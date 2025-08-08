@@ -79,12 +79,18 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    // Debug logging for primary buttons
+    // Enhanced debug logging for primary buttons
     React.useEffect(() => {
       if (variant === 'primary' || variant === 'default') {
         const root = document.documentElement;
-        console.log('🔴 Button Debug - Primary color CSS value:', getComputedStyle(root).getPropertyValue('--primary'));
-        console.log('🔴 Button Debug - Primary foreground CSS value:', getComputedStyle(root).getPropertyValue('--primary-foreground'));
+        const computedStyle = getComputedStyle(root);
+        console.log('🔴 === BUTTON DEBUG START ===');
+        console.log('🔴 Button variant:', variant);
+        console.log('🔴 CSS --primary value:', computedStyle.getPropertyValue('--primary').trim());
+        console.log('🔴 CSS --primary-foreground value:', computedStyle.getPropertyValue('--primary-foreground').trim());
+        console.log('🔴 Inline style --primary:', root.style.getPropertyValue('--primary') || 'none');
+        console.log('🔴 Theme class on html:', root.className);
+        console.log('🔴 === BUTTON DEBUG END ===');
       }
     }, [variant]);
     
