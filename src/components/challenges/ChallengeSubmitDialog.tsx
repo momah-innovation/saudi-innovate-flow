@@ -59,7 +59,7 @@ interface SubmissionData {
   teamMembers: TeamMember[];
   attachments: File[];
   attachmentUrls: string[];
-  technicalDetails: any;
+  technicalDetails: { technology: string; framework: string; database: string; hosting: string };
   isPublic: boolean;
 }
 
@@ -94,7 +94,7 @@ export const ChallengeSubmitDialog = ({
     teamMembers: [],
     attachments: [],
     attachmentUrls: [],
-    technicalDetails: {},
+    technicalDetails: { technology: '', framework: '', database: '', hosting: '' },
     isPublic: false
   });
 
@@ -128,7 +128,7 @@ export const ChallengeSubmitDialog = ({
     }
   ];
 
-  const updateSubmissionData = (field: keyof SubmissionData, value: any) => {
+  const updateSubmissionData = (field: keyof SubmissionData, value: string | boolean | TeamMember[] | File[] | string[] | { technology: string; framework: string; database: string; hosting: string }) => {
     setSubmissionData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -218,7 +218,7 @@ export const ChallengeSubmitDialog = ({
     updateSubmissionData('teamMembers', [...submissionData.teamMembers, newMember]);
   };
 
-  const updateTeamMember = (index: number, field: keyof TeamMember, value: any) => {
+  const updateTeamMember = (index: number, field: keyof TeamMember, value: string) => {
     const newMembers = submissionData.teamMembers.map((member, i) => 
       i === index ? { ...member, [field]: value } : member
     );
@@ -293,7 +293,7 @@ export const ChallengeSubmitDialog = ({
       teamMembers: [],
       attachments: [],
       attachmentUrls: [],
-      technicalDetails: {},
+      technicalDetails: { technology: '', framework: '', database: '', hosting: '' },
       isPublic: false
     });
   };

@@ -56,7 +56,7 @@ export function ChallengeCreateDialog({
     service_id: ''
   });
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | number | Date) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 

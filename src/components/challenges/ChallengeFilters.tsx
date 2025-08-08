@@ -69,7 +69,7 @@ export const ChallengeFilters = ({
     }
   }, [activeFiltersCount]);
 
-  const updateFilter = (key: keyof FilterState, value: any) => {
+  const updateFilter = (key: keyof FilterState, value: string | string[] | boolean | number[]) => {
     onFiltersChange({ ...filters, [key]: value });
   };
 
@@ -334,7 +334,7 @@ export const ChallengeFilters = ({
                 <div className="px-3">
                   <Slider
                     value={filters.prizeRange}
-                    onValueChange={(value) => updateFilter('prizeRange', value as [number, number])}
+                    onValueChange={(value) => updateFilter('prizeRange', value)}
                     max={dynamicMaxBudget}
                     min={0}
                     step={dynamicMaxBudget > 1000000 ? 100000 : 10000}
@@ -356,7 +356,7 @@ export const ChallengeFilters = ({
                 <div className="px-3">
                   <Slider
                     value={filters.participantRange}
-                    onValueChange={(value) => updateFilter('participantRange', value as [number, number])}
+                    onValueChange={(value) => updateFilter('participantRange', value)}
                     max={dynamicMaxParticipants}
                     min={0}
                     step={dynamicMaxParticipants > 100 ? 10 : 5}

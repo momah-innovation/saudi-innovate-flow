@@ -53,8 +53,8 @@ interface Challenge {
   award_type?: string;
   priority_level?: string;
   sensitivity_level?: string;
-  requirements?: any;
-  evaluation_criteria?: any;
+  requirements?: { text: string; type: string }[];
+  evaluation_criteria?: { criterion: string; weight: number }[];
 }
 
 interface ChallengeViewDialogProps {
@@ -549,13 +549,17 @@ export function ChallengeViewDialog({
                   <div className="p-4 bg-muted/50 rounded-lg">
                     <h4 className="font-medium mb-2">{isRTL ? 'المتطلبات الأساسية' : 'Basic Requirements'}</h4>
                     <p className="text-sm text-muted-foreground">
-                      {challenge.requirements || (isRTL ? 'لم يتم تحديد متطلبات خاصة للتحدي.' : 'No specific requirements defined for this challenge.')}
+                      {Array.isArray(challenge.requirements) ? 
+                        challenge.requirements.map(req => req.text).join(', ') : 
+                        challenge.requirements || (isRTL ? 'لم يتم تحديد متطلبات خاصة للتحدي.' : 'No specific requirements defined for this challenge.')}
                     </p>
                   </div>
                   <div className="p-4 bg-muted/50 rounded-lg">
                     <h4 className="font-medium mb-2">{isRTL ? 'معايير التقييم' : 'Evaluation Criteria'}</h4>
                     <p className="text-sm text-muted-foreground">
-                      {challenge.evaluation_criteria || (isRTL ? 'سيتم الإعلان عن معايير التقييم قريباً.' : 'Evaluation criteria will be announced soon.')}
+                      {Array.isArray(challenge.evaluation_criteria) ? 
+                        challenge.evaluation_criteria.map(crit => `${crit.criterion} (${crit.weight}%)`).join(', ') : 
+                        challenge.evaluation_criteria || (isRTL ? 'سيتم الإعلان عن معايير التقييم قريباً.' : 'Evaluation criteria will be announced soon.')}
                     </p>
                   </div>
                 </div>

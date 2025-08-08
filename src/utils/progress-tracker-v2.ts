@@ -31,8 +31,8 @@ export const currentProgress: ProgressUpdate[] = [
   {
     phase: 'Any Type Elimination',
     status: 'in-progress',
-    completion: 25,
-    details: '25/346 any types fixed across core components, systematic elimination ongoing'
+    completion: 35,
+    details: '35/346 any types fixed across challenges, forms, and settings components'
   },
   {
     phase: 'Translation Completion',
