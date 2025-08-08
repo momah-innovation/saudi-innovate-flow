@@ -28,6 +28,22 @@ export interface LogContext {
   platform?: string;
   selectedTypes?: string[];
   filters?: Record<string, unknown>;
+  // Translation system specific
+  batch?: number;
+  batchSize?: number;
+  totalSoFar?: number;
+  totalLoaded?: number;
+  totalTranslations?: number;
+  firstFew?: Array<{ key: string; en: string; ar: string }>;
+  mapSize?: number;
+  result?: string;
+  fallback?: string;
+  // AI Service specific
+  functionName?: string;
+  featureName?: string;
+  usageType?: string;
+  // Error context
+  error?: unknown;
   data?: Record<string, any>;
   debugName?: string;
   renderCount?: number;

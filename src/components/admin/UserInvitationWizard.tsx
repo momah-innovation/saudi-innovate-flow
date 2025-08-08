@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 
 interface UserInvitationWizardProps {
   open: boolean;
@@ -102,10 +103,10 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
         });
         
         if (emailError) {
-          console.warn('Email sending failed, showing invitation link instead:', emailError);
+          logger.warn('Email sending failed, showing invitation link instead', { error: emailError });
         }
       } catch (emailError) {
-        console.warn('Email service unavailable, showing invitation link instead:', emailError);
+        logger.warn('Email service unavailable, showing invitation link instead', { error: emailError });
       }
 
       const inviteLink = `${window.location.origin}/auth?invite=${tokenData}`;

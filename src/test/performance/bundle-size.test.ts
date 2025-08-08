@@ -36,9 +36,10 @@ describe('Bundle Size Analysis', () => {
     // Check that analysis identifies potential heavy dependencies
     expect(analysis.heavyDependencies).toBeInstanceOf(Array)
     
-    // Warn if bundle is too large (> 1MB)
+    // Performance assertion for bundle size
     if (analysis.totalSize > 1024 * 1024) {
-      console.warn(`Bundle size is ${analysis.totalSize} bytes, consider optimization`)
+      // Test environment - log performance concern for CI/CD
+      expect(analysis.totalSize).toBeLessThan(2 * 1024 * 1024); // Max 2MB
     }
   })
 

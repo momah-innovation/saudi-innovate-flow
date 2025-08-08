@@ -56,10 +56,14 @@ export function useUnifiedTranslation() {
           hasMore = false;
         }
         
-        console.log(`🔥 BATCH ${Math.floor(start/batchSize)}: loaded ${data?.length || 0} translations, total so far: ${allTranslations.length}`);
+        logger.debug('Translation batch loaded', { 
+          batch: Math.floor(start/batchSize), 
+          batchSize: data?.length || 0, 
+          totalSoFar: allTranslations.length 
+        });
       }
       
-      console.log('🔥 ALL TRANSLATIONS LOADED:', { 
+      logger.info('All translations loaded successfully', { 
         totalLoaded: allTranslations.length,
         language
       });
@@ -81,7 +85,7 @@ export function useUnifiedTranslation() {
   // Create optimized translation map
   const translationMap = useMemo(() => {
     const map = new Map<string, { en: string; ar: string }>();
-    console.log('🔍 Building translation map from DB data:', { 
+    logger.debug('Building translation map from database data', { 
       totalTranslations: dbTranslations.length,
       firstFew: dbTranslations.slice(0, 3).map(t => ({ key: t.translation_key, en: t.text_en, ar: t.text_ar }))
     });
@@ -91,7 +95,7 @@ export function useUnifiedTranslation() {
         ar: translation.text_ar
       });
     });
-    console.log('✅ Translation map built:', { mapSize: map.size, language });
+    logger.info('Translation map built successfully', { mapSize: map.size, language });
     return map;
   }, [dbTranslations, language]);
 
@@ -122,7 +126,7 @@ export function useUnifiedTranslation() {
         const text = dbTranslation[language];
         if (text && text.trim() !== '') {
           const result = interpolateText(text, interpolationOptions);
-          console.log(`✅ DB translation for "${key}": "${result}"`);
+          logger.debug('Database translation found', { key, result: result.slice(0, 50) });
           return result;
         }
       }
@@ -130,12 +134,12 @@ export function useUnifiedTranslation() {
       // Strategy 2: Provided fallback
       if (fallback && fallback.trim() !== '') {
         const result = interpolateText(fallback, interpolationOptions);
-        console.log(`⚠️ Using fallback for "${key}": "${result}"`);
+        logger.debug('Using fallback translation', { key, fallback: result.slice(0, 50) });
         return result;
       }
 
       // Strategy 3: Return key as last resort
-      console.error(`❌ NO TRANSLATION for "${key}" (mapSize: ${translationMap.size}, language: ${language})`);
+      logger.warn('No translation found for key', { key, mapSize: translationMap.size, language });
       return key;
     } catch (error) {
       logger.warn('Translation error occurred', { key, language }, error as Error);

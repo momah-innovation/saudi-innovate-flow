@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
+import { logger } from '@/utils/logger';
 
 export interface AIServiceConfig {
   model: string;
@@ -74,7 +75,7 @@ export class AIService {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error(`AI Service Error (${functionName}):`, error);
+      logger.error('AI Service call failed', { functionName }, error as Error);
       throw error;
     }
   }
@@ -104,7 +105,7 @@ export class AIService {
         metadata
       });
     } catch (error) {
-      console.warn('Failed to track AI usage:', error);
+      logger.warn('Failed to track AI usage', { featureName, usageType }, error as Error);
     }
   }
 
@@ -431,7 +432,7 @@ export class AIService {
       if (error || !data) return null;
       return data.model_configuration as AIServiceConfig;
     } catch (error) {
-      console.error('Error fetching AI feature config:', error);
+      logger.error('Error fetching AI feature config', {}, error as Error);
       return null;
     }
   }
@@ -460,7 +461,7 @@ export class AIService {
 
       return feature?.is_enabled || false;
     } catch (error) {
-      console.error('Error checking feature status:', error);
+      logger.error('Error checking feature status', { featureName }, error as Error);
       return false;
     }
   }

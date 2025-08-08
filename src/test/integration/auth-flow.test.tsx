@@ -44,7 +44,8 @@ const LoginPage = () => {
       await mockSignIn(email, password)
       mockNavigate('/dashboard')
     } catch (error) {
-      console.error('Login failed')
+      // Test environment - silent failure expected
+      return;
     }
   }
 

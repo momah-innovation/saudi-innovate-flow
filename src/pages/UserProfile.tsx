@@ -14,6 +14,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { useNavigate } from "react-router-dom";
 import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { EnhancedProfileHero } from '@/components/profile/EnhancedProfileHero';
+import { logger } from "@/utils/logger";
 
 interface ProfileForm {
   name: string;
@@ -108,7 +109,7 @@ const UserProfile = () => {
         description: "تم تحديث معلومات ملفك الشخصي",
       });
     } catch (error: any) {
-      console.error('Error updating profile:', error);
+      logger.error('Error updating profile', { userId: user?.id }, error);
       toast({
         title: "خطأ في التحديث",
         description: error.message || "فشل في تحديث الملف الشخصي",

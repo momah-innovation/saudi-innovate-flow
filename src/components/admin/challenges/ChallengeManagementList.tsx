@@ -30,6 +30,7 @@ import {
 import { format } from "date-fns";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import type { BadgeVariant, DatabaseChallenge } from "@/types";
 
 interface Challenge {
   id: string;
@@ -334,11 +335,11 @@ export function ChallengeManagementList() {
                 badges={[
                   { 
                     label: getStatusLabel(challenge.status),
-                    variant: getStatusColor(challenge.status) as any
+                    variant: getStatusColor(challenge.status) as BadgeVariant
                   },
                   { 
                     label: getPriorityLabel(challenge.priority_level),
-                    variant: getPriorityColor(challenge.priority_level) as any
+                    variant: getPriorityColor(challenge.priority_level) as BadgeVariant
                   },
                   ...(challenge.challenge_type ? [{ 
                     label: challenge.challenge_type, 
@@ -406,7 +407,7 @@ export function ChallengeManagementList() {
           setShowWizard(false);
           setSelectedChallenge(null);
         }}
-        challenge={selectedChallenge as any}
+        challenge={selectedChallenge as DatabaseChallenge}
       />
 
       <ChallengeDetailView
