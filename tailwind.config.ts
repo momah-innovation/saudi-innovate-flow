@@ -29,15 +29,20 @@ export default {
 					foreground: "hsl(var(--primary-foreground))",
 					hover: "hsl(var(--primary-hover))",
 					active: "hsl(var(--primary-active))",
+					light: "hsl(var(--primary-light))",
+					muted: "hsl(var(--primary-muted))",
 				},
 				secondary: {
 					DEFAULT: "hsl(var(--secondary))",
 					foreground: "hsl(var(--secondary-foreground))",
 					hover: "hsl(var(--secondary-hover))",
+					active: "hsl(var(--secondary-active))",
 				},
 				destructive: {
 					DEFAULT: "hsl(var(--destructive))",
 					foreground: "hsl(var(--destructive-foreground))",
+					light: "hsl(var(--destructive-light))",
+					border: "hsl(var(--destructive-border))",
 				},
 				muted: {
 					DEFAULT: "hsl(var(--muted))",
@@ -384,6 +389,8 @@ export default {
 				'gradient-warning': 'var(--gradient-warning)',
 				'gradient-info': 'var(--gradient-info)',
 				'gradient-subtle': 'var(--gradient-subtle)',
+				'gradient-overlay': 'var(--gradient-overlay)',
+				'gradient-hero': 'var(--gradient-hero)',
 			},
 			spacing: {
 				'3xs': 'var(--space-3xs)',
@@ -403,6 +410,7 @@ export default {
 				'medium': 'var(--shadow-medium)',
 				'large': 'var(--shadow-large)',
 				'glow': 'var(--shadow-glow)',
+				'colored': 'var(--shadow-colored)',
 			},
 			borderRadius: {
 				lg: "var(--radius)",
