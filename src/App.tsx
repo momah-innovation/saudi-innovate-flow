@@ -84,10 +84,14 @@ import { SubscriptionPage } from "./pages/SubscriptionPage";
 import PaddleSubscriptionPage from "./pages/PaddleSubscriptionPage";
 import LogflareAnalyticsPage from "./pages/LogflareAnalyticsPage";
 import { AppShell } from "@/components/layout/AppShell";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  const { t } = useUnifiedTranslation();
+  
+  return (
   <QueryClientProvider client={queryClient}>
     <I18nextProvider i18n={i18n}>
       <DirectionProvider>
@@ -108,18 +112,18 @@ const App = () => (
                     <Route path={ALL_ROUTES.ABOUT} element={
                       <PublicRoute>
                         <div className="container mx-auto px-4 py-16">
-                          <h1 className="text-4xl font-bold mb-8">حول منصة رواد</h1>
+                          <h1 className="text-4xl font-bold mb-8">{t('page.about_title')}</h1>
                           <div className="prose max-w-4xl">
                             <p className="text-lg mb-6">
-                              منصة رواد هي منصة الابتكار الحكومي الرائدة في المملكة العربية السعودية، تهدف إلى تسريع التحول الرقمي وتحقيق أهداف رؤية 2030.
+                              {t('page.about_description')}
                             </p>
-                            <h2 className="text-2xl font-semibold mb-4">رؤيتنا</h2>
+                            <h2 className="text-2xl font-semibold mb-4">{t('page.our_vision_title')}</h2>
                             <p className="mb-4">
-                              أن نكون المنصة الرائدة في تمكين الابتكار الحكومي وتطوير الحلول المبتكرة التي تخدم المواطنين والمقيمين.
+                              {t('page.our_vision_description')}
                             </p>
-                            <h2 className="text-2xl font-semibold mb-4">مهمتنا</h2>
+                            <h2 className="text-2xl font-semibold mb-4">{t('page.our_mission_title')}</h2>
                             <p className="mb-4">
-                              تسهيل التعاون بين الجهات الحكومية والقطاع الخاص والمبتكرين لإيجاد حلول مبتكرة للتحديات الحكومية.
+                              {t('page.our_mission_description')}
                             </p>
                           </div>
                         </div>
@@ -128,31 +132,31 @@ const App = () => (
                     <Route path={ALL_ROUTES.CAMPAIGNS} element={
                       <PublicRoute>
                         <div className="container mx-auto px-4 py-16">
-                          <h1 className="text-4xl font-bold mb-8">حملات الابتكار</h1>
+                          <h1 className="text-4xl font-bold mb-8">{t('page.campaigns_title')}</h1>
                           <p className="text-lg text-muted-foreground mb-8">
-                            استكشف الحملات الجارية للابتكار عبر القطاعات الحكومية المختلفة.
+                            {t('page.campaigns_description')}
                           </p>
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <div className="card p-6 border rounded-lg">
-                              <h3 className="text-xl font-semibold mb-3">التحول الرقمي</h3>
+                              <h3 className="text-xl font-semibold mb-3">{t('campaign.digital_transformation')}</h3>
                               <p className="text-muted-foreground mb-4">
-                                مبادرات لتسريع التحول الرقمي في الخدمات الحكومية
+                                {t('campaign.digital_transformation_desc')}
                               </p>
-                              <span className="badge bg-primary text-primary-foreground">نشطة</span>
+                              <span className="badge bg-primary text-primary-foreground">{t('status.active')}</span>
                             </div>
                             <div className="card p-6 border rounded-lg">
-                              <h3 className="text-xl font-semibold mb-3">المدن الذكية</h3>
+                              <h3 className="text-xl font-semibold mb-3">{t('campaign.smart_cities')}</h3>
                               <p className="text-muted-foreground mb-4">
-                                حلول مبتكرة لتطوير المدن الذكية والمستدامة
+                                {t('campaign.smart_cities_desc')}
                               </p>
-                              <span className="badge bg-secondary text-secondary-foreground">قريباً</span>
+                              <span className="badge bg-secondary text-secondary-foreground">{t('status.coming_soon')}</span>
                             </div>
                             <div className="card p-6 border rounded-lg">
-                              <h3 className="text-xl font-semibold mb-3">الذكاء الاصطناعي</h3>
+                              <h3 className="text-xl font-semibold mb-3">{t('campaign.artificial_intelligence')}</h3>
                               <p className="text-muted-foreground mb-4">
-                                تطبيقات الذكاء الاصطناعي في الخدمات العامة
+                                {t('campaign.artificial_intelligence_desc')}
                               </p>
-                              <span className="badge bg-accent text-accent-foreground">التخطيط</span>
+                              <span className="badge bg-accent text-accent-foreground">{t('status.planning')}</span>
                             </div>
                           </div>
                         </div>
@@ -161,13 +165,13 @@ const App = () => (
                     <Route path={ALL_ROUTES.MARKETPLACE} element={
                       <PublicRoute>
                         <div className="container mx-auto px-4 py-16">
-                          <h1 className="text-4xl font-bold mb-8">سوق الابتكار</h1>
+                          <h1 className="text-4xl font-bold mb-8">{t('page.marketplace_title')}</h1>
                           <p className="text-lg text-muted-foreground mb-8">
-                            اكتشف الفرص والشراكات الابتكارية في القطاع الحكومي.
+                            {t('page.marketplace_description')}
                           </p>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-6">
-                              <h2 className="text-2xl font-semibold">الفرص المتاحة</h2>
+                              <h2 className="text-2xl font-semibold">{t('marketplace.available_opportunities')}</h2>
                               <div className="space-y-4">
                                 <div className="border rounded-lg p-4">
                                   <h3 className="font-semibold mb-2">تطوير تطبيق خدمات حكومية</h3>
@@ -192,7 +196,7 @@ const App = () => (
                               </div>
                             </div>
                             <div className="space-y-6">
-                              <h2 className="text-2xl font-semibold">الشراكات</h2>
+                              <h2 className="text-2xl font-semibold">{t('marketplace.partnerships')}</h2>
                               <div className="space-y-4">
                                 <div className="border rounded-lg p-4">
                                   <h3 className="font-semibold mb-2">مايكروسوفت السعودية</h3>
@@ -865,6 +869,7 @@ const App = () => (
       </DirectionProvider>
     </I18nextProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
