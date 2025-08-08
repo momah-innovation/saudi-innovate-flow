@@ -4,482 +4,193 @@
 
 @layer base {
   :root {
-    /* === REFINED COLOR TOKENS === */
+    /* === MODERN DESIGN TOKENS === */
+    
+    /* Core colors with improved contrast */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 280 84% 12%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    /* Primary - Modern purple with good contrast */
+    --primary: 262 83% 58%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 280 84% 8%;
-    --primary-active: 280 84% 6%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --secondary-hover: 210 40% 92%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
+    --primary-hover: 262 83% 52%;
+    --primary-active: 262 83% 45%;
+    
+    /* Secondary - Refined grays */
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --secondary-hover: 240 4.8% 91%;
+    
+    /* Muted - Better readability */
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    
+    /* Accent - Complementary to primary */
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    
+    /* Destructive - Vibrant red */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 280 84% 12%;
+    --destructive-foreground: 0 0% 98%;
     
-    /* === ENHANCED SEMANTIC COLOR SYSTEM === */
-    /* Status Colors */
-    --success: 142 76% 36%;
-    --success-foreground: 355 7% 97%;
-    --success-hover: 142 76% 32%;
-    --success-light: 142 76% 95%;
-    --success-border: 142 76% 85%;
-    --success-muted: 142 76% 90%;
+    /* Border and input */
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 262 83% 58%;
     
-    --warning: 43 96% 56%;
-    --warning-foreground: 25 5% 11%;
-    --warning-hover: 43 96% 52%;
-    --warning-light: 43 96% 95%;
-    --warning-border: 43 96% 85%;
-    --warning-muted: 43 96% 90%;
+    /* === STATUS COLORS === */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 142 76% 96%;
+    --success-border: 142 69% 58%;
     
-    --info: 217 91% 60%;
-    --info-foreground: 210 40% 98%;
-    --info-hover: 217 91% 56%;
-    --info-light: 217 91% 95%;
-    --info-border: 217 91% 85%;
-    --info-muted: 217 91% 90%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-light: 48 96% 89%;
+    --warning-border: 38 92% 65%;
     
-    /* Specialized Status Colors */
-    --complete: 142 76% 36%;
-    --complete-foreground: 355 7% 97%;
-    --complete-light: 142 76% 95%;
-    --complete-border: 142 76% 85%;
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+    --info-light: 204 100% 97%;
+    --info-border: 199 89% 65%;
     
-    --scheduled: 217 91% 60%;
-    --scheduled-foreground: 210 40% 98%;
-    --scheduled-light: 217 91% 95%;
-    --scheduled-border: 217 91% 85%;
+    /* === EVENT STATUS === */
+    --scheduled: 199 89% 48%;
+    --scheduled-foreground: 0 0% 100%;
+    --scheduled-light: 204 100% 97%;
+    --scheduled-border: 199 89% 65%;
     
-    --active: 142 76% 36%;
-    --active-foreground: 355 7% 97%;
-    --active-light: 142 76% 95%;
-    --active-border: 142 76% 85%;
+    --active: 142 71% 45%;
+    --active-foreground: 0 0% 100%;
+    --active-light: 142 76% 96%;
+    --active-border: 142 69% 58%;
     
-    --inactive: 220 13% 69%;
-    --inactive-foreground: 220 9% 46%;
-    --inactive-light: 220 13% 95%;
-    --inactive-border: 220 13% 85%;
+    --complete: 142 71% 45%;
+    --complete-foreground: 0 0% 100%;
+    --complete-light: 142 76% 96%;
+    --complete-border: 142 69% 58%;
     
-    --pending: 43 96% 56%;
-    --pending-foreground: 25 5% 11%;
-    --pending-light: 43 96% 95%;
-    --pending-border: 43 96% 85%;
+    --pending: 38 92% 50%;
+    --pending-foreground: 0 0% 100%;
+    --pending-light: 48 96% 89%;
+    --pending-border: 38 92% 65%;
     
-    /* Priority Colors */
-    --priority-high: 0 84% 60%;
-    --priority-high-foreground: 355 7% 97%;
-    --priority-high-light: 0 84% 95%;
-    --priority-high-border: 0 84% 85%;
+    --inactive: 240 3.8% 46.1%;
+    --inactive-foreground: 0 0% 100%;
+    --inactive-light: 240 4.8% 95.9%;
+    --inactive-border: 240 5.9% 90%;
     
-    --priority-medium: 43 96% 56%;
-    --priority-medium-foreground: 25 5% 11%;
-    --priority-medium-light: 43 96% 95%;
-    --priority-medium-border: 43 96% 85%;
+    /* === CATEGORY COLORS === */
+    --innovation: 262 83% 58%;
+    --innovation-foreground: 0 0% 100%;
+    --innovation-light: 262 100% 97%;
+    --innovation-border: 262 83% 70%;
     
-    --priority-low: 142 76% 36%;
-    --priority-low-foreground: 355 7% 97%;
-    --priority-low-light: 142 76% 95%;
-    --priority-low-border: 142 76% 85%;
+    --technology: 199 89% 48%;
+    --technology-foreground: 0 0% 100%;
+    --technology-light: 204 100% 97%;
+    --technology-border: 199 89% 65%;
     
-    /* Trend Colors */
-    --trend-up: 142 76% 36%;
-    --trend-up-foreground: 355 7% 97%;
-    --trend-down: 0 84% 60%;
-    --trend-down-foreground: 355 7% 97%;
-    --trend-stable: 220 13% 69%;
-    --trend-stable-foreground: 220 9% 46%;
+    --sustainability: 142 71% 45%;
+    --sustainability-foreground: 0 0% 100%;
+    --sustainability-light: 142 76% 96%;
+    --sustainability-border: 142 69% 58%;
     
-    /* Innovation Category Colors */
-    --innovation: 280 84% 12%;
-    --innovation-foreground: 210 40% 98%;
-    --innovation-light: 280 84% 95%;
-    --innovation-border: 280 84% 85%;
+    --social: 328 86% 70%;
+    --social-foreground: 0 0% 100%;
+    --social-light: 328 100% 96%;
+    --social-border: 328 86% 80%;
     
-    --technology: 217 91% 60%;
-    --technology-foreground: 210 40% 98%;
-    --technology-light: 217 91% 95%;
-    --technology-border: 217 91% 85%;
+    --partner: 262 83% 58%;
+    --partner-foreground: 0 0% 100%;
+    --partner-light: 262 100% 97%;
+    --partner-border: 262 83% 70%;
     
-    --sustainability: 142 76% 36%;
-    --sustainability-foreground: 355 7% 97%;
-    --sustainability-light: 142 76% 95%;
-    --sustainability-border: 142 76% 85%;
+    /* === PRIORITY COLORS === */
+    --priority-high: 0 84.2% 60.2%;
+    --priority-high-foreground: 0 0% 100%;
+    --priority-high-light: 0 93% 94%;
+    --priority-high-border: 0 84% 75%;
     
-    --social: 340 82% 52%;
-    --social-foreground: 355 7% 97%;
-    --social-light: 340 82% 95%;
-    --social-border: 340 82% 85%;
+    --priority-medium: 38 92% 50%;
+    --priority-medium-foreground: 0 0% 100%;
+    --priority-medium-light: 48 96% 89%;
+    --priority-medium-border: 38 92% 65%;
     
-    /* Partner & Stakeholder Colors */
-    --partner: 280 84% 12%;
-    --partner-foreground: 210 40% 98%;
-    --partner-light: 280 84% 95%;
-    --partner-border: 280 84% 85%;
+    --priority-low: 142 71% 45%;
+    --priority-low-foreground: 0 0% 100%;
+    --priority-low-light: 142 76% 96%;
+    --priority-low-border: 142 69% 58%;
     
-    --stakeholder: 217 91% 60%;
-    --stakeholder-foreground: 210 40% 98%;
-    --stakeholder-light: 217 91% 95%;
-    --stakeholder-border: 217 91% 85%;
-    
-    --expert: 142 76% 36%;
-    --expert-foreground: 355 7% 97%;
-    --expert-light: 142 76% 95%;
-    --expert-border: 142 76% 85%;
-    
-    /* === REFINED SPACING TOKENS === */
-    --space-px: 1px;
-    --space-0: 0rem;
-    --space-0-5: 0.125rem;
-    --space-1: 0.25rem;
-    --space-1-5: 0.375rem;
-    --space-2: 0.5rem;
-    --space-2-5: 0.625rem;
-    --space-3: 0.75rem;
-    --space-3-5: 0.875rem;
-    --space-4: 1rem;
-    --space-5: 1.25rem;
-    --space-6: 1.5rem;
-    --space-7: 1.75rem;
-    --space-8: 2rem;
-    --space-9: 2.25rem;
-    --space-10: 2.5rem;
-    --space-11: 2.75rem;
-    --space-12: 3rem;
-    --space-14: 3.5rem;
-    --space-16: 4rem;
-    --space-20: 5rem;
-    --space-24: 6rem;
-    --space-28: 7rem;
-    --space-32: 8rem;
-    --space-36: 9rem;
-    --space-40: 10rem;
-    --space-44: 11rem;
-    --space-48: 12rem;
-    --space-52: 13rem;
-    --space-56: 14rem;
-    --space-60: 15rem;
-    --space-64: 16rem;
-    --space-72: 18rem;
-    --space-80: 20rem;
-    --space-96: 24rem;
-    
-    /* === REFINED TYPOGRAPHY TOKENS === */
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 1.875rem;
-    --font-size-4xl: 2.25rem;
-    --font-size-5xl: 3rem;
-    --font-size-6xl: 3.75rem;
-    --font-size-7xl: 4.5rem;
-    --font-size-8xl: 6rem;
-    --font-size-9xl: 8rem;
-    
-    --line-height-none: 1;
-    --line-height-tight: 1.25;
-    --line-height-snug: 1.375;
-    --line-height-normal: 1.5;
-    --line-height-relaxed: 1.625;
-    --line-height-loose: 2;
-    
-    --font-weight-thin: 100;
-    --font-weight-extralight: 200;
-    --font-weight-light: 300;
-    --font-weight-normal: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    --font-weight-extrabold: 800;
-    --font-weight-black: 900;
-    
-    /* === REFINED SHADOW TOKENS === */
-    --shadow-xs: 0 1px 2px 0 hsl(280 84% 12% / 0.05);
-    --shadow-sm: 0 1px 3px 0 hsl(280 84% 12% / 0.1), 0 1px 2px -1px hsl(280 84% 12% / 0.1);
-    --shadow-base: 0 4px 6px -1px hsl(280 84% 12% / 0.1), 0 2px 4px -2px hsl(280 84% 12% / 0.1);
-    --shadow-md: 0 10px 15px -3px hsl(280 84% 12% / 0.1), 0 4px 6px -4px hsl(280 84% 12% / 0.1);
-    --shadow-lg: 0 20px 25px -5px hsl(280 84% 12% / 0.1), 0 8px 10px -6px hsl(280 84% 12% / 0.1);
-    --shadow-xl: 0 25px 50px -12px hsl(280 84% 12% / 0.25);
-    --shadow-2xl: 0 50px 100px -20px hsl(280 84% 12% / 0.25);
-    --shadow-inner: inset 0 2px 4px 0 hsl(280 84% 12% / 0.05);
-    --shadow-glow: 0 0 20px hsl(280 84% 12% / 0.3);
-    --shadow-glow-lg: 0 0 40px hsl(280 84% 12% / 0.4);
-    
-    /* === BORDER RADIUS TOKENS === */
-    --radius-none: 0px;
-    --radius-sm: 0.125rem;
-    --radius-base: 0.25rem;
-    --radius-md: 0.375rem;
-    --radius-lg: 0.5rem;
-    --radius-xl: 0.75rem;
-    --radius-2xl: 1rem;
-    --radius-3xl: 1.5rem;
-    --radius-full: 9999px;
-    
-    /* === ANIMATION TIMING TOKENS === */
-    --duration-75: 75ms;
-    --duration-100: 100ms;
-    --duration-150: 150ms;
-    --duration-200: 200ms;
-    --duration-300: 300ms;
-    --duration-500: 500ms;
-    --duration-700: 700ms;
-    --duration-1000: 1000ms;
-    
-    --ease-linear: linear;
-    --ease-in: cubic-bezier(0.4, 0, 1, 1);
-    --ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    
-    /* === COMPONENT-SPECIFIC TOKENS === */
-    --button-padding-x: var(--space-4);
-    --button-padding-y: var(--space-2);
-    --button-font-size: var(--font-size-sm);
-    --button-border-radius: var(--radius-md);
-
-    --card-padding: var(--space-6);
-    --card-border-radius: var(--radius-lg);
-    --card-shadow: var(--shadow-sm);
-
-    --input-padding-x: var(--space-3);
-    --input-padding-y: var(--space-2);
-    --input-border-radius: var(--radius-md);
-    --input-font-size: var(--font-size-sm);
-    
-    /* === OVERLAY & HIGH CONTRAST TOKENS === */
+    /* === OVERLAY SYSTEM === */
     --overlay-background: 0 0% 0%;
     --overlay-foreground: 0 0% 100%;
-    --overlay-light: 0 0% 100%;
-    --overlay-dark: 0 0% 0%;
-    
-    /* High contrast text for overlays */
     --overlay-text: 0 0% 100%;
     --overlay-text-muted: 0 0% 70%;
-    
-    /* Interactive overlay elements */
     --overlay-button: 0 0% 100%;
     --overlay-button-hover: 0 0% 90%;
-
-    /* === SPECIALIZED UI TOKENS === */
-    /* Live/Real-time indicators */
-    --live: 0 84% 60%;
-    --live-foreground: 0 0% 100%;
-    --live-background: 0 84% 95%;
-    --live-border: 0 84% 85%;
-
-    /* Hot/Trending indicators */
-    --hot: 14 100% 57%;
-    --hot-foreground: 0 0% 100%;
-    --hot-background: 14 100% 95%;
-    --hot-border: 14 100% 85%;
-
-    /* Sector Categories - Complete Saudi Government Structure */
-    --sector-health: 142 76% 47%;         /* Medical green */
-    --sector-health-foreground: 355 7% 97%;
-    --sector-health-background: 142 76% 95%;
-    --sector-health-border: 142 76% 85%;
-
-    --sector-education: 271 91% 65%;      /* Purple */
-    --sector-education-foreground: 210 40% 98%;
-    --sector-education-background: 271 91% 95%;
-    --sector-education-border: 271 91% 85%;
-
-    --sector-transport: 203 69% 56%;      /* Sky blue */
-    --sector-transport-foreground: 210 40% 98%;
-    --sector-transport-background: 203 69% 95%;
-    --sector-transport-border: 203 69% 85%;
-
-    --sector-environment: 159 80% 50%;    /* Forest green */
-    --sector-environment-foreground: 355 7% 97%;
-    --sector-environment-background: 159 80% 95%;
-    --sector-environment-border: 159 80% 85%;
-
-    --sector-economy: 43 96% 56%;         /* Gold */
-    --sector-economy-foreground: 25 5% 11%;
-    --sector-economy-background: 43 96% 95%;
-    --sector-economy-border: 43 96% 85%;
-
-    --sector-technology: 239 84% 67%;     /* Modern blue */
-    --sector-technology-foreground: 210 40% 98%;
-    --sector-technology-background: 239 84% 95%;
-    --sector-technology-border: 239 84% 85%;
-
-    --sector-finance: 45 93% 47%;         /* Finance orange */
-    --sector-finance-foreground: 25 5% 11%;
-    --sector-finance-background: 45 93% 95%;
-    --sector-finance-border: 45 93% 85%;
-
-    --sector-defense: 220 9% 46%;         /* Military gray */
-    --sector-defense-foreground: 355 7% 97%;
-    --sector-defense-background: 220 9% 95%;
-    --sector-defense-border: 220 9% 85%;
-
-    --sector-social: 198 93% 60%;         /* Social cyan */
-    --sector-social-foreground: 210 40% 98%;
-    --sector-social-background: 198 93% 95%;
-    --sector-social-border: 198 93% 85%;
-
-    --sector-interior: 0 84% 60%;         /* Security red */
-    --sector-interior-foreground: 355 7% 97%;
-    --sector-interior-background: 0 84% 95%;
-    --sector-interior-border: 0 84% 85%;
-
-    --sector-foreign-affairs: 260 89% 66%; /* Diplomatic purple */
-    --sector-foreign-affairs-foreground: 210 40% 98%;
-    --sector-foreign-affairs-background: 260 89% 95%;
-    --sector-foreign-affairs-border: 260 89% 85%;
-
-    --sector-justice: 240 21% 15%;        /* Legal navy */
-    --sector-justice-foreground: 355 7% 97%;
-    --sector-justice-background: 240 21% 95%;
-    --sector-justice-border: 240 21% 85%;
-
-    --sector-islamic-affairs: 159 100% 25%; /* Islamic green */
-    --sector-islamic-affairs-foreground: 355 7% 97%;
-    --sector-islamic-affairs-background: 159 100% 95%;
-    --sector-islamic-affairs-border: 159 100% 85%;
-
-    --sector-agriculture: 86 64% 49%;     /* Earth green */
-    --sector-agriculture-foreground: 355 7% 97%;
-    --sector-agriculture-background: 86 64% 95%;
-    --sector-agriculture-border: 86 64% 85%;
-
-    --sector-energy: 30 100% 50%;         /* Energy orange */
-    --sector-energy-foreground: 355 7% 97%;
-    --sector-energy-background: 30 100% 95%;
-    --sector-energy-border: 30 100% 85%;
-
-    --sector-housing: 25 85% 53%;         /* Construction orange */
-    --sector-housing-foreground: 355 7% 97%;
-    --sector-housing-background: 25 85% 95%;
-    --sector-housing-border: 25 85% 85%;
-
-    --sector-labor: 320 65% 64%;          /* Worker magenta */
-    --sector-labor-foreground: 355 7% 97%;
-    --sector-labor-background: 320 65% 95%;
-    --sector-labor-border: 320 65% 85%;
-
-    --sector-commerce: 280 84% 12%;       /* Business purple */
-    --sector-commerce-foreground: 210 40% 98%;
-    --sector-commerce-background: 280 84% 95%;
-    --sector-commerce-border: 280 84% 85%;
-
-    --sector-tourism: 291 64% 42%;        /* Travel purple */
-    --sector-tourism-foreground: 355 7% 97%;
-    --sector-tourism-background: 291 64% 95%;
-    --sector-tourism-border: 291 64% 85%;
-
-    --sector-culture: 340 82% 52%;        /* Cultural pink */
-    --sector-culture-foreground: 355 7% 97%;
-    --sector-culture-background: 340 82% 95%;
-    --sector-culture-border: 340 82% 85%;
-
-    --sector-sports: 120 60% 50%;         /* Athletic green */
-    --sector-sports-foreground: 355 7% 97%;
-    --sector-sports-background: 120 60% 95%;
-    --sector-sports-border: 120 60% 85%;
-
-    --sector-media: 14 91% 60%;           /* Media orange */
-    --sector-media-foreground: 355 7% 97%;
-    --sector-media-background: 14 91% 95%;
-    --sector-media-border: 14 91% 85%;
-
-    --sector-municipal-affairs: 217 71% 53%; /* Municipal blue */
-    --sector-municipal-affairs-foreground: 210 40% 98%;
-    --sector-municipal-affairs-background: 217 71% 95%;
-    --sector-municipal-affairs-border: 217 71% 85%;
-
-    --sector-water: 195 100% 50%;         /* Water blue */
-    --sector-water-foreground: 210 40% 98%;
-    --sector-water-background: 195 100% 95%;
-    --sector-water-border: 195 100% 85%;
-
-    --sector-civil-service: 220 13% 69%;  /* Service gray */
-    --sector-civil-service-foreground: 220 9% 46%;
-    --sector-civil-service-background: 220 13% 95%;
-    --sector-civil-service-border: 220 13% 85%;
-
-    --sector-planning: 81 84% 50%;        /* Planning green */
-    --sector-planning-foreground: 355 7% 97%;
-    --sector-planning-background: 81 84% 95%;
-    --sector-planning-border: 81 84% 85%;
-
-    --sector-communications: 260 89% 66%; /* Telecom purple */
-    --sector-communications-foreground: 210 40% 98%;
-    --sector-communications-background: 260 89% 95%;
-    --sector-communications-border: 260 89% 85%;
-
-    --sector-public-works: 30 67% 54%;    /* Infrastructure brown */
-    --sector-public-works-foreground: 355 7% 97%;
-    --sector-public-works-background: 30 67% 95%;
-    --sector-public-works-border: 30 67% 85%;
-
-    /* Rating/Star indicators */
-    --rating: 43 96% 56%;
-    --rating-foreground: 25 5% 11%;
-    --rating-filled: 43 96% 56%;
-    --rating-empty: 220 13% 69%;
-
-    /* === SEMANTIC GRADIENTS === */
-    --gradient-primary: linear-gradient(135deg, hsl(280 84% 12%), hsl(280 84% 20%));
-    --gradient-primary-hover: linear-gradient(135deg, hsl(280 84% 8%), hsl(280 84% 16%));
-    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--success) / 0.8));
-    --gradient-warning: linear-gradient(135deg, hsl(var(--warning)), hsl(var(--warning) / 0.8));
-    --gradient-info: linear-gradient(135deg, hsl(var(--info)), hsl(var(--info) / 0.8));
-    --gradient-subtle: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--accent)));
-    --gradient-glass: linear-gradient(135deg, hsl(var(--background) / 0.7), hsl(var(--background) / 0.3));
+    
+    /* === MODERN SPACING === */
+    --radius: 0.5rem;
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    
+    /* === MODERN SHADOWS === */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 280 84% 20%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
     
-    /* Dark Mode Semantic Colors */
-    --success: 142 66% 46%;
-    --success-foreground: 142 10% 5%;
-    --warning: 43 86% 66%;
-    --warning-foreground: 43 10% 5%;
-    --info: 217 81% 70%;
-    --info-foreground: 217 10% 5%;
+    --primary: 262 83% 70%;
+    --primary-foreground: 240 10% 3.9%;
+    --primary-hover: 262 83% 75%;
+    
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-hover: 240 3.7% 20%;
+    
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 262 83% 70%;
+    
+    /* Dark mode status colors */
+    --success: 142 71% 55%;
+    --success-foreground: 240 10% 3.9%;
+    
+    --warning: 38 92% 60%;
+    --warning-foreground: 240 10% 3.9%;
+    
+    --info: 199 89% 58%;
+    --info-foreground: 240 10% 3.9%;
+    
+    /* Dark mode overlays */
+    --overlay-text: 0 0% 100%;
+    --overlay-text-muted: 0 0% 70%;
   }
 }
 
@@ -498,140 +209,94 @@
 }
 
 .lang-en {
-  font-family: 'Inter', 'Arial', sans-serif;
+  font-family: 'Inter', 'Geist Sans', system-ui, sans-serif;
 }
 
-/* === SEMANTIC UTILITY CLASSES === */
+/* === MODERN UTILITY CLASSES === */
 @layer utilities {
-  /* Status Classes */
+  /* Modern Status Classes */
   .status-scheduled {
-    @apply bg-scheduled text-scheduled-foreground border-scheduled-border;
+    @apply bg-scheduled text-scheduled-foreground border border-scheduled-border rounded-full px-3 py-1 text-xs font-medium;
   }
   
   .status-active {
-    @apply bg-active text-active-foreground border-active-border;
+    @apply bg-active text-active-foreground border border-active-border rounded-full px-3 py-1 text-xs font-medium;
   }
   
   .status-completed {
-    @apply bg-complete text-complete-foreground border-complete-border;
+    @apply bg-complete text-complete-foreground border border-complete-border rounded-full px-3 py-1 text-xs font-medium;
   }
   
   .status-cancelled {
-    @apply bg-destructive text-destructive-foreground border-destructive;
+    @apply bg-destructive text-destructive-foreground border border-destructive rounded-full px-3 py-1 text-xs font-medium;
   }
   
   .status-pending {
-    @apply bg-pending text-pending-foreground border-pending-border;
-  }
-  
-  .status-open {
-    @apply bg-success text-success-foreground border-success-border;
-  }
-  
-  .status-closed {
-    @apply bg-inactive text-inactive-foreground border-inactive-border;
+    @apply bg-pending text-pending-foreground border border-pending-border rounded-full px-3 py-1 text-xs font-medium;
   }
 
-  /* Priority Classes */
-  .priority-high {
-    @apply bg-priority-high text-priority-high-foreground border-priority-high-border;
-  }
-  
-  .priority-medium {
-    @apply bg-priority-medium text-priority-medium-foreground border-priority-medium-border;
-  }
-  
-  .priority-low {
-    @apply bg-priority-low text-priority-low-foreground border-priority-low-border;
-  }
-
-  /* Category Classes */
-  .category-innovation {
-    @apply bg-innovation text-innovation-foreground border-innovation-border;
-  }
-  
-  .category-technology {
-    @apply bg-technology text-technology-foreground border-technology-border;
-  }
-  
-  .category-sustainability {
-    @apply bg-sustainability text-sustainability-foreground border-sustainability-border;
-  }
-  
-  .category-social {
-    @apply bg-social text-social-foreground border-social-border;
-  }
-  
-  .category-research {
-    @apply bg-info text-info-foreground border-info-border;
-  }
-  
-  .category-partnership {
-    @apply bg-partner text-partner-foreground border-partner-border;
-  }
-
-  /* Event Type Classes */
+  /* Modern Event Type Classes */
   .event-workshop {
-    @apply bg-innovation text-innovation-foreground border-innovation-border;
+    @apply bg-innovation text-innovation-foreground border border-innovation-border rounded-md px-2 py-1 text-xs font-medium;
   }
   
   .event-conference {
-    @apply bg-technology text-technology-foreground border-technology-border;
+    @apply bg-technology text-technology-foreground border border-technology-border rounded-md px-2 py-1 text-xs font-medium;
   }
   
   .event-webinar {
-    @apply bg-info text-info-foreground border-info-border;
+    @apply bg-info text-info-foreground border border-info-border rounded-md px-2 py-1 text-xs font-medium;
   }
   
   .event-meetup {
-    @apply bg-social text-social-foreground border-social-border;
+    @apply bg-social text-social-foreground border border-social-border rounded-md px-2 py-1 text-xs font-medium;
   }
   
   .event-hackathon {
-    @apply bg-sustainability text-sustainability-foreground border-sustainability-border;
+    @apply bg-sustainability text-sustainability-foreground border border-sustainability-border rounded-md px-2 py-1 text-xs font-medium;
   }
 
-  /* Overlay Classes for Hero Sections */
+  /* Modern Overlay Classes */
   .overlay-primary {
-    @apply bg-overlay-background/20 text-overlay-text border-overlay-button/30 backdrop-blur-sm;
+    @apply bg-overlay-background/10 text-overlay-text border border-overlay-button/20 backdrop-blur-sm hover:bg-overlay-background/20 transition-all duration-200;
   }
   
   .overlay-secondary {
-    @apply bg-background/20 text-overlay-text border-overlay-button/30 backdrop-blur-sm;
-  }
-  
-  .overlay-accent {
-    @apply bg-accent/20 text-accent-foreground border-accent/30 backdrop-blur-sm;
+    @apply bg-background/10 text-overlay-text border border-overlay-button/20 backdrop-blur-sm hover:bg-background/20 transition-all duration-200;
   }
 
-  /* Interactive States */
-  .interactive-hover {
-    @apply hover:bg-accent hover:text-accent-foreground transition-colors;
+  /* Modern Interactive States */
+  .interactive-card {
+    @apply bg-card text-card-foreground border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5;
   }
   
-  .interactive-active {
-    @apply bg-primary text-primary-foreground;
-  }
-  
-  .interactive-disabled {
-    @apply bg-muted text-muted-foreground opacity-50 cursor-not-allowed;
+  .interactive-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active transition-colors duration-200 rounded-md px-4 py-2 font-medium text-sm;
   }
 
-  /* Validation States */
-  .validation-success {
-    @apply bg-success text-success-foreground border-success-border;
+  /* Modern Glass Effect */
+  .glass-effect {
+    @apply bg-background/80 backdrop-blur-md border border-border/50 shadow-lg;
+  }
+
+  /* Focus States */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+  }
+}
+
+/* Component Enhancements */
+@layer components {
+  .modern-card {
+    @apply bg-card text-card-foreground border border-border rounded-lg shadow-sm p-6;
   }
   
-  .validation-warning {
-    @apply bg-warning text-warning-foreground border-warning-border;
+  .modern-button {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
   }
   
-  .validation-error {
-    @apply bg-destructive text-destructive-foreground border-destructive;
-  }
-  
-  .validation-info {
-    @apply bg-info text-info-foreground border-info-border;
+  .modern-input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
   }
 }
 
