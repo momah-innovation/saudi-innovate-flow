@@ -13,11 +13,11 @@ const meta: Meta<typeof Card> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A flexible card component for displaying content with optional header and footer sections.',
+        component: 'A flexible, composable card component for displaying structured content. Features optional header, content, and footer sections with consistent spacing and styling. Perfect for creating dashboards, user profiles, feature showcases, and data presentations with seamless responsive design.',
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'layout', 'design-system', 'composition'],
 }
 
 export default meta

@@ -9,11 +9,11 @@ const meta: Meta<typeof Button> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A customizable button component with multiple variants and sizes.',
+        component: 'A highly customizable button component with multiple variants, sizes, and accessibility features. Built with Radix UI primitives and styled with Tailwind CSS. Supports icon integration, loading states, and comprehensive interaction patterns.',
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'design-system', 'interactive'],
   argTypes: {
     variant: {
       control: 'select',
