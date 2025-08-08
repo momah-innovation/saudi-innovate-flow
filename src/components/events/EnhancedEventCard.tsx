@@ -182,17 +182,17 @@ export const EnhancedEventCard = ({
             </Badge>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="sm" onClick={handleBookmark}>
+                    <Button variant="ghost" size="icon-sm" onClick={handleBookmark}>
                       <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => onViewDetails(event)}>
+                    <Button variant="info-subtle" size="sm" onClick={() => onViewDetails(event)}>
                       <Eye className="w-4 h-4 mr-1" />
                       {isRTL ? 'التفاصيل' : 'Details'}
                     </Button>
                     <Button 
+                      variant="primary"
                       size="sm" 
                       onClick={() => onRegister(event)}
-                      className="bg-primary text-white hover:bg-primary/90 font-medium"
                       disabled={event.status === 'completed' || isEventFull}
                     >
                       {isEventFull ? 
@@ -341,13 +341,13 @@ export const EnhancedEventCard = ({
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => onViewDetails(event)} className="flex-1 h-9">
+          <Button variant="info-subtle" onClick={() => onViewDetails(event)} className="flex-1 h-9">
             {isRTL ? 'التفاصيل' : 'Details'}
           </Button>
           <Button 
-            variant="default"
+            variant="primary"
             onClick={() => onRegister(event)}
-            className="flex-1 h-9 bg-primary text-white hover:bg-primary/90 font-medium"
+            className="flex-1 h-9"
             disabled={event.status === 'completed' || isEventFull}
           >
             {isEventFull ? 

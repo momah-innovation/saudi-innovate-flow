@@ -203,15 +203,15 @@ export const AdminEventCard = ({
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={() => onView(event)}>
+              <Button variant="info-subtle" size="icon-sm" onClick={() => onView(event)}>
                 <Eye className="w-4 h-4" />
               </Button>
-              <Button variant="outline" size="sm" onClick={() => onEdit(event)}>
+              <Button variant="warning-subtle" size="icon-sm" onClick={() => onEdit(event)}>
                 <Edit className="w-4 h-4" />
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="icon-sm">
                     <MoreHorizontal className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -400,7 +400,7 @@ export const AdminEventCard = ({
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => onView(event)} className="flex-1">
+          <Button variant="primary" onClick={() => onView(event)} className="flex-1">
             <Eye className="w-4 h-4 mr-2" />
             {isRTL ? 'عرض' : 'View'}
           </Button>

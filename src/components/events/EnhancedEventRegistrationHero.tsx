@@ -161,18 +161,16 @@ export const EnhancedEventRegistrationHero = ({
               
               <Button
                 onClick={onShowFilters}
-                variant="outline"
+                variant="overlay-secondary"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
               </Button>
 
               <Button
-                variant="ghost"
+                variant="overlay-ghost"
                 size="lg"
-                className="text-white hover:bg-white/10"
               >
                 <Play className="w-5 h-5 mr-2" />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
