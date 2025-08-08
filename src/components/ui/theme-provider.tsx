@@ -22,7 +22,7 @@ interface ThemeContextType {
 const defaultTheme: ThemeConfig = {
   variant: 'default',
   colorScheme: 'auto',
-  primaryColor: 'hsl(280 84% 12%)', // Match index.css primary color
+  primaryColor: '272 65% 22%', // Match index.css primary color - HSL values only
   borderRadius: 'md',
   animations: true,
   compactMode: false
@@ -123,7 +123,7 @@ export function useTheme() {
 export const themePresets = {
   default: {
     variant: 'default' as ThemeVariant,
-    primaryColor: 'hsl(280 84% 12%)', // Match index.css --primary
+    primaryColor: '272 65% 22%', // Match index.css --primary
     borderRadius: 'md' as const
   },
   modern: {
