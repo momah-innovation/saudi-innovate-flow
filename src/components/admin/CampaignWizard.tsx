@@ -255,8 +255,8 @@ export function CampaignWizard({
       setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
     } else {
       toast({
-        title: "خطأ في التحقق",
-        description: "يرجى ملء جميع الحقول المطلوبة",
+        title: t('dialog.validation_error'),
+        description: t('dialog.fill_required_fields'),
         variant: "destructive"
       });
     }
@@ -269,8 +269,8 @@ export function CampaignWizard({
   const handleSubmit = async () => {
     if (!validateStep(currentStep)) {
       toast({
-        title: "خطأ في التحقق",
-        description: "يرجى ملء جميع الحقول المطلوبة",
+        title: t('dialog.validation_error'),
+        description: t('dialog.fill_required_fields'),
         variant: "destructive"
       });
       return;
@@ -403,8 +403,8 @@ export function CampaignWizard({
       await Promise.all(linkPromises);
 
       toast({
-        title: "نجح الحفظ",
-        description: editingCampaign ? "تم تحديث الحملة بنجاح" : "تم إنشاء الحملة بنجاح"
+        title: t('dialog.save_success'),
+        description: editingCampaign ? t('dialog.update_success') : t('dialog.create_success')
       });
 
       onSuccess();
@@ -412,8 +412,8 @@ export function CampaignWizard({
     } catch (error) {
       // Failed to save campaign
       toast({
-        title: "خطأ في الحفظ",
-        description: "فشل في حفظ الحملة. يرجى المحاولة مرة أخرى",
+        title: t('dialog.save_failed'),
+        description: t('dialog.try_again'),
         variant: "destructive"
       });
     } finally {

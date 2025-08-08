@@ -17,6 +17,7 @@ import { format } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSettingsManager } from "@/hooks/useSettingsManager";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { ChallengeFormSchema } from '@/schemas/validation';
 import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service, Partner, Expert } from "@/types";
 
@@ -67,6 +68,7 @@ interface SystemLists {
 
 export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardProps) {
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
   const challengeStatusOptions = getSettingValue('challenge_statuses', []) as string[];
   const challengePriorityLevels = getSettingValue('priority_levels', []) as string[];
@@ -211,16 +213,16 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       case 'basic':
         if (!formData.title_ar.trim()) {
           toast({
-            title: 'خطأ في التحقق',
-            description: 'يرجى إدخال عنوان التحدي',
+            title: t('dialog.validation_error'),
+            description: t('placeholder.enter_title'),
             variant: 'destructive'
           });
           return false;
         }
         if (!formData.description_ar.trim()) {
           toast({
-            title: 'خطأ في التحقق',
-            description: 'يرجى إدخال وصف التحدي',
+            title: t('dialog.validation_error'),
+            description: t('placeholder.enter_description'),
             variant: 'destructive'
           });
           return false;
@@ -258,8 +260,8 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
         if (error) throw error;
 
         toast({
-          title: 'تم التحديث بنجاح',
-          description: 'تم تحديث التحدي بنجاح'
+          title: t('dialog.update_success'),
+          description: t('dialog.update_success')
         });
       } else {
         // إنشاء تحدي جديد
@@ -296,8 +298,8 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
         }
 
         toast({
-          title: 'تم الإنشاء بنجاح',
-          description: 'تم إنشاء التحدي بنجاح'
+          title: t('dialog.create_success'),
+          description: t('dialog.create_success')
         });
       }
 
@@ -306,8 +308,8 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
     } catch (error) {
       // Failed to save challenge - show error to user
       toast({
-        title: 'خطأ',
-        description: 'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى.',
+        title: t('dialog.save_failed'),
+        description: t('dialog.try_again'),
         variant: 'destructive'
       });
     } finally {
@@ -318,79 +320,79 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
   const steps = [
     {
       id: 'basic',
-      title: 'المعلومات الأساسية',
-      description: 'عنوان ووصف التحدي',
+      title: t('challenge_wizard.basic_info'),
+      description: t('challenge_wizard.basic_info'),
       validation: () => validateStep('basic'),
       content: (
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title_ar">عنوان التحدي *</Label>
+            <Label htmlFor="title_ar">{t('form.title_ar')} *</Label>
             <Input
               id="title_ar"
               value={formData.title_ar}
               onChange={(e) => updateFormData('title_ar', e.target.value)}
-              placeholder="أدخل عنوان التحدي باللغة العربية"
+              placeholder={t('placeholder.enter_title')}
+              dir="rtl"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description_ar">وصف التحدي *</Label>
+            <Label htmlFor="description_ar">{t('form.description_ar')} *</Label>
             <Textarea
               id="description_ar"
               value={formData.description_ar}
               onChange={(e) => updateFormData('description_ar', e.target.value)}
-              placeholder="أدخل وصف مفصل للتحدي باللغة العربية"
+              placeholder={t('placeholder.enter_description')}
+              dir="rtl"
               rows={4}
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="status">حالة التحدي</Label>
-              <Select value={formData.status} onValueChange={(value) => updateFormData('status', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر حالة التحدي" />
-                </SelectTrigger>
-                <SelectContent>
-                  {challengeStatusOptions.map(status => (
-                    <SelectItem key={status} value={status}>
-                      {status === 'draft' ? 'مسودة' : status === 'published' ? 'منشور' : status === 'active' ? 'نشط' : 
-                       status === 'closed' ? 'مغلق' : status === 'archived' ? 'مؤرشف' : status === 'completed' ? 'مكتمل' : status}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="priority_level">مستوى الأولوية</Label>
-              <Select value={formData.priority_level} onValueChange={(value) => updateFormData('priority_level', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر مستوى الأولوية" />
-                </SelectTrigger>
-                <SelectContent>
-                  {challengePriorityLevels.map(priority => (
-                    <SelectItem key={priority} value={priority}>
-                      {priority === 'low' ? 'منخفض' : priority === 'medium' ? 'متوسط' : 'عالي'}
-                    </SelectItem>
-                  ))}
-                  {/* No hardcoded urgent option - using priorityLevels from system lists */}
-                </SelectContent>
-              </Select>
-            </div>
+        <div className="space-y-4 px-4 pb-2">
+          <div className="space-y-2">
+            <Label htmlFor="status">{t('form.status')}</Label>
+            <Select value={formData.status} onValueChange={(value) => updateFormData('status', value)}>
+              <SelectTrigger dir="rtl">
+                <SelectValue placeholder={t('placeholder.select_status')} />
+              </SelectTrigger>
+              <SelectContent>
+                {challengeStatusOptions.map(status => (
+                  <SelectItem key={status} value={status}>
+                    {t(`status.${status}`) || status}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="priority_level">{t('form.priority_level')}</Label>
+            <Select value={formData.priority_level} onValueChange={(value) => updateFormData('priority_level', value)}>
+              <SelectTrigger dir="rtl">
+                <SelectValue placeholder={t('placeholder.select_priority')} />
+              </SelectTrigger>
+              <SelectContent>
+                {challengePriorityLevels.map(priority => (
+                  <SelectItem key={priority} value={priority}>
+                    {t(`priority.${priority}`) || priority}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="sensitivity_level">مستوى السرية</Label>
+              <Label htmlFor="sensitivity_level">{t('form.sensitivity_level')}</Label>
               <Select value={formData.sensitivity_level} onValueChange={(value) => updateFormData('sensitivity_level', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر مستوى السرية" />
+                <SelectTrigger dir="rtl">
+                  <SelectValue placeholder={t('placeholder.select_sensitivity')} />
                 </SelectTrigger>
                 <SelectContent>
                   {challengeSensitivityLevels.map(level => (
                     <SelectItem key={level} value={level}>
-                      {level === 'normal' ? 'عادي - وصول عام' : level === 'sensitive' ? 'حساس - أعضاء الفريق فقط' : 'سري - المدراء فقط'}
+                      {t(`sensitivity.${level}`) || level}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -398,12 +400,13 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="challenge_type">نوع التحدي</Label>
+              <Label htmlFor="challenge_type">{t('form.challenge_type')}</Label>
               <Input
                 id="challenge_type"
                 value={formData.challenge_type}
                 onChange={(e) => updateFormData('challenge_type', e.target.value)}
-                placeholder="مثل: تقني، إداري، إبداعي"
+                placeholder={t('form.challenge_type')}
+                dir="rtl"
               />
             </div>
           </div>
@@ -411,18 +414,18 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       )
     },
     {
-      id: 'organizational',
-      title: 'الهيكل التنظيمي',
-      description: 'ربط التحدي بالجهات والإدارات',
+      id: 'organizational', 
+      title: t('challenge_wizard.organizational'),
+      description: t('challenge_wizard.organizational'),
       validation: () => validateStep('organizational'),
       content: (
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="sector_id">القطاع</Label>
+              <Label htmlFor="sector_id">{t('form.sector')}</Label>
               <Select value={formData.sector_id} onValueChange={(value) => updateFormData('sector_id', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر القطاع" />
+                <SelectTrigger dir="rtl">
+                  <SelectValue placeholder={t('placeholder.select_sector')} />
                 </SelectTrigger>
                 <SelectContent>
                   {systemLists.sectors.map((sector) => (
@@ -435,10 +438,10 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="deputy_id">الوكالة</Label>
+              <Label htmlFor="deputy_id">{t('form.deputy')}</Label>
               <Select value={formData.deputy_id} onValueChange={(value) => updateFormData('deputy_id', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر الوكالة" />
+                <SelectTrigger dir="rtl">
+                  <SelectValue placeholder={t('placeholder.select_deputy')} />
                 </SelectTrigger>
                 <SelectContent>
                   {systemLists.deputies.map((deputy) => (
@@ -453,10 +456,10 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="department_id">الإدارة</Label>
+              <Label htmlFor="department_id">{t('form.department')}</Label>
               <Select value={formData.department_id} onValueChange={(value) => updateFormData('department_id', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر الإدارة" />
+                <SelectTrigger dir="rtl">
+                  <SelectValue placeholder={t('placeholder.select_department')} />
                 </SelectTrigger>
                 <SelectContent>
                   {systemLists.departments.map((dept) => (
@@ -469,10 +472,10 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="domain_id">المجال</Label>
+              <Label htmlFor="domain_id">{t('form.domain')}</Label>
               <Select value={formData.domain_id} onValueChange={(value) => updateFormData('domain_id', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر المجال" />
+                <SelectTrigger dir="rtl">
+                  <SelectValue placeholder={t('placeholder.select_domain')} />
                 </SelectTrigger>
                 <SelectContent>
                   {systemLists.domains.map((domain) => (
@@ -487,10 +490,10 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="sub_domain_id">المجال الفرعي</Label>
+              <Label htmlFor="sub_domain_id">{t('form.sub_domain')}</Label>
               <Select value={formData.sub_domain_id} onValueChange={(value) => updateFormData('sub_domain_id', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر المجال الفرعي" />
+                <SelectTrigger dir="rtl">
+                  <SelectValue placeholder={t('form.sub_domain')} />
                 </SelectTrigger>
                 <SelectContent>
                   {systemLists.subDomains.map((subDomain) => (
@@ -503,10 +506,10 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="service_id">الخدمة</Label>
+              <Label htmlFor="service_id">{t('form.service')}</Label>
               <Select value={formData.service_id} onValueChange={(value) => updateFormData('service_id', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر الخدمة" />
+                <SelectTrigger dir="rtl">
+                  <SelectValue placeholder={t('form.service')} />
                 </SelectTrigger>
                 <SelectContent>
                   {systemLists.services.map((service) => (
@@ -523,36 +526,38 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
     },
     {
       id: 'technical',
-      title: 'التفاصيل التقنية',
-      description: 'المواعيد والميزانية والمواصفات',
+      title: t('challenge_wizard.technical'),
+      description: t('challenge_wizard.technical'),
       validation: () => validateStep('technical'),
       content: (
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="start_date">تاريخ البداية</Label>
+              <Label htmlFor="start_date">{t('form.start_date')}</Label>
               <Input
                 id="start_date"
                 type="date"
                 value={formData.start_date}
                 onChange={(e) => updateFormData('start_date', e.target.value)}
+                dir="rtl"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="end_date">تاريخ النهاية</Label>
+              <Label htmlFor="end_date">{t('form.end_date')}</Label>
               <Input
                 id="end_date"
                 type="date"
                 value={formData.end_date}
                 onChange={(e) => updateFormData('end_date', e.target.value)}
+                dir="rtl"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="estimated_budget">الميزانية المقدرة (ريال)</Label>
+              <Label htmlFor="estimated_budget">{t('form.budget')}</Label>
               <Input
                 id="estimated_budget"
                 type="number"
@@ -560,11 +565,12 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                 value={formData.estimated_budget}
                 onChange={(e) => updateFormData('estimated_budget', parseFloat(e.target.value) || 0)}
                 placeholder="0"
+                dir="rtl"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="actual_budget">الميزانية الفعلية (ريال)</Label>
+              <Label htmlFor="actual_budget">{t('form.budget')}</Label>
               <Input
                 id="actual_budget"
                 type="number"
@@ -572,6 +578,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                 value={formData.actual_budget}
                 onChange={(e) => updateFormData('actual_budget', parseFloat(e.target.value) || 0)}
                 placeholder="0"
+                dir="rtl"
               />
             </div>
           </div>
@@ -602,8 +609,8 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
     },
     {
       id: 'relationships',
-      title: 'العلاقات والتعاون',
-      description: 'الشركاء والخبراء والتعاون',
+      title: t('challenge_wizard.relationships'),
+      description: t('challenge_wizard.relationships'),
       validation: () => validateStep('relationships'),
       content: (
         <div className="space-y-4">
@@ -713,8 +720,8 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
     },
     {
       id: 'review',
-      title: 'مراجعة وتأكيد',
-      description: 'مراجعة جميع المعلومات قبل الحفظ',
+      title: t('challenge_wizard.review'),
+      description: t('challenge_wizard.review'),
       validation: () => validateStep('review'),
       content: (
         <div className="space-y-4">
@@ -776,7 +783,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
     <MultiStepForm
       isOpen={isOpen}
       onClose={onClose}
-      title={challenge ? 'تعديل التحدي' : 'إنشاء تحدي جديد'}
+      title={challenge ? t('dialog.update_success') : t('dialog.create_success')}
       steps={steps}
       onComplete={handleComplete}
       showProgress={true}

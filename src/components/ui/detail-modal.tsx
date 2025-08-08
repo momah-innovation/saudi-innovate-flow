@@ -35,12 +35,12 @@ export function DetailModal({
 }: DetailModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`${maxWidthClasses[maxWidth]} max-h-[90vh]`}>
-        <DialogHeader className="flex flex-row items-start justify-between">
-          <div className="flex-1">
-            <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
+      <DialogContent className={`${maxWidthClasses[maxWidth]} max-h-[90vh]`} dir="rtl">
+        <DialogHeader className="flex flex-row-reverse items-start justify-between">
+          <div className="flex-1 text-right">
+            <DialogTitle className="text-xl font-semibold text-right">{title}</DialogTitle>
             {subtitle && (
-              <DialogDescription className="mt-1">{subtitle}</DialogDescription>
+              <DialogDescription className="mt-1 text-right">{subtitle}</DialogDescription>
             )}
           </div>
           <Button
@@ -53,14 +53,14 @@ export function DetailModal({
           </Button>
         </DialogHeader>
         
-        <ScrollArea className="flex-1 pr-6 -mr-6">
+        <ScrollArea className="flex-1 pr-6 -mr-6" dir="rtl">
           <div className="space-y-6">
             {children}
           </div>
         </ScrollArea>
         
         {actions && (
-          <div className="flex justify-end gap-2 pt-4 border-t">
+          <div className="flex justify-start gap-2 pt-4 border-t" dir="rtl">
             {actions}
           </div>
         )}

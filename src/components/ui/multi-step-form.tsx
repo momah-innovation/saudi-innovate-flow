@@ -77,9 +77,9 @@ export function MultiStepForm({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh]">
+      <DialogContent className="max-w-2xl max-h-[90vh]" dir="rtl">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
+          <DialogTitle className="flex items-center justify-between text-right">
             <span>{title}</span>
             <span className="text-sm font-normal text-muted-foreground">
               {t('step')} {currentStep + 1} {t('of')} {steps.length}
@@ -150,7 +150,7 @@ export function MultiStepForm({
               className="gap-2"
             >
               <ChevronLeft className="w-4 h-4" />
-              {t('previous')}
+              {t('button.previous')}
             </Button>
             
             {allowSkip && currentStep < steps.length - 1 && (
@@ -165,7 +165,7 @@ export function MultiStepForm({
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleClose}>
-              {t('cancel')}
+              {t('button.cancel')}
             </Button>
             <Button 
               onClick={handleNext}
@@ -175,10 +175,10 @@ export function MultiStepForm({
               {isValidating ? (
                 t('validating')
               ) : currentStep === steps.length - 1 ? (
-                t('complete')
+                t('button.submit')
               ) : (
                 <>
-                  {t('next')}
+                  {t('button.next')}
                   <ChevronRight className="w-4 h-4" />
                 </>
               )}
