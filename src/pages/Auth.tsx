@@ -19,16 +19,16 @@ const AuthPage = () => {
   });
 
   // Redirect if already authenticated
-  if (user && !loading && userProfile) {
-    // All authenticated users with sufficient profile completion go to dashboard
-    const redirectPath = userProfile.profile_completion_percentage >= 80 ? "/dashboard" : "/profile/setup";
+  if (user && !loading) {
+    // Check if user has profile, if not, default redirect behavior
+    const redirectPath = userProfile?.profile_completion_percentage >= 80 ? "/dashboard" : "/profile/setup";
     logger.info('AuthPage: Redirecting authenticated user', {
       component: 'AuthPage',
       action: 'redirect',
       data: {
         redirectPath,
-        profileCompletion: userProfile.profile_completion_percentage,
-        roles: userProfile.user_roles?.map(r => r.role)
+        profileCompletion: userProfile?.profile_completion_percentage || 0,
+        roles: userProfile?.user_roles?.map(r => r.role) || []
       }
     });
     return <Navigate to={redirectPath} replace />;
