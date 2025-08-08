@@ -245,8 +245,8 @@ const AICenter: React.FC = () => {
 
           <TabsContent value="evaluation" className="space-y-6">
             <IdeaEvaluationAI
-              ideaTitle="تطبيق الخدمات الحكومية الذكي"
-              ideaDescription="تطبيق موحد يجمع جميع الخدمات الحكومية في مكان واحد باستخدام تقنيات الذكاء الاصطناعي لتحسين تجربة المستخدم"
+              ideaTitle={t('example.smart_gov_app_title')}
+              ideaDescription={t('example.smart_gov_app_description')}
             />
           </TabsContent>
 
