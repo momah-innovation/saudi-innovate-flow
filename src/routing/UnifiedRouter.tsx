@@ -32,10 +32,22 @@ const OpportunitiesPage = lazy(() => import('@/pages/Opportunities'));
 const UserDashboard = lazy(() => import('@/components/dashboard/UserDashboard'));
 const ProfileSetupPage = lazy(() => import('@/pages/ProfileSetup'));
 const SettingsPage = lazy(() => import('@/pages/Settings'));
+const SystemSettings = lazy(() => import('@/pages/SystemSettings'));
 const AnalyticsPage = lazy(() => import('@/pages/AnalyticsPage'));
 const EventsBrowse = lazy(() => import('@/pages/EventsBrowse'));
 const ChallengesBrowse = lazy(() => import('@/pages/ChallengesBrowse'));
 const AccessControlManagement = lazy(() => import('@/pages/dashboard/AccessControlManagement'));
+
+// Temporary admin page fallbacks using existing components
+const AdminUsers = lazy(() => import('@/pages/AdminDashboard'));
+const AdminChallenges = lazy(() => import('@/pages/Challenges'));
+const AdminCampaigns = lazy(() => import('@/pages/AdminDashboard'));
+const AdminPartners = lazy(() => import('@/pages/AdminDashboard'));
+const AdminSectors = lazy(() => import('@/pages/AdminDashboard'));
+const AdminEvents = lazy(() => import('@/pages/EventsBrowse'));
+const AdminIdeas = lazy(() => import('@/pages/Ideas'));
+const AdminTeams = lazy(() => import('@/pages/AdminDashboard'));
+const AdminStorage = lazy(() => import('@/pages/AdminDashboard'));
 
 // Route configuration interface
 export interface UnifiedRouteConfig {
@@ -152,6 +164,86 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_ANALYTICS,
     component: AnalyticsPage,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_USERS,
+    component: AdminUsers,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_CHALLENGES,
+    component: AdminChallenges,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_CAMPAIGNS,
+    component: AdminCampaigns,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_PARTNERS,
+    component: AdminPartners,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_SECTORS,
+    component: AdminSectors,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_EVENTS,
+    component: AdminEvents,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_IDEAS,
+    component: AdminIdeas,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_TEAMS,
+    component: AdminTeams,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_SETTINGS,
+    component: SystemSettings,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_STORAGE,
+    component: AdminStorage,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
