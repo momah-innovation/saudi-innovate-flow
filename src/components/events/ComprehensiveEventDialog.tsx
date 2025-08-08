@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -159,11 +159,15 @@ export const ComprehensiveEventDialog = ({
 
   // Calculate visible tabs count for grid styling
   const { getSettingValue } = useSettingsManager();
-  const visibleTabs = getSettingValue('event_dialog_visible_tabs', ['details', 'registration', 'feedback']) as string[];
-  if (canShowParticipants) visibleTabs.push('attendees');
-  if (canShowPartners) visibleTabs.push('partners');
-  if (canShowRelated) visibleTabs.push('related');
-  if (canShowResources) visibleTabs.push('resources');
+  const baseVisibleTabs = getSettingValue('event_dialog_visible_tabs', ['details', 'registration', 'feedback']) as string[];
+  const visibleTabs = useMemo(() => {
+    const tabs = [...baseVisibleTabs];
+    if (canShowParticipants) tabs.push('attendees');
+    if (canShowPartners) tabs.push('partners');
+    if (canShowRelated) tabs.push('related');
+    if (canShowResources) tabs.push('resources');
+    return tabs;
+  }, [baseVisibleTabs, canShowParticipants, canShowPartners, canShowRelated, canShowResources]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
