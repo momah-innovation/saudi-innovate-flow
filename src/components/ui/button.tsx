@@ -79,6 +79,15 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
+    // Debug logging for primary buttons
+    React.useEffect(() => {
+      if (variant === 'primary' || variant === 'default') {
+        const root = document.documentElement;
+        console.log('🔴 Button Debug - Primary color CSS value:', getComputedStyle(root).getPropertyValue('--primary'));
+        console.log('🔴 Button Debug - Primary foreground CSS value:', getComputedStyle(root).getPropertyValue('--primary-foreground'));
+      }
+    }, [variant]);
+    
     const Comp = asChild ? Slot : "button"
     return (
       <Comp

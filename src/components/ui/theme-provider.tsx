@@ -85,7 +85,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
     // Apply custom primary color if provided
     if (theme.primaryColor) {
+      console.log('🎨 Theme Provider setting primary color:', theme.primaryColor);
+      console.log('🎨 Current CSS --primary value before override:', getComputedStyle(root).getPropertyValue('--primary'));
       root.style.setProperty('--primary', theme.primaryColor);
+      console.log('🎨 CSS --primary value after override:', getComputedStyle(root).getPropertyValue('--primary'));
     }
   };
 
