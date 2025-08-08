@@ -46,6 +46,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (newTheme: Partial<ThemeConfig>) => {
     const updatedTheme = { ...theme, ...newTheme };
+    // Reset to default primary color if needed
+    if (updatedTheme.primaryColor === 'hsl(346.8 77.2% 49.8%)') {
+      updatedTheme.primaryColor = '272 65% 22%';
+    }
     setThemeState(updatedTheme);
     localStorage.setItem('ui-theme', JSON.stringify(updatedTheme));
   };
@@ -83,12 +87,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       root.classList.remove('no-animations');
     }
 
-    // Apply custom primary color if provided
-    if (theme.primaryColor) {
+    // Apply custom primary color if provided and different from default
+    if (theme.primaryColor && theme.primaryColor !== '272 65% 22%') {
       console.log('🎨 Theme Provider setting primary color:', theme.primaryColor);
       console.log('🎨 Current CSS --primary value before override:', getComputedStyle(root).getPropertyValue('--primary'));
       root.style.setProperty('--primary', theme.primaryColor);
       console.log('🎨 CSS --primary value after override:', getComputedStyle(root).getPropertyValue('--primary'));
+    } else {
+      // Remove any inline override to use CSS default
+      root.style.removeProperty('--primary');
+      console.log('🎨 Using CSS default primary color:', getComputedStyle(root).getPropertyValue('--primary'));
     }
   };
 
