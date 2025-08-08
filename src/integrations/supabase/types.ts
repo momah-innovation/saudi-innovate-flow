@@ -8431,6 +8431,14 @@ export type Database = {
         }
         Returns: string
       }
+      should_send_notification: {
+        Args: {
+          p_user_id: string
+          p_notification_type: string
+          p_channel?: string
+        }
+        Returns: boolean
+      }
       test_realtime_config: {
         Args: Record<PropertyKey, never>
         Returns: {
