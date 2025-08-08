@@ -330,40 +330,27 @@ export const EnhancedEventCard = ({
         )}
       </CardHeader>
 
-      <CardContent className="pt-0">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="text-center p-2 bg-muted/50 rounded-lg">
-            <div className="text-lg font-bold text-foreground">{event.registered_participants}</div>
-            <div className="text-xs text-muted-foreground">{isRTL ? 'مسجل' : 'registered'}</div>
+      <CardContent className="pt-0 px-4 pb-4">
+        {/* Compact Stats */}
+        <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
+          <div className="flex items-center gap-1">
+            <Users className="w-4 h-4" />
+            <span>{event.registered_participants} {isRTL ? 'مسجل' : 'registered'}</span>
           </div>
-          <div className="text-center p-2 bg-muted/50 rounded-lg">
-            <div className="text-lg font-bold text-foreground">
-              {event.budget ? `${event.budget.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}` : (isRTL ? 'مجاني' : 'Free')}
-            </div>
-            <div className="text-xs text-muted-foreground">{isRTL ? 'السعر' : 'price'}</div>
+          <div className="flex items-center gap-1">
+            <Ticket className="w-4 h-4" />
+            <span>{event.budget ? `${event.budget.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}` : (isRTL ? 'مجاني' : 'Free')}</span>
           </div>
-        </div>
-
-        {/* Social Interactions */}
-        <div className="mb-4">
-          <InteractionButtons 
-            itemId={event.id}
-            itemType="event"
-            title={event.title_ar}
-            className="justify-center"
-          />
         </div>
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => onViewDetails(event)} className="flex-1 border-primary/60 text-primary hover:bg-primary/10 font-medium">
-            <Ticket className="w-4 h-4 mr-2" />
+          <Button variant="outline" onClick={() => onViewDetails(event)} className="flex-1 h-9">
             {isRTL ? 'التفاصيل' : 'Details'}
           </Button>
           <Button 
             onClick={() => onRegister(event)}
-            className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-medium shadow-md hover:shadow-lg transition-all duration-300"
+            className="flex-1 h-9"
             disabled={event.status === 'completed' || isEventFull}
           >
             {isEventFull ? 
