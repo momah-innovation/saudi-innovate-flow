@@ -459,18 +459,73 @@ export const ComprehensiveEventDialog = ({
                       </div>
                     )}
                     
+                    
                     <Button 
-                      onClick={() => registerForEvent()}
-                      disabled={isEventFull || event.status === 'completed' || event.status === 'مكتمل' || interactionsLoading}
+                      onClick={() => {
+                        const eventDate = new Date(event.event_date);
+                        const now = new Date();
+                        const isEventPast = eventDate < now;
+                        
+                        if (isEventPast) {
+                          // For past events, do nothing or show materials/feedback
+                          return;
+                        }
+                        registerForEvent();
+                      }}
+                      disabled={(() => {
+                        const eventDate = new Date(event.event_date);
+                        const now = new Date();
+                        const isEventPast = eventDate < now;
+                        
+                        return isEventFull || 
+                               event.status === 'completed' || 
+                               event.status === 'مكتمل' || 
+                               interactionsLoading || 
+                               (isEventPast && !interactions?.isRegistered);
+                      })()}
+                      variant={(() => {
+                        const eventDate = new Date(event.event_date);
+                        const now = new Date();
+                        const isEventPast = eventDate < now;
+                        
+                        if (isEventPast && interactions?.isRegistered) {
+                          return "secondary";
+                        }
+                        if (isEventPast || event.status === 'completed') {
+                          return "outline";
+                        }
+                        return "default";
+                      })()}
                       className="w-full"
                       size="lg"
                     >
-                      {isEventFull ? 
-                        (isRTL ? 'الفعالية ممتلئة' : 'Event Full') :
-                        event.status === 'completed' || event.status === 'مكتمل' ?
-                        (isRTL ? 'انتهت الفعالية' : 'Event Ended') :
-                        (isRTL ? 'سجل الآن' : 'Register Now')
-                      }
+                      {(() => {
+                        const eventDate = new Date(event.event_date);
+                        const now = new Date();
+                        const isEventPast = eventDate < now;
+                        
+                        if (isEventPast) {
+                          if (interactions?.isRegistered) {
+                            return isRTL ? 'تم الحضور' : 'Attended';
+                          } else {
+                            return isRTL ? 'انتهت الفعالية' : 'Event Ended';
+                          }
+                        }
+                        
+                        if (isEventFull) {
+                          return isRTL ? 'الفعالية ممتلئة' : 'Event Full';
+                        }
+                        
+                        if (event.status === 'completed' || event.status === 'مكتمل') {
+                          return isRTL ? 'انتهت الفعالية' : 'Event Ended';
+                        }
+                        
+                        if (interactions?.isRegistered) {
+                          return isRTL ? 'مسجل' : 'Registered';
+                        }
+                        
+                        return isRTL ? 'سجل الآن' : 'Register Now';
+                      })()}
                     </Button>
                   </div>
                 )}

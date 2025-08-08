@@ -221,6 +221,26 @@ export function useEventInteractions(eventId: string | null) {
     try {
       setLoading(true);
 
+      // Add date validation - prevent registration for past events
+      const { data: eventData, error: eventError } = await supabase
+        .from('events')
+        .select('event_date')
+        .eq('id', eventId)
+        .single();
+
+      if (eventError) throw eventError;
+
+      const eventDate = new Date(eventData.event_date);
+      const now = new Date();
+      if (eventDate < now) {
+        toast({
+          title: 'لا يمكن التسجيل',
+          description: 'لا يمكن التسجيل في فعالية انتهت',
+          variant: 'destructive'
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from('event_participants')
         .insert({
