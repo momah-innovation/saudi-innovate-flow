@@ -107,7 +107,10 @@ export const ChallengeNotificationCenter = ({
 
       if (error) throw error;
 
-      setNotifications(data || []);
+      setNotifications((data || []).map(item => ({
+        ...item,
+        metadata: (item.metadata as Record<string, unknown>) || {}
+      })) as ChallengeNotification[]);
       setUnreadCount(data?.filter(n => !n.is_read).length || 0);
     } catch (error) {
       logger.error('Error loading notifications', { 

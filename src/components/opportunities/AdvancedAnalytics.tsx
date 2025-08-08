@@ -114,7 +114,14 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
         behaviorPatterns,
         predictiveMetrics,
         performanceMetrics,
-        audienceInsights,
+        audienceInsights: {
+          segments: audienceInsights.segments,
+          demographics: audienceInsights.demographics,
+          interests: Object.entries(audienceInsights.interests).map(([interest, relevance]) => ({
+            interest,
+            relevance: Number(relevance) || 0
+          }))
+        },
         competitiveAnalysis
       });
     } catch (error) {
@@ -138,18 +145,18 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     ];
 
     // Analyze journey data to populate steps
-    const stepCounts = journeys.reduce((acc, journey) => {
-      const section = journey.section_name || 'page_visit';
+    const stepCounts = journeys.reduce((acc: Record<string, number>, journey) => {
+      const section = (journey.section_name as string) || 'page_visit';
       acc[section] = (acc[section] || 0) + 1;
       return acc;
     }, {});
 
     // Map journey data to steps - use real data only
-    steps[0].users = stepCounts.page_visit || analytics.totalViews || 0;
-    steps[1].users = stepCounts.details_view || 0;
-    steps[2].users = stepCounts.requirements_view || 0;
-    steps[3].users = stepCounts.application_start || 0;
-    steps[4].users = analytics.totalApplications || 0;
+    steps[0].users = Number(stepCounts.page_visit) || Number(analytics.totalViews) || 0;
+    steps[1].users = Number(stepCounts.details_view) || 0;
+    steps[2].users = Number(stepCounts.requirements_view) || 0;
+    steps[3].users = Number(stepCounts.application_start) || 0;
+    steps[4].users = Number(analytics.totalApplications) || 0;
 
     // Calculate dropoff rates
     for (let i = 1; i < steps.length; i++) {
@@ -160,9 +167,15 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
     // Calculate real average time per step from journey data
     steps.forEach((step, index) => {
-      const stepJourneys = journeys.filter(j => j.step_data?.step_name === step.step);
+      const stepJourneys = journeys.filter(j => {
+        const stepData = j.step_data as Record<string, unknown> | undefined;
+        return stepData?.step_name === step.step;
+      });
       const avgTime = stepJourneys.length > 0 
-        ? stepJourneys.reduce((sum, j) => sum + (j.time_from_previous_ms || 0), 0) / stepJourneys.length / 1000
+        ? stepJourneys.reduce((sum, j) => {
+            const timeMs = Number((j.time_from_previous_ms as number) || 0);
+            return sum + timeMs;
+          }, 0) / stepJourneys.length / 1000
         : 30 + (index * 15); // Fallback estimated time
       step.time = Math.round(avgTime);
     });
@@ -172,9 +185,9 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
   const generateBehaviorPatterns = (journeys: Record<string, unknown>[], sessions: Record<string, unknown>[]) => {
     // Calculate real behavior patterns from journey data
-    const actionCounts: Record<string, number> = journeys.reduce((acc, journey) => {
-      const stepData = journey.step_data || {};
-      const action = stepData.step_name || 'unknown';
+    const actionCounts: Record<string, number> = journeys.reduce((acc: Record<string, number>, journey) => {
+      const stepData = (journey.step_data as Record<string, unknown>) || {};
+      const action = (stepData.step_name as string) || 'unknown';
       acc[action] = (acc[action] || 0) + 1;
       return acc;
     }, {});
@@ -189,20 +202,24 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
   };
 
   const generatePredictiveMetrics = (analytics: Record<string, unknown>, journeys: Record<string, unknown>[], sessions: Record<string, unknown>[]) => {
-    const currentApplications = analytics.totalApplications || 0;
-    const currentViews = analytics.totalViews || 0;
+    const currentApplications = Number(analytics.totalApplications) || 0;
+    const currentViews = Number(analytics.totalViews) || 0;
     const conversionRate = currentViews > 0 ? (currentApplications / currentViews) * 100 : 0;
     
     // Calculate trend from historical data instead of arbitrary growth prediction
     const recentActivity = journeys.filter(j => {
-      const date = new Date(j.step_timestamp);
+      const timestamp = j.step_timestamp as string;
+      if (!timestamp) return false;
+      const date = new Date(timestamp);
       const lastWeek = new Date();
       lastWeek.setDate(lastWeek.getDate() - 7);
       return date > lastWeek;
     }).length;
     
     const olderActivity = journeys.filter(j => {
-      const date = new Date(j.step_timestamp);
+      const timestamp = j.step_timestamp as string;
+      if (!timestamp) return false;
+      const date = new Date(timestamp);
       const twoWeeksAgo = new Date();
       const oneWeekAgo = new Date();
       twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
@@ -222,16 +239,16 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
   const generatePerformanceMetrics = (sessions: Record<string, unknown>[], presence: Record<string, unknown>[]) => {
     const avgTimeSpent = sessions.length > 0 
-      ? sessions.reduce((sum, s) => sum + (s.time_spent || 0), 0) / sessions.length
+      ? sessions.reduce((sum, s) => sum + Number(s.time_spent || 0), 0) / sessions.length
       : 0;
 
     // Calculate real bounce rate from sessions (< 30 seconds is bounce)
-    const shortSessions = sessions.filter(s => (s.time_spent || 0) < 30).length;
+    const shortSessions = sessions.filter(s => Number(s.time_spent || 0) < 30).length;
     const bounceRate = sessions.length > 0 ? (shortSessions / sessions.length) * 100 : 0;
 
     // Calculate average load time from session data if available
     const avgLoadTime = sessions.length > 0 && sessions.some(s => s.load_time)
-      ? sessions.reduce((sum, s) => sum + (s.load_time || 0), 0) / sessions.length
+      ? sessions.reduce((sum, s) => sum + Number(s.load_time || 0), 0) / sessions.length
       : 1.5; // Default reasonable load time
 
     return {
@@ -244,8 +261,9 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
   const generateAudienceInsights = (journeys: Record<string, unknown>[], sessions: Record<string, unknown>[]) => {
     // Calculate real audience segments from journey data
-    const userSegments = journeys.reduce((acc: Record<string, unknown>, journey: Record<string, unknown>) => {
-      const stepCount = journey.step_data?.step_count || 1;
+    const userSegments = journeys.reduce((acc: Record<string, number>, journey: Record<string, unknown>) => {
+      const stepData = journey.step_data as Record<string, unknown> | undefined;
+      const stepCount = Number(stepData?.step_count) || 1;
       let segment = 'casual_browsers';
       
       if (stepCount > 10) segment = 'active_applicants';
@@ -259,32 +277,61 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     // Calculate demographics from session and journey data
     const calculateDemographics = () => {
       const ageGroups = sessions.reduce((acc: Record<string, number>, session: Record<string, unknown>) => {
-        const age = session.metadata?.age_group || 'unknown';
+        const metadata = session.metadata as Record<string, unknown> | undefined;
+        const age = (metadata?.age_group as string) || 'unknown';
         acc[age] = (acc[age] || 0) + 1;
         return acc;
       }, {});
       
       const mostCommonAge = Object.entries(ageGroups).sort(([,a]: [string, number], [,b]: [string, number]) => b - a)[0]?.[0] || '25-34';
-      const agePercentage = ageGroups[mostCommonAge] ? Math.round((ageGroups[mostCommonAge] / sessions.length) * 100) : 0;
+      const agePercentage = ageGroups[mostCommonAge] ? Math.round((Number(ageGroups[mostCommonAge]) / Math.max(1, sessions.length)) * 100) : 0;
+      
+      const sessionsWithMetadata = sessions.filter(s => s.metadata);
+      const sessionCount = Math.max(1, sessionsWithMetadata.length); // Avoid division by zero
       
       return [
         { category: isRTL ? 'العمر' : 'Age', value: mostCommonAge, percentage: agePercentage },
-        { category: isRTL ? 'الخبرة' : 'Experience', value: '2-5 years', percentage: Math.round(sessions.filter(s => s.metadata?.experience_years?.includes('2-5')).length / sessions.length * 100) || 0 },
-        { category: isRTL ? 'التعليم' : 'Education', value: 'Bachelor+', percentage: Math.round(sessions.filter(s => s.metadata?.education === 'bachelor_plus').length / sessions.length * 100) || 0 },
-        { category: isRTL ? 'الموقع' : 'Location', value: 'Urban', percentage: Math.round(sessions.filter(s => s.metadata?.location_type === 'urban').length / sessions.length * 100) || 0 }
+        { 
+          category: isRTL ? 'الخبرة' : 'Experience', 
+          value: '2-5 years', 
+          percentage: Math.round(sessionsWithMetadata.filter(s => {
+            const metadata = s.metadata as Record<string, unknown>;
+            const experience = metadata?.experience_years as string;
+            return experience?.includes('2-5');
+          }).length / sessionCount * 100) || 0 
+        },
+        { 
+          category: isRTL ? 'التعليم' : 'Education', 
+          value: 'Bachelor+', 
+          percentage: Math.round(sessionsWithMetadata.filter(s => {
+            const metadata = s.metadata as Record<string, unknown>;
+            return metadata?.education === 'bachelor_plus';
+          }).length / sessionCount * 100) || 0 
+        },
+        { 
+          category: isRTL ? 'الموقع' : 'Location', 
+          value: 'Urban', 
+          percentage: Math.round(sessionsWithMetadata.filter(s => {
+            const metadata = s.metadata as Record<string, unknown>;
+            return metadata?.location_type === 'urban';
+          }).length / sessionCount * 100) || 0 
+        }
       ];
     };
 
+    const journeyCount = Math.max(1, journeys.length); // Avoid division by zero
+    
     return {
       segments: [
-        { segment: isRTL ? 'مهتمون جدد' : 'New Prospects', count: userSegments.new_prospects || 0, engagement: Math.round((userSegments.new_prospects || 0) / journeys.length * 100) },
-        { segment: isRTL ? 'عائدون مهتمون' : 'Returning Interested', count: userSegments.returning_interested || 0, engagement: Math.round((userSegments.returning_interested || 0) / journeys.length * 100) },
-        { segment: isRTL ? 'مقدمو طلبات' : 'Active Applicants', count: userSegments.active_applicants || 0, engagement: Math.round((userSegments.active_applicants || 0) / journeys.length * 100) },
-        { segment: isRTL ? 'متصفحون' : 'Casual Browsers', count: userSegments.casual_browsers || 0, engagement: Math.round((userSegments.casual_browsers || 0) / journeys.length * 100) }
+        { segment: isRTL ? 'مهتمون جدد' : 'New Prospects', count: Number(userSegments.new_prospects) || 0, engagement: Math.round((Number(userSegments.new_prospects) || 0) / journeyCount * 100) },
+        { segment: isRTL ? 'عائدون مهتمون' : 'Returning Interested', count: Number(userSegments.returning_interested) || 0, engagement: Math.round((Number(userSegments.returning_interested) || 0) / journeyCount * 100) },
+        { segment: isRTL ? 'مقدمو طلبات' : 'Active Applicants', count: Number(userSegments.active_applicants) || 0, engagement: Math.round((Number(userSegments.active_applicants) || 0) / journeyCount * 100) },
+        { segment: isRTL ? 'متصفحون' : 'Casual Browsers', count: Number(userSegments.casual_browsers) || 0, engagement: Math.round((Number(userSegments.casual_browsers) || 0) / journeyCount * 100) }
       ],
       demographics: calculateDemographics(),
       interests: journeys.reduce((acc: Record<string, number>, journey: Record<string, unknown>) => {
-        const interests = journey.step_data?.interests || [];
+        const stepData = journey.step_data as Record<string, unknown> | undefined;
+        const interests = (stepData?.interests as string[]) || [];
         interests.forEach((interest: string) => {
           acc[interest] = (acc[interest] || 0) + 1;
         });
@@ -295,8 +342,8 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
   const generateCompetitiveAnalysis = (analytics: Record<string, unknown>) => {
     // Calculate position based on views and applications compared to other opportunities
-    const totalViews = analytics?.view_count || 0;
-    const totalApplications = analytics?.application_count || 0;
+    const totalViews = Number(analytics?.view_count) || 0;
+    const totalApplications = Number(analytics?.application_count) || 0;
     
     // Estimate position based on performance metrics
     const performanceScore = totalViews + (totalApplications * 10);

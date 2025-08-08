@@ -207,68 +207,78 @@ export const ChallengeActivityHub = ({
     </div>
   );
 
-  const ParticipantItem = ({ participant }: { participant: unknown }) => (
-    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-      <Avatar className="w-10 h-10">
-        <AvatarImage src={participant.profiles?.avatar_url} />
-        <AvatarFallback>
-          {participant.profiles?.display_name?.charAt(0) || 'U'}
-        </AvatarFallback>
-      </Avatar>
-      
-      <div className="flex-1">
-        <h4 className="text-sm font-medium">
-          {participant.profiles?.display_name || 'مشارك'}
-        </h4>
-        <p className="text-xs text-muted-foreground">
-          {isRTL ? 'انضم في' : 'Joined'} {new Date(participant.registration_date).toLocaleDateString()}
-        </p>
+  const ParticipantItem = ({ participant }: { participant: unknown }) => {
+    const p = participant as Record<string, unknown>;
+    const profiles = p.profiles as Record<string, unknown> | null;
+    
+    return (
+      <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+        <Avatar className="w-10 h-10">
+          <AvatarImage src={profiles?.avatar_url as string} />
+          <AvatarFallback>
+            {(profiles?.display_name as string)?.charAt(0) || 'U'}
+          </AvatarFallback>
+        </Avatar>
+        
+        <div className="flex-1">
+          <h4 className="text-sm font-medium">
+            {profiles?.display_name as string || 'مشارك'}
+          </h4>
+          <p className="text-xs text-muted-foreground">
+            {isRTL ? 'انضم في' : 'Joined'} {new Date(p.registration_date as string).toLocaleDateString()}
+          </p>
+        </div>
+        
+        <Badge variant="outline" className="text-xs">
+          {p.participation_type === 'individual' ? 
+            (isRTL ? 'فردي' : 'Individual') : 
+            (isRTL ? 'فريق' : 'Team')
+          }
+        </Badge>
       </div>
-      
-      <Badge variant="outline" className="text-xs">
-        {participant.participation_type === 'individual' ? 
-          (isRTL ? 'فردي' : 'Individual') : 
-          (isRTL ? 'فريق' : 'Team')
-        }
-      </Badge>
-    </div>
-  );
+    );
+  };
 
-  const SubmissionItem = ({ submission }: { submission: unknown }) => (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        <div className="flex items-start gap-3">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src={submission.profiles?.avatar_url} />
-            <AvatarFallback>
-              {submission.profiles?.display_name?.charAt(0) || 'U'}
-            </AvatarFallback>
-          </Avatar>
-          
-          <div className="flex-1">
-            <h4 className="text-sm font-semibold line-clamp-1">
-              {submission.title_ar}
-            </h4>
-            <p className="text-xs text-muted-foreground mb-2">
-              {isRTL ? 'بواسطة' : 'by'} {submission.profiles?.display_name || 'مجهول'}
-            </p>
-            <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-              {submission.description_ar}
-            </p>
+  const SubmissionItem = ({ submission }: { submission: unknown }) => {
+    const s = submission as Record<string, unknown>;
+    const profiles = s.profiles as Record<string, unknown> | null;
+    
+    return (
+      <Card className="hover:shadow-md transition-shadow">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={profiles?.avatar_url as string} />
+              <AvatarFallback>
+                {(profiles?.display_name as string)?.charAt(0) || 'U'}
+              </AvatarFallback>
+            </Avatar>
             
-            <div className="flex items-center justify-between">
-              <Badge variant="outline" className="text-xs">
-                {submission.status}
-              </Badge>
-              <span className="text-xs text-muted-foreground">
-                {formatTimeAgo(submission.created_at)}
-              </span>
+            <div className="flex-1">
+              <h4 className="text-sm font-semibold line-clamp-1">
+                {s.title_ar as string}
+              </h4>
+              <p className="text-xs text-muted-foreground mb-2">
+                {isRTL ? 'بواسطة' : 'by'} {profiles?.display_name as string || 'مجهول'}
+              </p>
+              <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                {s.description_ar as string}
+              </p>
+              
+              <div className="flex items-center justify-between">
+                <Badge variant="outline" className="text-xs">
+                  {s.status as string}
+                </Badge>
+                <span className="text-xs text-muted-foreground">
+                  {formatTimeAgo(s.created_at as string)}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
+        </CardContent>
+      </Card>
+    );
+  };
 
   if (loading) {
     return (
@@ -375,7 +385,7 @@ export const ChallengeActivityHub = ({
               </div>
             ) : (
               participants.map((participant) => (
-                <ParticipantItem key={participant.id} participant={participant} />
+                <ParticipantItem key={(participant as Record<string, unknown>).id as string} participant={participant} />
               ))
             )}
           </TabsContent>
@@ -390,7 +400,7 @@ export const ChallengeActivityHub = ({
               </div>
             ) : (
               submissions.map((submission) => (
-                <SubmissionItem key={submission.id} submission={submission} />
+                <SubmissionItem key={(submission as Record<string, unknown>).id as string} submission={submission} />
               ))
             )}
           </TabsContent>
