@@ -9,8 +9,10 @@ import {
   Globe, MapPinIcon, BookmarkIcon
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Event {
   id: string;
@@ -37,6 +39,7 @@ interface EnhancedEventCardProps {
   event: Event;
   onViewDetails: (event: Event) => void;
   onRegister: (event: Event) => void;
+  onCancelRegistration?: (event: Event) => void;
   onBookmark?: (event: Event) => void;
   viewMode?: 'cards' | 'list' | 'grid';
   isBookmarked?: boolean;
@@ -46,13 +49,17 @@ export const EnhancedEventCard = ({
   event, 
   onViewDetails, 
   onRegister, 
+  onCancelRegistration,
   onBookmark,
   viewMode = 'cards',
   isBookmarked = false
 }: EnhancedEventCardProps) => {
   const { isRTL } = useDirection();
+  const { user } = useAuth();
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(isBookmarked);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [checkingRegistration, setCheckingRegistration] = useState(false);
 
   const getStatusClass = (status: string) => {
     switch (status) {
@@ -109,14 +116,61 @@ export const EnhancedEventCard = ({
     return diffDays <= 3 && diffDays > 0;
   };
 
+  useEffect(() => {
+    if (user) {
+      checkRegistrationStatus();
+    } else {
+      setIsRegistered(false);
+    }
+  }, [event.id, user]);
+
+  const checkRegistrationStatus = async () => {
+    if (!user) return;
+    
+    try {
+      setCheckingRegistration(true);
+      const { data, error } = await supabase
+        .from('event_participants')
+        .select('id')
+        .eq('event_id', event.id)
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') throw error;
+      setIsRegistered(!!data);
+    } catch (error) {
+      console.error('Failed to check registration status:', error);
+    } finally {
+      setCheckingRegistration(false);
+    }
+  };
+
   const handleBookmark = () => {
     setBookmarked(!bookmarked);
     onBookmark?.(event);
   };
 
+  const handleRegistrationAction = () => {
+    if (isRegistered) {
+      onCancelRegistration?.(event);
+      setIsRegistered(false);
+    } else {
+      onRegister(event);
+      setIsRegistered(true);
+    }
+  };
+
+  const getRegistrationButtonText = () => {
+    if (checkingRegistration) return isRTL ? 'جاري التحقق...' : 'Checking...';
+    if (isEventFull) return isRTL ? 'ممتلئ' : 'Full';
+    if (event.status === 'completed') return isRTL ? 'انتهى' : 'Ended';
+    if (isRegistered) return isRTL ? 'إلغاء التسجيل' : 'Cancel Registration';
+    return isRTL ? 'تسجيل' : 'Register';
+  };
+
   if (viewMode === 'list') {
     return (
-      <Card className="hover:shadow-md transition-all duration-300 hover-scale animate-fade-in">
+      <Card className="hover:shadow-md transition-all duration-300 hover-scale animate-fade-in cursor-pointer" onClick={() => onViewDetails(event)}>
         <CardContent className="p-4">
           <div className="flex items-start gap-4">
             {/* Event Image */}
@@ -181,24 +235,17 @@ export const EnhancedEventCard = ({
               {getStatusText(event.status)}
             </Badge>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                     <Button variant="ghost" size="icon-sm" onClick={handleBookmark}>
                       <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
                     </Button>
-                    <Button variant="info-subtle" size="sm" onClick={() => onViewDetails(event)}>
-                      <Eye className="w-4 h-4 mr-1" />
-                      {isRTL ? 'التفاصيل' : 'Details'}
-                    </Button>
                     <Button 
-                      variant="primary"
+                      variant={isRegistered ? "destructive" : "primary"}
                       size="sm" 
-                      onClick={() => onRegister(event)}
-                      disabled={event.status === 'completed' || isEventFull}
+                      onClick={handleRegistrationAction}
+                      disabled={event.status === 'completed' || (isEventFull && !isRegistered) || checkingRegistration}
                     >
-                      {isEventFull ? 
-                        (isRTL ? 'ممتلئ' : 'Full') :
-                        (isRTL ? 'تسجيل' : 'Register')
-                      }
+                      {getRegistrationButtonText()}
                     </Button>
                   </div>
                 </div>
@@ -222,7 +269,7 @@ export const EnhancedEventCard = ({
   }
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+    <Card className="group hover:shadow-lg transition-all duration-300 hover-scale animate-fade-in overflow-hidden cursor-pointer" onClick={() => onViewDetails(event)}>
       {/* Event Image */}
       <div className="relative h-48 overflow-hidden">
         {event.image_url ? (
@@ -256,7 +303,7 @@ export const EnhancedEventCard = ({
         </div>
 
         {/* Quick Actions */}
-        <div className="absolute top-3 right-3 flex gap-2">
+        <div className="absolute top-3 right-3 flex gap-2" onClick={(e) => e.stopPropagation()}>
           <Button
             variant="secondary"
             size="sm"
@@ -339,23 +386,15 @@ export const EnhancedEventCard = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => onViewDetails(event)} className="flex-1 h-9">
-            {isRTL ? 'التفاصيل' : 'Details'}
-          </Button>
+        {/* Action Button */}
+        <div className="flex" onClick={(e) => e.stopPropagation()}>
           <Button 
-            variant="primary"
-            onClick={() => onRegister(event)}
-            className="flex-1 h-9"
-            disabled={event.status === 'completed' || isEventFull}
+            variant={isRegistered ? "destructive" : "primary"}
+            onClick={handleRegistrationAction}
+            className="w-full h-9"
+            disabled={event.status === 'completed' || (isEventFull && !isRegistered) || checkingRegistration}
           >
-            {isEventFull ? 
-              (isRTL ? 'ممتلئ' : 'Full') :
-              event.status === 'completed' ?
-              (isRTL ? 'انتهى' : 'Ended') :
-              (isRTL ? 'تسجيل' : 'Register')
-            }
+            {getRegistrationButtonText()}
           </Button>
         </div>
       </CardContent>
