@@ -122,7 +122,7 @@ export const DashboardHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Role-specific background */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(262, 83%, 58%), hsl(262, 83%, 52%))' }}>
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(99deg, rgba(59, 20, 93, 1) 51%, rgba(23, 8, 38, 1) 99%)' }}>
         <div className="absolute inset-0 bg-black/10" />
       </div>
 
