@@ -341,7 +341,7 @@ export const EnhancedEventCard = ({
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button variant="info-subtle" onClick={() => onViewDetails(event)} className="flex-1 h-9">
+          <Button variant="outline" onClick={() => onViewDetails(event)} className="flex-1 h-9">
             {isRTL ? 'التفاصيل' : 'Details'}
           </Button>
           <Button 
