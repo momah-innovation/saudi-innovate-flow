@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppShell } from '@/components/layout/AppShell';
+// Removed AppShell import - route provides AppShell wrapper
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -142,8 +142,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <AppShell>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
         {/* Hero Section */}
         <section className="relative overflow-hidden border-b bg-gradient-to-r from-primary/5 via-primary/10 to-accent/5">
           <div className="absolute inset-0 bg-grid-pattern opacity-5" />
@@ -313,7 +312,6 @@ export default function Dashboard() {
             </Card>
           </section>
         </div>
-      </div>
-    </AppShell>
+    </div>
   );
 }

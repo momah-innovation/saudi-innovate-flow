@@ -18,7 +18,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { AppShell } from '@/components/layout/AppShell';
+// Removed AppShell import - route provides AppShell wrapper
 import { DashboardHero } from './DashboardHero';
 import { AdminDashboard } from './AdminDashboard';
 import { ExpertDashboard } from './ExpertDashboard';
@@ -300,16 +300,14 @@ export default function UserDashboard() {
 
   if (loading) {
     return (
-      <AppShell>
-        <div className="flex justify-center items-center p-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      </AppShell>
+      <div className="flex justify-center items-center p-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
     );
   }
 
   return (
-    <AppShell>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
       <DashboardHero
         userProfile={userProfile}
         stats={{
@@ -690,6 +688,6 @@ export default function UserDashboard() {
         </div>
         )}
       </div>
-    </AppShell>
+    </div>
   );
 }
