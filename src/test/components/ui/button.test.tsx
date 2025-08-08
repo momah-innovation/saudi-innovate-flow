@@ -22,6 +22,18 @@ describe('Button Component', () => {
     expect(button).toHaveClass('bg-destructive')
   })
 
+  it('applies success variant classes', () => {
+    render(<Button variant="success">Success</Button>)
+    const button = screen.getByRole('button')
+    expect(button).toHaveClass('bg-success')
+  })
+
+  it('applies gradient variant classes', () => {
+    render(<Button variant="gradient-primary">Gradient</Button>)
+    const button = screen.getByRole('button')
+    expect(button).toHaveClass('bg-gradient-to-r')
+  })
+
   it('applies correct size classes', () => {
     render(<Button size="lg">Large Button</Button>)
     const button = screen.getByRole('button')

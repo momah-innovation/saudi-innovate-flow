@@ -159,7 +159,7 @@ export const ChallengesHero = ({
               {canCreateChallenges && onCreateChallenge && (
                 <Button
                   onClick={onCreateChallenge}
-                  variant="hero-primary"
+                  variant="gradient-primary"
                   size="lg"
                   className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
@@ -170,7 +170,7 @@ export const ChallengesHero = ({
               
               <Button
                 onClick={onShowFilters}
-                variant="hero-secondary"
+                variant="overlay-secondary"
                 size="lg"
               >
                 <Filter className="w-5 h-5 mr-2" />
@@ -178,7 +178,7 @@ export const ChallengesHero = ({
               </Button>
 
               <Button
-                variant="hero-ghost"
+                variant="overlay-ghost"
                 size="lg"
               >
                 <Play className="w-5 h-5 mr-2" />

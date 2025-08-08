@@ -7,8 +7,8 @@ interface IconActionButtonProps {
   icon: ReactNode;
   tooltip: string;
   onClick?: () => void;
-  variant?: "default" | "ghost" | "outline" | "secondary";
-  size?: "sm" | "default" | "lg";
+  variant?: "default" | "ghost" | "outline" | "secondary" | "success" | "warning" | "info" | "destructive";
+  size?: "icon-sm" | "icon" | "icon-lg";
   className?: string;
   disabled?: boolean;
 }
@@ -18,7 +18,7 @@ export function IconActionButton({
   tooltip,
   onClick,
   variant = "ghost",
-  size = "sm",
+  size = "icon-sm",
   className,
   disabled = false
 }: IconActionButtonProps) {
@@ -31,7 +31,7 @@ export function IconActionButton({
             size={size}
             onClick={onClick}
             disabled={disabled}
-            className={cn("h-8 w-8 p-0", className)}
+            className={cn(className)}
           >
             {icon}
           </Button>

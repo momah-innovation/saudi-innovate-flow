@@ -17,11 +17,18 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
+      options: [
+        'default', 'primary', 'secondary', 'outline', 'ghost', 'link',
+        'destructive', 'success', 'warning', 'info',
+        'destructive-subtle', 'success-subtle', 'warning-subtle', 'info-subtle',
+        'overlay-primary', 'overlay-secondary', 'overlay-ghost',
+        'gradient-primary', 'gradient-success', 'gradient-info',
+        'cta', 'elevated', 'glass'
+      ],
     },
     size: {
       control: 'select',
-      options: ['default', 'sm', 'lg', 'icon'],
+      options: ['xs', 'sm', 'default', 'lg', 'xl', 'icon', 'icon-sm', 'icon-lg'],
     },
     disabled: {
       control: 'boolean',
@@ -38,15 +45,68 @@ export const Default: Story = {
   },
 }
 
-export const Variants: Story = {
+export const PrimaryVariants: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div className="flex gap-2 flex-wrap">
+        <Button variant="default">Default</Button>
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="outline">Outline</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button variant="link">Link</Button>
+      </div>
+    </div>
+  ),
+}
+
+export const StatusVariants: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div className="flex gap-2 flex-wrap">
+        <Button variant="destructive">Destructive</Button>
+        <Button variant="success">Success</Button>
+        <Button variant="warning">Warning</Button>
+        <Button variant="info">Info</Button>
+      </div>
+      <div className="flex gap-2 flex-wrap">
+        <Button variant="destructive-subtle">Destructive Subtle</Button>
+        <Button variant="success-subtle">Success Subtle</Button>
+        <Button variant="warning-subtle">Warning Subtle</Button>
+        <Button variant="info-subtle">Info Subtle</Button>
+      </div>
+    </div>
+  ),
+}
+
+export const OverlayVariants: Story = {
+  render: () => (
+    <div className="p-8 bg-gradient-to-r from-primary via-primary-hover to-primary rounded-lg">
+      <div className="flex gap-2 flex-wrap">
+        <Button variant="overlay-primary">Overlay Primary</Button>
+        <Button variant="overlay-secondary">Overlay Secondary</Button>
+        <Button variant="overlay-ghost">Overlay Ghost</Button>
+      </div>
+    </div>
+  ),
+}
+
+export const GradientVariants: Story = {
   render: () => (
     <div className="flex gap-2 flex-wrap">
-      <Button variant="default">Default</Button>
-      <Button variant="destructive">Destructive</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="link">Link</Button>
+      <Button variant="gradient-primary">Gradient Primary</Button>
+      <Button variant="gradient-success">Gradient Success</Button>
+      <Button variant="gradient-info">Gradient Info</Button>
+    </div>
+  ),
+}
+
+export const SpecialVariants: Story = {
+  render: () => (
+    <div className="flex gap-2 flex-wrap">
+      <Button variant="cta">Call to Action</Button>
+      <Button variant="elevated">Elevated</Button>
+      <Button variant="glass">Glass Effect</Button>
     </div>
   ),
 }
