@@ -41,7 +41,7 @@ export const DashboardHero = ({
       case 'admin':
       case 'super_admin':
         return {
-          gradient: 'bg-gradient-primary',
+          gradient: 'gradient-primary',
           title: language === 'ar' ? 'لوحة الإدارة' : 'Admin Dashboard',
           subtitle: language === 'ar' ? 'إدارة شاملة للنظام والمستخدمين' : 'Complete system and user management',
           icon: Shield,
@@ -58,7 +58,7 @@ export const DashboardHero = ({
         };
       case 'expert':
         return {
-          gradient: 'bg-gradient-info',
+          gradient: 'gradient-info',
           title: language === 'ar' ? 'مركز الخبرة' : 'Expert Center',
           subtitle: language === 'ar' ? 'تقييم ومراجعة الأفكار الابتكارية' : 'Evaluate and review innovative ideas',
           icon: Brain,
@@ -74,7 +74,7 @@ export const DashboardHero = ({
         };
       case 'partner':
         return {
-          gradient: 'bg-gradient-success',
+          gradient: 'gradient-success',
           title: language === 'ar' ? 'منصة الشريك' : 'Partner Platform',
           subtitle: language === 'ar' ? 'إدارة الشراكات والفرص الاستثمارية' : 'Manage partnerships and investment opportunities',
           icon: Handshake,
@@ -90,7 +90,7 @@ export const DashboardHero = ({
         };
       default: // innovator and others
         return {
-          gradient: 'bg-gradient-primary',
+          gradient: 'gradient-primary',
           title: language === 'ar' ? 'رحلة الابتكار' : 'Innovation Journey',
           subtitle: language === 'ar' ? 'اكتشف، ابتكر، وشارك أفكارك مع العالم' : 'Discover, innovate, and share your ideas with the world',
           icon: Lightbulb,
@@ -122,7 +122,7 @@ export const DashboardHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Role-specific background */}
-      <div className={`absolute inset-0 bg-gradient-to-r ${roleConfig.gradient}`}>
+      <div className={`absolute inset-0 ${roleConfig.gradient}`}>
         <div className="absolute inset-0 bg-black/10" />
       </div>
 
