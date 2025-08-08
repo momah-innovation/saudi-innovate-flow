@@ -5,6 +5,7 @@ import { Button } from './button';
 import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
+import { useTranslation } from 'react-i18next';
 
 interface AvatarUploadProps {
   currentAvatarUrl?: string | null;
@@ -21,6 +22,7 @@ export function AvatarUpload({
   size = 'md',
   showUploadButton = true 
 }: AvatarUploadProps) {
+  const { t } = useTranslation();
   const [uploading, setUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(currentAvatarUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -65,10 +67,10 @@ export function AvatarUpload({
 
       setAvatarUrl(publicUrl);
       onAvatarUpdate?.(publicUrl);
-      toast.success('Avatar updated successfully!');
+      toast.success(t('toast.avatar_updated'));
     } catch (error) {
       logger.error('Error uploading avatar', { component: 'AvatarUpload', action: 'uploadAvatar' }, error as Error);
-      toast.error('Error uploading avatar. Please try again.');
+      toast.error(t('toast.avatar_upload_error'));
     } finally {
       setUploading(false);
     }
@@ -80,13 +82,13 @@ export function AvatarUpload({
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
+      toast.error(t('toast.select_image_file'));
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('File size must be less than 5MB');
+      toast.error(t('toast.file_size_limit'));
       return;
     }
 
@@ -111,10 +113,10 @@ export function AvatarUpload({
 
       setAvatarUrl(null);
       onAvatarUpdate?.('');
-      toast.success('Avatar removed');
+      toast.success(t('toast.avatar_removed'));
     } catch (error) {
       logger.error('Error removing avatar', { component: 'AvatarUpload', action: 'removeAvatar' }, error as Error);
-      toast.error('Error removing avatar');
+      toast.error(t('toast.avatar_remove_error'));
     } finally {
       setUploading(false);
     }

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { useTranslation } from 'react-i18next';
 
 interface DraftIdea {
   id: string;
@@ -32,6 +33,7 @@ interface Challenge {
 }
 
 export default function IdeaDrafts() {
+  const { t } = useTranslation();
   const { userProfile } = useAuth();
   const navigate = useNavigate();
   const { isRTL } = useDirection();
@@ -66,7 +68,7 @@ export default function IdeaDrafts() {
       setDrafts(data || []);
     } catch (error) {
       logger.error('Error fetching drafts', { userId: userProfile?.id }, error as Error);
-      toast.error(isRTL ? 'فشل في تحميل المسودات' : 'Failed to load drafts');
+      toast.error(t('toast.drafts_load_error'));
     } finally {
       setLoading(false);
     }
@@ -96,10 +98,10 @@ export default function IdeaDrafts() {
       if (error) throw error;
 
       setDrafts(drafts.filter(draft => draft.id !== draftId));
-      toast.success(isRTL ? 'تم حذف المسودة بنجاح' : 'Draft deleted successfully');
+      toast.success(t('toast.draft_deleted'));
     } catch (error) {
       logger.error('Error deleting draft', { entityId: draftId }, error as Error);
-      toast.error(isRTL ? 'فشل في تحميل المسودات' : 'Failed to delete draft');
+      toast.error(t('toast.draft_delete_error'));
     }
   };
 

@@ -95,7 +95,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
       });
 
       if (failedUploads.length === 0) {
-        toast.success(t('all_avatars_updated_successfully'));
+        toast.success(t('toast.avatar_updated'));
       } else {
         toast.warning(t('avatars_update_partial_success', { 
           success: successfulUploads.length, 
@@ -106,7 +106,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
       onComplete?.();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      toast.error(t('failed_to_upload_avatars'));
+      toast.error(t('toast.avatar_upload_error'));
     } finally {
       setUploading(false);
     }
