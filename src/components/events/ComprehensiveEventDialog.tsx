@@ -81,6 +81,9 @@ export const ComprehensiveEventDialog = ({
   onRegister,
   isAdmin = false
 }: ComprehensiveEventDialogProps) => {
+  // Early return BEFORE any hooks to prevent hook order violations
+  if (!event) return null;
+
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const [activeTab, setActiveTab] = useState('details');
@@ -110,8 +113,6 @@ export const ComprehensiveEventDialog = ({
     updateParticipantStatus,
     cancelRegistration
   } = useParticipants(event?.id || null);
-
-  if (!event) return null;
 
   const getStatusColor = (status: string) => {
     switch (status) {
