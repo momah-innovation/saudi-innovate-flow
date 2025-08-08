@@ -2309,6 +2309,48 @@ export type Database = {
         }
         Relationships: []
       }
+      event_notifications: {
+        Row: {
+          action_url: string | null
+          created_at: string | null
+          event_id: string
+          id: string
+          is_read: boolean | null
+          message: string
+          metadata: Json | null
+          notification_type: string
+          recipient_id: string
+          sender_id: string | null
+          title: string
+        }
+        Insert: {
+          action_url?: string | null
+          created_at?: string | null
+          event_id: string
+          id?: string
+          is_read?: boolean | null
+          message: string
+          metadata?: Json | null
+          notification_type: string
+          recipient_id: string
+          sender_id?: string | null
+          title: string
+        }
+        Update: {
+          action_url?: string | null
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          metadata?: Json | null
+          notification_type?: string
+          recipient_id?: string
+          sender_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       event_participant_notifications: {
         Row: {
           created_at: string
@@ -8354,6 +8396,18 @@ export type Database = {
       send_challenge_notification: {
         Args: {
           p_challenge_id: string
+          p_recipient_id: string
+          p_notification_type: string
+          p_title: string
+          p_message: string
+          p_action_url?: string
+          p_metadata?: Json
+        }
+        Returns: string
+      }
+      send_event_notification: {
+        Args: {
+          p_event_id: string
           p_recipient_id: string
           p_notification_type: string
           p_title: string
