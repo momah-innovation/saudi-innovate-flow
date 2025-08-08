@@ -213,11 +213,11 @@ export function UnifiedHeader({
                   size="sm" 
                   className="h-9 w-9 p-0"
                   onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-                  title={t('switch_language')}
+                  title={t('switch_language') || 'Switch language'}
                 >
                   <Languages className="h-4 w-4" />
                   <span className="sr-only">
-                    {t('switch_language')}
+                    {t('switch_language') || 'Switch language'}
                   </span>
                 </Button>
               )}
@@ -347,11 +347,11 @@ export function UnifiedHeader({
           size="sm" 
           className="h-9 w-9 p-0"
           onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-          title={t('switch_language')}
+          title={t('switch_language') || 'Switch language'}
         >
           <Languages className="h-4 w-4" />
           <span className="sr-only">
-            {t('switch_language')}
+            {t('switch_language') || 'Switch language'}
           </span>
         </Button>
       )}

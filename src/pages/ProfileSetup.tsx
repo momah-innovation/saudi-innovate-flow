@@ -99,9 +99,19 @@ const ProfileSetup = () => {
     experience_years: '',
   });
 
-  // Redirect if not authenticated
+  // Redirect if not authenticated or profile is complete
   if (!user) {
     return <Navigate to="/auth" replace />;
+  }
+
+  // Redirect to dashboard if profile is already complete (80% or more)
+  if (userProfile && userProfile.profile_completion_percentage >= 80) {
+    logger.info('ProfileSetup: Profile complete, redirecting to dashboard', { 
+      component: 'ProfileSetup', 
+      action: 'redirect',
+      data: { completion: userProfile.profile_completion_percentage }
+    });
+    return <Navigate to="/dashboard" replace />;
   }
 
   logger.info('ProfileSetup component loaded', { 

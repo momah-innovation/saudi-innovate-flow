@@ -101,12 +101,13 @@ export function useSystemHealth() {
                      securityMetrics.highRiskEvents > 2 ? 'warning' : 'optimal'
       }
 
-      // Get detailed storage stats for each bucket
-      const bucketStatsPromises = buckets.map(bucket => 
-        supabase.rpc('get_bucket_stats', { bucket_name: bucket.bucket_id })
-      )
+      // Get detailed storage stats for each bucket (disable for now due to function errors)
+      // const bucketStatsPromises = buckets.map(bucket => 
+      //   supabase.rpc('get_bucket_stats', { bucket_name: bucket.bucket_id })
+      // )
       
-      const bucketStatsResults = await Promise.allSettled(bucketStatsPromises)
+      // const bucketStatsResults = await Promise.allSettled(bucketStatsPromises)
+      const bucketStatsResults: Array<{ status: 'fulfilled' | 'rejected', value?: any }> = []
       
       let totalFiles = 0
       let totalSize = 0
