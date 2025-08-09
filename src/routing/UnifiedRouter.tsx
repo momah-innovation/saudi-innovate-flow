@@ -23,6 +23,7 @@ const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'));
 const HelpPage = lazy(() => import('@/pages/HelpPage'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const DesignSystem = lazy(() => import('@/pages/DesignSystem'));
+const PartnersManagement = lazy(() => import('@/pages/admin/PartnersManagement'));
 const AdminEvaluations = lazy(() => import('@/pages/AdminEvaluations'));
 const AdminRelationships = lazy(() => import('@/pages/AdminRelationships'));
 const Challenges = lazy(() => import('@/pages/Challenges'));
@@ -205,6 +206,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_EVENTS,
     component: EventsManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_PARTNERS,
+    component: PartnersManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
