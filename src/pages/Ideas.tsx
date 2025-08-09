@@ -28,6 +28,10 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+// Collaboration imports
+import { CollaborationProvider } from '@/components/collaboration';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { UserPresence } from '@/components/collaboration/UserPresence';
 import { 
   Plus, Lightbulb, TrendingUp, Filter, Heart, MessageSquare,
   Eye, Star, Trophy, Target, Rocket, CheckCircle, Clock,
@@ -646,6 +650,20 @@ export default function IdeasPage() {
 
   const renderIdeaCard = (idea: Idea) => (
     <Card key={idea.id} className="hover:shadow-lg transition-all duration-300 hover-scale animate-fade-in group cursor-pointer overflow-hidden">
+      {/* Collaboration Indicators */}
+      <div className="absolute top-2 left-2 z-10 flex items-center gap-1">
+        <div className="bg-background/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1">
+          <UserPresence 
+            users={[]} 
+            maxVisible={3} 
+            size="sm"
+            showStatus={false}
+            showLocation={false}
+          />
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" title="Active collaboration" />
+        </div>
+      </div>
+      
       {/* Idea Image */}
       {idea.image_url && (
         <div className="relative h-48 w-full overflow-hidden">
@@ -907,24 +925,36 @@ export default function IdeasPage() {
   };
 
   return (
-    <AppShell>
-      <EnhancedIdeasHero 
-        totalIdeas={personalMetrics.totalIdeas}
-        publishedIdeas={ideas.filter(idea => idea.status === 'published').length}
-        totalViews={personalMetrics.totalViews}
-        totalLikes={personalMetrics.totalViews * 0.1}
-        onCreateIdea={() => navigate('/submit-idea')}
-        onShowFilters={() => setFiltersDialogOpen(true)}
-        canCreateIdea={!!user}
-        featuredIdea={ideas.length > 0 ? {
-          id: ideas[0].id,
-          title_ar: ideas[0].title_ar,
-          views: ideas[0].view_count || 0,
-          likes: ideas[0].like_count || 0,
-          innovator: ideas[0].profile?.name_ar || 'مبدع مجهول',
-          image: ideas[0].image_url
-        } : undefined}
-      />
+    <CollaborationProvider>
+      <AppShell>
+        <EnhancedIdeasHero 
+          totalIdeas={personalMetrics.totalIdeas}
+          publishedIdeas={ideas.filter(idea => idea.status === 'published').length}
+          totalViews={personalMetrics.totalViews}
+          totalLikes={personalMetrics.totalViews * 0.1}
+          onCreateIdea={() => navigate('/submit-idea')}
+          onShowFilters={() => setFiltersDialogOpen(true)}
+          canCreateIdea={!!user}
+          featuredIdea={ideas.length > 0 ? {
+            id: ideas[0].id,
+            title_ar: ideas[0].title_ar,
+            views: ideas[0].view_count || 0,
+            likes: ideas[0].like_count || 0,
+            innovator: ideas[0].profile?.name_ar || 'مبدع مجهول',
+            image: ideas[0].image_url
+          } : undefined}
+        />
+        
+        {/* Real-time Collaboration Integration */}
+        <div className="mb-6">
+          <WorkspaceCollaboration
+            workspaceType="user"
+            entityId={userProfile?.id}
+            showWidget={false}
+            showPresence={true}
+            showActivity={false}
+          />
+        </div>
       <PageLayout
         title={isRTL ? 'الأفكار الابتكارية' : 'Innovation Ideas'}
         description={isRTL ? 'اكتشف واستكشف أحدث الأفكار الابتكارية' : 'Discover and explore the latest innovative ideas'}
@@ -1232,5 +1262,6 @@ export default function IdeasPage() {
 
       </PageLayout>
     </AppShell>
+    </CollaborationProvider>
   );
 }

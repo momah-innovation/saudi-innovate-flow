@@ -24,6 +24,9 @@ import { AdminDashboard } from './AdminDashboard';
 import { ExpertDashboard } from './ExpertDashboard';
 import { PartnerDashboard } from './PartnerDashboard';
 import { logger } from '@/utils/logger';
+// Collaboration imports
+import { CollaborationProvider } from '@/components/collaboration';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -307,21 +310,22 @@ export default function UserDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
-      <DashboardHero
-        userProfile={userProfile}
-        stats={{
-          totalIdeas: stats.totalIdeas,
-          activeChallenges: stats.challengesParticipated,
-          totalPoints: stats.totalRewards,
-          innovationScore: stats.innovationScore
-        }}
-        onNavigate={navigate}
-        userRole={primaryRole}
-        rolePermissions={permissions}
-      />
-      
-      <div className="container mx-auto px-6 py-8 space-y-6">
+    <CollaborationProvider>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
+        <DashboardHero
+          userProfile={userProfile}
+          stats={{
+            totalIdeas: stats.totalIdeas,
+            activeChallenges: stats.challengesParticipated,
+            totalPoints: stats.totalRewards,
+            innovationScore: stats.innovationScore
+          }}
+          onNavigate={navigate}
+          userRole={primaryRole}
+          rolePermissions={permissions}
+        />
+        
+        <div className="container mx-auto px-6 py-8 space-y-6">
         {/* Role-specific Dashboard Content */}
         {(() => {
           console.log('🎯 Dashboard role check:', { 
@@ -694,9 +698,21 @@ export default function UserDashboard() {
             </Card>
           </TabsContent>
         </Tabs>
+        
+        {/* Collaboration Widget Integration */}
+        <div className="mt-8">
+          <WorkspaceCollaboration
+            workspaceType="user"
+            entityId={userProfile?.id}
+            showWidget={true}
+            showPresence={true}
+            showActivity={true}
+          />
+        </div>
         </div>
         )}
       </div>
-    </div>
+      </div>
+    </CollaborationProvider>
   );
 }
