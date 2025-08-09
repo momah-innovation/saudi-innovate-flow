@@ -78,7 +78,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
         title: 'You were mentioned in a comment',
         content: 'Sarah mentioned you in the project discussion',
         priority: 'high',
-        read: false,
+        is_read: false,
         created_at: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
         context: {
           entity_type: 'comment',
@@ -97,7 +97,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
         title: 'New task assigned',
         content: 'You have been assigned to "Update documentation"',
         priority: 'medium',
-        read: false,
+        is_read: false,
         created_at: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
         context: {
           entity_type: 'task',
@@ -116,7 +116,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
         title: 'Someone joined your workspace',
         content: 'Alex joined the Design Team workspace',
         priority: 'low',
-        read: true,
+        is_read: true,
         created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
         context: {
           entity_type: 'workspace',
@@ -135,7 +135,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
         title: 'Meeting reminder',
         content: 'Team standup starts in 30 minutes',
         priority: 'high',
-        read: false,
+        is_read: false,
         created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
         context: {
           entity_type: 'meeting',
@@ -155,7 +155,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
   const filteredNotifications = notifications.filter(notification => {
     switch (filter) {
       case 'unread':
-        return !notification.read;
+        return !notification.is_read;
       case 'mentions':
         return notification.type === 'mention';
       case 'urgent':
@@ -165,17 +165,17 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
     }
   });
 
-  const unreadCount = notifications.filter(n => !n.read).length;
-  const urgentCount = notifications.filter(n => n.priority === 'high' && !n.read).length;
+  const unreadCount = notifications.filter(n => !n.is_read).length;
+  const urgentCount = notifications.filter(n => n.priority === 'high' && !n.is_read).length;
 
   const markAsRead = (notificationId: string) => {
     setNotifications(prev => prev.map(n => 
-      n.id === notificationId ? { ...n, read: true } : n
+      n.id === notificationId ? { ...n, is_read: true } : n
     ));
   };
 
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
   };
 
   const deleteNotification = (notificationId: string) => {
@@ -309,7 +309,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
                   <div
                     key={notification.id}
                     className={`p-3 border rounded-lg transition-colors ${
-                      !notification.read 
+                       !notification.is_read 
                         ? 'border-primary bg-primary/5' 
                         : 'border-muted'
                     }`}
@@ -321,7 +321,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
                           <h4 className={`text-sm font-medium ${
-                            !notification.read ? 'text-foreground' : 'text-muted-foreground'
+                            !notification.is_read ? 'text-foreground' : 'text-muted-foreground'
                           }`}>
                             {notification.title}
                           </h4>
@@ -340,23 +340,23 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
                           </div>
                         </div>
                         <p className="text-xs text-muted-foreground mt-1">
-                          {notification.content}
+                          {(notification as any).content || notification.message}
                         </p>
                         <div className="flex items-center justify-between mt-2">
-                          {notification.metadata?.user_name && (
+                          {(notification as any).metadata?.user_name && (
                             <div className="flex items-center gap-2">
                               <Avatar className="h-5 w-5">
-                                <AvatarImage src={notification.metadata.avatar_url} />
+                                <AvatarImage src={(notification as any).metadata.avatar_url} />
                                 <AvatarFallback className="text-xs">
-                                  {notification.metadata.user_name[0]?.toUpperCase()}
+                                  {(notification as any).metadata.user_name[0]?.toUpperCase()}
                                 </AvatarFallback>
                               </Avatar>
                               <span className="text-xs text-muted-foreground">
-                                {notification.metadata.user_name}
+                                {(notification as any).metadata.user_name}
                               </span>
                             </div>
                           )}
-                          {!notification.read && (
+                          {!notification.is_read && (
                             <Button
                               variant="ghost"
                               size="sm"
