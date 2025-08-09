@@ -148,8 +148,16 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
     {
       title: language === 'ar' ? 'إدارة الشراكات' : 'Partners Management',
       description: language === 'ar' ? 'إدارة الشراكات والتعاون الخارجي' : 'Manage partnerships and external collaborations',
-      icon: Users,
+      icon: Briefcase,
       action: () => navigate('/admin/partners'),
+      show: true,
+      category: 'management'
+    },
+    {
+      title: language === 'ar' ? 'إدارة القطاعات' : 'Sectors Management',
+      description: language === 'ar' ? 'إدارة القطاعات والمجالات الابتكارية' : 'Manage innovation sectors and fields',
+      icon: Building,
+      action: () => navigate('/admin/sectors'),
       show: true,
       category: 'management'
     },
