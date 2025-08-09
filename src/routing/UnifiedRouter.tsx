@@ -36,7 +36,7 @@ const AnalyticsPage = lazy(() => import('@/pages/AnalyticsPage'));
 const EventsBrowse = lazy(() => import('@/pages/EventsBrowse'));
 const ChallengesBrowse = lazy(() => import('@/pages/ChallengesBrowse'));
 const AccessControlManagement = lazy(() => import('@/pages/dashboard/AccessControlManagement'));
-const UserManagement = lazy(() => import('@/pages/UserManagement'));
+const UserManagement = lazy(() => import('@/pages/admin/UserManagement'));
 const ChallengesManagement = lazy(() => import('@/pages/ChallengesManagement'));
 const CampaignsManagement = lazy(() => import('@/pages/CampaignsManagement'));
 const EventsManagement = lazy(() => import('@/pages/EventsManagement'));
