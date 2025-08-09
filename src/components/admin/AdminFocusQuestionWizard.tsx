@@ -23,6 +23,7 @@ interface Challenge {
 interface FocusQuestion {
   id?: string;
   question_text_ar: string;
+  question_text_en?: string;
   question_type: string;
   is_sensitive: boolean;
   order_sequence: number;
@@ -49,6 +50,7 @@ export function AdminFocusQuestionWizard({
   
   const [formData, setFormData] = useState({
     question_text_ar: "",
+    question_text_en: "",
     question_type: "open_ended",
     is_sensitive: false,
     order_sequence: 0,
@@ -78,6 +80,7 @@ export function AdminFocusQuestionWizard({
     if (question) {
       setFormData({
         question_text_ar: question.question_text_ar || "",
+        question_text_en: question.question_text_en || "",
         question_type: question.question_type || "open_ended",
         is_sensitive: question.is_sensitive || false,
         order_sequence: question.order_sequence || 0,
@@ -86,6 +89,7 @@ export function AdminFocusQuestionWizard({
     } else {
       setFormData({
         question_text_ar: "",
+        question_text_en: "",
         question_type: "open_ended",
         is_sensitive: false,
         order_sequence: 0,
@@ -143,6 +147,7 @@ export function AdminFocusQuestionWizard({
     try {
       const questionData = {
         question_text_ar: formData.question_text_ar.trim(),
+        question_text_en: formData.question_text_en?.trim() || null,
         question_type: formData.question_type,
         is_sensitive: formData.is_sensitive,
         order_sequence: formData.order_sequence,
@@ -235,6 +240,23 @@ export function AdminFocusQuestionWizard({
                 يجب أن يكون السؤال واضحاً ومفهوماً ولا يقل عن 10 أحرف
               </p>
             )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="question_text_en">Question Text (English)</Label>
+            <Textarea
+              id="question_text_en"
+              value={formData.question_text_en}
+              onChange={(e) => {
+                setFormData({ ...formData, question_text_en: e.target.value });
+              }}
+              placeholder="Enter the focus question in English"
+              rows={4}
+              dir="ltr"
+            />
+            <p className="text-sm text-muted-foreground">
+              Optional English translation of the question
+            </p>
           </div>
         </div>
       ),

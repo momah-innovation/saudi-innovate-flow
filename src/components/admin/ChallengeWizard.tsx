@@ -24,7 +24,9 @@ import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service,
 interface ChallengeFormData {
   id?: string;
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   status: string;
   priority_level: string;
   sensitivity_level: string;
@@ -88,7 +90,9 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
 
   const [formData, setFormData] = useState<ChallengeFormData>({
     title_ar: '',
+    title_en: '',
     description_ar: '',
+    description_en: '',
     status: 'draft',
     priority_level: 'medium',
     sensitivity_level: 'normal',
@@ -176,7 +180,9 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
   const resetForm = () => {
     setFormData({
       title_ar: '',
+      title_en: '',
       description_ar: '',
+      description_en: '',
       status: 'draft',
       priority_level: 'medium',
       sensitivity_level: 'normal',
@@ -337,6 +343,17 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="title_en">{t('form.title_en')}</Label>
+            <Input
+              id="title_en"
+              value={formData.title_en || ''}
+              onChange={(e) => updateFormData('title_en', e.target.value)}
+              placeholder={t('placeholder.enter_title_en')}
+              dir="ltr"
+            />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="description_ar">{t('form.description_ar')} *</Label>
             <Textarea
               id="description_ar"
@@ -344,6 +361,18 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
               onChange={(e) => updateFormData('description_ar', e.target.value)}
               placeholder={t('placeholder.enter_description')}
               dir="rtl"
+              rows={4}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description_en">{t('form.description_en')}</Label>
+            <Textarea
+              id="description_en"
+              value={formData.description_en || ''}
+              onChange={(e) => updateFormData('description_en', e.target.value)}
+              placeholder={t('placeholder.enter_description_en')}
+              dir="ltr"
               rows={4}
             />
           </div>

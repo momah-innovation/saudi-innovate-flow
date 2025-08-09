@@ -285,7 +285,9 @@ export interface CampaignFormData {
   updated_at?: string;
   // Form-specific fields
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   status: string;
   theme?: string;
   success_metrics?: string; // String, not array - based on actual usage

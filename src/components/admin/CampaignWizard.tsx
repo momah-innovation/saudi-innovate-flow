@@ -59,7 +59,9 @@ export function CampaignWizard({
   // Form data
   const [formData, setFormData] = useState<CampaignFormData>({
     title_ar: "",
+    title_en: "",
     description_ar: "",
+    description_en: "",
     status: "planning",
     theme: "",
     start_date: "",
@@ -208,7 +210,9 @@ export function CampaignWizard({
 
     setFormData({
       title_ar: "",
+      title_en: "",
       description_ar: "",
+      description_en: "",
       status: "planning",
       theme: "",
       start_date: nextWeek.toISOString().split('T')[0],
@@ -281,7 +285,9 @@ export function CampaignWizard({
       // Prepare campaign data
       const campaignData = {
         title_ar: formData.title_ar,
+        title_en: formData.title_en || null,
         description_ar: formData.description_ar,
+        description_en: formData.description_en || null,
         status: formData.status,
         theme: formData.theme,
         start_date: formData.start_date,
@@ -438,6 +444,17 @@ export function CampaignWizard({
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="title_en">{t('form.campaign_title_en')}</Label>
+              <Input
+                id="title_en"
+                value={formData.title_en || ''}
+                onChange={(e) => setFormData(prev => ({ ...prev, title_en: e.target.value }))}
+                placeholder={t('placeholder.enter_campaign_title_en')}
+                dir="ltr"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="description_ar">{t('form.campaign_description')} *</Label>
               <Textarea
                 id="description_ar"
@@ -445,6 +462,18 @@ export function CampaignWizard({
                 onChange={(e) => setFormData(prev => ({ ...prev, description_ar: e.target.value }))}
                 placeholder={t('placeholder.enter_campaign_description')}
                 dir="rtl"
+                rows={4}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="description_en">{t('form.campaign_description_en')}</Label>
+              <Textarea
+                id="description_en"
+                value={formData.description_en || ''}
+                onChange={(e) => setFormData(prev => ({ ...prev, description_en: e.target.value }))}
+                placeholder={t('placeholder.enter_campaign_description_en')}
+                dir="ltr"
                 rows={4}
               />
             </div>
