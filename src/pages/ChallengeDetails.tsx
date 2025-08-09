@@ -103,7 +103,9 @@ interface OrganizationalHierarchy {
 }
 
 const ChallengeDetails = () => {
+  console.log('🎯 ChallengeDetails COMPONENT LOADED');
   const { id: challengeId } = useParams();
+  console.log('🔍 useParams result:', { challengeId });
   const navigate = useNavigate();
   const { toast } = useToast();
   const { hasRole } = useAuth();
@@ -623,6 +625,15 @@ const ChallengeDetails = () => {
     challengeId,
     challengeTitle: challenge?.title_ar 
   });
+
+  // Add an alert for immediate feedback
+  if (typeof window !== 'undefined') {
+    console.log('🚨 IMMEDIATE DEBUG: Component is rendering');
+    if (!(window as any).debugAlertShown) {
+      alert(`Debug: ChallengeDetails rendering with challengeId: ${challengeId}, loading: ${loading}`);
+      (window as any).debugAlertShown = true;
+    }
+  }
 
   if (loading) {
     console.log('⏳ RENDER: Showing loading state');
