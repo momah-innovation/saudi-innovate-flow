@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.52.1";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,14 +8,14 @@ const corsHeaders = {
 
 interface WorkflowRequest {
   action: string;
-  ideaId: string;
+  ideaId?: string;
+  data?: any;
   status?: string;
   reason?: string;
   assignee?: string;
   dueDate?: string;
   priority?: string;
   assignmentType?: string;
-  data?: any;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -26,37 +26,30 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: { headers: { Authorization: req.headers.get('Authorization')! } }
-      }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { action, ideaId, status, reason, assignee, dueDate, priority, assignmentType, data }: WorkflowRequest = await req.json();
+    const { action, ideaId, data, status, reason, assignee, dueDate, priority, assignmentType }: WorkflowRequest = await req.json();
 
-    console.log('Processing workflow action:', { action, ideaId, status });
+    console.log('Idea workflow action:', { action, ideaId, status });
 
-    let result;
+    let result: any = {};
 
     switch (action) {
+      case 'get_workflow_state':
+        result = await getWorkflowState(supabaseClient, ideaId!);
+        break;
+      
       case 'change_status':
-        result = await changeIdeaStatus(supabaseClient, ideaId, status!, reason);
+        result = await changeIdeaStatus(supabaseClient, ideaId!, status!, reason);
         break;
       
       case 'assign_for_review':
-        result = await assignIdeaForReview(supabaseClient, ideaId, assignee!, dueDate, priority, assignmentType);
+        result = await assignForReview(supabaseClient, ideaId!, assignee!, dueDate, priority, assignmentType);
         break;
       
       case 'create_milestones':
-        result = await createIdeaLifecycleMilestones(supabaseClient, ideaId);
-        break;
-      
-      case 'get_workflow_state':
-        result = await getWorkflowState(supabaseClient, ideaId);
-        break;
-      
-      case 'calculate_analytics':
-        result = await calculateIdeaAnalytics(supabaseClient, ideaId);
+        result = await createMilestones(supabaseClient, ideaId!);
         break;
       
       case 'bulk_status_change':
@@ -67,210 +60,221 @@ const handler = async (req: Request): Promise<Response> => {
         throw new Error(`Unknown action: ${action}`);
     }
 
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        data: result 
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
 
   } catch (error: any) {
-    console.error('Error in workflow manager:', error);
+    console.error('Error in idea-workflow-manager:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
-      {
+      JSON.stringify({ 
+        success: false, 
+        error: error.message 
+      }),
+      { 
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
       }
     );
   }
 };
 
-async function changeIdeaStatus(supabase: any, ideaId: string, newStatus: string, reason?: string) {
-  console.log('Changing idea status:', { ideaId, newStatus, reason });
-  
-  // Use the database function for workflow change
-  const { data, error } = await supabase.rpc('trigger_idea_workflow_change', {
-    p_idea_id: ideaId,
-    p_to_status: newStatus,
-    p_reason: reason
-  });
+async function getWorkflowState(supabase: any, ideaId: string) {
+  // Get workflow states
+  const { data: workflowStates, error: workflowError } = await supabase
+    .from('idea_workflow_states')
+    .select('*')
+    .eq('idea_id', ideaId)
+    .order('created_at', { ascending: false });
 
-  if (error) throw error;
-  
-  return { success: true, data, message: 'تم تغيير حالة الفكرة بنجاح' };
+  if (workflowError) throw workflowError;
+
+  // Get assignments
+  const { data: assignments, error: assignmentError } = await supabase
+    .from('team_assignments')
+    .select(`
+      *,
+      innovation_team_members(
+        user_id,
+        profiles(display_name, profile_image_url)
+      )
+    `)
+    .eq('assignment_type', 'idea')
+    .eq('assignment_id', ideaId);
+
+  if (assignmentError) throw assignmentError;
+
+  // Get milestones
+  const { data: milestones, error: milestonesError } = await supabase
+    .from('idea_lifecycle_milestones')
+    .select('*')
+    .eq('idea_id', ideaId)
+    .order('target_date', { ascending: true });
+
+  if (milestonesError) throw milestonesError;
+
+  return {
+    workflowStates: workflowStates || [],
+    assignments: assignments || [],
+    milestones: milestones || []
+  };
 }
 
-async function assignIdeaForReview(supabase: any, ideaId: string, assigneeId: string, dueDate?: string, priority: string = 'medium', assignmentType: string = 'reviewer') {
-  console.log('Assigning idea for review:', { ideaId, assigneeId, dueDate, priority, assignmentType });
-  
-  const { data: authData } = await supabase.auth.getUser();
-  const assignedBy = authData?.user?.id;
+async function changeIdeaStatus(supabase: any, ideaId: string, newStatus: string, reason?: string) {
+  // Get current idea
+  const { data: idea, error: ideaError } = await supabase
+    .from('ideas')
+    .select('status')
+    .eq('id', ideaId)
+    .single();
 
-  if (!assignedBy) {
-    throw new Error('User not authenticated');
-  }
+  if (ideaError) throw ideaError;
 
-  const { data, error } = await supabase
-    .from('idea_assignments')
+  const oldStatus = idea.status;
+
+  // Update idea status
+  const { error: updateError } = await supabase
+    .from('ideas')
+    .update({ 
+      status: newStatus,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', ideaId);
+
+  if (updateError) throw updateError;
+
+  // Log workflow state change
+  const { error: workflowError } = await supabase
+    .from('idea_workflow_states')
     .insert({
       idea_id: ideaId,
-      assigned_to: assigneeId,
-      assigned_by: assignedBy,
-      assignment_type: assignmentType,
-      due_date: dueDate,
-      priority: priority,
-      status: 'pending'
+      from_status: oldStatus,
+      to_status: newStatus,
+      triggered_by: null, // System action
+      reason: reason || `Status changed to ${newStatus}`,
+      metadata: {
+        automated: true,
+        timestamp: new Date().toISOString()
+      }
+    });
+
+  if (workflowError) throw workflowError;
+
+  // Send notifications
+  await sendStatusChangeNotifications(supabase, ideaId, oldStatus, newStatus);
+
+  return {
+    ideaId,
+    oldStatus,
+    newStatus,
+    message: 'Status updated successfully'
+  };
+}
+
+async function assignForReview(supabase: any, ideaId: string, assigneeId: string, dueDate?: string, priority?: string, assignmentType?: string) {
+  // Get team member
+  const { data: teamMember, error: memberError } = await supabase
+    .from('innovation_team_members')
+    .select('id')
+    .eq('user_id', assigneeId)
+    .single();
+
+  if (memberError) throw memberError;
+
+  // Create assignment
+  const { data: assignment, error: assignmentError } = await supabase
+    .from('team_assignments')
+    .insert({
+      team_member_id: teamMember.id,
+      assignment_type: 'idea',
+      assignment_id: ideaId,
+      role_in_assignment: assignmentType || 'reviewer',
+      status: 'active',
+      assigned_date: new Date().toISOString(),
+      due_date: dueDate ? new Date(dueDate).toISOString() : null,
+      priority: priority || 'medium',
+      workload_percentage: 10
     })
     .select()
     .single();
 
-  if (error) throw error;
+  if (assignmentError) throw assignmentError;
 
-  // Send notification to assignee
-  await supabase
-    .from('idea_notifications')
-    .insert({
-      idea_id: ideaId,
-      recipient_id: assigneeId,
-      sender_id: assignedBy,
-      notification_type: 'assignment',
-      title: 'تم تكليفك بمراجعة فكرة',
-      message: `تم تكليفك بمراجعة فكرة جديدة. نوع المهمة: ${assignmentType}`
-    });
+  // Send assignment notification
+  await sendAssignmentNotification(supabase, ideaId, assigneeId, assignmentType || 'reviewer');
 
-  return { success: true, data, message: 'تم تكليف المراجع بنجاح' };
+  return {
+    assignmentId: assignment.id,
+    message: 'Assignment created successfully'
+  };
 }
 
-async function createIdeaLifecycleMilestones(supabase: any, ideaId: string) {
-  console.log('Creating lifecycle milestones for idea:', ideaId);
-  
-  const milestones = [
+async function createMilestones(supabase: any, ideaId: string) {
+  // Get idea details
+  const { data: idea, error: ideaError } = await supabase
+    .from('ideas')
+    .select('title_ar, status')
+    .eq('id', ideaId)
+    .single();
+
+  if (ideaError) throw ideaError;
+
+  // Define default milestones based on status
+  const defaultMilestones = [
     {
-      milestone_type: 'submission',
-      title: 'تقديم الفكرة',
-      description: 'تم تقديم الفكرة للنظام',
-      order_sequence: 1,
-      status: 'achieved',
-      achieved_date: new Date().toISOString()
+      milestone_name: 'مراجعة أولية',
+      milestone_name_en: 'Initial Review',
+      description: 'مراجعة الفكرة والتحقق من اكتمال المتطلبات',
+      target_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      milestone_type: 'review',
+      is_critical: true
     },
     {
-      milestone_type: 'initial_review',
-      title: 'المراجعة الأولية',
-      description: 'مراجعة أولية للفكرة من قبل الفريق',
-      order_sequence: 2,
-      status: 'pending'
+      milestone_name: 'تقييم تقني',
+      milestone_name_en: 'Technical Evaluation',
+      description: 'تقييم الجدوى التقنية والتنفيذية للفكرة',
+      target_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+      milestone_type: 'evaluation',
+      is_critical: true
     },
     {
-      milestone_type: 'expert_evaluation',
-      title: 'تقييم الخبراء',
-      description: 'تقييم مفصل من قبل الخبراء المختصين',
-      order_sequence: 3,
-      status: 'pending'
-    },
-    {
+      milestone_name: 'قرار نهائي',
+      milestone_name_en: 'Final Decision',
+      description: 'اتخاذ القرار النهائي بشأن قبول أو رفض الفكرة',
+      target_date: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000).toISOString(),
       milestone_type: 'decision',
-      title: 'اتخاذ القرار',
-      description: 'قرار نهائي بقبول أو رفض الفكرة',
-      order_sequence: 4,
-      status: 'pending'
-    },
-    {
-      milestone_type: 'implementation_planning',
-      title: 'تخطيط التنفيذ',
-      description: 'وضع خطة تفصيلية لتنفيذ الفكرة',
-      order_sequence: 5,
-      status: 'pending'
-    },
-    {
-      milestone_type: 'development',
-      title: 'التطوير',
-      description: 'مرحلة تطوير وتنفيذ الفكرة',
-      order_sequence: 6,
-      status: 'pending'
-    },
-    {
-      milestone_type: 'launch',
-      title: 'الإطلاق',
-      description: 'إطلاق الفكرة للجمهور المستهدف',
-      order_sequence: 7,
-      status: 'pending'
+      is_critical: true
     }
   ];
 
-  const milestonesToInsert = milestones.map(milestone => ({
+  // Insert milestones
+  const milestonesToInsert = defaultMilestones.map(milestone => ({
     ...milestone,
-    idea_id: ideaId
+    idea_id: ideaId,
+    created_by: null, // System created
+    status: 'pending'
   }));
 
-  const { data, error } = await supabase
+  const { data: milestones, error: milestonesError } = await supabase
     .from('idea_lifecycle_milestones')
     .insert(milestonesToInsert)
     .select();
 
-  if (error) throw error;
-
-  return { success: true, data, message: 'تم إنشاء معالم دورة حياة الفكرة بنجاح' };
-}
-
-async function getWorkflowState(supabase: any, ideaId: string) {
-  console.log('Getting workflow state for idea:', ideaId);
-  
-  const [
-    { data: idea, error: ideaError },
-    { data: workflowStates, error: statesError },
-    { data: assignments, error: assignmentsError },
-    { data: milestones, error: milestonesError },
-    { data: comments, error: commentsError }
-  ] = await Promise.all([
-    supabase.from('ideas').select('*').eq('id', ideaId).single(),
-    supabase.from('idea_workflow_states').select('*').eq('idea_id', ideaId).order('created_at', { ascending: false }),
-    supabase.from('idea_assignments').select('*').eq('idea_id', ideaId).order('created_at', { ascending: false }),
-    supabase.from('idea_lifecycle_milestones').select('*').eq('idea_id', ideaId).order('order_sequence'),
-    supabase.from('idea_comments').select('*').eq('idea_id', ideaId).order('created_at', { ascending: false })
-  ]);
-
-  if (ideaError) throw ideaError;
-  if (statesError) throw statesError;
-  if (assignmentsError) throw assignmentsError;
   if (milestonesError) throw milestonesError;
-  if (commentsError) throw commentsError;
 
   return {
-    success: true,
-    data: {
-      idea,
-      workflowStates,
-      assignments,
-      milestones,
-      comments,
-      summary: {
-        currentStatus: idea.status,
-        totalStateChanges: workflowStates.length,
-        activeAssignments: assignments.filter((a: any) => a.status === 'pending').length,
-        completedMilestones: milestones.filter((m: any) => m.status === 'achieved').length,
-        totalMilestones: milestones.length,
-        commentCount: comments.length
-      }
-    }
+    milestonesCreated: milestones.length,
+    milestones
   };
 }
 
-async function calculateIdeaAnalytics(supabase: any, ideaId: string) {
-  console.log('Calculating analytics for idea:', ideaId);
-  
-  const { data, error } = await supabase.rpc('calculate_idea_analytics', {
-    p_idea_id: ideaId
-  });
-
-  if (error) throw error;
-
-  return { success: true, data, message: 'تم حساب تحليلات الفكرة بنجاح' };
-}
-
 async function bulkStatusChange(supabase: any, ideaIds: string[], newStatus: string, reason?: string) {
-  console.log('Bulk status change:', { ideaIds, newStatus, reason });
-  
   const results = [];
-  
+
   for (const ideaId of ideaIds) {
     try {
       const result = await changeIdeaStatus(supabase, ideaId, newStatus, reason);
@@ -280,14 +284,88 @@ async function bulkStatusChange(supabase: any, ideaIds: string[], newStatus: str
     }
   }
 
-  const successful = results.filter(r => r.success).length;
-  const failed = results.filter(r => !r.success).length;
-
   return {
-    success: true,
-    data: results,
-    message: `تم تحديث ${successful} فكرة بنجاح، فشل في ${failed} فكرة`
+    totalProcessed: ideaIds.length,
+    successful: results.filter(r => r.success).length,
+    failed: results.filter(r => !r.success).length,
+    results
   };
+}
+
+async function sendStatusChangeNotifications(supabase: any, ideaId: string, oldStatus: string, newStatus: string) {
+  try {
+    // Get idea details and innovator
+    const { data: idea, error } = await supabase
+      .from('ideas')
+      .select(`
+        title_ar,
+        innovators(user_id)
+      `)
+      .eq('id', ideaId)
+      .single();
+
+    if (error || !idea) return;
+
+    const notificationTitle = getStatusChangeTitle(newStatus);
+    const notificationMessage = `تم تغيير حالة فكرة "${idea.title_ar}" من ${oldStatus} إلى ${newStatus}`;
+
+    // Send notification to innovator
+    await supabase.functions.invoke('send-idea-notification', {
+      body: {
+        ideaId,
+        recipientId: idea.innovators.user_id,
+        notificationType: 'status_change',
+        title: notificationTitle,
+        message: notificationMessage,
+        metadata: { oldStatus, newStatus }
+      }
+    });
+  } catch (error) {
+    console.error('Error sending status change notifications:', error);
+  }
+}
+
+async function sendAssignmentNotification(supabase: any, ideaId: string, assigneeId: string, assignmentType: string) {
+  try {
+    // Get idea details
+    const { data: idea, error } = await supabase
+      .from('ideas')
+      .select('title_ar')
+      .eq('id', ideaId)
+      .single();
+
+    if (error || !idea) return;
+
+    const notificationTitle = 'مهمة جديدة مُسندة إليك';
+    const notificationMessage = `تم إسناد مراجعة فكرة "${idea.title_ar}" إليك كـ ${assignmentType}`;
+
+    // Send notification to assignee
+    await supabase.functions.invoke('send-idea-notification', {
+      body: {
+        ideaId,
+        recipientId: assigneeId,
+        notificationType: 'assignment',
+        title: notificationTitle,
+        message: notificationMessage,
+        metadata: { assignmentType }
+      }
+    });
+  } catch (error) {
+    console.error('Error sending assignment notification:', error);
+  }
+}
+
+function getStatusChangeTitle(status: string): string {
+  const titles: Record<string, string> = {
+    'draft': 'الفكرة في حالة مسودة',
+    'submitted': 'تم تقديم الفكرة',
+    'under_review': 'الفكرة قيد المراجعة',
+    'approved': 'تم قبول الفكرة',
+    'rejected': 'تم رفض الفكرة',
+    'in_development': 'الفكرة قيد التطوير',
+    'implemented': 'تم تنفيذ الفكرة'
+  };
+  return titles[status] || 'تم تحديث حالة الفكرة';
 }
 
 serve(handler);

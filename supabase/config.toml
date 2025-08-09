@@ -100,3 +100,9 @@ verify_jwt = false
 
 [functions.document-processor]
 verify_jwt = false
+
+[functions.send-invitation-email]
+verify_jwt = false
+
+[functions.idea-workflow-manager]
+verify_jwt = false
