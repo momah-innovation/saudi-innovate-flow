@@ -37,6 +37,7 @@ const EventsBrowse = lazy(() => import('@/pages/EventsBrowse'));
 const ChallengesBrowse = lazy(() => import('@/pages/ChallengesBrowse'));
 const AccessControlManagement = lazy(() => import('@/pages/dashboard/AccessControlManagement'));
 const UserManagement = lazy(() => import('@/pages/UserManagement'));
+const ChallengesManagement = lazy(() => import('@/pages/ChallengesManagement'));
 
 // Route configuration interface
 export interface UnifiedRouteConfig {
@@ -169,6 +170,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_USERS,
     component: UserManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_CHALLENGES,
+    component: ChallengesManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
