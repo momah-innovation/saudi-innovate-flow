@@ -90,6 +90,7 @@ export const ADMIN_ROUTES = {
   ADMIN_USERS: '/admin/users',
   ADMIN_PARTNERS: '/admin/partners',
   ADMIN_SECTORS: '/admin/sectors',
+  ADMIN_EXPERT_ASSIGNMENTS: '/admin/expert-assignments',
   ADMIN_EVALUATIONS: '/admin/evaluations',
   ADMIN_EVENTS: '/admin/events',
   ADMIN_IDEAS: '/admin/ideas',

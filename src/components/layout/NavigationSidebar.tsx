@@ -300,6 +300,15 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         roles: ['admin'] 
       },
       { 
+        id: 'admin-expert-assignments', 
+        label: 'Expert Assignments', 
+        arabicLabel: 'مهام الخبراء',
+        icon: Users, 
+        path: '/admin/expert-assignments',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
         id: 'admin-evaluations', 
         label: 'Evaluation Management', 
         arabicLabel: 'إدارة التقييمات',

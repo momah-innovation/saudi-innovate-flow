@@ -25,6 +25,7 @@ const NotFound = lazy(() => import('@/pages/NotFound'));
 const DesignSystem = lazy(() => import('@/pages/DesignSystem'));
 const PartnersManagement = lazy(() => import('@/pages/admin/PartnersManagement'));
 const SectorsManagement = lazy(() => import('@/pages/admin/SectorsManagement'));
+const ExpertAssignmentManagement = lazy(() => import('@/pages/admin/ExpertAssignmentManagement'));
 const AdminEvaluations = lazy(() => import('@/pages/AdminEvaluations'));
 const AdminRelationships = lazy(() => import('@/pages/AdminRelationships'));
 const Challenges = lazy(() => import('@/pages/Challenges'));
@@ -223,6 +224,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_SECTORS,
     component: SectorsManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_EXPERT_ASSIGNMENTS,
+    component: ExpertAssignmentManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
