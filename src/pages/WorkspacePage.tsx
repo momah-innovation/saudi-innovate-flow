@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { CollaborationProvider } from '@/contexts/CollaborationContext';
 import { UserWorkspace } from '@/components/workspace/UserWorkspace';
 import { ExpertWorkspace } from '@/components/workspace/ExpertWorkspace';
+import { OrganizationWorkspace } from '@/components/workspace/OrganizationWorkspace';
+import { PartnerWorkspace } from '@/components/workspace/PartnerWorkspace';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
 
@@ -16,27 +18,9 @@ export default function WorkspacePage() {
       case 'expert':
         return <ExpertWorkspace expertId={id} />;
       case 'organization':
-        return (
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <div className="py-8">
-                <h3 className="text-lg font-semibold mb-2">مساحة عمل المنظمة</h3>
-                <p className="text-muted-foreground">قادمة قريباً</p>
-              </div>
-            </CardContent>
-          </Card>
-        );
+        return <OrganizationWorkspace organizationId={id} />;
       case 'partner':
-        return (
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <div className="py-8">
-                <h3 className="text-lg font-semibold mb-2">مساحة عمل الشريك</h3>
-                <p className="text-muted-foreground">قادمة قريباً</p>
-              </div>
-            </CardContent>
-          </Card>
-        );
+        return <PartnerWorkspace partnerId={id} />;
       case 'admin':
         return (
           <Card>
