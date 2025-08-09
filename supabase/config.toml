@@ -112,3 +112,9 @@ verify_jwt = false
 
 [functions.evaluation-workflow-manager]
 verify_jwt = false
+
+[functions.opportunity-workflow-manager]
+verify_jwt = false
+
+[functions.campaign-workflow-manager]
+verify_jwt = false

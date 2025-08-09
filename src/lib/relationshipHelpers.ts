@@ -268,3 +268,101 @@ export const updateUserTagsById = async (userId: string, tagIds: string[], tagTy
     if (error) throw error;
   }
 };
+
+// TODO: Uncomment after TypeScript types are updated for new tables
+// Opportunity relationship helpers
+// export const updateOpportunityParticipants = async (opportunityId: string, participantIds: string[]) => {
+//   // First, delete existing relationships
+//   await supabase
+//     .from("opportunity_participants")
+//     .delete()
+//     .eq("opportunity_id", opportunityId);
+
+//   // Then insert new relationships
+//   if (participantIds.length > 0) {
+//     const links = participantIds.map(participantId => ({
+//       opportunity_id: opportunityId,
+//       user_id: participantId,
+//       participation_type: 'applicant',
+//       status: 'applied'
+//     }));
+
+//     const { error } = await supabase
+//       .from("opportunity_participants")
+//       .insert(links);
+
+//     if (error) throw error;
+//   }
+// };
+
+// export const updateOpportunityExperts = async (opportunityId: string, expertIds: string[]) => {
+//   // First, delete existing relationships
+//   await supabase
+//     .from("opportunity_experts")
+//     .delete()
+//     .eq("opportunity_id", opportunityId);
+
+//   // Then insert new relationships
+//   if (expertIds.length > 0) {
+//     const links = expertIds.map(expertId => ({
+//       opportunity_id: opportunityId,
+//       expert_id: expertId,
+//       role_type: 'evaluator',
+//       status: 'active'
+//     }));
+
+//     const { error } = await supabase
+//       .from("opportunity_experts")
+//       .insert(links);
+
+//     if (error) throw error;
+//   }
+// };
+
+// // Campaign relationship helpers
+// export const updateCampaignParticipants = async (campaignId: string, participantIds: string[]) => {
+//   // First, delete existing relationships
+//   await supabase
+//     .from("campaign_participants")
+//     .delete()
+//     .eq("campaign_id", campaignId);
+
+//   // Then insert new relationships
+//   if (participantIds.length > 0) {
+//     const links = participantIds.map(participantId => ({
+//       campaign_id: campaignId,
+//       user_id: participantId,
+//       participation_type: 'participant',
+//       status: 'registered'
+//     }));
+
+//     const { error } = await supabase
+//       .from("campaign_participants")
+//       .insert(links);
+
+//     if (error) throw error;
+//   }
+// };
+
+// // Expert relationship helpers
+// export const updateExpertTagsById = async (expertId: string, tagIds: string[]) => {
+//   // First, delete existing tag relationships
+//   await supabase
+//     .from("expert_tags")
+//     .delete()
+//     .eq("expert_id", expertId);
+
+//   // Then insert new tag relationships
+//   if (tagIds.length > 0) {
+//     const links = tagIds.map(tagId => ({
+//       expert_id: expertId,
+//       tag_id: tagId
+//     }));
+
+//     const { error } = await supabase
+//       .from("expert_tags")
+//       .insert(links);
+
+//     if (error) throw error;
+//   }
+// };
