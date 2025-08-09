@@ -85,3 +85,18 @@ verify_jwt = false
 
 [functions.cancel-subscription]
 verify_jwt = false
+
+[functions.send-notification-email]
+verify_jwt = false
+
+[functions.user-analytics-tracker]
+verify_jwt = false
+
+[functions.engagement-analytics]
+verify_jwt = false
+
+[functions.content-translation]
+verify_jwt = false
+
+[functions.document-processor]
+verify_jwt = false
