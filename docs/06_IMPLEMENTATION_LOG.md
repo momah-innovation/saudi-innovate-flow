@@ -170,11 +170,13 @@ This document maintains a detailed log of daily implementation progress, decisio
 - Added route definition `ADMIN_EXPERT_ASSIGNMENTS: '/admin/expert-assignments'` to routes.ts
 - Added lazy import and route configuration to UnifiedRouter.tsx
 - Added navigation link to NavigationSidebar in admin section
+- **NEW**: Added Expert Assignment Management card to AdminDashboard Management tab
 - Updated all tracking documentation
 
 **🔧 Technical Details:**
 - **Route**: `/admin/expert-assignments` with admin role requirements
 - **Navigation**: Added to admin group with Users icon and Arabic translation 'مهام الخبراء'
+- **AdminDashboard**: Added card to Management tab with proper category filtering
 - **Components**: Both page and management component are comprehensive with tabs for assignments, workload, and availability
 - **Security**: Requires authentication, profile, and admin/super_admin roles
 
