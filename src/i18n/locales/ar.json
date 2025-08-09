@@ -1620,6 +1620,7 @@
     "no_tags_available": "لا توجد وسوم متاحة",
     "used_times": "مستخدم {{count}} مرة",
     "add_tags": "إضافة وسوم...",
+    "search_or_create": "بحث أو إنشاء وسوم...",
     "search_or_create": "البحث أو إنشاء وسوم...",
     "uses": "استخدامات",
     "create_tag_with_name": "إنشاء \"{{name}}\"",

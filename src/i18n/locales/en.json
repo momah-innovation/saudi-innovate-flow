@@ -1621,17 +1621,18 @@
     "used_times": "used {{count}} times",
     "add_tags": "Add tags...",
     "search_or_create": "Search or create tags...",
-    "uses": "uses",
-    "create_tag_with_name": "Create \"{{name}}\"",
-    "categories": {
-      "innovation": "Innovation",
-      "digital": "Digital",
-      "sustainability": "Sustainability",
-      "efficiency": "Efficiency",
-      "technology": "Technology",
-      "business": "Business",
-      "social": "Social",
-      "environmental": "Environmental"
-    }
+    "no_tags_found": "No tags found"
+  },
+  "uses": "uses",
+  "create_tag_with_name": "Create \"{{name}}\"",
+  "categories": {
+    "innovation": "Innovation",
+    "digital": "Digital", 
+    "sustainability": "Sustainability",
+    "efficiency": "Efficiency",
+    "technology": "Technology",
+    "business": "Business",
+    "social": "Social",
+    "environmental": "Environmental"
   }
 }

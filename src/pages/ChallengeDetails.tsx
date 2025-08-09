@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { AppShell } from "@/components/layout/AppShell";
+import { GlobalBreadcrumb } from "@/components/layout/GlobalBreadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -297,12 +299,12 @@ const ChallengeDetails = () => {
     try {
       setLoading(true);
       
-      // Fetch challenge data from Supabase
+      // Fetch challenge data from Supabase  
       const { data: challengeData, error: challengeError } = await supabase
         .from('challenges')
         .select('*')
         .eq('id', challengeId)
-        .single();
+        .maybeSingle();
 
       if (challengeError) {
         logger.error('Failed to fetch challenge details', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, challengeError as Error);
@@ -317,6 +319,15 @@ const ChallengeDetails = () => {
       if (challengeData) {
         setChallenge(challengeData);
         setEditValues(challengeData);
+      } else {
+        // Challenge not found
+        toast({
+          title: "التحدي غير موجود",
+          description: "لم يتم العثور على التحدي المطلوب",
+          variant: "destructive",
+        });
+        navigate('/challenges');
+        return;
       }
 
       // Fetch focus questions
@@ -590,8 +601,9 @@ const ChallengeDetails = () => {
   ];
 
   return (
-    <CollaborationProvider>
-      <AdminLayout breadcrumbs={breadcrumbs}>
+    <AppShell enableCollaboration={true}>
+      <div className="container mx-auto px-4 py-8">
+        <GlobalBreadcrumb customItems={breadcrumbs} />
       <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -1324,9 +1336,9 @@ const ChallengeDetails = () => {
           fetchFocusQuestions();
         }}
         />
+        </div>
       </div>
-    </AdminLayout>
-    </CollaborationProvider>
+    </AppShell>
   );
 };
 
