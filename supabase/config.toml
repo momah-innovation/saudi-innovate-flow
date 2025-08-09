@@ -46,3 +46,21 @@ verify_jwt = false
 
 [functions.update-translations]
 verify_jwt = false
+
+[functions.send-challenge-notification]
+verify_jwt = false
+
+[functions.challenge-analytics-tracker]
+verify_jwt = false
+
+[functions.real-time-presence-manager]
+verify_jwt = false
+
+[functions.challenge-workflow-manager]
+verify_jwt = false
+
+[functions.ai-content-generator]
+verify_jwt = false
+
+[functions.generate-analytics-report]
+verify_jwt = false

@@ -853,6 +853,59 @@ export type Database = {
           },
         ]
       }
+      challenge_analytics: {
+        Row: {
+          bookmark_count: number | null
+          challenge_id: string
+          conversion_rate: number | null
+          created_at: string | null
+          engagement_rate: number | null
+          id: string
+          last_updated: string | null
+          like_count: number | null
+          participant_count: number | null
+          share_count: number | null
+          submission_count: number | null
+          view_count: number | null
+        }
+        Insert: {
+          bookmark_count?: number | null
+          challenge_id: string
+          conversion_rate?: number | null
+          created_at?: string | null
+          engagement_rate?: number | null
+          id?: string
+          last_updated?: string | null
+          like_count?: number | null
+          participant_count?: number | null
+          share_count?: number | null
+          submission_count?: number | null
+          view_count?: number | null
+        }
+        Update: {
+          bookmark_count?: number | null
+          challenge_id?: string
+          conversion_rate?: number | null
+          created_at?: string | null
+          engagement_rate?: number | null
+          id?: string
+          last_updated?: string | null
+          like_count?: number | null
+          participant_count?: number | null
+          share_count?: number | null
+          submission_count?: number | null
+          view_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_analytics_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenge_bookmarks: {
         Row: {
           challenge_id: string
@@ -1025,6 +1078,70 @@ export type Database = {
           would_recommend?: boolean | null
         }
         Relationships: []
+      }
+      challenge_likes: {
+        Row: {
+          challenge_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_likes_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_live_presence: {
+        Row: {
+          challenge_id: string
+          id: string
+          last_seen: string | null
+          metadata: Json | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          id?: string
+          last_seen?: string | null
+          metadata?: Json | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          id?: string
+          last_seen?: string | null
+          metadata?: Json | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_live_presence_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       challenge_notifications: {
         Row: {
@@ -1278,6 +1395,41 @@ export type Database = {
           },
         ]
       }
+      challenge_shares: {
+        Row: {
+          challenge_id: string
+          created_at: string | null
+          id: string
+          share_method: string | null
+          shared_to: string | null
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string | null
+          id?: string
+          share_method?: string | null
+          shared_to?: string | null
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string | null
+          id?: string
+          share_method?: string | null
+          shared_to?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_shares_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenge_submissions: {
         Row: {
           attachment_urls: string[] | null
@@ -1387,6 +1539,50 @@ export type Database = {
             columns: ["tag_id"]
             isOneToOne: false
             referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_view_sessions: {
+        Row: {
+          challenge_id: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          referrer: string | null
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+          view_duration: number | null
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          view_duration?: number | null
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          view_duration?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_view_sessions_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
             referencedColumns: ["id"]
           },
         ]
