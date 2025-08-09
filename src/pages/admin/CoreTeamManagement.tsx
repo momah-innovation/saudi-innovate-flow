@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
-export default function InnovationTeamsManagement() {
+export default function CoreTeamManagement() {
   console.log('🎯 Core Team Management page loaded');
   const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState('core-team');
