@@ -80,7 +80,7 @@ export const CollaborativeEventCard = ({
 
   // Get users currently viewing this event
   const eventViewers = onlineUsers.filter(user => 
-    user.page?.includes('event') || user.entity_type === 'event'
+    user.current_location.page?.includes('event') || user.current_location.entity_type === 'event'
   );
 
   const recentActivity = activities
@@ -424,7 +424,7 @@ export const CollaborativeEventCard = ({
                 <div className="flex -space-x-1">
                   {eventViewers.slice(0, 3).map((user, index) => (
                     <Avatar key={index} className="w-6 h-6 border-2 border-white">
-                      <AvatarImage src={user.profile_image_url} />
+                      <AvatarImage src={user.user_info.avatar_url} />
                       <AvatarFallback className="text-xs bg-primary text-white">
                         {user.user_id?.[0] || 'U'}
                       </AvatarFallback>

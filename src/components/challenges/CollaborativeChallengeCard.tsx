@@ -79,7 +79,7 @@ export const CollaborativeChallengeCard = ({
 
   // Get users currently viewing this challenge
   const challengeViewers = onlineUsers.filter(user => 
-    user.page?.includes('challenge') || user.entity_type === 'challenge'
+    user.current_location.page?.includes('challenge') || user.current_location.entity_type === 'challenge'
   );
 
   const recentActivity = activities
@@ -398,7 +398,7 @@ export const CollaborativeChallengeCard = ({
                 <div className="flex -space-x-1">
                   {challengeViewers.slice(0, 3).map((user, index) => (
                     <Avatar key={index} className="w-6 h-6 border-2 border-white">
-                      <AvatarImage src={user.profile_image_url} />
+                      <AvatarImage src={user.user_info.avatar_url} />
                       <AvatarFallback className="text-xs bg-primary text-white">
                         {user.user_id?.[0] || 'U'}
                       </AvatarFallback>

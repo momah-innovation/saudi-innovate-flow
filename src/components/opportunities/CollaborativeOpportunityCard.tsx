@@ -75,7 +75,7 @@ export const CollaborativeOpportunityCard = ({
 
   // Get users currently viewing this opportunity
   const opportunityViewers = onlineUsers.filter(user => 
-    user.page?.includes('opportunity') || user.entity_type === 'opportunity'
+    user.current_location.page?.includes('opportunity') || user.current_location.entity_type === 'opportunity'
   );
 
   const recentActivity = activities
@@ -236,7 +236,7 @@ export const CollaborativeOpportunityCard = ({
                 <div className="flex -space-x-1">
                   {opportunityViewers.slice(0, 3).map((user, index) => (
                     <Avatar key={index} className="w-6 h-6 border-2 border-white">
-                      <AvatarImage src={user.profile_image_url} />
+                      <AvatarImage src={user.user_info.avatar_url} />
                       <AvatarFallback className="text-xs bg-primary text-white">
                         {user.user_id?.[0] || 'U'}
                       </AvatarFallback>
@@ -397,7 +397,7 @@ export const CollaborativeOpportunityCard = ({
             <div className="flex -space-x-1">
               {opportunityViewers.slice(0, 5).map((user, index) => (
                 <Avatar key={index} className="w-6 h-6 border-2 border-background">
-                  <AvatarImage src={user.profile_image_url} />
+                  <AvatarImage src={user.user_info.avatar_url} />
                   <AvatarFallback className="text-xs bg-primary text-white">
                     {user.user_id?.[0] || 'U'}
                   </AvatarFallback>
