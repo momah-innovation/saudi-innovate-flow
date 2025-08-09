@@ -1,92 +1,224 @@
-import { useState } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
-import { PageLayout } from '@/components/layout/PageLayout';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { WorkspaceLayout } from '@/components/workspace/WorkspaceLayout';
+import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
+import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
+import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
+import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
+import { useExpertWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { GraduationCap, ClipboardCheck, Users, Award, Calendar } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ClipboardList, Users, Star, Eye, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ALL_ROUTES } from '@/routing/routes';
 
 export default function ExpertWorkspace() {
-  const { expertId } = useParams();
   const { t } = useUnifiedTranslation();
-  const [activeView, setActiveView] = useState('evaluations');
+  const { userProfile } = useAuth();
+  const navigate = useNavigate();
+  const permissions = useWorkspacePermissions();
+  const { data: workspaceData, isLoading } = useExpertWorkspaceData();
+
+  const navigationItems = [
+    {
+      id: 'evaluations',
+      label: t('workspace.expert.nav.evaluations'),
+      icon: ClipboardList,
+      count: workspaceData?.stats?.pendingEvaluations || 0,
+      active: true,
+      onClick: () => {}
+    },
+    {
+      id: 'challenges',
+      label: t('workspace.expert.nav.assigned_challenges'),
+      icon: Users,
+      count: workspaceData?.stats?.assignedChallenges || 0,
+      active: false,
+      onClick: () => {}
+    },
+    {
+      id: 'completed',
+      label: t('workspace.expert.nav.completed'),
+      icon: CheckCircle,
+      count: workspaceData?.stats?.completedEvaluations || 0,
+      active: false,
+      onClick: () => {}
+    }
+  ];
+
+  const quickActions = [
+    {
+      id: 'evaluate-ideas',
+      title: t('workspace.expert.actions.evaluate_ideas'),
+      description: t('workspace.expert.actions.evaluate_ideas_desc'),
+      icon: Star,
+      onClick: () => {},
+      variant: 'default' as const,
+      badge: workspaceData?.stats?.pendingEvaluations ? {
+        text: workspaceData.stats.pendingEvaluations.toString(),
+        variant: 'destructive' as const
+      } : undefined
+    },
+    {
+      id: 'review-submissions',
+      title: t('workspace.expert.actions.review_submissions'),
+      description: t('workspace.expert.actions.review_submissions_desc'),
+      icon: Eye,
+      onClick: () => {},
+      variant: 'outline' as const
+    }
+  ];
+
+  const metrics = [
+    {
+      title: t('workspace.expert.metrics.pending_evaluations'),
+      value: workspaceData?.stats?.pendingEvaluations || 0,
+      icon: ClipboardList,
+      color: 'bg-destructive/10 text-destructive'
+    },
+    {
+      title: t('workspace.expert.metrics.completed_evaluations'),
+      value: workspaceData?.stats?.completedEvaluations || 0,
+      icon: CheckCircle,
+      color: 'bg-success/10 text-success'
+    },
+    {
+      title: t('workspace.expert.metrics.assigned_challenges'),
+      value: workspaceData?.stats?.assignedChallenges || 0,
+      icon: Users,
+      color: 'bg-primary/10 text-primary'
+    }
+  ];
+
+  if (isLoading) {
+    return (
+      <WorkspaceLayout
+        title={t('workspace.expert.title')}
+        description={t('workspace.expert.description')}
+        userRole={userProfile?.roles?.[0] || 'expert'}
+      >
+        <div className="animate-pulse space-y-6">
+          <div className="h-32 bg-muted rounded-lg"></div>
+          <div className="h-64 bg-muted rounded-lg"></div>
+        </div>
+      </WorkspaceLayout>
+    );
+  }
 
   return (
-    <AppShell>
-      <PageLayout 
-        title={t('expertWorkspace') || 'Expert Workspace'}
-        description={t('manageExpertActivities') || 'Manage your expert evaluation activities'}
-        primaryAction={{
-          label: t('newEvaluation') || 'New Evaluation',
-          onClick: () => console.log('New evaluation'),
-          icon: <ClipboardCheck className="w-4 h-4" />
-        }}
-        maxWidth="full"
-      >
-        <div className="space-y-6">
-          {/* Expert Dashboard Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 border rounded-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <ClipboardCheck className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">{t('pendingEvaluations') || 'Pending Evaluations'}</h3>
-              </div>
-              <div className="text-2xl font-bold text-primary">5</div>
-              <p className="text-sm text-muted-foreground">
-                {t('ideasAwaitingReview') || 'Ideas awaiting your review'}
-              </p>
-            </div>
+    <WorkspaceLayout
+      title={t('workspace.expert.title')}
+      description={t('workspace.expert.description')}
+      userRole={userProfile?.roles?.[0] || 'expert'}
+      stats={metrics}
+      quickActions={[
+        {
+          label: t('workspace.expert.actions.start_evaluation'),
+          onClick: () => {},
+          icon: Star
+        }
+      ]}
+    >
+      <div className="space-y-6">
+        {/* Navigation */}
+        <WorkspaceNavigation items={navigationItems} />
 
-            <div className="p-6 border rounded-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <Award className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">{t('completedEvaluations') || 'Completed'}</h3>
-              </div>
-              <div className="text-2xl font-bold text-green-600">23</div>
-              <p className="text-sm text-muted-foreground">
-                {t('totalEvaluationsCompleted') || 'Total evaluations completed'}
-              </p>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Pending Evaluations */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  {t('workspace.expert.pending_evaluations')}
+                  {workspaceData?.stats?.pendingEvaluations > 0 && (
+                    <Badge variant="destructive">
+                      {workspaceData.stats.pendingEvaluations} {t('workspace.expert.pending')}
+                    </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {workspaceData?.evaluations?.length > 0 ? (
+                  <div className="space-y-3">
+                    {workspaceData.evaluations.slice(0, 5).map((evaluation) => (
+                      <div key={evaluation.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{evaluation.ideas?.title_ar}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {t('workspace.expert.submitted')}: {new Date(evaluation.ideas?.created_at || '').toLocaleDateString('ar')}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={evaluation.evaluation_date ? 'success' : 'secondary'}>
+                            {evaluation.evaluation_date ? t('common.completed') : t('common.pending')}
+                          </Badge>
+                          <Button variant="ghost" size="sm">
+                            {t('workspace.expert.evaluate')}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <ClipboardList className="mx-auto h-12 w-12 mb-4" />
+                    <p>{t('workspace.expert.no_evaluations')}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
-            <div className="p-6 border rounded-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <Users className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">{t('assignedChallenges') || 'Assigned Challenges'}</h3>
-              </div>
-              <div className="text-2xl font-bold text-blue-600">7</div>
-              <p className="text-sm text-muted-foreground">
-                {t('challengesUnderReview') || 'Active challenges under review'}
-              </p>
-            </div>
-
-            <div className="p-6 border rounded-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <Calendar className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">{t('upcomingDeadlines') || 'Upcoming Deadlines'}</h3>
-              </div>
-              <div className="text-2xl font-bold text-orange-600">3</div>
-              <p className="text-sm text-muted-foreground">
-                {t('evaluationsDueThisWeek') || 'Evaluations due this week'}
-              </p>
-            </div>
+            {/* Assigned Challenges */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('workspace.expert.assigned_challenges')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {workspaceData?.assignedChallenges?.length > 0 ? (
+                  <div className="space-y-3">
+                    {workspaceData.assignedChallenges.map((assignment) => (
+                      <div key={assignment.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{assignment.challenges?.title_ar}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {t('workspace.expert.status')}: {assignment.challenges?.status}
+                          </p>
+                        </div>
+                        <Button variant="ghost" size="sm">
+                          {t('common.view')}
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Users className="mx-auto h-12 w-12 mb-4" />
+                    <p>{t('workspace.expert.no_challenges')}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="p-6 border rounded-lg">
-              <h3 className="text-lg font-semibold mb-4">{t('recentEvaluations') || 'Recent Evaluations'}</h3>
-              <p className="text-muted-foreground">
-                {t('noRecentEvaluations') || 'No recent evaluations to display'}
-              </p>
-            </div>
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Quick Actions */}
+            <WorkspaceQuickActions
+              title={t('workspace.expert.quick_actions')}
+              actions={quickActions}
+            />
 
-            <div className="p-6 border rounded-lg">
-              <h3 className="text-lg font-semibold mb-4">{t('expertProfile') || 'Expert Profile'}</h3>
-              <p className="text-muted-foreground">
-                {t('manageExpertProfile') || 'Manage your expertise areas and evaluation preferences'}
-              </p>
-            </div>
+            {/* Metrics */}
+            <WorkspaceMetrics
+              title={t('workspace.expert.performance')}
+              metrics={metrics}
+            />
           </div>
         </div>
-      </PageLayout>
-    </AppShell>
+      </div>
+    </WorkspaceLayout>
   );
 }

@@ -119,8 +119,8 @@ export function useExpertWorkspaceData() {
         evaluations: evaluationsResult.data || [],
         assignedChallenges: assignedChallengesResult.data || [],
         stats: {
-          pendingEvaluations: evaluationsResult.data?.filter(e => !e.overall_score).length || 0,
-          completedEvaluations: evaluationsResult.data?.filter(e => e.overall_score).length || 0,
+          pendingEvaluations: evaluationsResult.data?.filter(e => !e.evaluation_date || e.evaluation_date === '').length || 0,
+          completedEvaluations: evaluationsResult.data?.filter(e => e.evaluation_date && e.evaluation_date !== '').length || 0,
           assignedChallenges: assignedChallengesResult.data?.length || 0
         }
       };

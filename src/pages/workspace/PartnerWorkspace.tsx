@@ -1,128 +1,273 @@
-import { useState } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
-import { PageLayout } from '@/components/layout/PageLayout';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { WorkspaceLayout } from '@/components/workspace/WorkspaceLayout';
+import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
+import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
+import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
+import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
+import { usePartnerWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { Handshake, ShoppingCart, Target, DollarSign, Package, TrendingUp } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Briefcase, Handshake, FileCheck, Plus, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ALL_ROUTES } from '@/routing/routes';
 
 export default function PartnerWorkspace() {
-  const { partnerId } = useParams();
   const { t } = useUnifiedTranslation();
-  const [activeView, setActiveView] = useState('marketplace');
+  const { userProfile } = useAuth();
+  const navigate = useNavigate();
+  const permissions = useWorkspacePermissions();
+  const { data: workspaceData, isLoading } = usePartnerWorkspaceData();
+
+  const navigationItems = [
+    {
+      id: 'opportunities',
+      label: t('workspace.partner.nav.opportunities'),
+      icon: Briefcase,
+      count: workspaceData?.stats?.availableOpportunities || 0,
+      active: true,
+      onClick: () => navigate(ALL_ROUTES.OPPORTUNITIES)
+    },
+    {
+      id: 'partnerships',
+      label: t('workspace.partner.nav.partnerships'),
+      icon: Handshake,
+      count: workspaceData?.stats?.activePartnerships || 0,
+      active: false,
+      onClick: () => {}
+    },
+    {
+      id: 'applications',
+      label: t('workspace.partner.nav.applications'),
+      icon: FileCheck,
+      count: workspaceData?.stats?.pendingApplications || 0,
+      active: false,
+      onClick: () => {}
+    }
+  ];
+
+  const quickActions = [
+    {
+      id: 'browse-opportunities',
+      title: t('workspace.partner.actions.browse_opportunities'),
+      description: t('workspace.partner.actions.browse_opportunities_desc'),
+      icon: Search,
+      onClick: () => navigate(ALL_ROUTES.OPPORTUNITIES),
+      variant: 'default' as const
+    },
+    {
+      id: 'create-opportunity',
+      title: t('workspace.partner.actions.create_opportunity'),
+      description: t('workspace.partner.actions.create_opportunity_desc'),
+      icon: Plus,
+      onClick: () => navigate(ALL_ROUTES.OPPORTUNITIES + '?action=create'),
+      variant: 'outline' as const,
+      disabled: !permissions.canCreateOpportunities
+    }
+  ];
+
+  const metrics = [
+    {
+      title: t('workspace.partner.metrics.available_opportunities'),
+      value: workspaceData?.stats?.availableOpportunities || 0,
+      icon: Briefcase,
+      color: 'bg-primary/10 text-primary'
+    },
+    {
+      title: t('workspace.partner.metrics.active_partnerships'),
+      value: workspaceData?.stats?.activePartnerships || 0,
+      icon: Handshake,
+      color: 'bg-success/10 text-success'
+    },
+    {
+      title: t('workspace.partner.metrics.pending_applications'),
+      value: workspaceData?.stats?.pendingApplications || 0,
+      icon: FileCheck,
+      color: 'bg-warning/10 text-warning'
+    },
+    {
+      title: t('workspace.partner.metrics.accepted_applications'),
+      value: workspaceData?.stats?.acceptedApplications || 0,
+      icon: FileCheck,
+      color: 'bg-info/10 text-info'
+    }
+  ];
+
+  if (isLoading) {
+    return (
+      <WorkspaceLayout
+        title={t('workspace.partner.title')}
+        description={t('workspace.partner.description')}
+        userRole={userProfile?.roles?.[0] || 'partner'}
+      >
+        <div className="animate-pulse space-y-6">
+          <div className="h-32 bg-muted rounded-lg"></div>
+          <div className="h-64 bg-muted rounded-lg"></div>
+        </div>
+      </WorkspaceLayout>
+    );
+  }
 
   return (
-    <AppShell>
-      <PageLayout 
-        title={t('partnerWorkspace') || 'Partner Workspace'}
-        description={t('managePartnershipActivities') || 'Manage your partnership activities and marketplace presence'}
-        primaryAction={{
-          label: t('newOpportunity') || 'New Opportunity',
-          onClick: () => console.log('New opportunity'),
-          icon: <Package className="w-4 h-4" />
-        }}
-        maxWidth="full"
-      >
-        <div className="space-y-6">
-          {/* Partner Dashboard Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 border rounded-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <ShoppingCart className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">{t('marketplaceListings') || 'Marketplace Listings'}</h3>
-              </div>
-              <div className="text-2xl font-bold text-primary">18</div>
-              <p className="text-sm text-muted-foreground">
-                {t('activeOpportunities') || 'Active opportunities in marketplace'}
-              </p>
-            </div>
+    <WorkspaceLayout
+      title={t('workspace.partner.title')}
+      description={t('workspace.partner.description')}
+      userRole={userProfile?.roles?.[0] || 'partner'}
+      stats={metrics}
+      quickActions={[
+        {
+          label: t('workspace.partner.actions.browse_opportunities'),
+          onClick: () => navigate(ALL_ROUTES.OPPORTUNITIES),
+          icon: Search
+        }
+      ]}
+    >
+      <div className="space-y-6">
+        {/* Navigation */}
+        <WorkspaceNavigation items={navigationItems} />
 
-            <div className="p-6 border rounded-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <Handshake className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">{t('activePartnerships') || 'Active Partnerships'}</h3>
-              </div>
-              <div className="text-2xl font-bold text-blue-600">7</div>
-              <p className="text-sm text-muted-foreground">
-                {t('ongoingCollaborations') || 'Ongoing collaboration projects'}
-              </p>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Available Opportunities */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  {t('workspace.partner.available_opportunities')}
+                  <Button 
+                    size="sm" 
+                    onClick={() => navigate(ALL_ROUTES.OPPORTUNITIES)}
+                  >
+                    {t('workspace.partner.view_all')}
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {workspaceData?.opportunities?.length > 0 ? (
+                  <div className="space-y-3">
+                    {workspaceData.opportunities.slice(0, 5).map((opportunity) => (
+                      <div key={opportunity.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{opportunity.title_ar}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {t('workspace.partner.deadline')}: {opportunity.deadline ? new Date(opportunity.deadline).toLocaleDateString('ar') : t('common.no_deadline')}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="success">
+                            {opportunity.status}
+                          </Badge>
+                          <Button variant="ghost" size="sm">
+                            {t('common.apply')}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Briefcase className="mx-auto h-12 w-12 mb-4" />
+                    <p>{t('workspace.partner.no_opportunities')}</p>
+                    <Button 
+                      className="mt-4" 
+                      onClick={() => navigate(ALL_ROUTES.OPPORTUNITIES)}
+                    >
+                      {t('workspace.partner.actions.browse_opportunities')}
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
-            <div className="p-6 border rounded-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <DollarSign className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">{t('revenue') || 'Revenue'}</h3>
-              </div>
-              <div className="text-2xl font-bold text-green-600">2.4M</div>
-              <p className="text-sm text-muted-foreground">
-                {t('quarterlyRevenue') || 'SAR revenue this quarter'}
-              </p>
-            </div>
+            {/* Active Partnerships */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('workspace.partner.active_partnerships')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {workspaceData?.partnerships?.length > 0 ? (
+                  <div className="space-y-3">
+                    {workspaceData.partnerships.map((partnership) => (
+                      <div key={partnership.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{partnership.challenges?.title_ar}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {t('workspace.partner.status')}: {partnership.challenges?.status}
+                          </p>
+                        </div>
+                        <Button variant="ghost" size="sm">
+                          {t('common.manage')}
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Handshake className="mx-auto h-12 w-12 mb-4" />
+                    <p>{t('workspace.partner.no_partnerships')}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
-            <div className="p-6 border rounded-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <TrendingUp className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">{t('applications') || 'Applications'}</h3>
-              </div>
-              <div className="text-2xl font-bold text-purple-600">34</div>
-              <p className="text-sm text-muted-foreground">
-                {t('pendingApplications') || 'Pending opportunity applications'}
-              </p>
-            </div>
+            {/* Applications */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('workspace.partner.my_applications')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {workspaceData?.applications?.length > 0 ? (
+                  <div className="space-y-3">
+                    {workspaceData.applications.slice(0, 3).map((application) => (
+                      <div key={application.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{application.opportunities?.title_ar}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString('ar')}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={
+                            application.status === 'accepted' ? 'success' :
+                            application.status === 'rejected' ? 'destructive' : 'secondary'
+                          }>
+                            {application.status}
+                          </Badge>
+                          <Button variant="ghost" size="sm">
+                            {t('common.view')}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <FileCheck className="mx-auto h-12 w-12 mb-4" />
+                    <p>{t('workspace.partner.no_applications')}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="p-6 border rounded-lg">
-              <h3 className="text-lg font-semibold mb-4">{t('recentOpportunities') || 'Recent Opportunities'}</h3>
-              <div className="space-y-3">
-                <div className="p-3 bg-muted rounded-lg">
-                  <h4 className="font-medium">{t('digitalTransformationConsulting') || 'Digital Transformation Consulting'}</h4>
-                  <p className="text-sm text-muted-foreground">{t('activeApplications') || '12 active applications'}</p>
-                </div>
-                <div className="p-3 bg-muted rounded-lg">
-                  <h4 className="font-medium">{t('cloudInfrastructureServices') || 'Cloud Infrastructure Services'}</h4>
-                  <p className="text-sm text-muted-foreground">{t('activeApplications') || '8 active applications'}</p>
-                </div>
-              </div>
-            </div>
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Quick Actions */}
+            <WorkspaceQuickActions
+              title={t('workspace.partner.quick_actions')}
+              actions={quickActions}
+            />
 
-            <div className="p-6 border rounded-lg">
-              <h3 className="text-lg font-semibold mb-4">{t('partnershipMetrics') || 'Partnership Metrics'}</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">{t('successfulProjects') || 'Successful Projects'}</span>
-                  <span className="font-medium">23</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">{t('customerSatisfaction') || 'Customer Satisfaction'}</span>
-                  <span className="font-medium">4.8/5</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">{t('responseTime') || 'Avg Response Time'}</span>
-                  <span className="font-medium">2.3h</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 border rounded-lg">
-            <h3 className="text-lg font-semibold mb-4">{t('marketplaceInsights') || 'Marketplace Insights'}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">156</div>
-                <p className="text-sm text-muted-foreground">{t('totalViews') || 'Total views this month'}</p>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">23%</div>
-                <p className="text-sm text-muted-foreground">{t('conversionRate') || 'Application conversion rate'}</p>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">4.7</div>
-                <p className="text-sm text-muted-foreground">{t('averageRating') || 'Average partner rating'}</p>
-              </div>
-            </div>
+            {/* Metrics */}
+            <WorkspaceMetrics
+              title={t('workspace.partner.overview')}
+              metrics={metrics}
+            />
           </div>
         </div>
-      </PageLayout>
-    </AppShell>
+      </div>
+    </WorkspaceLayout>
   );
 }
