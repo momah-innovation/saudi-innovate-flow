@@ -106,3 +106,9 @@ verify_jwt = false
 
 [functions.idea-workflow-manager]
 verify_jwt = false
+
+[functions.event-workflow-manager]
+verify_jwt = false
+
+[functions.evaluation-workflow-manager]
+verify_jwt = false
