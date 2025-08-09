@@ -39,7 +39,7 @@ const AccessControlManagement = lazy(() => import('@/pages/dashboard/AccessContr
 const UserManagement = lazy(() => import('@/pages/admin/UserManagement'));
 const ChallengesManagement = lazy(() => import('@/pages/admin/ChallengesManagement'));
 const CampaignsManagement = lazy(() => import('@/pages/admin/CampaignsManagement'));
-const EventsManagement = lazy(() => import('@/pages/EventsManagement'));
+const EventsManagement = lazy(() => import('@/pages/admin/EventsManagement'));
 const IdeasManagement = lazy(() => import('@/pages/IdeasManagement'));
 
 // Route configuration interface
