@@ -132,9 +132,13 @@ const ChallengeDetails = () => {
   const canEdit = hasRole('admin') || hasRole('super_admin');
 
   useEffect(() => {
+    console.log('🎯 useEffect called with challengeId:', challengeId);
     if (challengeId) {
+      console.log('🔄 About to call fetchChallengeDetails');
       fetchChallengeDetails();
       fetchSystemSettings();
+    } else {
+      console.log('❌ No challengeId found');
     }
   }, [challengeId]);
 
@@ -297,6 +301,7 @@ const ChallengeDetails = () => {
 
   const fetchChallengeDetails = async () => {
     try {
+      console.log('🚀 Starting fetchChallengeDetails for challengeId:', challengeId);
       setLoading(true);
       
       // Fetch challenge data from Supabase  
@@ -305,6 +310,8 @@ const ChallengeDetails = () => {
         .select('*')
         .eq('id', challengeId)
         .maybeSingle();
+
+      console.log('🔍 Challenge fetch result:', { challengeData, challengeError });
 
       if (challengeError) {
         logger.error('Failed to fetch challenge details', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, challengeError as Error);
