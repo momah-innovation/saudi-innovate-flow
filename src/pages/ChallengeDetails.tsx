@@ -626,14 +626,6 @@ const ChallengeDetails = () => {
     challengeTitle: challenge?.title_ar 
   });
 
-  // Add an alert for immediate feedback
-  if (typeof window !== 'undefined') {
-    console.log('🚨 IMMEDIATE DEBUG: Component is rendering');
-    if (!(window as any).debugAlertShown) {
-      alert(`Debug: ChallengeDetails rendering with challengeId: ${challengeId}, loading: ${loading}`);
-      (window as any).debugAlertShown = true;
-    }
-  }
 
   if (loading) {
     console.log('⏳ RENDER: Showing loading state');
