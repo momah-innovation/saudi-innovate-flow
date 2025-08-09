@@ -274,20 +274,20 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
   {
-    path: ALL_ROUTES.ADMIN_CHALLENGES,
-    component: ChallengesManagement,
-    requireAuth: true,
-    requireProfile: true,
-    requiredRole: ['admin', 'super_admin'],
-    withAppShell: true,
-  },
-  {
     path: ALL_ROUTES.ADMIN_CHALLENGE_DETAIL,
     component: ChallengeDetailAdmin,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
     withAppShell: false, // ChallengeDetail handles AppShell internally
+  },
+  {
+    path: ALL_ROUTES.ADMIN_CHALLENGES,
+    component: ChallengesManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
   },
   {
     path: ALL_ROUTES.ADMIN_CAMPAIGNS,
