@@ -239,7 +239,7 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         label: 'Admin Dashboard', 
         arabicLabel: 'لوحة التحكم الإدارية',
         icon: Shield, 
-        path: '/admin',
+        path: '/admin/dashboard',
         group: 'admin',
         roles: ['admin'] 
       },
