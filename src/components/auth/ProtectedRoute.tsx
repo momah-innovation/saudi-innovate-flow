@@ -93,6 +93,19 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Check role requirements - support both single role and array of roles
   if (requiredRole) {
+    // If user profile hasn't loaded yet, wait for it
+    if (!userProfile) {
+      console.log('🔐 Waiting for user profile to load for role check');
+      return (
+        <div className="min-h-[400px] flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="text-sm text-muted-foreground">Loading profile...</p>
+          </div>
+        </div>
+      );
+    }
+
     const hasRequiredRole = Array.isArray(requiredRole) 
       ? requiredRole.some(role => hasRole(role))
       : hasRole(requiredRole);
