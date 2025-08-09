@@ -36,7 +36,9 @@ export function ChallengeCreateDialog({
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     title_ar: '',
+    title_en: '',
     description_ar: '',
+    description_en: '',
     challenge_type: '',
     priority_level: 'medium',
     sensitivity_level: 'normal',
@@ -85,7 +87,9 @@ export function ChallengeCreateDialog({
       // Reset form
       setFormData({
         title_ar: '',
+        title_en: '',
         description_ar: '',
+        description_en: '',
         challenge_type: '',
         priority_level: 'medium',
         sensitivity_level: 'normal',
@@ -127,6 +131,17 @@ export function ChallengeCreateDialog({
       </div>
 
       <div className="space-y-2">
+        <Label htmlFor="title_en">العنوان بالإنجليزية</Label>
+        <Input
+          id="title_en"
+          placeholder="Enter challenge title in English"
+          value={formData.title_en}
+          onChange={(e) => handleInputChange('title_en', e.target.value)}
+          dir="ltr"
+        />
+      </div>
+
+      <div className="space-y-2">
         <Label htmlFor="description">وصف التحدي *</Label>
         <Textarea
           id="description"
@@ -134,6 +149,18 @@ export function ChallengeCreateDialog({
           value={formData.description_ar}
           onChange={(e) => handleInputChange('description_ar', e.target.value)}
           rows={6}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="description_en">الوصف بالإنجليزية</Label>
+        <Textarea
+          id="description_en"
+          placeholder="Describe the challenge in detail in English..."
+          value={formData.description_en}
+          onChange={(e) => handleInputChange('description_en', e.target.value)}
+          rows={4}
+          dir="ltr"
         />
       </div>
 
