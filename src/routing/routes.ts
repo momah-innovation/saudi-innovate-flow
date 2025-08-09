@@ -101,6 +101,7 @@ export const ADMIN_ROUTES = {
   ADMIN_ANALYTICS: '/admin/system-analytics',
   ADMIN_STORAGE: '/admin/storage',
   ADMIN_ENTITIES: '/admin/entities',
+  ADMIN_INNOVATION_TEAMS: '/admin/innovation-teams',
 } as const;
 
 // Dashboard routes (unified admin interface)

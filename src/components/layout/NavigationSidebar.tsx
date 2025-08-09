@@ -327,6 +327,15 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         group: 'admin',
         roles: ['team', 'admin'] 
       },
+      { 
+        id: 'admin-innovation-teams', 
+        label: 'Innovation Teams', 
+        arabicLabel: 'فرق الابتكار',
+        icon: Users, 
+        path: '/admin/innovation-teams',
+        group: 'admin',
+        roles: ['admin'] 
+      },
     ];
 
     const systemItems = [
