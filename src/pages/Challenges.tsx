@@ -5,6 +5,7 @@ import { logger } from '@/utils/logger';
 import { AppShell } from '@/components/layout/AppShell';
 import { GlobalBreadcrumb } from '@/components/layout/GlobalBreadcrumb';
 import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallengeCard';
+import { EnhancedChallengesHero } from '@/components/challenges/EnhancedChallengesHero';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -303,106 +304,118 @@ export default function Challenges() {
 
   return (
     <AppShell enableCollaboration={true}>
-      <div className="container mx-auto px-4 py-8">
-        <GlobalBreadcrumb />
+      <div className="space-y-6">
+        {/* Hero Section */}
+        <EnhancedChallengesHero
+          totalChallenges={challenges.length}
+          activeChallenges={challenges.filter(c => c.status === 'active').length}
+          participantsCount={challenges.reduce((sum, c) => sum + (c.participant_count || 0), 0)}
+          completedChallenges={challenges.filter(c => c.status === 'completed').length}
+          canCreateChallenge={hasRole('admin')}
+          featuredChallenge={challenges.find(c => c.status === 'active') ? {
+            id: challenges.find(c => c.status === 'active')!.id,
+            title_ar: challenges.find(c => c.status === 'active')!.title_ar,
+            participant_count: challenges.find(c => c.status === 'active')!.participant_count || 0,
+            end_date: challenges.find(c => c.status === 'active')!.end_date || ''
+          } : undefined}
+        />
         
-        <div className={cn("mb-8", isRTL && "text-right")}>
-          <h1 className="text-3xl font-bold mb-2">التحديات الابتكارية</h1>
-          <p className="text-muted-foreground">استكشف التحديات المتاحة وشارك في الابتكار</p>
-        </div>
-        
-        <div className="space-y-6">
-          {/* Header Actions */}
-          <div className={cn(
-            "flex flex-col gap-4 md:flex-row md:items-center md:justify-between",
-            isRTL && "md:flex-row-reverse"
-          )}>
+        <div className="container mx-auto px-4 py-8">
+          <GlobalBreadcrumb />
+          
+          <div className="space-y-6">
+            {/* Header Actions */}
             <div className={cn(
-              "flex flex-1 gap-4",
-              isRTL && "flex-row-reverse"
+              "flex flex-col gap-4 md:flex-row md:items-center md:justify-between",
+              isRTL && "md:flex-row-reverse"
             )}>
-              <div className="relative flex-1 max-w-sm">
-                <Search className={cn(
-                  "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
-                  isRTL ? "right-3" : "left-3"
-                )} />
-                <Input
-                  placeholder="البحث في التحديات..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={cn(isRTL ? "pr-10 text-right" : "pl-10")}
-                  dir={isRTL ? 'rtl' : 'ltr'}
+              <div className={cn(
+                "flex flex-1 gap-4",
+                isRTL && "flex-row-reverse"
+              )}>
+                <div className="relative flex-1 max-w-sm">
+                  <Search className={cn(
+                    "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
+                    isRTL ? "right-3" : "left-3"
+                  )} />
+                  <Input
+                    placeholder="البحث في التحديات..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={cn(isRTL ? "pr-10 text-right" : "pl-10")}
+                    dir={isRTL ? 'rtl' : 'ltr'}
+                  />
+                </div>
+                
+                <TagSelector
+                  selectedTags={selectedTags}
+                  onTagsChange={setSelectedTags}
+                  category="challenge"
+                  placeholder="تصفية بالعلامات..."
+                  className="max-w-xs"
                 />
               </div>
               
-              <TagSelector
-                selectedTags={selectedTags}
-                onTagsChange={setSelectedTags}
-                category="challenge"
-                placeholder="تصفية بالعلامات..."
-                className="max-w-xs"
-              />
-            </div>
-            
-            {hasRole('admin') && (
-              <Button className={cn("gap-2", isRTL && "flex-row-reverse")}>
-                <Plus className="w-4 h-4" />
-                إضافة تحدي جديد
-              </Button>
-            )}
-          </div>
-
-          {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="all">جميع التحديات</TabsTrigger>
-              <TabsTrigger value="active">النشطة</TabsTrigger>
-              <TabsTrigger value="upcoming">القادمة</TabsTrigger>
-              <TabsTrigger value="completed">المكتملة</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value={activeTab} className="mt-6">
-              {filteredChallenges.length === 0 ? (
-                <Card>
-                  <CardContent className="flex flex-col items-center justify-center py-16">
-                    <Target className="h-12 w-12 text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">لا توجد تحديات</h3>
-                    <p className="text-muted-foreground text-center">
-                      لا توجد تحديات متاحة حاليًا وفقًا للمعايير المحددة
-                    </p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {filteredChallenges.map((challenge) => (
-                    <EnhancedChallengeCard
-                      key={challenge.id}
-                      challenge={challenge}
-                      onViewDetails={handleViewDetails}
-                      onParticipate={handleParticipate}
-                      onLike={handleLike}
-                      onShare={handleShare}
-                      isLiked={likedChallenges.has(challenge.id)}
-                      variant="default"
-                      showActions={true}
-                      showStats={true}
-                      showOwner={true}
-                    />
-                  ))}
-                </div>
+              {hasRole('admin') && (
+                <Button className={cn("gap-2", isRTL && "flex-row-reverse")}>
+                  <Plus className="w-4 h-4" />
+                  إضافة تحدي جديد
+                </Button>
               )}
-            </TabsContent>
-          </Tabs>
+            </div>
+
+            {/* Tabs */}
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="all">جميع التحديات</TabsTrigger>
+                <TabsTrigger value="active">النشطة</TabsTrigger>
+                <TabsTrigger value="upcoming">القادمة</TabsTrigger>
+                <TabsTrigger value="completed">المكتملة</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value={activeTab} className="mt-6">
+                {filteredChallenges.length === 0 ? (
+                  <Card>
+                    <CardContent className="flex flex-col items-center justify-center py-16">
+                      <Target className="h-12 w-12 text-muted-foreground mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">لا توجد تحديات</h3>
+                      <p className="text-muted-foreground text-center">
+                        لا توجد تحديات متاحة حاليًا وفقًا للمعايير المحددة
+                      </p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {filteredChallenges.map((challenge) => (
+                      <EnhancedChallengeCard
+                        key={challenge.id}
+                        challenge={challenge}
+                        onViewDetails={handleViewDetails}
+                        onParticipate={handleParticipate}
+                        onLike={handleLike}
+                        onShare={handleShare}
+                        isLiked={likedChallenges.has(challenge.id)}
+                        variant="default"
+                        showActions={true}
+                        showStats={true}
+                        showOwner={true}
+                      />
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
+          </div>
+          
+          {/* Collaboration Integration */}
+          <WorkspaceCollaboration
+            workspaceType="user"
+            entityId="challenges"
+            showWidget={false}
+            showPresence={true}
+            showActivity={false}
+          />
         </div>
-        
-        {/* Collaboration Integration */}
-        <WorkspaceCollaboration
-          workspaceType="user"
-          entityId="challenges"
-          showWidget={false}
-          showPresence={true}
-          showActivity={false}
-        />
       </div>
     </AppShell>
   );

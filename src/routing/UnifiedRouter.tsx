@@ -112,6 +112,13 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     public: true,
   },
   {
+    path: ALL_ROUTES.CHALLENGE_DETAILS,
+    component: ChallengeDetails,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
+  {
     path: ALL_ROUTES.EVENTS,
     component: CollaborativeEventsPage,
     public: true,
