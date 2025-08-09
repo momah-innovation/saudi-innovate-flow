@@ -50,6 +50,14 @@ const EntitiesManagement = lazy(() => import('@/pages/admin/EntitiesManagement')
 const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement'));
 const TeamManagement = lazy(() => import('@/pages/admin/TeamManagement'));
 
+// Workspace Components
+const UserWorkspace = lazy(() => import('@/pages/workspace/UserWorkspace'));
+const ExpertWorkspace = lazy(() => import('@/pages/workspace/ExpertWorkspace'));
+const OrganizationWorkspace = lazy(() => import('@/pages/workspace/OrganizationWorkspace'));
+const PartnerWorkspace = lazy(() => import('@/pages/workspace/PartnerWorkspace'));
+const AdminWorkspace = lazy(() => import('@/pages/workspace/AdminWorkspace'));
+const TeamWorkspace = lazy(() => import('@/pages/workspace/TeamWorkspace'));
+
 // Route configuration interface
 export interface UnifiedRouteConfig {
   path: string;
@@ -140,6 +148,54 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.OPPORTUNITIES,
     component: OpportunitiesPage,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
+
+  // Workspace routes
+  {
+    path: ALL_ROUTES.WORKSPACE_USER,
+    component: UserWorkspace,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.WORKSPACE_EXPERT,
+    component: ExpertWorkspace,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['expert', 'admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.WORKSPACE_ORG,
+    component: OrganizationWorkspace,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.WORKSPACE_PARTNER,
+    component: PartnerWorkspace,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['partner', 'admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.WORKSPACE_ADMIN,
+    component: AdminWorkspace,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.DASHBOARD_TEAMS,
+    component: TeamWorkspace,
     requireAuth: true,
     requireProfile: true,
     withAppShell: true,

@@ -47,6 +47,7 @@ export const AUTHENTICATED_ROUTES = {
   WORKSPACE_USER: '/workspace/user/:userId',
   WORKSPACE_EXPERT: '/workspace/expert/:expertId', 
   WORKSPACE_ORG: '/workspace/org/:orgId',
+  WORKSPACE_PARTNER: '/workspace/partner/:partnerId',
   WORKSPACE_ADMIN: '/workspace/admin',
   
   // Profile & Settings
