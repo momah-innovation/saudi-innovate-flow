@@ -15,6 +15,7 @@ import { IdeaFormData, SystemLists } from "@/types";
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
 }
 
@@ -27,12 +28,14 @@ interface FocusQuestion {
 interface Campaign {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
 }
 
 interface Event {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
 }
 
@@ -50,7 +53,9 @@ interface Innovator {
 interface Idea {
   id?: string;
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   status: string;
   maturity_level: string;
   overall_score?: number;

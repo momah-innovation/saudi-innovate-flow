@@ -36,6 +36,7 @@ interface Expert {
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
   priority_level: string;
   estimated_budget: number;

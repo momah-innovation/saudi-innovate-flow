@@ -29,6 +29,7 @@ interface EventsManagementProps {
 interface EventData {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
   event_type?: string;
   image_url?: string;

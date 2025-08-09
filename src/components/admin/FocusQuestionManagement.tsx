@@ -21,6 +21,7 @@ import { format } from "date-fns";
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
   sensitivity_level: string;
 }
@@ -28,6 +29,7 @@ interface Challenge {
 interface FocusQuestion {
   id: string;
   question_text_ar: string;
+  question_text_en?: string;
   question_type: string;
   is_sensitive: boolean;
   order_sequence: number;
