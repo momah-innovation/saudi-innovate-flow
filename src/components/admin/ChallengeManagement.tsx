@@ -4,6 +4,7 @@ import { Target, BarChart3, Settings } from "lucide-react";
 import { ChallengeManagementList } from "./challenges/ChallengeManagementList";
 import { ChallengeAnalytics } from "./challenges/ChallengeAnalytics";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export function ChallengeManagement() {
@@ -11,11 +12,13 @@ export function ChallengeManagement() {
   const [activeTab, setActiveTab] = useState("challenges");
 
   return (
-    <PageLayout
-      title="إدارة التحديات الابتكارية"
-      description="نظام شامل لإدارة وتحليل التحديات الابتكارية"
-      className="space-y-6"
-    >
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
+        title="إدارة التحديات الابتكارية"
+        description="نظام شامل لإدارة وتحليل التحديات الابتكارية"
+        className="space-y-6"
+      >
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="challenges" className="flex items-center gap-2">
@@ -36,6 +39,7 @@ export function ChallengeManagement() {
           <ChallengeAnalytics />
         </TabsContent>
       </Tabs>
-    </PageLayout>
+      </PageLayout>
+    </div>
   );
 }

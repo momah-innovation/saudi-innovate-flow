@@ -135,8 +135,8 @@ export function ChallengeManagementList() {
   };
 
   const handleView = (challenge: Challenge) => {
-    setSelectedChallenge(challenge);
-    setShowDetails(true);
+    // Navigate to full page view instead of dialog
+    window.location.href = `/admin/challenges/${challenge.id}`;
   };
 
   const getStatusColor = (status: string) => {

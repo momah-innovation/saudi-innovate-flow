@@ -90,6 +90,7 @@ export const SUBSCRIPTION_ROUTES = {
 export const ADMIN_ROUTES = {
   ADMIN_DASHBOARD: '/admin/dashboard',
   ADMIN_CHALLENGES: '/admin/challenges',
+  ADMIN_CHALLENGE_DETAIL: '/admin/challenges/:challengeId',
   ADMIN_CHALLENGE_SUBMISSIONS: '/admin/challenges/:challengeId/submissions',
   ADMIN_CAMPAIGNS: '/admin/campaigns',
   ADMIN_USERS: '/admin/users',

@@ -51,6 +51,7 @@ const StakeholdersManagement = lazy(() => import('@/pages/admin/StakeholdersMana
 const EntitiesManagement = lazy(() => import('@/pages/admin/EntitiesManagement'));
 const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement'));
 const AdminChallengeSubmissions = lazy(() => import('@/pages/admin/AdminChallengeSubmissions'));
+const ChallengeDetailAdmin = lazy(() => import('@/pages/admin/ChallengeDetail'));
 const TeamManagement = lazy(() => import('@/pages/admin/TeamManagement'));
 const CollaborationPage = lazy(() => import('@/pages/CollaborationPage'));
 const CollaborationLandingPage = lazy(() => import('@/pages/CollaborationLandingPage'));
@@ -279,6 +280,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
     withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_CHALLENGE_DETAIL,
+    component: ChallengeDetailAdmin,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: false, // ChallengeDetail handles AppShell internally
   },
   {
     path: ALL_ROUTES.ADMIN_CAMPAIGNS,
