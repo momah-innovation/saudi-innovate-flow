@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/logger";
@@ -17,6 +18,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InteractionButtons } from "@/components/ui/interaction-buttons";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 import { 
   Lightbulb, 
@@ -32,7 +35,23 @@ import {
   LayoutGrid,
   List,
   Grid3x3,
-  User
+  User,
+  Shield,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Flag,
+  MoreVertical,
+  Trash2,
+  Archive,
+  Clock,
+  Award,
+  BarChart3,
+  Search,
+  UserCheck,
+  MessageSquare,
+  ThumbsUp,
+  ThumbsDown
 } from "lucide-react";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -40,7 +59,7 @@ import { useSystemLists } from "@/hooks/useSystemLists";
 import { format } from "date-fns";
 import { ManagementListProps } from "@/types";
 
-// Local Idea interface for this management component
+// Enhanced Admin Idea interface with full data for management
 interface IdeaListItem {
   id: string;
   title_ar: string;
@@ -48,9 +67,17 @@ interface IdeaListItem {
   status: string;
   maturity_level: string;
   overall_score?: number;
+  feasibility_score?: number;
+  impact_score?: number;
+  innovation_score?: number;
+  alignment_score?: number;
   innovator_id: string;
   challenge_id?: string;
   focus_question_id?: string;
+  featured?: boolean;
+  view_count?: number;
+  like_count?: number;
+  comment_count?: number;
   created_at: string;
   updated_at: string;
   innovator?: {
@@ -65,6 +92,11 @@ interface IdeaListItem {
   focus_question?: {
     id: string;
     question_text_ar: string;
+  };
+  innovator_profile?: {
+    name: string;
+    name_ar: string;
+    email?: string;
   };
 }
 
@@ -142,6 +174,7 @@ export function IdeasManagementList({
         .order('created_at', { ascending: false });
       
       if (error) throw error;
+      
       setIdeas(data || []);
     } catch (error) {
       logger.error('Error fetching ideas', { component: 'IdeasManagementList', action: 'fetchIdeas' }, error as Error);
@@ -152,6 +185,107 @@ export function IdeasManagementList({
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Admin-specific actions
+  const handleApproveIdea = async (ideaId: string) => {
+    try {
+      const { error } = await supabase
+        .from('ideas')
+        .update({ status: 'approved' })
+        .eq('id', ideaId);
+
+      if (error) throw error;
+
+      toast({
+        title: "تم بنجاح",
+        description: "تم الموافقة على الفكرة",
+      });
+      
+      fetchIdeas();
+    } catch (error) {
+      logger.error('Error approving idea', { ideaId }, error as Error);
+      toast({
+        title: "خطأ",
+        description: "فشل في الموافقة على الفكرة",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleRejectIdea = async (ideaId: string) => {
+    try {
+      const { error } = await supabase
+        .from('ideas')
+        .update({ status: 'rejected' })
+        .eq('id', ideaId);
+
+      if (error) throw error;
+
+      toast({
+        title: "تم بنجاح",
+        description: "تم رفض الفكرة",
+      });
+      
+      fetchIdeas();
+    } catch (error) {
+      logger.error('Error rejecting idea', { ideaId }, error as Error);
+      toast({
+        title: "خطأ",
+        description: "فشل في رفض الفكرة",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleFeatureIdea = async (ideaId: string, featured: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('ideas')
+        .update({ featured })
+        .eq('id', ideaId);
+
+      if (error) throw error;
+
+      toast({
+        title: "تم بنجاح",
+        description: featured ? "تم إبراز الفكرة" : "تم إلغاء إبراز الفكرة",
+      });
+      
+      fetchIdeas();
+    } catch (error) {
+      logger.error('Error featuring idea', { ideaId }, error as Error);
+      toast({
+        title: "خطأ",
+        description: "فشل في تحديث حالة الإبراز",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeleteIdea = async (ideaId: string) => {
+    try {
+      const { error } = await supabase
+        .from('ideas')
+        .delete()
+        .eq('id', ideaId);
+
+      if (error) throw error;
+
+      toast({
+        title: "تم بنجاح",
+        description: "تم حذف الفكرة",
+      });
+      
+      fetchIdeas();
+    } catch (error) {
+      logger.error('Error deleting idea', { ideaId }, error as Error);
+      toast({
+        title: "خطأ",
+        description: "فشل في حذف الفكرة",
+        variant: "destructive"
+      });
     }
   };
 
@@ -223,45 +357,101 @@ export function IdeasManagementList({
   return (
     <>
       <div className="space-y-6">
-        {/* Header */}
-        <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-          <div>
-            <h2 className="text-2xl font-bold">إدارة الأفكار</h2>
-            <p className="text-muted-foreground">إنشاء وإدارة الأفكار الابتكارية ({filteredIdeas.length})</p>
-          </div>
-          <div className="flex items-center gap-2">
-            {/* Layout Toggle */}
-            <div className="flex items-center border rounded-lg p-1">
-              <button
-                onClick={() => handleLayoutChange('cards')}
-                className={`p-2 rounded ${currentLayout === 'cards' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
-                title="عرض البطاقات"
-              >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => handleLayoutChange('list')}
-                className={`p-2 rounded ${currentLayout === 'list' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
-                title="عرض القائمة"
-              >
-                <List className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => handleLayoutChange('grid')}
-                className={`p-2 rounded ${currentLayout === 'grid' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
-                title="عرض الشبكة"
-              >
-                <Grid3x3 className="w-4 h-4" />
-              </button>
+        {/* Admin Header with Stats */}
+        <div className="space-y-4">
+          <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+            <div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-6 h-6 text-primary" />
+                <h2 className="text-2xl font-bold">إدارة الأفكار الابتكارية</h2>
+              </div>
+              <p className="text-muted-foreground">إدارة شاملة لجميع الأفكار المقدمة في النظام ({filteredIdeas.length})</p>
             </div>
+            <div className="flex items-center gap-2">
+              {/* Layout Toggle */}
+              <div className="flex items-center border rounded-lg p-1">
+                <button
+                  onClick={() => handleLayoutChange('cards')}
+                  className={`p-2 rounded ${currentLayout === 'cards' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
+                  title="عرض البطاقات"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleLayoutChange('list')}
+                  className={`p-2 rounded ${currentLayout === 'list' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
+                  title="عرض القائمة"
+                >
+                  <List className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleLayoutChange('grid')}
+                  className={`p-2 rounded ${currentLayout === 'grid' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
+                  title="عرض الشبكة"
+                >
+                  <Grid3x3 className="w-4 h-4" />
+                </button>
+              </div>
+              
+              <Button onClick={() => {
+                setSelectedIdea(null);
+                setShowWizard(true);
+              }}>
+                <Lightbulb className="w-4 h-4 mr-2" />
+                فكرة جديدة
+              </Button>
+            </div>
+          </div>
+
+          {/* Admin Dashboard Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <Lightbulb className="w-5 h-5 text-blue-500" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">إجمالي الأفكار</p>
+                    <p className="text-2xl font-bold">{ideas.length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
             
-            <Button onClick={() => {
-              setSelectedIdea(null);
-              setShowWizard(true);
-            }}>
-              <Lightbulb className="w-4 h-4 mr-2" />
-              فكرة جديدة
-            </Button>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-orange-500" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">قيد المراجعة</p>
+                    <p className="text-2xl font-bold">{ideas.filter(i => i.status === 'under_review').length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">موافق عليها</p>
+                    <p className="text-2xl font-bold">{ideas.filter(i => i.status === 'approved').length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <Award className="w-5 h-5 text-purple-500" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">مميزة</p>
+                    <p className="text-2xl font-bold">{ideas.filter(i => i.featured).length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
@@ -378,7 +568,7 @@ export function IdeasManagementList({
                   actions={[
                    {
                      type: 'view',
-                     label: 'عرض',
+                     label: 'عرض التفاصيل',
                      onClick: () => {
                        setSelectedIdea(idea);
                        setShowDetailView(true);
@@ -394,6 +584,28 @@ export function IdeasManagementList({
                      },
                      icon: <Settings className="w-4 h-4" />
                    },
+                   // Admin approval actions
+                   ...(idea.status === 'under_review' ? [
+                     {
+                       type: 'custom' as const,
+                       label: 'موافقة',
+                       onClick: () => handleApproveIdea(idea.id),
+                       icon: <CheckCircle className="w-4 h-4 text-green-600" />
+                     },
+                     {
+                       type: 'custom' as const,
+                       label: 'رفض',
+                       onClick: () => handleRejectIdea(idea.id),
+                       icon: <XCircle className="w-4 h-4 text-red-600" />
+                     }
+                   ] : []),
+                   // Feature/unfeature action
+                   {
+                     type: 'custom',
+                     label: idea.featured ? 'إلغاء الإبراز' : 'إبراز',
+                     onClick: () => handleFeatureIdea(idea.id, !idea.featured),
+                     icon: <Award className={`w-4 h-4 ${idea.featured ? 'text-yellow-500' : 'text-gray-500'}`} />
+                   },
                    {
                      type: 'custom',
                      label: 'التعليقات',
@@ -401,7 +613,7 @@ export function IdeasManagementList({
                        setSelectedIdeaForPanel(idea.id);
                        setShowCommentsPanel(true);
                      },
-                     icon: <Users className="w-4 h-4" />
+                     icon: <MessageSquare className="w-4 h-4" />
                    },
                    {
                      type: 'custom',
@@ -412,6 +624,17 @@ export function IdeasManagementList({
                        setShowWorkflowPanel(true);
                      },
                      icon: <TrendingUp className="w-4 h-4" />
+                   },
+                   // Delete action (admin only)
+                   {
+                     type: 'custom',
+                     label: 'حذف',
+                     onClick: () => {
+                       if (confirm('هل أنت متأكد من حذف هذه الفكرة؟')) {
+                         handleDeleteIdea(idea.id);
+                       }
+                     },
+                     icon: <Trash2 className="w-4 h-4 text-red-600" />
                    }
                  ]}
               />
