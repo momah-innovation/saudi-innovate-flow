@@ -67,30 +67,49 @@ export default function OrganizationWorkspace() {
     }
   ];
 
+  const stats = [
+    {
+      label: t('workspace.org.metrics.active_challenges'),
+      value: workspaceData?.stats?.activeChallenges || 0,
+      icon: Target
+    },
+    {
+      label: t('workspace.org.metrics.total_submissions'),
+      value: workspaceData?.stats?.totalSubmissions || 0,
+      icon: FileText
+    },
+    {
+      label: t('workspace.org.metrics.team_members'),
+      value: workspaceData?.stats?.teamSize || 0,
+      icon: Users
+    },
+    {
+      label: t('workspace.org.metrics.completed_challenges'),
+      value: workspaceData?.stats?.completedChallenges || 0,
+      icon: Building
+    }
+  ];
+
   const metrics = [
     {
       title: t('workspace.org.metrics.active_challenges'),
       value: workspaceData?.stats?.activeChallenges || 0,
-      icon: Target,
-      color: 'bg-primary/10 text-primary'
+      icon: Target
     },
     {
       title: t('workspace.org.metrics.total_submissions'),
       value: workspaceData?.stats?.totalSubmissions || 0,
-      icon: FileText,
-      color: 'bg-success/10 text-success'
+      icon: FileText
     },
     {
       title: t('workspace.org.metrics.team_members'),
       value: workspaceData?.stats?.teamSize || 0,
-      icon: Users,
-      color: 'bg-info/10 text-info'
+      icon: Users
     },
     {
       title: t('workspace.org.metrics.completed_challenges'),
       value: workspaceData?.stats?.completedChallenges || 0,
-      icon: Building,
-      color: 'bg-warning/10 text-warning'
+      icon: Building
     }
   ];
 
@@ -114,7 +133,7 @@ export default function OrganizationWorkspace() {
       title={t('workspace.org.title')}
       description={t('workspace.org.description')}
       userRole={userProfile?.roles?.[0] || 'admin'}
-      stats={metrics}
+      stats={stats}
       quickActions={[
         {
           label: t('workspace.org.actions.create_challenge'),
@@ -227,10 +246,7 @@ export default function OrganizationWorkspace() {
             />
 
             {/* Metrics */}
-            <WorkspaceMetrics
-              title={t('workspace.org.overview')}
-              metrics={metrics}
-            />
+            <WorkspaceMetrics metrics={metrics} />
           </div>
         </div>
       </div>

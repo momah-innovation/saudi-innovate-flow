@@ -71,24 +71,39 @@ export default function ExpertWorkspace() {
     }
   ];
 
+  const stats = [
+    {
+      label: t('workspace.expert.metrics.pending_evaluations'),
+      value: workspaceData?.stats?.pendingEvaluations || 0,
+      icon: ClipboardList
+    },
+    {
+      label: t('workspace.expert.metrics.completed_evaluations'),
+      value: workspaceData?.stats?.completedEvaluations || 0,
+      icon: CheckCircle
+    },
+    {
+      label: t('workspace.expert.metrics.assigned_challenges'),
+      value: workspaceData?.stats?.assignedChallenges || 0,
+      icon: Users
+    }
+  ];
+
   const metrics = [
     {
       title: t('workspace.expert.metrics.pending_evaluations'),
       value: workspaceData?.stats?.pendingEvaluations || 0,
-      icon: ClipboardList,
-      color: 'bg-destructive/10 text-destructive'
+      icon: ClipboardList
     },
     {
       title: t('workspace.expert.metrics.completed_evaluations'),
       value: workspaceData?.stats?.completedEvaluations || 0,
-      icon: CheckCircle,
-      color: 'bg-success/10 text-success'
+      icon: CheckCircle
     },
     {
       title: t('workspace.expert.metrics.assigned_challenges'),
       value: workspaceData?.stats?.assignedChallenges || 0,
-      icon: Users,
-      color: 'bg-primary/10 text-primary'
+      icon: Users
     }
   ];
 
@@ -112,7 +127,7 @@ export default function ExpertWorkspace() {
       title={t('workspace.expert.title')}
       description={t('workspace.expert.description')}
       userRole={userProfile?.roles?.[0] || 'expert'}
-      stats={metrics}
+      stats={stats}
       quickActions={[
         {
           label: t('workspace.expert.actions.start_evaluation'),
@@ -212,10 +227,7 @@ export default function ExpertWorkspace() {
             />
 
             {/* Metrics */}
-            <WorkspaceMetrics
-              title={t('workspace.expert.performance')}
-              metrics={metrics}
-            />
+            <WorkspaceMetrics metrics={metrics} />
           </div>
         </div>
       </div>

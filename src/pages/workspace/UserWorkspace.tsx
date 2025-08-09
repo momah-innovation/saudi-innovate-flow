@@ -66,24 +66,39 @@ export default function UserWorkspace() {
     }
   ];
 
-  const metrics = [
+  const stats = [
     {
       label: t('workspace.user.metrics.total_ideas'),
       value: workspaceData?.stats?.totalIdeas || 0,
-      icon: Lightbulb,
-      color: 'bg-primary/10 text-primary'
+      icon: Lightbulb
     },
     {
       label: t('workspace.user.metrics.active_challenges'),
       value: workspaceData?.stats?.activeChallenges || 0,
-      icon: Target,
-      color: 'bg-success/10 text-success'
+      icon: Target
     },
     {
       label: t('workspace.user.metrics.saved_items'),
       value: workspaceData?.stats?.savedItems || 0,
-      icon: Bookmark,
-      color: 'bg-warning/10 text-warning'
+      icon: Bookmark
+    }
+  ];
+
+  const metrics = [
+    {
+      title: t('workspace.user.metrics.total_ideas'),
+      value: workspaceData?.stats?.totalIdeas || 0,
+      icon: Lightbulb
+    },
+    {
+      title: t('workspace.user.metrics.active_challenges'),
+      value: workspaceData?.stats?.activeChallenges || 0,
+      icon: Target
+    },
+    {
+      title: t('workspace.user.metrics.saved_items'),
+      value: workspaceData?.stats?.savedItems || 0,
+      icon: Bookmark
     }
   ];
 
@@ -107,7 +122,7 @@ export default function UserWorkspace() {
       title={t('workspace.user.title')}
       description={t('workspace.user.description')}
       userRole={userProfile?.roles?.[0] || 'user'}
-      stats={metrics}
+      stats={stats}
       quickActions={[
         {
           label: t('workspace.user.actions.new_idea'),
@@ -207,9 +222,7 @@ export default function UserWorkspace() {
             />
 
             {/* Metrics */}
-            <WorkspaceMetrics
-              metrics={metrics}
-            />
+            <WorkspaceMetrics metrics={metrics} />
           </div>
         </div>
       </div>

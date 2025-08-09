@@ -68,30 +68,49 @@ export default function PartnerWorkspace() {
     }
   ];
 
+  const stats = [
+    {
+      label: t('workspace.partner.metrics.available_opportunities'),
+      value: workspaceData?.stats?.availableOpportunities || 0,
+      icon: Briefcase
+    },
+    {
+      label: t('workspace.partner.metrics.active_partnerships'),
+      value: workspaceData?.stats?.activePartnerships || 0,
+      icon: Handshake
+    },
+    {
+      label: t('workspace.partner.metrics.pending_applications'),
+      value: workspaceData?.stats?.pendingApplications || 0,
+      icon: FileCheck
+    },
+    {
+      label: t('workspace.partner.metrics.accepted_applications'),
+      value: workspaceData?.stats?.acceptedApplications || 0,
+      icon: FileCheck
+    }
+  ];
+
   const metrics = [
     {
       title: t('workspace.partner.metrics.available_opportunities'),
       value: workspaceData?.stats?.availableOpportunities || 0,
-      icon: Briefcase,
-      color: 'bg-primary/10 text-primary'
+      icon: Briefcase
     },
     {
       title: t('workspace.partner.metrics.active_partnerships'),
       value: workspaceData?.stats?.activePartnerships || 0,
-      icon: Handshake,
-      color: 'bg-success/10 text-success'
+      icon: Handshake
     },
     {
       title: t('workspace.partner.metrics.pending_applications'),
       value: workspaceData?.stats?.pendingApplications || 0,
-      icon: FileCheck,
-      color: 'bg-warning/10 text-warning'
+      icon: FileCheck
     },
     {
       title: t('workspace.partner.metrics.accepted_applications'),
       value: workspaceData?.stats?.acceptedApplications || 0,
-      icon: FileCheck,
-      color: 'bg-info/10 text-info'
+      icon: FileCheck
     }
   ];
 
@@ -115,7 +134,7 @@ export default function PartnerWorkspace() {
       title={t('workspace.partner.title')}
       description={t('workspace.partner.description')}
       userRole={userProfile?.roles?.[0] || 'partner'}
-      stats={metrics}
+      stats={stats}
       quickActions={[
         {
           label: t('workspace.partner.actions.browse_opportunities'),
@@ -223,7 +242,7 @@ export default function PartnerWorkspace() {
                     {workspaceData.applications.slice(0, 3).map((application) => (
                       <div key={application.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
-                          <h4 className="font-medium">{application.opportunities?.title_ar}</h4>
+                          <h4 className="font-medium">{application.id}</h4>
                           <p className="text-sm text-muted-foreground">
                             {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString('ar')}
                           </p>
@@ -261,10 +280,7 @@ export default function PartnerWorkspace() {
             />
 
             {/* Metrics */}
-            <WorkspaceMetrics
-              title={t('workspace.partner.overview')}
-              metrics={metrics}
-            />
+            <WorkspaceMetrics metrics={metrics} />
           </div>
         </div>
       </div>

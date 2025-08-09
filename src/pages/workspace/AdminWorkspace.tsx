@@ -75,30 +75,49 @@ export default function AdminWorkspace() {
     }
   ];
 
+  const stats = [
+    {
+      label: t('workspace.admin.metrics.total_users'),
+      value: workspaceData?.stats?.totalUsers || 0,
+      icon: Users
+    },
+    {
+      label: t('workspace.admin.metrics.total_challenges'),
+      value: workspaceData?.stats?.totalChallenges || 0,
+      icon: Shield
+    },
+    {
+      label: t('workspace.admin.metrics.total_ideas'),
+      value: workspaceData?.stats?.totalIdeas || 0,
+      icon: BarChart3
+    },
+    {
+      label: t('workspace.admin.metrics.active_challenges'),
+      value: workspaceData?.stats?.activeChallenges || 0,
+      icon: Settings
+    }
+  ];
+
   const metrics = [
     {
       title: t('workspace.admin.metrics.total_users'),
       value: workspaceData?.stats?.totalUsers || 0,
-      icon: Users,
-      color: 'bg-primary/10 text-primary'
+      icon: Users
     },
     {
       title: t('workspace.admin.metrics.total_challenges'),
       value: workspaceData?.stats?.totalChallenges || 0,
-      icon: Shield,
-      color: 'bg-success/10 text-success'
+      icon: Shield
     },
     {
       title: t('workspace.admin.metrics.total_ideas'),
       value: workspaceData?.stats?.totalIdeas || 0,
-      icon: BarChart3,
-      color: 'bg-info/10 text-info'
+      icon: BarChart3
     },
     {
       title: t('workspace.admin.metrics.active_challenges'),
       value: workspaceData?.stats?.activeChallenges || 0,
-      icon: Settings,
-      color: 'bg-warning/10 text-warning'
+      icon: Settings
     }
   ];
 
@@ -122,7 +141,7 @@ export default function AdminWorkspace() {
       title={t('workspace.admin.title')}
       description={t('workspace.admin.description')}
       userRole={userProfile?.roles?.[0] || 'admin'}
-      stats={metrics}
+      stats={stats}
       quickActions={[
         {
           label: t('workspace.admin.actions.manage_system'),
@@ -199,7 +218,7 @@ export default function AdminWorkspace() {
                             <Users className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <h4 className="font-medium">{user.display_name || user.email}</h4>
+                            <h4 className="font-medium">{user.email}</h4>
                             <p className="text-sm text-muted-foreground">
                               {t('workspace.admin.joined')}: {new Date(user.created_at || '').toLocaleDateString('ar')}
                             </p>
@@ -230,10 +249,7 @@ export default function AdminWorkspace() {
             />
 
             {/* Metrics */}
-            <WorkspaceMetrics
-              title={t('workspace.admin.overview')}
-              metrics={metrics}
-            />
+            <WorkspaceMetrics metrics={metrics} />
           </div>
         </div>
       </div>
