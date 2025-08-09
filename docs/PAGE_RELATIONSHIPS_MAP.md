@@ -56,10 +56,12 @@ This document provides a complete map of all pages, components, dialogs, sheets,
 | Admin Evaluations | `/admin/evaluations` | AdminEvaluations | admin/super_admin | Evaluation management |
 | Admin Analytics | `/admin/system-analytics` | AnalyticsPage | admin/super_admin | Platform analytics, reports |
 | Admin Relationships | `/admin/relationships` | AdminRelationships | admin/super_admin | Relationship overview |
+| User Management | `/admin/users` | UserManagement | admin/super_admin | User administration with stats |
 | Challenges Management | `/admin/challenges` | ChallengesManagement | admin/super_admin | Challenge administration with tabs |
 | Campaigns Management | `/admin/campaigns` | CampaignsManagement | admin/super_admin | Campaign administration |
 | Events Management | `/admin/events` | EventsManagement | admin/super_admin | Event administration |
 | Ideas Management | `/admin/ideas` | IdeasManagement | admin/super_admin | Idea administration with analytics |
+| Partners Management | `/admin/partners` | PartnersManagement | admin/super_admin | Partner administration |
 | Focus Questions Management | `/admin/focus-questions` | FocusQuestionsManagement | admin/super_admin | Focus question administration |
 | Expert Assignment Management | `/admin/expert-assignments` | ExpertAssignmentManagement | admin/super_admin | Expert assignment with tabs |
 | Evaluation Management | `/admin/evaluation-management` | EvaluationManagement | admin/super_admin | Evaluation criteria and templates |

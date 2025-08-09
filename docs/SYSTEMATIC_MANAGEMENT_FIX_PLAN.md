@@ -37,7 +37,7 @@ const ComponentManagement = lazy(() => import('@/pages/ComponentManagementPage')
 - **Status**: ✅ Connected to routing
 - **Files**: 
   - Component: `src/components/admin/settings/UserManagementSettings.tsx`
-  - Page: `src/pages/UserManagement.tsx`
+  - Page: `src/pages/admin/UserManagement.tsx` ⬅️ MOVED TO ADMIN FOLDER
   - Route: Added to UnifiedRouter.tsx
 - **Navigation**: Working from AdminDashboard + NavigationSidebar
 
