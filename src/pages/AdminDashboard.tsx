@@ -28,6 +28,7 @@ import { TestPrivilegeElevation } from '@/components/admin/TestPrivilegeElevatio
 import { logger } from '@/utils/logger';
 
 export default function AdminDashboard() {
+  console.log('🚀 AdminDashboard page loaded - Management tab should be visible');
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [activityDialogOpen, setActivityDialogOpen] = useState(false);
