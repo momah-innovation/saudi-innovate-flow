@@ -48,7 +48,9 @@ interface Evaluation {
 interface Idea {
   id: string;
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   status: string;
 }
 
@@ -112,7 +114,7 @@ export function EvaluationsManagement({
       if (ideaIds.length > 0) {
         const { data: ideasData, error: ideasError } = await supabase
           .from("ideas")
-          .select("id, title_ar, description_ar, status")
+          .select("id, title_ar, title_en, description_ar, description_en, status")
           .in("id", ideaIds);
 
         if (ideasError) throw ideasError;

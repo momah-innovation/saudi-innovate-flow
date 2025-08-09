@@ -32,6 +32,7 @@ import type { QuestionResponse } from "@/types";
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
   sensitivity_level: string;
 }
@@ -39,6 +40,7 @@ interface Challenge {
 interface FocusQuestion {
   id: string;
   question_text_ar: string;
+  question_text_en?: string;
   question_type: string;
   is_sensitive: boolean;
   order_sequence: number;
@@ -110,7 +112,9 @@ export function FocusQuestionDetailView({
           .select(`
             id,
             title_ar,
+            title_en,
             description_ar,
+            description_en,
             status,
             created_at,
             innovator_id
@@ -126,7 +130,9 @@ export function FocusQuestionDetailView({
             events:event_id (
               id,
               title_ar,
+              title_en,
               description_ar,
+              description_en,
               event_date,
               status,
               format,

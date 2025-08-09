@@ -25,7 +25,9 @@ import { format } from "date-fns";
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   status: string;
   priority_level: string;
   challenge_type: string;
@@ -63,7 +65,7 @@ export function ChallengeListSimplified() {
 
   // Configure data table with simpler options
   const dataTableConfig = {
-    searchFields: ['title_ar', 'description_ar'],
+    searchFields: ['title_ar', 'title_en', 'description_ar', 'description_en'],
     statusOptions: challengeStatusOptions.map(status => ({
       value: status,
       label: getStatusLabel(status)
