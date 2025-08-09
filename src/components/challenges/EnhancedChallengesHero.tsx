@@ -14,8 +14,13 @@ import {
   ChevronRight,
   Trophy,
   Clock,
-  Eye
+  Eye,
+  Star,
+  ArrowRight,
+  Sparkles,
+  Bookmark
 } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -53,38 +58,10 @@ export const EnhancedChallengesHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    {
-      label: 'إجمالي التحديات',
-      value: totalChallenges,
-      icon: Target,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
-      trend: '+12%'
-    },
-    {
-      label: 'التحديات النشطة',
-      value: activeChallenges,
-      icon: TrendingUp,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100',
-      trend: '+8%'
-    },
-    {
-      label: 'إجمالي المشاركين',
-      value: participantsCount,
-      icon: Users,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-100',
-      trend: '+25%'
-    },
-    {
-      label: 'التحديات المكتملة',
-      value: completedChallenges,
-      icon: Trophy,
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-100',
-      trend: '+15%'
-    }
+    { icon: Target, value: totalChallenges, label: isRTL ? 'تحدي' : 'challenges', color: 'text-blue-400', trend: '+12%' },
+    { icon: TrendingUp, value: activeChallenges, label: isRTL ? 'نشط' : 'active', color: 'text-green-400', trend: '+8%' },
+    { icon: Users, value: participantsCount, label: isRTL ? 'مشارك' : 'participants', color: 'text-purple-400', trend: '+25%' },
+    { icon: Trophy, value: completedChallenges, label: isRTL ? 'مكتمل' : 'completed', color: 'text-yellow-400', trend: '+15%' }
   ];
 
   React.useEffect(() => {
@@ -96,189 +73,218 @@ export const EnhancedChallengesHero = ({
 
   return (
     <div className="relative overflow-hidden">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
-      
-      <div className="relative container mx-auto px-4 py-12">
-        <div className={cn(
-          "grid gap-8 lg:grid-cols-2 items-center",
-          isRTL && "lg:grid-cols-2"
-        )}>
+      {/* Background with animated gradients */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(99deg, rgba(59, 20, 93, 1) 51%, rgba(23, 8, 38, 1) 99%)' }}>
+        <div className="absolute inset-0 bg-[url('/challenge-images/innovation.jpg')] opacity-10 bg-cover bg-center" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+      </div>
+
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 bg-purple-400/5 rounded-full blur-2xl animate-bounce" />
+      </div>
+
+      <div className="container mx-auto px-4 py-16 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           
-          {/* Hero Content */}
-          <div className={cn("space-y-6", isRTL && "text-right")}>
-            <div className="space-y-4">
-              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-                <Target className="w-3 h-3 mx-1" />
-                منصة التحديات الابتكارية
-              </Badge>
+          {/* Enhanced Content Section */}
+          <div className="space-y-8">
+            {/* Header with animation */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                  <Target className="w-6 h-6 text-yellow-300" />
+                </div>
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                  <Star className="w-3 h-3 mr-1" />
+                  {t('challenges.platform_badge', 'Innovation Challenges Platform')}
+                </Badge>
+              </div>
               
-              <h1 className="text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-                استكشف التحديات
-                <span className="text-primary block">الابتكارية</span>
-              </h1>
-              
-              <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
-                انضم إلى مجتمع المبدعين وساهم في حل التحديات المؤثرة في قطاعات مختلفة
-              </p>
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                  {t('challenges.hero_title_part1', 'Take on')} {' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+                    {t('challenges.hero_title_part2', 'Challenges')}
+                  </span>
+                  <br />
+                  {t('challenges.hero_title_part3', 'Shape the Future')}
+                </h1>
+                
+                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
+                  {t('challenges.hero_description', 'Join innovators worldwide in solving real-world challenges and contributing to Saudi Arabia\'s Vision 2030 transformation.')}
+                </p>
+              </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className={cn(
-              "flex flex-wrap gap-4",
-              isRTL && "flex-row-reverse"
-            )}>
-              <Button size="lg" className="gap-2" onClick={onShowFilters}>
-                <Search className="w-4 h-4" />
-                استكشف التحديات
-                <ChevronRight className={cn("w-4 h-4", isRTL && "rotate-180")} />
-              </Button>
-
-              {canCreateChallenge && hasRole('admin') && (
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="gap-2" 
-                  onClick={onCreateChallenge}
-                >
-                  <Plus className="w-4 h-4" />
-                  إنشاء تحدي جديد
-                </Button>
-              )}
-
-              <Button variant="ghost" size="lg" className="gap-2">
-                <Filter className="w-4 h-4" />
-                الفلاتر المتقدمة
-              </Button>
-            </div>
-          </div>
-
-          {/* Stats Cards */}
-          <div className="space-y-6">
-            {/* Featured Challenge */}
-            {featuredChallenge && (
-              <Card className="border-primary/20 bg-primary/5">
-                <CardHeader className="pb-3">
-                  <div className={cn(
-                    "flex items-center justify-between",
-                    isRTL && "flex-row-reverse"
-                  )}>
-                    <CardTitle className="text-sm text-primary">التحدي المميز</CardTitle>
-                    <Badge variant="secondary" className="bg-primary/10 text-primary">
-                      مميز
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <h3 className={cn(
-                    "font-semibold text-foreground line-clamp-2",
-                    isRTL && "text-right"
-                  )}>
-                    {featuredChallenge.title_ar}
-                  </h3>
-                  <div className={cn(
-                    "flex items-center gap-4 text-sm text-muted-foreground",
-                    isRTL && "flex-row-reverse"
-                  )}>
-                    <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
-                      <Users className="w-3 h-3" />
-                      <span>{featuredChallenge.participant_count} مشارك</span>
-                    </div>
-                    <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
-                      <Clock className="w-3 h-3" />
-                      <span>ينتهي قريباً</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* Animated Statistics */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
-                const isActive = index === currentStat;
+                const isActive = currentStat === index;
                 
                 return (
                   <Card 
                     key={index}
                     className={cn(
-                      "transition-all duration-300 hover:shadow-md border-border/50",
-                      isActive && "ring-2 ring-primary/20 shadow-lg"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
+                      isActive && "bg-white/10 border-white/20 scale-105"
                     )}
                   >
-                    <CardContent className="p-4">
-                      <div className={cn(
-                        "flex items-center gap-3",
-                        isRTL && "flex-row-reverse"
-                      )}>
-                        <div className={cn(
-                          "p-2 rounded-lg",
-                          stat.bgColor
-                        )}>
-                          <Icon className={cn("w-4 h-4", stat.color)} />
+                    <CardContent className="p-4 text-center">
+                      <Icon className={cn("w-6 h-6 mx-auto mb-2 transition-colors", stat.color)} />
+                      <div className="text-2xl font-bold text-white">{stat.value}</div>
+                      <div className="text-sm text-white/70">{stat.label}</div>
+                      {stat.trend && (
+                        <div className="flex items-center justify-center gap-1 mt-1">
+                          <TrendingUp className="w-3 h-3 text-green-400" />
+                          <span className="text-xs text-green-400">{stat.trend}</span>
                         </div>
-                        <div className={cn("flex-1", isRTL && "text-right")}>
-                          <p className="text-2xl font-bold text-foreground">
-                            {stat.value.toLocaleString('ar-SA')}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {stat.label}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      {/* Trend Indicator */}
-                      <div className={cn(
-                        "mt-2 flex items-center gap-1",
-                        isRTL && "flex-row-reverse"
-                      )}>
-                        <TrendingUp className="w-3 h-3 text-green-500" />
-                        <span className="text-xs text-green-600">{stat.trend}</span>
-                        <span className="text-xs text-muted-foreground">من الشهر الماضي</span>
-                      </div>
+                      )}
                     </CardContent>
                   </Card>
                 );
               })}
             </div>
 
-            {/* Quick Actions */}
-            <Card className="border-border/50">
-              <CardContent className="p-4">
-                <h4 className={cn(
-                  "font-medium mb-3 text-foreground",
-                  isRTL && "text-right"
-                )}>
-                  الإجراءات السريعة
-                </h4>
-                <div className="space-y-2">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className={cn(
-                      "w-full justify-start gap-2",
-                      isRTL && "flex-row-reverse justify-end"
-                    )}
-                  >
-                    <Eye className="w-4 h-4" />
-                    عرض التحديات المحفوظة
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className={cn(
-                      "w-full justify-start gap-2",
-                      isRTL && "flex-row-reverse justify-end"
-                    )}
-                  >
-                    <Award className="w-4 h-4" />
-                    إنجازاتي في التحديات
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Enhanced Action Buttons */}
+            <div className="flex flex-wrap gap-4">
+              <Button
+                onClick={onShowFilters}
+                variant="gradient-primary"
+                size="lg"
+                className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              >
+                <Search className="w-5 h-5 mr-2" />
+                {t('challenges.explore_challenges', 'Explore Challenges')}
+              </Button>
+              
+              {canCreateChallenge && (
+                <Button
+                  onClick={onCreateChallenge}
+                  variant="overlay-secondary"
+                  size="lg"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  {t('challenges.create_challenge', 'Create Challenge')}
+                </Button>
+              )}
+              
+              <Button
+                onClick={onShowFilters}
+                variant="overlay-ghost"
+                size="lg"
+              >
+                <Filter className="w-5 h-5 mr-2" />
+                {t('challenges.advanced_filters', 'Advanced Filters')}
+              </Button>
+            </div>
+          </div>
+
+          {/* Enhanced Featured Challenge */}
+          <div className="space-y-6">
+            {featuredChallenge ? (
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+                <CardContent className="p-0">
+                  {/* Challenge Image */}
+                  <div className="relative h-48 overflow-hidden rounded-t-lg">
+                    <div className="w-full h-full bg-gradient-overlay flex items-center justify-center">
+                      <Target className="w-16 h-16 text-white/60" />
+                    </div>
+                    
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-green-500/90 text-white border-0 animate-pulse">
+                        <Clock className="w-3 h-3 mr-1" />
+                        {t('challenges.active', 'Active')}
+                      </Badge>
+                    </div>
+
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-orange-500/90 text-white border-0">
+                        <Star className="w-3 h-3 mr-1" />
+                        {t('challenges.featured', 'Featured')}
+                      </Badge>
+                    </div>
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  </div>
+
+                  <div className="p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-white">
+                      {featuredChallenge.title_ar}
+                    </h3>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-purple-300">
+                          {featuredChallenge.participant_count}
+                        </div>
+                        <div className="text-sm text-white/70">{t('challenges.participants', 'participants')}</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-yellow-300">
+                          {new Date(featuredChallenge.end_date).toLocaleDateString()}
+                        </div>
+                        <div className="text-sm text-white/70">{t('challenges.end_date', 'end date')}</div>
+                      </div>
+                    </div>
+
+                    <Progress 
+                      value={(featuredChallenge.participant_count / 500) * 100} 
+                      className="h-2 bg-white/20"
+                    />
+
+                    <Button 
+                      className="w-full gradient-primary hover:opacity-90 text-white"
+                    >
+                      {t('challenges.view_details', 'View Details')}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="bg-white/5 backdrop-blur-xl border-white/10 border-dashed">
+                <CardContent className="p-8 text-center">
+                  <Target className="w-16 h-16 mx-auto text-white/40 mb-4" />
+                  <h3 className="text-lg font-semibold text-white/80 mb-2">
+                    {t('challenges.no_featured_challenge', 'No Featured Challenge')}
+                  </h3>
+                  <p className="text-white/60 text-sm">
+                    {t('challenges.featured_will_appear', 'Featured challenges will appear here')}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Quick Action Cards */}
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                <CardContent className="p-4 text-center">
+                  <Bookmark className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                  <div className="text-sm font-medium text-white">
+                    {t('challenges.saved_challenges', 'Saved Challenges')}
+                  </div>
+                  <div className="text-xs text-white/70">
+                    {t('challenges.view_saved', 'View Saved')}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                <CardContent className="p-4 text-center">
+                  <Award className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
+                  <div className="text-sm font-medium text-white">
+                    {t('challenges.achievements', 'Achievements')}
+                  </div>
+                  <div className="text-xs text-white/70">
+                    {t('challenges.my_achievements', 'My Achievements')}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
