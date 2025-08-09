@@ -52,6 +52,10 @@ const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement')
 const TeamManagement = lazy(() => import('@/pages/admin/TeamManagement'));
 const CollaborationPage = lazy(() => import('@/pages/CollaborationPage'));
 const CollaborationLandingPage = lazy(() => import('@/pages/CollaborationLandingPage'));
+const CollaborativeIdeasPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeIdeasPage })));
+const CollaborativeChallengesPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeChallengesPage })));
+const CollaborativeEventsPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeEventsPage })));
+const CollaborativeOpportunitiesPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeOpportunitiesPage })));
 
 // Workspace Components
 const UserWorkspace = lazy(() => import('@/pages/workspace/UserWorkspace'));
@@ -104,12 +108,12 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: ALL_ROUTES.CHALLENGES,
-    component: ChallengesBrowse,
+    component: CollaborativeChallengesPage,
     public: true,
   },
   {
     path: ALL_ROUTES.EVENTS,
-    component: EventsBrowse,
+    component: CollaborativeEventsPage,
     public: true,
   },
 
@@ -136,7 +140,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: ALL_ROUTES.IDEAS,
-    component: Ideas,
+    component: CollaborativeIdeasPage,
     requireAuth: true,
     requireProfile: true,
     withAppShell: true,
@@ -150,7 +154,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: ALL_ROUTES.OPPORTUNITIES,
-    component: OpportunitiesPage,
+    component: CollaborativeOpportunitiesPage,
     requireAuth: true,
     requireProfile: true,
     withAppShell: true,
