@@ -25,6 +25,9 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+// Collaboration imports
+import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 
 interface Challenge {
   id: string;
@@ -186,8 +189,16 @@ export default function Challenges() {
   }
 
   return (
-    <AppShell>
-      <div className="container mx-auto px-4 py-8">
+    <RealTimeCollaborationWrapper
+      contextType="global"
+      contextId="challenges"
+      entityType="challenges"
+      entityId="browse"
+      showWidget={true}
+      widgetPosition="bottom-right"
+    >
+      <AppShell>
+        <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">التحديات الابتكارية</h1>
           <p className="text-muted-foreground">استكشف التحديات المتاحة وشارك في الابتكار</p>
@@ -357,7 +368,17 @@ export default function Challenges() {
             </TabsContent>
           </Tabs>
         </div>
+        
+        {/* Collaboration Integration */}
+        <WorkspaceCollaboration
+          workspaceType="user"
+          entityId="challenges"
+          showWidget={false}
+          showPresence={true}
+          showActivity={false}
+        />
       </div>
     </AppShell>
+    </RealTimeCollaborationWrapper>
   );
 }

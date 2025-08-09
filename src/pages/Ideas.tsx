@@ -29,9 +29,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
 // Collaboration imports
-import { CollaborationProvider } from '@/components/collaboration';
+import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { UserPresence } from '@/components/collaboration/UserPresence';
+import { useCollaboration } from '@/contexts/CollaborationContext';
 import { 
   Plus, Lightbulb, TrendingUp, Filter, Heart, MessageSquare,
   Eye, Star, Trophy, Target, Rocket, CheckCircle, Clock,
@@ -925,7 +926,14 @@ export default function IdeasPage() {
   };
 
   return (
-    <CollaborationProvider>
+    <RealTimeCollaborationWrapper
+      contextType="global"
+      contextId="ideas"
+      entityType="ideas"
+      entityId="browse"
+      showWidget={true}
+      widgetPosition="bottom-right"
+    >
       <AppShell>
         <EnhancedIdeasHero 
           totalIdeas={personalMetrics.totalIdeas}
@@ -1260,8 +1268,8 @@ export default function IdeasPage() {
         />
 
 
-      </PageLayout>
-    </AppShell>
-    </CollaborationProvider>
+        </PageLayout>
+      </AppShell>
+    </RealTimeCollaborationWrapper>
   );
 }
