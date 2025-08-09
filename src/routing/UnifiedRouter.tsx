@@ -40,6 +40,7 @@ const UserManagement = lazy(() => import('@/pages/UserManagement'));
 const ChallengesManagement = lazy(() => import('@/pages/ChallengesManagement'));
 const CampaignsManagement = lazy(() => import('@/pages/CampaignsManagement'));
 const EventsManagement = lazy(() => import('@/pages/EventsManagement'));
+const IdeasManagement = lazy(() => import('@/pages/IdeasManagement'));
 
 // Route configuration interface
 export interface UnifiedRouteConfig {
@@ -188,6 +189,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_CAMPAIGNS,
     component: CampaignsManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_IDEAS,
+    component: IdeasManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
