@@ -14,7 +14,9 @@ import { logger } from "@/utils/logger";
 interface Stakeholder {
   id?: string;
   name: string;
+  name_ar?: string;
   organization: string;
+  organization_ar?: string;
   position: string;
   email: string;
   phone?: string;
@@ -42,7 +44,9 @@ export function StakeholderWizard({
   
   const [formData, setFormData] = useState({
     name: "",
+    name_ar: "",
     organization: "",
+    organization_ar: "",
     position: "",
     email: "",
     phone: "",
@@ -95,7 +99,9 @@ export function StakeholderWizard({
     if (stakeholder) {
       setFormData({
         name: stakeholder.name || "",
+        name_ar: stakeholder.name_ar || "",
         organization: stakeholder.organization || "",
+        organization_ar: stakeholder.organization_ar || "",
         position: stakeholder.position || "",
         email: stakeholder.email || "",
         phone: stakeholder.phone || "",
@@ -108,7 +114,9 @@ export function StakeholderWizard({
     } else {
       setFormData({
         name: "",
+        name_ar: "",
         organization: "",
+        organization_ar: "",
         position: "",
         email: "",
         phone: "",
@@ -161,7 +169,9 @@ export function StakeholderWizard({
     try {
       const stakeholderData = {
         name: formData.name.trim(),
+        name_ar: formData.name_ar?.trim() || null,
         organization: formData.organization.trim(),
+        organization_ar: formData.organization_ar?.trim() || null,
         position: formData.position.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim() || null,
@@ -252,6 +262,17 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="name_ar">Name (English)</Label>
+              <Input
+                id="name_ar"
+                value={formData.name_ar}
+                onChange={(e) => updateFormData("name_ar", e.target.value)}
+                placeholder="Enter stakeholder name in English"
+                dir="ltr"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="organization">{t('stakeholder_wizard.organization')} *</Label>
               <Input
                 id="organization"
@@ -264,6 +285,17 @@ export function StakeholderWizard({
               {errors.organization && (
                 <p className="text-sm text-destructive">{t('stakeholder_wizard.organization_required')}</p>
               )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="organization_ar">Organization (English)</Label>
+              <Input
+                id="organization_ar"
+                value={formData.organization_ar}
+                onChange={(e) => updateFormData("organization_ar", e.target.value)}
+                placeholder="Enter organization name in English"
+                dir="ltr"
+              />
             </div>
 
             <div className="space-y-2">

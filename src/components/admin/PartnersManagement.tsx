@@ -16,6 +16,8 @@ interface Partner {
   id: string;
   name: string;
   name_ar?: string;
+  description?: string;
+  description_ar?: string;
   partner_type?: string;
   email?: string;
   phone?: string;
@@ -47,6 +49,8 @@ export function PartnersManagement() {
   const [formData, setFormData] = useState({
     name: "",
     name_ar: "",
+    description: "",
+    description_ar: "",
     partner_type: partnerTypeOptions[0] || "government",
     email: "",
     phone: "",
@@ -129,6 +133,8 @@ export function PartnersManagement() {
     setFormData({
       name: partner.name,
       name_ar: partner.name_ar || "",
+      description: partner.description || "",
+      description_ar: partner.description_ar || "",
       partner_type: partner.partner_type || partnerTypeOptions[0] || "government",
       email: partner.email || "",
       phone: partner.phone || "",
@@ -193,6 +199,8 @@ export function PartnersManagement() {
     setFormData({
       name: "",
       name_ar: "",
+      description: "",
+      description_ar: "",
       partner_type: partnerTypeOptions[0] || "government",
       email: "",
       phone: "",
@@ -268,6 +276,27 @@ export function PartnersManagement() {
                     id="name_ar"
                     value={formData.name_ar}
                     onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <Label htmlFor="description">Description (English)</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    dir="ltr"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="description_ar">Description (Arabic)</Label>
+                  <Textarea
+                    id="description_ar"
+                    value={formData.description_ar}
+                    onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })}
+                    dir="rtl"
                   />
                 </div>
               </div>

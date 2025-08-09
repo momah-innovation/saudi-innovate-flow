@@ -16,6 +16,7 @@ interface Sector {
   name: string;
   name_ar?: string;
   description?: string;
+  description_ar?: string;
   vision_2030_alignment?: string;
   created_at: string;
 }
@@ -39,6 +40,7 @@ export function SectorsManagement() {
     name: "",
     name_ar: "",
     description: "",
+    description_ar: "",
     vision_2030_alignment: ""
   });
 
@@ -88,6 +90,7 @@ export function SectorsManagement() {
             name: formData.name,
             name_ar: formData.name_ar,
             description: formData.description,
+            description_ar: formData.description_ar,
             vision_2030_alignment: formData.vision_2030_alignment,
             updated_at: new Date().toISOString()
           })
@@ -132,6 +135,7 @@ export function SectorsManagement() {
       name: sector.name,
       name_ar: sector.name_ar || "",
       description: sector.description || "",
+      description_ar: sector.description_ar || "",
       vision_2030_alignment: sector.vision_2030_alignment || ""
     });
     setIsDialogOpen(true);
@@ -167,6 +171,7 @@ export function SectorsManagement() {
       name: "",
       name_ar: "",
       description: "",
+      description_ar: "",
       vision_2030_alignment: ""
     });
   };
@@ -220,11 +225,22 @@ export function SectorsManagement() {
               </div>
 
               <div>
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">Description (English)</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  dir="ltr"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="description_ar">Description (Arabic)</Label>
+                <Textarea
+                  id="description_ar"
+                  value={formData.description_ar || ''}
+                  onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })}
+                  dir="rtl"
                 />
               </div>
 
