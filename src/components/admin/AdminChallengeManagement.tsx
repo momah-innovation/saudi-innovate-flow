@@ -25,7 +25,9 @@ import { format } from "date-fns";
 interface AdminChallenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   status: string;
   priority_level: string;
   challenge_type: string;
@@ -158,7 +160,9 @@ export function AdminChallengeManagement() {
 
   const filteredChallenges = useMemo(() => challenges.filter(challenge => {
     const matchesSearch = challenge.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         challenge.description_ar.toLowerCase().includes(searchTerm.toLowerCase());
+                         challenge.description_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (challenge.title_en?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                         (challenge.description_en?.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStatus = statusFilter === 'all' || challenge.status === statusFilter;
     return matchesSearch && matchesStatus;
   }), [challenges, searchTerm, statusFilter]);

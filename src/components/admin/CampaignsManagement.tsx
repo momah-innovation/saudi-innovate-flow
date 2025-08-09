@@ -16,7 +16,9 @@ import {
 interface Campaign {
   id: string;
   title_ar: string;
+  title_en?: string;
   description_ar?: string;
+  description_en?: string;
   status: 'planning' | 'active' | 'paused' | 'completed';
   priority?: 'low' | 'medium' | 'high';
   start_date: string;

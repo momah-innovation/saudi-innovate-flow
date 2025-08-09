@@ -20,6 +20,7 @@ import { logger } from "@/utils/error-handler";
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
   priority_level: string;
   sensitivity_level: string;
