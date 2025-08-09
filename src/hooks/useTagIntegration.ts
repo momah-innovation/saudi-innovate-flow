@@ -94,7 +94,7 @@ export const useTagIntegration = () => {
       if (!tableName) throw new Error('Invalid entity type');
 
       const { error } = await supabase
-        .from(tableName)
+        .from(tableName as any)
         .insert({
           [`${entityType}_id`]: entityId,
           tag_id: tagId,
@@ -116,7 +116,7 @@ export const useTagIntegration = () => {
       if (!tableName) throw new Error('Invalid entity type');
 
       const { error } = await supabase
-        .from(tableName)
+        .from(tableName as any)
         .delete()
         .eq(`${entityType}_id`, entityId)
         .eq('tag_id', tagId);
@@ -136,7 +136,7 @@ export const useTagIntegration = () => {
       if (!tableName) return [];
 
       const { data, error } = await supabase
-        .from(tableName)
+        .from(tableName as any)
         .select(`
           tag_id,
           tags (*)
@@ -144,7 +144,7 @@ export const useTagIntegration = () => {
         .eq(`${entityType}_id`, entityId);
 
       if (error) throw error;
-      return data?.map(item => item.tags).filter(Boolean) || [];
+      return data?.map((item: any) => item.tags).filter(Boolean) || [];
     } catch (error) {
       console.error('Failed to get entity tags:', error);
       return [];
