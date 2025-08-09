@@ -93,12 +93,94 @@
 | Ideas | IdeasManagementList | Idea management and oversight |
 | Analytics | IdeasAnalytics | Idea submission analytics |
 
-#### **Expert Assignment Management** (`/admin/expert-assignments`)
+#### **Organizational Structure Management** (`/admin/organizational-structure`)
 | Tab | Component | Features |
 |-----|-----------|----------|
-| Assignments | ExpertAssignmentList | Active expert assignments |
-| Workload | WorkloadOverview | Expert workload distribution |
-| Availability | AvailabilityTracking | Expert availability management |
+| Deputies | DeputyManagement | Deputy creation and management with detailed dialogs |
+| Departments | DepartmentManagement | Department hierarchy management |
+| Domains | DomainManagement | Domain classification and organization |
+| Sub-domains | SubDomainManagement | Sub-domain categorization |
+| Services | ServiceManagement | Service catalog management |
+
+#### **Team Workspace** (`/admin/team-workspace`)
+| Tab | Component | Features |
+|-----|-----------|----------|
+| Dashboard | WorkspaceDashboard | Team activity overview and metrics |
+| Projects | ProjectManagement | Project creation, tracking, and management |
+| Team | TeamManagement | Team member management and roles |
+| Schedule | ScheduleManagement | Meeting and task scheduling |
+
+#### **Team Management** (`/admin/team-management`)
+| Tab | Component | Features |
+|-----|-----------|----------|
+| Teams | TeamManagementList | Core team structure and assignments |
+| Projects | ProjectManagementList | Project tracking and collaboration |
+| Analytics | TeamAnalytics | Team performance metrics |
+
+#### **Innovation Teams** (`/admin/innovation-teams`)
+| Tab | Component | Features |
+|-----|-----------|----------|
+| Core Team | CoreTeamManagement | Innovation team structure |
+| Assignments | TeamAssignmentManagement | Task and role assignments |
+| Performance | PerformanceTracking | Team performance analytics |
+
+#### **Challenge Analytics** (Sub-component)
+| Tab | Component | Features |
+|-----|-----------|----------|
+| Distribution | DistributionAnalytics | Challenge distribution metrics |
+| Performance | PerformanceAnalytics | Challenge performance tracking |
+| Trends | TrendAnalytics | Challenge trend analysis |
+
+### **Wizard Components** (Multi-step Forms)
+| Wizard | Steps | Features |
+|--------|-------|----------|
+| CampaignWizard | 4 steps | Campaign creation with validation |
+| ChallengeWizard | 5 steps | Challenge setup and configuration |
+| ChallengeWizardV2 | Enhanced | Advanced challenge creation |
+| TeamMemberWizard | 3 steps | Team member onboarding |
+| UserInvitationWizard | 2 steps | User invitation process |
+| IdeaWizard | 4 steps | Structured idea submission |
+| OpportunityWizard | 3 steps | Opportunity creation process |
+| StakeholderWizard | 3 steps | Stakeholder registration |
+| TeamWizard | 3 steps | Team creation and setup |
+| EventWizard | Multi-step | Comprehensive event creation |
+| RoleRequestWizard | 2 steps | Role request submission |
+
+### **Detail View Components**
+| Detail View | Access From | Features |
+|-------------|-------------|----------|
+| ChallengeDetailView | Challenge lists | Comprehensive challenge overview with accordions |
+| IdeaDetailView | Idea management | Detailed idea view with collaboration tools |
+| ExpertDetailView | Expert assignments | Expert profile and assignment details |
+| PartnerDetailView | Partner management | Partner information and collaboration history |
+| FocusQuestionDetailView | Focus question management | Question details and usage analytics |
+| AssignmentDetailView | Assignment tracking | Assignment progress and navigation |
+
+### **Analytics Components**
+| Analytics | Data Source | Features |
+|-----------|-------------|----------|
+| ChallengeAnalytics | Challenge data | Distribution, performance, trends analysis |
+| IdeaAnalytics | Idea submissions | Submission trends and evaluation metrics |
+| StorageAnalyticsDashboard | Storage usage | File storage metrics and trends |
+| TeamAnalytics | Team performance | Team productivity and collaboration metrics |
+
+### **Settings Categories** (All under SystemSettings)
+| Category | Component | Configuration Areas |
+|----------|-----------|-------------------|
+| General | GeneralSettings | Basic system configuration |
+| Challenges | ChallengeSettings | Challenge-specific parameters |
+| Ideas | IdeaSettings | Idea submission configuration |
+| Events | EventSettings | Event management settings |
+| Campaigns | CampaignSettings | Campaign configuration |
+| Partners | PartnerSettings | Partner management settings |
+| Opportunities | OpportunitySettings | Opportunity configuration |
+| Analytics | AnalyticsSettings | Analytics and reporting settings |
+| Security | SecuritySettings | Security and access control |
+| AI | AISettings | AI feature configuration |
+| UI | UISettings | User interface customization |
+| Performance | PerformanceSettings | System performance optimization |
+| Notifications | NotificationSettings | Global notification configuration |
+| Translations | TranslationManagement | Multi-language content management |
 
 ---
 
@@ -349,30 +431,126 @@ graph LR
 - **Notification system**: Real-time updates and preference management
 - **Search integration**: Global search with advanced filtering
 
-### **Dialog-Based Sub-Pages**
+### **Advanced Dialog Components**
 | Dialog | Trigger From | Features |
 |--------|--------------|----------|
-| Challenge Settings | Admin Challenge Management | 4-tab settings configuration |
+| Challenge Settings | Admin Challenge Management | 4-tab settings configuration (Access, Notifications, Workflow, Advanced) |
 | Expert Profile | Expert Assignment Management | Expert profile viewing and editing |
+| Expert Assignment | Expert Assignment Management | Single expert assignment dialog |
+| Bulk Expert Assignment | Expert Assignment Management | Multi-expert assignment dialog |
+| Edit Assignment | Expert Assignment Management | Assignment modification dialog |
 | Campaign Wizard | Campaigns Management | Multi-step campaign creation |
 | Challenge View | Various pages | Challenge details and actions |
 | Event Detail | Events Browse | Event information and registration |
 | Assignment Detail | Expert assignments | Assignment details and navigation |
+| Role Request Wizard | Settings/Profile | Role request submission process |
+| Team Member Wizard | Team Management | Member onboarding process |
+| User Invitation Wizard | Admin tools | User invitation workflow |
+| Create Project | Team Workspace | Project creation interface |
+| Invite Member | Team Workspace | Team member invitation |
+| Task Assignment | Team Workspace | Task assignment interface |
+| Meeting Scheduler | Team Workspace | Meeting scheduling tool |
+| Team Chat Sheet | Team Workspace | Team communication panel |
 
-### **Advanced Component Features**
-| Component | Sub-Components | Special Features |
-|-----------|----------------|------------------|
-| UnifiedSettingsManager | Multiple category filters | Dynamic settings loading by category |
-| TranslationManagement | Language editing interface | Multi-language content management |
-| NavigationSidebar | Dynamic menu generation | Role-based menu items |
-| GlobalSearch | Unified search interface | Cross-platform search functionality |
-| NotificationCenter | Real-time notifications | Activity tracking and updates |
+### **Organizational Management Components**
+| Component | Management Area | Sub-Components |
+|-----------|----------------|----------------|
+| DeputyManagement | Deputies | Deputy creation, editing, detail dialogs |
+| DepartmentManagement | Departments | Department hierarchy with deputy links |
+| DomainManagement | Domains | Domain classification and organization |
+| SubDomainManagement | Sub-domains | Sub-domain categorization |
+| ServiceManagement | Services | Service catalog and offerings |
+| SectorsManagement | Sectors | Sector classification and management |
+| PartnersManagement | Partners | Partner relationships and collaboration |
+| StakeholdersManagement | Stakeholders | Stakeholder engagement and tracking |
 
-### **Missing Route Implementations**
-- **Team Collaboration**: Team workspace and collaboration features
-- **Report Generation**: Advanced reporting and export functionality
-- **User Profile Management**: Enhanced profile editing beyond expert profiles
-- **Notification Management**: Dedicated notification configuration page
+### **Accordion-Based Components**
+| Component | Accordion Sections | Purpose |
+|-----------|-------------------|---------|
+| ChallengeDetailView | Overview, Team, Questions, Events, Ideas, Implementation, Analytics, Notes | Comprehensive challenge information |
+| GlobalListSettings | Language/Localization, File/Data, Classification, UI/Appearance, Communication, System/Admin | Global system list configuration |
+| SystemListSettings | Challenge Lists, Event Lists, Stakeholder Lists, Team Lists, Evaluation Lists, Campaign Lists | System-specific list management |
+
+### **Filter and Search Components**
+| Component | Filter Types | Advanced Features |
+|-----------|-------------|------------------|
+| ChallengeFilters | Status, Priority, Date, Category | Collapsible filter panels |
+| EventFilters | Date range, Type, Location, Status | Advanced search with collapsible sections |
+| FocusQuestionFilters | Type, Status, Difficulty, Category | Multi-criteria filtering |
+| AdvancedFilters | Universal filter component | Collapsible content areas |
+
+### **Notification and Communication**
+| Component | Features | Integration |
+|-----------|----------|-------------|
+| NotificationCenter | Real-time notifications, activity tracking | Global notification system |
+| IdeaNotificationCenter | Idea-specific notifications | Idea submission workflow |
+| TeamChatSheet | Team communication | Team workspace integration |
+| AdminNotificationSettings | Global notification configuration | System settings integration |
+
+### **Specialized Management Lists**
+| Management List | Entity Type | Features |
+|----------------|-------------|----------|
+| ChallengeManagementList | Challenges | Grid/list view, detail modals, bulk actions |
+| IdeasManagementList | Ideas | Advanced filtering, workflow panels, comments |
+| FocusQuestionManagementList | Focus Questions | Question management with detail views |
+| OpportunityManagementList | Opportunities | Partnership opportunity tracking |
+| TeamManagementContent | Teams | Team structure and project tracking |
+| TeamWorkspaceContent | Workspace | Comprehensive team collaboration tools |
+
+### **Form and Editor Components**
+| Component | Purpose | Features |
+|-----------|---------|----------|
+| ProfileEditForm | User profile editing | Comprehensive profile management |
+| ChallengeForm | Challenge creation/editing | Enhanced challenge form with validation |
+| MultiStepForm | Generic wizard component | Reusable multi-step form framework |
+| FormLayout | Form structure | RTL-aware form layouts |
+| RTLForm | RTL form support | Arabic language form optimization |
+| DynamicSelect | Dynamic dropdown | Data-driven select components |
+| FeedbackForm | User feedback collection | Feedback and rating system |
+
+### **Storage and File Management**
+| Component | Functionality | Features |
+|-----------|---------------|----------|
+| StorageAnalyticsDashboard | Storage analytics | File usage metrics and trends |
+| StorageQuotaManager | Quota management | Storage limit configuration |
+| ConfigurationTester | Upload testing | File upload configuration testing |
+
+### **Performance and Monitoring**
+| Component | Purpose | Features |
+|-----------|---------|----------|
+| PerformanceMonitor | Performance tracking | Component-level performance monitoring |
+| PerformanceSettings | Performance configuration | System optimization settings |
+| ErrorBoundary | Error handling | Comprehensive error boundary system |
+| FormErrorBoundary | Form error handling | Form-specific error management |
+
+### **UI and Theme Components**
+| Component | Features | Customization |
+|-----------|----------|---------------|
+| UISettings | Theme configuration | Light/dark/system themes, color schemes |
+| ThemeProvider | Theme management | Global theme state management |
+| LanguageSettings | Localization | Multi-language support configuration |
+| DirectionProvider | RTL/LTR support | Text direction management |
+
+### **Data Management and Analytics**
+| Component | Data Type | Analytics Features |
+|-----------|-----------|-------------------|
+| CompetitiveIntelligence | Market analysis | Trends, opportunities, threats tracking |
+| AIUsageTracking | AI feature usage | Token usage, cost estimation, performance |
+| ContentModerationLogs | Content review | AI-powered content moderation tracking |
+| AnalyticsEvents | User interactions | Event tracking and user behavior analysis |
+
+### **Missing Component Implementations**
+| Missing Component | Intended Purpose | Priority |
+|------------------|------------------|----------|
+| AccessControlManagement | Super admin system controls | High |
+| SettingsPage | User settings interface | High |
+| ProfileSetupPage | Initial profile configuration | High |
+| AdminUsers | User management interface | Medium |
+| AdminTeams | Team administration | Medium |
+| AdminStorage | Storage administration | Medium |
+| NotificationManagement | Notification configuration | Medium |
+| ReportGenerator | Advanced reporting | Low |
+| TeamCollaboration | Enhanced team features | Low |
 
 ---
 
