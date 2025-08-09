@@ -6,11 +6,12 @@ This document provides a complete map of all pages, components, dialogs, sheets,
 
 ### System Architecture Status
 - **Total Existing Pages**: 65+ pages found in src/pages/
-- **Total Routed Pages**: 43+ pages in UnifiedRouter (INCREASED)
+- **Total Routed Pages**: 43+ pages in UnifiedRouter (MAINTAINED)
 - **Disconnected Pages**: 7+ pages exist but not routed (REDUCED)
 - **Missing Pages**: 8+ routes defined but no implementation
 - **Orphaned Components**: 15+ components not connected anywhere
-- **Recently Fixed**: User Management ✅, Challenges Management ✅, Campaigns Management ✅, Events Management ✅, Ideas Management ✅
+- **Recently Fixed**: User Management ✅, Challenges Management ✅, Campaigns Management ✅, Events Management ✅, Ideas Management ✅ - ALL MOVED TO ADMIN FOLDER
+- **Admin Folder Organization**: 5/5 completed management pages now properly organized in `src/pages/admin/`
 
 ---
 
