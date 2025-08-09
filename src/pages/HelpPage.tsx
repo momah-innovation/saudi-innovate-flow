@@ -429,6 +429,29 @@ const HelpPage = () => {
                 <Card className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
+                      <Book className="h-5 w-5" />
+                      {isRTL ? 'وثائق مساحات العمل' : 'Workspace Documentation'}
+                    </CardTitle>
+                    <CardDescription>
+                      {isRTL ? 'دليل شامل لفهم أنواع مساحات العمل ووظائفها' : 'Comprehensive guide to workspace types and their functions'}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="text-sm text-muted-foreground">{isRTL ? 'صفحة ويب' : 'Web Page'}</div>
+                      <Button className="w-full" asChild>
+                        <a href="/docs/workspaces">
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          {isRTL ? 'عرض الوثائق' : 'View Documentation'}
+                        </a>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
                       <Download className="h-5 w-5" />
                       {isRTL ? 'قوالب المشاريع' : 'Project Templates'}
                     </CardTitle>

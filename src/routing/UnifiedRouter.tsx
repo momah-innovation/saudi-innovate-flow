@@ -23,6 +23,7 @@ const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'));
 const HelpPage = lazy(() => import('@/pages/HelpPage'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const DesignSystem = lazy(() => import('@/pages/DesignSystem'));
+const WorkspaceDocumentation = lazy(() => import('@/pages/WorkspaceDocumentation'));
 const PartnersManagement = lazy(() => import('@/pages/admin/PartnersManagement'));
 const SectorsManagement = lazy(() => import('@/pages/admin/SectorsManagement'));
 const ExpertAssignmentManagement = lazy(() => import('@/pages/admin/ExpertAssignmentManagement'));
@@ -355,6 +356,11 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     component: DesignSystem,
     requireAuth: true,
     withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.WORKSPACE_DOCS,
+    component: WorkspaceDocumentation,
+    public: true,
   },
 ];
 
