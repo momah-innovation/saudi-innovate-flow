@@ -132,13 +132,18 @@ const ChallengeDetails = () => {
   const canEdit = hasRole('admin') || hasRole('super_admin');
 
   useEffect(() => {
-    console.log('🎯 useEffect called with challengeId:', challengeId);
+    console.log('🎯 ChallengeDetails useEffect triggered');
+    console.log('📋 challengeId:', challengeId);
+    console.log('🔄 Current loading state:', loading);
+    console.log('🎯 Current challenge state:', challenge);
+    
     if (challengeId) {
-      console.log('🔄 About to call fetchChallengeDetails');
+      console.log('✅ challengeId exists, calling fetchChallengeDetails');
       fetchChallengeDetails();
       fetchSystemSettings();
     } else {
-      console.log('❌ No challengeId found');
+      console.log('❌ No challengeId found in params');
+      console.log('🔍 Available params:', { challengeId });
     }
   }, [challengeId]);
 
@@ -301,19 +306,25 @@ const ChallengeDetails = () => {
 
   const fetchChallengeDetails = async () => {
     try {
-      console.log('🚀 Starting fetchChallengeDetails for challengeId:', challengeId);
+      console.log('🚀 fetchChallengeDetails STARTED');
+      console.log('📝 Challenge ID:', challengeId);
+      console.log('⏳ Setting loading to true');
       setLoading(true);
       
       // Fetch challenge data from Supabase  
+      console.log('🔍 Fetching challenge data from database...');
       const { data: challengeData, error: challengeError } = await supabase
         .from('challenges')
         .select('*')
         .eq('id', challengeId)
         .maybeSingle();
 
-      console.log('🔍 Challenge fetch result:', { challengeData, challengeError });
+      console.log('📊 Challenge query completed');
+      console.log('📋 Challenge data:', challengeData);
+      console.log('❌ Challenge error:', challengeError);
 
       if (challengeError) {
+        console.error('💥 Challenge fetch error:', challengeError);
         logger.error('Failed to fetch challenge details', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, challengeError as Error);
         toast({
           title: "Error",
@@ -324,10 +335,13 @@ const ChallengeDetails = () => {
       }
 
       if (challengeData) {
+        console.log('✅ Challenge data found, setting state');
         setChallenge(challengeData);
         setEditValues(challengeData);
+        console.log('✅ Challenge state updated');
       } else {
         // Challenge not found
+        console.log('❌ No challenge data found');
         toast({
           title: "التحدي غير موجود",
           description: "لم يتم العثور على التحدي المطلوب",
@@ -338,19 +352,27 @@ const ChallengeDetails = () => {
       }
 
       // Fetch focus questions
+      console.log('🔍 Fetching focus questions...');
       const { data: questionsData, error: questionsError } = await supabase
         .from('focus_questions')
         .select('*')
         .eq('challenge_id', challengeId)
         .order('order_sequence');
 
+      console.log('📊 Focus questions query completed');
+      console.log('📋 Questions data:', questionsData);
+      console.log('❌ Questions error:', questionsError);
+
       if (questionsError) {
+        console.warn('⚠️ Failed to fetch focus questions:', questionsError);
         logger.error('Failed to fetch focus questions', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', challengeId }, questionsError as Error);
       } else {
+        console.log('✅ Setting focus questions state');
         setFocusQuestions((questionsData as any) || []);
       }
 
       // Fetch assigned experts
+      console.log('🔍 Fetching assigned experts...');
       const { data: expertsData, error: expertsError } = await supabase
         .from('challenge_experts')
         .select(`
@@ -365,10 +387,15 @@ const ChallengeDetails = () => {
         .eq('challenge_id', challengeId)
         .eq('status', 'active');
 
+      console.log('📊 Experts query completed');
+      console.log('📋 Experts data:', expertsData);
+      console.log('❌ Experts error:', expertsError);
+
       if (expertsError) {
-        console.warn('Failed to fetch experts:', expertsError);
+        console.warn('⚠️ Failed to fetch experts:', expertsError);
         logger.error('Failed to fetch challenge experts', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', challengeId }, expertsError as Error);
       } else if (expertsData) {
+        console.log('✅ Processing and setting experts data');
         // Transform the data to match our interface  
         const transformedData = expertsData.map(item => ({
           ...item,
@@ -378,6 +405,7 @@ const ChallengeDetails = () => {
           } : undefined
         }));
         setAssignedExperts(transformedData as ChallengeExpert[]);
+        console.log('✅ Experts state updated');
       }
 
       // Fetch organizational hierarchy
@@ -390,6 +418,13 @@ const ChallengeDetails = () => {
       console.log('🎉 fetchChallengeDetails completed successfully');
 
     } catch (error) {
+      console.error('💥 MAJOR ERROR in fetchChallengeDetails:', error);
+      console.error('🔍 Error details:', {
+        message: error?.message,
+        stack: error?.stack,
+        challengeId,
+        timestamp: new Date().toISOString()
+      });
       logger.error('Error in fetchChallengeDetails', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, error as Error);
       toast({
         title: "Error",
@@ -397,7 +432,9 @@ const ChallengeDetails = () => {
         variant: "destructive",
       });
     } finally {
+      console.log('🏁 fetchChallengeDetails FINALLY block - setting loading to false');
       setLoading(false);
+      console.log('✅ Loading state set to false');
     }
   };
 
@@ -579,7 +616,16 @@ const ChallengeDetails = () => {
     });
   };
 
+  console.log('🎨 RENDER: ChallengeDetails component');
+  console.log('📊 Current state:', { 
+    loading, 
+    challengeExists: !!challenge, 
+    challengeId,
+    challengeTitle: challenge?.title_ar 
+  });
+
   if (loading) {
+    console.log('⏳ RENDER: Showing loading state');
     return (
       <div className="p-6 space-y-6">
         <div className="h-8 bg-muted rounded animate-pulse" />
@@ -598,6 +644,7 @@ const ChallengeDetails = () => {
   }
 
   if (!challenge) {
+    console.log('❌ RENDER: No challenge data, showing not found');
     return (
       <div className="p-6">
         <div className="text-center py-12">
@@ -608,6 +655,9 @@ const ChallengeDetails = () => {
       </div>
     );
   }
+
+  console.log('✅ RENDER: Showing challenge details');
+  console.log('📋 Challenge data:', challenge);
 
   const breadcrumbs = [
     { label: "التحديات", href: "/challenges" },
