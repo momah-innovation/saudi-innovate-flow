@@ -291,6 +291,15 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         roles: ['admin'] 
       },
       { 
+        id: 'admin-sectors', 
+        label: 'Sectors Management', 
+        arabicLabel: 'إدارة القطاعات',
+        icon: Building, 
+        path: '/admin/sectors',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
         id: 'admin-evaluations', 
         label: 'Evaluation Management', 
         arabicLabel: 'إدارة التقييمات',
@@ -354,15 +363,6 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         arabicLabel: 'الهيكل التنظيمي',
         icon: Building, 
         path: '/admin/organizational-structure',
-        group: 'system',
-        roles: ['admin'] 
-      },
-      { 
-        id: 'sectors-management', 
-        label: 'Sectors Management', 
-        arabicLabel: 'إدارة القطاعات',
-        icon: Network, 
-        path: '/admin/sectors',
         group: 'system',
         roles: ['admin'] 
       },
