@@ -178,6 +178,14 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       category: 'management'
     },
     {
+      title: language === 'ar' ? 'أصحاب المصلحة' : 'Stakeholders Management',
+      description: language === 'ar' ? 'إدارة علاقات أصحاب المصلحة' : 'Manage stakeholder relationships and engagement',
+      icon: Users,
+      action: () => navigate('/admin/stakeholders'),
+      show: canManageSystem,
+      category: 'management'
+    },
+    {
       title: language === 'ar' ? 'إدارة الفرق' : 'Teams Management',
       description: language === 'ar' ? 'تنظيم فرق العمل والمشاريع' : 'Organize work teams and projects',
       icon: Users,
