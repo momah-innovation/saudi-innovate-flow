@@ -2,6 +2,7 @@
 // Centralized route protection with role-based access control
 
 import React from 'react';
+console.log('🔒 ProtectedRoute component loaded');
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { ALL_ROUTES } from '@/routing/routes';

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export default function InnovationTeamsManagement() {
+  console.log('🎯 Core Team Management page loaded');
   const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState('core-team');
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
