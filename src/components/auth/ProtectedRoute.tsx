@@ -27,7 +27,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   redirectTo,
   
 }) => {
-  const { user, userProfile, hasRole } = useAuth();
+  const { user, userProfile, hasRole, loading } = useAuth();
   const location = useLocation();
 
   // Enhanced auth debugging
@@ -59,6 +59,18 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       userRoles: userProfile?.user_roles?.map(r => r.role)
     }
   });
+
+  // Wait for auth to finish loading before checking permissions
+  if (loading) {
+    return (
+      <div className="min-h-[400px] flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-sm text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Check authentication
   if (requireAuth && !user) {
