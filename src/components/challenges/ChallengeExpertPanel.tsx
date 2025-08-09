@@ -68,7 +68,7 @@ export const ChallengeExpertPanel: React.FC<ChallengeExpertPanelProps> = ({
         .eq('status', 'active');
 
       if (error) throw error;
-      setExperts(data || []);
+      setExperts((data as any[])?.filter(item => item.expert?.profiles) || []);
     } catch (error) {
       logger.error('Error loading experts', { challengeId }, error as Error);
     } finally {

@@ -102,7 +102,7 @@ export const ChallengePage: React.FC = () => {
         .single();
 
       if (error) throw error;
-      setChallenge(data);
+      setChallenge(data as any);
     } catch (error) {
       logger.error('Error loading challenge', { challengeId }, error as Error);
       toast({

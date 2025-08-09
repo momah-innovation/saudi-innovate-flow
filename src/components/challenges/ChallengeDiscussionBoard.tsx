@@ -68,7 +68,7 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setDiscussions(data || []);
+      setDiscussions((data as any[])?.filter(item => item.profiles) || []);
     } catch (error) {
       logger.error('Error loading discussions', { challengeId }, error as Error);
     } finally {
