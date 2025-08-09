@@ -162,6 +162,14 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       category: 'management'
     },
     {
+      title: language === 'ar' ? 'مهام الخبراء' : 'Expert Assignment Management',
+      description: language === 'ar' ? 'تعيين الخبراء للتحديات وإدارة التقييمات' : 'Assign experts to challenges and manage evaluations',
+      icon: Users,
+      action: () => navigate('/admin/expert-assignments'),
+      show: canManageUsers,
+      category: 'management'
+    },
+    {
       title: language === 'ar' ? 'إدارة الفرق' : 'Teams Management',
       description: language === 'ar' ? 'تنظيم فرق العمل والمشاريع' : 'Organize work teams and projects',
       icon: Users,
