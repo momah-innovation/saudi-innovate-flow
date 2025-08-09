@@ -26,15 +26,25 @@ export default function ChallengeDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showEditWizard, setShowEditWizard] = useState(false);
 
+  // Debug logging
+  console.log('🔍 ChallengeDetail Debug:', {
+    challengeId,
+    pathname: location.pathname,
+    params: { challengeId }
+  });
+
   useEffect(() => {
+    console.log('🔍 ChallengeDetail useEffect triggered:', { challengeId });
     if (challengeId) {
       fetchChallenge();
+    } else {
+      console.error('❌ No challengeId provided');
     }
   }, [challengeId]);
 
   const fetchChallenge = async () => {
     if (!challengeId) return;
-    
+    console.log('🔍 Fetching challenge:', challengeId);
     try {
       setLoading(true);
       const { data, error } = await supabase

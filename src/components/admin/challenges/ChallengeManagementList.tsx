@@ -136,6 +136,7 @@ export function ChallengeManagementList() {
 
   const handleView = (challenge: Challenge) => {
     // Navigate to full page view instead of dialog
+    console.log('🔍 Navigating to challenge detail:', `/admin/challenges/${challenge.id}`);
     window.location.href = `/admin/challenges/${challenge.id}`;
   };
 
