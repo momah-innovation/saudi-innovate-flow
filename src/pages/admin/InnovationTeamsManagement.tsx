@@ -69,8 +69,8 @@ export default function InnovationTeamsManagement() {
   return (
     <AppShell>
       <PageLayout 
-        title={t('coreInnovationTeam')}
-        description={t('manageCoreInnovationTeamMembers')}
+        title={t('coreTeam')}
+        description={t('manageCoreTeamMembers')}
         itemCount={0}
         primaryAction={{
           label: t('addCoreTeamMember'),

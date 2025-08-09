@@ -138,11 +138,11 @@ const ComponentManagement = lazy(() => import('@/pages/ComponentManagementPage')
 - **Dashboard Integration**: ✅ Added to AdminDashboard Management tab
 - **Completion**: Full routing, navigation, and dashboard access complete
 
-#### 11. **Innovation Teams Management** - ✅ FULLY COMPLETED
-- **Route**: `/admin/innovation-teams` 
+#### 11. **Core Team Management** - ✅ FULLY COMPLETED
+- **Route**: `/admin/core-team` 
 - **Status**: ✅ Connected to routing + Navigation + AdminDashboard integration
 - **Files**: 
-  - Component: `src/components/admin/TeamManagementContent.tsx`
+  - Component: `src/components/admin/InnovationTeamsContent.tsx`
   - Page: `src/pages/admin/InnovationTeamsManagement.tsx` ⬅️ MOVED TO ADMIN FOLDER
   - Route: Added to UnifiedRouter.tsx
 - **Navigation**: ✅ Added to NavigationSidebar admin section
@@ -213,7 +213,7 @@ const ComponentManagement = lazy(() => import('@/pages/ComponentManagementPage')
 - [x] **Expert Assignment Management** - ✅ COMPLETED
 - [x] **Organizational Structure** - ✅ COMPLETED
 - [x] **Stakeholders Management** - ✅ COMPLETED
-- [x] **Innovation Teams Management** - ✅ COMPLETED
+- [x] **Core Team Management** - ✅ COMPLETED
 - [ ] **Team Management** (complex)
 
 ### **Phase 3: Missing Page Creation**

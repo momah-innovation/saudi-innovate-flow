@@ -328,11 +328,11 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         roles: ['team', 'admin'] 
       },
       { 
-        id: 'admin-innovation-teams', 
-        label: 'Innovation Teams', 
-        arabicLabel: 'فرق الابتكار',
+        id: 'admin-core-team', 
+        label: 'Core Team', 
+        arabicLabel: 'الفريق الأساسي',
         icon: Users, 
-        path: '/admin/innovation-teams',
+        path: '/admin/core-team',
         group: 'admin',
         roles: ['admin'] 
       },

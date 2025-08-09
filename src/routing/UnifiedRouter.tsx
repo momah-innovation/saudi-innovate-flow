@@ -266,7 +266,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
   {
-    path: ALL_ROUTES.ADMIN_INNOVATION_TEAMS,
+    path: ALL_ROUTES.ADMIN_CORE_TEAM,
     component: InnovationTeamsManagement,
     requireAuth: true,
     requireProfile: true,

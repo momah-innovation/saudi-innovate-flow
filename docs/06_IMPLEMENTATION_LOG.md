@@ -262,19 +262,19 @@ This document maintains a detailed log of daily implementation progress, decisio
 
 ---
 
-## 📝 **August 9, 2025** - Innovation Teams Management Connected
+## 📝 **August 9, 2025** - Core Team Management Connected
 
 **✅ Completed:**
-- **NEXT CATEGORY**: Successfully connected Innovation Teams Management to routing system
-- Added route definition `ADMIN_INNOVATION_TEAMS: '/admin/innovation-teams'` to routes.ts
+- **NEXT CATEGORY**: Successfully connected Core Team Management to routing system
+- Added route definition `ADMIN_CORE_TEAM: '/admin/core-team'` to routes.ts
 - Added lazy import and route configuration to UnifiedRouter.tsx
 - Moved page from `src/pages/InnovationTeamsManagement.tsx` to `src/pages/admin/InnovationTeamsManagement.tsx`
-- Added Innovation Teams navigation entry to NavigationSidebar admin section
+- Added Core Team navigation entry to NavigationSidebar admin section
 - Updated all tracking documentation
 
 **🔧 Technical Details:**
-- **Route**: `/admin/innovation-teams` with admin role requirements
-- **Navigation**: Added to admin group with Users icon and Arabic translation 'فرق الابتكار'
+- **Route**: `/admin/core-team` with admin role requirements
+- **Navigation**: Added to admin group with Users icon and Arabic translation 'الفريق الأساسي'
 - **Components**: Comprehensive component with teams, projects, and analytics tabs including mock data
 - **Security**: Requires authentication, profile, and admin/super_admin roles
 
