@@ -22,16 +22,17 @@ interface Challenge {
   end_date?: string;
 }
 
-interface IdeaFormData {
+interface SubmissionFormData {
   title_ar: string;
   title_en: string;
   description_ar: string;
   description_en: string;
-  innovation_level: string;
-  implementation_timeline: string;
+  solution_approach: string;
+  implementation_plan: string;
   expected_impact: string;
-  required_resources: string;
-  tags: string[];
+  business_model: string;
+  technical_details: Record<string, any>;
+  team_members: any[];
 }
 
 const INNOVATION_LEVELS = [
@@ -62,16 +63,17 @@ export default function ChallengeIdeaSubmission() {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
 
-  const [formData, setFormData] = useState<IdeaFormData>({
+  const [formData, setFormData] = useState<SubmissionFormData>({
     title_ar: '',
     title_en: '',
     description_ar: '',
     description_en: '',
-    innovation_level: '',
-    implementation_timeline: '',
+    solution_approach: '',
+    implementation_plan: '',
     expected_impact: '',
-    required_resources: '',
-    tags: []
+    business_model: '',
+    technical_details: {},
+    team_members: []
   });
 
   useEffect(() => {
@@ -124,9 +126,9 @@ export default function ChallengeIdeaSubmission() {
       case 1:
         return formData.title_ar.trim().length > 0 && formData.description_ar.trim().length > 0;
       case 2:
-        return formData.innovation_level.length > 0 && formData.implementation_timeline.length > 0;
+        return formData.solution_approach.trim().length > 0 && formData.implementation_plan.trim().length > 0;
       case 3:
-        return formData.expected_impact.trim().length > 0 && formData.required_resources.trim().length > 0;
+        return formData.expected_impact.trim().length > 0 && formData.business_model.trim().length > 0;
       case 4:
         return true; // Review step, no additional validation
       default:
@@ -157,23 +159,26 @@ export default function ChallengeIdeaSubmission() {
     try {
       setSubmitting(true);
 
-      const ideaData = {
+      const submissionData = {
         title_ar: formData.title_ar,
         title_en: formData.title_en || null,
         description_ar: formData.description_ar,
         description_en: formData.description_en || null,
         challenge_id: challengeId,
-        innovator_id: userProfile.id,
-        innovation_level: formData.innovation_level,
-        estimated_timeline: formData.implementation_timeline,
+        submitted_by: userProfile.id,
+        solution_approach: formData.solution_approach,
+        implementation_plan: formData.implementation_plan,
         expected_impact: formData.expected_impact,
-        required_resources: formData.required_resources,
-        status: 'submitted'
+        business_model: formData.business_model,
+        technical_details: formData.technical_details,
+        team_members: formData.team_members,
+        status: 'submitted',
+        submission_date: new Date().toISOString()
       };
 
       const { error } = await supabase
-        .from('ideas')
-        .insert(ideaData);
+        .from('challenge_submissions')
+        .insert(submissionData);
 
       if (error) {
         throw error;
@@ -287,37 +292,27 @@ export default function ChallengeIdeaSubmission() {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">تصنيف الابتكار والجدولة الزمنية</h3>
+              <h3 className="text-lg font-semibold mb-4">الحل المقترح وخطة التنفيذ</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">مستوى الابتكار *</label>
-                  <Select value={formData.innovation_level} onValueChange={(value) => setFormData({ ...formData, innovation_level: value })}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="اختر مستوى الابتكار" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {INNOVATION_LEVELS.map((level) => (
-                        <SelectItem key={level.value} value={level.value}>
-                          {isRTL ? level.label_ar : level.label_en}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <label className="block text-sm font-medium mb-2">نهج الحل المقترح *</label>
+                  <Textarea
+                    value={formData.solution_approach}
+                    onChange={(e) => setFormData({ ...formData, solution_approach: e.target.value })}
+                    placeholder="اشرح النهج التقني والمنهجي لحل المشكلة"
+                    rows={4}
+                    dir="rtl"
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">الجدولة الزمنية للتنفيذ *</label>
-                  <Select value={formData.implementation_timeline} onValueChange={(value) => setFormData({ ...formData, implementation_timeline: value })}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="اختر الإطار الزمني المتوقع للتنفيذ" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {IMPLEMENTATION_TIMELINES.map((timeline) => (
-                        <SelectItem key={timeline.value} value={timeline.value}>
-                          {isRTL ? timeline.label_ar : timeline.label_en}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <label className="block text-sm font-medium mb-2">خطة التنفيذ *</label>
+                  <Textarea
+                    value={formData.implementation_plan}
+                    onChange={(e) => setFormData({ ...formData, implementation_plan: e.target.value })}
+                    placeholder="حدد خطة التنفيذ التفصيلية والجدولة الزمنية"
+                    rows={4}
+                    dir="rtl"
+                  />
                 </div>
               </div>
             </div>
@@ -328,7 +323,7 @@ export default function ChallengeIdeaSubmission() {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">التأثير والموارد المطلوبة</h3>
+              <h3 className="text-lg font-semibold mb-4">التأثير ونموذج العمل</h3>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">التأثير المتوقع *</label>
@@ -341,11 +336,11 @@ export default function ChallengeIdeaSubmission() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">الموارد المطلوبة *</label>
+                  <label className="block text-sm font-medium mb-2">نموذج العمل *</label>
                   <Textarea
-                    value={formData.required_resources}
-                    onChange={(e) => setFormData({ ...formData, required_resources: e.target.value })}
-                    placeholder="حدد الموارد المطلوبة (بشرية، مالية، تقنية، إلخ)"
+                    value={formData.business_model}
+                    onChange={(e) => setFormData({ ...formData, business_model: e.target.value })}
+                    placeholder="اشرح نموذج العمل والجدوى الاقتصادية للحل"
                     rows={4}
                     dir="rtl"
                   />
@@ -373,23 +368,21 @@ export default function ChallengeIdeaSubmission() {
                       <h4 className="font-medium">الوصف:</h4>
                       <p className="text-sm text-muted-foreground" dir="rtl">{formData.description_ar}</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <h4 className="font-medium">مستوى الابتكار:</h4>
-                        <Badge>{INNOVATION_LEVELS.find(l => l.value === formData.innovation_level)?.label_ar}</Badge>
-                      </div>
-                      <div>
-                        <h4 className="font-medium">الجدولة الزمنية:</h4>
-                        <Badge variant="outline">{IMPLEMENTATION_TIMELINES.find(t => t.value === formData.implementation_timeline)?.label_ar}</Badge>
-                      </div>
+                    <div>
+                      <h4 className="font-medium">نهج الحل:</h4>
+                      <p className="text-sm text-muted-foreground" dir="rtl">{formData.solution_approach}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">خطة التنفيذ:</h4>
+                      <p className="text-sm text-muted-foreground" dir="rtl">{formData.implementation_plan}</p>
                     </div>
                     <div>
                       <h4 className="font-medium">التأثير المتوقع:</h4>
                       <p className="text-sm text-muted-foreground" dir="rtl">{formData.expected_impact}</p>
                     </div>
                     <div>
-                      <h4 className="font-medium">الموارد المطلوبة:</h4>
-                      <p className="text-sm text-muted-foreground" dir="rtl">{formData.required_resources}</p>
+                      <h4 className="font-medium">نموذج العمل:</h4>
+                      <p className="text-sm text-muted-foreground" dir="rtl">{formData.business_model}</p>
                     </div>
                   </CardContent>
                 </Card>
