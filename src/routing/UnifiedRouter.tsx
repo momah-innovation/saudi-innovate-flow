@@ -50,6 +50,7 @@ const StakeholdersManagement = lazy(() => import('@/pages/admin/StakeholdersMana
 const EntitiesManagement = lazy(() => import('@/pages/admin/EntitiesManagement'));
 const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement'));
 const TeamManagement = lazy(() => import('@/pages/admin/TeamManagement'));
+const CollaborationPage = lazy(() => import('@/pages/CollaborationPage'));
 
 // Workspace Components
 const UserWorkspace = lazy(() => import('@/pages/workspace/UserWorkspace'));
@@ -197,6 +198,13 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.DASHBOARD_TEAMS,
     component: TeamWorkspace,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
+  {
+    path: '/collaboration',
+    component: CollaborationPage,
     requireAuth: true,
     requireProfile: true,
     withAppShell: true,
