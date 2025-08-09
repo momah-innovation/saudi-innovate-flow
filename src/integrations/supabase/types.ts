@@ -739,6 +739,7 @@ export type Database = {
           department_id: string | null
           deputy_id: string | null
           description_ar: string | null
+          description_en: string | null
           end_date: string
           id: string
           registration_deadline: string | null
@@ -750,6 +751,7 @@ export type Database = {
           target_participants: number | null
           theme: string | null
           title_ar: string
+          title_en: string | null
           updated_at: string | null
         }
         Insert: {
@@ -760,6 +762,7 @@ export type Database = {
           department_id?: string | null
           deputy_id?: string | null
           description_ar?: string | null
+          description_en?: string | null
           end_date: string
           id?: string
           registration_deadline?: string | null
@@ -771,6 +774,7 @@ export type Database = {
           target_participants?: number | null
           theme?: string | null
           title_ar: string
+          title_en?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -781,6 +785,7 @@ export type Database = {
           department_id?: string | null
           deputy_id?: string | null
           description_ar?: string | null
+          description_en?: string | null
           end_date?: string
           id?: string
           registration_deadline?: string | null
@@ -792,6 +797,7 @@ export type Database = {
           target_participants?: number | null
           theme?: string | null
           title_ar?: string
+          title_en?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -1437,6 +1443,7 @@ export type Database = {
           challenge_id: string
           created_at: string | null
           description_ar: string
+          description_en: string | null
           expected_impact: string | null
           id: string
           implementation_plan: string | null
@@ -1450,6 +1457,7 @@ export type Database = {
           team_members: Json | null
           technical_details: Json | null
           title_ar: string
+          title_en: string | null
           updated_at: string | null
         }
         Insert: {
@@ -1458,6 +1466,7 @@ export type Database = {
           challenge_id: string
           created_at?: string | null
           description_ar: string
+          description_en?: string | null
           expected_impact?: string | null
           id?: string
           implementation_plan?: string | null
@@ -1471,6 +1480,7 @@ export type Database = {
           team_members?: Json | null
           technical_details?: Json | null
           title_ar: string
+          title_en?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -1479,6 +1489,7 @@ export type Database = {
           challenge_id?: string
           created_at?: string | null
           description_ar?: string
+          description_en?: string | null
           expected_impact?: string | null
           id?: string
           implementation_plan?: string | null
@@ -1492,6 +1503,7 @@ export type Database = {
           team_members?: Json | null
           technical_details?: Json | null
           title_ar?: string
+          title_en?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -1599,6 +1611,7 @@ export type Database = {
           department_id: string | null
           deputy_id: string | null
           description_ar: string
+          description_en: string | null
           domain_id: string | null
           end_date: string | null
           estimated_budget: number | null
@@ -1615,6 +1628,7 @@ export type Database = {
           status: string | null
           sub_domain_id: string | null
           title_ar: string
+          title_en: string | null
           updated_at: string | null
           vision_2030_goal: string | null
         }
@@ -1629,6 +1643,7 @@ export type Database = {
           department_id?: string | null
           deputy_id?: string | null
           description_ar: string
+          description_en?: string | null
           domain_id?: string | null
           end_date?: string | null
           estimated_budget?: number | null
@@ -1645,6 +1660,7 @@ export type Database = {
           status?: string | null
           sub_domain_id?: string | null
           title_ar: string
+          title_en?: string | null
           updated_at?: string | null
           vision_2030_goal?: string | null
         }
@@ -1659,6 +1675,7 @@ export type Database = {
           department_id?: string | null
           deputy_id?: string | null
           description_ar?: string
+          description_en?: string | null
           domain_id?: string | null
           end_date?: string | null
           estimated_budget?: number | null
@@ -1675,6 +1692,7 @@ export type Database = {
           status?: string | null
           sub_domain_id?: string | null
           title_ar?: string
+          title_en?: string | null
           updated_at?: string | null
           vision_2030_goal?: string | null
         }
@@ -2055,6 +2073,7 @@ export type Database = {
           id: string
           name: string
           name_ar: string | null
+          name_en: string | null
           updated_at: string | null
         }
         Insert: {
@@ -2066,6 +2085,7 @@ export type Database = {
           id?: string
           name: string
           name_ar?: string | null
+          name_en?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -2077,6 +2097,7 @@ export type Database = {
           id?: string
           name?: string
           name_ar?: string | null
+          name_en?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -2105,6 +2126,7 @@ export type Database = {
           id: string
           name: string
           name_ar: string | null
+          name_en: string | null
           sector_id: string | null
           updated_at: string | null
         }
@@ -2116,6 +2138,7 @@ export type Database = {
           id?: string
           name: string
           name_ar?: string | null
+          name_en?: string | null
           sector_id?: string | null
           updated_at?: string | null
         }
@@ -2127,6 +2150,7 @@ export type Database = {
           id?: string
           name?: string
           name_ar?: string | null
+          name_en?: string | null
           sector_id?: string | null
           updated_at?: string | null
         }
@@ -2207,6 +2231,7 @@ export type Database = {
           id: string
           name: string
           name_ar: string | null
+          name_en: string | null
           specialization: string | null
           updated_at: string | null
         }
@@ -2218,6 +2243,7 @@ export type Database = {
           id?: string
           name: string
           name_ar?: string | null
+          name_en?: string | null
           specialization?: string | null
           updated_at?: string | null
         }
@@ -2229,6 +2255,7 @@ export type Database = {
           id?: string
           name?: string
           name_ar?: string | null
+          name_en?: string | null
           specialization?: string | null
           updated_at?: string | null
         }
@@ -3308,6 +3335,7 @@ export type Database = {
           challenge_id: string | null
           created_at: string | null
           description_ar: string | null
+          description_en: string | null
           email_reminders: boolean | null
           enable_feedback: boolean | null
           enable_networking: boolean | null
@@ -3348,6 +3376,7 @@ export type Database = {
           target_stakeholder_groups: string[] | null
           timezone: string | null
           title_ar: string
+          title_en: string | null
           virtual_link: string | null
         }
         Insert: {
@@ -3360,6 +3389,7 @@ export type Database = {
           challenge_id?: string | null
           created_at?: string | null
           description_ar?: string | null
+          description_en?: string | null
           email_reminders?: boolean | null
           enable_feedback?: boolean | null
           enable_networking?: boolean | null
@@ -3400,6 +3430,7 @@ export type Database = {
           target_stakeholder_groups?: string[] | null
           timezone?: string | null
           title_ar: string
+          title_en?: string | null
           virtual_link?: string | null
         }
         Update: {
@@ -3412,6 +3443,7 @@ export type Database = {
           challenge_id?: string | null
           created_at?: string | null
           description_ar?: string | null
+          description_en?: string | null
           email_reminders?: boolean | null
           enable_feedback?: boolean | null
           enable_networking?: boolean | null
@@ -3452,6 +3484,7 @@ export type Database = {
           target_stakeholder_groups?: string[] | null
           timezone?: string | null
           title_ar?: string
+          title_en?: string | null
           virtual_link?: string | null
         }
         Relationships: [
@@ -3784,6 +3817,7 @@ export type Database = {
           is_sensitive: boolean | null
           order_sequence: number | null
           question_text_ar: string
+          question_text_en: string | null
           question_type: string | null
           updated_at: string | null
         }
@@ -3794,6 +3828,7 @@ export type Database = {
           is_sensitive?: boolean | null
           order_sequence?: number | null
           question_text_ar: string
+          question_text_en?: string | null
           question_type?: string | null
           updated_at?: string | null
         }
@@ -3804,6 +3839,7 @@ export type Database = {
           is_sensitive?: boolean | null
           order_sequence?: number | null
           question_text_ar?: string
+          question_text_en?: string | null
           question_type?: string | null
           updated_at?: string | null
         }
@@ -4625,6 +4661,7 @@ export type Database = {
           comment_count: number | null
           created_at: string | null
           description_ar: string
+          description_en: string | null
           estimated_timeline: string | null
           expected_impact: string | null
           feasibility_score: number | null
@@ -4645,6 +4682,7 @@ export type Database = {
           status: string | null
           tags: string[] | null
           title_ar: string
+          title_en: string | null
           updated_at: string | null
           view_count: number | null
         }
@@ -4655,6 +4693,7 @@ export type Database = {
           comment_count?: number | null
           created_at?: string | null
           description_ar: string
+          description_en?: string | null
           estimated_timeline?: string | null
           expected_impact?: string | null
           feasibility_score?: number | null
@@ -4675,6 +4714,7 @@ export type Database = {
           status?: string | null
           tags?: string[] | null
           title_ar: string
+          title_en?: string | null
           updated_at?: string | null
           view_count?: number | null
         }
@@ -4685,6 +4725,7 @@ export type Database = {
           comment_count?: number | null
           created_at?: string | null
           description_ar?: string
+          description_en?: string | null
           estimated_timeline?: string | null
           expected_impact?: string | null
           feasibility_score?: number | null
@@ -4705,6 +4746,7 @@ export type Database = {
           status?: string | null
           tags?: string[] | null
           title_ar?: string
+          title_en?: string | null
           updated_at?: string | null
           view_count?: number | null
         }
@@ -6561,6 +6603,7 @@ export type Database = {
           logo_url: string | null
           name: string
           name_ar: string | null
+          name_en: string | null
           partner_type: string | null
           phone: string | null
           status: string | null
@@ -6577,6 +6620,7 @@ export type Database = {
           logo_url?: string | null
           name: string
           name_ar?: string | null
+          name_en?: string | null
           partner_type?: string | null
           phone?: string | null
           status?: string | null
@@ -6593,6 +6637,7 @@ export type Database = {
           logo_url?: string | null
           name?: string
           name_ar?: string | null
+          name_en?: string | null
           partner_type?: string | null
           phone?: string | null
           status?: string | null
@@ -6730,6 +6775,7 @@ export type Database = {
           id: string
           name: string
           name_ar: string | null
+          name_en: string | null
           phone: string | null
           position: string | null
           preferred_language: string | null
@@ -6750,6 +6796,7 @@ export type Database = {
           id: string
           name: string
           name_ar?: string | null
+          name_en?: string | null
           phone?: string | null
           position?: string | null
           preferred_language?: string | null
@@ -6770,6 +6817,7 @@ export type Database = {
           id?: string
           name?: string
           name_ar?: string | null
+          name_en?: string | null
           phone?: string | null
           position?: string | null
           preferred_language?: string | null
@@ -7230,6 +7278,7 @@ export type Database = {
           image_url: string | null
           name: string
           name_ar: string | null
+          name_en: string | null
           updated_at: string | null
           vision_2030_alignment: string | null
         }
@@ -7241,6 +7290,7 @@ export type Database = {
           image_url?: string | null
           name: string
           name_ar?: string | null
+          name_en?: string | null
           updated_at?: string | null
           vision_2030_alignment?: string | null
         }
@@ -7252,6 +7302,7 @@ export type Database = {
           image_url?: string | null
           name?: string
           name_ar?: string | null
+          name_en?: string | null
           updated_at?: string | null
           vision_2030_alignment?: string | null
         }
