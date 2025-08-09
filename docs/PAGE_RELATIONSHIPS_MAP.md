@@ -12,6 +12,7 @@ This document provides a complete map of all pages, components, dialogs, sheets,
 - **Orphaned Components**: 15+ components not connected anywhere
 - **Recently Fixed**: User Management ✅, Challenges Management ✅, Campaigns Management ✅, Events Management ✅, Ideas Management ✅, Partners Management ✅, **Sectors Management** ✅ **[Aug 9 - DB Fix]**, **Expert Assignment Management** ✅ **[Aug 9 - Full Integration]**, **Organizational Structure** ✅ **[Aug 9 - Route + Navigation]**, **Stakeholders Management** ✅ **[LATEST - Aug 9 - Full Integration]** - ALL MOVED TO ADMIN FOLDER
 - **Latest Database Fix**: Sectors Management RLS policies repaired - all 7 sectors now loading properly
+- **Latest Database Enhancement**: Entities seeded with 19 Saudi Government entities across all 7 sectors
 - **Latest Routing Fix**: Stakeholders Management fully integrated with routing, navigation, and AdminDashboard
 - **Admin Folder Organization**: 10/16 completed management pages now properly organized in `src/pages/admin/`
 
@@ -71,6 +72,7 @@ This document provides a complete map of all pages, components, dialogs, sheets,
 | Evaluations Management | `/admin/evaluations-management` | EvaluationsManagement | admin/super_admin | Evaluation process management |
 | Opportunities Management | `/admin/opportunities` | OpportunitiesManagement | admin/super_admin | Partnership opportunity management |
 | Innovation Teams Management | `/admin/innovation-teams` | InnovationTeamsManagement | admin/super_admin | Innovation team administration |
+| Entities Management | `/admin/entities` | EntitiesManagement | admin/super_admin | Saudi Government entities administration |
 | Organizational Structure | `/admin/organizational-structure` | OrganizationalStructure | admin/super_admin | Organizational hierarchy management |
 
 ### **Super Admin Pages** (Require Super Admin Role)
