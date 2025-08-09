@@ -36,12 +36,11 @@ const AnalyticsPage = lazy(() => import('@/pages/AnalyticsPage'));
 const EventsBrowse = lazy(() => import('@/pages/EventsBrowse'));
 const ChallengesBrowse = lazy(() => import('@/pages/ChallengesBrowse'));
 const AccessControlManagement = lazy(() => import('@/pages/dashboard/AccessControlManagement'));
-const UserManagement = lazy(() => import('@/pages/admin/UserManagement'));
-const ChallengesManagement = lazy(() => import('@/pages/admin/ChallengesManagement'));
-const CampaignsManagement = lazy(() => import('@/pages/admin/CampaignsManagement'));
-const EventsManagement = lazy(() => import('@/pages/admin/EventsManagement'));
-const IdeasManagement = lazy(() => import('@/pages/admin/IdeasManagement'));
-const PartnersManagement = lazy(() => import('@/pages/admin/PartnersManagement'));
+const UserManagement = lazy(() => import('@/pages/UserManagement'));
+const ChallengesManagement = lazy(() => import('@/pages/ChallengesManagement'));
+const CampaignsManagement = lazy(() => import('@/pages/CampaignsManagement'));
+const EventsManagement = lazy(() => import('@/pages/EventsManagement'));
+const IdeasManagement = lazy(() => import('@/pages/IdeasManagement'));
 
 // Route configuration interface
 export interface UnifiedRouteConfig {
@@ -206,14 +205,6 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_EVENTS,
     component: EventsManagement,
-    requireAuth: true,
-    requireProfile: true,
-    requiredRole: ['admin', 'super_admin'],
-    withAppShell: true,
-  },
-  {
-    path: ALL_ROUTES.ADMIN_PARTNERS,
-    component: PartnersManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
