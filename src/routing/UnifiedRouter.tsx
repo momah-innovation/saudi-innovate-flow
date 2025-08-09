@@ -32,6 +32,7 @@ const AdminRelationships = lazy(() => import('@/pages/AdminRelationships'));
 const Challenges = lazy(() => import('@/pages/Challenges'));
 const Ideas = lazy(() => import('@/pages/Ideas'));
 const ChallengeDetails = lazy(() => import('@/pages/ChallengeDetails'));
+const ChallengeIdeaSubmission = lazy(() => import('@/pages/ChallengeIdeaSubmission'));
 const OpportunitiesPage = lazy(() => import('@/pages/Opportunities'));
 const UserDashboard = lazy(() => import('@/components/dashboard/UserDashboard'));
 const ProfileSetupPage = lazy(() => import('@/pages/ProfileSetup'));
@@ -114,6 +115,13 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.CHALLENGE_DETAILS,
     component: ChallengeDetails,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.CHALLENGE_SUBMIT_IDEA,
+    component: ChallengeIdeaSubmission,
     requireAuth: true,
     requireProfile: true,
     withAppShell: true,

@@ -69,6 +69,7 @@ export const AUTHENTICATED_ROUTES = {
   
   // Specific content routes
   CHALLENGE_DETAILS: '/challenges/:challengeId',
+  CHALLENGE_SUBMIT_IDEA: '/challenges/:challengeId/submit-idea',
   CHALLENGE_QUESTIONS: '/challenges/:challengeId/questions',
   CHALLENGE_IDEAS: '/challenges/:challengeId/ideas',
   EVENT_DETAILS: '/events/:eventId',
