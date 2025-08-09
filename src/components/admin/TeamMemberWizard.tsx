@@ -37,6 +37,7 @@ interface TeamMemberData {
 interface UserProfile {
   id: string;
   name: string;
+  name_ar?: string;
   email: string;
   department?: string;
   position?: string;
