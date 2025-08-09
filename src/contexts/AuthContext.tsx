@@ -238,6 +238,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       (event, session) => {
         if (!isSubscribed) return;
         
+        console.log('🔄 Auth state change:', {
+          event,
+          hasSession: !!session,
+          userId: session?.user?.id,
+          userEmail: session?.user?.email
+        });
+        
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -259,6 +266,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!isSubscribed) return;
+      
+      console.log('🔍 Initial session check:', {
+        hasSession: !!session,
+        userId: session?.user?.id,
+        userEmail: session?.user?.email
+      });
       
       setSession(session);
       setUser(session?.user ?? null);

@@ -30,7 +30,21 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { user, userProfile, hasRole } = useAuth();
   const location = useLocation();
 
-  // Log all auth decisions
+  // Enhanced auth debugging
+  console.log('🔒 ProtectedRoute auth check:', {
+    path: location.pathname,
+    requireAuth,
+    requireProfile,
+    requiredRole,
+    hasUser: !!user,
+    userId: user?.id,
+    userEmail: user?.email,
+    hasProfile: !!userProfile,
+    profileCompletion: userProfile?.profile_completion_percentage,
+    userRoles: userProfile?.user_roles?.map(r => r.role),
+    hasRoleFunction: typeof hasRole
+  });
+
   logger.debug('ProtectedRoute auth check', {
     component: 'ProtectedRoute',
     action: 'authCheck',
