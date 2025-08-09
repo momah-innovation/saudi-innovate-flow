@@ -1714,6 +1714,7 @@ export type Database = {
           created_at: string | null
           department_head: string | null
           deputy_id: string | null
+          entity_id: string | null
           id: string
           name: string
           name_ar: string | null
@@ -1724,6 +1725,7 @@ export type Database = {
           created_at?: string | null
           department_head?: string | null
           deputy_id?: string | null
+          entity_id?: string | null
           id?: string
           name: string
           name_ar?: string | null
@@ -1734,6 +1736,7 @@ export type Database = {
           created_at?: string | null
           department_head?: string | null
           deputy_id?: string | null
+          entity_id?: string | null
           id?: string
           name?: string
           name_ar?: string | null
@@ -1747,6 +1750,13 @@ export type Database = {
             referencedRelation: "deputies"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "departments_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
         ]
       }
       deputies: {
@@ -1754,6 +1764,7 @@ export type Database = {
           contact_email: string | null
           created_at: string | null
           deputy_minister: string | null
+          entity_id: string | null
           id: string
           name: string
           name_ar: string | null
@@ -1764,6 +1775,7 @@ export type Database = {
           contact_email?: string | null
           created_at?: string | null
           deputy_minister?: string | null
+          entity_id?: string | null
           id?: string
           name: string
           name_ar?: string | null
@@ -1774,6 +1786,7 @@ export type Database = {
           contact_email?: string | null
           created_at?: string | null
           deputy_minister?: string | null
+          entity_id?: string | null
           id?: string
           name?: string
           name_ar?: string | null
@@ -1781,6 +1794,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "deputies_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "deputies_sector_id_fkey"
             columns: ["sector_id"]
@@ -1846,6 +1866,7 @@ export type Database = {
           created_at: string | null
           department_id: string | null
           domain_lead: string | null
+          entity_id: string | null
           id: string
           name: string
           name_ar: string | null
@@ -1856,6 +1877,7 @@ export type Database = {
           created_at?: string | null
           department_id?: string | null
           domain_lead?: string | null
+          entity_id?: string | null
           id?: string
           name: string
           name_ar?: string | null
@@ -1866,6 +1888,7 @@ export type Database = {
           created_at?: string | null
           department_id?: string | null
           domain_lead?: string | null
+          entity_id?: string | null
           id?: string
           name?: string
           name_ar?: string | null
@@ -1878,6 +1901,196 @@ export type Database = {
             columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "domains_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      entities: {
+        Row: {
+          budget_allocation: number | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          created_by: string | null
+          description_ar: string | null
+          description_en: string | null
+          employee_count: number | null
+          entity_manager_id: string | null
+          entity_type: string
+          establishment_date: string | null
+          headquarters_location: string | null
+          id: string
+          logo_url: string | null
+          mission_ar: string | null
+          mission_en: string | null
+          name_ar: string
+          name_en: string
+          sector_id: string
+          status: string
+          updated_at: string
+          vision_ar: string | null
+          vision_en: string | null
+          website_url: string | null
+        }
+        Insert: {
+          budget_allocation?: number | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          employee_count?: number | null
+          entity_manager_id?: string | null
+          entity_type?: string
+          establishment_date?: string | null
+          headquarters_location?: string | null
+          id?: string
+          logo_url?: string | null
+          mission_ar?: string | null
+          mission_en?: string | null
+          name_ar: string
+          name_en: string
+          sector_id: string
+          status?: string
+          updated_at?: string
+          vision_ar?: string | null
+          vision_en?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          budget_allocation?: number | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          employee_count?: number | null
+          entity_manager_id?: string | null
+          entity_type?: string
+          establishment_date?: string | null
+          headquarters_location?: string | null
+          id?: string
+          logo_url?: string | null
+          mission_ar?: string | null
+          mission_en?: string | null
+          name_ar?: string
+          name_en?: string
+          sector_id?: string
+          status?: string
+          updated_at?: string
+          vision_ar?: string | null
+          vision_en?: string | null
+          website_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entities_sector_id_fkey"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      entity_analytics: {
+        Row: {
+          challenges_created: number | null
+          entity_id: string
+          id: string
+          ideas_submitted: number | null
+          innovation_projects_count: number | null
+          last_updated: string
+          total_departments: number | null
+          total_deputies: number | null
+          total_domains: number | null
+          total_services: number | null
+          total_sub_domains: number | null
+        }
+        Insert: {
+          challenges_created?: number | null
+          entity_id: string
+          id?: string
+          ideas_submitted?: number | null
+          innovation_projects_count?: number | null
+          last_updated?: string
+          total_departments?: number | null
+          total_deputies?: number | null
+          total_domains?: number | null
+          total_services?: number | null
+          total_sub_domains?: number | null
+        }
+        Update: {
+          challenges_created?: number | null
+          entity_id?: string
+          id?: string
+          ideas_submitted?: number | null
+          innovation_projects_count?: number | null
+          last_updated?: string
+          total_departments?: number | null
+          total_deputies?: number | null
+          total_domains?: number | null
+          total_services?: number | null
+          total_sub_domains?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entity_analytics_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: true
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      entity_manager_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          assignment_notes: string | null
+          entity_id: string
+          id: string
+          is_active: boolean
+          manager_id: string
+          revoked_at: string | null
+          revoked_by: string | null
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          assignment_notes?: string | null
+          entity_id: string
+          id?: string
+          is_active?: boolean
+          manager_id: string
+          revoked_at?: string | null
+          revoked_by?: string | null
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          assignment_notes?: string | null
+          entity_id?: string
+          id?: string
+          is_active?: boolean
+          manager_id?: string
+          revoked_at?: string | null
+          revoked_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entity_manager_assignments_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
             referencedColumns: ["id"]
           },
         ]
@@ -6614,6 +6827,7 @@ export type Database = {
           citizen_facing: boolean | null
           created_at: string | null
           digital_maturity_score: number | null
+          entity_id: string | null
           id: string
           name: string
           name_ar: string | null
@@ -6625,6 +6839,7 @@ export type Database = {
           citizen_facing?: boolean | null
           created_at?: string | null
           digital_maturity_score?: number | null
+          entity_id?: string | null
           id?: string
           name: string
           name_ar?: string | null
@@ -6636,6 +6851,7 @@ export type Database = {
           citizen_facing?: boolean | null
           created_at?: string | null
           digital_maturity_score?: number | null
+          entity_id?: string | null
           id?: string
           name?: string
           name_ar?: string | null
@@ -6644,6 +6860,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "services_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "services_sub_domain_id_fkey"
             columns: ["sub_domain_id"]
@@ -6894,6 +7117,7 @@ export type Database = {
         Row: {
           created_at: string | null
           domain_id: string | null
+          entity_id: string | null
           id: string
           name: string
           name_ar: string | null
@@ -6903,6 +7127,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           domain_id?: string | null
+          entity_id?: string | null
           id?: string
           name: string
           name_ar?: string | null
@@ -6912,6 +7137,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           domain_id?: string | null
+          entity_id?: string | null
           id?: string
           name?: string
           name_ar?: string | null
@@ -6924,6 +7150,13 @@ export type Database = {
             columns: ["domain_id"]
             isOneToOne: false
             referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_domains_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
             referencedColumns: ["id"]
           },
         ]
@@ -8074,6 +8307,14 @@ export type Database = {
           archive_bucket?: string
         }
         Returns: Json
+      }
+      assign_entity_manager: {
+        Args: {
+          p_entity_id: string
+          p_manager_id: string
+          p_assignment_notes?: string
+        }
+        Returns: string
       }
       assign_role_with_justification: {
         Args: {
