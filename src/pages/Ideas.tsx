@@ -926,15 +926,7 @@ export default function IdeasPage() {
   };
 
   return (
-    <RealTimeCollaborationWrapper
-      contextType="global"
-      contextId="ideas"
-      entityType="ideas"
-      entityId="browse"
-      showWidget={true}
-      widgetPosition="bottom-right"
-    >
-      <AppShell>
+    <AppShell enableCollaboration={true}>
         <EnhancedIdeasHero 
           totalIdeas={personalMetrics.totalIdeas}
           publishedIdeas={ideas.filter(idea => idea.status === 'published').length}
@@ -1270,6 +1262,5 @@ export default function IdeasPage() {
 
         </PageLayout>
       </AppShell>
-    </RealTimeCollaborationWrapper>
   );
 }

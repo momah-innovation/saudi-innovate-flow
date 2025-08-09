@@ -7,10 +7,19 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useTheme } from '@/components/ui/theme-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSystemSettings } from '@/contexts/SystemSettingsContext';
+import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
+import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface AppShellProps {
   children: ReactNode;
+  enableCollaboration?: boolean;
+  collaborationContext?: {
+    contextType?: 'global' | 'organization' | 'team' | 'project' | 'direct';
+    contextId?: string;
+    entityType?: string;
+    entityId?: string;
+  };
 }
 
 // Global app context that provides all common hooks
@@ -53,16 +62,44 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
  * - Global header with search and user controls
  * - Loading states and performance optimization
  */
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ children, enableCollaboration, collaborationContext }: AppShellProps) {
   // Initialize all hooks at app level
   const auth = useAuth();
   const direction = useDirection();
   const theme = useTheme();
   const translation = useUnifiedTranslation();
   const systemSettings = useSystemSettings();
+  const location = useLocation();
   
   // Local state
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Determine if collaboration should be enabled based on route
+  const shouldEnableCollaboration = enableCollaboration !== false && (
+    enableCollaboration === true ||
+    ['/challenges', '/ideas', '/workspace', '/events', '/opportunities'].some(route => 
+      location.pathname.startsWith(route)
+    )
+  );
+  
+  // Auto-generate collaboration context based on current route
+  const getCollaborationContext = () => {
+    if (collaborationContext) return collaborationContext;
+    
+    const path = location.pathname;
+    if (path.startsWith('/challenges')) {
+      return { contextType: 'global' as const, contextId: 'challenges', entityType: 'challenges', entityId: 'browse' };
+    } else if (path.startsWith('/ideas')) {
+      return { contextType: 'global' as const, contextId: 'ideas', entityType: 'ideas', entityId: 'browse' };
+    } else if (path.startsWith('/workspace')) {
+      return { contextType: 'global' as const, contextId: 'workspace', entityType: 'workspace', entityId: 'global' };
+    } else if (path.startsWith('/events')) {
+      return { contextType: 'global' as const, contextId: 'events', entityType: 'events', entityId: 'browse' };
+    } else if (path.startsWith('/opportunities')) {
+      return { contextType: 'global' as const, contextId: 'opportunities', entityType: 'opportunities', entityId: 'browse' };
+    }
+    return { contextType: 'global' as const, contextId: 'general', entityType: 'system', entityId: 'main' };
+  };
   
   // Apply global RTL/LTR classes to document
   React.useEffect(() => {
@@ -110,7 +147,7 @@ export function AppShell({ children }: AppShellProps) {
     setSidebarOpen,
   };
   
-  return (
+  const content = (
     <AppContext.Provider value={appContextValue}>
       <div className={cn(
         "min-h-screen flex w-full bg-background transition-all duration-300",
@@ -134,6 +171,25 @@ export function AppShell({ children }: AppShellProps) {
       </div>
     </AppContext.Provider>
   );
+
+  // Wrap with collaboration if enabled
+  if (shouldEnableCollaboration) {
+    const context = getCollaborationContext();
+    return (
+      <RealTimeCollaborationWrapper
+        contextType={context.contextType}
+        contextId={context.contextId}
+        entityType={context.entityType}
+        entityId={context.entityId}
+        showWidget={true}
+        widgetPosition="bottom-right"
+      >
+        {content}
+      </RealTimeCollaborationWrapper>
+    );
+  }
+
+  return content;
 }
 
 /**

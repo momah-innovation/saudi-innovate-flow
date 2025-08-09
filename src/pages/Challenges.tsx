@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
 import { AppShell } from '@/components/layout/AppShell';
+import { GlobalBreadcrumb } from '@/components/layout/GlobalBreadcrumb';
+import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallengeCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { TagSelector } from '@/components/ui/tag-selector';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { 
   Search, 
   Filter, 
@@ -25,35 +29,45 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-// Collaboration imports
-import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
-import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { useDirection } from '@/components/ui/direction-provider';
+import { cn } from '@/lib/utils';
 
 interface Challenge {
   id: string;
   title_ar: string;
   description_ar: string;
-  status: string;
-  priority_level: string;
+  status: 'draft' | 'active' | 'planning' | 'completed' | 'paused';
+  priority_level: 'low' | 'medium' | 'high' | 'urgent';
   start_date?: string;
   end_date?: string;
   estimated_budget?: number;
+  actual_budget?: number;
   sector_name?: string;
   sector_name_ar?: string;
   department_name?: string;
   department_name_ar?: string;
   participant_count?: number;
   submission_count?: number;
+  like_count?: number;
+  view_count?: number;
   tag_names?: string[];
   tag_names_ar?: string[];
   tag_colors?: string[];
   image_url?: string;
+  challenge_owner?: {
+    name: string;
+    profile_image_url?: string;
+  };
+  created_at?: string;
+  updated_at?: string;
 }
 
 export default function Challenges() {
   const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const { user, hasRole } = useAuth();
+  const { isRTL } = useDirection();
+  const navigate = useNavigate();
   
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,6 +75,7 @@ export default function Challenges() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [statusFilter, setStatusFilter] = useState('all');
   const [activeTab, setActiveTab] = useState('all');
+  const [likedChallenges, setLikedChallenges] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchChallenges();
@@ -81,6 +96,8 @@ export default function Challenges() {
       // Transform the data to match our Challenge interface
       const transformedData: Challenge[] = (data || []).map(challenge => ({
         ...challenge,
+        status: challenge.status as Challenge['status'],
+        priority_level: challenge.priority_level as Challenge['priority_level'],
         participant_count: 0, // We'll fetch these separately if needed
         submission_count: 0,
         tag_names: [],
@@ -138,6 +155,101 @@ export default function Challenges() {
     }
   };
 
+  const handleViewDetails = (challengeId: string) => {
+    navigate(`/challenges/${challengeId}`);
+  };
+
+  const handleLike = async (challengeId: string) => {
+    if (!user) {
+      toast({
+        title: 'يرجى تسجيل الدخول',
+        description: 'يجب تسجيل الدخول للإعجاب بالتحديات',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const isLiked = likedChallenges.has(challengeId);
+      
+      if (isLiked) {
+        // Remove like
+        await supabase
+          .from('challenge_bookmarks')
+          .delete()
+          .eq('challenge_id', challengeId)
+          .eq('user_id', user.id);
+        
+        setLikedChallenges(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(challengeId);
+          return newSet;
+        });
+      } else {
+        // Add like
+        await supabase
+          .from('challenge_bookmarks')
+          .insert({
+            challenge_id: challengeId,
+            user_id: user.id
+          });
+        
+        setLikedChallenges(prev => new Set([...prev, challengeId]));
+      }
+
+      toast({
+        title: isLiked ? 'تم إلغاء الإعجاب' : 'تم الإعجاب',
+        description: isLiked ? 'تم إلغاء إعجابك بالتحدي' : 'تم إضافة إعجابك للتحدي',
+      });
+      
+    } catch (error) {
+      logger.error('Failed to toggle like', { component: 'Challenges', action: 'like', challengeId }, error as Error);
+      toast({
+        title: 'خطأ',
+        description: 'فشل في تحديث الإعجاب',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleShare = async (challengeId: string) => {
+    const challenge = challenges.find(c => c.id === challengeId);
+    if (!challenge) return;
+
+    const shareData = {
+      title: challenge.title_ar,
+      text: challenge.description_ar,
+      url: `${window.location.origin}/challenges/${challengeId}`
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        toast({
+          title: 'تم المشاركة بنجاح',
+          description: 'تم مشاركة التحدي بنجاح',
+        });
+      } catch (error) {
+        // User cancelled share
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(shareData.url);
+        toast({
+          title: 'تم نسخ الرابط',
+          description: 'تم نسخ رابط التحدي إلى الحافظة',
+        });
+      } catch (error) {
+        toast({
+          title: 'خطأ',
+          description: 'فشل في نسخ الرابط',
+          variant: 'destructive',
+        });
+      }
+    }
+  };
+
   const filteredChallenges = challenges.filter(challenge => {
     const matchesSearch = challenge.title_ar.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          challenge.description_ar.toLowerCase().includes(searchQuery.toLowerCase());
@@ -174,11 +286,12 @@ export default function Challenges() {
 
   if (loading) {
     return (
-      <AppShell>
+      <AppShell enableCollaboration={true}>
         <div className="container mx-auto px-4 py-8">
+          <GlobalBreadcrumb />
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">التحديات الابتكارية</h1>
-            <p className="text-muted-foreground">استكشف التحديات المتاحة وشارك في الابتكار</p>
+            <h1 className={cn("text-3xl font-bold mb-2", isRTL && "text-right")}>التحديات الابتكارية</h1>
+            <p className={cn("text-muted-foreground", isRTL && "text-right")}>استكشف التحديات المتاحة وشارك في الابتكار</p>
           </div>
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
@@ -189,32 +302,36 @@ export default function Challenges() {
   }
 
   return (
-    <RealTimeCollaborationWrapper
-      contextType="global"
-      contextId="challenges"
-      entityType="challenges"
-      entityId="browse"
-      showWidget={true}
-      widgetPosition="bottom-right"
-    >
-      <AppShell>
-        <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
+    <AppShell enableCollaboration={true}>
+      <div className="container mx-auto px-4 py-8">
+        <GlobalBreadcrumb />
+        
+        <div className={cn("mb-8", isRTL && "text-right")}>
           <h1 className="text-3xl font-bold mb-2">التحديات الابتكارية</h1>
           <p className="text-muted-foreground">استكشف التحديات المتاحة وشارك في الابتكار</p>
         </div>
         
         <div className="space-y-6">
           {/* Header Actions */}
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-1 gap-4">
+          <div className={cn(
+            "flex flex-col gap-4 md:flex-row md:items-center md:justify-between",
+            isRTL && "md:flex-row-reverse"
+          )}>
+            <div className={cn(
+              "flex flex-1 gap-4",
+              isRTL && "flex-row-reverse"
+            )}>
               <div className="relative flex-1 max-w-sm">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className={cn(
+                  "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
+                  isRTL ? "right-3" : "left-3"
+                )} />
                 <Input
                   placeholder="البحث في التحديات..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className={cn(isRTL ? "pr-10 text-right" : "pl-10")}
+                  dir={isRTL ? 'rtl' : 'ltr'}
                 />
               </div>
               
@@ -228,8 +345,8 @@ export default function Challenges() {
             </div>
             
             {hasRole('admin') && (
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
+              <Button className={cn("gap-2", isRTL && "flex-row-reverse")}>
+                <Plus className="w-4 h-4" />
                 إضافة تحدي جديد
               </Button>
             )}
@@ -258,110 +375,19 @@ export default function Challenges() {
               ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {filteredChallenges.map((challenge) => (
-                    <Card key={challenge.id} className="group hover:shadow-lg transition-all duration-200">
-                      {challenge.image_url && (
-                        <div className="aspect-video overflow-hidden rounded-t-lg">
-                          <img
-                            src={challenge.image_url}
-                            alt={challenge.title_ar}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                          />
-                        </div>
-                      )}
-                      
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between gap-2 mb-2">
-                          <CardTitle className="text-lg line-clamp-2 flex-1">
-                            {challenge.title_ar}
-                          </CardTitle>
-                          <Badge 
-                            variant="secondary" 
-                            className={`${getStatusColor(challenge.status)} text-white`}
-                          >
-                            {getStatusText(challenge.status)}
-                          </Badge>
-                        </div>
-                        
-                        <p className="text-sm text-muted-foreground line-clamp-3">
-                          {challenge.description_ar}
-                        </p>
-                      </CardHeader>
-
-                      <CardContent className="pt-0">
-                        <div className="space-y-4">
-                          {/* Tags */}
-                          {challenge.tag_names_ar && challenge.tag_names_ar.length > 0 && (
-                            <div className="flex flex-wrap gap-1">
-                              {challenge.tag_names_ar.slice(0, 3).map((tag, index) => (
-                                <Badge
-                                  key={index}
-                                  variant="outline"
-                                  style={{ 
-                                    borderColor: challenge.tag_colors?.[index] || '#3B82F6',
-                                    color: challenge.tag_colors?.[index] || '#3B82F6'
-                                  }}
-                                  className="text-xs"
-                                >
-                                  {tag}
-                                </Badge>
-                              ))}
-                              {challenge.tag_names_ar.length > 3 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{challenge.tag_names_ar.length - 3}
-                                </Badge>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Stats */}
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <Users className="h-4 w-4" />
-                              <span>{challenge.participant_count || 0}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Target className="h-4 w-4" />
-                              <span>{challenge.submission_count || 0}</span>
-                            </div>
-                            {challenge.end_date && (
-                              <div className="flex items-center gap-1">
-                                <Calendar className="h-4 w-4" />
-                                <span>{format(new Date(challenge.end_date), 'MMM dd')}</span>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Budget */}
-                          {challenge.estimated_budget && (
-                            <div className="flex items-center gap-2">
-                              <Award className="h-4 w-4 text-primary" />
-                              <span className="font-semibold text-primary">
-                                {challenge.estimated_budget.toLocaleString()} ريال
-                              </span>
-                            </div>
-                          )}
-
-                          {/* Actions */}
-                          <div className="flex gap-2 pt-2">
-                            <Button variant="outline" size="sm" className="flex-1">
-                              <Eye className="w-4 h-4 mr-2" />
-                              عرض التفاصيل
-                            </Button>
-                            
-                            {challenge.status === 'active' && user && (
-                              <Button 
-                                size="sm" 
-                                onClick={() => handleParticipate(challenge.id)}
-                                className="flex-1"
-                              >
-                                <Target className="w-4 h-4 mr-2" />
-                                شارك الآن
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <EnhancedChallengeCard
+                      key={challenge.id}
+                      challenge={challenge}
+                      onViewDetails={handleViewDetails}
+                      onParticipate={handleParticipate}
+                      onLike={handleLike}
+                      onShare={handleShare}
+                      isLiked={likedChallenges.has(challenge.id)}
+                      variant="default"
+                      showActions={true}
+                      showStats={true}
+                      showOwner={true}
+                    />
                   ))}
                 </div>
               )}
@@ -379,6 +405,5 @@ export default function Challenges() {
         />
       </div>
     </AppShell>
-    </RealTimeCollaborationWrapper>
   );
 }
