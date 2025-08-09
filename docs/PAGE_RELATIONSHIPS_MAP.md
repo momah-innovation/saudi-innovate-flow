@@ -131,38 +131,96 @@
 | Performance | PerformanceAnalytics | Challenge performance tracking |
 | Trends | TrendAnalytics | Challenge trend analysis |
 
-### **Wizard Components** (Multi-step Forms)
-| Wizard | Steps | Features |
-|--------|-------|----------|
-| CampaignWizard | 4 steps | Campaign creation with validation |
-| ChallengeWizard | 5 steps | Challenge setup and configuration |
-| ChallengeWizardV2 | Enhanced | Advanced challenge creation |
-| TeamMemberWizard | 3 steps | Team member onboarding |
-| UserInvitationWizard | 2 steps | User invitation process |
-| IdeaWizard | 4 steps | Structured idea submission |
-| OpportunityWizard | 3 steps | Opportunity creation process |
-| StakeholderWizard | 3 steps | Stakeholder registration |
-| TeamWizard | 3 steps | Team creation and setup |
-| EventWizard | Multi-step | Comprehensive event creation |
-| RoleRequestWizard | 2 steps | Role request submission |
+### **Sheet Components** (Slide-out Panels)
+| Sheet | Trigger From | Features |
+|-------|--------------|----------|
+| TeamChatSheet | Team Workspace | Real-time team communication with channels |
+| ChallengeNotificationCenter | Challenge pages | Challenge-specific notifications panel |
+| EventAdvancedFilters | Events Browse | Advanced event filtering options |
+| ExpertNotificationCenter | Expert dashboard | Expert-specific notifications |
+| NotificationCenter | Global header | System-wide notifications panel |
+| StatisticsNotificationCenter | Statistics pages | Analytics notifications |
+| NavigationSidebar | Mobile view | Mobile navigation menu |
 
-### **Detail View Components**
-| Detail View | Access From | Features |
-|-------------|-------------|----------|
-| ChallengeDetailView | Challenge lists | Comprehensive challenge overview with accordions |
-| IdeaDetailView | Idea management | Detailed idea view with collaboration tools |
-| ExpertDetailView | Expert assignments | Expert profile and assignment details |
-| PartnerDetailView | Partner management | Partner information and collaboration history |
-| FocusQuestionDetailView | Focus question management | Question details and usage analytics |
-| AssignmentDetailView | Assignment tracking | Assignment progress and navigation |
+### **Command and Search Components**
+| Component | Purpose | Features |
+|-----------|---------|----------|
+| CommandPalette | Global shortcuts | Quick actions and navigation |
+| GlobalSearch | Universal search | Cross-platform content search |
+| SmartSearch | AI-powered search | Semantic search with AI assistance |
+| SmartSearchPanel | Advanced search | AI-enhanced search panel |
+| AdvancedSearch | Detailed filtering | Complex search criteria |
 
-### **Analytics Components**
-| Analytics | Data Source | Features |
+### **Interactive UI Components**
+| Component | Type | Features |
+|-----------|------|----------|
+| ContextMenu | Right-click menus | Context-sensitive actions |
+| DropdownMenu | Action menus | Hierarchical menu structures |
+| HoverCard | Information tooltips | Rich content previews |
+| Popover | Contextual panels | Temporary information displays |
+| Tooltip | Quick help | Immediate information access |
+
+### **Calendar and Scheduling**
+| Component | Features | Integration |
+|-----------|----------|-------------|
+| Calendar | Date selection | Event and deadline management |
+| DateTimePicker | Date/time input | Form integration |
+| CalendarScheduler | Event scheduling | Meeting and task planning |
+| MeetingSchedulerDialog | Meeting planning | Team workspace integration |
+| TimeRangeFilter | Date filtering | Analytics and reporting |
+
+### **Charts and Analytics**
+| Component | Chart Types | Data Sources |
+|-----------|------------|-------------|
+| StorageAnalyticsDashboard | Line, Bar, Pie charts | Storage usage metrics |
+| ChallengeAnalytics | Distribution, performance, trends | Challenge data |
+| TeamAnalytics | Performance metrics | Team productivity data |
+| ExpertAnalyticsDashboard | Expert performance | Assignment and evaluation data |
+| ChartContainer | Universal chart wrapper | Recharts integration |
+
+### **Communication and Social**
+| Component | Purpose | Features |
+|-----------|---------|----------|
+| TeamChatSheet | Team communication | Multi-channel chat system |
+| IdeaCommentsPanel | Idea discussions | Threaded comments and replies |
+| OpportunityCommentsSection | Opportunity discussions | Comment management with actions |
+| ShareOpportunityButton | Content sharing | Multiple platform sharing |
+| NotificationCenter | System notifications | Real-time activity updates |
+
+### **Task and Project Management**
+| Component | Features | Integration |
+|-----------|----------|-------------|
+| TaskAssignmentDialog | Task creation and assignment | Team workspace |
+| CreateProjectDialog | Project setup | Team management |
+| ProjectManagement | Project tracking | Team workspace integration |
+| WorkflowPanel | Process management | Idea and challenge workflows |
+| BulkActionsPanel | Batch operations | Idea and content management |
+
+### **Content Management**
+| Component | Content Type | Features |
 |-----------|-------------|----------|
-| ChallengeAnalytics | Challenge data | Distribution, performance, trends analysis |
-| IdeaAnalytics | Idea submissions | Submission trends and evaluation metrics |
-| StorageAnalyticsDashboard | Storage usage | File storage metrics and trends |
-| TeamAnalytics | Team performance | Team productivity and collaboration metrics |
+| IdeaDetailView | Ideas | Comprehensive idea information |
+| ChallengeDetailView | Challenges | Multi-accordion challenge details |
+| ExpertDetailView | Experts | Expert profiles and assignments |
+| PartnerDetailView | Partners | Partnership information |
+| FocusQuestionDetailView | Focus Questions | Question details and analytics |
+
+### **Form and Input Components**
+| Component | Purpose | Features |
+|-----------|---------|----------|
+| MultiStepForm | Wizard framework | Progress tracking and validation |
+| FormLayout | Form structure | RTL-aware layouts |
+| DynamicSelect | Data-driven dropdowns | Database integration |
+| TagSelector | Tag management | Searchable tag selection |
+| FileUploader | File handling | Multi-format support |
+
+### **State Management Components**
+| Component | Purpose | Features |
+|-----------|---------|----------|
+| EmptyState | No data display | Action-oriented empty states |
+| LoadingState | Loading indication | Skeleton and spinner states |
+| ErrorBoundary | Error handling | Component-level error recovery |
+| StateMessage | Status communication | Success, error, warning, info states |
 
 ### **Settings Categories** (All under SystemSettings)
 | Category | Component | Configuration Areas |
@@ -539,18 +597,62 @@ graph LR
 | ContentModerationLogs | Content review | AI-powered content moderation tracking |
 | AnalyticsEvents | User interactions | Event tracking and user behavior analysis |
 
-### **Missing Component Implementations**
-| Missing Component | Intended Purpose | Priority |
-|------------------|------------------|----------|
-| AccessControlManagement | Super admin system controls | High |
-| SettingsPage | User settings interface | High |
-| ProfileSetupPage | Initial profile configuration | High |
-| AdminUsers | User management interface | Medium |
-| AdminTeams | Team administration | Medium |
-| AdminStorage | Storage administration | Medium |
-| NotificationManagement | Notification configuration | Medium |
-| ReportGenerator | Advanced reporting | Low |
-| TeamCollaboration | Enhanced team features | Low |
+### **Menu and Navigation Components**
+| Component | Type | Features |
+|-----------|------|----------|
+| NavigationSidebar | Main navigation | Role-based menu items, collapsible groups |
+| UserMenu | User actions | Profile, settings, logout options |
+| DropdownMenu | Action menus | Context-sensitive action lists |
+| Menubar | Top-level navigation | Primary navigation bar |
+| ContextMenu | Right-click actions | Context-sensitive operations |
+
+### **Specialized Dialog Systems**
+| Dialog System | Components | Purpose |
+|---------------|------------|---------|
+| Team Workspace Dialogs | CreateProject, InviteMember, TaskAssignment, MeetingScheduler | Team collaboration tools |
+| Admin Management Dialogs | UserInvitation, TeamMember, RoleRequest, ChallengeSettings | Administrative operations |
+| Content Management Dialogs | IdeaDetail, ChallengeDetail, ExpertDetail, PartnerDetail | Content viewing and editing |
+| Organizational Dialogs | Deputy, Department, Domain, SubDomain, Service | Organizational structure management |
+
+### **Advanced Filter Systems**
+| Filter Component | Target Content | Features |
+|-----------------|----------------|----------|
+| ChallengeFilters | Challenges | Status, priority, date, category filtering |
+| EventFilters | Events | Date range, type, location, status filtering |
+| FocusQuestionFilters | Focus Questions | Type, status, difficulty, category filtering |
+| EventAdvancedFilters | Events | Complex multi-criteria filtering |
+| StorageFilters | Files | File type, size, date filtering |
+| AdvancedFilters | Universal | Reusable filter component |
+
+### **Real-time Communication**
+| Component | Communication Type | Features |
+|-----------|-------------------|----------|
+| TeamChatSheet | Team messaging | Multi-channel chat with reactions |
+| NotificationCenter | System notifications | Real-time activity updates |
+| ChallengeNotificationCenter | Challenge updates | Challenge-specific notifications |
+| ExpertNotificationCenter | Expert notifications | Assignment and evaluation updates |
+| StatisticsNotificationCenter | Analytics alerts | Data insights and reports |
+
+### **Data Visualization**
+| Visualization | Chart Types | Use Cases |
+|---------------|-------------|-----------|
+| StorageAnalyticsDashboard | Line, Bar, Pie | Storage usage and trends |
+| ChallengeAnalytics | Distribution charts | Challenge performance metrics |
+| ExpertAnalyticsDashboard | Performance metrics | Expert evaluation tracking |
+| TeamAnalytics | Productivity charts | Team performance analysis |
+| StatisticsDetailDialog | Multiple chart types | Detailed data analysis |
+
+### **Missing Implementation Priority List**
+| Missing Component | Intended Route | Priority | Complexity |
+|------------------|----------------|----------|------------|
+| AccessControlManagement | `/dashboard/access-control` | Critical | High |
+| SettingsPage | `/settings` | High | Medium |
+| ProfileSetupPage | `/profile/setup` | High | Medium |
+| AdminUsers | `/admin/users` | Medium | Medium |
+| AdminTeams | `/admin/teams` | Medium | High |
+| AdminStorage | `/admin/storage` | Medium | Medium |
+| ReportGenerator | Various admin pages | Low | High |
+| TeamCollaboration | Enhanced team features | Low | High |
 
 ---
 
