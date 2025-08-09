@@ -17,7 +17,9 @@ import { cn } from '@/lib/utils';
 
 interface ChallengeData {
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   challenge_type: string;
   priority_level: string;
   estimated_budget: string;
@@ -48,7 +50,9 @@ export function ChallengeForm({
   
   const [formData, setFormData] = useState({
     title_ar: initialData?.title_ar || '',
+    title_en: initialData?.title_en || '',
     description_ar: initialData?.description_ar || '',
+    description_en: initialData?.description_en || '',
     challenge_type: initialData?.challenge_type || '',
     priority_level: initialData?.priority_level || 'medium',
     estimated_budget: initialData?.estimated_budget || '',
@@ -127,6 +131,20 @@ export function ChallengeForm({
                   />
                 </div>
 
+                <div className="lg:col-span-1 space-y-4">
+                  <Label htmlFor="title_en" className="text-base font-medium">
+                    {t('challenge_form.challenge_title_en')}
+                  </Label>
+                  <Input
+                    id="title_en"
+                    value={formData.title_en}
+                    onChange={(e) => handleInputChange('title_en', e.target.value)}
+                    placeholder={t('challenge_form.challenge_title_en_placeholder')}
+                    className="text-lg"
+                    dir="ltr"
+                  />
+                </div>
+
                 <div className="lg:col-span-2 space-y-4">
                   <Label htmlFor="description_ar" className="text-base font-medium">
                     {t('challenge_form.challenge_description')} *
@@ -139,6 +157,20 @@ export function ChallengeForm({
                     required
                     className="min-h-32 resize-y"
                     dir="rtl"
+                  />
+                </div>
+
+                <div className="lg:col-span-2 space-y-4">
+                  <Label htmlFor="description_en" className="text-base font-medium">
+                    {t('challenge_form.challenge_description_en')}
+                  </Label>
+                  <Textarea
+                    id="description_en"
+                    value={formData.description_en}
+                    onChange={(e) => handleInputChange('description_en', e.target.value)}
+                    placeholder={t('challenge_form.challenge_description_en_placeholder')}
+                    className="min-h-32 resize-y"
+                    dir="ltr"
                   />
                 </div>
               </div>
