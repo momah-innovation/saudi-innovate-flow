@@ -40,7 +40,7 @@ const UserManagement = lazy(() => import('@/pages/admin/UserManagement'));
 const ChallengesManagement = lazy(() => import('@/pages/admin/ChallengesManagement'));
 const CampaignsManagement = lazy(() => import('@/pages/admin/CampaignsManagement'));
 const EventsManagement = lazy(() => import('@/pages/admin/EventsManagement'));
-const IdeasManagement = lazy(() => import('@/pages/IdeasManagement'));
+const IdeasManagement = lazy(() => import('@/pages/admin/IdeasManagement'));
 
 // Route configuration interface
 export interface UnifiedRouteConfig {
