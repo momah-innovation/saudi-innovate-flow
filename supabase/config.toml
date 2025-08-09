@@ -76,3 +76,12 @@ verify_jwt = false
 
 [functions.social-media-publisher]
 verify_jwt = false
+
+[functions.send-test-notification]
+verify_jwt = false
+
+[functions.download-opportunity-images]
+verify_jwt = false
+
+[functions.cancel-subscription]
+verify_jwt = false
