@@ -35,7 +35,9 @@ import type { BadgeVariant, DatabaseChallenge } from "@/types";
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   status: string;
   priority_level: string;
   challenge_type: string;

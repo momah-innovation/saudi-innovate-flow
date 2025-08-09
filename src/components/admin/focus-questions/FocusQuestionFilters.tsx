@@ -27,6 +27,7 @@ import {
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   status: string;
 }
 

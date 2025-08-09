@@ -22,7 +22,9 @@ import type { Challenge, Partner, Expert } from "@/types";
 interface ChallengeFormData {
   id?: string;
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   status: string;
   priority_level: string;
   sensitivity_level: string;

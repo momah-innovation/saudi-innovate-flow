@@ -66,6 +66,7 @@ interface FocusQuestion {
 interface Event {
   id: string;
   title_ar: string;
+  title_en?: string;
   event_date: string;
   status: string;
 }
@@ -73,7 +74,9 @@ interface Event {
 interface Idea {
   id: string;
   title_ar: string;
+  title_en?: string;
   description_ar?: string;
+  description_en?: string;
   status: string;
   created_at: string;
   overall_score?: number;
