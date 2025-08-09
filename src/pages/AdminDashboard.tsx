@@ -173,8 +173,9 @@ export default function AdminDashboard() {
         />
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="management">Management</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="storage">Storage</TabsTrigger>
             <TabsTrigger value="security">Security</TabsTrigger>
@@ -279,6 +280,122 @@ export default function AdminDashboard() {
                     >
                       <Users className="w-4 h-4 mr-2" />
                       Manage Expert Assignments
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="management" className="space-y-6">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Core Team Management</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/core-team'}>
+                  <Plus className="w-4 h-4" />
+                  Add Core Team Member
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">12</div>
+                      <div className="text-sm text-muted-foreground">Core Team Members</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">8</div>
+                      <div className="text-sm text-muted-foreground">Active Members</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-info">5</div>
+                      <div className="text-sm text-muted-foreground">Active Projects</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/core-team'}
+                    >
+                      <Users className="w-4 h-4 mr-2" />
+                      Manage Core Team
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Stakeholders Management</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/stakeholders'}>
+                  <Plus className="w-4 h-4" />
+                  Add Stakeholder
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">45</div>
+                      <div className="text-sm text-muted-foreground">Total Stakeholders</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">38</div>
+                      <div className="text-sm text-muted-foreground">Active Stakeholders</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-warning">7</div>
+                      <div className="text-sm text-muted-foreground">Pending Reviews</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/stakeholders'}
+                    >
+                      <Users className="w-4 h-4 mr-2" />
+                      Manage Stakeholders
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Organizational Structure</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/organizational-structure'}>
+                  <Plus className="w-4 h-4" />
+                  Add Department
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">28</div>
+                      <div className="text-sm text-muted-foreground">Departments</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">15</div>
+                      <div className="text-sm text-muted-foreground">Active Domains</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-info">42</div>
+                      <div className="text-sm text-muted-foreground">Services</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/organizational-structure'}
+                    >
+                      <Users className="w-4 h-4 mr-2" />
+                      Manage Organization
                     </Button>
                   </div>
                 </div>
