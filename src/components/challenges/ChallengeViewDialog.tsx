@@ -40,7 +40,9 @@ import { challengesPageConfig } from '@/config/challengesPageConfig';
 interface Challenge {
   id: string;
   title_ar: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   challenge_type?: string;
   category?: string;
   participants?: number;
@@ -398,7 +400,10 @@ export function ChallengeViewDialog({
 
           {/* Title and Key Info */}
           <div className={`absolute bottom-4 left-4 right-4 ${challengesPageConfig.ui.colors.text.accent}`}>
-            <h2 className="text-2xl font-bold mb-2">{challenge.title_ar}</h2>
+            <h2 className="text-2xl font-bold mb-1" dir="rtl">{challenge.title_ar}</h2>
+            {challenge.title_en && (
+              <h3 className="text-lg font-medium mb-2 opacity-80" dir="ltr">{challenge.title_en}</h3>
+            )}
             <div className="flex flex-wrap gap-4 text-sm">
               {daysRemaining !== null && (
                 <div className="flex items-center gap-1">
@@ -448,7 +453,13 @@ export function ChallengeViewDialog({
               {/* Description */}
               <div>
                 <h3 className="text-lg font-semibold mb-3">{isRTL ? 'وصف التحدي' : 'Challenge Description'}</h3>
-                <p className="text-muted-foreground leading-relaxed">{challenge.description_ar}</p>
+                <p className="text-muted-foreground leading-relaxed" dir="rtl">{challenge.description_ar}</p>
+                {challenge.description_en && (
+                  <>
+                    <h3 className="text-lg font-semibold mb-3 mt-6">Description (English)</h3>
+                    <p className="text-muted-foreground leading-relaxed" dir="ltr">{challenge.description_en}</p>
+                  </>
+                )}
               </div>
 
               {/* Key Metrics */}

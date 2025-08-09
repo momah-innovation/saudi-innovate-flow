@@ -339,13 +339,26 @@ export function AdminChallengeManagement() {
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{selectedChallenge?.title_ar}</DialogTitle>
+            <DialogTitle>
+              {selectedChallenge?.title_ar}
+              {selectedChallenge?.title_en && (
+                <span className="text-sm text-muted-foreground block mt-1" dir="ltr">
+                  {selectedChallenge.title_en}
+                </span>
+              )}
+            </DialogTitle>
           </DialogHeader>
           {selectedChallenge && (
             <div className="space-y-6">
               <div>
                 <h4 className="font-semibold mb-2">{t('description')}</h4>
-                <p className="text-sm text-muted-foreground">{selectedChallenge.description_ar}</p>
+                <p className="text-sm text-muted-foreground" dir="rtl">{selectedChallenge.description_ar}</p>
+                {selectedChallenge.description_en && (
+                  <>
+                    <h4 className="font-semibold mb-2 mt-4">Description (English)</h4>
+                    <p className="text-sm text-muted-foreground" dir="ltr">{selectedChallenge.description_en}</p>
+                  </>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
