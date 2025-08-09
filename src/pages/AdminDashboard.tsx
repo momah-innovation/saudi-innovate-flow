@@ -26,6 +26,8 @@ import { SystemActivityDialog } from '@/components/dialogs/SystemActivityDialog'
 import { SystemHealthDialog } from '@/components/dialogs/SystemHealthDialog';
 import { TestPrivilegeElevation } from '@/components/admin/TestPrivilegeElevation';
 import { logger } from '@/utils/logger';
+import { CollaborationProvider } from '@/contexts/CollaborationContext';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 
 export default function AdminDashboard() {
   console.log('🚀 AdminDashboard page loaded - Management tab should be visible');
@@ -157,10 +159,11 @@ export default function AdminDashboard() {
   }
 
   return (
-    <PageLayout>
-      {/* Removed duplicate PageHeader - AppShell already provides header */}
+    <CollaborationProvider>
+      <PageLayout>
+        {/* Removed duplicate PageHeader - AppShell already provides header */}
 
-      <div className="space-y-6">
+        <div className="space-y-6">
         {/* Enhanced Hero Dashboard */}
         <AdminDashboardHero 
           totalUsers={dashboardData.totalUsers}
@@ -459,6 +462,22 @@ export default function AdminDashboard() {
             <TestPrivilegeElevation />
           </TabsContent>
         </Tabs>
+
+        {/* Admin Collaboration Space */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Admin Collaboration</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <WorkspaceCollaboration
+              workspaceType="admin"
+              entityId="admin-dashboard"
+              showWidget={true}
+              showPresence={true}
+              showActivity={true}
+            />
+          </CardContent>
+        </Card>
       </div>
 
       {/* System Dialogs */}
@@ -469,7 +488,8 @@ export default function AdminDashboard() {
       <SystemHealthDialog 
         isOpen={healthDialogOpen}
         onClose={() => setHealthDialogOpen(false)}
-      />
-    </PageLayout>
+        />
+      </PageLayout>
+    </CollaborationProvider>
   );
 }

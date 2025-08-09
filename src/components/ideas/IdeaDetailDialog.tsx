@@ -13,9 +13,11 @@ import {
   Heart, MessageSquare, Share2, Flag, Eye, Star, Trophy, Target, 
   Rocket, Zap, FileText, BarChart3, User, Plus, Bookmark,
   Calendar, MapPin, ExternalLink, ThumbsUp, CheckCircle,
-   Lightbulb, Award, Sparkles
+  Lightbulb, Award, Sparkles, Users
  } from 'lucide-react';
 import { logger } from '@/utils/logger';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { CollaborationProvider } from '@/contexts/CollaborationContext';
 
 interface Idea {
   id: string;
@@ -239,9 +241,10 @@ export function IdeaDetailDialog({
   if (!idea) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden flex flex-col">
-        <DialogHeader className="pb-0">
+    <CollaborationProvider>
+      <Dialog open={isOpen} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+          <DialogHeader className="pb-0">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <DialogTitle className="text-2xl mb-3 line-clamp-2">
@@ -386,6 +389,21 @@ export function IdeaDetailDialog({
 
             {/* Sidebar */}
             <div className="space-y-6">
+              {/* Collaboration Workspace */}
+              <div>
+                <h4 className="font-semibold mb-4 flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  {isRTL ? 'مساحة التعاون' : 'Collaboration Space'}
+                </h4>
+                <WorkspaceCollaboration
+                  workspaceType="user"
+                  entityId={idea.id}
+                  showWidget={true}
+                  showPresence={true}
+                  showActivity={false}
+                />
+              </div>
+
               {/* Evaluation Scores */}
               <div>
                 <h4 className="font-semibold mb-4 flex items-center gap-2">
@@ -555,5 +573,6 @@ export function IdeaDetailDialog({
         </div>
       </DialogContent>
     </Dialog>
+    </CollaborationProvider>
   );
 }

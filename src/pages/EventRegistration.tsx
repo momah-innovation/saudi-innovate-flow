@@ -3,6 +3,8 @@ import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { EventRegistrationHero } from '@/components/events/EventRegistrationHero';
 import { EnhancedEventRegistrationHero } from '@/components/events/EnhancedEventRegistrationHero';
+import { CollaborationProvider } from '@/contexts/CollaborationContext';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -938,8 +940,9 @@ const EventRegistration = () => {
   const currentEvents = getCurrentEvents();
 
   return (
-    <AppShell>
-      <EnhancedEventRegistrationHero 
+    <CollaborationProvider>
+      <AppShell>
+        <EnhancedEventRegistrationHero
         totalRegistrations={mockRegistrations.length}
         upcomingEvents={upcomingEvents.length}
         totalParticipants={mockRegistrations.reduce((sum, reg) => sum + reg.registered, 0)}
@@ -1134,8 +1137,28 @@ const EventRegistration = () => {
         <EventDetailDialog />
         <RegistrationDialog />
         <FilterPanel />
+
+        {/* Event Collaboration */}
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>{isRTL ? 'تعاون الفعاليات' : 'Event Collaboration'}</CardTitle>
+            <CardDescription>
+              {isRTL ? 'تفاعل مع المشاركين الآخرين' : 'Engage with other participants'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <WorkspaceCollaboration
+              workspaceType="user"
+              entityId="events"
+              showWidget={true}
+              showPresence={true}
+              showActivity={true}
+            />
+          </CardContent>
+        </Card>
       </PageLayout>
     </AppShell>
+    </CollaborationProvider>
   );
 };
 

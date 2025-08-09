@@ -36,6 +36,8 @@ import { ChallengeExpertAssignmentWizard } from "@/components/challenges/Challen
 import { ChallengeFocusQuestionWizard } from "@/components/challenges/ChallengeFocusQuestionWizard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { logger } from '@/utils/logger';
+import { CollaborationProvider } from '@/contexts/CollaborationContext';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 
 interface Challenge {
   id: string;
@@ -588,7 +590,8 @@ const ChallengeDetails = () => {
   ];
 
   return (
-    <AdminLayout breadcrumbs={breadcrumbs}>
+    <CollaborationProvider>
+      <AdminLayout breadcrumbs={breadcrumbs}>
       <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -1323,6 +1326,7 @@ const ChallengeDetails = () => {
         />
       </div>
     </AdminLayout>
+    </CollaborationProvider>
   );
 };
 
