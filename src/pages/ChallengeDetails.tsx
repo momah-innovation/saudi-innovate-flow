@@ -365,7 +365,10 @@ const ChallengeDetails = () => {
         .eq('challenge_id', challengeId)
         .eq('status', 'active');
 
-      if (!expertsError && expertsData) {
+      if (expertsError) {
+        console.warn('Failed to fetch experts:', expertsError);
+        logger.error('Failed to fetch challenge experts', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', challengeId }, expertsError as Error);
+      } else if (expertsData) {
         // Transform the data to match our interface  
         const transformedData = expertsData.map(item => ({
           ...item,
@@ -379,8 +382,12 @@ const ChallengeDetails = () => {
 
       // Fetch organizational hierarchy
       if (challengeData) {
+        console.log('🏢 Fetching organizational hierarchy');
         await fetchOrganizationalHierarchy(challengeData);
+        console.log('✅ Organizational hierarchy fetched');
       }
+      
+      console.log('🎉 fetchChallengeDetails completed successfully');
 
     } catch (error) {
       logger.error('Error in fetchChallengeDetails', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, error as Error);
@@ -404,7 +411,7 @@ const ChallengeDetails = () => {
           .from('sectors')
           .select('id, name, name_ar')
           .eq('id', challenge.sector_id)
-          .single();
+          .maybeSingle();
         if (sector) hierarchy.sector = sector;
       }
 
@@ -414,7 +421,7 @@ const ChallengeDetails = () => {
           .from('deputies')
           .select('id, name, name_ar')
           .eq('id', challenge.deputy_id)
-          .single();
+          .maybeSingle();
         if (deputy) hierarchy.deputy = deputy;
       }
 
@@ -424,7 +431,7 @@ const ChallengeDetails = () => {
           .from('departments')
           .select('id, name, name_ar')
           .eq('id', challenge.department_id)
-          .single();
+          .maybeSingle();
         if (department) hierarchy.department = department;
       }
 
@@ -434,7 +441,7 @@ const ChallengeDetails = () => {
           .from('domains')
           .select('id, name, name_ar')
           .eq('id', challenge.domain_id)
-          .single();
+          .maybeSingle();
         if (domain) hierarchy.domain = domain;
       }
 
