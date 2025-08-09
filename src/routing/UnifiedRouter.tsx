@@ -48,6 +48,7 @@ const OrganizationalStructureManagement = lazy(() => import('@/pages/admin/Organ
 const StakeholdersManagement = lazy(() => import('@/pages/admin/StakeholdersManagement'));
 const EntitiesManagement = lazy(() => import('@/pages/admin/EntitiesManagement'));
 const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement'));
+const TeamManagement = lazy(() => import('@/pages/admin/TeamManagement'));
 
 // Route configuration interface
 export interface UnifiedRouteConfig {
@@ -268,6 +269,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_CORE_TEAM,
     component: CoreTeamManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_TEAMS,
+    component: TeamManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],

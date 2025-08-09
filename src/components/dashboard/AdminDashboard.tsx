@@ -197,8 +197,8 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة الفرق' : 'Teams Management',
       description: language === 'ar' ? 'تنظيم فرق العمل والمشاريع' : 'Organize work teams and projects',
       icon: Users,
-      action: () => navigate('/innovation-teams'),
-      show: true,
+      action: () => navigate('/admin/teams'),
+      show: canManageSystem,
       category: 'management'
     },
     {

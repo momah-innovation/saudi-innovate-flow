@@ -5,7 +5,7 @@ import { InnovatorDashboard } from "@/components/dashboard/InnovatorDashboard";
 import { AdminChallengeManagement } from "@/components/admin/AdminChallengeManagement";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageContainer, Section, ContentArea } from "@/components/ui";
-import TeamManagement from "./TeamManagement";
+import TeamManagement from "./admin/TeamManagement";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 // Force cache refresh
