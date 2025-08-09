@@ -170,6 +170,14 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       category: 'management'
     },
     {
+      title: language === 'ar' ? 'الهيكل التنظيمي' : 'Organizational Structure',
+      description: language === 'ar' ? 'إدارة الهيكل التنظيمي والإدارات' : 'Manage organizational hierarchy and departments',
+      icon: Building,
+      action: () => navigate('/admin/organizational-structure'),
+      show: canManageSystem,
+      category: 'management'
+    },
+    {
       title: language === 'ar' ? 'إدارة الفرق' : 'Teams Management',
       description: language === 'ar' ? 'تنظيم فرق العمل والمشاريع' : 'Organize work teams and projects',
       icon: Users,
