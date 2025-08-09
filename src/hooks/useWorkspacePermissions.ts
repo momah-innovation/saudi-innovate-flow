@@ -60,7 +60,7 @@ export function useWorkspacePermissions(): WorkspacePermissions {
     const isAdmin = hasRole('admin') || hasRole('super_admin');
     const isExpert = hasRole('expert');
     const isPartner = hasRole('partner');
-    const isTeamMember = userRoles.includes('team_member') || isAdmin;
+    const isTeamMember = hasRole('team_member') || hasRole('team_lead') || hasRole('project_manager') || isAdmin;
 
     return {
       // User Workspace - Available to all authenticated users

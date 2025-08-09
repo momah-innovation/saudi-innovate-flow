@@ -56,7 +56,7 @@ export const UserMentionSelector: React.FC<UserMentionSelectorProps> = ({
   useEffect(() => {
     const loadSuggestions = async () => {
       if (showSuggestions) {
-        const suggestions = await getUserSuggestions(contextType, contextId);
+        const suggestions = await getUserSuggestions();
         setSuggestedUsers(suggestions);
       }
     };

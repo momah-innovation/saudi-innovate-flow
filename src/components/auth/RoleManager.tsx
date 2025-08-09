@@ -42,7 +42,7 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
     'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager',
     'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager',
     'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager',
-    'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator'
+    'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'team_member'
   ];
 
   const roleDescriptions: Record<AppRole, string> = {
@@ -72,7 +72,8 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
     innovation_manager: 'مدير ابتكار - إدارة عمليات الابتكار',
     external_expert: 'خبير خارجي - خبير من خارج المؤسسة',
     judge: 'محكم - تحكيم المسابقات والتحديات',
-    facilitator: 'ميسر - تسهيل العمليات والأنشطة'
+    facilitator: 'ميسر - تسهيل العمليات والأنشطة',
+    team_member: 'عضو فريق - عضو في فريق العمل'
   };
 
   const userId = targetUserId || userProfile?.id;

@@ -27,7 +27,7 @@ export const useUserDiscovery = () => {
       // Simplified search using only confirmed table columns
       const { data: profileData, error } = await supabase
         .from('profiles')
-        .select('id, email, user_id')
+        .select('id, email, name')
         .ilike('email', `%${query}%`)
         .limit(20);
 
@@ -38,8 +38,8 @@ export const useUserDiscovery = () => {
       }
 
       const users: UserProfile[] = (profileData || []).map(profile => ({
-        id: profile.user_id || profile.id,
-        display_name: profile.email?.split('@')[0] || 'مستخدم',
+        id: profile.id,
+        display_name: profile.name || profile.email?.split('@')[0] || 'مستخدم',
         email: profile.email || '',
         role: 'user',
         expertise: []
@@ -61,14 +61,14 @@ export const useUserDiscovery = () => {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, email, user_id')
+        .select('id, email, name')
         .limit(10);
 
       if (error) throw error;
 
       return (data || []).map(profile => ({
-        id: profile.user_id || profile.id,
-        display_name: profile.email?.split('@')[0] || 'مستخدم',
+        id: profile.id,
+        display_name: profile.name || profile.email?.split('@')[0] || 'مستخدم',
         email: profile.email || '',
         role: 'user',
         expertise: []
