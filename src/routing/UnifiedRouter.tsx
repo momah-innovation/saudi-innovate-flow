@@ -277,7 +277,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     path: ALL_ROUTES.ADMIN_CHALLENGE_DETAIL,
     component: ChallengeDetailAdmin,
     requireAuth: true,
-    requireProfile: true,
+    requireProfile: false, // Temporarily disabled to test routing
     requiredRole: ['admin', 'super_admin'],
     withAppShell: false, // ChallengeDetail handles AppShell internally
   },
