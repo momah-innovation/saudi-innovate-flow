@@ -6902,6 +6902,7 @@ export type Database = {
           created_at: string
           hierarchy_level: Database["public"]["Enums"]["role_hierarchy_level"]
           id: string
+          permissions: string[] | null
           requires_approval_for:
             | Database["public"]["Enums"]["app_role"][]
             | null
@@ -6912,6 +6913,7 @@ export type Database = {
           created_at?: string
           hierarchy_level: Database["public"]["Enums"]["role_hierarchy_level"]
           id?: string
+          permissions?: string[] | null
           requires_approval_for?:
             | Database["public"]["Enums"]["app_role"][]
             | null
@@ -6922,6 +6924,7 @@ export type Database = {
           created_at?: string
           hierarchy_level?: Database["public"]["Enums"]["role_hierarchy_level"]
           id?: string
+          permissions?: string[] | null
           requires_approval_for?:
             | Database["public"]["Enums"]["app_role"][]
             | null
@@ -8865,6 +8868,10 @@ export type Database = {
           _user_id: string
           _roles: Database["public"]["Enums"]["app_role"][]
         }
+        Returns: boolean
+      }
+      has_collaboration_permission: {
+        Args: { user_id: string; permission: string }
         Returns: boolean
       }
       has_role: {
