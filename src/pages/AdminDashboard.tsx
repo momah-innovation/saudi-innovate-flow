@@ -52,6 +52,14 @@ export default function AdminDashboard() {
       label: "Active Users"
     },
     {
+      title: "Expert Assignments",
+      description: "Assign experts to challenges and manage evaluations", 
+      icon: Users,
+      href: "/admin/expert-assignments",
+      count: "24",
+      label: "Active Assignments"
+    },
+    {
       title: "Storage Management", 
       description: "Monitor and manage file storage",
       icon: Database,
@@ -233,6 +241,44 @@ export default function AdminDashboard() {
                       <div className="text-2xl font-bold text-inactive">{dashboardData.totalUsers - dashboardData.activeUsers}</div>
                       <div className="text-sm text-muted-foreground">Inactive Users</div>
                     </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Expert Assignment Management</CardTitle>
+                <Button size="sm" className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  Assign Expert
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">24</div>
+                      <div className="text-sm text-muted-foreground">Active Assignments</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">18</div>
+                      <div className="text-sm text-muted-foreground">Available Experts</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-warning">6</div>
+                      <div className="text-sm text-muted-foreground">Pending Reviews</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/expert-assignments'}
+                    >
+                      <Users className="w-4 h-4 mr-2" />
+                      Manage Expert Assignments
+                    </Button>
                   </div>
                 </div>
               </CardContent>
