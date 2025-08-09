@@ -123,6 +123,15 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         roles: ['all'] 
       },
       { 
+        id: 'collaboration', 
+        label: 'Live Collaboration', 
+        arabicLabel: 'التعاون المباشر',
+        icon: Users, 
+        path: '/collaboration',
+        group: 'personal',
+        roles: ['all'] 
+      },
+      { 
         id: 'user-profile', 
         label: 'My Profile', 
         arabicLabel: 'ملفي الشخصي',

@@ -51,6 +51,7 @@ const EntitiesManagement = lazy(() => import('@/pages/admin/EntitiesManagement')
 const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement'));
 const TeamManagement = lazy(() => import('@/pages/admin/TeamManagement'));
 const CollaborationPage = lazy(() => import('@/pages/CollaborationPage'));
+const CollaborationLandingPage = lazy(() => import('@/pages/CollaborationLandingPage'));
 
 // Workspace Components
 const UserWorkspace = lazy(() => import('@/pages/workspace/UserWorkspace'));
@@ -204,7 +205,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: '/collaboration',
-    component: CollaborationPage,
+    component: CollaborationLandingPage,
     requireAuth: true,
     requireProfile: true,
     withAppShell: true,
