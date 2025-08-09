@@ -13,6 +13,7 @@
 | Help | `/help` | HelpPage | Documentation and support | FAQ, Guides, Videos, Contact, Downloads |
 | Challenges Browse | `/challenges` | ChallengesBrowse | Public challenge discovery | Advanced filters, search, view modes |
 | Events Browse | `/events` | EventsBrowse | Public event listings | Calendar view, registration, filters |
+| Event Registration | `/event-registration` | EventRegistration | Event registration with details | Registration forms, confirmation, calendar |
 | Not Found | `/*` | NotFound | 404 error page | Error logging |
 
 ### **Authenticated User Pages** (Require Login)
@@ -22,10 +23,16 @@
 | Profile Setup | `/profile/setup` | ProfileSetupPage | Auth Only | Role selection, system settings |
 | Settings | `/settings` | SettingsPage | Auth + Profile | Notifications, theme, role management |
 | Ideas | `/ideas` | Ideas | Auth + Profile | Real-time updates, drafts, analytics |
+| Idea Submission Wizard | `/ideas/submit` | IdeaSubmissionWizard | Auth + Profile | Step-by-step idea creation with auto-save |
+| Idea Drafts | `/ideas/drafts` | IdeaDrafts | Auth + Profile | Draft management and restoration |
 | Challenge Details | `/challenges/:id` | ChallengeDetails | Auth + Profile | Expert assignment, focus questions |
-| Challenges | `/ideas` (internal) | Challenges | Auth + Profile | Full challenges management |
+| Challenges | `/challenges-management` | Challenges | Auth + Profile | Full challenges management |
 | Challenge Activity Hub | `/challenges/:id/activity` | ChallengeActivityHub | Auth + Profile | Activity monitoring, collaboration |
 | Opportunities | `/opportunities` | OpportunitiesPage | Auth + Profile | Partnership opportunities, applications |
+| Expert Dashboard | `/dashboard/expert` | ExpertDashboard | Expert Role | Expert-specific metrics and assignments |
+| Expert Profile | `/expert/profile` | ExpertProfile | Expert Role | Expert profile management and certifications |
+| Evaluations | `/evaluations` | EvaluationsPage | Expert Role | Idea evaluation and scoring |
+| AI Center | `/ai-center` | AICenter | Auth + Profile | AI features and preferences |
 
 ### **Admin Pages** (Require Admin Role)
 | Page | Route | Component | Role Required | Features |
@@ -34,17 +41,64 @@
 | Admin Evaluations | `/admin/evaluations` | AdminEvaluations | admin/super_admin | Evaluation management |
 | Admin Analytics | `/admin/system-analytics` | AnalyticsPage | admin/super_admin | Platform analytics, reports |
 | Admin Relationships | `/admin/relationships` | AdminRelationships | admin/super_admin | Relationship overview |
+| Challenges Management | `/admin/challenges` | ChallengesManagement | admin/super_admin | Challenge administration with tabs |
+| Campaigns Management | `/admin/campaigns` | CampaignsManagement | admin/super_admin | Campaign administration |
+| Events Management | `/admin/events` | EventsManagement | admin/super_admin | Event administration |
+| Ideas Management | `/admin/ideas` | IdeasManagement | admin/super_admin | Idea administration with analytics |
+| Focus Questions Management | `/admin/focus-questions` | FocusQuestionsManagement | admin/super_admin | Focus question administration |
+| Expert Assignment Management | `/admin/expert-assignments` | ExpertAssignmentManagement | admin/super_admin | Expert assignment with tabs |
+| Evaluation Management | `/admin/evaluation-management` | EvaluationManagement | admin/super_admin | Evaluation criteria and templates |
+| Evaluations Management | `/admin/evaluations-management` | EvaluationsManagement | admin/super_admin | Evaluation process management |
 
 ### **Super Admin Pages** (Require Super Admin Role)
 | Page | Route | Component | Role Required | Features |
 |------|-------|-----------|---------------|----------|
 | Access Control | `/dashboard/access-control` | AccessControlManagement | super_admin | System administration |
+| System Settings | `/admin/system-settings` | SystemSettings | super_admin | System-wide configuration with 13 category tabs |
 
 ### **Special Pages**
 | Page | Route | Component | Access Level | Features |
 |------|-------|-----------|--------------|----------|
 | Design System | `/design-system` | DesignSystem | Auth Required | Complete design tokens, components |
-| AI Center | Not routed | AICenter | Auth Required | AI features management |
+
+### **Management Sub-Pages with Tabs/Sections**
+
+#### **System Settings** (`/admin/system-settings`)
+| Tab | Component | Features |
+|-----|-----------|----------|
+| All | UnifiedSettingsManager | Complete settings overview |
+| General | UnifiedSettingsManager | General system configuration |
+| Challenges | UnifiedSettingsManager | Challenge-specific settings |
+| Ideas | UnifiedSettingsManager | Idea submission settings |
+| Events | UnifiedSettingsManager | Event management settings |
+| Campaigns | UnifiedSettingsManager | Campaign configuration |
+| Partners | UnifiedSettingsManager | Partner management settings |
+| Opportunities | UnifiedSettingsManager | Opportunity settings |
+| Analytics | UnifiedSettingsManager | Analytics configuration |
+| Security | UnifiedSettingsManager | Security settings |
+| AI | UnifiedSettingsManager | AI system configuration |
+| UI | UnifiedSettingsManager | User interface settings |
+| Performance | UnifiedSettingsManager | Performance optimization |
+| Translations | TranslationManagement | Multi-language management |
+
+#### **Challenge Management** (`/admin/challenges`)
+| Tab | Component | Features |
+|-----|-----------|----------|
+| Challenges | AdminChallengeManagement | Challenge list and management |
+| Analytics | ChallengeAnalytics | Challenge performance metrics |
+
+#### **Ideas Management** (`/ideas`)
+| Tab | Component | Features |
+|-----|-----------|----------|
+| Ideas | IdeasManagementList | Idea management and oversight |
+| Analytics | IdeasAnalytics | Idea submission analytics |
+
+#### **Expert Assignment Management** (`/admin/expert-assignments`)
+| Tab | Component | Features |
+|-----|-----------|----------|
+| Assignments | ExpertAssignmentList | Active expert assignments |
+| Workload | WorkloadOverview | Expert workload distribution |
+| Availability | AvailabilityTracking | Expert availability management |
 
 ---
 
@@ -179,11 +233,20 @@ graph LR
 
 | Protection Level | Pages Count | Requirements | Real-time Features |
 |------------------|-------------|--------------|-------------------|
-| **Public** | 6 | None | Event updates, challenge views |
+| **Public** | 7 | None | Event updates, challenge views, registration |
 | **Auth Required** | 2 | Authentication | Profile completion tracking |
-| **Auth + Profile** | 8 | Authentication + Complete Profile | Ideas updates, notifications |
-| **Admin** | 4 | Authentication + Profile + Admin Role | System monitoring, analytics |
-| **Super Admin** | 1 | Authentication + Profile + Super Admin Role | Access control changes |
+| **Auth + Profile** | 14 | Authentication + Complete Profile | Ideas updates, notifications, AI features |
+| **Admin** | 12 | Authentication + Profile + Admin Role | System monitoring, analytics, management |
+| **Super Admin** | 2 | Authentication + Profile + Super Admin Role | Access control, system settings |
+
+### **Tab-Based Pages Summary**
+| Page | Total Tabs | Tab Types |
+|------|------------|-----------|
+| System Settings | 14 | Category-based configuration tabs |
+| Challenge Management | 2 | Management and analytics |
+| Ideas Management | 2 | Management and analytics |
+| Expert Assignment Management | 3 | Assignments, workload, availability |
+| Challenge Settings Dialog | 4 | Access, notifications, workflow, advanced |
 
 ---
 
@@ -286,11 +349,30 @@ graph LR
 - **Notification system**: Real-time updates and preference management
 - **Search integration**: Global search with advanced filtering
 
+### **Dialog-Based Sub-Pages**
+| Dialog | Trigger From | Features |
+|--------|--------------|----------|
+| Challenge Settings | Admin Challenge Management | 4-tab settings configuration |
+| Expert Profile | Expert Assignment Management | Expert profile viewing and editing |
+| Campaign Wizard | Campaigns Management | Multi-step campaign creation |
+| Challenge View | Various pages | Challenge details and actions |
+| Event Detail | Events Browse | Event information and registration |
+| Assignment Detail | Expert assignments | Assignment details and navigation |
+
+### **Advanced Component Features**
+| Component | Sub-Components | Special Features |
+|-----------|----------------|------------------|
+| UnifiedSettingsManager | Multiple category filters | Dynamic settings loading by category |
+| TranslationManagement | Language editing interface | Multi-language content management |
+| NavigationSidebar | Dynamic menu generation | Role-based menu items |
+| GlobalSearch | Unified search interface | Cross-platform search functionality |
+| NotificationCenter | Real-time notifications | Activity tracking and updates |
+
 ### **Missing Route Implementations**
-- **Admin Pages**: Several admin routes defined but components not in router
-- **Profile Management**: Enhanced profile editing and management
 - **Team Collaboration**: Team workspace and collaboration features
 - **Report Generation**: Advanced reporting and export functionality
+- **User Profile Management**: Enhanced profile editing beyond expert profiles
+- **Notification Management**: Dedicated notification configuration page
 
 ---
 
