@@ -55,6 +55,42 @@ export type Database = {
           },
         ]
       }
+      activity_events: {
+        Row: {
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          privacy_level: string | null
+          user_id: string | null
+          visibility_scope: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          privacy_level?: string | null
+          user_id?: string | null
+          visibility_scope?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          privacy_level?: string | null
+          user_id?: string | null
+          visibility_scope?: Json | null
+        }
+        Relationships: []
+      }
       admin_elevation_logs: {
         Row: {
           elevated_at: string | null
@@ -1577,6 +1613,111 @@ export type Database = {
           files_deleted?: number | null
           files_processed?: number | null
           id?: string
+        }
+        Relationships: []
+      }
+      collaboration_messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          is_edited: boolean | null
+          message_type: string | null
+          metadata: Json | null
+          reply_to: string | null
+          sender_id: string | null
+          space_id: string | null
+          thread_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          is_edited?: boolean | null
+          message_type?: string | null
+          metadata?: Json | null
+          reply_to?: string | null
+          sender_id?: string | null
+          space_id?: string | null
+          thread_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          is_edited?: boolean | null
+          message_type?: string | null
+          metadata?: Json | null
+          reply_to?: string | null
+          sender_id?: string | null
+          space_id?: string | null
+          thread_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collaboration_messages_reply_to_fkey"
+            columns: ["reply_to"]
+            isOneToOne: false
+            referencedRelation: "collaboration_messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collaboration_messages_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "collaboration_spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collaboration_spaces: {
+        Row: {
+          admins: string[] | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+          participants: string[] | null
+          privacy_level: string | null
+          settings: Json | null
+          space_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          admins?: string[] | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          participants?: string[] | null
+          privacy_level?: string | null
+          settings?: Json | null
+          space_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          admins?: string[] | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          participants?: string[] | null
+          privacy_level?: string | null
+          settings?: Json | null
+          space_type?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -5093,6 +5234,98 @@ export type Database = {
         }
         Relationships: []
       }
+      live_documents: {
+        Row: {
+          collaborators: string[] | null
+          content: Json | null
+          created_at: string | null
+          current_editors: Json | null
+          document_type: string
+          entity_id: string | null
+          id: string
+          permissions: Json | null
+          privacy_level: string | null
+          title: string
+          updated_at: string | null
+          version: number | null
+        }
+        Insert: {
+          collaborators?: string[] | null
+          content?: Json | null
+          created_at?: string | null
+          current_editors?: Json | null
+          document_type: string
+          entity_id?: string | null
+          id?: string
+          permissions?: Json | null
+          privacy_level?: string | null
+          title: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Update: {
+          collaborators?: string[] | null
+          content?: Json | null
+          created_at?: string | null
+          current_editors?: Json | null
+          document_type?: string
+          entity_id?: string | null
+          id?: string
+          permissions?: Json | null
+          privacy_level?: string | null
+          title?: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Relationships: []
+      }
+      live_edits: {
+        Row: {
+          content: string | null
+          document_id: string | null
+          id: string
+          length: number | null
+          metadata: Json | null
+          operation_type: string
+          position: number
+          timestamp: string | null
+          user_id: string | null
+          version: number
+        }
+        Insert: {
+          content?: string | null
+          document_id?: string | null
+          id?: string
+          length?: number | null
+          metadata?: Json | null
+          operation_type: string
+          position: number
+          timestamp?: string | null
+          user_id?: string | null
+          version: number
+        }
+        Update: {
+          content?: string | null
+          document_id?: string | null
+          id?: string
+          length?: number | null
+          metadata?: Json | null
+          operation_type?: string
+          position?: number
+          timestamp?: string | null
+          user_id?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_edits_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "live_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       media_content: {
         Row: {
           author_id: string | null
@@ -6456,6 +6689,48 @@ export type Database = {
           request_count?: number | null
           user_id?: string
           window_start?: string
+        }
+        Relationships: []
+      }
+      realtime_notifications: {
+        Row: {
+          channels: string[] | null
+          created_at: string | null
+          data: Json | null
+          id: string
+          is_read: boolean | null
+          message: string
+          notification_type: string
+          priority: string | null
+          recipient_id: string | null
+          sender_id: string | null
+          title: string
+        }
+        Insert: {
+          channels?: string[] | null
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          notification_type: string
+          priority?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+          title: string
+        }
+        Update: {
+          channels?: string[] | null
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          notification_type?: string
+          priority?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+          title?: string
         }
         Relationships: []
       }
@@ -8039,6 +8314,42 @@ export type Database = {
           name_ar?: string | null
           position?: string | null
           status?: string
+        }
+        Relationships: []
+      }
+      user_presence: {
+        Row: {
+          created_at: string | null
+          current_location: Json | null
+          id: string
+          last_seen: string | null
+          session_id: string
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+          user_info: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_location?: Json | null
+          id?: string
+          last_seen?: string | null
+          session_id: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          user_info?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          current_location?: Json | null
+          id?: string
+          last_seen?: string | null
+          session_id?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          user_info?: Json | null
         }
         Relationships: []
       }

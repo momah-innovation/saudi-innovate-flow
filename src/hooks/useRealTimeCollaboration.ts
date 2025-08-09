@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import type { 
   UserPresence, 
@@ -74,7 +74,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
     presenceChannel
       .on('presence', { event: 'sync' }, () => {
         const state = presenceChannel.presenceState();
-        const users = Object.values(state).flat() as UserPresence[];
+        const users = Object.values(state).flat().map((presence: any) => presence as UserPresence);
         setOnlineUsers(users);
       })
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
@@ -153,7 +153,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
     channelsRef.current.activity = activityChannel;
   };
 
-  // Setup messaging
+  // Setup messaging - using existing messages table for compatibility
   const setupMessagingChannel = async () => {
     const messagingChannel = supabase
       .channel('collaboration-messages')
@@ -162,19 +162,28 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'collaboration_messages'
+          table: 'messages'
         },
         (payload) => {
-          const newMessage = payload.new as CollaborationMessage;
+          // Map existing message structure to collaboration message
+          const message = payload.new as any;
+          const newMessage: CollaborationMessage = {
+            id: message.id,
+            sender_id: message.user_id,
+            sender: {
+              display_name: message.user_name || 'مستخدم',
+              role: 'user'
+            },
+            content: message.content,
+            message_type: 'text',
+            context: {
+              space_type: 'global',
+              space_id: 'global'
+            },
+            is_edited: false,
+            created_at: message.created_at
+          };
           setMessages(prev => [newMessage, ...prev]);
-          
-          // Show notification for mentions
-          if (newMessage.metadata?.mentioned_users?.includes(user?.id || '')) {
-            toast({
-              title: "تم ذكرك",
-              description: `${newMessage.sender.display_name}: ${newMessage.content}`,
-            });
-          }
         }
       );
 
@@ -182,7 +191,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
     channelsRef.current.messaging = messagingChannel;
   };
 
-  // Setup notifications
+  // Setup notifications - using existing notifications table
   const setupNotificationChannel = async () => {
     if (!user) return;
 
@@ -193,18 +202,32 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'realtime_notifications',
-          filter: `recipient_id=eq.${user.id}`
+          table: 'notifications',
+          filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          const notification = payload.new as RealtimeNotification;
-          setNotifications(prev => [notification, ...prev]);
+          // Map existing notification to realtime notification format
+          const notification = payload.new as any;
+          const realtimeNotification: RealtimeNotification = {
+            id: notification.id,
+            recipient_id: notification.user_id,
+            sender_id: null,
+            type: notification.type || 'system',
+            title: notification.title,
+            message: notification.message,
+            data: notification.metadata || {},
+            priority: 'medium',
+            channels: ['in_app'],
+            is_read: notification.is_read || false,
+            created_at: notification.created_at
+          };
+          setNotifications(prev => [realtimeNotification, ...prev]);
           
-          if (notification.priority === 'high' || notification.priority === 'urgent') {
+          if (realtimeNotification.priority === 'high' || realtimeNotification.priority === 'urgent') {
             toast({
-              title: notification.title,
-              description: notification.message,
-              variant: notification.priority === 'urgent' ? 'destructive' : 'default',
+              title: realtimeNotification.title,
+              description: realtimeNotification.message,
+              variant: realtimeNotification.priority === 'urgent' ? 'destructive' : 'default',
             });
           }
         }
@@ -228,7 +251,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
     setCurrentUserPresence(updatedPresence);
   }, [currentUserPresence]);
 
-  // Send message
+  // Send message - using existing messages table
   const sendMessage = useCallback(async (
     content: string, 
     context: CollaborationMessage['context']
@@ -237,13 +260,11 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
 
     try {
       const { error } = await supabase
-        .from('collaboration_messages')
+        .from('messages')
         .insert({
-          sender_id: user.id,
+          user_id: user.id,
           content,
-          message_type: 'text',
-          context,
-          is_edited: false
+          user_name: user.user_metadata?.display_name || user.email || 'مستخدم'
         });
 
       if (error) throw error;
@@ -257,11 +278,11 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
     }
   }, [user, toast]);
 
-  // Mark notification as read
+  // Mark notification as read - using existing notifications table
   const markAsRead = useCallback(async (notificationId: string) => {
     try {
       const { error } = await supabase
-        .from('realtime_notifications')
+        .from('notifications')
         .update({ is_read: true })
         .eq('id', notificationId);
 
