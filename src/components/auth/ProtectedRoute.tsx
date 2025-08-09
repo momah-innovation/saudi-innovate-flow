@@ -97,6 +97,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       ? requiredRole.some(role => hasRole(role))
       : hasRole(requiredRole);
       
+    console.log('🔐 Role check for admin dashboard:', {
+      requiredRole,
+      hasRequiredRole,
+      userRoles: userProfile?.user_roles?.map(r => r.role),
+      path: location.pathname
+    });
+      
     if (!hasRequiredRole) {
       logger.info('ProtectedRoute: Redirecting to dashboard - insufficient role', {
         component: 'ProtectedRoute',
