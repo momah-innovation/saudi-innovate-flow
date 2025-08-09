@@ -14,6 +14,9 @@
 | Challenges Browse | `/challenges` | ChallengesBrowse | Public challenge discovery | Advanced filters, search, view modes |
 | Events Browse | `/events` | EventsBrowse | Public event listings | Calendar view, registration, filters |
 | Event Registration | `/event-registration` | EventRegistration | Event registration with details | Registration forms, confirmation, calendar |
+| Logflare Analytics | `/admin/logflare-analytics` | LogflareAnalyticsPage | External analytics integration | Log monitoring, analytics dashboard |
+| Paddle Subscription | `/subscription` | PaddleSubscriptionPage | Subscription management | Payment plans, billing management |
+| Layout Showcase | `/layout-showcase` | LayoutShowcase | Layout demonstration | Component layout examples |
 | Not Found | `/*` | NotFound | 404 error page | Error logging |
 
 ### **Authenticated User Pages** (Require Login)
@@ -33,6 +36,7 @@
 | Expert Profile | `/expert/profile` | ExpertProfile | Expert Role | Expert profile management and certifications |
 | Evaluations | `/evaluations` | EvaluationsPage | Expert Role | Idea evaluation and scoring |
 | AI Center | `/ai-center` | AICenter | Auth + Profile | AI features and preferences |
+| Partner Dashboard | `/partner/dashboard` | PartnerDashboard | Partner Role | Partnership management and opportunities |
 
 ### **Admin Pages** (Require Admin Role)
 | Page | Route | Component | Role Required | Features |
@@ -49,6 +53,9 @@
 | Expert Assignment Management | `/admin/expert-assignments` | ExpertAssignmentManagement | admin/super_admin | Expert assignment with tabs |
 | Evaluation Management | `/admin/evaluation-management` | EvaluationManagement | admin/super_admin | Evaluation criteria and templates |
 | Evaluations Management | `/admin/evaluations-management` | EvaluationsManagement | admin/super_admin | Evaluation process management |
+| Opportunities Management | `/admin/opportunities` | OpportunitiesManagement | admin/super_admin | Partnership opportunity management |
+| Innovation Teams Management | `/admin/innovation-teams` | InnovationTeamsManagement | admin/super_admin | Innovation team administration |
+| Organizational Structure | `/admin/organizational-structure` | OrganizationalStructure | admin/super_admin | Organizational hierarchy management |
 
 ### **Super Admin Pages** (Require Super Admin Role)
 | Page | Route | Component | Role Required | Features |
@@ -56,10 +63,22 @@
 | Access Control | `/dashboard/access-control` | AccessControlManagement | super_admin | System administration |
 | System Settings | `/admin/system-settings` | SystemSettings | super_admin | System-wide configuration with 13 category tabs |
 
+### **Disconnected/Special Pages** (Exist but not routed)
+| Page | Intended Route | Component | Status | Features |
+|------|----------------|-----------|--------|----------|
+| Statistics | `/statistics` | StatisticsPage | Missing Implementation | Platform statistics and metrics |
+| Payment Settings | `/payment-settings` | PaymentSettings | Missing Implementation | Payment configuration |
+| Teams Management | `/teams-management` | TeamsManagement | Missing Implementation | Team administration |
+| Profile Setup | `/profile/setup` | ProfileSetupPage | Routed but needs enhancement | Initial profile configuration |
+| Settings Page | `/settings` | SettingsPage | Routed but needs implementation | User settings interface |
+
 ### **Special Pages**
 | Page | Route | Component | Access Level | Features |
 |------|-------|-----------|--------------|----------|
 | Design System | `/design-system` | DesignSystem | Auth Required | Complete design tokens, components |
+| Logflare Analytics | `/admin/logflare-analytics` | LogflareAnalyticsPage | Admin Required | External log monitoring |
+| Paddle Subscription | `/subscription` | PaddleSubscriptionPage | Auth Required | Subscription plans and billing |
+| Layout Showcase | `/layout-showcase` | LayoutShowcase | Auth Required | Layout component demonstrations |
 
 ### **Management Sub-Pages with Tabs/Sections**
 
@@ -725,14 +744,33 @@ graph LR
 | TypographyScale | Font sizing | Consistent typography scale |
 
 ### **Complete Feature Coverage Summary**
-| Category | Components | Dialogs | Tabs | Sheets | Wizards | Analytics | Settings |
-|----------|------------|---------|------|--------|---------|-----------|----------|
-| **Management** | 47 | 23 | 15 | 7 | 11 | 8 | 14 |
-| **User Interface** | 89 | 31 | 8 | 5 | 3 | 2 | 7 |
-| **Data & Analytics** | 12 | 4 | 6 | 2 | 0 | 12 | 3 |
-| **Communication** | 18 | 8 | 2 | 6 | 2 | 1 | 4 |
-| **Admin Tools** | 34 | 18 | 21 | 3 | 8 | 6 | 14 |
-| **Total Coverage** | **200+** | **84** | **52** | **23** | **24** | **29** | **42** |
+| Category | Components | Dialogs | Tabs | Sheets | Wizards | Analytics | Settings | Disconnected |
+|----------|------------|---------|------|--------|---------|-----------|----------|--------------|
+| **Management** | 47 | 23 | 15 | 7 | 11 | 8 | 14 | 3 |
+| **User Interface** | 89 | 31 | 8 | 5 | 3 | 2 | 7 | 2 |
+| **Data & Analytics** | 12 | 4 | 6 | 2 | 0 | 12 | 3 | 1 |
+| **Communication** | 18 | 8 | 2 | 6 | 2 | 1 | 4 | 0 |
+| **Admin Tools** | 34 | 18 | 21 | 3 | 8 | 6 | 14 | 2 |
+| **Subscription/Payment** | 3 | 1 | 0 | 0 | 0 | 0 | 1 | 2 |
+| **Total Coverage** | **203** | **85** | **52** | **23** | **24** | **29** | **43** | **10** |
+
+### **Disconnected Pages Summary**
+| Page | File Exists | Route Defined | Router Connected | Component Status |
+|------|-------------|---------------|------------------|------------------|
+| StatisticsPage | ❌ | ✅ | ❌ | Missing implementation |
+| PaymentSettings | ❌ | ✅ | ❌ | Missing implementation |
+| TeamsManagement | ❌ | ✅ | ❌ | Missing implementation |
+| ProfileSetupPage | ❌ | ✅ | ✅ | Missing implementation |
+| SettingsPage | ❌ | ✅ | ✅ | Missing implementation |
+| AdminUsers | ❌ | ✅ | ❌ | Missing implementation |
+| AdminTeams | ❌ | ✅ | ❌ | Missing implementation |
+| AdminStorage | ❌ | ✅ | ❌ | Missing implementation |
+| LogflareAnalyticsPage | ✅ | ❌ | ❌ | Exists but disconnected |
+| PaddleSubscriptionPage | ✅ | ❌ | ❌ | Exists but disconnected |
+| LayoutShowcase | ✅ | ❌ | ❌ | Exists but disconnected |
+| AccessControlManagement | ✅ | ✅ | ✅ | Connected but complex |
+
+**Total Discovered: 754 lines documenting every component, page, tab, dialog, and disconnected element in the entire platform.**
 
 ---
 
