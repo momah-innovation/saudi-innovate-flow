@@ -93,7 +93,9 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
 
   const [formData, setFormData] = useState<ChallengeFormData>({
     title_ar: '',
+    title_en: '',
     description_ar: '',
+    description_en: '',
     status: 'draft',
     priority_level: 'medium',
     sensitivity_level: 'normal',
@@ -183,7 +185,9 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
   const resetForm = () => {
     setFormData({
       title_ar: '',
+      title_en: '',
       description_ar: '',
+      description_en: '',
       status: 'draft',
       priority_level: 'medium',
       sensitivity_level: 'normal',
@@ -347,25 +351,54 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="title_ar">عنوان التحدي *</Label>
-                <Input
-                  id="title_ar"
-                  value={formData.title_ar}
-                  onChange={(e) => updateFormData('title_ar', e.target.value)}
-                  placeholder="أدخل عنوان التحدي باللغة العربية"
-                />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title_ar">عنوان التحدي *</Label>
+                  <Input
+                    id="title_ar"
+                    value={formData.title_ar}
+                    onChange={(e) => updateFormData('title_ar', e.target.value)}
+                    placeholder="أدخل عنوان التحدي باللغة العربية"
+                    dir="rtl"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="title_en">Challenge Title (English)</Label>
+                  <Input
+                    id="title_en"
+                    value={formData.title_en || ''}
+                    onChange={(e) => updateFormData('title_en', e.target.value)}
+                    placeholder="Enter challenge title in English"
+                    dir="ltr"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="description_ar">وصف التحدي *</Label>
-                <Textarea
-                  id="description_ar"
-                  value={formData.description_ar}
-                  onChange={(e) => updateFormData('description_ar', e.target.value)}
-                  placeholder="أدخل وصف مفصل للتحدي باللغة العربية"
-                  rows={4}
-                />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="description_ar">وصف التحدي *</Label>
+                  <Textarea
+                    id="description_ar"
+                    value={formData.description_ar}
+                    onChange={(e) => updateFormData('description_ar', e.target.value)}
+                    placeholder="أدخل وصف مفصل للتحدي باللغة العربية"
+                    rows={4}
+                    dir="rtl"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="description_en">Challenge Description (English)</Label>
+                  <Textarea
+                    id="description_en"
+                    value={formData.description_en || ''}
+                    onChange={(e) => updateFormData('description_en', e.target.value)}
+                    placeholder="Enter detailed challenge description in English"
+                    rows={4}
+                    dir="ltr"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">

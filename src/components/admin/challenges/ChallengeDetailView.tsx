@@ -252,6 +252,9 @@ export function ChallengeDetailView({
           <div className="flex items-start justify-between">
             <div className="space-y-2">
               <DialogTitle className="text-2xl font-bold">{challenge.title_ar}</DialogTitle>
+              {challenge.title_en && (
+                <p className="text-lg text-muted-foreground" dir="ltr">{challenge.title_en}</p>
+              )}
               <div className="flex items-center gap-2">
                 <Badge variant={getStatusColor(challenge.status) as 'default' | 'secondary' | 'destructive' | 'outline'}>
                   {getStatusLabel(challenge.status)}
@@ -290,7 +293,13 @@ export function ChallengeDetailView({
                     <CardContent className="space-y-4">
                       <div>
                         <h4 className="font-semibold mb-2">الوصف</h4>
-                        <p className="text-sm text-muted-foreground">{challenge.description_ar}</p>
+                        <p className="text-sm text-muted-foreground" dir="rtl">{challenge.description_ar}</p>
+                        {challenge.description_en && (
+                          <>
+                            <h4 className="font-semibold mb-2 mt-4">Description (English)</h4>
+                            <p className="text-sm text-muted-foreground" dir="ltr">{challenge.description_en}</p>
+                          </>
+                        )}
                       </div>
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

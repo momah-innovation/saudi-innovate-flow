@@ -59,6 +59,7 @@ interface AnalyticsData {
   topPerformers: Array<{
     id: string;
     title: string;
+    title_en?: string;
     ideasCount: number;
     completion: number;
     budget: number;
@@ -153,6 +154,7 @@ export function ChallengeAnalytics() {
       .map(c => ({
         id: c.id,
         title: c.title_ar,
+        title_en: c.title_en,
         ideasCount: c.ideas?.length || 0,
         completion: c.implementation_tracker?.[0]?.completion_percentage || 0,
         budget: c.estimated_budget || 0
@@ -422,7 +424,10 @@ export function ChallengeAnalytics() {
                       {index + 1}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-sm line-clamp-1">{challenge.title}</p>
+                      <p className="font-medium text-sm line-clamp-1" dir="rtl">{challenge.title}</p>
+                      {challenge.title_en && (
+                        <p className="text-xs text-muted-foreground line-clamp-1" dir="ltr">{challenge.title_en}</p>
+                      )}
                       <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
                         <span className="flex items-center gap-1">
                           <Lightbulb className="w-3 h-3" />

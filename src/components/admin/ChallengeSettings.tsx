@@ -188,6 +188,9 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
           <DialogTitle className="flex items-center gap-2">
             <SettingsIcon className="h-5 w-5" />
             {t('challenge_settings.title')}: {challenge.title_ar}
+            {challenge.title_en && (
+              <span className="text-sm text-muted-foreground" dir="ltr">({challenge.title_en})</span>
+            )}
           </DialogTitle>
         </DialogHeader>
 
