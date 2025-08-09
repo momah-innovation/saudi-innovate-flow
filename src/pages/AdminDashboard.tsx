@@ -17,7 +17,8 @@ import {
   Plus,
   Download,
   Eye,
-  RefreshCw
+  RefreshCw,
+  UserCheck
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -52,9 +53,9 @@ export default function AdminDashboard() {
       label: "Active Users"
     },
     {
-      title: "Expert Assignments",
+      title: "Expert Assignment Management",
       description: "Assign experts to challenges and manage evaluations", 
-      icon: Users,
+      icon: UserCheck,
       href: "/admin/expert-assignments",
       count: "24",
       label: "Active Assignments"
