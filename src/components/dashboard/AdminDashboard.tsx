@@ -192,6 +192,14 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       action: () => navigate('/innovation-teams'),
       show: true,
       category: 'management'
+    },
+    {
+      title: language === 'ar' ? 'إدارة الكيانات' : 'Entities Management',
+      description: language === 'ar' ? 'إدارة الكيانات التنظيمية والمؤسسات' : 'Manage organizational entities and institutions',
+      icon: Building,
+      action: () => navigate('/admin/entities'),
+      show: canManageSystem,
+      category: 'management'
     }
   ];
 
