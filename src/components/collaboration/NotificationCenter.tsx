@@ -16,6 +16,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import type { RealtimeNotification } from '@/types/collaboration';
 
 interface NotificationCenterProps {
@@ -44,6 +45,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   onClose
 }) => {
   const { notifications, markAsRead } = useCollaboration();
+  const { t } = useUnifiedTranslation();
   const [selectedTab, setSelectedTab] = useState('all');
 
   // Filter notifications by read status
@@ -79,10 +81,10 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'الآن';
-    if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
-    if (diffHours < 24) return `منذ ${diffHours} ساعة`;
-    return `منذ ${diffDays} يوم`;
+    if (diffMins < 1) return t('collaboration.time_now');
+    if (diffMins < 60) return t('collaboration.time_minutes_ago', { count: diffMins });
+    if (diffHours < 24) return t('collaboration.time_hours_ago', { count: diffHours });
+    return t('collaboration.time_days_ago', { count: diffDays });
   };
 
   const handleNotificationClick = (notification: RealtimeNotification) => {
@@ -104,7 +106,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Bell className="w-5 h-5" />
-            الإشعارات
+            {t('collaboration.notifications')}
             {unreadNotifications.length > 0 && (
               <Badge variant="destructive" className="text-xs">
                 {unreadNotifications.length}
@@ -120,7 +122,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                 onClick={handleMarkAllAsRead}
               >
                 <Check className="w-4 h-4 ml-1" />
-                قراءة الكل
+                {t('collaboration.mark_all_read')}
               </Button>
             )}
             {onClose && (
@@ -140,13 +142,13 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
         <Tabs value={selectedTab} onValueChange={setSelectedTab}>
           <TabsList className="grid grid-cols-3 w-full rounded-none">
             <TabsTrigger value="all">
-              الكل ({notifications.length})
+              {t('collaboration.all_notifications')} ({notifications.length})
             </TabsTrigger>
             <TabsTrigger value="unread">
-              غير مقروء ({unreadNotifications.length})
+              {t('collaboration.unread_notifications')} ({unreadNotifications.length})
             </TabsTrigger>
             <TabsTrigger value="read">
-              مقروء ({readNotifications.length})
+              {t('collaboration.read_notifications')} ({readNotifications.length})
             </TabsTrigger>
           </TabsList>
 
@@ -156,7 +158,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                 {getNotificationsForTab().length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <BellOff className="w-8 h-8 mx-auto mb-2 text-muted-foreground/50" />
-                    <p className="text-sm">لا توجد إشعارات</p>
+                    <p className="text-sm">{t('collaboration.no_notifications')}</p>
                   </div>
                 ) : (
                   <div className="space-y-2">

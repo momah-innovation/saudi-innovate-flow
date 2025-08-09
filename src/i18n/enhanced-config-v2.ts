@@ -7,19 +7,15 @@ import { logger } from '@/utils/logger';
 // Import fallback static translations
 import en from './locales/en.json';
 import ar from './locales/ar.json';
-import { collaborationTranslations } from './collaboration-ar';
-
 const fallbackResources = {
   en: { 
     translation: { 
-      ...en,
-      collaboration: collaborationTranslations 
+      ...en
     } 
   },
   ar: { 
     translation: { 
-      ...ar,
-      collaboration: collaborationTranslations 
+      ...ar
     } 
   }
 };

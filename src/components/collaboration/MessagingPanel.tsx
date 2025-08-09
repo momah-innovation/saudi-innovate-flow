@@ -12,9 +12,12 @@ import {
   Users,
   Hash,
   X,
-  Settings
+  Settings,
+  AtSign,
+  Tag
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import type { CollaborationMessage } from '@/types/collaboration';
 
 interface MessagingPanelProps {
@@ -31,8 +34,11 @@ export const MessagingPanel: React.FC<MessagingPanelProps> = ({
   onClose
 }) => {
   const { messages, sendMessage, onlineUsers } = useCollaboration();
+  const { t } = useUnifiedTranslation();
   const [newMessage, setNewMessage] = useState('');
   const [isMinimized, setIsMinimized] = useState(false);
+  const [showMentions, setShowMentions] = useState(false);
+  const [mentionQuery, setMentionQuery] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Filter messages by context
@@ -73,19 +79,33 @@ export const MessagingPanel: React.FC<MessagingPanelProps> = ({
   const getContextTitle = (): string => {
     switch (contextType) {
       case 'global':
-        return 'المحادثة العامة';
+        return t('collaboration.global_chat');
       case 'organization':
-        return 'محادثة المؤسسة';
+        return t('collaboration.organization_chat');
       case 'team':
-        return 'محادثة الفريق';
+        return t('collaboration.team_chat');
       case 'project':
-        return 'محادثة المشروع';
+        return t('collaboration.project_chat');
       case 'direct':
-        return 'محادثة مباشرة';
+        return t('collaboration.direct_chat');
       default:
-        return 'المحادثة';
+        return t('collaboration.messages');
     }
   };
+
+  // Handle user mentions
+  const handleMentionUser = (user: any) => {
+    const mentionText = `@${user.display_name || user.name} `;
+    setNewMessage(prev => prev + mentionText);
+    setShowMentions(false);
+    setMentionQuery('');
+  };
+
+  // Filter users for mentions
+  const filteredUsers = onlineUsers.filter(user => 
+    user.user_info?.display_name?.toLowerCase().includes(mentionQuery.toLowerCase()) ||
+    mentionQuery === ''
+  );
 
   const getContextIcon = () => {
     switch (contextType) {
@@ -111,7 +131,7 @@ export const MessagingPanel: React.FC<MessagingPanelProps> = ({
           </CardTitle>
           <div className="flex items-center gap-1">
             <Badge variant="secondary" className="text-xs">
-              {onlineUsers.length} متصل
+              {onlineUsers.length} {t('collaboration.users_online')}
             </Badge>
             {onClose && (
               <Button 
@@ -137,7 +157,7 @@ export const MessagingPanel: React.FC<MessagingPanelProps> = ({
             <div className="space-y-3 py-2">
               {contextMessages.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground text-sm">
-                  لا توجد رسائل بعد. ابدأ المحادثة!
+                  {t('collaboration.no_messages')}
                 </div>
               ) : (
                 contextMessages.map((message) => (
@@ -159,7 +179,7 @@ export const MessagingPanel: React.FC<MessagingPanelProps> = ({
                         </span>
                         {message.is_edited && (
                           <Badge variant="outline" className="text-xs">
-                            معدل
+                            {t('collaboration.message_edited')}
                           </Badge>
                         )}
                       </div>
@@ -189,9 +209,54 @@ export const MessagingPanel: React.FC<MessagingPanelProps> = ({
 
           {/* Message Input */}
           <div className="p-3">
+            <div className="flex gap-2 mb-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowMentions(!showMentions)}
+              >
+                <AtSign className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {/* TODO: Implement tag selector */}}
+              >
+                <Tag className="w-4 h-4" />
+              </Button>
+            </div>
+            
+            {showMentions && (
+              <div className="mb-2 p-2 border rounded-lg bg-muted/50">
+                <Input
+                  placeholder={t('collaboration.search_users')}
+                  value={mentionQuery}
+                  onChange={(e) => setMentionQuery(e.target.value)}
+                  className="text-xs mb-2"
+                />
+                <div className="max-h-24 overflow-y-auto space-y-1">
+                  {filteredUsers.slice(0, 5).map((user) => (
+                    <div
+                      key={user.user_id}
+                      className="flex items-center gap-2 p-1 hover:bg-muted rounded cursor-pointer"
+                      onClick={() => handleMentionUser(user.user_info)}
+                    >
+                      <Avatar className="w-5 h-5">
+                        <AvatarImage src={user.user_info?.avatar_url} />
+                        <AvatarFallback className="text-xs">
+                          {user.user_info?.display_name?.charAt(0) || 'م'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs">{user.user_info?.display_name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div className="flex gap-2">
               <Input
-                placeholder="اكتب رسالة..."
+                placeholder={t('collaboration.type_message')}
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyPress={handleKeyPress}

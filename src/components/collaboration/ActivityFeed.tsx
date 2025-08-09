@@ -15,6 +15,7 @@ import {
   Filter
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import type { ActivityEvent } from '@/types/collaboration';
 
 const activityIcons = {
@@ -28,25 +29,15 @@ const activityIcons = {
   delete: <Activity className="w-4 h-4" />
 };
 
-const entityTypeLabels = {
-  challenge: 'تحدي',
-  idea: 'فكرة', 
-  event: 'فعالية',
-  opportunity: 'فرصة',
-  campaign: 'حملة',
-  workspace: 'مساحة عمل',
-  project: 'مشروع'
+// Use unified translation system for labels
+const getEntityTypeLabel = (t: any, type: string) => {
+  const key = `collaboration.entity_${type}`;
+  return t(key, type);
 };
 
-const eventTypeLabels = {
-  create: 'إنشاء',
-  update: 'تحديث',
-  comment: 'تعليق',
-  like: 'إعجاب',
-  share: 'مشاركة',
-  join: 'انضمام',
-  leave: 'مغادرة',
-  delete: 'حذف'
+const getEventTypeLabel = (t: any, type: string) => {
+  const key = `collaboration.activity_${type}`;
+  return t(key, type);
 };
 
 interface ActivityFeedProps {
@@ -63,6 +54,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
   showFilters = true
 }) => {
   const { activities, organizationActivities, teamActivities } = useCollaboration();
+  const { t } = useUnifiedTranslation();
   const [selectedEntityType, setSelectedEntityType] = useState<string>('all');
   const [selectedEventType, setSelectedEventType] = useState<string>('all');
 
@@ -92,8 +84,8 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
     .slice(0, limit);
 
   const formatActivityDescription = (activity: ActivityEvent): string => {
-    const entityLabel = entityTypeLabels[activity.entity_type] || activity.entity_type;
-    const eventLabel = eventTypeLabels[activity.event_type] || activity.event_type;
+    const entityLabel = getEntityTypeLabel(t, activity.entity_type);
+    const eventLabel = getEventTypeLabel(t, activity.event_type);
     
     return `${eventLabel} ${entityLabel}`;
   };
@@ -106,10 +98,10 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'الآن';
-    if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
-    if (diffHours < 24) return `منذ ${diffHours} ساعة`;
-    return `منذ ${diffDays} يوم`;
+    if (diffMins < 1) return t('collaboration.time_now');
+    if (diffMins < 60) return t('collaboration.time_minutes_ago', { count: diffMins });
+    if (diffHours < 24) return t('collaboration.time_hours_ago', { count: diffHours });
+    return t('collaboration.time_days_ago', { count: diffDays });
   };
 
   return (
@@ -118,12 +110,12 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Activity className="w-5 h-5" />
-            تدفق الأنشطة
+            {t('collaboration.activity_feed')}
           </CardTitle>
           {showFilters && (
             <Button variant="outline" size="sm">
               <Filter className="w-4 h-4 ml-2" />
-              تصفية
+              {t('collaboration.filter')}
             </Button>
           )}
         </div>
@@ -132,7 +124,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
         {showFilters && (
           <Tabs defaultValue="all" className="mb-4">
             <TabsList className="grid grid-cols-3 w-full">
-              <TabsTrigger value="all">الكل</TabsTrigger>
+              <TabsTrigger value="all">{t('collaboration.all_activities')}</TabsTrigger>
               <TabsTrigger value="entity">نوع المحتوى</TabsTrigger>
               <TabsTrigger value="event">نوع النشاط</TabsTrigger>
             </TabsList>
@@ -143,16 +135,16 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
                   className="cursor-pointer"
                   onClick={() => setSelectedEntityType('all')}
                 >
-                  الكل
+                  {t('collaboration.all_activities')}
                 </Badge>
-                {Object.entries(entityTypeLabels).map(([key, label]) => (
+                {['challenge', 'idea', 'event', 'opportunity', 'campaign', 'workspace', 'project'].map((key) => (
                   <Badge
                     key={key}
                     variant={selectedEntityType === key ? 'default' : 'outline'}
                     className="cursor-pointer"
                     onClick={() => setSelectedEntityType(key)}
                   >
-                    {label}
+                    {getEntityTypeLabel(t, key)}
                   </Badge>
                 ))}
               </div>
@@ -164,16 +156,16 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
                   className="cursor-pointer"
                   onClick={() => setSelectedEventType('all')}
                 >
-                  الكل
+                  {t('collaboration.all_activities')}
                 </Badge>
-                {Object.entries(eventTypeLabels).map(([key, label]) => (
+                {['create', 'update', 'comment', 'like', 'share', 'join', 'leave', 'delete'].map((key) => (
                   <Badge
                     key={key}
                     variant={selectedEventType === key ? 'default' : 'outline'}
                     className="cursor-pointer"
                     onClick={() => setSelectedEventType(key)}
                   >
-                    {label}
+                    {getEventTypeLabel(t, key)}
                   </Badge>
                 ))}
               </div>
@@ -185,7 +177,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
           <div className="space-y-4">
             {filteredActivities.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
-                لا توجد أنشطة للعرض
+                {t('collaboration.no_activities')}
               </div>
             ) : (
               filteredActivities.map((activity) => (
@@ -201,7 +193,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
                       </Avatar>
                       <span className="text-sm font-medium">مستخدم</span>
                       <Badge variant="outline" className="text-xs">
-                        {entityTypeLabels[activity.entity_type]}
+                        {getEntityTypeLabel(t, activity.entity_type)}
                       </Badge>
                     </div>
                     
