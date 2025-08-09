@@ -104,7 +104,7 @@ interface OrganizationalHierarchy {
 
 const ChallengeDetails = () => {
   console.log('🎯 ChallengeDetails COMPONENT LOADED');
-  const { id: challengeId } = useParams();
+  const { challengeId } = useParams();
   console.log('🔍 useParams result:', { challengeId });
   const navigate = useNavigate();
   const { toast } = useToast();
