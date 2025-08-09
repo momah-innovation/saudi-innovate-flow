@@ -159,7 +159,6 @@ export const CollaborativeEventsBrowse: React.FC<CollaborativeEventsBrowseProps>
           key={event.id}
           event={event as any}
           onViewDetails={(e) => onEventSelect(e as any)}
-          onRegister={(e) => onEventSelect(e as any)}
           showCollaboration={true}
         />
       ))}
@@ -173,7 +172,6 @@ export const CollaborativeEventsBrowse: React.FC<CollaborativeEventsBrowseProps>
           key={event.id}
           event={event as any}
           onViewDetails={(e) => onEventSelect(e as any)}
-          onRegister={(e) => onEventSelect(e as any)}
           showCollaboration={true}
         />
       ))}

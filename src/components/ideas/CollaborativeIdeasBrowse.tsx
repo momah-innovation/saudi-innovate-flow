@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { CollaborativeIdeaCard } from './CollaborativeIdeaCard';
 import { ActivityFeed } from '@/components/collaboration/ActivityFeed';
 import { UserPresence } from '@/components/collaboration/UserPresence';
 import { CollaborationWidget } from '@/components/collaboration/CollaborationWidget';
@@ -152,77 +153,15 @@ export const CollaborativeIdeasBrowse: React.FC<CollaborativeIdeasBrowseProps> =
     </Card>
   );
 
-  const renderIdeaCard = (idea: Idea) => {
-    const ideaViewers = onlineUsers.filter(user => 
-      user.current_location.entity_type === 'idea' && 
-      user.current_location.entity_id === idea.id
-    );
-
-    return (
-      <Card key={idea.id} className="group hover:shadow-lg transition-all duration-200 relative overflow-hidden">
-        {/* Real-time viewers indicator */}
-        {ideaViewers.length > 0 && (
-          <div className="absolute top-2 right-2 z-10">
-            <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full flex items-center space-x-1 rtl:space-x-reverse">
-              <Eye className="w-3 h-3" />
-              <span>{ideaViewers.length}</span>
-            </div>
-          </div>
-        )}
-
-        <CardContent className="p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1">
-              <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary cursor-pointer"
-                  onClick={() => onIdeaSelect(idea)}>
-                {idea.title_ar}
-              </h3>
-              <p className="text-muted-foreground text-sm line-clamp-3 mb-3">
-                {idea.description_ar}
-              </p>
-            </div>
-          </div>
-
-          {/* Collaboration indicators */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4 rtl:space-x-reverse">
-              <div className="flex items-center space-x-1 rtl:space-x-reverse">
-                <Heart className="w-4 h-4 text-red-500" />
-                <span className="text-sm">{idea.likes_count || 0}</span>
-              </div>
-              <div className="flex items-center space-x-1 rtl:space-x-reverse">
-                <MessageCircle className="w-4 h-4 text-blue-500" />
-                <span className="text-sm">{idea.comments_count || 0}</span>
-              </div>
-              <div className="flex items-center space-x-1 rtl:space-x-reverse">
-                <Eye className="w-4 h-4 text-gray-500" />
-                <span className="text-sm">{idea.views_count || 0}</span>
-              </div>
-            </div>
-
-            {/* Live viewers */}
-            {ideaViewers.length > 0 && (
-              <div className="flex -space-x-1 rtl:space-x-reverse">
-                {ideaViewers.slice(0, 3).map((user, index) => (
-                  <Avatar key={index} className="w-6 h-6 border-2 border-background">
-                    <AvatarImage src={user.user_info.avatar_url} />
-                    <AvatarFallback className="text-xs bg-green-500 text-white">
-                      {user.user_info.display_name?.[0] || 'U'}
-                    </AvatarFallback>
-                  </Avatar>
-                ))}
-                {ideaViewers.length > 3 && (
-                  <div className="w-6 h-6 rounded-full bg-muted border-2 border-background flex items-center justify-center text-xs font-medium">
-                    +{ideaViewers.length - 3}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
+  const renderIdeaCard = (idea: Idea) => (
+    <CollaborativeIdeaCard
+      key={idea.id}
+      idea={idea}
+      onViewDetails={onIdeaSelect}
+      showCollaboration={true}
+      layout={viewMode === 'list' ? 'horizontal' : 'vertical'}
+    />
+  );
 
   const renderTrendingIdeas = () => (
     <Card>
