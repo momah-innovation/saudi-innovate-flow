@@ -4,7 +4,7 @@ import {
   Edit, Award, FileText, Building, Database, HardDrive, Briefcase, Target, 
   Star, Activity, MessageSquare, TrendingUp, Settings, HelpCircle, Palette, 
   BookOpen, Network, DollarSign, Shield, Zap, Brain, Archive, Tag, Upload,
-  ChevronDown, ChevronRight
+  ChevronDown, ChevronRight, User, GraduationCap, Handshake
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
@@ -162,13 +162,61 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         group: 'workflow',
         roles: ['partner', 'admin'] 
       },
+    ];
+
+    const workspaceItems = [
+      { 
+        id: 'user-workspace', 
+        label: 'My Workspace', 
+        arabicLabel: 'مساحة عملي',
+        icon: User, 
+        path: '/workspace/user/' + (userProfile?.id || 'me'),
+        group: 'workspace',
+        roles: ['all'] 
+      },
+      { 
+        id: 'expert-workspace', 
+        label: 'Expert Workspace', 
+        arabicLabel: 'مساحة عمل الخبير',
+        icon: GraduationCap, 
+        path: '/workspace/expert/' + (userProfile?.id || 'me'),
+        group: 'workspace',
+        roles: ['expert', 'admin'] 
+      },
+      { 
+        id: 'organization-workspace', 
+        label: 'Organization Workspace', 
+        arabicLabel: 'مساحة عمل المؤسسة',
+        icon: Building, 
+        path: '/workspace/org/' + (userProfile?.id || 'me'),
+        group: 'workspace',
+        roles: ['admin', 'team'] 
+      },
+      { 
+        id: 'partner-workspace', 
+        label: 'Partner Workspace', 
+        arabicLabel: 'مساحة عمل الشريك',
+        icon: Handshake, 
+        path: '/workspace/partner/' + (userProfile?.id || 'me'),
+        group: 'workspace',
+        roles: ['partner', 'admin'] 
+      },
+      { 
+        id: 'admin-workspace', 
+        label: 'Admin Workspace', 
+        arabicLabel: 'مساحة عمل الإدارة',
+        icon: Shield, 
+        path: '/workspace/admin',
+        group: 'workspace',
+        roles: ['admin'] 
+      },
       { 
         id: 'team-workspace', 
-        label: 'Team Workspace', 
-        arabicLabel: 'مساحة عمل الفريق',
+        label: 'Team Collaboration', 
+        arabicLabel: 'التعاون الجماعي',
         icon: Users, 
-        path: '/team',
-        group: 'workflow',
+        path: '/dashboard/teams',
+        group: 'workspace',
         roles: ['team', 'admin'] 
       },
     ];
@@ -416,7 +464,7 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
       },
     ];
 
-    return [...baseItems, ...discoverItems, ...personalItems, ...workflowItems, ...subscriptionItems, ...analyticsItems, ...adminItems, ...systemItems, ...settingsItems];
+    return [...baseItems, ...discoverItems, ...personalItems, ...workflowItems, ...workspaceItems, ...subscriptionItems, ...analyticsItems, ...adminItems, ...systemItems, ...settingsItems];
   }, []);
 
   // Check if user can see a menu item
@@ -451,6 +499,7 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
     discover: { en: 'Discover', ar: 'استكشاف' },
     personal: { en: 'Personal', ar: 'شخصي' },
     workflow: { en: 'Workflow', ar: 'سير العمل' },
+    workspace: { en: 'Workspaces', ar: 'مساحات العمل' },
     subscription: { en: 'Subscription & AI', ar: 'الاشتراك والذكاء الاصطناعي' },
     analytics: { en: 'Analytics & Reports', ar: 'التحليلات والتقارير' },
     admin: { en: 'Administration', ar: 'الإدارة العامة' },
@@ -460,7 +509,7 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
 
   // Priority order for groups
   const { getSettingValue } = useSettingsManager();
-  const groupOrder = getSettingValue('navigation_group_order', ['main', 'discover', 'personal', 'workflow', 'subscription', 'analytics', 'admin', 'system', 'settings']) as string[];
+  const groupOrder = getSettingValue('navigation_group_order', ['main', 'discover', 'personal', 'workspace', 'workflow', 'subscription', 'analytics', 'admin', 'system', 'settings']) as string[];
 
   const renderMenuItems = (items: MenuItem[]) => {
     return items.map((item) => {
