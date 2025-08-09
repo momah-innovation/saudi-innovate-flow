@@ -108,7 +108,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: ALL_ROUTES.CHALLENGES,
-    component: CollaborativeChallengesPage,
+    component: Challenges,
     public: true,
   },
   {
