@@ -103,9 +103,7 @@ interface OrganizationalHierarchy {
 }
 
 const ChallengeDetails = () => {
-  console.log('🎯 ChallengeDetails COMPONENT LOADED');
   const { challengeId } = useParams();
-  console.log('🔍 useParams result:', { challengeId });
   const navigate = useNavigate();
   const { toast } = useToast();
   const { hasRole } = useAuth();
@@ -134,18 +132,9 @@ const ChallengeDetails = () => {
   const canEdit = hasRole('admin') || hasRole('super_admin');
 
   useEffect(() => {
-    console.log('🎯 ChallengeDetails useEffect triggered');
-    console.log('📋 challengeId:', challengeId);
-    console.log('🔄 Current loading state:', loading);
-    console.log('🎯 Current challenge state:', challenge);
-    
     if (challengeId) {
-      console.log('✅ challengeId exists, calling fetchChallengeDetails');
       fetchChallengeDetails();
       fetchSystemSettings();
-    } else {
-      console.log('❌ No challengeId found in params');
-      console.log('🔍 Available params:', { challengeId });
     }
   }, [challengeId]);
 
@@ -308,25 +297,16 @@ const ChallengeDetails = () => {
 
   const fetchChallengeDetails = async () => {
     try {
-      console.log('🚀 fetchChallengeDetails STARTED');
-      console.log('📝 Challenge ID:', challengeId);
-      console.log('⏳ Setting loading to true');
       setLoading(true);
       
       // Fetch challenge data from Supabase  
-      console.log('🔍 Fetching challenge data from database...');
       const { data: challengeData, error: challengeError } = await supabase
         .from('challenges')
         .select('*')
         .eq('id', challengeId)
         .maybeSingle();
 
-      console.log('📊 Challenge query completed');
-      console.log('📋 Challenge data:', challengeData);
-      console.log('❌ Challenge error:', challengeError);
-
       if (challengeError) {
-        console.error('💥 Challenge fetch error:', challengeError);
         logger.error('Failed to fetch challenge details', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, challengeError as Error);
         toast({
           title: "Error",
@@ -337,13 +317,9 @@ const ChallengeDetails = () => {
       }
 
       if (challengeData) {
-        console.log('✅ Challenge data found, setting state');
         setChallenge(challengeData);
         setEditValues(challengeData);
-        console.log('✅ Challenge state updated');
       } else {
-        // Challenge not found
-        console.log('❌ No challenge data found');
         toast({
           title: "التحدي غير موجود",
           description: "لم يتم العثور على التحدي المطلوب",
@@ -518,11 +494,47 @@ const ChallengeDetails = () => {
     navigate(-1);
   };
 
+  const handleDownloadBrief = () => {
+    // Generate and download challenge brief
+    const briefContent = `
+Challenge: ${challenge?.title_ar}
+Description: ${challenge?.description_ar}
+Start Date: ${challenge?.start_date}
+End Date: ${challenge?.end_date}
+Budget: ${challenge?.estimated_budget} SAR
+Priority: ${challenge?.priority_level}
+Status: ${challenge?.status}
+    `;
+    const blob = new Blob([briefContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `challenge-brief-${challengeId}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleJoinDiscussion = () => {
+    navigate(`/challenges/${challengeId}/discussion`);
+  };
+
+  const handleViewParticipants = () => {
+    navigate(`/admin/challenges/${challengeId}/participants`);
+  };
+
+  const handleViewSubmissions = () => {
+    navigate(`/admin/challenges/${challengeId}/submissions`);
+  };
+
+  const handleViewAnalytics = () => {
+    navigate(`/admin/challenges/${challengeId}/analytics`);
+  };
+
   const startEdit = (field: string, value: any) => {
     setEditMode({ ...editMode, [field]: true });
     setEditValues({ ...editValues, [field]: value });
   };
-
+  
   const cancelEdit = (field: string) => {
     setEditMode({ ...editMode, [field]: false });
     if (challenge) {
@@ -750,6 +762,14 @@ const ChallengeDetails = () => {
               <TabsTrigger value="questions">Focus Questions</TabsTrigger>
               <TabsTrigger value="experts">Assigned Experts</TabsTrigger>
               <TabsTrigger value="requirements">Requirements</TabsTrigger>
+              {canEdit && (
+                <>
+                  <TabsTrigger value="participants">Participants</TabsTrigger>
+                  <TabsTrigger value="submissions">Submissions</TabsTrigger>
+                  <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                  <TabsTrigger value="management">Management</TabsTrigger>
+                </>
+              )}
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4">
@@ -1107,6 +1127,130 @@ const ChallengeDetails = () => {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            {/* Admin-only tabs */}
+            {canEdit && (
+              <>
+                <TabsContent value="participants" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Challenge Participants</CardTitle>
+                      <CardDescription>
+                        Users who have joined this challenge or submitted ideas
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-center py-8">
+                        <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground mb-4">Participant management coming soon</p>
+                        <Button onClick={handleViewParticipants}>
+                          View Full Participant List
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="submissions" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Idea Submissions</CardTitle>
+                      <CardDescription>
+                        Ideas submitted for this challenge
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-center py-8">
+                        <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground mb-4">No submissions yet</p>
+                        <Button onClick={handleViewSubmissions}>
+                          View All Submissions
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="analytics" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Challenge Analytics</CardTitle>
+                      <CardDescription>
+                        Performance metrics and engagement data
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">0</div>
+                          <div className="text-sm text-muted-foreground">Views</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">0</div>
+                          <div className="text-sm text-muted-foreground">Participants</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">0</div>
+                          <div className="text-sm text-muted-foreground">Submissions</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">0%</div>
+                          <div className="text-sm text-muted-foreground">Completion</div>
+                        </div>
+                      </div>
+                      <Button onClick={handleViewAnalytics} className="w-full">
+                        View Detailed Analytics
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="management" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Challenge Management</CardTitle>
+                      <CardDescription>
+                        Administrative controls and settings
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Button onClick={() => setExpertDialogOpen(true)}>
+                          <UserPlus className="h-4 w-4 mr-2" />
+                          Assign Expert
+                        </Button>
+                        <Button onClick={() => setQuestionDialogOpen(true)}>
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Focus Question
+                        </Button>
+                        <Button variant="outline" onClick={handleViewParticipants}>
+                          <Users className="h-4 w-4 mr-2" />
+                          Manage Participants
+                        </Button>
+                        <Button variant="outline" onClick={handleViewSubmissions}>
+                          <FileText className="h-4 w-4 mr-2" />
+                          Review Submissions
+                        </Button>
+                      </div>
+                      
+                      <Separator />
+                      
+                      <div>
+                        <h4 className="font-medium mb-2">Challenge Status</h4>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={challenge.status === 'active' ? 'default' : 'secondary'}>
+                            {challenge.status}
+                          </Badge>
+                          <Button variant="outline" size="sm">
+                            Change Status
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </>
+            )}
           </Tabs>
         </div>
 
@@ -1371,14 +1515,30 @@ const ChallengeDetails = () => {
                 <Lightbulb className="h-4 w-4 mr-2" />
                 Submit Your Idea
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={handleDownloadBrief}>
                 <FileText className="h-4 w-4 mr-2" />
                 Download Brief
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={handleJoinDiscussion}>
                 <Users className="h-4 w-4 mr-2" />
                 Join Discussion
               </Button>
+              {canEdit && (
+                <>
+                  <Button variant="outline" className="w-full" onClick={handleViewParticipants}>
+                    <Users className="h-4 w-4 mr-2" />
+                    View Participants
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={handleViewSubmissions}>
+                    <FileText className="h-4 w-4 mr-2" />
+                    View Submissions
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={handleViewAnalytics}>
+                    <Target className="h-4 w-4 mr-2" />
+                    View Analytics
+                  </Button>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>
