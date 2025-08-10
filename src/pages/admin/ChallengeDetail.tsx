@@ -64,7 +64,7 @@ export default function ChallengeDetailPage() {
           departments!challenges_department_id_fkey(id, name_ar, name_en, department_head),
           domains!challenges_domain_id_fkey(id, name_ar, name_en, domain_lead, specialization),
           sub_domains(id, name_ar, name_en, technical_focus),
-          services(id, name_ar, name_en, service_type, citizen_facing),
+          services!challenges_service_id_fkey(id, name_ar, name_en, service_type, citizen_facing),
           challenge_experts(
             id,
             role_type,
