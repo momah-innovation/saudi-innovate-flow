@@ -111,6 +111,46 @@ export default function AdminDashboard() {
       href: "/admin/security",
       count: "3",
       label: "Recent Alerts"
+    },
+    {
+      title: "Focus Questions Management",
+      description: "Manage questions that guide challenges",
+      icon: HelpCircle,
+      href: "/admin/focus-questions",
+      count: "18",
+      label: "Active Questions"
+    },
+    {
+      title: "Ideas Management",
+      description: "Review and manage submitted ideas",
+      icon: TrendingUp,
+      href: "/admin/ideas",
+      count: "245",
+      label: "Total Ideas"
+    },
+    {
+      title: "Challenges Management", 
+      description: "Create and manage innovation challenges",
+      icon: Activity,
+      href: "/admin/challenges",
+      count: "12",
+      label: "Active Challenges"
+    },
+    {
+      title: "Partners Management",
+      description: "Manage partner organizations",
+      icon: Users,
+      href: "/admin/partners", 
+      count: "28",
+      label: "Active Partners"
+    },
+    {
+      title: "Sectors Management",
+      description: "Manage innovation sectors",
+      icon: Database,
+      href: "/admin/sectors",
+      count: "8",
+      label: "Sectors"
     }
   ];
 
