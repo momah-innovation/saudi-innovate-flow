@@ -7,6 +7,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useTheme } from '@/components/ui/theme-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSystemSettings } from '@/contexts/SystemSettingsContext';
+import { TranslationProvider } from '@/contexts/TranslationContext';
 import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -39,8 +40,16 @@ interface AppContextType {
   theme: any;
   setTheme: (theme: any) => void;
   
-  // Translation
-  t: (key: string, params?: any) => string;
+  // Translation (full unified system)
+  t: (key: string, fallback?: string, options?: Record<string, any>) => string;
+  getTranslation: (key: string, targetLanguage?: 'en' | 'ar', fallback?: string) => string;
+  getDynamicText: (textAr: string, textEn?: string | null) => string;
+  formatNumber: (num: number) => string;
+  formatRelativeTime: (date: Date) => string;
+  translationLoading: boolean;
+  translationError: Error | null;
+  changeLanguage: (lang: string) => Promise<any>;
+  refreshTranslations: () => Promise<void>;
   
   // System
   systemSettings: any;
@@ -136,8 +145,16 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
     theme: theme.theme,
     setTheme: theme.setTheme,
     
-    // Translation
+    // Translation (full unified system)
     t: translation.t,
+    getTranslation: translation.getTranslation,
+    getDynamicText: translation.getDynamicText,
+    formatNumber: translation.formatNumber,
+    formatRelativeTime: translation.formatRelativeTime,
+    translationLoading: translation.isLoading,
+    translationError: translation.error,
+    changeLanguage: translation.changeLanguage,
+    refreshTranslations: translation.refreshTranslations,
     
     // System
     systemSettings,
@@ -148,28 +165,30 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   };
   
   const content = (
-    <AppContext.Provider value={appContextValue}>
-      <div className={cn(
-        "min-h-screen flex w-full bg-background transition-all duration-300",
-        direction.isRTL && "flex-row-reverse"
-      )}>
-        {/* Navigation Sidebar Overlay */}
-        <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
-        
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
-          {/* Global Header */}
-          <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
+    <TranslationProvider>
+      <AppContext.Provider value={appContextValue}>
+        <div className={cn(
+          "min-h-screen flex w-full bg-background transition-all duration-300",
+          direction.isRTL && "flex-row-reverse"
+        )}>
+          {/* Navigation Sidebar Overlay */}
+          <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
           
-          {/* Page Content with Loading */}
-          <main className="flex-1 overflow-auto">
-            <Suspense fallback={<LoadingSpinner />}>
-              {children}
-            </Suspense>
-          </main>
+          {/* Main Content Area */}
+          <div className="flex-1 flex flex-col min-w-0">
+            {/* Global Header */}
+            <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
+            
+            {/* Page Content with Loading */}
+            <main className="flex-1 overflow-auto">
+              <Suspense fallback={<LoadingSpinner />}>
+                {children}
+              </Suspense>
+            </main>
+          </div>
         </div>
-      </div>
-    </AppContext.Provider>
+      </AppContext.Provider>
+    </TranslationProvider>
   );
 
   // Wrap with collaboration if enabled
@@ -221,6 +240,26 @@ export const useAppTheme = () => {
 };
 
 export const useAppShellTranslation = () => {
-  const { t } = useAppShell();
-  return { t };
+  const { 
+    t, 
+    getTranslation, 
+    getDynamicText, 
+    formatNumber, 
+    formatRelativeTime,
+    translationLoading,
+    translationError,
+    changeLanguage,
+    refreshTranslations
+  } = useAppShell();
+  return { 
+    t, 
+    getTranslation, 
+    getDynamicText, 
+    formatNumber, 
+    formatRelativeTime,
+    isLoading: translationLoading,
+    error: translationError,
+    changeLanguage,
+    refreshTranslations
+  };
 };

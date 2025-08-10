@@ -12,7 +12,7 @@ import { DirectionProvider } from "@/components/ui/direction-provider";
 import { SidebarPersistenceProvider } from "@/contexts/SidebarContext";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import { UploaderSettingsProvider } from "./contexts/UploaderSettingsContext";
-import { TranslationProvider } from "@/contexts/TranslationContext";
+// TranslationProvider now handled in AppShell
 import { UnifiedRouter } from '@/routing/UnifiedRouter';
 
 const queryClient = new QueryClient();
@@ -22,21 +22,19 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>
         <DirectionProvider>
-          <TranslationProvider>
-            <TooltipProvider>
-              <AuthProvider>
-                <SidebarPersistenceProvider>
-                  <MaintenanceGuard>
-                    <UploaderSettingsProvider>
-                      <Toaster />
-                      <Sonner />
-                      <UnifiedRouter />
-                    </UploaderSettingsProvider>
-                  </MaintenanceGuard>
-                </SidebarPersistenceProvider>
-              </AuthProvider>
-            </TooltipProvider>
-          </TranslationProvider>
+          <TooltipProvider>
+            <AuthProvider>
+              <SidebarPersistenceProvider>
+                <MaintenanceGuard>
+                  <UploaderSettingsProvider>
+                    <Toaster />
+                    <Sonner />
+                    <UnifiedRouter />
+                  </UploaderSettingsProvider>
+                </MaintenanceGuard>
+              </SidebarPersistenceProvider>
+            </AuthProvider>
+          </TooltipProvider>
         </DirectionProvider>
       </I18nextProvider>
     </QueryClientProvider>

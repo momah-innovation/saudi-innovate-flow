@@ -127,17 +127,7 @@ export function getVisibilityTranslationKey(visibility: string): string {
   return VISIBILITY_TRANSLATIONS[visibility as keyof typeof VISIBILITY_TRANSLATIONS] || visibility;
 }
 
-/**
- * Convert legacy sensitivity value to translation key
- */
-export function getSensitivityTranslationKey(sensitivity: string): string {
-  // If already a translation key, return as-is
-  if (sensitivity.includes('.')) {
-    return sensitivity;
-  }
-  
-  return SENSITIVITY_TRANSLATIONS[sensitivity as keyof typeof SENSITIVITY_TRANSLATIONS] || sensitivity;
-}
+// Removed duplicate - see line 255 for the correct implementation
 
 /**
  * Convert legacy team role value to translation key
@@ -233,6 +223,103 @@ export function getVisibilityColor(visibilityKey: string): string {
       return 'bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100';
     case 'restricted':
       return 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
+    default:
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
+  }
+}
+
+/**
+ * Convert priority value to translation key
+ */
+export function getPriorityTranslationKey(priority: string): string {
+  if (priority.includes('.')) {
+    return priority;
+  }
+  
+  return `priority.${priority}`;
+}
+
+/**
+ * Convert sensitivity value to translation key  
+ */
+export function getSensitivityTranslationKey(sensitivity: string): string {
+  if (sensitivity.includes('.')) {
+    return sensitivity;
+  }
+  
+  return SENSITIVITY_TRANSLATIONS[sensitivity as keyof typeof SENSITIVITY_TRANSLATIONS] || sensitivity;
+}
+
+/**
+ * Convert requirement value to translation key
+ */
+export function getRequirementTranslationKey(requirement: string): string {
+  if (requirement.includes('.')) {
+    return requirement;
+  }
+  
+  return `requirement.${requirement}`;
+}
+
+/**
+ * Get priority color based on translation key
+ */
+export function getPriorityColor(priorityKey: string): string {
+  const basePriority = priorityKey.replace(/^priority\./, '');
+  
+  switch (basePriority) {
+    case 'low':
+      return 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100';
+    case 'medium':
+      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100';
+    case 'high':
+      return 'bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100';
+    case 'urgent':
+      return 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
+    default:
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
+  }
+}
+
+/**
+ * Get sensitivity color based on translation key
+ */
+export function getSensitivityColor(sensitivityKey: string): string {
+  const baseSensitivity = sensitivityKey.replace(/^sensitivity\./, '');
+  
+  switch (baseSensitivity) {
+    case 'normal':
+      return 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100';
+    case 'sensitive':
+      return 'bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100';
+    case 'classified':
+      return 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
+    default:
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
+  }
+}
+
+/**
+ * Get requirement color based on translation key
+ */
+export function getRequirementColor(requirementKey: string): string {
+  const baseRequirement = requirementKey.replace(/^requirement\./, '');
+  
+  switch (baseRequirement) {
+    case 'technical':
+      return 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100';
+    case 'business':
+      return 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100';
+    case 'legal':
+      return 'bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100';
+    case 'documentation':
+      return 'bg-indigo-100 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-100';
+    case 'presentation':
+      return 'bg-pink-100 text-pink-800 dark:bg-pink-800 dark:text-pink-100';
+    case 'criteria':
+      return 'bg-amber-100 text-amber-800 dark:bg-amber-800 dark:text-amber-100';
+    case 'validation':
+      return 'bg-teal-100 text-teal-800 dark:bg-teal-800 dark:text-teal-100';
     default:
       return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
   }
