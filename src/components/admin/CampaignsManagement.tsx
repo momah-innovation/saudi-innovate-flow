@@ -42,18 +42,18 @@ interface Campaign {
   theme?: string;
 }
 
-const statusConfig = {
-  planning: { label: 'قيد التخطيط', variant: 'secondary' as const },
-  active: { label: 'نشط', variant: 'default' as const },
-  paused: { label: 'متوقف', variant: 'destructive' as const },
-  completed: { label: 'مكتمل', variant: 'outline' as const }
-};
+const getStatusConfig = (t: (key: string, fallback: string) => string) => ({
+  planning: { label: t('status.planning', 'قيد التخطيط'), variant: 'secondary' as const },
+  active: { label: t('status.active', 'نشط'), variant: 'default' as const },
+  paused: { label: t('status.paused', 'متوقف'), variant: 'destructive' as const },
+  completed: { label: t('status.completed', 'مكتمل'), variant: 'outline' as const }
+});
 
-const priorityConfig = {
-  low: { label: 'منخفض', variant: 'secondary' as const },
-  medium: { label: 'متوسط', variant: 'default' as const },
-  high: { label: 'عالي', variant: 'destructive' as const }
-};
+const getPriorityConfig = (t: (key: string, fallback: string) => string) => ({
+  low: { label: t('priority.low', 'منخفض'), variant: 'secondary' as const },
+  medium: { label: t('priority.medium', 'متوسط'), variant: 'default' as const },
+  high: { label: t('priority.high', 'عالي'), variant: 'destructive' as const }
+});
 
 interface CampaignsManagementProps {
   viewMode: 'cards' | 'list' | 'grid';
@@ -63,7 +63,9 @@ interface CampaignsManagementProps {
 }
 
 export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: CampaignsManagementProps) {
-  const { language } = useUnifiedTranslation();
+  const { t, language } = useUnifiedTranslation();
+  const statusConfig = getStatusConfig(t);
+  const priorityConfig = getPriorityConfig(t);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);

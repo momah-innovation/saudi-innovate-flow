@@ -82,7 +82,7 @@ export function MultiStepForm({
           <DialogTitle className="flex items-center justify-between text-right">
             <span>{title}</span>
             <span className="text-sm font-normal text-muted-foreground">
-              {t('step')} {currentStep + 1} {t('of')} {steps.length}
+              {t('common.step', 'خطوة')} {currentStep + 1} {t('common.of', 'من')} {steps.length}
             </span>
           </DialogTitle>
         </DialogHeader>

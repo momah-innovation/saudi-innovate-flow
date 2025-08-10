@@ -46,10 +46,10 @@ interface FocusQuestionManagementProps {
   onAddDialogChange: (open: boolean) => void;
 }
 
-const statusConfig = {
-  normal: { label: 'عادي', variant: 'secondary' as const },
-  sensitive: { label: 'حساس', variant: 'destructive' as const }
-};
+const getSensitivityConfig = (t: (key: string, fallback: string) => string) => ({
+  normal: { label: t('sensitivity.normal', 'عادي'), variant: 'secondary' as const },
+  sensitive: { label: t('sensitivity.sensitive', 'حساس'), variant: 'destructive' as const }
+});
 
 const typeConfig = {
   open_ended: { label: 'سؤال مفتوح', variant: 'default' as const },
@@ -66,6 +66,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
   const [showDetailView, setShowDetailView] = useState(false);
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
+  const sensitivityConfig = getSensitivityConfig(t);
 
   useEffect(() => {
     fetchFocusQuestions();
@@ -186,8 +187,8 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
                 variant: getTypeVariant(question.question_type)
               },
               {
-                label: question.is_sensitive ? 'حساس' : 'عادي',
-                variant: question.is_sensitive ? 'destructive' : 'secondary'
+                label: question.is_sensitive ? sensitivityConfig.sensitive.label : sensitivityConfig.normal.label,
+                variant: question.is_sensitive ? sensitivityConfig.sensitive.variant : sensitivityConfig.normal.variant
               },
               {
                 label: question.challenge ? 'مرتبط بتحدي' : 'سؤال عام',
@@ -202,8 +203,8 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
               },
               {
                 icon: <Shield className="w-4 h-4" />,
-                label: 'الحساسية',
-                value: question.is_sensitive ? 'حساس' : 'عادي'
+                label: t('focus_questions.sensitivity', 'الحساسية'),
+                value: question.is_sensitive ? sensitivityConfig.sensitive.label : sensitivityConfig.normal.label
               },
               {
                 icon: <Calendar className="w-4 h-4" />,

@@ -125,29 +125,29 @@ export function AdvancedSearch({
 
   const statusOptions = {
     challenges: [
-      { value: 'draft', label: 'Draft', labelAr: 'مسودة' },
-      { value: 'active', label: 'Active', labelAr: 'نشط' },
-      { value: 'completed', label: 'Completed', labelAr: 'مكتمل' },
-      { value: 'cancelled', label: 'Cancelled', labelAr: 'ملغي' }
+      { value: 'draft', key: 'status.draft' },
+      { value: 'active', key: 'status.active' },
+      { value: 'completed', key: 'status.completed' },
+      { value: 'cancelled', key: 'status.cancelled' }
     ],
     ideas: [
-      { value: 'draft', label: 'Draft', labelAr: 'مسودة' },
-      { value: 'submitted', label: 'Submitted', labelAr: 'مقدم' },
-      { value: 'under_review', label: 'Under Review', labelAr: 'قيد المراجعة' },
-      { value: 'approved', label: 'Approved', labelAr: 'معتمد' },
-      { value: 'rejected', label: 'Rejected', labelAr: 'مرفوض' }
+      { value: 'draft', key: 'status.draft' },
+      { value: 'submitted', key: 'status.submitted' },
+      { value: 'under_review', key: 'status.under_review' },
+      { value: 'approved', key: 'status.approved' },
+      { value: 'rejected', key: 'status.rejected' }
     ],
     events: [
-      { value: 'upcoming', label: 'Upcoming', labelAr: 'قادم' },
-      { value: 'registration_open', label: 'Registration Open', labelAr: 'التسجيل مفتوح' },
-      { value: 'registration_closed', label: 'Registration Closed', labelAr: 'التسجيل مغلق' },
-      { value: 'ongoing', label: 'Ongoing', labelAr: 'جاري' },
-      { value: 'completed', label: 'Completed', labelAr: 'مكتمل' }
+      { value: 'upcoming', key: 'status.upcoming' },
+      { value: 'registration_open', key: 'status.registration_open' },
+      { value: 'registration_closed', key: 'status.registration_closed' },
+      { value: 'ongoing', key: 'status.ongoing' },
+      { value: 'completed', key: 'status.completed' }
     ],
     opportunities: [
-      { value: 'open', label: 'Open', labelAr: 'مفتوح' },
-      { value: 'closed', label: 'Closed', labelAr: 'مغلق' },
-      { value: 'paused', label: 'Paused', labelAr: 'متوقف مؤقتاً' }
+      { value: 'open', key: 'status.open' },
+      { value: 'closed', key: 'status.closed' },
+      { value: 'paused', key: 'status.paused' }
     ]
   };
 
@@ -226,7 +226,7 @@ export function AdvancedSearch({
                     </SelectItem>
                     {statusOptions[searchType]?.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        {language === 'ar' ? option.labelAr : option.label}
+                        {t(option.key, option.value)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -251,7 +251,7 @@ export function AdvancedSearch({
                     </SelectItem>
                     {priorityOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        {language === 'ar' ? option.labelAr : option.label}
+                        {t(`priority.${option.value}`, option.value)}
                       </SelectItem>
                     ))}
                   </SelectContent>
