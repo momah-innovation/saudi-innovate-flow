@@ -137,11 +137,11 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       setMilestones(milestones || []);
     } catch (error) {
       logger.error('Error fetching workflow data', { component: 'IdeaWorkflowPanel', action: 'fetchWorkflowData', data: { ideaId } }, error as Error);
-      toast({
-        title: "خطأ",
-        description: "فشل في تحميل بيانات سير العمل",
-        variant: "destructive"
-      });
+          toast({
+            title: t('common.error', 'خطأ'),
+            description: t('idea_workflow.load_workflow_data_failed', 'فشل في تحميل بيانات سير العمل'),
+            variant: "destructive"
+          });
     } finally {
       setLoading(false);
     }
@@ -219,8 +219,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       if (error) throw error;
 
       toast({
-        title: "تم التكليف",
-        description: data.message || "تم تكليف المراجع بنجاح"
+        title: t('idea_workflow.assignment_success', 'تم التكليف'),
+        description: data.message || t('idea_workflow.reviewer_assigned_success', 'تم تكليف المراجع بنجاح')
       });
 
       setAssigneeId("");
@@ -231,8 +231,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
     } catch (error) {
       logger.error('Error creating assignment', { component: 'IdeaWorkflowPanel', action: 'handleAssignment', data: { ideaId, assigneeId } }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في تكليف المراجع",
+        title: t('common.error', 'خطأ'),
+        description: t('idea_workflow.assignment_failed', 'فشل في تكليف المراجع'),
         variant: "destructive"
       });
     } finally {
@@ -253,16 +253,16 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       if (error) throw error;
 
       toast({
-        title: "تم إنشاء المعالم",
-        description: data.message || "تم إنشاء معالم دورة الحياة بنجاح"
+        title: t('idea_workflow.milestones_created', 'تم إنشاء المعالم'),
+        description: data.message || t('idea_workflow.milestones_created_success', 'تم إنشاء معالم دورة الحياة بنجاح')
       });
 
       await fetchWorkflowData();
     } catch (error) {
       logger.error('Error creating milestones', { component: 'IdeaWorkflowPanel', action: 'createMilestones', data: { ideaId } }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في إنشاء المعالم",
+        title: t('common.error', 'خطأ'),
+        description: t('idea_workflow.milestones_creation_failed', 'فشل في إنشاء المعالم'),
         variant: "destructive"
       });
     } finally {
@@ -316,7 +316,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
-          سير العمل
+          {t('idea_workflow.workflow_tab', 'سير العمل')}
         </button>
         <button
           onClick={() => setActiveTab("assignments")}
@@ -326,7 +326,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
-          التكليفات
+          {t('idea_workflow.assignments_tab', 'التكليفات')}
         </button>
         <button
           onClick={() => setActiveTab("milestones")}
@@ -336,7 +336,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
-          المعالم
+          {t('idea_workflow.milestones_tab', 'المعالم')}
         </button>
       </div>
 

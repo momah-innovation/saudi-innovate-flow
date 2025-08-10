@@ -81,8 +81,8 @@ export function FocusQuestionAnalytics() {
     } catch (error) {
       // Failed to fetch focus question analytics
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل بيانات التحليلات",
+        title: t('common.error', 'خطأ'),
+        description: t('focus_question_analytics.load_analytics_failed', 'فشل في تحميل بيانات التحليلات'),
         variant: "destructive"
       });
     } finally {
@@ -200,7 +200,7 @@ export function FocusQuestionAnalytics() {
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger className="w-48">
-            <SelectValue placeholder="اختر الفترة الزمنية" />
+            <SelectValue placeholder={t('focus_question_analytics.select_time_period', 'اختر الفترة الزمنية')} />
           </SelectTrigger>
           <SelectContent>
             {timeRangeOptions.map(range => (

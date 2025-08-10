@@ -163,8 +163,8 @@ export function FocusQuestionDetailView({
       });
     } catch (error) {
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل البيانات المرتبطة",
+        title: t('common.error', 'خطأ'),
+        description: t('focus_question_detail.load_related_data_failed', 'فشل في تحميل البيانات المرتبطة'),
         variant: "destructive"
       });
     } finally {
@@ -266,7 +266,7 @@ export function FocusQuestionDetailView({
             {/* Analytics Overview */}
             <CollapsibleSection 
               id="analytics" 
-              title="إحصائيات السؤال" 
+              title={t('focus_question_detail.question_analytics', 'إحصائيات السؤال')} 
               icon={BarChart3}
             >
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -299,7 +299,7 @@ export function FocusQuestionDetailView({
             {/* Question Details */}
             <CollapsibleSection 
               id="details" 
-              title="تفاصيل السؤال" 
+              title={t('focus_question_detail.question_details', 'تفاصيل السؤال')} 
               icon={HelpCircle}
             >
               <div className="space-y-4">
@@ -372,7 +372,7 @@ export function FocusQuestionDetailView({
             {/* Related Ideas */}
             <CollapsibleSection 
               id="ideas" 
-              title="الأفكار المرتبطة" 
+              title={t('focus_question_detail.related_ideas', 'الأفكار المرتبطة')} 
               icon={Users}
               count={relatedData.ideas.length}
             >
