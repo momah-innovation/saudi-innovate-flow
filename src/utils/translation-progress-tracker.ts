@@ -238,6 +238,19 @@ export class TranslationProgressTracker {
     });
 
     this.addFix({
+      id: 'challenge-management-legacy',
+      component: 'ChallengeManagement',
+      file: 'src/components/admin/ChallengeManagement.tsx',
+      category: 'management',
+      priority: 'medium',
+      status: 'completed',
+      estimatedStrings: 20,
+      fixedStrings: 20,
+      addedTranslationKeys: 6,
+      description: 'Challenge management interface with tabs and basic error handling'
+    });
+
+    this.addFix({
       id: 'form-components',
       component: 'Form Components',
       file: 'src/components/forms/*',

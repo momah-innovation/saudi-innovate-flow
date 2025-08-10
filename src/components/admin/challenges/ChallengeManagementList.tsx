@@ -109,8 +109,8 @@ export function ChallengeManagementList() {
       console.error('🔴 ChallengeManagementList: fetchChallenges failed:', error);
       logger.error('Error fetching challenges', { component: 'ChallengeManagementList', action: 'fetchChallenges' }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل التحديات",
+        title: t('challenge_management.load_error_title'),
+        description: t('challenge_management.load_error_description'),
         variant: "destructive"
       });
     } finally {
@@ -130,14 +130,14 @@ export function ChallengeManagementList() {
       
       setChallenges(prev => prev.filter(c => c.id !== challengeId));
       toast({
-        title: "تم بنجاح",
-        description: "تم حذف التحدي بنجاح"
+        title: t('challenge_management.delete_success_title'),
+        description: t('challenge_management.delete_success_description')
       });
     } catch (error) {
       logger.error('Error deleting challenge', { component: 'ChallengeManagementList', action: 'handleDelete', data: { challengeId } }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في حذف التحدي",
+        title: t('challenge_management.delete_error_title'),
+        description: t('challenge_management.delete_error_description'),
         variant: "destructive"
       });
     }

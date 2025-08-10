@@ -15,19 +15,19 @@ export function ChallengeManagement() {
     <div className="container mx-auto px-4 py-8">
       <AdminBreadcrumb />
       <PageLayout
-        title="إدارة التحديات الابتكارية"
-        description="نظام شامل لإدارة وتحليل التحديات الابتكارية"
+        title={t('challenge_management.title')}
+        description={t('challenge_management.description')}
         className="space-y-6"
       >
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="challenges" className="flex items-center gap-2">
             <Target className="w-4 h-4" />
-            التحديات
+            {t('challenge_management.challenges_tab')}
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex items-center gap-2">
             <BarChart3 className="w-4 h-4" />
-            التحليلات
+            {t('challenge_management.analytics_tab')}
           </TabsTrigger>
         </TabsList>
 
