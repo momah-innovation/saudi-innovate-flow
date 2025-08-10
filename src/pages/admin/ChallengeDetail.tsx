@@ -53,7 +53,7 @@ export default function ChallengeDetailPage() {
         .from('challenges')
         .select(`
           *,
-          sectors(id, name_ar, name_en),
+          sectors!challenges_sector_id_fkey(id, name_ar, name_en),
           deputies(id, name_ar, name_en, deputy_minister, contact_email),
           departments(id, name_ar, name_en, department_head),
           domains(id, name_ar, name_en, domain_lead, specialization),

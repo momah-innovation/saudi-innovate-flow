@@ -198,7 +198,7 @@ export function AdminBreadcrumb({ className, maxItems = 4 }: AdminBreadcrumbProp
           if (showEllipsis && isFirst) return null;
 
           return (
-            <React.Fragment key={index}>
+            <React.Fragment key={`breadcrumb-${index}`}>
               {index > 0 && (
                 <BreadcrumbSeparator>
                   <ChevronRight className={cn("w-4 h-4", isRTL && "rotate-180")} />
