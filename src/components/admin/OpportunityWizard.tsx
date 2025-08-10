@@ -210,7 +210,7 @@ export function OpportunityWizard({
       
       toast({
         title: "خطأ",
-        description: error instanceof Error ? error.message : "فشل في حفظ الفرصة",
+        description: error instanceof Error ? error.message : t('opportunity_wizard.save_error_description'),
         variant: "destructive",
       });
     } finally {
@@ -222,7 +222,7 @@ export function OpportunityWizard({
     {
       id: "basic-info",
       title: "المعلومات الأساسية",
-      description: "أدخل المعلومات الأساسية للفرصة",
+      description: t('opportunity_wizard.basic_info_description'),
       validation: validateBasicInfo,
       content: (
         <div className="space-y-6">
@@ -244,7 +244,7 @@ export function OpportunityWizard({
                   setErrors({ ...errors, title: "" });
                 }
               }}
-              placeholder="أدخل عنوان الفرصة"
+              placeholder={t('opportunity_wizard.title_placeholder')}
               dir="rtl"
               className={errors.title ? "border-destructive" : ""}
             />
@@ -252,7 +252,7 @@ export function OpportunityWizard({
               <p className="text-sm text-destructive">{errors.title}</p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                عنوان واضح وجذاب للفرصة
+                {t('opportunity_wizard.title_help')}
               </p>
             )}
           </div>

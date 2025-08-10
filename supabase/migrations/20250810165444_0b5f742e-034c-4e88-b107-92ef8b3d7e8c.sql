@@ -1,0 +1,71 @@
+-- Add final missing translation keys for remaining components
+INSERT INTO public.system_translations (translation_key, text_ar, text_en, category) VALUES
+-- Form labels (common across components)
+('form.name_english_label', 'الاسم (بالإنجليزية)', 'Name (English)', 'form'),
+('form.name_arabic_label', 'الاسم (بالعربية)', 'Name (Arabic)', 'form'),
+('form.description_arabic_label', 'الوصف (بالعربية)', 'Description (Arabic)', 'form'),
+('form.deputy_minister_label', 'نائب الوزير', 'Deputy Minister', 'form'),
+('form.contact_email_label', 'البريد الإلكتروني للتواصل', 'Contact Email', 'form'),
+('form.sector_label', 'القطاع', 'Sector', 'form'),
+('form.department_head_label', 'رئيس القسم', 'Department Head', 'form'),
+('form.budget_allocation_label', 'الميزانية المخصصة', 'Budget Allocation', 'form'),
+('form.deputy_label', 'النائب', 'Deputy', 'form'),
+('form.domain_lead_label', 'قائد النطاق', 'Domain Lead', 'form'),
+('form.specialization_label', 'التخصص', 'Specialization', 'form'),
+('form.department_label', 'القسم', 'Department', 'form'),
+('form.technical_focus_label', 'التركيز التقني', 'Technical Focus', 'form'),
+('form.domain_label', 'النطاق', 'Domain', 'form'),
+('form.service_type_label', 'نوع الخدمة', 'Service Type', 'form'),
+('form.citizen_facing_label', 'خدمة للمواطنين', 'Citizen Facing', 'form'),
+('form.digital_maturity_score_label', 'نقاط النضج الرقمي', 'Digital Maturity Score', 'form'),
+('form.sub_domain_label', 'النطاق الفرعي', 'Sub-domain', 'form'),
+
+-- IdeaWizard remaining strings
+('idea_wizard.challenge_label', 'التحدي المرتبط', 'Related Challenge', 'idea_wizard'),
+('idea_wizard.challenge_placeholder', 'اختر التحدي المرتبط', 'Select related challenge', 'idea_wizard'),
+('idea_wizard.challenge_help', 'اختر التحدي الذي تهدف الفكرة إلى حله', 'Select the challenge this idea aims to solve', 'idea_wizard'),
+('idea_wizard.focus_question_label', 'السؤال المحوري المرتبط', 'Related Focus Question', 'idea_wizard'),
+('idea_wizard.focus_question_placeholder', 'اختر السؤال المحوري المرتبط', 'Select related focus question', 'idea_wizard'),
+('idea_wizard.focus_question_help_no_challenge', 'اختر التحدي أولاً لعرض الأسئلة المحورية المرتبطة', 'Select challenge first to show related focus questions', 'idea_wizard'),
+('idea_wizard.focus_question_help', 'اختر السؤال المحوري الذي تجيب عليه الفكرة', 'Select the focus question this idea answers', 'idea_wizard'),
+('idea_wizard.campaigns_events_note', 'ربط الفكرة بالحملات والفعاليات اختياري. إذا تم اختيار حملة أو فعالية، ستتم تصفية التحديات المتاحة في الخطوة التالية.', 'Linking idea to campaigns and events is optional. If a campaign or event is selected, available challenges will be filtered in the next step.', 'idea_wizard'),
+('idea_wizard.draft_note', 'هذه الفكرة محفوظة كمسودة. يمكنك حفظها بدون ربط إجباري بالتحديات، ولكن ستحتاج لربطها عند تقديمها رسمياً.', 'This idea is saved as a draft. You can save it without mandatory challenge linking, but you will need to link it when submitting officially.', 'idea_wizard'),
+('idea_wizard.required_when_submitting', 'عند التقديم', 'When Submitting', 'idea_wizard'),
+('idea_wizard.required_linking', 'الربط المطلوب', 'Required Linking', 'idea_wizard'),
+('idea_wizard.solution_approach_label', 'منهجية الحل', 'Solution Approach', 'idea_wizard'),
+('idea_wizard.solution_approach_placeholder', 'اشرح المنهجية المتبعة في حل المشكلة', 'Explain the methodology used to solve the problem', 'idea_wizard'),
+('idea_wizard.implementation_plan_label', 'خطة التنفيذ', 'Implementation Plan', 'idea_wizard'),
+('idea_wizard.implementation_plan_placeholder', 'وضح خطة تنفيذ الفكرة والخطوات المطلوبة', 'Explain the idea implementation plan and required steps', 'idea_wizard'),
+('idea_wizard.expected_impact_label', 'الأثر المتوقع', 'Expected Impact', 'idea_wizard'),
+('idea_wizard.expected_impact_placeholder', 'صف الأثر المتوقع من تطبيق هذه الفكرة', 'Describe the expected impact of implementing this idea', 'idea_wizard'),
+('idea_wizard.resource_requirements_label', 'متطلبات الموارد', 'Resource Requirements', 'idea_wizard'),
+('idea_wizard.resource_requirements_placeholder', 'حدد الموارد المطلوبة لتنفيذ الفكرة', 'Specify the resources required to implement the idea', 'idea_wizard'),
+
+-- Campaign and Event labels
+('idea_wizard.campaign_label', 'الحملة', 'Campaign', 'idea_wizard'),
+('idea_wizard.campaign_placeholder', 'اختر الحملة', 'Select campaign', 'idea_wizard'),
+('idea_wizard.campaign_none', 'بدون حملة', 'No campaign', 'idea_wizard'),
+('idea_wizard.event_label', 'الفعالية', 'Event', 'idea_wizard'),
+('idea_wizard.event_placeholder', 'اختر الفعالية', 'Select event', 'idea_wizard'),
+('idea_wizard.event_none', 'بدون فعالية', 'No event', 'idea_wizard'),
+
+-- Organizational Structure Management
+('organizational_structure.title', 'إدارة الهيكل التنظيمي', 'Organizational Structure Management', 'admin'),
+('organizational_structure.description', 'إدارة شاملة للهيكل التنظيمي للوزارة', 'Comprehensive management of ministry organizational structure', 'admin'),
+('organizational_structure.deputies', 'النواب', 'Deputies', 'admin'),
+('organizational_structure.departments', 'الأقسام', 'Departments', 'admin'),
+('organizational_structure.domains', 'النطاقات', 'Domains', 'admin'),
+('organizational_structure.sub_domains', 'النطاقات الفرعية', 'Sub-domains', 'admin'),
+('organizational_structure.services', 'الخدمات', 'Services', 'admin'),
+('organizational_structure.search_deputies', 'البحث في النواب...', 'Search deputies...', 'admin'),
+('organizational_structure.add_deputy', 'إضافة نائب', 'Add Deputy', 'admin'),
+('organizational_structure.edit_deputy', 'تعديل النائب', 'Edit Deputy', 'admin'),
+('organizational_structure.add_new_deputy', 'إضافة نائب جديد', 'Add New Deputy', 'admin'),
+('organizational_structure.add_department', 'إضافة قسم', 'Add Department', 'admin'),
+('organizational_structure.edit_department', 'تعديل القسم', 'Edit Department', 'admin'),
+('organizational_structure.add_new_department', 'إضافة قسم جديد', 'Add New Department', 'admin')
+
+ON CONFLICT (translation_key) DO UPDATE SET
+text_ar = EXCLUDED.text_ar,
+text_en = EXCLUDED.text_en,
+category = EXCLUDED.category;

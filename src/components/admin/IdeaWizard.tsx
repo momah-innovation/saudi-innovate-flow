@@ -516,7 +516,7 @@ export function IdeaWizard({
     },
     {
       id: "campaigns-events",
-      title: "الحملات والفعاليات",
+      title: t('idea_wizard.campaigns_events_title'),
       description: t('idea_wizard.campaigns_events_description'),
       validation: () => true, // Always valid as optional
       content: (
@@ -524,13 +524,13 @@ export function IdeaWizard({
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              ربط الفكرة بالحملات والفعاليات اختياري. إذا تم اختيار حملة أو فعالية، ستتم تصفية التحديات المتاحة في الخطوة التالية.
+              {t('idea_wizard.campaigns_events_note')}
             </AlertDescription>
           </Alert>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="campaign_id">الحملة</Label>
+              <Label htmlFor="campaign_id">{t('idea_wizard.campaign_label')}</Label>
               <Select 
                 value={formData.campaign_id} 
                 onValueChange={(value) => {
@@ -543,10 +543,10 @@ export function IdeaWizard({
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="اختر الحملة" />
+                  <SelectValue placeholder={t('idea_wizard.campaign_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">بدون حملة</SelectItem>
+                  <SelectItem value="none">{t('idea_wizard.campaign_none')}</SelectItem>
                   {campaigns.map((campaign) => (
                     <SelectItem key={campaign.id} value={campaign.id}>
                       {campaign.title_ar} ({campaign.status})
@@ -557,7 +557,7 @@ export function IdeaWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="event_id">الفعالية</Label>
+              <Label htmlFor="event_id">{t('idea_wizard.event_label')}</Label>
               <Select 
                 value={formData.event_id} 
                 onValueChange={(value) => {
@@ -570,10 +570,10 @@ export function IdeaWizard({
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="اختر الفعالية" />
+                  <SelectValue placeholder={t('idea_wizard.event_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">بدون فعالية</SelectItem>
+                  <SelectItem value="none">{t('idea_wizard.event_none')}</SelectItem>
                   {events.map((event) => (
                     <SelectItem key={event.id} value={event.id}>
                       {event.title_ar} ({event.status})
@@ -598,7 +598,7 @@ export function IdeaWizard({
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                هذه الفكرة محفوظة كمسودة. يمكنك حفظها بدون ربط إجباري بالتحديات، ولكن ستحتاج لربطها عند تقديمها رسمياً.
+                {t('idea_wizard.draft_note')}
               </AlertDescription>
             </Alert>
           )}
@@ -606,7 +606,7 @@ export function IdeaWizard({
           {/* Required Associations */}
           <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
             <h4 className="font-medium text-sm">
-              الربط المطلوب {formData.status === 'draft' ? '(عند التقديم)' : '*'}
+              {t('idea_wizard.required_linking')} {formData.status === 'draft' ? `(${t('idea_wizard.required_when_submitting')})` : '*'}
             </h4>
             
             <div className="space-y-2">
@@ -621,7 +621,7 @@ export function IdeaWizard({
                 }}
               >
                 <SelectTrigger className={errors.challenge_id ? "border-destructive" : ""}>
-                  <SelectValue placeholder="اختر التحدي المرتبط" />
+                  <SelectValue placeholder={t('idea_wizard.challenge_placeholder')} />
                 </SelectTrigger>
                  <SelectContent>
                    {filteredChallenges.map((challenge) => (
@@ -635,13 +635,13 @@ export function IdeaWizard({
                 <p className="text-sm text-destructive">{errors.challenge_id}</p>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  اختر التحدي الذي تهدف الفكرة إلى حله
+                  {t('idea_wizard.challenge_help')}
                 </p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="focus_question_id">السؤال المحوري المرتبط *</Label>
+              <Label htmlFor="focus_question_id">{t('idea_wizard.focus_question_label')} *</Label>
               <Select 
                 value={formData.focus_question_id} 
                 onValueChange={(value) => {
@@ -653,7 +653,7 @@ export function IdeaWizard({
                 disabled={!formData.challenge_id}
               >
                 <SelectTrigger className={errors.focus_question_id ? "border-destructive" : ""}>
-                  <SelectValue placeholder="اختر السؤال المحوري المرتبط" />
+                  <SelectValue placeholder={t('idea_wizard.focus_question_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {filteredFocusQuestions.map((question) => (
@@ -668,8 +668,8 @@ export function IdeaWizard({
               ) : (
                 <p className="text-sm text-muted-foreground">
                   {!formData.challenge_id 
-                    ? 'اختر التحدي أولاً لعرض الأسئلة المحورية المرتبطة' 
-                    : 'اختر السؤال المحوري الذي تجيب عليه الفكرة'
+                    ? t('idea_wizard.focus_question_help_no_challenge')
+                    : t('idea_wizard.focus_question_help')
                   }
                 </p>
               )}
@@ -686,48 +686,48 @@ export function IdeaWizard({
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="solution_approach">منهجية الحل</Label>
+            <Label htmlFor="solution_approach">{t('idea_wizard.solution_approach_label')}</Label>
             <Textarea
               id="solution_approach"
               value={formData.solution_approach}
               onChange={(e) => setFormData({ ...formData, solution_approach: e.target.value })}
-              placeholder="اشرح المنهجية المتبعة في حل المشكلة"
+              placeholder={t('idea_wizard.solution_approach_placeholder')}
               rows={3}
               dir="rtl"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="implementation_plan">خطة التنفيذ</Label>
+            <Label htmlFor="implementation_plan">{t('idea_wizard.implementation_plan_label')}</Label>
             <Textarea
               id="implementation_plan"
               value={formData.implementation_plan}
               onChange={(e) => setFormData({ ...formData, implementation_plan: e.target.value })}
-              placeholder="وضح خطة تنفيذ الفكرة والخطوات المطلوبة"
+              placeholder={t('idea_wizard.implementation_plan_placeholder')}
               rows={3}
               dir="rtl"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="expected_impact">الأثر المتوقع</Label>
+            <Label htmlFor="expected_impact">{t('idea_wizard.expected_impact_label')}</Label>
             <Textarea
               id="expected_impact"
               value={formData.expected_impact}
               onChange={(e) => setFormData({ ...formData, expected_impact: e.target.value })}
-              placeholder="صف الأثر المتوقع من تطبيق هذه الفكرة"
+              placeholder={t('idea_wizard.expected_impact_placeholder')}
               rows={3}
               dir="rtl"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="resource_requirements">متطلبات الموارد</Label>
+            <Label htmlFor="resource_requirements">{t('idea_wizard.resource_requirements_label')}</Label>
             <Textarea
               id="resource_requirements"
               value={formData.resource_requirements}
               onChange={(e) => setFormData({ ...formData, resource_requirements: e.target.value })}
-              placeholder="حدد الموارد المطلوبة لتنفيذ الفكرة"
+              placeholder={t('idea_wizard.resource_requirements_placeholder')}
               rows={3}
               dir="rtl"
             />
