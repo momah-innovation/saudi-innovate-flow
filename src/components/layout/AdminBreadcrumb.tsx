@@ -21,6 +21,21 @@ const adminRouteConfig: Record<string, BreadcrumbConfig> = {
     path: '/admin/dashboard',
     icon: Home
   },
+  '/admin/organizational-structure': {
+    label: 'Organizational Structure',
+    labelAr: 'الهيكل التنظيمي',
+    icon: Building
+  },
+  '/admin/evaluation-management': {
+    label: 'Evaluation Management',
+    labelAr: 'إدارة التقييم',
+    icon: Target
+  },
+  '/admin/relationships': {
+    label: 'Relationship Overview',
+    labelAr: 'نظرة عامة على العلاقات',
+    icon: Users
+  },
   '/admin/dashboard': {
     label: 'Dashboard',
     labelAr: 'لوحة التحكم',

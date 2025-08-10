@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -432,7 +433,9 @@ const EvaluationManagement = () => {
   }
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title={isRTL ? 'إدارة نظام التقييم' : 'Evaluation System Management'}
         description={isRTL ? 'إدارة معايير التقييم والقوالب والقواعد' : 'Manage evaluation criteria, templates, and rules'}
         primaryAction={{
@@ -1202,6 +1205,7 @@ const EvaluationManagement = () => {
           </Tabs>
         </div>
       </PageLayout>
+    </div>
   );
 };
 

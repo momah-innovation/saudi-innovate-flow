@@ -1,3 +1,4 @@
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { OrganizationalStructureManagement } from "@/components/admin/OrganizationalStructureManagement";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useDirection } from "@/components/ui/direction-provider";
@@ -72,7 +73,9 @@ export default function OrganizationalStructurePage() {
   );
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title={title}
         description={description}
         primaryAction={{
@@ -94,5 +97,6 @@ export default function OrganizationalStructurePage() {
       >
         <OrganizationalStructureManagement />
       </PageLayout>
+    </div>
   );
 }

@@ -404,6 +404,22 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
   {
+    path: '/admin/organizational-structure',
+    component: OrganizationalStructureManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: '/admin/evaluation-management',
+    component: lazy(() => import('@/pages/admin/EvaluationManagement')),
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
     path: ALL_ROUTES.ADMIN_SETTINGS,
     component: SystemSettings,
     requireAuth: true,
