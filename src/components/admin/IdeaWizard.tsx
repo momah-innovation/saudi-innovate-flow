@@ -485,7 +485,7 @@ export function IdeaWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="maturity_level">مستوى النضج *</Label>
+              <Label htmlFor="maturity_level">{t('idea_wizard.maturity_label')} *</Label>
               <Select 
                 value={formData.maturity_level} 
                 onValueChange={(value) => {
@@ -517,7 +517,7 @@ export function IdeaWizard({
     {
       id: "campaigns-events",
       title: "الحملات والفعاليات",
-      description: "ربط الفكرة بالحملات والفعاليات (اختياري)",
+      description: t('idea_wizard.campaigns_events_description'),
       validation: () => true, // Always valid as optional
       content: (
         <div className="space-y-6">
@@ -588,8 +588,8 @@ export function IdeaWizard({
     },
     {
       id: "challenges-questions",
-      title: "التحديات والأسئلة المحورية",
-      description: "ربط الفكرة بالتحديات والأسئلة المحورية",
+      title: t('idea_wizard.challenges_questions_title'),
+      description: t('idea_wizard.challenges_questions_description'),
       validation: validateAssociations,
       content: (
         <div className="space-y-6">
@@ -681,8 +681,8 @@ export function IdeaWizard({
     },
     {
       id: "content",
-      title: "محتوى إضافي",
-      description: "معلومات تفصيلية عن الفكرة",
+      title: t('idea_wizard.additional_content_title'),
+      description: t('idea_wizard.additional_content_description'),
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
@@ -745,7 +745,7 @@ export function IdeaWizard({
         setErrors({});
         setIsLoading(false);
       }}
-      title={idea ? "تعديل الفكرة" : "إضافة فكرة جديدة"}
+      title={idea ? t('idea_wizard.edit_title') : t('idea_wizard.create_title')}
       steps={steps}
       onComplete={handleSave}
       showProgress={true}
