@@ -79,7 +79,7 @@ export default function ChallengeDetailPage() {
             status,
             funding_amount,
             contribution_details,
-            partners(id, name_ar, name_en, partner_type, contact_email)
+            partners(id, name_ar, name_en, partner_type, email)
           ),
           challenge_requirements!challenge_requirements_challenge_id_fkey(
             id,
