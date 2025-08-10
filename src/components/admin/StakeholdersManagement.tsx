@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useStatusTranslations } from '@/utils/statusMappings';
 import { StakeholderWizard } from './StakeholderWizard';
 import { 
   User,
@@ -24,7 +25,7 @@ const mockStakeholders = [
     stakeholder_type: 'حكومي',
     influence_level: 'عالي',
     interest_level: 'عالي',
-    engagement_status: 'نشط',
+    engagement_status: 'active',
     notes: 'صاحب قرار رئيسي في مبادرات الابتكار الحكومي',
     projects_count: 12,
     last_interaction: '2024-03-01'
@@ -39,7 +40,7 @@ const mockStakeholders = [
     stakeholder_type: 'خاص',
     influence_level: 'عالي',
     interest_level: 'متوسط',
-    engagement_status: 'نشط',
+    engagement_status: 'active',
     notes: 'مهتمة بمشاريع الطاقة المتجددة والتكنولوجيا النظيفة',
     projects_count: 8,
     last_interaction: '2024-02-25'
@@ -54,7 +55,7 @@ const mockStakeholders = [
     stakeholder_type: 'أكاديمي',
     influence_level: 'متوسط',
     interest_level: 'عالي',
-    engagement_status: 'نشط',
+    engagement_status: 'active',
     notes: 'خبير في الذكاء الاصطناعي وتطبيقاته في القطاع الحكومي',
     projects_count: 15,
     last_interaction: '2024-03-05'
@@ -69,7 +70,7 @@ const mockStakeholders = [
     stakeholder_type: 'غير ربحي',
     influence_level: 'متوسط',
     interest_level: 'عالي',
-    engagement_status: 'معلق',
+    engagement_status: 'pending',
     notes: 'تنسق برامج الابتكار الإقليمية',
     projects_count: 6,
     last_interaction: '2024-01-15'
@@ -92,10 +93,10 @@ const influenceConfig = {
 };
 
 const engagementConfig = {
-  'نشط': { label: 'نشط', variant: 'default' as const },
-  'غير نشط': { label: 'غير نشط', variant: 'secondary' as const },
-  'معلق': { label: 'معلق', variant: 'outline' as const },
-  'محظور': { label: 'محظور', variant: 'destructive' as const }
+  'active': { label: 'نشط', variant: 'default' as const },
+  'inactive': { label: 'غير نشط', variant: 'secondary' as const },
+  'pending': { label: 'معلق', variant: 'outline' as const },
+  'blocked': { label: 'محظور', variant: 'destructive' as const }
 };
 
 interface StakeholdersManagementProps {
@@ -122,7 +123,8 @@ interface StakeholderData {
 }
 
 export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: StakeholdersManagementProps) {
-  const { language } = useUnifiedTranslation();
+  const { t } = useUnifiedTranslation();
+  const { getStatusLabel } = useStatusTranslations();
   const [selectedStakeholder, setSelectedStakeholder] = useState<StakeholderData | null>(null);
   const [showViewDialog, setShowViewDialog] = useState(false);
   const [stakeholderToDelete, setStakeholderToDelete] = useState<StakeholderData | null>(null);

@@ -354,7 +354,7 @@ export function TeamWorkspaceContent({
           <div className="grid grid-cols-2 gap-4">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">المهام النشطة</CardTitle>
+                <CardTitle className="text-sm">{t('workspace.active_tasks', 'المهام النشطة')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">12</div>
@@ -362,7 +362,7 @@ export function TeamWorkspaceContent({
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">معدل الإنجاز</CardTitle>
+                <CardTitle className="text-sm">{t('workspace.completion_rate', 'معدل الإنجاز')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">87%</div>
@@ -371,7 +371,7 @@ export function TeamWorkspaceContent({
           </div>
 
           <div>
-            <h3 className="font-medium mb-3">التخصصات والمهارات</h3>
+            <h3 className="font-medium mb-3">{t('workspace.specializations_skills', 'التخصصات والمهارات')}</h3>
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary">{member?.specialization}</Badge>
               <Badge variant="outline">تحليل البيانات</Badge>
@@ -381,10 +381,10 @@ export function TeamWorkspaceContent({
           </div>
 
           <div>
-            <h3 className="font-medium mb-3">السعة الحالية</h3>
+            <h3 className="font-medium mb-3">{t('workspace.current_capacity', 'السعة الحالية')}</h3>
             <Progress value={member?.current_workload || 65} className="h-2" />
             <p className="text-sm text-muted-foreground mt-1">
-              {member?.current_workload || 65}% من السعة الكاملة
+              {member?.current_workload || 65}% {t('workspace.of_full_capacity', 'من السعة الكاملة')}
             </p>
           </div>
 

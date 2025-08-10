@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useStatusTranslations } from "@/utils/statusMappings";
 import { logger } from "@/utils/logger";
 
 import { 
@@ -79,6 +80,7 @@ export function ChallengeManagementList() {
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
+  const { getStatusLabel, getPriorityLabel } = useStatusTranslations();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
   
 
@@ -174,15 +176,6 @@ export function ChallengeManagementList() {
     }
   };
 
-  const getStatusLabel = (status: string) => {
-    const key = `status.${status}`;
-    return t(key, status);
-  };
-
-  const getPriorityLabel = (priority: string) => {
-    const key = `priority.${priority}`;
-    return t(key, priority);
-  };
 
   // Load saved layout preference
   useEffect(() => {
@@ -213,8 +206,8 @@ export function ChallengeManagementList() {
         {/* Header */}
         <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
           <div>
-            <h2 className="text-2xl font-bold">إدارة التحديات</h2>
-            <p className="text-muted-foreground">إنشاء وإدارة التحديات الابتكارية ({filteredChallenges.length})</p>
+            <h2 className="text-2xl font-bold">{t('challenge_management.title', 'إدارة التحديات')}</h2>
+            <p className="text-muted-foreground">{t('challenge_management.description', 'إنشاء وإدارة التحديات الابتكارية')} ({filteredChallenges.length})</p>
           </div>
           <div className="flex items-center gap-2">
             {/* Layout Toggle */}
@@ -222,21 +215,21 @@ export function ChallengeManagementList() {
               <button
                 onClick={() => handleLayoutChange('cards')}
                 className={`p-2 rounded ${currentLayout === 'cards' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
-                title="عرض البطاقات"
+                title={t('common.card_view', 'عرض البطاقات')}
               >
                 <LayoutGrid className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleLayoutChange('list')}
                 className={`p-2 rounded ${currentLayout === 'list' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
-                title="عرض القائمة"
+                title={t('common.list_view', 'عرض القائمة')}
               >
                 <List className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleLayoutChange('grid')}
                 className={`p-2 rounded ${currentLayout === 'grid' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
-                title="عرض الشبكة"
+                title={t('common.grid_view', 'عرض الشبكة')}
               >
                 <Grid3x3 className="w-4 h-4" />
               </button>
@@ -247,7 +240,7 @@ export function ChallengeManagementList() {
               setShowWizard(true);
             }}>
               <Target className="w-4 h-4 mr-2" />
-              تحدي جديد
+              {t('challenge_management.new_challenge', 'تحدي جديد')}
             </Button>
           </div>
         </div>
@@ -271,7 +264,7 @@ export function ChallengeManagementList() {
                 <SelectItem value="all">{t('common.all_statuses', 'كل الحالات')}</SelectItem>
                 {challengeStatusOptions.map(status => (
                   <SelectItem key={status} value={status}>
-                    {getStatusLabel(status)}
+                    {getStatusLabel(status as any)}
                   </SelectItem>
                 ))}
                 <SelectItem value="on_hold">معلق</SelectItem>
@@ -286,7 +279,7 @@ export function ChallengeManagementList() {
                 <SelectItem value="all">{t('common.all_priorities', 'كل الأولويات')}</SelectItem>
                 {challengePriorityLevels.map(priority => (
                   <SelectItem key={priority} value={priority}>
-                    {getPriorityLabel(priority)}
+                    {getPriorityLabel(priority as any)}
                   </SelectItem>
                 ))}
               </SelectContent>

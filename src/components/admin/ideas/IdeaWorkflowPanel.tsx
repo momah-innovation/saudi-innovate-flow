@@ -180,8 +180,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       if (error) throw error;
 
       toast({
-        title: "تم تغيير الحالة",
-        description: data.message || "تم تغيير حالة الفكرة بنجاح"
+        title: t('workflow.status_changed_title', 'تم تغيير الحالة'),
+        description: data.message || t('workflow.status_changed_success', 'تم تغيير حالة الفكرة بنجاح')
       });
 
       setNewStatus("");
@@ -191,8 +191,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
     } catch (error) {
       logger.error('Error changing status', { component: 'IdeaWorkflowPanel', action: 'handleStatusChange', data: { ideaId, newStatus } }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في تغيير حالة الفكرة",
+        title: t('common.error', 'خطأ'),
+        description: t('workflow.status_change_error', 'فشل في تغيير حالة الفكرة'),
         variant: "destructive"
       });
     } finally {
