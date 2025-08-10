@@ -206,7 +206,7 @@ export function SectorsManagement() {
             <form onSubmit={(e) => { e.preventDefault(); handleSaveSector(); }} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name">Name (English)</Label>
+                  <Label htmlFor="name">{t('form.name_english_label')}</Label>
                   <Input
                     id="name"
                     value={formData.name}
@@ -215,7 +215,7 @@ export function SectorsManagement() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="name_ar">Name (Arabic)</Label>
+                  <Label htmlFor="name_ar">{t('form.name_arabic_label')}</Label>
                   <Input
                     id="name_ar"
                     value={formData.name_ar}
@@ -225,7 +225,7 @@ export function SectorsManagement() {
               </div>
 
               <div>
-                <Label htmlFor="description">Description (English)</Label>
+                <Label htmlFor="description">{t('form.description_english_label')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
@@ -235,7 +235,7 @@ export function SectorsManagement() {
               </div>
 
               <div>
-                <Label htmlFor="description_ar">Description (Arabic)</Label>
+                <Label htmlFor="description_ar">{t('form.description_arabic_label')}</Label>
                 <Textarea
                   id="description_ar"
                   value={formData.description_ar || ''}

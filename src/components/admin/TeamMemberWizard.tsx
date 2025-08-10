@@ -310,8 +310,8 @@ export function TeamMemberWizard({
         if (error) throw error;
 
         toast({
-          title: "تم التحديث بنجاح",
-          description: "تم تحديث بيانات عضو الفريق"
+          title: t('team_wizard.update_success_title'),
+          description: t('team_wizard.update_success_description')
         });
       } else {
         // Add new member
@@ -322,8 +322,8 @@ export function TeamMemberWizard({
         if (error) throw error;
 
         toast({
-          title: "تم الإضافة بنجاح",
-          description: "تم إضافة عضو جديد إلى فريق الابتكار"
+          title: t('success.add_successful'),
+          description: t('success.member_added')
         });
       }
 
