@@ -66,27 +66,27 @@ export function StakeholderWizard({
   // Predefined options in Arabic
   const stakeholderTypes = partnerTypeOptions.map(type => ({ 
     value: type, 
-    label: type === 'government' ? 'حكومي' :
-           type === 'private' ? 'قطاع خاص' :
-           type === 'academic' ? 'أكاديمي' :
-           type === 'non_profit' ? 'منظمة غير ربحية' :
-           type === 'international' ? 'دولي' : type
+    label: type === 'government' ? t('stakeholder.types.government', 'حكومي') :
+           type === 'private' ? t('stakeholder.types.private', 'قطاع خاص') :
+           type === 'academic' ? t('stakeholder.types.academic', 'أكاديمي') :
+           type === 'non_profit' ? t('stakeholder.types.non_profit', 'منظمة غير ربحية') :
+           type === 'international' ? t('stakeholder.types.international', 'دولي') : type
   }));
 
   const { stakeholderInfluenceLevels, stakeholderInterestLevels } = useSystemLists();
   
   const influenceLevels = stakeholderInfluenceLevels.map(level => ({ 
     value: level, 
-    label: level === 'high' ? 'عالي' :
-           level === 'medium' ? 'متوسط' :
-           level === 'low' ? 'منخفض' : level
+    label: level === 'high' ? t('stakeholder.levels.high', 'عالي') :
+           level === 'medium' ? t('stakeholder.levels.medium', 'متوسط') :
+           level === 'low' ? t('stakeholder.levels.low', 'منخفض') : level
   }));
 
   const interestLevels = stakeholderInterestLevels.map(level => ({ 
     value: level, 
-    label: level === 'high' ? 'عالي' :
-           level === 'medium' ? 'متوسط' :
-           level === 'low' ? 'منخفض' : level
+    label: level === 'high' ? t('stakeholder.levels.high', 'عالي') :
+           level === 'medium' ? t('stakeholder.levels.medium', 'متوسط') :
+           level === 'low' ? t('stakeholder.levels.low', 'منخفض') : level
   }));
 
   const engagementStatuses = generalStatusOptions.map(status => ({ 
