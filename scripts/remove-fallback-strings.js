@@ -42,7 +42,7 @@ function removeFallbackStrings(content) {
   let modifiedContent = content;
   let replacementCount = 0;
   
-  // Pattern to match t('key', 'fallback') or t("key", "fallback")
+  // Comprehensive patterns to remove all types of fallback strings
   const patterns = [
     // t('key', 'fallback') -> t('key')
     {
@@ -58,11 +58,49 @@ function removeFallbackStrings(content) {
         return `t(${keyPart}${options || ''})`;
       }
     },
+    // getTranslation('key', 'targetLang', 'fallback') -> getTranslation('key', 'targetLang')
+    {
+      pattern: /\bgetTranslation\(\s*(['"](.*?)['"])\s*,\s*(['"](.*?)['"])\s*,\s*['"](.*?)['"](\s*,\s*['"](.*?)['"])?\s*\)/g,
+      replacement: (match, keyPart, key, langPart, lang, fallback, extraPart, extra) => {
+        return `getTranslation(${keyPart}, ${langPart}${extraPart || ''})`;
+      }
+    },
     // getTranslation('key', 'fallback') -> getTranslation('key')
     {
       pattern: /\bgetTranslation\(\s*(['"](.*?)['"])\s*,\s*['"](.*?)['"](\s*,\s*['"](.*?)['"])?\s*\)/g,
       replacement: (match, keyPart, key, fallback, langPart, lang) => {
         return `getTranslation(${keyPart}${langPart || ''})`;
+      }
+    },
+    // t('key', { fallback: 'fallback' }) -> t('key')
+    {
+      pattern: /\bt\(\s*(['"](.*?)['"])\s*,\s*\{\s*[^}]*fallback[^}]*\}\s*\)/g,
+      replacement: (match, keyPart, key) => {
+        return `t(${keyPart})`;
+      }
+    },
+    // t('key', { ...options, fallback: 'fallback' }) -> t('key', { ...options })
+    {
+      pattern: /\bt\(\s*(['"](.*?)['"])\s*,\s*\{\s*([^}]*),\s*fallback[^}]*\}\s*\)/g,
+      replacement: (match, keyPart, key, otherOptions) => {
+        if (otherOptions.trim()) {
+          return `t(${keyPart}, { ${otherOptions.trim()} })`;
+        }
+        return `t(${keyPart})`;
+      }
+    },
+    // Remove || 'fallback' patterns after translation calls
+    {
+      pattern: /(\bt\([^)]+\)|\bgetTranslation\([^)]+\))\s*\|\|\s*['"](.*?)['"]?/g,
+      replacement: (match, translationCall, fallback) => {
+        return translationCall;
+      }
+    },
+    // Remove ternary operators with translation fallbacks
+    {
+      pattern: /(\bt\([^)]+\)|\bgetTranslation\([^)]+\))\s*\?\s*['"](.*?)['"]?\s*:\s*['"](.*?)['"]?/g,
+      replacement: (match, translationCall, ifTrue, ifFalse) => {
+        return translationCall;
       }
     }
   ];

@@ -57,24 +57,79 @@ function determineCategory(translationKey) {
 function extractTranslationKeys(content, filePath) {
   const keys = new Set();
   
-  // Match t('key') and t("key") patterns
+  // Comprehensive patterns to match all translation function calls
   const patterns = [
+    // Basic t() calls
     /\bt\(\s*['"](.*?)['"]\s*[,\)]/g,
     /\bt\(\s*`(.*?)`\s*[,\)]/g,
-    /getTranslation\(\s*['"](.*?)['"]/g
+    
+    // t() with fallback strings
+    /\bt\(\s*['"](.*?)['"],\s*['"](.*?)['"]/g,
+    /\bt\(\s*`(.*?)`,\s*`(.*?)`/g,
+    
+    // getTranslation calls
+    /getTranslation\(\s*['"](.*?)['"]/g,
+    /getTranslation\(\s*`(.*?)`/g,
+    
+    // Template literal patterns in translation keys
+    /\bt\(\s*['"]([\w._]+)['"]/g,
+    /getTranslation\(\s*['"]([\w._]+)['"]/g,
+    
+    // Dynamic key patterns (common constructions)
+    /\bt\(\s*['"]([\w._]+)\${?[\w.]*}?['"]/g,
+    /\bt\(\s*`([\w._]+)\${?[^}]*}?`/g,
+    
+    // Translation key references in objects/maps
+    /['"]([\w._]{3,})['"]\s*:\s*['"]/g,
+    
+    // Keys in translation mapping objects
+    /[\w.]+\.\$\{([\w._]+)\}/g
   ];
   
   patterns.forEach(pattern => {
     let match;
     while ((match = pattern.exec(content)) !== null) {
       const key = match[1];
-      if (key && key.length > 0 && !key.includes('${')) {
+      if (key && key.length > 2 && !key.includes('${') && !key.includes('(') && /^[\w._]+$/.test(key)) {
+        // Filter out obvious non-translation keys
+        if (!isLikelyTranslationKey(key)) continue;
         keys.add(key);
       }
     }
   });
   
   return Array.from(keys);
+}
+
+// Helper function to determine if a string is likely a translation key
+function isLikelyTranslationKey(key) {
+  // Must have at least one dot or underscore
+  if (!key.includes('.') && !key.includes('_')) return false;
+  
+  // Must not be too long (likely not a sentence)
+  if (key.length > 50) return false;
+  
+  // Must not contain spaces
+  if (key.includes(' ')) return false;
+  
+  // Must not be a file path
+  if (key.includes('/') || key.includes('\\')) return false;
+  
+  // Must not be a URL
+  if (key.includes('http') || key.includes('www')) return false;
+  
+  // Must not be an email
+  if (key.includes('@')) return false;
+  
+  // Common translation key patterns
+  const translationPatterns = [
+    /^(ui|admin|challenge|campaign|partner|expert|auth|notification|analytics|profile|translation|general|error|success|status|date|action)\./,
+    /\.(title|description|name|label|button|message|error|success|warning|info|placeholder|tooltip)$/,
+    /\.(create|edit|delete|save|cancel|submit|close|open|view|search|filter|loading)$/,
+    /^(advanced_search|challenge_form|campaign_form|partner_form|expert_form|admin_panel)\./
+  ];
+  
+  return translationPatterns.some(pattern => pattern.test(key));
 }
 
 // Recursively scan directory for TypeScript/JavaScript files
@@ -220,12 +275,22 @@ async function main() {
   try {
     console.log('🚀 Starting comprehensive translation key extraction...\n');
     
-    // Step 1: Scan all source files
+    // Step 1: Scan all source files and edge functions
     console.log('📁 Scanning source files...');
     const sourceDir = path.join(process.cwd(), 'src');
-    const files = scanDirectory(sourceDir);
+    const edgeFunctionsDir = path.join(process.cwd(), 'supabase', 'functions');
+    
+    let files = scanDirectory(sourceDir);
+    
+    // Also scan edge functions if they exist
+    if (fs.existsSync(edgeFunctionsDir)) {
+      const edgeFiles = scanDirectory(edgeFunctionsDir);
+      files = files.concat(edgeFiles);
+      console.log(`   ✓ Found ${edgeFiles.length} edge function files`);
+    }
+    
     progress.totalFiles = files.length;
-    console.log(`   ✓ Found ${files.length} source files to scan\n`);
+    console.log(`   ✓ Found ${files.length} total files to scan\n`);
     
     // Step 2: Extract all translation keys
     console.log('🔍 Extracting translation keys from source files...');
