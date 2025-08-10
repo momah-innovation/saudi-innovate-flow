@@ -73,11 +73,11 @@ export class TranslationProgressTracker {
       file: 'src/components/admin/CampaignWizard.tsx',
       category: 'wizard',
       priority: 'high',
-      status: 'in-progress',
+      status: 'completed',
       estimatedStrings: 80,
-      fixedStrings: 25,
-      addedTranslationKeys: 35,
-      description: 'Partially fixed campaign wizard - need to complete organizational structure section'
+      fixedStrings: 80,
+      addedTranslationKeys: 75,
+      description: 'Completed all CampaignWizard sections - organizational structure, partnerships, forms, navigation'
     });
 
     this.addFix({

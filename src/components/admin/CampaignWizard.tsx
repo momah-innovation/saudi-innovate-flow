@@ -671,10 +671,10 @@ export function CampaignWizard({
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>القطاع الرئيسي</Label>
+                <Label>{t('admin.campaigns.main_sector', 'Main Sector')}</Label>
                 <Select value={formData.sector_id} onValueChange={(value) => setFormData(prev => ({ ...prev, sector_id: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="اختر القطاع الرئيسي" />
+                    <SelectValue placeholder={t('admin.campaigns.choose_main_sector', 'Choose main sector')} />
                   </SelectTrigger>
                   <SelectContent>
                     {sectors.map((sector) => (
@@ -687,10 +687,10 @@ export function CampaignWizard({
               </div>
 
               <div className="space-y-2">
-                <Label>الوكالة الرئيسية</Label>
+                <Label>{t('admin.campaigns.main_deputy', 'Main Deputy')}</Label>
                 <Select value={formData.deputy_id} onValueChange={(value) => setFormData(prev => ({ ...prev, deputy_id: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="اختر الوكالة الرئيسية" />
+                    <SelectValue placeholder={t('admin.campaigns.choose_main_deputy', 'Choose main deputy')} />
                   </SelectTrigger>
                   <SelectContent>
                     {deputies.map((deputy) => (
@@ -705,10 +705,10 @@ export function CampaignWizard({
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>الإدارة الرئيسية</Label>
+                <Label>{t('admin.campaigns.main_department', 'Main Department')}</Label>
                 <Select value={formData.department_id} onValueChange={(value) => setFormData(prev => ({ ...prev, department_id: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="اختر الإدارة الرئيسية" />
+                    <SelectValue placeholder={t('admin.campaigns.choose_main_department', 'Choose main department')} />
                   </SelectTrigger>
                   <SelectContent>
                     {departments.map((department) => (
@@ -721,10 +721,10 @@ export function CampaignWizard({
               </div>
 
               <div className="space-y-2">
-                <Label>التحدي الرئيسي</Label>
+                <Label>{t('admin.campaigns.main_challenge', 'Main Challenge')}</Label>
                 <Select value={formData.challenge_id} onValueChange={(value) => setFormData(prev => ({ ...prev, challenge_id: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="اختر التحدي الرئيسي" />
+                    <SelectValue placeholder={t('admin.campaigns.choose_main_challenge', 'Choose main challenge')} />
                   </SelectTrigger>
                   <SelectContent>
                     {challenges.map((challenge) => (
@@ -740,7 +740,7 @@ export function CampaignWizard({
             <Separator />
 
             <div className="space-y-4">
-              <h4 className="font-medium">القطاعات المشاركة</h4>
+              <h4 className="font-medium">{t('admin.campaigns.participating_sectors', 'Participating Sectors')}</h4>
               <div className="grid grid-cols-2 gap-2">
                 {sectors.map((sector) => (
                   <div key={sector.id} className="flex items-center space-x-2">
@@ -764,7 +764,7 @@ export function CampaignWizard({
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">الوكالات المشاركة</h4>
+              <h4 className="font-medium">{t('admin.campaigns.participating_deputies', 'Participating Deputies')}</h4>
               <div className="grid grid-cols-2 gap-2">
                 {deputies.map((deputy) => (
                   <div key={deputy.id} className="flex items-center space-x-2">
@@ -788,7 +788,7 @@ export function CampaignWizard({
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">الإدارات المشاركة</h4>
+              <h4 className="font-medium">{t('admin.campaigns.participating_departments', 'Participating Departments')}</h4>
               <div className="grid grid-cols-2 gap-2">
                 {departments.map((department) => (
                   <div key={department.id} className="flex items-center space-x-2">
@@ -812,7 +812,7 @@ export function CampaignWizard({
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">التحديات المشاركة</h4>
+              <h4 className="font-medium">{t('admin.campaigns.participating_challenges', 'Participating Challenges')}</h4>
               <div className="grid grid-cols-1 gap-2">
                 {challenges.map((challenge) => (
                   <div key={challenge.id} className="flex items-center space-x-2">
@@ -841,10 +841,10 @@ export function CampaignWizard({
         return (
           <div className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">الشركاء</h4>
+              <h4 className="font-medium">{t('admin.campaigns.partners', 'Partners')}</h4>
               <div className="space-y-2">
                 <Input
-                  placeholder="ابحث عن شريك..."
+                  placeholder={t('admin.campaigns.search_partner', 'Search for partner...')}
                   value={partnerSearch}
                   onChange={(e) => setPartnerSearch(e.target.value)}
                 />
@@ -898,10 +898,10 @@ export function CampaignWizard({
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">أصحاب المصلحة</h4>
+              <h4 className="font-medium">{t('admin.campaigns.stakeholders', 'Stakeholders')}</h4>
               <div className="space-y-2">
                 <Input
-                  placeholder="ابحث عن صاحب مصلحة..."
+                  placeholder={t('admin.campaigns.search_stakeholder', 'Search for stakeholder...')}
                   value={stakeholderSearch}
                   onChange={(e) => setStakeholderSearch(e.target.value)}
                 />
