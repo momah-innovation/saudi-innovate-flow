@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Run Database Migration</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        .results { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 20px; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Database Values Migration</h1>
+        
+        <div class="status info">
+            <strong>About this migration:</strong><br>
+            This will standardize all hardcoded Arabic values in the database to English keys that work with the translation system.
+            <br><br>
+            <strong>What will be updated:</strong>
+            <ul>
+                <li>Challenge priority levels (عالي → high, متوسط → medium, etc.)</li>
+                <li>Status values across all tables</li>
+                <li>Challenge types and categories</li>
+                <li>Partner and expert classifications</li>
+                <li>All other hardcoded system values</li>
+            </ul>
+        </div>
+
+        <button id="runMigration" onclick="runMigration()">🚀 Run Migration</button>
+        <button id="checkStatus" onclick="checkCurrentValues()" style="margin-left: 10px;">🔍 Check Current Values</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2.52.1';
+        
+        const supabase = createClient(
+            'https://jxpbiljkoibvqxzdkgod.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cGJpbGprb2lidnF4emRrZ29kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NzEzMDksImV4cCI6MjA2OTA0NzMwOX0.ls7b6Dh5Go0nQYP6Sjv1c_IxPXEv8MC5RQEpH91Z_V8'
+        );
+
+        // Migration mappings
+        const VALUE_KEY_MAPPINGS = {
+            'status': {
+                'مسودة': 'draft',
+                'نشط': 'active', 
+                'منشور': 'published',
+                'مكتمل': 'completed',
+                'مغلق': 'closed',
+                'مؤرشف': 'archived',
+                'قيد التخطيط': 'planning',
+                'جاري': 'ongoing',
+                'مؤجل': 'postponed'
+            },
+            'priority': {
+                'منخفض': 'low',
+                'متوسط': 'medium', 
+                'عالي': 'high',
+                'عاجل': 'urgent',
+                'حرج': 'critical'
+            },
+            'challenge_type': {
+                'ابتكار': 'innovation',
+                'تحسين': 'improvement', 
+                'بحث': 'research',
+                'تطوير': 'development',
+                'تقني': 'technical',
+                'تجاري': 'business'
+            },
+            'sensitivity_level': {
+                'عادي': 'normal',
+                'حساس': 'sensitive',
+                'سري': 'confidential',
+                'مقيد': 'restricted'
+            }
+        };
+
+        async function migrateTableColumn(table, column, category) {
+            const mappings = VALUE_KEY_MAPPINGS[category];
+            if (!mappings) return { table, column, updated: 0, errors: [`No mappings for category: ${category}`] };
+
+            const results = { table, column, updated: 0, errors: [] };
+
+            try {
+                // Get unique values that need mapping
+                const { data: existingData, error: fetchError } = await supabase
+                    .from(table)
+                    .select(`id, ${column}`)
+                    .not(column, 'is', null);
+
+                if (fetchError) throw fetchError;
+
+                // Group by values that need updating
+                const updateGroups = {};
+                existingData.forEach(row => {
+                    const currentValue = row[column];
+                    const standardValue = mappings[currentValue];
+                    if (standardValue && standardValue !== currentValue) {
+                        if (!updateGroups[standardValue]) updateGroups[standardValue] = [];
+                        updateGroups[standardValue].push(row.id);
+                    }
+                });
+
+                // Perform batch updates
+                for (const [standardValue, ids] of Object.entries(updateGroups)) {
+                    const { error: updateError } = await supabase
+                        .from(table)
+                        .update({ [column]: standardValue })
+                        .in('id', ids);
+
+                    if (updateError) {
+                        results.errors.push(`Failed to update ${ids.length} records to '${standardValue}': ${updateError.message}`);
+                    } else {
+                        results.updated += ids.length;
+                    }
+                }
+
+            } catch (error) {
+                results.errors.push(`Unexpected error: ${error.message}`);
+            }
+
+            return results;
+        }
+
+        window.runMigration = async function() {
+            const button = document.getElementById('runMigration');
+            const resultsDiv = document.getElementById('results');
+            
+            button.disabled = true;
+            button.textContent = '🔄 Running Migration...';
+            
+            resultsDiv.innerHTML = '<div class="status info">Starting migration...</div>';
+
+            const migrations = [
+                // Status fields
+                { table: 'challenges', column: 'status', category: 'status' },
+                { table: 'campaigns', column: 'status', category: 'status' },
+                { table: 'ideas', column: 'status', category: 'status' },
+                { table: 'events', column: 'status', category: 'status' },
+                { table: 'opportunities', column: 'status', category: 'status' },
+                
+                // Priority fields  
+                { table: 'challenges', column: 'priority_level', category: 'priority' },
+                { table: 'ideas', column: 'priority_level', category: 'priority' },
+                { table: 'campaigns', column: 'priority_level', category: 'priority' },
+                
+                // Challenge specific
+                { table: 'challenges', column: 'challenge_type', category: 'challenge_type' },
+                { table: 'challenges', column: 'sensitivity_level', category: 'sensitivity_level' },
+                
+                // Other tables
+                { table: 'challenge_submissions', column: 'status', category: 'status' },
+                { table: 'event_participants', column: 'status', category: 'status' },
+                { table: 'opportunity_applications', column: 'status', category: 'status' }
+            ];
+
+            let totalUpdated = 0;
+            let totalErrors = 0;
+            let html = '<div class="results"><h3>Migration Results:</h3>';
+
+            for (const migration of migrations) {
+                try {
+                    const result = await migrateTableColumn(migration.table, migration.column, migration.category);
+                    totalUpdated += result.updated;
+                    totalErrors += result.errors.length;
+                    
+                    const status = result.errors.length > 0 ? 'error' : (result.updated > 0 ? 'success' : 'info');
+                    html += `<div class="status ${status}">
+                        <strong>${migration.table}.${migration.column}</strong>: 
+                        Updated ${result.updated} records
+                        ${result.errors.length > 0 ? '<br>Errors: ' + result.errors.join(', ') : ''}
+                    </div>`;
+                } catch (error) {
+                    html += `<div class="status error">
+                        <strong>${migration.table}.${migration.column}</strong>: Failed - ${error.message}
+                    </div>`;
+                    totalErrors++;
+                }
+            }
+
+            html += `<div class="status ${totalErrors > 0 ? 'error' : 'success'}">
+                <h4>📊 SUMMARY:</h4>
+                <ul>
+                    <li>Total records updated: <strong>${totalUpdated}</strong></li>
+                    <li>Total errors: <strong>${totalErrors}</strong></li>
+                    <li>Tables processed: <strong>${migrations.length}</strong></li>
+                </ul>
+            </div></div>`;
+
+            resultsDiv.innerHTML = html;
+            button.disabled = false;
+            button.textContent = '🚀 Run Migration';
+        };
+
+        window.checkCurrentValues = async function() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="status info">Checking current values...</div>';
+
+            try {
+                const { data, error } = await supabase
+                    .from('challenges')
+                    .select('id, priority_level, status, challenge_type, sensitivity_level')
+                    .limit(10);
+
+                if (error) throw error;
+
+                let html = '<div class="results"><h3>Sample Current Values:</h3><pre>';
+                html += JSON.stringify(data, null, 2);
+                html += '</pre></div>';
+
+                resultsDiv.innerHTML = html;
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="status error">Error: ${error.message}</div>`;
+            }
+        };
+    </script>
+</body>
+</html>
