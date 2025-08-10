@@ -300,11 +300,11 @@ export function OrganizationalStructureManagement() {
                   <form onSubmit={handleDeputySubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label>Name (English)</Label>
+                        <Label>{t('form.name_english_label')}</Label>
                         <Input value={deputyForm.name} onChange={(e) => setDeputyForm({...deputyForm, name: e.target.value})} required />
                       </div>
                       <div>
-                        <Label>Name (Arabic)</Label>
+                        <Label>{t('form.name_arabic_label')}</Label>
                         <Input value={deputyForm.name_ar} onChange={(e) => setDeputyForm({...deputyForm, name_ar: e.target.value})} />
                       </div>
                     </div>

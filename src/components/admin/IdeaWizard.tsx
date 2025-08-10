@@ -610,7 +610,7 @@ export function IdeaWizard({
             </h4>
             
             <div className="space-y-2">
-              <Label htmlFor="challenge_id">التحدي المرتبط *</Label>
+              <Label htmlFor="challenge_id">{t('idea_wizard.challenge_label')} *</Label>
               <Select 
                 value={formData.challenge_id} 
                 onValueChange={(value) => {
