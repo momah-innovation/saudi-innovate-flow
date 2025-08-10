@@ -117,9 +117,9 @@ export function AdminFocusQuestionWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.question_text_ar.trim()) {
-      newErrors.question_text_ar = "نص السؤال مطلوب";
+      newErrors.question_text_ar = t('admin.focus_questions.question_text_required', 'Question text is required');
     } else if (formData.question_text_ar.length < 10) {
-      newErrors.question_text_ar = "يجب أن يكون نص السؤال أكثر من 10 أحرف";
+      newErrors.question_text_ar = t('admin.focus_questions.question_text_min_length', 'Question text must be more than 10 characters');
     }
     
     setErrors(newErrors);
@@ -130,11 +130,11 @@ export function AdminFocusQuestionWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.question_type) {
-      newErrors.question_type = "نوع السؤال مطلوب";
+      newErrors.question_type = t('admin.focus_questions.question_type_required', 'Question type is required');
     }
     
     if (formData.order_sequence < 0) {
-      newErrors.order_sequence = "ترتيب السؤال يجب أن يكون صفر أو أكثر";
+      newErrors.order_sequence = t('admin.focus_questions.order_sequence_positive', 'Question order must be zero or positive');
     }
     
     setErrors(newErrors);
@@ -206,7 +206,7 @@ export function AdminFocusQuestionWizard({
   const steps = [
     {
       id: "question-content",
-      title: "محتوى السؤال",
+      title: t('admin.focus_questions.content_step_title', 'Question Content'),
       description: t('description.enter_question_details'),
       validation: validateQuestionText,
       content: (
@@ -219,7 +219,7 @@ export function AdminFocusQuestionWizard({
           )}
           
           <div className="space-y-2">
-            <Label htmlFor="question_text_ar">نص السؤال المحوري *</Label>
+            <Label htmlFor="question_text_ar">{t('admin.focus_questions.question_text_label', 'Focus Question Text *')}</Label>
             <Textarea
               id="question_text_ar"
               value={formData.question_text_ar}
@@ -238,7 +238,7 @@ export function AdminFocusQuestionWizard({
               <p className="text-sm text-destructive">{errors.question_text_ar}</p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                يجب أن يكون السؤال واضحاً ومفهوماً ولا يقل عن 10 أحرف
+                {t('admin.focus_questions.question_text_help', 'The question should be clear and understandable, not less than 10 characters')}
               </p>
             )}
           </div>
@@ -264,14 +264,14 @@ export function AdminFocusQuestionWizard({
     },
     {
       id: "question-details",
-      title: "تفاصيل السؤال",
-      description: "حدد نوع السؤال وترتيبه",
+      title: t('admin.focus_questions.details_step_title', 'Question Details'),
+      description: t('admin.focus_questions.details_step_description', 'Set question type and order'),
       validation: validateQuestionDetails,
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="question_type">نوع السؤال *</Label>
+              <Label htmlFor="question_type">{t('admin.focus_questions.question_type_label', 'Question Type *')}</Label>
               <Select 
                 value={formData.question_type} 
                 onValueChange={(value) => {
@@ -298,7 +298,7 @@ export function AdminFocusQuestionWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="order_sequence">ترتيب السؤال</Label>
+              <Label htmlFor="order_sequence">{t('admin.focus_questions.order_sequence_label', 'Question Order')}</Label>
               <Input
                 id="order_sequence"
                 type="number"
@@ -323,12 +323,12 @@ export function AdminFocusQuestionWizard({
     },
     {
       id: "question-association",
-      title: "ربط السؤال",
-      description: "ربط السؤال بتحدي محدد (اختياري)",
+      title: t('admin.focus_questions.link_step_title', 'Link Question'),
+      description: t('admin.focus_questions.link_step_description', 'Link question to specific challenge (optional)'),
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="challenge_id">التحدي المرتبط (اختياري)</Label>
+            <Label htmlFor="challenge_id">{t('admin.focus_questions.challenge_link_label', 'Linked Challenge (optional)')}</Label>
             <Select 
               value={formData.challenge_id} 
               onValueChange={(value) => setFormData({ ...formData, challenge_id: value })}
@@ -337,7 +337,7 @@ export function AdminFocusQuestionWizard({
                 <SelectValue placeholder={t('placeholder.select_challenge')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">بدون ربط بتحدي محدد</SelectItem>
+                <SelectItem value="none">{t('admin.focus_questions.no_challenge_link', 'No specific challenge link')}</SelectItem>
                 {challenges.map((challenge) => (
                   <SelectItem key={challenge.id} value={challenge.id}>
                     {challenge.title_ar}
@@ -346,7 +346,7 @@ export function AdminFocusQuestionWizard({
               </SelectContent>
             </Select>
             <p className="text-sm text-muted-foreground">
-              يمكن ربط السؤال بتحدي محدد أو تركه عاماً لجميع التحديات
+              {t('admin.focus_questions.link_help', 'You can link the question to a specific challenge or keep it general for all challenges')}
             </p>
           </div>
         </div>
@@ -354,8 +354,8 @@ export function AdminFocusQuestionWizard({
     },
     {
       id: "question-settings",
-      title: "إعدادات السؤال",
-      description: "إعدادات الخصوصية والأمان",
+      title: t('admin.focus_questions.settings_step_title', 'Question Settings'),
+      description: t('admin.focus_questions.settings_step_description', 'Privacy and security settings'),
       content: (
         <div className="space-y-6">
           <div className="flex items-center space-x-2 space-x-reverse">
@@ -384,7 +384,7 @@ export function AdminFocusQuestionWizard({
         setErrors({});
         setIsLoading(false);
       }}
-      title={question ? "تعديل السؤال المحوري" : "إضافة سؤال محوري جديد"}
+      title={question ? t('admin.focus_questions.edit_title', 'Edit Focus Question') : t('admin.focus_questions.add_title', 'Add New Focus Question')}
       steps={steps}
       onComplete={handleSave}
       showProgress={true}

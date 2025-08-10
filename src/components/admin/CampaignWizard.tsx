@@ -549,14 +549,14 @@ export function CampaignWizard({
                 id="success_metrics"
                 value={formData.success_metrics}
                 onChange={(e) => setFormData(prev => ({ ...prev, success_metrics: e.target.value }))}
-                placeholder="أدخل مقاييس النجاح والمؤشرات المطلوب تحقيقها"
+                placeholder={t('admin.campaigns.success_metrics_placeholder', 'Enter success metrics and required indicators')}
                 dir="rtl"
                 rows={4}
               />
             </div>
 
             <div className="space-y-2">
-              <Label>مدير الحملة</Label>
+              <Label>{t('admin.campaigns.manager_label', 'Campaign Manager')}</Label>
               <Popover open={openManager} onOpenChange={setOpenManager}>
                 <PopoverTrigger asChild>
                   <Button
@@ -568,18 +568,18 @@ export function CampaignWizard({
                     {formData.campaign_manager_id
                       ? managers.find(manager => manager.id === formData.campaign_manager_id)?.name_ar || 
                         managers.find(manager => manager.id === formData.campaign_manager_id)?.name
-                      : "اختر مدير الحملة"}
+                      : t('admin.campaigns.choose_manager', 'Choose Campaign Manager')}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
                   <Command>
                     <CommandInput 
-                      placeholder="ابحث عن مدير..."
+                      placeholder={t('admin.campaigns.search_manager', 'Search for manager...')}
                       value={managerSearch}
                       onValueChange={setManagerSearch}
                     />
-                    <CommandEmpty>لا توجد نتائج</CommandEmpty>
+                    <CommandEmpty>{t('admin.campaigns.no_results', 'No results found')}</CommandEmpty>
                     <CommandGroup>
                       <CommandList>
                         {managers
@@ -623,7 +623,7 @@ export function CampaignWizard({
           <div className="space-y-6">
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="start_date">تاريخ البداية *</Label>
+                <Label htmlFor="start_date">{t('admin.campaigns.start_date_label', 'Start Date *')}</Label>
                 <Input
                   id="start_date"
                   type="date"
@@ -633,7 +633,7 @@ export function CampaignWizard({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="end_date">تاريخ النهاية *</Label>
+                <Label htmlFor="end_date">{t('admin.campaigns.end_date_label', 'End Date *')}</Label>
                 <Input
                   id="end_date"
                   type="date"
