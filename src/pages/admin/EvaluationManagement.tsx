@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -418,8 +417,7 @@ const EvaluationManagement = () => {
 
   if (loading) {
     return (
-      <AppShell>
-        <PageLayout 
+      <PageLayout
           title={isRTL ? 'إدارة نظام التقييم' : 'Evaluation System Management'}
           description={isRTL ? 'جاري التحميل...' : 'Loading...'}
         >
@@ -430,13 +428,11 @@ const EvaluationManagement = () => {
             </div>
           </div>
         </PageLayout>
-      </AppShell>
     );
   }
 
   return (
-    <AppShell>
-      <PageLayout
+    <PageLayout
         title={isRTL ? 'إدارة نظام التقييم' : 'Evaluation System Management'}
         description={isRTL ? 'إدارة معايير التقييم والقوالب والقواعد' : 'Manage evaluation criteria, templates, and rules'}
         primaryAction={{
@@ -1206,7 +1202,6 @@ const EvaluationManagement = () => {
           </Tabs>
         </div>
       </PageLayout>
-    </AppShell>
   );
 };
 

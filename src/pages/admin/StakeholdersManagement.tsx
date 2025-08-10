@@ -1,5 +1,4 @@
 import { StakeholdersManagement } from "@/components/admin/StakeholdersManagement";
-import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
@@ -65,8 +64,7 @@ export default function StakeholdersManagementPage() {
   );
 
   return (
-    <AppShell>
-      <PageLayout 
+    <PageLayout
         title="إدارة أصحاب المصلحة"
         description="إدارة وتنظيم علاقات أصحاب المصلحة ومستويات التأثير"
         itemCount={4}
@@ -94,6 +92,5 @@ export default function StakeholdersManagementPage() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
-    </AppShell>
   );
 }

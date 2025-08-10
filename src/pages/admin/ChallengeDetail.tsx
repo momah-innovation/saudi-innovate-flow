@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { AppShell } from '@/components/layout/AppShell';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { ChallengeDetailView } from '@/components/admin/challenges/ChallengeDetailView';
 import { Button } from '@/components/ui/button';
@@ -245,21 +244,18 @@ export default function ChallengeDetailPage() {
 
   if (loading) {
     return (
-      <AppShell>
-        <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
           <AdminBreadcrumb />
           <div className="flex items-center justify-center min-h-[400px]">
             <LoadingSpinner />
           </div>
         </div>
-      </AppShell>
     );
   }
 
   if (!challenge) {
     return (
-      <AppShell>
-        <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
           <AdminBreadcrumb />
           <div className="text-center py-12">
             <h2 className="text-2xl font-bold mb-4">
@@ -274,15 +270,13 @@ export default function ChallengeDetailPage() {
             </Button>
           </div>
         </div>
-      </AppShell>
     );
   }
 
   const challengeTitle = language === 'ar' ? challenge.title_ar : (challenge.title_en || challenge.title_ar);
 
   return (
-    <AppShell>
-      <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
         <AdminBreadcrumb />
         
         {/* Header with Actions */}
@@ -839,6 +833,5 @@ export default function ChallengeDetailPage() {
           />
         )}
       </div>
-    </AppShell>
   );
 }

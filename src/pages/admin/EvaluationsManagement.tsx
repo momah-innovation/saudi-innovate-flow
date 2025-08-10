@@ -1,5 +1,4 @@
 import { EvaluationsManagement } from "@/components/admin/EvaluationsManagement";
-import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useState } from "react";
@@ -79,8 +78,7 @@ export default function EvaluationsManagementPage() {
   );
 
   return (
-    <AppShell>
-      <PageLayout 
+    <PageLayout
         title={title}
         description={description}
         primaryAction={{
@@ -102,6 +100,5 @@ export default function EvaluationsManagementPage() {
       >
         <EvaluationsManagement />
       </PageLayout>
-    </AppShell>
   );
 }
