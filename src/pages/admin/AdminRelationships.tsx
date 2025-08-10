@@ -1,9 +1,11 @@
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { RelationshipOverview } from '@/components/admin/RelationshipOverview';
 
 export default function AdminRelationships() {
   return (
     <PageLayout>
+      <AdminBreadcrumb />
       <RelationshipOverview />
     </PageLayout>
   );
