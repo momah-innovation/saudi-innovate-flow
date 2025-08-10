@@ -43,16 +43,16 @@ interface Campaign {
 }
 
 const getStatusConfig = (t: (key: string, fallback: string) => string) => ({
-  planning: { label: t('status.planning', 'قيد التخطيط'), variant: 'secondary' as const },
-  active: { label: t('status.active', 'نشط'), variant: 'default' as const },
-  paused: { label: t('status.paused', 'متوقف'), variant: 'destructive' as const },
-  completed: { label: t('status.completed', 'مكتمل'), variant: 'outline' as const }
+  planning: { label: t('status.planning', 'Planning'), variant: 'secondary' as const },
+  active: { label: t('status.active', 'Active'), variant: 'default' as const },
+  paused: { label: t('status.paused', 'Paused'), variant: 'destructive' as const },
+  completed: { label: t('status.completed', 'Completed'), variant: 'outline' as const }
 });
 
 const getPriorityConfig = (t: (key: string, fallback: string) => string) => ({
-  low: { label: t('priority.low', 'منخفض'), variant: 'secondary' as const },
-  medium: { label: t('priority.medium', 'متوسط'), variant: 'default' as const },
-  high: { label: t('priority.high', 'عالي'), variant: 'destructive' as const }
+  low: { label: t('priority.low', 'Low'), variant: 'secondary' as const },
+  medium: { label: t('priority.medium', 'Medium'), variant: 'default' as const },
+  high: { label: t('priority.high', 'High'), variant: 'destructive' as const }
 });
 
 interface CampaignsManagementProps {
@@ -160,17 +160,17 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
             actions={[
               {
                 type: 'view' as const,
-                label: 'عرض',
+                label: t('button.view', 'View'),
                 onClick: () => handleView(campaign)
               },
               {
                 type: 'edit' as const,
-                label: 'تعديل',
+                label: t('button.edit', 'Edit'),
                 onClick: () => handleEdit(campaign)
               },
               {
                 type: 'delete' as const,
-                label: 'حذف',
+                label: t('button.delete', 'Delete'),
                 onClick: () => handleDelete(campaign)
               }
             ]}

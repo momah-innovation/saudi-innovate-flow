@@ -47,17 +47,17 @@ interface FocusQuestionManagementProps {
 }
 
 const getSensitivityConfig = (t: (key: string, fallback: string) => string) => ({
-  normal: { label: t('sensitivity.normal', 'عادي'), variant: 'secondary' as const },
-  sensitive: { label: t('sensitivity.sensitive', 'حساس'), variant: 'destructive' as const }
+  normal: { label: t('sensitivity.normal', 'Normal'), variant: 'secondary' as const },
+  sensitive: { label: t('sensitivity.sensitive', 'Sensitive'), variant: 'destructive' as const }
 });
 
-const typeConfig = {
-  open_ended: { label: 'سؤال مفتوح', variant: 'default' as const },
-  multiple_choice: { label: 'متعدد الخيارات', variant: 'secondary' as const },
-  yes_no: { label: 'نعم/لا', variant: 'outline' as const },
-  rating: { label: 'تقييم', variant: 'default' as const },
-  ranking: { label: 'ترتيب', variant: 'secondary' as const }
-};
+const getTypeConfig = (t: (key: string, fallback: string) => string) => ({
+  open_ended: { label: t('question_type.open_ended', 'Open Ended'), variant: 'default' as const },
+  multiple_choice: { label: t('question_type.multiple_choice', 'Multiple Choice'), variant: 'secondary' as const },
+  yes_no: { label: t('question_type.yes_no', 'Yes/No'), variant: 'outline' as const },
+  rating: { label: t('question_type.rating', 'Rating'), variant: 'default' as const },
+  ranking: { label: t('question_type.ranking', 'Ranking'), variant: 'secondary' as const }
+});
 
 export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: FocusQuestionManagementProps) {
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
@@ -67,6 +67,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
   const sensitivityConfig = getSensitivityConfig(t);
+  const typeConfig = getTypeConfig(t);
 
   useEffect(() => {
     fetchFocusQuestions();
@@ -158,10 +159,10 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
     return (
       <EmptyState
         icon={<HelpCircle className="w-12 h-12 text-muted-foreground" />}
-        title="لا توجد أسئلة محورية"
-        description="ابدأ بإنشاء سؤال محوري جديد لتوجيه المبتكرين"
+        title={t('focus_questions.empty_title', 'No Focus Questions')}
+        description={t('focus_questions.empty_description', 'Start by creating a new focus question to guide innovators')}
         action={{
-          label: "إنشاء سؤال محوري جديد",
+          label: t('focus_questions.create_new', 'Create New Focus Question'),
           onClick: () => {
             setSelectedQuestion(null);
             onAddDialogChange(true);
@@ -179,7 +180,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
             key={question.id}
             id={question.id}
             title={question.question_text_ar}
-            subtitle={question.challenge?.title_ar ? `التحدي: ${question.challenge.title_ar}` : 'سؤال عام'}
+            subtitle={question.challenge?.title_ar ? `${t('challenge', 'Challenge')}: ${question.challenge.title_ar}` : t('general_question', 'General Question')}
             onClick={() => handleView(question)}
             badges={[
               {
@@ -191,14 +192,14 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
                 variant: question.is_sensitive ? sensitivityConfig.sensitive.variant : sensitivityConfig.normal.variant
               },
               {
-                label: question.challenge ? 'مرتبط بتحدي' : 'سؤال عام',
+                label: question.challenge ? t('linked_to_challenge', 'Linked to Challenge') : t('general_question', 'General Question'),
                 variant: question.challenge ? 'outline' : 'secondary'
               }
             ]}
             metadata={[
               {
                 icon: <Hash className="w-4 h-4" />,
-                label: 'الترتيب',
+                label: t('order', 'Order'),
                 value: question.order_sequence.toString()
               },
               {
@@ -208,29 +209,29 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
               },
               {
                 icon: <Calendar className="w-4 h-4" />,
-                label: 'تاريخ الإنشاء',
+                label: t('creation_date', 'Creation Date'),
                 value: format(new Date(question.created_at), 'dd/MM/yyyy')
               },
               ...(question.challenge ? [{
                 icon: <Target className="w-4 h-4" />,
-                label: 'التحدي',
+                label: t('challenge', 'Challenge'),
                 value: question.challenge.title_ar
               }] : [])
             ]}
             actions={[
               {
                 type: 'view' as const,
-                label: 'عرض',
+                label: t('button.view', 'View'),
                 onClick: () => handleView(question)
               },
               {
                 type: 'edit' as const,
-                label: 'تعديل',
+                label: t('button.edit', 'Edit'),
                 onClick: () => handleEdit(question)
               },
               {
                 type: 'delete' as const,
-                label: 'حذف',
+                label: t('button.delete', 'Delete'),
                 onClick: () => handleDelete(question)
               }
             ]}
