@@ -19,7 +19,7 @@ const LoadingFallback = () => (
 // Lazy load all components
 const LandingPage = lazy(() => import('@/pages/LandingPage'));
 const AuthPage = lazy(() => import('@/pages/Auth'));
-const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'));
+const AdminDashboardPage = lazy(() => import('@/pages/AdminDashboardPage'));
 const HelpPage = lazy(() => import('@/pages/HelpPage'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const DesignSystem = lazy(() => import('@/pages/DesignSystem'));
@@ -53,8 +53,6 @@ const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement')
 const AdminChallengeSubmissions = lazy(() => import('@/pages/admin/AdminChallengeSubmissions'));
 const ChallengeDetailAdmin = lazy(() => import('@/pages/admin/ChallengeDetail'));
 const TeamManagement = lazy(() => import('@/pages/admin/TeamManagement'));
-const EvaluationManagement = lazy(() => import('@/pages/admin/EvaluationManagement'));
-const EvaluationsManagement = lazy(() => import('@/pages/admin/EvaluationsManagement'));
 const FocusQuestionsManagement = lazy(() => import('@/pages/admin/FocusQuestionsManagement'));
 const OpportunitiesManagement = lazy(() => import('@/pages/admin/OpportunitiesManagement'));
 const RelationshipOverview = lazy(() => import('@/pages/admin/RelationshipOverview'));
@@ -173,13 +171,6 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
   {
-    path: ALL_ROUTES.CHALLENGE_DETAILS,
-    component: ChallengeDetails,
-    requireAuth: true,
-    requireProfile: true,
-    withAppShell: true,
-  },
-  {
     path: ALL_ROUTES.OPPORTUNITIES,
     component: CollaborativeOpportunitiesPage,
     requireAuth: true,
@@ -245,7 +236,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   // Admin routes
   {
     path: ALL_ROUTES.ADMIN_DASHBOARD,
-    component: AdminDashboard,
+    component: AdminDashboardPage,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -382,22 +373,6 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_CHALLENGE_SUBMISSIONS,
     component: AdminChallengeSubmissions,
-    requireAuth: true,
-    requireProfile: true,
-    requiredRole: ['admin', 'super_admin'],
-    withAppShell: true,
-  },
-  {
-    path: ALL_ROUTES.ADMIN_EVALUATION_MANAGEMENT,
-    component: EvaluationManagement,
-    requireAuth: true,
-    requireProfile: true,
-    requiredRole: ['admin', 'super_admin'],
-    withAppShell: true,
-  },
-  {
-    path: ALL_ROUTES.ADMIN_EVALUATIONS_MANAGEMENT,
-    component: EvaluationsManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],

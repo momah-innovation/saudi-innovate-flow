@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 // Removed AppShell import - route provides AppShell wrapper
 import { DashboardHero } from './DashboardHero';
-import { AdminDashboard } from './AdminDashboard';
+import { AdminDashboard } from './AdminDashboardComponent';
 import { ExpertDashboard } from './ExpertDashboard';
 import { PartnerDashboard } from './PartnerDashboard';
 import { logger } from '@/utils/logger';

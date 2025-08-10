@@ -109,8 +109,6 @@ export const ADMIN_ROUTES = {
   ADMIN_ENTITIES: '/admin/entities',
   ADMIN_SECURITY: '/admin/security',
   ADMIN_CORE_TEAM: '/admin/core-team',
-  ADMIN_EVALUATION_MANAGEMENT: '/admin/evaluation-management',
-  ADMIN_EVALUATIONS_MANAGEMENT: '/admin/evaluations-management',
   ADMIN_FOCUS_QUESTIONS: '/admin/focus-questions',
   ADMIN_OPPORTUNITIES: '/admin/opportunities',
   ADMIN_RELATIONSHIPS: '/admin/relationships',
@@ -118,16 +116,7 @@ export const ADMIN_ROUTES = {
 
 // Dashboard routes (unified admin interface)
 export const DASHBOARD_ROUTES = {
-  DASHBOARD_USERS: '/dashboard/users',
-  DASHBOARD_ROLES: '/dashboard/roles', 
   DASHBOARD_ACCESS_CONTROL: '/dashboard/access-control',
-  DASHBOARD_CHALLENGES: '/dashboard/challenges',
-  DASHBOARD_IDEAS: '/dashboard/ideas',
-  DASHBOARD_ANALYTICS: '/dashboard/analytics',
-  DASHBOARD_SYSTEM: '/dashboard/system',
-  DASHBOARD_EVENTS: '/dashboard/events',
-  DASHBOARD_CAMPAIGNS: '/dashboard/campaigns',
-  DASHBOARD_PARTNERS: '/dashboard/partners',
   DASHBOARD_TEAMS: '/dashboard/teams',
 } as const;
 
