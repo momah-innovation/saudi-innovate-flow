@@ -132,7 +132,7 @@ function isLikelyTranslationKey(key) {
   return translationPatterns.some(pattern => pattern.test(key));
 }
 
-// Recursively scan directory for TypeScript/JavaScript files
+// Recursively scan directory for TypeScript/JavaScript files (FRONTEND ONLY)
 function scanDirectory(dir, extensions = ['.tsx', '.ts', '.jsx', '.js']) {
   const files = [];
   
@@ -144,12 +144,39 @@ function scanDirectory(dir, extensions = ['.tsx', '.ts', '.jsx', '.js']) {
       const stat = fs.statSync(itemPath);
       
       if (stat.isDirectory()) {
-        // Skip node_modules and build directories
-        if (!['node_modules', '.git', 'dist', 'build', '.next'].includes(item)) {
+        // EXCLUDE Supabase-related directories and other backend/build directories
+        const excludedDirs = [
+          'node_modules', '.git', 'dist', 'build', '.next',
+          'supabase',           // Exclude entire supabase directory
+          'migrations',         // Exclude any migrations
+          'sql',               // Exclude SQL directories
+          'functions',         // Exclude functions (if standalone)
+          '.supabase',         // Exclude Supabase cache
+          'public',            // Exclude public assets
+          'docs'               // Exclude documentation
+        ];
+        
+        if (!excludedDirs.includes(item)) {
           scan(itemPath);
         }
       } else if (extensions.some(ext => item.endsWith(ext))) {
-        files.push(itemPath);
+        // ONLY include frontend files, exclude backend-related files
+        const excludedFilePatterns = [
+          /\.sql$/i,           // SQL files
+          /\.migration\./i,    // Migration files
+          /\.config\./i,       // Config files (except React configs)
+          /\.test\./i,         // Test files
+          /\.spec\./i,         // Spec files
+          /\.d\.ts$/i,         // Type definition files
+          /vite\.config/i,     // Vite config
+          /tailwind\.config/i, // Tailwind config
+          /postcss\.config/i,  // PostCSS config
+        ];
+        
+        // Only include if it doesn't match excluded patterns
+        if (!excludedFilePatterns.some(pattern => pattern.test(item))) {
+          files.push(itemPath);
+        }
       }
     }
   }
@@ -275,22 +302,28 @@ async function main() {
   try {
     console.log('🚀 Starting comprehensive translation key extraction...\n');
     
-    // Step 1: Scan all source files and edge functions
-    console.log('📁 Scanning source files...');
+    // Step 1: Scan ONLY frontend source files (src/ directory only)
+    console.log('📁 Scanning frontend source files (src/ directory only)...');
     const sourceDir = path.join(process.cwd(), 'src');
-    const edgeFunctionsDir = path.join(process.cwd(), 'supabase', 'functions');
+    
+    // Verify src directory exists
+    if (!fs.existsSync(sourceDir)) {
+      throw new Error('Source directory (src/) not found. This script must be run from the project root.');
+    }
     
     let files = scanDirectory(sourceDir);
     
-    // Also scan edge functions if they exist
-    if (fs.existsSync(edgeFunctionsDir)) {
-      const edgeFiles = scanDirectory(edgeFunctionsDir);
-      files = files.concat(edgeFiles);
-      console.log(`   ✓ Found ${edgeFiles.length} edge function files`);
-    }
+    // EXPLICITLY exclude any Supabase-related files that might be in src/
+    files = files.filter(filePath => {
+      const relativePath = path.relative(process.cwd(), filePath);
+      return !relativePath.includes('supabase') && 
+             !relativePath.includes('migrations') &&
+             !relativePath.includes('.sql') &&
+             !relativePath.endsWith('.d.ts');
+    });
     
     progress.totalFiles = files.length;
-    console.log(`   ✓ Found ${files.length} total files to scan\n`);
+    console.log(`   ✓ Found ${files.length} frontend files to scan (excluding Supabase files)\n`);
     
     // Step 2: Extract all translation keys
     console.log('🔍 Extracting translation keys from source files...');

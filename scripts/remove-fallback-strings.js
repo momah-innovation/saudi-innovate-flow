@@ -11,7 +11,7 @@ let progress = {
   errors: 0
 };
 
-// Scan directory for TypeScript/JavaScript files
+// Scan directory for TypeScript/JavaScript files (FRONTEND ONLY)
 function scanDirectory(dir, extensions = ['.tsx', '.ts', '.jsx', '.js']) {
   const files = [];
   
@@ -23,12 +23,36 @@ function scanDirectory(dir, extensions = ['.tsx', '.ts', '.jsx', '.js']) {
       const stat = fs.statSync(itemPath);
       
       if (stat.isDirectory()) {
-        // Skip node_modules and build directories
-        if (!['node_modules', '.git', 'dist', 'build', '.next'].includes(item)) {
+        // EXCLUDE Supabase-related directories and other backend/build directories
+        const excludedDirs = [
+          'node_modules', '.git', 'dist', 'build', '.next',
+          'supabase',           // Exclude entire supabase directory
+          'migrations',         // Exclude any migrations
+          'sql',               // Exclude SQL directories
+          'functions',         // Exclude functions (if standalone)
+          '.supabase',         // Exclude Supabase cache
+          'public',            // Exclude public assets
+          'docs'               // Exclude documentation
+        ];
+        
+        if (!excludedDirs.includes(item)) {
           scan(itemPath);
         }
       } else if (extensions.some(ext => item.endsWith(ext))) {
-        files.push(itemPath);
+        // ONLY include frontend files, exclude backend-related files
+        const excludedFilePatterns = [
+          /\.sql$/i,           // SQL files
+          /\.migration\./i,    // Migration files
+          /\.test\./i,         // Test files
+          /\.spec\./i,         // Spec files
+          /\.d\.ts$/i,         // Type definition files
+          /scripts\//i,        // Script files
+        ];
+        
+        // Only include if it doesn't match excluded patterns
+        if (!excludedFilePatterns.some(pattern => pattern.test(itemPath))) {
+          files.push(itemPath);
+        }
       }
     }
   }
@@ -140,12 +164,18 @@ async function main() {
   try {
     console.log('🚀 Starting fallback string removal process...\n');
     
-    // Step 1: Scan all source files
-    console.log('📁 Scanning source files...');
+    // Step 1: Scan ONLY frontend source files (src/ directory only)
+    console.log('📁 Scanning frontend source files (src/ directory only)...');
     const sourceDir = path.join(process.cwd(), 'src');
+    
+    // Verify src directory exists
+    if (!fs.existsSync(sourceDir)) {
+      throw new Error('Source directory (src/) not found. This script must be run from the project root.');
+    }
+    
     const files = scanDirectory(sourceDir);
     progress.totalFiles = files.length;
-    console.log(`   ✓ Found ${files.length} source files to process\n`);
+    console.log(`   ✓ Found ${files.length} frontend files to process (excluding Supabase files)\n`);
     
     // Step 2: Process each file
     console.log('🔄 Removing fallback strings from translation calls...');
