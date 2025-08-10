@@ -1,120 +1,181 @@
-import { FocusQuestionManagement } from "@/components/admin/FocusQuestionManagement";
-import { AppShell } from "@/components/layout/AppShell";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { useState } from "react";
-import { Plus, HelpCircle, Download } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { AdminLayout } from '@/components/layout/AdminLayout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { HelpCircle, Plus, Edit, Trash2 } from 'lucide-react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
-const FocusQuestionsManagement = () => {
-  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
-  const [searchValue, setSearchValue] = useState('');
-  const [showAddDialog, setShowAddDialog] = useState(false);
-  const { questionTypeOptions } = useSystemLists();
-  
-  const secondaryActions = (
-    <>
-      <Select>
-        <SelectTrigger className="w-32">
-          <SelectValue placeholder="تصدير" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="pdf">PDF</SelectItem>
-          <SelectItem value="excel">Excel</SelectItem>
-          <SelectItem value="csv">CSV</SelectItem>
-        </SelectContent>
-      </Select>
-      <Button variant="outline" className="gap-2">
-        <HelpCircle className="w-4 h-4" />
-        الإجراءات المجمعة
-      </Button>
-    </>
-  );
+export default function FocusQuestionsManagement() {
+  const { t, language } = useUnifiedTranslation();
 
-  const filters = (
-    <>
-      <div className="min-w-[120px]">
-        <Select>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب النوع" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع الأنواع</SelectItem>
-            {questionTypeOptions.map(type => (
-              <SelectItem key={type} value={type}>
-                {type === 'open_ended' ? 'سؤال مفتوح' : 
-                 type === 'multiple_choice' ? 'متعدد الخيارات' :
-                 type === 'yes_no' ? 'نعم/لا' :
-                 type === 'rating' ? 'تقييم' :
-                 type === 'ranking' ? 'ترتيب' : type}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="min-w-[120px]">
-        <Select>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب الحساسية" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع المستويات</SelectItem>
-            {['normal', 'sensitive'].map(level => (
-              <SelectItem key={level} value={level}>
-                {level === 'normal' ? 'عادي' : 'حساس'}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="min-w-[120px]">
-        <Select>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب الارتباط" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع الأسئلة</SelectItem>
-            <SelectItem value="challenge_linked">مرتبط بتحدي</SelectItem>
-            <SelectItem value="general">سؤال عام</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-    </>
-  );
+  const focusQuestions = [
+    {
+      id: 1,
+      question_ar: 'ما هي التحديات الرئيسية التي تواجه قطاع التعليم؟',
+      question_en: 'What are the main challenges facing the education sector?',
+      category: 'Education',
+      priority: 'High',
+      status: 'Active'
+    },
+    {
+      id: 2,
+      question_ar: 'كيف يمكن تحسين الخدمات الصحية الرقمية؟',
+      question_en: 'How can digital health services be improved?',
+      category: 'Health',
+      priority: 'Medium',
+      status: 'Active'
+    },
+    {
+      id: 3,
+      question_ar: 'ما هي الحلول المبتكرة للنقل المستدام؟',
+      question_en: 'What are innovative solutions for sustainable transport?',
+      category: 'Transportation',
+      priority: 'High',
+      status: 'Draft'
+    }
+  ];
 
   return (
-    <AppShell>
-      <PageLayout 
-        title="إدارة الأسئلة المحورية"
-        description="إنشاء وإدارة الأسئلة المحورية للتحديات"
-        itemCount={12}
-        primaryAction={{
-          label: "إنشاء سؤال محوري جديد",
-          onClick: () => setShowAddDialog(true),
-          icon: <Plus className="w-4 h-4" />
-        }}
-        secondaryActions={secondaryActions}
-        showLayoutSelector={true}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        showSearch={true}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        searchPlaceholder="بحث في الأسئلة المحورية..."
-        filters={filters}
-        spacing="md"
-        maxWidth="full"
-      >
-        <FocusQuestionManagement 
-          viewMode={viewMode} 
-          searchTerm={searchValue} 
-          showAddDialog={showAddDialog}
-          onAddDialogChange={setShowAddDialog}
-        />
-      </PageLayout>
-    </AppShell>
-  );
-};
+    <AdminLayout
+      title={language === 'ar' ? 'إدارة الأسئلة المحورية' : 'Focus Questions Management'}
+      breadcrumbs={[
+        { label: language === 'ar' ? 'لوحة الإدارة' : 'Admin', href: '/admin/dashboard' },
+        { label: language === 'ar' ? 'الأسئلة المحورية' : 'Focus Questions' }
+      ]}
+    >
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+              <HelpCircle className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">
+                {language === 'ar' ? 'إدارة الأسئلة المحورية' : 'Focus Questions Management'}
+              </h1>
+              <p className="text-muted-foreground">
+                {language === 'ar' 
+                  ? 'إدارة الأسئلة التي توجه التحديات والمبادرات'
+                  : 'Manage questions that guide challenges and initiatives'
+                }
+              </p>
+            </div>
+          </div>
+          <Button className="gap-2">
+            <Plus className="h-4 w-4" />
+            {language === 'ar' ? 'إضافة سؤال' : 'Add Question'}
+          </Button>
+        </div>
 
-export default FocusQuestionsManagement;
+        {/* Statistics */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {language === 'ar' ? 'إجمالي الأسئلة' : 'Total Questions'}
+              </CardTitle>
+              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{focusQuestions.length}</div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {language === 'ar' ? 'أسئلة نشطة' : 'Active Questions'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">
+                {focusQuestions.filter(q => q.status === 'Active').length}
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {language === 'ar' ? 'مسودات' : 'Drafts'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-yellow-600">
+                {focusQuestions.filter(q => q.status === 'Draft').length}
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {language === 'ar' ? 'أولوية عالية' : 'High Priority'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-600">
+                {focusQuestions.filter(q => q.priority === 'High').length}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Questions List */}
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              {language === 'ar' ? 'قائمة الأسئلة المحورية' : 'Focus Questions List'}
+            </CardTitle>
+            <CardDescription>
+              {language === 'ar' 
+                ? 'الأسئلة التي توجه المبادرات والتحديات في النظام'
+                : 'Questions that guide initiatives and challenges in the system'
+              }
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {focusQuestions.map((question) => (
+                <div key={question.id} className="p-4 border rounded-lg">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-medium mb-2">
+                        {language === 'ar' ? question.question_ar : question.question_en}
+                      </h3>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span>
+                          {language === 'ar' ? 'الفئة:' : 'Category:'} {question.category}
+                        </span>
+                        <span className={`px-2 py-1 rounded-full text-xs ${
+                          question.priority === 'High' ? 'bg-red-100 text-red-700' :
+                          question.priority === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-green-100 text-green-700'
+                        }`}>
+                          {question.priority}
+                        </span>
+                        <span className={`px-2 py-1 rounded-full text-xs ${
+                          question.status === 'Active' ? 'bg-green-100 text-green-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {question.status}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="sm">
+                        <Edit className="h-3 w-3" />
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </AdminLayout>
+  );
+}

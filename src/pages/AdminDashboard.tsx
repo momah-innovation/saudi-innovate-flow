@@ -75,7 +75,7 @@ export default function AdminDashboard() {
       title: "Analytics",
       description: "View system analytics and reports", 
       icon: BarChart3,
-      href: "/admin/analytics",
+      href: "/admin/system-analytics",
       count: "98.5%",
       label: "Uptime"
     },
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
       title: "System Settings",
       description: "Configure system-wide settings",
       icon: Settings,
-      href: "/admin/settings", 
+      href: "/admin/system-settings", 
       count: "5",
       label: "Pending Updates"
     },
