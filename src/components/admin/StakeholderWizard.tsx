@@ -401,13 +401,13 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="interest_level">مستوى الاهتمام</Label>
+              <Label htmlFor="interest_level">{t('stakeholder_wizard.interest_level')}</Label>
               <Select
                 value={formData.interest_level}
                 onValueChange={(value) => updateFormData("interest_level", value)}
               >
                 <SelectTrigger id="interest_level">
-                  <SelectValue placeholder="اختر مستوى الاهتمام" />
+                  <SelectValue placeholder={t('stakeholder_wizard.select_interest_level')} />
                 </SelectTrigger>
                 <SelectContent>
                   {interestLevels.map((level) => (
@@ -420,13 +420,13 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="engagement_status">حالة المشاركة</Label>
+              <Label htmlFor="engagement_status">{t('stakeholder_wizard.engagement_status')}</Label>
               <Select
                 value={formData.engagement_status}
                 onValueChange={(value) => updateFormData("engagement_status", value)}
               >
                 <SelectTrigger id="engagement_status">
-                  <SelectValue placeholder="اختر حالة المشاركة" />
+                  <SelectValue placeholder={t('stakeholder_wizard.select_engagement_status')} />
                 </SelectTrigger>
                 <SelectContent>
                   {engagementStatuses.map((status) => (

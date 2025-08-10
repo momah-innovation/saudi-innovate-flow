@@ -263,7 +263,7 @@ export function TeamWizard({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">وصف الفريق *</Label>
+            <Label htmlFor="description">{t('team_wizard.description')} *</Label>
             <Textarea
               id="description"
               value={formData.description}
@@ -273,7 +273,7 @@ export function TeamWizard({
                   setErrors({ ...errors, description: "" });
                 }
               }}
-              placeholder="اكتب وصفاً مفصلاً للفريق وأهدافه"
+              placeholder={t('team_wizard.description_placeholder')}
               rows={4}
               dir="rtl"
               className={errors.description ? "border-destructive" : ""}
@@ -282,13 +282,13 @@ export function TeamWizard({
               <p className="text-sm text-destructive">{errors.description}</p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                وصف شامل يوضح مهام الفريق وأهدافه (لا يقل عن 20 حرف)
+                {t('team_wizard.description_hint')}
               </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="type">نوع الفريق *</Label>
+            <Label htmlFor="type">{t('team_wizard.team_type')} *</Label>
             <Select 
               value={formData.type} 
               onValueChange={(value) => {
@@ -299,7 +299,7 @@ export function TeamWizard({
               }}
             >
               <SelectTrigger className={errors.type ? "border-destructive" : ""}>
-                <SelectValue placeholder="اختر نوع الفريق" />
+                <SelectValue placeholder={t('team_wizard.select_team_type')} />
               </SelectTrigger>
               <SelectContent>
                 {teamTypeOptions.map((type) => (
@@ -318,8 +318,8 @@ export function TeamWizard({
     },
     {
       id: "details",
-      title: "تفاصيل الفريق",
-      description: "حدد إعدادات وإدارة الفريق",
+      title: t('team_wizard.team_details'),
+      description: t('team_wizard.team_details_description'),
       validation: validateDetails,
       content: (
         <div className="space-y-6">
@@ -431,7 +431,7 @@ export function TeamWizard({
     <MultiStepForm
       isOpen={isOpen}
       onClose={onClose}
-      title={team ? "تعديل الفريق" : "فريق جديد"}
+      title={team ? t('team_wizard.edit_team') : t('team_wizard.new_team')}
       steps={steps}
       onComplete={handleSave}
     />
