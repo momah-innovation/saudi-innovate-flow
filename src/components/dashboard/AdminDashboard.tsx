@@ -74,80 +74,80 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   const adminActions = [
     // Dashboard Routes (New unified admin interface)
     {
-      title: language === 'ar' ? 'إدارة المستخدمين' : 'User Management',
-      description: language === 'ar' ? 'إدارة المستخدمين والأدوار والصلاحيات' : 'Manage users, roles and permissions',
+      title: t('admin.dashboard.user_management', 'User Management'),
+      description: t('admin.dashboard.user_management_desc', 'Manage users, roles and permissions'),
       icon: Users,
       action: () => navigate('/admin/users'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'إدارة الأدوار' : 'Role Management',
-      description: language === 'ar' ? 'تكوين الأدوار والصلاحيات' : 'Configure roles and permissions',
+      title: t('admin.dashboard.role_management', 'Role Management'),
+      description: t('admin.dashboard.role_management_desc', 'Configure roles and permissions'),
       icon: Shield,
       action: () => navigate('/admin/organizational-structure'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'التحكم في الوصول' : 'Access Control',
-      description: language === 'ar' ? 'إدارة التحكم في الوصول للصفحات والميزات' : 'Manage page and feature access control',
+      title: t('admin.dashboard.access_control', 'Access Control'),
+      description: t('admin.dashboard.access_control_desc', 'Manage page and feature access control'),
       icon: Shield,
       action: () => navigate('/admin/expert-assignments'),
       show: canManageSystem,
       category: 'security'
     },
     {
-      title: language === 'ar' ? 'إدارة التحديات' : 'Challenge Management',
-      description: language === 'ar' ? 'إنشاء وإدارة التحديات والمسابقات' : 'Create and manage challenges and competitions',
+      title: t('admin.dashboard.challenge_management', 'Challenge Management'),
+      description: t('admin.dashboard.challenge_management_desc', 'Create and manage challenges and competitions'),
       icon: BarChart3,
       action: () => navigate('/admin/challenges'),
       show: true,
       category: 'content'
     },
     {
-      title: language === 'ar' ? 'إدارة الأفكار' : 'Ideas Management',
-      description: language === 'ar' ? 'مراجعة وإدارة الأفكار المقترحة' : 'Review and manage submitted ideas',
+      title: t('admin.dashboard.ideas_management', 'Ideas Management'),
+      description: t('admin.dashboard.ideas_management_desc', 'Review and manage submitted ideas'),
       icon: Database,
       action: () => navigate('/ideas'),
       show: true,
       category: 'content'
     },
     {
-      title: language === 'ar' ? 'التحليلات والتقارير' : 'Analytics & Reports',
-      description: language === 'ar' ? 'عرض تقارير النظام والإحصائيات المتقدمة' : 'View system reports and advanced analytics',
+      title: t('admin.dashboard.analytics_reports', 'Analytics & Reports'),
+      description: t('admin.dashboard.analytics_reports_desc', 'View system reports and advanced analytics'),
       icon: BarChart3,
       action: () => navigate('/admin/evaluations'),
       show: canViewAnalytics,
       category: 'analytics'
     },
     {
-      title: language === 'ar' ? 'إعدادات النظام' : 'System Settings',
-      description: language === 'ar' ? 'تكوين إعدادات النظام العامة' : 'Configure global system settings',
+      title: t('admin.dashboard.system_settings', 'System Settings'),
+      description: t('admin.dashboard.system_settings_desc', 'Configure global system settings'),
       icon: Settings,
       action: () => navigate('/admin/system-settings'),
       show: canManageSystem,
       category: 'system'
     },
     {
-      title: language === 'ar' ? 'إدارة الفعاليات' : 'Events Management',
-      description: language === 'ar' ? 'تنظيم وإدارة الفعاليات والمؤتمرات' : 'Organize and manage events and conferences',
+      title: t('admin.dashboard.events_management', 'Events Management'),
+      description: t('admin.dashboard.events_management_desc', 'Organize and manage events and conferences'),
       icon: Users,
       action: () => navigate('/admin/events'),
       show: true,
       category: 'content'
     },
     {
-      title: language === 'ar' ? 'إدارة الحملات' : 'Campaigns Management',
-      description: language === 'ar' ? 'إنشاء وإدارة حملات الابتكار' : 'Create and manage innovation campaigns',
+      title: t('admin.dashboard.campaigns_management', 'Campaigns Management'),
+      description: t('admin.dashboard.campaigns_management_desc', 'Create and manage innovation campaigns'),
       icon: Database,
       action: () => navigate('/admin/campaigns'),
       show: true,
       category: 'content'
     },
     {
-      title: language === 'ar' ? 'إدارة الشراكات' : 'Partners Management',
-      description: language === 'ar' ? 'إدارة الشراكات والتعاون الخارجي' : 'Manage partnerships and external collaborations',
+      title: t('admin.dashboard.partners_management', 'Partners Management'),
+      description: t('admin.dashboard.partners_management_desc', 'Manage partnerships and external collaborations'),
       icon: Briefcase,
       action: () => navigate('/admin/partners'),
       show: true,
