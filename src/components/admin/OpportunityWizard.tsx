@@ -175,15 +175,15 @@ export function OpportunityWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.application_deadline) {
-      newErrors.application_deadline = "موعد انتهاء التقديم مطلوب";
+      newErrors.application_deadline = t('opportunity_wizard.deadline_required');
     }
     
     if (formData.contact_email && !/\S+@\S+\.\S+/.test(formData.contact_email)) {
-      newErrors.contact_email = "البريد الإلكتروني غير صحيح";
+      newErrors.contact_email = t('opportunity_wizard.email_invalid');
     }
     
     if (formData.salary_min && formData.salary_max && formData.salary_min > formData.salary_max) {
-      newErrors.salary_max = "الحد الأقصى للراتب يجب أن يكون أكبر من الحد الأدنى";
+      newErrors.salary_max = t('opportunity_wizard.salary_max_error');
     }
     
     setErrors(newErrors);
@@ -209,7 +209,7 @@ export function OpportunityWizard({
       logger.error('Failed to save opportunity', error);
       
       toast({
-        title: "خطأ",
+        title: t('opportunity_wizard.save_error_title'),
         description: error instanceof Error ? error.message : t('opportunity_wizard.save_error_description'),
         variant: "destructive",
       });
@@ -221,7 +221,7 @@ export function OpportunityWizard({
   const steps = [
     {
       id: "basic-info",
-      title: "المعلومات الأساسية",
+      title: t('opportunity_wizard.basic_info_title'),
       description: t('opportunity_wizard.basic_info_description'),
       validation: validateBasicInfo,
       content: (
@@ -258,7 +258,7 @@ export function OpportunityWizard({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">وصف الفرصة *</Label>
+            <Label htmlFor="description">{t('opportunity_wizard.description_label')} *</Label>
             <Textarea
               id="description"
               value={formData.description}
@@ -268,7 +268,7 @@ export function OpportunityWizard({
                   setErrors({ ...errors, description: "" });
                 }
               }}
-              placeholder="اكتب وصفاً مفصلاً للفرصة"
+              placeholder={t('opportunity_wizard.description_placeholder')}
               rows={4}
               dir="rtl"
               className={errors.description ? "border-destructive" : ""}
@@ -277,14 +277,14 @@ export function OpportunityWizard({
               <p className="text-sm text-destructive">{errors.description}</p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                وصف شامل يوضح تفاصيل الفرصة
+                {t('opportunity_wizard.description_help')}
               </p>
             )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="type">نوع الفرصة *</Label>
+              <Label htmlFor="type">{t('opportunity_wizard.type_label')} *</Label>
               <Select 
                 value={formData.type} 
                 onValueChange={(value) => {
@@ -295,7 +295,7 @@ export function OpportunityWizard({
                 }}
               >
                 <SelectTrigger className={errors.type ? "border-destructive" : ""}>
-                  <SelectValue placeholder="اختر نوع الفرصة" />
+                  <SelectValue placeholder={t('opportunity_wizard.type_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {typeOptions.map((type) => (
@@ -311,7 +311,7 @@ export function OpportunityWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="status">حالة الفرصة</Label>
+              <Label htmlFor="status">{t('opportunity_wizard.status_label')}</Label>
               <Select 
                 value={formData.status} 
                 onValueChange={(value) => {
@@ -336,30 +336,30 @@ export function OpportunityWizard({
     },
     {
       id: "details",
-      title: "التفاصيل والمتطلبات",
-      description: "حدد متطلبات وتفاصيل الفرصة",
+      title: t('opportunity_wizard.details_title'),
+      description: t('opportunity_wizard.details_description'),
       validation: validateContactInfo,
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="requirements">المتطلبات</Label>
+            <Label htmlFor="requirements">{t('opportunity_wizard.requirements_label')}</Label>
             <Textarea
               id="requirements"
               value={formData.requirements}
               onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
-              placeholder="أدخل متطلبات الفرصة"
+              placeholder={t('opportunity_wizard.requirements_placeholder')}
               rows={3}
               dir="rtl"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="benefits">المزايا</Label>
+            <Label htmlFor="benefits">{t('opportunity_wizard.benefits_label')}</Label>
             <Textarea
               id="benefits"
               value={formData.benefits}
               onChange={(e) => setFormData({ ...formData, benefits: e.target.value })}
-              placeholder="أدخل مزايا الفرصة"
+              placeholder={t('opportunity_wizard.benefits_placeholder')}
               rows={3}
               dir="rtl"
             />
@@ -367,7 +367,7 @@ export function OpportunityWizard({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="application_deadline">موعد انتهاء التقديم *</Label>
+              <Label htmlFor="application_deadline">{t('opportunity_wizard.deadline_label')} *</Label>
               <Input
                 id="application_deadline"
                 type="date"
@@ -386,7 +386,7 @@ export function OpportunityWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="department_id">القسم</Label>
+              <Label htmlFor="department_id">{t('form.department_label')}</Label>
               <Select 
                 value={formData.department_id} 
                 onValueChange={(value) => {
@@ -410,7 +410,7 @@ export function OpportunityWizard({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="contact_person">الشخص المسؤول</Label>
+              <Label htmlFor="contact_person">{t('form.contact_person_label')}</Label>
               <Input
                 id="contact_person"
                 value={formData.contact_person}
@@ -421,7 +421,7 @@ export function OpportunityWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="contact_email">البريد الإلكتروني للتواصل</Label>
+              <Label htmlFor="contact_email">{t('form.contact_email_label')}</Label>
               <Input
                 id="contact_email"
                 type="email"
@@ -530,7 +530,7 @@ export function OpportunityWizard({
     <MultiStepForm
       isOpen={isOpen}
       onClose={onClose}
-      title={opportunity ? "تعديل الفرصة" : "فرصة جديدة"}
+      title={opportunity ? t('opportunity_wizard.edit_title') : t('opportunity_wizard.create_title')}
       steps={steps}
       onComplete={handleSave}
     />
