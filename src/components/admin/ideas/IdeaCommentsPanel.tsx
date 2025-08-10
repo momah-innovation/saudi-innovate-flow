@@ -350,8 +350,8 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
           ) : comments.length === 0 ? (
             <div className="text-center py-8">
               <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">لا توجد تعليقات بعد</p>
-              <p className="text-xs text-muted-foreground">كن أول من يعلق على هذه الفكرة</p>
+              <p className="text-sm text-muted-foreground">{t('comments.no_comments_yet', 'لا توجد تعليقات بعد')}</p>
+              <p className="text-xs text-muted-foreground">{t('comments.be_first_to_comment', 'كن أول من يعلق على هذه الفكرة')}</p>
             </div>
           ) : (
             <div className="space-y-4">

@@ -393,7 +393,7 @@ export function IdeasManagementList({
                 setShowWizard(true);
               }}>
                 <Lightbulb className="w-4 h-4 mr-2" />
-                فكرة جديدة
+                {t('ideas.new_idea', 'فكرة جديدة')}
               </Button>
             </div>
           </div>
@@ -509,7 +509,7 @@ export function IdeasManagementList({
             title={t('ideas.no_ideas_found', 'لا توجد أفكار')}
             description={t('ideas.no_matching_ideas', 'لم يتم العثور على أفكار مطابقة للفلاتر المحددة')}
             action={{
-              label: "فكرة جديدة",
+              label: t('ideas.new_idea', 'فكرة جديدة'),
               onClick: () => setShowWizard(true)
             }}
           />

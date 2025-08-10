@@ -887,7 +887,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
     <MultiStepForm
       isOpen={isOpen}
       onClose={onClose}
-      title={challenge ? 'تعديل التحدي' : 'إنشاء تحدي جديد'}
+      title={challenge ? t('challenges.edit_challenge', 'تعديل التحدي') : t('challenges.create_new_challenge', 'إنشاء تحدي جديد')}
       steps={steps}
       onComplete={handleComplete}
       showProgress={true}

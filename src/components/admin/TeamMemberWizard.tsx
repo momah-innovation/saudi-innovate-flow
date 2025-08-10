@@ -400,7 +400,7 @@ export function TeamMemberWizard({
                       ))
                     ) : (
                       <div className="p-3 text-center text-muted-foreground">
-                        لا توجد نتائج مطابقة
+                        {t('search.no_matching_results', 'لا توجد نتائج مطابقة')}
                       </div>
                     )}
                   </div>

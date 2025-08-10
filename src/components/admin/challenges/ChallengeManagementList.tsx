@@ -314,7 +314,7 @@ export function ChallengeManagementList() {
             title="لا توجد تحديات"
             description="ابدأ بإنشاء تحدي ابتكاري جديد لجذب الأفكار المبدعة"
             action={{
-              label: "إنشاء تحدي جديد",
+              label: t('challenges.create_new_challenge', 'إنشاء تحدي جديد'),
               onClick: () => {
                 setSelectedChallenge(null);
                 setShowWizard(true);

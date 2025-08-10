@@ -397,7 +397,7 @@ export function OpportunityWizard({
                   <SelectValue placeholder="اختر القسم" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">بدون قسم محدد</SelectItem>
+                  <SelectItem value="">{t('department.no_department_specified', 'بدون قسم محدد')}</SelectItem>
                   {departments.map((department) => (
                     <SelectItem key={department.id} value={department.id}>
                       {department.name_ar || department.name}
