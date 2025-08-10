@@ -4,7 +4,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
 import { StorageAnalyticsDashboard } from '@/components/admin/StorageAnalyticsDashboard';
-import { StoragePoliciesPage } from './StoragePoliciesPage';
+import { StoragePoliciesPage } from '../../pages/admin/StoragePolicies';
 import { EnhancedStorageQuotasTab } from './EnhancedStorageQuotasTab';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { FixedStorageUploadTab } from './FixedStorageUploadTab';
