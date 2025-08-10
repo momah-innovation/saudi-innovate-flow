@@ -80,7 +80,7 @@ interface SystemListsHook {
 export const useSystemLists = (): SystemListsHook => {
   const { t } = useUnifiedTranslation();
   const [settings, setSettings] = useState<SystemListsHook>({
-    // Initialize with empty arrays - will be populated from database
+    // Initialize with empty arrays - will be populated from translation keys
     challengePriorityLevels: [],
     challengeSensitivityLevels: [],
     challengeTypes: [],
@@ -163,78 +163,86 @@ export const useSystemLists = (): SystemListsHook => {
   useEffect(() => {
     const loadSystemLists = async () => {
       try {
-        // Load from both system_settings and system_lists tables
+        console.log('🔍 useSystemLists: Loading lists using translation keys');
+        
+        // Use key-based translation system for core lists that have mappings
+        const keyBasedSettings = {
+          // Core challenge/opportunity/status lists from VALUE_KEY_MAPPINGS
+          challengePriorityLevels: getCategoryKeys('priority').map(key => key.split('.')[1]),
+          challengeTypes: getCategoryKeys('challenge_type').map(key => key.split('.')[1]),
+          challengeStatusOptions: getCategoryKeys('status').map(key => key.split('.')[1]),
+          priorityLevels: getCategoryKeys('priority').map(key => key.split('.')[1]),
+          partnerStatusOptions: getCategoryKeys('status').map(key => key.split('.')[1]),
+          userStatusOptions: getCategoryKeys('status').map(key => key.split('.')[1]),
+          generalStatusOptions: getCategoryKeys('status').map(key => key.split('.')[1]),
+          extendedStatusOptions: getCategoryKeys('status').map(key => key.split('.')[1]),
+          challengeFilterStatusOptions: getCategoryKeys('status').map(key => key.split('.')[1]),
+          eventTypes: getCategoryKeys('event_type').map(key => key.split('.')[1]),
+          assignmentTypes: getCategoryKeys('assignment_type').map(key => key.split('.')[1]),
+          ideaAssignmentTypes: getCategoryKeys('assignment_type').map(key => key.split('.')[1]),
+          expertRoleTypes: getCategoryKeys('role_type').map(key => key.split('.')[1]),
+          teamRoleOptions: getCategoryKeys('role_type').map(key => key.split('.')[1]),
+        };
+
+        // Load remaining lists from database for backward compatibility
         const [settingsData, listsData] = await Promise.all([
           supabase
             .from('system_settings')
             .select('setting_key, setting_value')
             .in('setting_key', [
-              'challenge_priority_levels',
-              'challenge_sensitivity_levels', 
-              'challenge_types',
-              'challenge_status_options',
-            'partner_status_options',
-            'partner_type_options',
-            'partnership_type_options',
-            'expert_status_options',
-            'assignment_status_options',
-            'role_request_status_options',
-            'user_status_options',
-            'general_status_options',
-            'available_user_roles',
-            'requestable_user_roles',
-            'team_role_options',
-            'team_specialization_options',
-            'focus_question_types',
-            'experience_levels',
-            'expert_role_types',
-            'event_types',
-            'event_formats',
-            'event_categories',
-            'event_visibility_options',
-            'supported_languages',
-            'stakeholder_influence_levels',
-            'stakeholder_interest_levels',
-            'idea_assignment_types',
-            'priority_levels',
-            'idea_maturity_levels',
-            'campaign_theme_options',
-            'attendance_status_options',
-            'evaluator_types',
-            'relationship_types',
-            'organization_types',
-            'assignment_types',
-            'extended_status_options',
-            'sector_types',
-            'tag_categories',
-            'sensitivity_levels',
-            'frequency_options',
-            'backup_frequency_options',
-            'report_frequency_options',
-            'reminder_frequency_options',
-            'recurrence_pattern_options',
-            'question_type_options',
-            'time_range_options',
-            'role_request_justifications',
-            'ui_language_options',
-            'stakeholder_categories',
-            'engagement_levels',
-            'chart_color_palette',
-            'theme_variants',
-            'theme_color_schemes',
-            'theme_border_radius_options',
-            'challenge_filter_status_options',
-            'navigation_menu_visibility_roles',
-            'data_export_formats',
-            'chart_visualization_colors'
-          ]),
+              'challenge_sensitivity_levels',
+              'partner_type_options',
+              'partnership_type_options',
+              'expert_status_options',
+              'assignment_status_options',
+              'role_request_status_options',
+              'available_user_roles',
+              'requestable_user_roles',
+              'team_specialization_options',
+              'focus_question_types',
+              'experience_levels',
+              'event_formats',
+              'event_categories',
+              'event_visibility_options',
+              'supported_languages',
+              'stakeholder_influence_levels',
+              'stakeholder_interest_levels',
+              'idea_maturity_levels',
+              'campaign_theme_options',
+              'attendance_status_options',
+              'evaluator_types',
+              'relationship_types',
+              'organization_types',
+              'sector_types',
+              'tag_categories',
+              'sensitivity_levels',
+              'frequency_options',
+              'backup_frequency_options',
+              'report_frequency_options',
+              'reminder_frequency_options',
+              'recurrence_pattern_options',
+              'question_type_options',
+              'time_range_options',
+              'role_request_justifications',
+              'ui_language_options',
+              'stakeholder_categories',
+              'engagement_levels',
+              'chart_color_palette',
+              'theme_variants',
+              'theme_color_schemes',
+              'theme_border_radius_options',
+              'navigation_menu_visibility_roles',
+              'data_export_formats',
+              'chart_visualization_colors'
+            ]),
           supabase
             .from('system_lists')
             .select('list_key, list_values')
             .eq('is_active', true)
         ]);
         
-        const newSettings = { ...settings };
+        // Start with key-based settings
+        const newSettings = { ...settings, ...keyBasedSettings };
         
         // Process system_settings data
         if (settingsData.data) {
@@ -244,20 +252,9 @@ export const useSystemLists = (): SystemListsHook => {
               : setting.setting_value;
               
             switch (setting.setting_key) {
-              case 'challenge_priority_levels':
-                newSettings.challengePriorityLevels = Array.isArray(value) ? value : [];
-                break;
               case 'challenge_sensitivity_levels':
                 newSettings.challengeSensitivityLevels = value;
-                break;
-              case 'challenge_types':
-                newSettings.challengeTypes = value;
-                break;
-              case 'challenge_status_options':
-                newSettings.challengeStatusOptions = value;
-                break;
-              case 'partner_status_options':
-                newSettings.partnerStatusOptions = value;
+                newSettings.sensitivityLevels = value;
                 break;
               case 'partner_type_options':
                 newSettings.partnerTypeOptions = value;
@@ -274,20 +271,11 @@ export const useSystemLists = (): SystemListsHook => {
               case 'role_request_status_options':
                 newSettings.roleRequestStatusOptions = value;
                 break;
-              case 'user_status_options':
-                newSettings.userStatusOptions = value;
-                break;
-              case 'general_status_options':
-                newSettings.generalStatusOptions = value;
-                break;
               case 'available_user_roles':
                 newSettings.availableUserRoles = value;
                 break;
               case 'requestable_user_roles':
                 newSettings.requestableUserRoles = value;
-                break;
-              case 'team_role_options':
-                newSettings.teamRoleOptions = value;
                 break;
               case 'team_specialization_options':
                 newSettings.teamSpecializationOptions = value;
@@ -297,12 +285,6 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'experience_levels':
                 newSettings.experienceLevels = value;
-                break;
-              case 'expert_role_types':
-                newSettings.expertRoleTypes = value;
-                break;
-              case 'event_types':
-                newSettings.eventTypes = value;
                 break;
               case 'event_formats':
                 newSettings.eventFormats = value;
@@ -322,12 +304,6 @@ export const useSystemLists = (): SystemListsHook => {
               case 'stakeholder_interest_levels':
                 newSettings.stakeholderInterestLevels = value;
                 break;
-              case 'idea_assignment_types':
-                newSettings.ideaAssignmentTypes = value;
-                break;
-              case 'priority_levels':
-                newSettings.priorityLevels = value;
-                break;
               case 'idea_maturity_levels':
                 newSettings.ideaMaturityLevels = value;
                 break;
@@ -346,20 +322,11 @@ export const useSystemLists = (): SystemListsHook => {
               case 'organization_types':
                 newSettings.organizationTypes = value;
                 break;
-              case 'assignment_types':
-                newSettings.assignmentTypes = value;
-                break;
-              case 'extended_status_options':
-                newSettings.extendedStatusOptions = value;
-                break;
               case 'sector_types':
                 newSettings.sectorTypes = value;
                 break;
               case 'tag_categories':
                 newSettings.tagCategories = value;
-                break;
-              case 'sensitivity_levels':
-                newSettings.sensitivityLevels = value;
                 break;
               case 'frequency_options':
                 newSettings.frequencyOptions = value;
@@ -405,9 +372,6 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'theme_border_radius_options':
                 newSettings.themeBorderRadiusOptions = value;
-                break;
-              case 'challenge_filter_status_options':
-                newSettings.challengeFilterStatusOptions = value;
                 break;
               case 'navigation_menu_visibility_roles':
                 newSettings.navigationMenuVisibilityRoles = value;
@@ -469,6 +433,11 @@ export const useSystemLists = (): SystemListsHook => {
           });
         }
           
+        console.log('🔍 useSystemLists: Lists loaded successfully', {
+          keyBasedLists: Object.keys(keyBasedSettings),
+          totalLists: Object.keys(newSettings).filter(key => Array.isArray((newSettings as any)[key])).length
+        });
+        
         setSettings({ ...newSettings, loading: false });
       } catch (error) {
         logger.error('Failed to load system lists', { component: 'useSystemLists', action: 'loadSystemLists' }, error as Error);
