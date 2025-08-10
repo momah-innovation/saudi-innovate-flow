@@ -172,23 +172,13 @@ export function ChallengeManagementList() {
   };
 
   const getStatusLabel = (status: string) => {
-    const labels = {
-      draft: 'مسودة',
-      active: 'نشط',
-      completed: 'مكتمل',
-      cancelled: 'ملغي',
-      on_hold: 'معلق'
-    };
-    return labels[status as keyof typeof labels] || status;
+    const key = `status.${status}`;
+    return t(key, status);
   };
 
   const getPriorityLabel = (priority: string) => {
-    const labels = {
-      high: 'عالي',
-      medium: 'متوسط',
-      low: 'منخفض'
-    };
-    return labels[priority as keyof typeof labels] || priority;
+    const key = `priority.${priority}`;
+    return t(key, priority);
   };
 
   // Load saved layout preference
@@ -275,12 +265,10 @@ export function ChallengeManagementList() {
                 <SelectValue placeholder="الحالة" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">كل الحالات</SelectItem>
+                <SelectItem value="all">{t('common.all_statuses', 'كل الحالات')}</SelectItem>
                 {challengeStatusOptions.map(status => (
                   <SelectItem key={status} value={status}>
-                    {status === 'draft' ? 'مسودة' : status === 'active' ? 'نشط' : status === 'completed' ? 'مكتمل' : 
-                     status === 'cancelled' ? 'ملغي' : status === 'published' ? 'منشور' : status === 'closed' ? 'مغلق' : 
-                     status === 'archived' ? 'مؤرشف' : status}
+                    {getStatusLabel(status)}
                   </SelectItem>
                 ))}
                 <SelectItem value="on_hold">معلق</SelectItem>
@@ -292,10 +280,10 @@ export function ChallengeManagementList() {
                 <SelectValue placeholder="الأولوية" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">كل الأولويات</SelectItem>
+                <SelectItem value="all">{t('common.all_priorities', 'كل الأولويات')}</SelectItem>
                 {challengePriorityLevels.map(priority => (
                   <SelectItem key={priority} value={priority}>
-                    {priority === 'high' ? 'عالي' : priority === 'medium' ? 'متوسط' : 'منخفض'}
+                    {getPriorityLabel(priority)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -306,10 +294,10 @@ export function ChallengeManagementList() {
                 <SelectValue placeholder="الحساسية" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">كل المستويات</SelectItem>
+                <SelectItem value="all">{t('common.all_levels', 'كل المستويات')}</SelectItem>
                 {challengeSensitivityLevels.map(level => (
                   <SelectItem key={level} value={level}>
-                    {level === 'normal' ? 'عادي' : level === 'sensitive' ? 'حساس' : 'سري'}
+                    {t(`sensitivity.${level}`, level)}
                   </SelectItem>
                 ))}
               </SelectContent>
