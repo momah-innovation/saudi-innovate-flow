@@ -35,7 +35,9 @@ import {
   Target,
   Building,
   FileText,
-  Zap
+  Zap,
+  HardDrive,
+  HelpCircle
 } from 'lucide-react';
 
 interface AdminUserProfile {
@@ -208,6 +210,46 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       action: () => navigate('/admin/entities'),
       show: canManageSystem,
       category: 'management'
+    },
+    {
+      title: "Storage Management", 
+      description: "Monitor and manage file storage",
+      icon: Database,
+      action: () => navigate('/admin/storage'),
+      show: canManageSystem,
+      category: 'system'
+    },
+    {
+      title: "Storage Policies",
+      description: "Configure storage access policies",
+      icon: HardDrive, 
+      action: () => navigate('/admin/storage/policies'),
+      show: canManageSystem,
+      category: 'system'
+    },
+    {
+      title: "Security Monitor",
+      description: "Monitor security events and alerts",
+      icon: Shield,
+      action: () => navigate('/admin/security'),
+      show: canManageSystem,
+      category: 'security'
+    },
+    {
+      title: "Focus Questions Management",
+      description: "Manage questions that guide challenges",
+      icon: HelpCircle,
+      action: () => navigate('/admin/focus-questions'),
+      show: canManageSystem,
+      category: 'content'
+    },
+    {
+      title: "System Analytics",
+      description: "View system analytics and reports", 
+      icon: BarChart3,
+      action: () => navigate('/admin/system-analytics'),
+      show: canViewAnalytics,
+      category: 'analytics'
     }
   ];
 
