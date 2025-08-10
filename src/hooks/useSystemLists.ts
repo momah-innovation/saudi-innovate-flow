@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { VALUE_KEY_MAPPINGS, getCategoryKeys, useTranslatedValue } from '@/utils/valueKeys';
 
 // Debug logging for useSystemLists hook
 console.log('🔍 useSystemLists: Module loaded');
@@ -64,15 +66,25 @@ interface SystemListsHook {
   navigationMenuVisibilityRoles: string[];
   dataExportFormats: string[];
   chartVisualizationColors: string[];
+  
+  // NEW: Translation-aware helper functions
+  getTranslatedOptions: (category: keyof typeof VALUE_KEY_MAPPINGS) => Array<{
+    value: string;
+    label: string;
+  }>;
+  getTranslatedValue: (value: string, category: keyof typeof VALUE_KEY_MAPPINGS) => string;
+  
   loading: boolean;
 }
 
 export const useSystemLists = (): SystemListsHook => {
+  const { t } = useUnifiedTranslation();
   const [settings, setSettings] = useState<SystemListsHook>({
-    challengePriorityLevels: ['low', 'medium', 'high', 'urgent'],
-    challengeSensitivityLevels: ['normal', 'sensitive', 'confidential'],
+    // Use standardized English values for database compatibility
+    challengePriorityLevels: ['low', 'medium', 'high', 'critical'],
+    challengeSensitivityLevels: ['normal', 'confidential', 'restricted'],
     challengeTypes: ['innovation', 'improvement', 'research', 'development'],
-    challengeStatusOptions: ['draft', 'published', 'active', 'closed', 'archived', 'completed'],
+    challengeStatusOptions: ['draft', 'active', 'published', 'completed', 'closed', 'archived'],
     partnerStatusOptions: ['active', 'inactive', 'pending', 'suspended'],
     partnerTypeOptions: ['government', 'private', 'academic', 'non_profit', 'international'],
     partnershipTypeOptions: ['collaborator', 'sponsor', 'technical_partner', 'strategic_partner', 'implementation_partner'],
@@ -152,6 +164,24 @@ export const useSystemLists = (): SystemListsHook => {
     navigationMenuVisibilityRoles: ['admin', 'super_admin', 'team_member', 'evaluator', 'domain_expert'],
     dataExportFormats: ['csv', 'excel', 'pdf', 'json'],
     chartVisualizationColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4', '#84cc16'],
+    
+    // NEW: Translation helper functions
+    getTranslatedOptions: (category: keyof typeof VALUE_KEY_MAPPINGS) => {
+      const keys = getCategoryKeys(category);
+      return keys.map(key => ({
+        value: key.split('.')[1], // Standard database value
+        label: t(key, key.split('.')[1]) // Translated label
+      }));
+    },
+    
+    getTranslatedValue: (value: string, category: keyof typeof VALUE_KEY_MAPPINGS) => {
+      const mapping = VALUE_KEY_MAPPINGS[category];
+      if (!mapping) return value;
+      
+      const key = mapping[value as keyof typeof mapping];
+      return key ? t(key, value) : value;
+    },
+    
     loading: true
   });
 
