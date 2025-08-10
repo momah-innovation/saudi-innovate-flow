@@ -137,6 +137,7 @@ export function AdminBreadcrumb({ className, maxItems = 4 }: AdminBreadcrumbProp
 
   const generateBreadcrumbs = (): BreadcrumbConfig[] => {
     const path = location.pathname;
+    console.log('🔍 AdminBreadcrumb Debug:', { path, segments: path.split('/').filter(Boolean) });
     const segments = path.split('/').filter(Boolean);
     const breadcrumbs: BreadcrumbConfig[] = [];
 

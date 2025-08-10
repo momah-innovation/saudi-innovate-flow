@@ -19,7 +19,8 @@ import {
   Eye,
   RefreshCw,
   UserCheck,
-  HelpCircle
+  HelpCircle,
+  Target
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -644,6 +645,45 @@ export default function AdminDashboard() {
                 </div>
               </CardContent>
             </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Evaluation Management</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/evaluation-management'}>
+                  <Plus className="w-4 h-4" />
+                  Manage Evaluations
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">24</div>
+                      <div className="text-sm text-muted-foreground">Evaluation Criteria</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">8</div>
+                      <div className="text-sm text-muted-foreground">Active Templates</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-info">12</div>
+                      <div className="text-sm text-muted-foreground">Evaluation Rules</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/evaluation-management'}
+                    >
+                      <Target className="w-4 h-4 mr-2" />
+                      Manage Evaluations
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
           </TabsContent>
 
           <TabsContent value="storage" className="space-y-6">

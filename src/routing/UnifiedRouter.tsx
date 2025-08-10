@@ -57,6 +57,7 @@ const FocusQuestionsManagement = lazy(() => import('@/pages/admin/FocusQuestions
 const OpportunitiesManagement = lazy(() => import('@/pages/admin/OpportunitiesManagement'));
 const RelationshipOverview = lazy(() => import('@/pages/admin/RelationshipOverview'));
 const UserManagementPage = lazy(() => import('@/pages/admin/UserManagementPage'));
+const EvaluationManagement = lazy(() => import('@/pages/admin/EvaluationManagement'));
 const SystemSettings = lazy(() => import('@/pages/admin/SystemSettings'));
 const SystemAnalytics = lazy(() => import('@/pages/admin/SystemAnalytics'));
 const StorageManagement = lazy(() => import('@/pages/admin/StorageManagement'));
@@ -398,6 +399,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_RELATIONSHIPS,
     component: RelationshipOverview,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_EVALUATION_MANAGEMENT,
+    component: EvaluationManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],

@@ -98,6 +98,7 @@ export const ADMIN_ROUTES = {
   ADMIN_SECTORS: '/admin/sectors',
   ADMIN_EXPERT_ASSIGNMENTS: '/admin/expert-assignments',
   ADMIN_ORGANIZATIONAL_STRUCTURE: '/admin/organizational-structure',
+  ADMIN_EVALUATION_MANAGEMENT: '/admin/evaluation-management',
   ADMIN_STAKEHOLDERS: '/admin/stakeholders',
   ADMIN_EVALUATIONS: '/admin/evaluations',
   ADMIN_EVENTS: '/admin/events',
