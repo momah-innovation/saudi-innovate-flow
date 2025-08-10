@@ -74,8 +74,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       if (error) throw error;
 
       toast({
-        title: "نجح التحديث",
-        description: `تم تحديث حالة ${selectedItems.length} فكرة بنجاح`,
+        title: t('bulk_actions.update_success', 'نجح التحديث'),
+        description: t('bulk_actions.ideas_updated_success', `تم تحديث حالة ${selectedItems.length} فكرة بنجاح`),
       });
 
       setShowStatusDialog(false);
@@ -108,8 +108,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       if (error) throw error;
 
       toast({
-        title: "نجح الحذف",
-        description: `تم حذف ${selectedItems.length} فكرة بنجاح`,
+        title: t('bulk_actions.delete_success', 'نجح الحذف'),
+        description: t('bulk_actions.ideas_deleted_success', `تم حذف ${selectedItems.length} فكرة بنجاح`),
       });
 
       setShowDeleteDialog(false);
@@ -196,8 +196,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       if (error) throw error;
 
       toast({
-        title: "نجح التكليف",
-        description: `تم تكليف المراجع لـ ${selectedItems.length} فكرة بنجاح`,
+        title: t('bulk_actions.assignment_success', 'نجح التكليف'),
+        description: t('bulk_actions.reviewer_assigned_success', `تم تكليف المراجع لـ ${selectedItems.length} فكرة بنجاح`),
       });
 
       setShowAssignDialog(false);
@@ -207,8 +207,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
     } catch (error) {
       logger.error('Error assigning ideas', { component: 'BulkActionsPanel', action: 'handleBulkAssignment', data: { selectedItems, assigneeId } }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في تكليف المراجع",
+        title: t('common.error', 'خطأ'),
+        description: t('bulk_actions.assignment_failed', 'فشل في تكليف المراجع'),
         variant: "destructive"
       });
     } finally {
@@ -320,7 +320,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
               <label className="text-sm font-medium">الحالة الجديدة</label>
               <Select value={newStatus} onValueChange={setNewStatus}>
                 <SelectTrigger>
-                  <SelectValue placeholder="اختر الحالة الجديدة" />
+                  <SelectValue placeholder={t('bulk_actions.select_new_status', 'اختر الحالة الجديدة')} />
                 </SelectTrigger>
                 <SelectContent>
                   {statusOptions.map((status) => (
@@ -414,7 +414,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
               <label className="text-sm font-medium">المراجع</label>
               <Select value={assigneeId} onValueChange={setAssigneeId}>
                 <SelectTrigger>
-                  <SelectValue placeholder="اختر المراجع" />
+                  <SelectValue placeholder={t('bulk_actions.select_reviewer', 'اختر المراجع')} />
                 </SelectTrigger>
                 <SelectContent>
                   {teamMembers.map((member) => (

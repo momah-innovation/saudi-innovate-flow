@@ -258,7 +258,7 @@ export function ChallengeManagementList() {
           <div className="flex gap-2">
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder="الحالة" />
+                <SelectValue placeholder={t('challenges.status_filter_placeholder', 'الحالة')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('common.all_statuses', 'كل الحالات')}</SelectItem>
@@ -287,7 +287,7 @@ export function ChallengeManagementList() {
 
             <Select value={sensitivityFilter} onValueChange={setSensitivityFilter}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder="الحساسية" />
+                <SelectValue placeholder={t('challenges.sensitivity_filter_placeholder', 'الحساسية')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('common.all_levels', 'كل المستويات')}</SelectItem>
@@ -311,8 +311,8 @@ export function ChallengeManagementList() {
         ) : filteredChallenges.length === 0 ? (
           <EmptyState
             icon={<Target className="w-12 h-12 text-muted-foreground" />}
-            title="لا توجد تحديات"
-            description="ابدأ بإنشاء تحدي ابتكاري جديد لجذب الأفكار المبدعة"
+            title={t('challenges.no_challenges_found', 'لا توجد تحديات')}
+            description={t('challenges.no_challenges_description', 'ابدأ بإنشاء تحدي ابتكاري جديد لجذب الأفكار المبدعة')}
             action={{
               label: t('challenges.create_new_challenge', 'إنشاء تحدي جديد'),
               onClick: () => {
@@ -347,22 +347,22 @@ export function ChallengeManagementList() {
                 metadata={[
                   ...(challenge.start_date ? [{ 
                     icon: <Calendar className="h-4 w-4" />, 
-                    label: "تاريخ البداية", 
+                    label: t('challenges.start_date_label', 'تاريخ البداية'), 
                     value: format(new Date(challenge.start_date), 'PPP') 
                   }] : []),
                   ...(challenge.end_date ? [{ 
                     icon: <Clock className="h-4 w-4" />, 
-                    label: "تاريخ النهاية", 
+                    label: t('challenges.end_date_label', 'تاريخ النهاية'), 
                     value: format(new Date(challenge.end_date), 'PPP') 
                   }] : []),
                   ...(challenge.estimated_budget ? [{ 
                     icon: <DollarSign className="h-4 w-4" />, 
-                    label: "الميزانية", 
+                    label: t('challenges.budget_label', 'الميزانية'), 
                     value: `${challenge.estimated_budget.toLocaleString()} ريال` 
                   }] : []),
                   { 
                     icon: <Lightbulb className="h-4 w-4" />, 
-                    label: "مستوى الحساسية", 
+                    label: t('challenges.sensitivity_level_label', 'مستوى الحساسية'), 
                     value: challenge.sensitivity_level 
                   }
                 ]}

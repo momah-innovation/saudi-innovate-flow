@@ -407,7 +407,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                 <Label htmlFor="challenge_type">نوع التحدي</Label>
                 <Select value={formData.challenge_type} onValueChange={(value) => updateFormData('challenge_type', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="اختر نوع التحدي" />
+                    <SelectValue placeholder={t('challenges.select_challenge_type', 'اختر نوع التحدي')} />
                   </SelectTrigger>
                   <SelectContent>
                     {challengeTypes.map(type => (
@@ -435,7 +435,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                   <Label htmlFor="status">حالة التحدي</Label>
                   <Select value={formData.status} onValueChange={(value) => updateFormData('status', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="اختر حالة التحدي" />
+                      <SelectValue placeholder={t('challenges.select_challenge_status', 'اختر حالة التحدي')} />
                     </SelectTrigger>
                     <SelectContent>
                       {challengeStatusOptions.map(status => (
@@ -474,7 +474,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                 <Label htmlFor="sensitivity_level">مستوى السرية</Label>
                 <Select value={formData.sensitivity_level} onValueChange={(value) => updateFormData('sensitivity_level', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="اختر مستوى السرية" />
+                    <SelectValue placeholder={t('challenges.select_sensitivity_level', 'اختر مستوى السرية')} />
                   </SelectTrigger>
                   <SelectContent>
                     {challengeSensitivityLevels.map(level => (
@@ -510,7 +510,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                   <Label htmlFor="sector_id">القطاع</Label>
                   <Select value={formData.sector_id} onValueChange={(value) => updateFormData('sector_id', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="اختر القطاع" />
+                      <SelectValue placeholder={t('challenges.select_sector', 'اختر القطاع')} />
                     </SelectTrigger>
                     <SelectContent>
                       {systemLists.sectors.map((sector) => (
@@ -526,7 +526,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                   <Label htmlFor="deputy_id">الوكالة</Label>
                   <Select value={formData.deputy_id} onValueChange={(value) => updateFormData('deputy_id', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="اختر الوكالة" />
+                      <SelectValue placeholder={t('challenges.select_deputy', 'اختر الوكالة')} />
                     </SelectTrigger>
                     <SelectContent>
                       {systemLists.deputies.map((deputy) => (
@@ -560,7 +560,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                   <Label htmlFor="domain_id">المجال</Label>
                   <Select value={formData.domain_id} onValueChange={(value) => updateFormData('domain_id', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="اختر المجال" />
+                      <SelectValue placeholder={t('challenges.select_domain', 'اختر المجال')} />
                     </SelectTrigger>
                     <SelectContent>
                       {systemLists.domains.map((domain) => (
@@ -781,7 +781,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                   id="internal_team_notes"
                   value={formData.internal_team_notes}
                   onChange={(e) => updateFormData('internal_team_notes', e.target.value)}
-                  placeholder="ملاحظات خاصة بالفريق الداخلي"
+                  placeholder={t('challenges.internal_team_notes_placeholder', 'ملاحظات خاصة بالفريق الداخلي')}
                   rows={3}
                 />
               </div>

@@ -223,8 +223,8 @@ export function TeamMemberWizard({
       case 0: // User Selection
         if (!editingMember && !formData.user_id) {
           toast({
-            title: "خطأ في التحقق",
-            description: "يرجى اختيار مستخدم",
+            title: t('team_member_wizard.validation_error', 'خطأ في التحقق'),
+            description: t('team_member_wizard.user_selection_required', 'يرجى اختيار مستخدم'),
             variant: "destructive"
           });
           return false;
@@ -233,8 +233,8 @@ export function TeamMemberWizard({
       case 1: // Role and Specialization
         if (!formData.cic_role) {
           toast({
-            title: "خطأ في التحقق",
-            description: "يرجى اختيار الدور في فريق الابتكار",
+            title: t('team_member_wizard.validation_error', 'خطأ في التحقق'),
+            description: t('team_member_wizard.role_selection_required', 'يرجى اختيار الدور في فريق الابتكار'),
             variant: "destructive"
           });
           return false;
@@ -344,13 +344,13 @@ export function TeamMemberWizard({
 
   const steps = [
     {
-      title: editingMember ? "معلومات العضو" : "اختيار المستخدم",
+      title: editingMember ? t('team_member_wizard.member_info', 'معلومات العضو') : t('team_member_wizard.user_selection', 'اختيار المستخدم'),
       description: editingMember ? "مراجعة معلومات العضو الأساسية" : "البحث عن المستخدم وإضافته إلى الفريق",
       icon: <User className="w-5 h-5" />
     },
     {
-      title: "الدور والتخصص",
-      description: "تحديد دور العضو وتخصصاته في فريق الابتكار",
+      title: t('team_member_wizard.role_specialization', 'الدور والتخصص'),
+      description: t('team_member_wizard.role_specialization_desc', 'تحديد دور العضو وتخصصاته في فريق الابتكار'),
       icon: <Settings className="w-5 h-5" />
     },
     {
@@ -438,7 +438,7 @@ export function TeamMemberWizard({
                 onValueChange={(value) => setFormData(prev => ({ ...prev, cic_role: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="اختر الدور" />
+                  <SelectValue placeholder={t('team_member_wizard.select_role', 'اختر الدور')} />
                 </SelectTrigger>
                 <SelectContent>
                   {teamRoleOptions.map((role) => (
@@ -556,7 +556,7 @@ export function TeamMemberWizard({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Users className="w-5 h-5" />
-            {editingMember ? "تعديل عضو الفريق" : "إضافة عضو فريق جديد"}
+            {editingMember ? t('team_member_wizard.edit_team_member', 'تعديل عضو الفريق') : t('team_member_wizard.add_team_member', 'إضافة عضو فريق جديد')}
           </DialogTitle>
         </DialogHeader>
 
@@ -613,11 +613,11 @@ export function TeamMemberWizard({
               disabled={loading}
             >
               {loading ? (
-                "جاري الحفظ..."
+                t('team_member_wizard.saving', 'جاري الحفظ...')
               ) : currentStep === steps.length - 1 ? (
-                editingMember ? "تحديث العضو" : "إضافة العضو"
+                editingMember ? t('team_member_wizard.update_member', 'تحديث العضو') : t('team_member_wizard.add_member', 'إضافة العضو')
               ) : (
-                "التالي"
+                t('team_member_wizard.next', 'التالي')
               )}
             </Button>
           </div>

@@ -109,8 +109,8 @@ export function IdeaDetailView({
     } catch (error) {
       logger.error('Error fetching related data', { component: 'IdeaDetailView', action: 'fetchRelatedData', ideaId: idea.id }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل البيانات المرتبطة",
+        title: t('common.error', 'خطأ'),
+        description: t('idea_detail.load_related_data_failed', 'فشل في تحميل البيانات المرتبطة'),
         variant: "destructive"
       });
     } finally {
@@ -256,7 +256,7 @@ export function IdeaDetailView({
             {/* Idea Details */}
             <CollapsibleSection 
               id="details" 
-              title="تفاصيل الفكرة" 
+              title={t('idea_detail.idea_details_title', 'تفاصيل الفكرة')} 
               icon={Lightbulb}
             >
               <div className="space-y-4">
@@ -328,7 +328,7 @@ export function IdeaDetailView({
             {/* Idea Content */}
             <CollapsibleSection 
               id="content" 
-              title="محتوى الفكرة" 
+              title={t('idea_detail.idea_content_title', 'محتوى الفكرة')} 
               icon={FileText}
             >
               <div className="space-y-4">
@@ -380,7 +380,7 @@ export function IdeaDetailView({
             {/* Evaluations */}
             <CollapsibleSection 
               id="evaluations" 
-              title="التقييمات" 
+              title={t('idea_detail.evaluations_title', 'التقييمات')} 
               icon={MessageSquare}
               count={relatedData.evaluations.length}
             >
