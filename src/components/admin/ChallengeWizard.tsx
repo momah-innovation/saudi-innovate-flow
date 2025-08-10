@@ -176,7 +176,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
         experts: expertsRes.data || []
       });
     } catch (error) {
-      // Failed to load challenge wizard data - using defaults
+      // Failed to load challenge wizard data
     }
   };
 
@@ -260,7 +260,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       };
 
       if (challenge?.id) {
-        // تحديث التحدي الموجود
+        // Update existing challenge
         const { error } = await supabase
           .from('challenges')
           .update(challengeData)
@@ -273,7 +273,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           description: t('dialog.update_success')
         });
       } else {
-        // إنشاء تحدي جديد
+        // Create new challenge
         const { data, error } = await supabase
           .from('challenges')
           .insert([challengeData])
@@ -282,7 +282,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
 
         if (error) throw error;
 
-        // إضافة الخبراء المختارين
+        // Add selected experts
         if (selectedExperts.length > 0 && data) {
           const expertLinks = selectedExperts.map(expertId => ({
             challenge_id: data.id,
@@ -294,7 +294,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           await supabase.from('challenge_experts').insert(expertLinks);
         }
 
-        // إضافة الشركاء المختارين
+        // Add selected partners
         if (selectedPartners.length > 0 && data) {
           const partnerLinks = selectedPartners.map(partnerId => ({
             challenge_id: data.id,
@@ -315,7 +315,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       onSuccess();
       onClose();
     } catch (error) {
-      // Failed to save challenge - show error to user
+      // Failed to save challenge
       toast({
         title: t('dialog.save_failed'),
         description: t('dialog.try_again'),
@@ -616,23 +616,23 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="vision_2030_goal">هدف رؤية 2030</Label>
+            <Label htmlFor="vision_2030_goal">{t('form.vision_2030_goal')}</Label>
             <Textarea
               id="vision_2030_goal"
               value={formData.vision_2030_goal}
               onChange={(e) => updateFormData('vision_2030_goal', e.target.value)}
-              placeholder="كيف يساهم هذا التحدي في تحقيق أهداف رؤية 2030؟"
+              placeholder={t('placeholder.vision_2030_goal')}
               rows={3}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="kpi_alignment">مؤشرات الأداء المرتبطة</Label>
+            <Label htmlFor="kpi_alignment">{t('form.kpi_alignment')}</Label>
             <Textarea
               id="kpi_alignment"
               value={formData.kpi_alignment}
               onChange={(e) => updateFormData('kpi_alignment', e.target.value)}
-              placeholder="مؤشرات الأداء الرئيسية المتأثرة بهذا التحدي"
+              placeholder={t('placeholder.kpi_alignment')}
               rows={3}
             />
           </div>
@@ -647,7 +647,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       content: (
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label>الشركاء المشاركون</Label>
+            <Label>{t('form.participating_partners')}</Label>
             <div className="border rounded-lg p-4 max-h-32 overflow-y-auto">
               {systemLists.partners.map((partner) => (
                 <div key={partner.id} className="flex items-center space-x-2 mb-2">
@@ -687,7 +687,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           </div>
 
           <div className="space-y-2">
-            <Label>الخبراء المعينون</Label>
+            <Label>{t('form.assigned_experts')}</Label>
             <div className="border rounded-lg p-4 max-h-32 overflow-y-auto">
               {systemLists.experts.map((expert) => (
                 <div key={expert.id} className="flex items-center space-x-2 mb-2">
@@ -703,7 +703,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                     }}
                   />
                   <Label htmlFor={`expert-${expert.id}`} className="text-sm">
-                    خبير - {expert.expertise_areas?.join(', ') || 'مجالات متنوعة'}
+                    {t('expert.prefix')} - {expert.expertise_areas?.join(', ') || t('expert.diverse_areas')}
                   </Label>
                 </div>
               ))}
@@ -714,7 +714,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                   const expert = systemLists.experts.find(e => e.id === expertId);
                   return (
                     <Badge key={expertId} variant="secondary" className="flex items-center gap-1">
-                      خبير - {expert?.expertise_areas?.[0] || 'متنوع'}
+                      {t('expert.prefix')} - {expert?.expertise_areas?.[0] || t('expert.varied')}
                       <X 
                         className="h-3 w-3 cursor-pointer" 
                         onClick={() => setSelectedExperts(selectedExperts.filter(id => id !== expertId))}
@@ -727,23 +727,23 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="collaboration_details">تفاصيل التعاون</Label>
+            <Label htmlFor="collaboration_details">{t('form.collaboration_details')}</Label>
             <Textarea
               id="collaboration_details"
               value={formData.collaboration_details}
               onChange={(e) => updateFormData('collaboration_details', e.target.value)}
-              placeholder="تفاصيل كيفية التعاون مع الشركاء والخبراء"
+              placeholder={t('placeholder.collaboration_details')}
               rows={3}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="internal_team_notes">ملاحظات الفريق الداخلي</Label>
+            <Label htmlFor="internal_team_notes">{t('form.internal_team_notes')}</Label>
             <Textarea
               id="internal_team_notes"
               value={formData.internal_team_notes}
               onChange={(e) => updateFormData('internal_team_notes', e.target.value)}
-              placeholder="ملاحظات داخلية للفريق (لن تظهر للمشاركين)"
+              placeholder={t('placeholder.internal_team_notes')}
               rows={3}
             />
           </div>
@@ -759,14 +759,14 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>معلومات التحدي</CardTitle>
+              <CardTitle>{t('review.challenge_info')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <strong>العنوان:</strong> {formData.title_ar}
+                <strong>{t('review.title_label')}</strong> {formData.title_ar}
               </div>
               <div>
-                <strong>الوصف:</strong> {formData.description_ar}
+                <strong>{t('review.description_label')}</strong> {formData.description_ar}
               </div>
               <div className="flex gap-2 flex-wrap">
                 <StatusBadge status={formData.status} size="sm" />
@@ -778,31 +778,31 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
 
           <Card>
             <CardHeader>
-              <CardTitle>التفاصيل التقنية</CardTitle>
+              <CardTitle>{t('review.technical_details')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <strong>تاريخ البداية:</strong> {formData.start_date || 'غير محدد'}
+                <strong>{t('review.start_date_label')}</strong> {formData.start_date || t('review.not_specified')}
               </div>
               <div>
-                <strong>تاريخ النهاية:</strong> {formData.end_date || 'غير محدد'}
+                <strong>{t('review.end_date_label')}</strong> {formData.end_date || t('review.not_specified')}
               </div>
               <div>
-                <strong>الميزانية المقدرة:</strong> {formData.estimated_budget.toLocaleString()} ريال
+                <strong>{t('review.estimated_budget_label')}</strong> {formData.estimated_budget.toLocaleString()} {t('review.currency_sar')}
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>الشركاء والخبراء</CardTitle>
+              <CardTitle>{t('review.partners_experts')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <strong>عدد الشركاء:</strong> {selectedPartners.length}
+                <strong>{t('review.partners_count_label')}</strong> {selectedPartners.length}
               </div>
               <div>
-                <strong>عدد الخبراء:</strong> {selectedExperts.length}
+                <strong>{t('review.experts_count_label')}</strong> {selectedExperts.length}
               </div>
             </CardContent>
           </Card>
