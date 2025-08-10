@@ -643,7 +643,7 @@ export function CampaignWizard({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="registration_deadline">آخر موعد للتسجيل *</Label>
+                <Label htmlFor="registration_deadline">{t('admin.campaigns.registration_deadline', 'Registration Deadline *')}</Label>
                 <Input
                   id="registration_deadline"
                   type="date"
@@ -654,13 +654,13 @@ export function CampaignWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="budget">الميزانية (ريال سعودي)</Label>
+              <Label htmlFor="budget">{t('admin.campaigns.budget_label', 'Budget (Saudi Riyals)')}</Label>
               <Input
                 id="budget"
                 type="number"
                 value={formData.budget || ""}
                 onChange={(e) => setFormData(prev => ({ ...prev, budget: e.target.value ? Number(e.target.value) : null }))}
-                placeholder="أدخل ميزانية الحملة"
+                placeholder={t('admin.campaigns.budget_placeholder', 'Enter campaign budget')}
               />
             </div>
           </div>
@@ -966,7 +966,7 @@ export function CampaignWizard({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
-            {editingCampaign ? "تعديل الحملة" : "إضافة حملة جديدة"}
+            {editingCampaign ? t('admin.campaigns.edit_campaign', 'Edit Campaign') : t('admin.campaigns.add_new_campaign', 'Add New Campaign')}
           </DialogTitle>
         </DialogHeader>
 
@@ -1007,21 +1007,21 @@ export function CampaignWizard({
               onClick={handlePrevious}
               disabled={currentStep === 0}
             >
-              السابق
+              {t('admin.campaigns.previous', 'Previous')}
             </Button>
 
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                إلغاء
+                {t('admin.campaigns.cancel', 'Cancel')}
               </Button>
               
               {currentStep === steps.length - 1 ? (
                 <Button onClick={handleSubmit} disabled={loading}>
-                  {loading ? "جاري الحفظ..." : (editingCampaign ? "تحديث الحملة" : "إنشاء الحملة")}
+                  {loading ? t('admin.campaigns.saving', 'Saving...') : (editingCampaign ? t('admin.campaigns.update_campaign', 'Update Campaign') : t('admin.campaigns.create_campaign', 'Create Campaign'))}
                 </Button>
               ) : (
                 <Button onClick={handleNext}>
-                  التالي
+                  {t('admin.campaigns.next', 'Next')}
                 </Button>
               )}
             </div>
