@@ -71,8 +71,7 @@ export default function ChallengeDetailPage() {
             status,
             assignment_date,
             notes,
-            expert_id,
-            profiles!challenge_experts_expert_id_fkey(id, display_name, avatar_url)
+            expert_id
           ),
           challenge_partners(
             id,
