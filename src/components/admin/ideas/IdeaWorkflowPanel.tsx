@@ -353,7 +353,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-sm font-medium">الحالة الحالية</label>
+                <label className="text-sm font-medium">{t('workflow.current_status', 'الحالة الحالية')}</label>
                 <div className="flex items-center gap-2 mt-1">
                   {getStatusInfo(currentStatus).icon}
                   <span>{getStatusInfo(currentStatus).label}</span>
@@ -361,10 +361,10 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
               </div>
 
               <div>
-                <label className="text-sm font-medium">الحالة الجديدة</label>
+                <label className="text-sm font-medium">{t('workflow.new_status', 'الحالة الجديدة')}</label>
                 <Select value={newStatus} onValueChange={setNewStatus}>
                   <SelectTrigger>
-                    <SelectValue placeholder="اختر الحالة الجديدة" />
+                    <SelectValue placeholder={t('workflow.select_new_status', 'اختر الحالة الجديدة')} />
                   </SelectTrigger>
                   <SelectContent>
                     {statusOptions

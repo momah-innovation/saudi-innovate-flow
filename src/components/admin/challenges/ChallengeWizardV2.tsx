@@ -16,6 +16,7 @@ import { ar } from 'date-fns/locale';
 import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSystemLists } from "@/hooks/useSystemLists";
 import type { Challenge, Partner, Expert } from "@/types";
 
@@ -77,6 +78,7 @@ interface SystemLists {
 
 export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardV2Props) {
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
@@ -424,7 +426,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="w-5 h-5" />
-                الأولوية والحساسية
+                {t('challenge_wizard.priority_sensitivity', 'الأولوية والحساسية')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -447,10 +449,10 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="priority_level">مستوى الأولوية</Label>
+                  <Label htmlFor="priority_level">{t('challenge_wizard.priority_level', 'مستوى الأولوية')}</Label>
                   <Select value={formData.priority_level} onValueChange={(value) => updateFormData('priority_level', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="اختر مستوى الأولوية" />
+                      <SelectValue placeholder={t('challenge_wizard.select_priority', 'اختر مستوى الأولوية')} />
                     </SelectTrigger>
                     <SelectContent>
                       {challengePriorityLevels.map(priority => (

@@ -39,29 +39,29 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
 
   const systemLists = {
     // Core system lists
-    challenge_types: settings.challenge_types || ["تقنية", "استدامة", "صحة", "تعليم", "حوكمة"],
-    priority_levels: settings.priority_levels || ["منخفض", "متوسط", "عالي", "عاجل"],
-    status_options: settings.status_options || ["نشط", "غير نشط", "معلق", "مكتمل", "ملغي"],
+    challenge_types: settings.challenge_types || ["technology", "sustainability", "health", "education", "governance"],
+    priority_levels: settings.priority_levels || ["low", "medium", "high", "urgent"],
+    status_options: settings.status_options || ["active", "inactive", "pending", "completed", "cancelled"],
     
     // Event lists
     event_types: settings.event_types || ["event_type.workshop", "event_type.seminar", "event_type.conference", "event_type.meetup", "event_type.hackathon"],
     event_categories: settings.event_categories || ["standalone_event", "campaign_event", "training", "workshop"],
     
     // Stakeholder lists
-    stakeholder_categories: settings.stakeholder_categories || ["حكومي", "خاص", "أكاديمي", "مجتمع مدني"],
-    relationship_types: settings.relationship_types || ["مباشر", "غير مباشر", "تعاوني", "تنافسي"],
+    stakeholder_categories: settings.stakeholder_categories || ["government", "private", "academic", "civil_society"],
+    relationship_types: settings.relationship_types || ["direct", "indirect", "collaborative", "competitive"],
     
     // Team and role lists
-    team_specializations: settings.team_specializations || ["استراتيجية", "تنفيذ", "بحث", "تحليل"],
-    expert_roles: settings.expert_roles || ["خبير رئيسي", "مقيم", "مراجع", "مستشار"],
+    team_specializations: settings.team_specializations || ["strategy", "implementation", "research", "analysis"],
+    expert_roles: settings.expert_roles || ["lead_expert", "evaluator", "reviewer", "advisor"],
     
     // Idea and evaluation lists
-    idea_assignment_types: settings.idea_assignment_types || ["مراجع", "مقيم", "منفذ", "مراقب"],
-    evaluator_types: settings.evaluator_types || ["خبير رئيسي", "مقيم", "مراجع", "مستشار خارجي"],
+    idea_assignment_types: settings.idea_assignment_types || ["reviewer", "evaluator", "implementer", "observer"],
+    evaluator_types: settings.evaluator_types || ["lead_expert", "evaluator", "reviewer", "external_advisor"],
     
     // Campaign and analytics lists
-    campaign_themes: settings.campaign_themes || ["تحول رقمي", "استدامة", "مدن ذكية", "صحة"],
-    analytics_metrics: settings.analytics_metrics || ["مشاهدات", "مشاركات", "تقييمات", "تعليقات"]
+    campaign_themes: settings.campaign_themes || ["digital_transformation", "sustainability", "smart_cities", "health"],
+    analytics_metrics: settings.analytics_metrics || ["views", "shares", "ratings", "comments"]
   };
 
   const listLabels = {

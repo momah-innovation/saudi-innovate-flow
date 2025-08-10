@@ -20,8 +20,8 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
   const [newOpportunityType, setNewOpportunityType] = useState("");
   const [newApplicationStatus, setNewApplicationStatus] = useState("");
   
-  const opportunityTypes = (settings.opportunity_types as string[]) || ["تطوير حلول", "شراكة تقنية", "تنفيذ مشروع", "استشارة", "تدريب"];
-  const applicationStatusOptions = (settings.application_status_options as string[]) || ["مقدم", "قيد المراجعة", "مقبول", "مرفوض", "معلق"];
+  const opportunityTypes = (settings.opportunity_types as string[]) || ["solution_development", "technical_partnership", "project_implementation", "consultation", "training"];
+  const applicationStatusOptions = (settings.application_status_options as string[]) || ["submitted", "under_review", "accepted", "rejected", "pending"];
 
   const addOpportunityType = () => {
     if (newOpportunityType.trim() && !opportunityTypes.includes(newOpportunityType)) {

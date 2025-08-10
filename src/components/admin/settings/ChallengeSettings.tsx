@@ -20,9 +20,9 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
   const [newPriorityLevel, setNewPriorityLevel] = useState("");
   const [newStatusOption, setNewStatusOption] = useState("");
   
-  const challengeTypes = settings.challenge_types || ["تقنية", "استدامة", "صحة", "تعليم", "حوكمة"];
-  const priorityLevels = settings.priority_levels || ["منخفض", "متوسط", "عالي", "عاجل"];
-  const challengeStatusOptions = settings.challenge_status_options || ["مسودة", "منشور", "نشط", "مغلق", "مؤرشف"];
+  const challengeTypes = settings.challenge_types || ["technology", "sustainability", "health", "education", "governance"];
+  const priorityLevels = settings.priority_levels || ["low", "medium", "high", "urgent"];
+  const challengeStatusOptions = settings.challenge_status_options || ["draft", "published", "active", "closed", "archived"];
 
   const addChallengeType = () => {
     if (newChallengeType.trim() && !challengeTypes.includes(newChallengeType)) {

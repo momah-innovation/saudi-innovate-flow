@@ -785,13 +785,13 @@ export function TeamWorkspaceContent({
       <div className="flex items-center gap-4">
         <Select defaultValue="all">
           <SelectTrigger className="w-40">
-            <SelectValue placeholder="تصفية حسب الحالة" />
+            <SelectValue placeholder={t('workspace.filter_by_status', 'تصفية حسب الحالة')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">جميع المشاريع</SelectItem>
-            <SelectItem value="active">نشطة</SelectItem>
-            <SelectItem value="completed">مكتملة</SelectItem>
-            <SelectItem value="paused">متوقفة</SelectItem>
+            <SelectItem value="all">{t('workspace.all_projects', 'جميع المشاريع')}</SelectItem>
+            <SelectItem value="active">{t('status.active', 'نشطة')}</SelectItem>
+            <SelectItem value="completed">{t('status.completed', 'مكتملة')}</SelectItem>
+            <SelectItem value="paused">{t('status.paused', 'متوقفة')}</SelectItem>
           </SelectContent>
         </Select>
         <Button size="sm" variant="outline">
