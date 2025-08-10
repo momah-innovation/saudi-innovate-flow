@@ -249,7 +249,7 @@ export function TeamWorkspaceContent({
     try {
       // This would create a new task/assignment
       toast({
-        title: "تم إنشاء المهمة",
+        title: t('workspace.task_created', 'تم إنشاء المهمة'),
         description: `تم تكليف ${newTaskAssignee} بمهمة: ${newTaskTitle}`,
       });
       setNewTaskTitle('');
@@ -257,8 +257,8 @@ export function TeamWorkspaceContent({
       setShowQuickActions(false);
     } catch (error) {
       toast({
-        title: "خطأ",
-        description: "فشل في إنشاء المهمة",
+        title: t('common.error', 'خطأ'),
+        description: t('workspace.task_creation_failed', 'فشل في إنشاء المهمة'),
         variant: "destructive",
       });
     }

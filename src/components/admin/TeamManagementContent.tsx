@@ -141,8 +141,8 @@ export function TeamManagementContent({
     } catch (error) {
       logger.error('Error fetching teams data', { component: 'TeamManagementContent', action: 'fetchTeamsData' }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل بيانات فرق الابتكار.",
+        title: t('common.error', 'خطأ'),
+        description: t('team_management.load_teams_failed', 'فشل في تحميل بيانات فرق الابتكار.'),
         variant: "destructive",
       });
     } finally {
@@ -159,16 +159,16 @@ export function TeamManagementContent({
     try {
       // In a real implementation, you would update the team status
       toast({
-        title: "نجح",
-        description: "تم إزالة فريق الابتكار بنجاح.",
+        title: t('common.success', 'نجح'),
+        description: t('team_management.team_removed_success', 'تم إزالة فريق الابتكار بنجاح.'),
       });
 
       fetchTeamsData();
     } catch (error) {
       logger.error('Error removing team', { component: 'TeamManagementContent', action: 'handleRemoveTeam', data: { teamId } }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في إزالة فريق الابتكار.",
+        title: t('common.error', 'خطأ'),
+        description: t('team_management.team_removal_failed', 'فشل في إزالة فريق الابتكار.'),
         variant: "destructive",
       });
     }
