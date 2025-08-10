@@ -64,7 +64,7 @@ export default function ChallengeDetailPage() {
           departments!challenges_department_id_fkey(id, name_ar, name_en, department_head),
           domains!challenges_domain_id_fkey(id, name_ar, name_en, domain_lead, specialization),
           sub_domains(id, name_ar, technical_focus),
-          services!challenges_service_id_fkey(id, name_ar, name_en, service_type, citizen_facing),
+          services!challenges_service_id_fkey(id, name_ar, service_type, citizen_facing),
           challenge_experts(
             id,
             role_type,
@@ -551,9 +551,9 @@ export default function ChallengeDetailPage() {
                   <label className="text-sm font-medium text-muted-foreground">
                     {language === 'ar' ? 'الخدمة' : 'Service'}
                   </label>
-                  <p className="font-medium" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-                    {language === 'ar' ? challenge.services.name_ar : (challenge.services.name_en || challenge.services.name_ar)}
-                  </p>
+                   <p className="font-medium" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+                     {challenge.services.name_ar}
+                   </p>
                   <p className="text-sm text-muted-foreground">
                     {challenge.services.service_type} {challenge.services.citizen_facing ? '(Citizen Facing)' : '(Internal)'}
                   </p>
