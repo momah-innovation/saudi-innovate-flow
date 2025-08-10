@@ -1,5 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { TypeBadge } from '@/components/ui/TypeBadge';
+import { VisibilityBadge } from '@/components/ui/VisibilityBadge';
 import { Button } from '@/components/ui/button';
 import { CalendarIcon, MapPin, Users, Clock, Ticket, UserMinus } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -19,6 +22,7 @@ interface Event {
   event_type: string;
   event_category: string;
   status: string;
+  visibility?: string;
   max_participants?: number;
   registered_participants: number;
   actual_participants: number;
@@ -129,7 +133,11 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
         </div>
 
         <div className="flex justify-between items-center">
-          <Badge variant="outline">{event.event_type}</Badge>
+          <div className="flex items-center gap-2 flex-wrap">
+            <StatusBadge status={event.status} size="sm" />
+            <TypeBadge type={event.event_type} size="sm" />
+            {event.visibility && <VisibilityBadge visibility={event.visibility} size="sm" />}
+          </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={() => onViewDetails(event)}>
               <Ticket className="h-4 w-4 mr-2" />

@@ -10,6 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { PriorityBadge } from '@/components/ui/PriorityBadge';
+import { SensitivityBadge } from '@/components/ui/SensitivityBadge';
 import { useToast } from "@/hooks/use-toast";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { supabase } from "@/integrations/supabase/client";
@@ -195,10 +198,10 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          <div className="flex items-center gap-4">
-            <Badge variant="outline">{challenge.status}</Badge>
-            <Badge variant="outline">{challenge.priority_level}</Badge>
-            <Badge variant="outline">{challenge.sensitivity_level}</Badge>
+          <div className="flex items-center gap-2 flex-wrap">
+            <StatusBadge status={challenge.status} size="sm" />
+            <PriorityBadge priority={challenge.priority_level} size="sm" />
+            <SensitivityBadge sensitivity={challenge.sensitivity_level} size="sm" />
           </div>
 
           <Tabs defaultValue="access" className="w-full">

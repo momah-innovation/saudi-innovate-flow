@@ -7,6 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { PriorityBadge } from '@/components/ui/PriorityBadge';
+import { SensitivityBadge } from '@/components/ui/SensitivityBadge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -765,10 +768,10 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
               <div>
                 <strong>الوصف:</strong> {formData.description_ar}
               </div>
-              <div className="flex gap-2">
-                <Badge variant="outline">{formData.status}</Badge>
-                <Badge variant="outline">{formData.priority_level}</Badge>
-                <Badge variant="outline">{formData.sensitivity_level}</Badge>
+              <div className="flex gap-2 flex-wrap">
+                <StatusBadge status={formData.status} size="sm" />
+                <PriorityBadge priority={formData.priority_level} size="sm" />
+                <SensitivityBadge sensitivity={formData.sensitivity_level} size="sm" />
               </div>
             </CardContent>
           </Card>

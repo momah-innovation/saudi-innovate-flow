@@ -5,6 +5,9 @@ import { ChallengeWizardV2 } from "./ChallengeWizardV2";
 import { ChallengeDetailView } from "./ChallengeDetailView";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { TypeBadge } from '@/components/ui/TypeBadge';
+import { PriorityBadge } from '@/components/ui/PriorityBadge';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -336,17 +339,17 @@ export function ChallengeManagementList() {
                 viewMode={currentLayout}
                 badges={[
                   { 
-                    label: getStatusLabel(challenge.status),
-                    variant: getStatusColor(challenge.status) as BadgeVariant
+                    label: t(challenge.status, challenge.status),
+                    variant: 'default' as const
                   },
                   { 
-                    label: getPriorityLabel(challenge.priority_level),
-                    variant: getPriorityColor(challenge.priority_level) as BadgeVariant
+                    label: t(challenge.priority_level, challenge.priority_level),
+                    variant: 'outline' as const
                   },
-                  ...(challenge.challenge_type ? [{ 
-                    label: challenge.challenge_type, 
+                  { 
+                    label: t(challenge.challenge_type, challenge.challenge_type), 
                     variant: 'outline' as const 
-                  }] : [])
+                  }
                 ]}
                 metadata={[
                   ...(challenge.start_date ? [{ 
