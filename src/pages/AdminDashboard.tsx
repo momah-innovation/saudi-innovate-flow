@@ -18,7 +18,8 @@ import {
   Download,
   Eye,
   RefreshCw,
-  UserCheck
+  UserCheck,
+  HelpCircle
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -405,6 +406,44 @@ export default function AdminDashboard() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Focus Questions Management</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/focus-questions'}>
+                  <Plus className="w-4 h-4" />
+                  Add Focus Question
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">18</div>
+                      <div className="text-sm text-muted-foreground">Total Questions</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">14</div>
+                      <div className="text-sm text-muted-foreground">Active Questions</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-warning">4</div>
+                      <div className="text-sm text-muted-foreground">Draft Questions</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/focus-questions'}
+                    >
+                      <HelpCircle className="w-4 h-4 mr-2" />
+                      Manage Focus Questions
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="storage" className="space-y-6">
@@ -427,6 +466,16 @@ export default function AdminDashboard() {
                       <div className="text-2xl font-bold text-info">24</div>
                       <div className="text-sm text-muted-foreground">Storage Buckets</div>
                     </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/storage'}
+                    >
+                      <Database className="w-4 h-4 mr-2" />
+                      Manage Storage
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -453,6 +502,16 @@ export default function AdminDashboard() {
                       <div className="text-2xl font-bold text-warning">{dashboardData.pendingUpdates}</div>
                       <div className="text-sm text-muted-foreground">Pending Updates</div>
                     </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/security'}
+                    >
+                      <Shield className="w-4 h-4 mr-2" />
+                      Security Monitor
+                    </Button>
                   </div>
                 </div>
               </CardContent>
