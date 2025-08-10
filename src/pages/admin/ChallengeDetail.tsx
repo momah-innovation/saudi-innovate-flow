@@ -101,7 +101,7 @@ export default function ChallengeDetailPage() {
             team_name,
             status,
             registration_date,
-            profiles(id, display_name, avatar_url)
+            profiles(id, name, name_ar, name_en, profile_image_url)
           ),
           focus_questions!focus_questions_challenge_id_fkey(
             id,
@@ -121,7 +121,7 @@ export default function ChallengeDetailPage() {
             score,
             submission_date,
             submitted_by,
-            profiles(id, display_name, avatar_url)
+            profiles(id, name, name_ar, name_en, profile_image_url)
           )
         `)
         .eq('id', challengeId)
@@ -666,11 +666,11 @@ export default function ChallengeDetailPage() {
                 {challenge.challenge_experts.map((expertLink: any) => (
                   <div key={expertLink.id} className="flex items-center gap-4 p-4 border rounded-lg">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      {expertLink.experts?.profiles?.display_name?.charAt(0) || 'E'}
+                      {(language === 'ar' ? expertLink.experts?.profiles?.name_ar : expertLink.experts?.profiles?.name_en) || expertLink.experts?.profiles?.name?.charAt(0) || 'E'}
                     </div>
                     <div className="flex-1">
                       <h4 className="font-medium">
-                        {expertLink.experts?.profiles?.display_name || language === 'ar' ? 'خبير' : 'Expert'}
+                        {(language === 'ar' ? expertLink.experts?.profiles?.name_ar : expertLink.experts?.profiles?.name_en) || expertLink.experts?.profiles?.name || (language === 'ar' ? 'خبير' : 'Expert')}
                       </h4>
                       <p className="text-sm text-muted-foreground">
                         {language === 'ar' ? 'الدور:' : 'Role:'} {expertLink.role_type}
@@ -750,11 +750,11 @@ export default function ChallengeDetailPage() {
                 {challenge.challenge_participants.slice(0, 9).map((participant: any) => (
                   <div key={participant.id} className="flex items-center gap-3 p-3 border rounded-lg">
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                      {participant.profiles?.display_name?.charAt(0) || 'U'}
+                      {(language === 'ar' ? participant.profiles?.name_ar : participant.profiles?.name_en) || participant.profiles?.name?.charAt(0) || 'U'}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">
-                        {participant.profiles?.display_name || language === 'ar' ? 'مشارك' : 'Participant'}
+                        {(language === 'ar' ? participant.profiles?.name_ar : participant.profiles?.name_en) || participant.profiles?.name || (language === 'ar' ? 'مشارك' : 'Participant')}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {participant.participation_type}
@@ -811,7 +811,7 @@ export default function ChallengeDetailPage() {
                     )}
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <span>
-                        {language === 'ar' ? 'بواسطة:' : 'By:'} {submission.profiles?.display_name || language === 'ar' ? 'مشارك' : 'Participant'}
+                        {language === 'ar' ? 'بواسطة:' : 'By:'} {(language === 'ar' ? submission.profiles?.name_ar : submission.profiles?.name_en) || submission.profiles?.name || (language === 'ar' ? 'مشارك' : 'Participant')}
                       </span>
                       {submission.submission_date && (
                         <span>
