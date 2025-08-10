@@ -71,8 +71,8 @@ const FocusQuestionsManagement = () => {
     } catch (error) {
       // Failed to fetch focus questions data
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل البيانات",
+        title: t('focus_questions.load_error_title'),
+        description: t('focus_questions.load_error_description'),
         variant: "destructive",
       });
     } finally {
@@ -92,7 +92,7 @@ const FocusQuestionsManagement = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('هل أنت متأكد من حذف هذا السؤال المحوري؟')) return;
+    if (!confirm(t('focus_questions.delete_confirm'))) return;
     
     try {
       const { error } = await supabase
@@ -103,16 +103,16 @@ const FocusQuestionsManagement = () => {
       if (error) throw error;
 
       toast({
-        title: "نجح",
-        description: "تم حذف السؤال المحوري بنجاح",
+        title: t('focus_questions.delete_success_title'),
+        description: t('focus_questions.delete_success_description'),
       });
 
       fetchData();
     } catch (error) {
       // Failed to delete focus question
       toast({
-        title: "خطأ",
-        description: "فشل في حذف السؤال المحوري",
+        title: t('focus_questions.delete_error_title'),
+        description: t('focus_questions.delete_error_description'),
         variant: "destructive",
       });
     }
@@ -125,11 +125,11 @@ const FocusQuestionsManagement = () => {
 
   return (
     <PageLayout
-      title="إدارة الأسئلة المحورية"
-      description="إدارة الأسئلة المحورية للتحديات"
+      title={t('focus_questions.management_title')}
+      description={t('focus_questions.management_description')}
       itemCount={filteredQuestions.length}
       primaryAction={{
-        label: "إضافة سؤال محوري",
+        label: t('focus_questions.add_question'),
         icon: <Plus className="w-4 h-4" />,
         onClick: () => {
           setEditingQuestion(null);
@@ -142,7 +142,7 @@ const FocusQuestionsManagement = () => {
       <div className="mb-6">
         <Input
           type="text"
-          placeholder="البحث في الأسئلة..."
+          placeholder={t('focus_questions.search_placeholder')}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-md"
@@ -157,10 +157,10 @@ const FocusQuestionsManagement = () => {
       ) : filteredQuestions.length === 0 ? (
         <EmptyState
           icon={<HelpCircle className="w-12 h-12 text-muted-foreground" />}
-          title="لا توجد أسئلة محورية"
-          description="ابدأ بإنشاء سؤال محوري جديد لتوجيه المبتكرين"
+          title={t('focus_questions.no_questions_title')}
+          description={t('focus_questions.no_questions_description')}
           action={{
-            label: "إنشاء سؤال محوري",
+            label: t('focus_questions.create_question'),
             onClick: () => {
               setEditingQuestion(null);
               setShowWizard(true);
@@ -183,12 +183,12 @@ const FocusQuestionsManagement = () => {
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">{question.question_type}</Badge>
                     {question.is_sensitive && (
-                      <Badge variant="destructive">حساس</Badge>
+                      <Badge variant="destructive">{t('focus_questions.sensitive_label')}</Badge>
                     )}
                   </div>
                   {question.challenge?.title_ar && (
                     <p className="text-sm text-muted-foreground">
-                      التحدي: {question.challenge.title_ar}
+                      {t('focus_questions.challenge_prefix')} {question.challenge.title_ar}
                     </p>
                   )}
                   <div className="flex justify-end gap-2 mt-4">
@@ -197,14 +197,14 @@ const FocusQuestionsManagement = () => {
                       variant="outline"
                       onClick={() => handleEdit(question)}
                     >
-                      تعديل
+                      {t('focus_questions.edit_action')}
                     </Button>
                     <Button
                       size="sm"
                       variant="destructive"
                       onClick={() => handleDelete(question.id)}
                     >
-                      حذف
+                      {t('focus_questions.delete_action')}
                     </Button>
                   </div>
                 </div>

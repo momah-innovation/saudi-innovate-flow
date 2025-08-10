@@ -199,6 +199,19 @@ export class TranslationProgressTracker {
     });
 
     this.addFix({
+      id: 'focus-questions-management-legacy',
+      component: 'FocusQuestionsManagement',
+      file: 'src/components/admin/FocusQuestionsManagement.tsx',
+      category: 'management',
+      priority: 'high',
+      status: 'completed',
+      estimatedStrings: 20,
+      fixedStrings: 20,
+      addedTranslationKeys: 20,
+      description: 'Focus questions management interface with filters and actions'
+    });
+
+    this.addFix({
       id: 'shared-components',
       component: 'Shared Components',
       file: 'src/components/shared/*',
