@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTranslation } from 'react-i18next';
 import { Filter, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -38,7 +39,7 @@ export function FilterPanel({
   activeFiltersCount = 0,
   className
 }: FilterPanelProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   const renderFilter = (filter: FilterConfig) => {
     const value = values[filter.key] || (filter.type === 'multi-select' ? [] : '');

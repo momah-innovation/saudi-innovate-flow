@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTranslation } from 'react-i18next';
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -51,7 +52,7 @@ export function DataTable<T extends Record<string, any>>({
   emptyState,
   className
 }: DataTableProps<T>) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   const getSortIcon = (columnKey: string) => {
     if (!sortConfig || sortConfig.field !== columnKey) {

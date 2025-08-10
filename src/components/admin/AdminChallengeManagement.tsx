@@ -6,6 +6,8 @@ import { ChallengeWizard } from "./ChallengeWizard";
 import { ChallengeSettings } from "./ChallengeSettings";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { PriorityBadge } from '@/components/ui/PriorityBadge';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
@@ -130,25 +132,6 @@ export function AdminChallengeManagement() {
     setShowDetails(true);
   }, [setSelectedChallenge, setShowDetails]);
 
-  const getStatusColor = useCallback((status: string) => {
-    switch (status) {
-      case 'draft': return 'secondary';
-      case 'active': return 'default';
-      case 'completed': return 'success';
-      case 'cancelled': return 'destructive';
-      case 'on_hold': return 'warning';
-      default: return 'secondary';
-    }
-  }, []);
-
-  const getPriorityColor = useCallback((priority: string) => {
-    switch (priority) {
-      case 'high': return 'destructive';
-      case 'medium': return 'warning';
-      case 'low': return 'secondary';
-      default: return 'secondary';
-    }
-  }, []);
 
   const getStatusLabel = useCallback((status: string) => {
     return t(`status.${status}`) || status;
@@ -225,14 +208,8 @@ export function AdminChallengeManagement() {
             title={challenge.title_ar}
             description={challenge.description_ar}
             badges={[
-                { 
-                label: getStatusLabel(challenge.status),
-                variant: getStatusColor(challenge.status) as "default" | "secondary" | "destructive" | "outline"
-              },
-              { 
-                label: getPriorityLabel(challenge.priority_level),
-                variant: getPriorityColor(challenge.priority_level) as "default" | "secondary" | "destructive" | "outline"
-              },
+              { label: getStatusLabel(challenge.status), variant: 'secondary' as const },
+              { label: getPriorityLabel(challenge.priority_level), variant: 'outline' as const },
               ...(challenge.challenge_type ? [{ 
                 label: challenge.challenge_type, 
                 variant: 'outline' as const 
@@ -364,15 +341,11 @@ export function AdminChallengeManagement() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h4 className="font-semibold mb-2">{t('status')}</h4>
-                  <Badge variant={getStatusColor(selectedChallenge.status) as "default" | "secondary" | "destructive" | "outline"}>
-                    {getStatusLabel(selectedChallenge.status)}
-                  </Badge>
+                  <StatusBadge status={selectedChallenge.status} size="sm" />
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">{t('priority')}</h4>
-                  <Badge variant={getPriorityColor(selectedChallenge.priority_level) as "default" | "secondary" | "destructive" | "outline"}>
-                    {getPriorityLabel(selectedChallenge.priority_level)}
-                  </Badge>
+                  <PriorityBadge priority={selectedChallenge.priority_level} size="sm" />
                 </div>
               </div>
 

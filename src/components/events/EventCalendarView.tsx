@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { TypeBadge } from '@/components/ui/TypeBadge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { 
   Calendar,
@@ -301,9 +302,7 @@ export const EventCalendarView = ({
                           )}
                         </div>
                       </div>
-                      <Badge variant="outline" className={cn("ml-2", getEventTypeColor(event.event_type), "text-white")}>
-                        {event.event_type}
-                      </Badge>
+                      <TypeBadge type={event.event_type} size="sm" />
                     </div>
                   </div>
                 ))}

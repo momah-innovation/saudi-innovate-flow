@@ -3,6 +3,7 @@ import { Search, X, FileText, Users, Calendar, Target, Building, Lightbulb } fro
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { TypeBadge } from '@/components/ui/TypeBadge';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -402,12 +403,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
                       <div className="flex-1 min-w-0">
                         <div className={cn("flex items-center gap-2 mb-1", isRTL ? "flex-row-reverse" : "")}>
                           <h4 className="font-medium text-sm truncate">{result.title}</h4>
-                          <Badge 
-                            variant="secondary" 
-                            className={cn("text-xs", getTypeColor(result.type))}
-                          >
-                            {getTypeLabel(result.type)}
-                          </Badge>
+                          <TypeBadge type={result.type} size="sm" />
                         </div>
                         {result.description && (
                           <p className="text-xs text-muted-foreground truncate">

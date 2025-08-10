@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTranslation } from 'react-i18next';
 import { Plus, Filter, Download, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -103,7 +104,7 @@ export function ActionPanel({
   onClearFilters,
   className
 }: ActionPanelProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   return (
     <div className={`space-y-4 ${className || ''}`}>

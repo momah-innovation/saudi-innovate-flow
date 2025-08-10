@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -33,7 +34,7 @@ export function Pagination({
   pageSizeOptions = [10, 20, 50, 100],
   className
 }: PaginationProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   const startItem = Math.min((currentPage - 1) * pageSize + 1, totalItems);
   const endItem = Math.min(currentPage * pageSize, totalItems);

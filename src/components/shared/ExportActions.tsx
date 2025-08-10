@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTranslation } from 'react-i18next';
 import { Download, FileText, FileSpreadsheet, FileImage } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -64,7 +65,7 @@ export function ExportActions({
   disabled = false,
   className
 }: ExportActionsProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   const handleExport = async (format: string) => {
     try {

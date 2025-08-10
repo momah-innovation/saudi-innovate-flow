@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { TypeBadge } from '@/components/ui/TypeBadge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -168,9 +169,7 @@ export const AdminEventCard = ({
                   <Badge className={getStatusColor(event.status)}>
                     {getStatusText(event.status)}
                   </Badge>
-                  <Badge className={getEventTypeColor(event.event_type)}>
-                    {event.event_type}
-                  </Badge>
+                  <TypeBadge type={event.event_type} size="sm" />
                 </div>
               </div>
 
@@ -326,9 +325,7 @@ export const AdminEventCard = ({
               {event.description_ar}
             </p>
           </div>
-          <Badge className={getEventTypeColor(event.event_type)}>
-            {event.event_type}
-          </Badge>
+          <TypeBadge type={event.event_type} size="sm" />
         </div>
 
         {/* Event Meta */}

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Camera, Upload, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from './button';
@@ -22,7 +23,7 @@ export function AvatarUpload({
   size = 'md',
   showUploadButton = true 
 }: AvatarUploadProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [uploading, setUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(currentAvatarUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
