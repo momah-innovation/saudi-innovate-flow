@@ -506,8 +506,8 @@ export function IdeasManagementList({
           </div>
         ) : filteredIdeas.length === 0 ? (
           <EmptyState
-            title="لا توجد أفكار"
-            description="لم يتم العثور على أفكار مطابقة للفلاتر المحددة"
+            title={t('ideas.no_ideas_found', 'لا توجد أفكار')}
+            description={t('ideas.no_matching_ideas', 'لم يتم العثور على أفكار مطابقة للفلاتر المحددة')}
             action={{
               label: "فكرة جديدة",
               onClick: () => setShowWizard(true)

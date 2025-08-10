@@ -471,7 +471,7 @@ export function ChallengeDetailView({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-muted-foreground">لا توجد أسئلة محورية مرتبطة</p>
+                      <p className="text-sm text-muted-foreground">{t('challenge.no_focus_questions', 'لا توجد أسئلة محورية مرتبطة')}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -505,7 +505,7 @@ export function ChallengeDetailView({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-muted-foreground">لا توجد فعاليات مرتبطة</p>
+                      <p className="text-sm text-muted-foreground">{t('challenge.no_related_events', 'لا توجد فعاليات مرتبطة')}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -549,7 +549,7 @@ export function ChallengeDetailView({
                         )}
                       </div>
                     ) : (
-                      <p className="text-sm text-muted-foreground">لا توجد أفكار مقترحة</p>
+                      <p className="text-sm text-muted-foreground">{t('challenge.no_suggested_ideas', 'لا توجد أفكار مقترحة')}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -602,7 +602,7 @@ export function ChallengeDetailView({
                         </div>
                       </div>
                     ) : (
-                      <p className="text-sm text-muted-foreground">لا توجد بيانات تنفيذ متاحة</p>
+                      <p className="text-sm text-muted-foreground">{t('challenge.no_implementation_data', 'لا توجد بيانات تنفيذ متاحة')}</p>
                     )}
                   </CardContent>
                 </Card>

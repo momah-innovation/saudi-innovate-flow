@@ -181,7 +181,7 @@ export function InnovationTeamsContent({
       logger.error('Error fetching core team data', { component: 'InnovationTeamsContent', action: 'fetchCoreTeamData' }, error as Error);
       toast({
         title: "خطأ",
-        description: "فشل في تحميل بيانات فريق الابتكار الأساسي.",
+        description: t('errors.failed_to_load_core_team_data', 'فشل في تحميل بيانات فريق الابتكار الأساسي.'),
         variant: "destructive",
       });
     } finally {
