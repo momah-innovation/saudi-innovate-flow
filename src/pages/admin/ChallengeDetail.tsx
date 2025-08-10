@@ -103,7 +103,7 @@ export default function ChallengeDetailPage() {
             registration_date,
             profiles(id, display_name, avatar_url)
           ),
-          focus_questions(
+          focus_questions!focus_questions_challenge_id_fkey(
             id,
             question_text_ar,
             question_text_en,

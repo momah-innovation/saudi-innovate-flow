@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, MoreHorizontal } from "lucide-react"
-import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+
 
 import { cn } from "@/lib/utils"
 
@@ -11,8 +11,7 @@ const Breadcrumb = React.forwardRef<
     separator?: React.ReactNode
   }
 >(({ ...props }, ref) => {
-  const { t } = useUnifiedTranslation();
-  return <nav ref={ref} aria-label={t('breadcrumb') || 'Breadcrumb navigation'} {...props} />
+  return <nav ref={ref} aria-label="Breadcrumb navigation" {...props} />;
 })
 Breadcrumb.displayName = "Breadcrumb"
 
@@ -96,7 +95,6 @@ const BreadcrumbEllipsis = ({
   className,
   ...props
 }: React.ComponentProps<"span">) => {
-  const { t } = useUnifiedTranslation();
   return (
     <span
       role="presentation"
@@ -105,7 +103,7 @@ const BreadcrumbEllipsis = ({
       {...props}
     >
       <MoreHorizontal className="h-4 w-4" />
-      <span className="sr-only">{t('more') || 'More'}</span>
+      <span className="sr-only">More</span>
     </span>
   );
 }
