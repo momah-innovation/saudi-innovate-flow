@@ -12,7 +12,7 @@ const Breadcrumb = React.forwardRef<
   }
 >(({ ...props }, ref) => {
   const { t } = useUnifiedTranslation();
-  return <nav ref={ref} aria-label={t('breadcrumb')} {...props} />
+  return <nav ref={ref} aria-label={t('breadcrumb') || 'Breadcrumb navigation'} {...props} />
 })
 Breadcrumb.displayName = "Breadcrumb"
 
@@ -105,7 +105,7 @@ const BreadcrumbEllipsis = ({
       {...props}
     >
       <MoreHorizontal className="h-4 w-4" />
-      <span className="sr-only">{t('more')}</span>
+      <span className="sr-only">{t('more') || 'More'}</span>
     </span>
   );
 }
