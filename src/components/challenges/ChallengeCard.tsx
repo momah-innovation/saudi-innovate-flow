@@ -7,13 +7,14 @@ import { Progress } from '@/components/ui/progress';
 import { IconActionButton } from '@/components/ui/icon-action-button';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { TypeBadge } from '@/components/ui/TypeBadge';
+import { PriorityBadge } from '@/components/ui/PriorityBadge';
 import { 
   CalendarIcon, Target, Users, Award, Star, Eye, BookmarkIcon, 
   TrendingUp, Clock, Zap, CheckCircle, AlertCircle, Heart,
   Share2, MessageSquare, Trophy
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 import { getStatusMapping, getPriorityMapping, getDifficultyMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 
@@ -62,7 +63,7 @@ export const ChallengeCard = ({
   variant = 'enhanced'
 }: ChallengeCardProps) => {
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
@@ -209,9 +210,7 @@ export const ChallengeCard = ({
                     {challenge.challenge_type && (
                       <TypeBadge type={challenge.challenge_type} size="sm" />
                     )}
-                    <Badge className={getPriorityColor(challenge.priority_level || 'متوسط')}>
-                      {challenge.priority_level || 'متوسط'}
-                    </Badge>
+                    <PriorityBadge priority={challenge.priority_level || 'medium'} size="sm" />
                   </div>
 
                   <div className="flex items-center gap-1">
@@ -359,9 +358,7 @@ export const ChallengeCard = ({
               {description}
             </CardDescription>
           </div>
-          <Badge className={getPriorityColor(challenge.priority_level || 'متوسط')}>
-            {challenge.priority_level || 'متوسط'}
-          </Badge>
+          <PriorityBadge priority={challenge.priority_level || 'medium'} size="sm" />
         </div>
 
         {/* Challenge Type & Difficulty */}

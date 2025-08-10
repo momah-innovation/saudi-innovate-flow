@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { TypeBadge } from '@/components/ui/TypeBadge';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -213,24 +215,6 @@ export function PartnersManagement() {
     });
   };
 
-  const getPartnerTypeColor = (type: string) => {
-    const colors: Record<string, string> = {
-      academic: "badge-info",
-      corporate: "badge-success",
-      government: "badge-innovation",
-      ngo: "badge-warning"
-    };
-    return colors[type] || "bg-muted text-muted-foreground";
-  };
-
-  const getStatusColor = (status: string) => {
-    const colors: Record<string, string> = {
-      active: "badge-success",
-      inactive: "badge-error",
-      pending: "badge-warning"
-    };
-    return colors[status] || "bg-muted text-muted-foreground";
-  };
 
   if (isLoading) {
     return <div className="flex justify-center p-8">Loading...</div>;
@@ -419,12 +403,8 @@ export function PartnersManagement() {
                     <p className="text-muted-foreground">{viewingPartner.name_ar}</p>
                   )}
                   <div className="flex gap-2 mt-2">
-                    <Badge className={getPartnerTypeColor(viewingPartner.partner_type || '')}>
-                      {viewingPartner.partner_type}
-                    </Badge>
-                    <Badge className={getStatusColor(viewingPartner.status)}>
-                      {viewingPartner.status}
-                    </Badge>
+                    <TypeBadge type={viewingPartner.partner_type || ''} size="sm" />
+                    <StatusBadge status={viewingPartner.status} size="sm" />
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -526,12 +506,8 @@ export function PartnersManagement() {
                     <h3 className="font-medium">{partner.name}</h3>
                   </div>
                   <div className="flex gap-2">
-                    <Badge variant="outline" className={getPartnerTypeColor(partner.partner_type || '')}>
-                      {partner.partner_type}
-                    </Badge>
-                    <Badge className={getStatusColor(partner.status)}>
-                      {partner.status}
-                    </Badge>
+                    <TypeBadge type={partner.partner_type || ''} size="sm" />
+                    <StatusBadge status={partner.status} size="sm" />
                   </div>
                   {partner.contact_person && (
                     <p className="text-sm text-muted-foreground mt-1">

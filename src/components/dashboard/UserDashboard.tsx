@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -281,15 +282,7 @@ export default function UserDashboard() {
   };
 
   const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      pending: { variant: 'secondary', text: currentLanguage === 'ar' ? 'قيد الانتظار' : 'Pending' },
-      under_review: { variant: 'default', text: currentLanguage === 'ar' ? 'قيد المراجعة' : 'Under Review' },
-      approved: { variant: 'default', text: currentLanguage === 'ar' ? 'موافق عليها' : 'Approved' },
-      rejected: { variant: 'destructive', text: currentLanguage === 'ar' ? 'مرفوضة' : 'Rejected' },
-    };
-    
-    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
-    return <Badge variant={config.variant as 'default' | 'secondary' | 'destructive' | 'outline'}>{config.text}</Badge>;
+    return <StatusBadge status={status} size="sm" />;
   };
 
   const getGoalIcon = (type: string) => {
