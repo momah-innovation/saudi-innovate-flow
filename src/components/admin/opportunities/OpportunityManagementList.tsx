@@ -312,7 +312,7 @@ export function OpportunityManagementList({
         {
           icon: <MapPin className="w-4 h-4" />,
           label: "الموقع",
-          value: opportunity.is_remote ? "عن بُعد" : (opportunity.location || "غير محدد")
+          value: opportunity.is_remote ? t('location.remote', 'عن بُعد') : (opportunity.location || t('location.not_specified', 'غير محدد'))
         },
         {
           icon: <Users className="w-4 h-4" />,
@@ -388,7 +388,7 @@ export function OpportunityManagementList({
         <div className="flex items-center gap-2">
           {selectedItems.length > 0 && (
             <Badge variant="secondary">
-              {selectedItems.length} محدد
+              {selectedItems.length} {t('ui.selected', 'محدد')}
             </Badge>
           )}
           
@@ -396,7 +396,7 @@ export function OpportunityManagementList({
             checked={selectedItems.length === opportunities.length}
             onCheckedChange={handleSelectAll}
           />
-          <span className="text-sm text-muted-foreground">تحديد الكل</span>
+          <span className="text-sm text-muted-foreground">{t('ui.select_all', 'تحديد الكل')}</span>
         </div>
       </div>
 

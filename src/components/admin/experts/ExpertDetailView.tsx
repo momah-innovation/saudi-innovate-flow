@@ -287,7 +287,7 @@ export function ExpertDetailView({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="w-5 h-5" />
-                  الأنشطة الأخيرة
+                  {t('expert.recent_activities', 'الأنشطة الأخيرة')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -297,7 +297,7 @@ export function ExpertDetailView({
                       <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
                         <CheckCircle className="w-4 h-4 mt-1 icon-success" />
                         <div className="flex-1">
-                          <p className="font-medium">نشاط جديد</p>
+                          <p className="font-medium">{t('expert.new_activity', 'نشاط جديد')}</p>
                           <p className="text-sm text-muted-foreground">
                             {format(new Date(), 'dd/MM/yyyy')}
                           </p>
@@ -307,7 +307,7 @@ export function ExpertDetailView({
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground text-center py-4">
-                    لا توجد أنشطة حديثة
+                    {t('expert.no_recent_activities', 'لا توجد أنشطة حديثة')}
                   </p>
                 )}
               </CardContent>

@@ -67,14 +67,14 @@ export function FocusQuestionCard({
       impact: 'تأثير',
       implementation: 'تنفيذ',
       social: 'اجتماعي',
-      ethical: 'أخلاقي',
-      medical: 'طبي',
-      regulatory: 'تنظيمي',
-      open_ended: 'سؤال مفتوح',
-      multiple_choice: 'متعدد الخيارات',
-      yes_no: 'نعم/لا',
-      rating: 'تقييم',
-      ranking: 'ترتيب'
+      ethical: t('question_category.ethical', 'أخلاقي'),
+      medical: t('question_category.medical', 'طبي'),
+      regulatory: t('question_category.regulatory', 'تنظيمي'),
+      open_ended: t('question_type.open_ended', 'سؤال مفتوح'),
+      multiple_choice: t('question_type.multiple_choice', 'متعدد الخيارات'),
+      yes_no: t('question_type.yes_no', 'نعم/لا'),
+      rating: t('question_type.rating', 'تقييم'),
+      ranking: t('question_type.ranking', 'ترتيب')
     };
     return labels[type as keyof typeof labels] || type;
   };

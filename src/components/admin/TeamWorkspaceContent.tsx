@@ -452,7 +452,7 @@ export function TeamWorkspaceContent({
           </div>
 
           <div>
-            <h3 className="font-medium mb-3">الأنشطة الحديثة</h3>
+            <h3 className="font-medium mb-3">{t('workspace.recent_activities', 'الأنشطة الحديثة')}</h3>
             <ScrollArea className="h-40">
               <div className="space-y-3">
                 {[
@@ -581,7 +581,7 @@ export function TeamWorkspaceContent({
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Activity className="h-5 w-5" />
-              آخر الأنشطة
+              {t('workspace.latest_activities', 'آخر الأنشطة')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -922,7 +922,7 @@ export function TeamWorkspaceContent({
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm">الأعضاء النشطون</CardTitle>
+            <CardTitle className="text-sm">{t('workspace.active_members', 'الأعضاء النشطون')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-success">

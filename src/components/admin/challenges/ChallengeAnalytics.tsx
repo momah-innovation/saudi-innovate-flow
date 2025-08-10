@@ -243,7 +243,7 @@ export function ChallengeAnalytics() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">التحديات النشطة</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('challenges.active_challenges', 'التحديات النشطة')}</p>
                 <p className="text-3xl font-bold text-success">{analytics.overview.activeChallenges}</p>
               </div>
               <CheckCircle className="w-8 h-8 icon-success" />

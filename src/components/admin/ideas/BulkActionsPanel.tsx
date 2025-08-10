@@ -311,7 +311,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
           <DialogHeader>
             <DialogTitle>تغيير حالة الأفكار</DialogTitle>
             <DialogDescription>
-              تغيير حالة {selectedItems.length} فكرة محددة
+              {t('bulk_actions.change_status_for_selected', 'تغيير حالة {{count}} فكرة محددة', { count: selectedItems.length })}
             </DialogDescription>
           </DialogHeader>
           

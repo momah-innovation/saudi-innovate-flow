@@ -440,8 +440,12 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                     <SelectContent>
                       {challengeStatusOptions.map(status => (
                         <SelectItem key={status} value={status}>
-                          {status === 'draft' ? 'مسودة' : status === 'published' ? 'منشور' : status === 'active' ? 'نشط' : 
-                           status === 'closed' ? 'مغلق' : status === 'archived' ? 'مؤرشف' : status === 'completed' ? 'مكتمل' : status}
+                          {status === 'draft' ? t('status.draft', 'مسودة') : 
+                           status === 'published' ? t('status.published', 'منشور') : 
+                           status === 'active' ? t('status.active', 'نشط') : 
+                           status === 'closed' ? t('status.closed', 'مغلق') : 
+                           status === 'archived' ? t('status.archived', 'مؤرشف') : 
+                           status === 'completed' ? t('status.completed', 'مكتمل') : status}
                         </SelectItem>
                       ))}
                     </SelectContent>

@@ -23,6 +23,7 @@ import {
 import { CoreTeamMemberData } from './core-team-card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 
 interface CoreTeamDetailDialogProps {
@@ -77,6 +78,7 @@ export function CoreTeamDetailDialog({
   children
 }: CoreTeamDetailDialogProps) {
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const [loading, setLoading] = useState(false);
   const [relatedData, setRelatedData] = useState<RelatedData>({
     campaigns: [],
@@ -469,7 +471,7 @@ export function CoreTeamDetailDialog({
       ) : (
         <div className="text-center py-8 text-muted-foreground">
           <Activity className="h-8 w-8 mx-auto mb-2" />
-          <p>لا توجد أنشطة مسجلة</p>
+          <p>{t('team.no_activities_recorded', 'لا توجد أنشطة مسجلة')}</p>
         </div>
       )}
     </div>
