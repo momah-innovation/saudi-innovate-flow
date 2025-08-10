@@ -146,7 +146,7 @@ export function ExpertDetailView({
                   <div>
                     <h4 className="font-semibold mb-1 text-sm">الإيميل</h4>
                     <p className="text-sm text-muted-foreground">
-                      {expert.profiles?.email || 'غير محدد'}
+                      {expert.profiles?.email || t('common.not_specified', 'غير محدد')}
                     </p>
                   </div>
                   <div>
@@ -164,7 +164,7 @@ export function ExpertDetailView({
                   <div>
                     <h4 className="font-semibold mb-1 text-sm">الحد الأقصى للمشاريع</h4>
                     <p className="text-sm text-muted-foreground">
-                      {expert.max_concurrent_projects || 'غير محدد'}
+                      {expert.max_concurrent_projects || t('common.not_specified', 'غير محدد')}
                     </p>
                   </div>
                 </div>

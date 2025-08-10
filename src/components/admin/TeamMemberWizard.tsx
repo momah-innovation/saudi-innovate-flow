@@ -414,10 +414,10 @@ export function TeamMemberWizard({
                       <User className="w-8 h-8 text-primary" />
                       <div>
                         <h3 className="font-medium">
-                          {availableUsers.find(u => u.id === formData.user_id)?.name || "غير محدد"}
+                          {availableUsers.find(u => u.id === formData.user_id)?.name || t('common.not_specified', 'غير محدد')}
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          {availableUsers.find(u => u.id === formData.user_id)?.email || "غير محدد"}
+                          {availableUsers.find(u => u.id === formData.user_id)?.email || t('common.not_specified', 'غير محدد')}
                         </p>
                       </div>
                     </div>

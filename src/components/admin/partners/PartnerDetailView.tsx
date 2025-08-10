@@ -157,14 +157,14 @@ export function PartnerDetailView({
                     <h4 className="font-semibold mb-1 text-sm">البريد الإلكتروني</h4>
                     <p className="text-sm text-muted-foreground flex items-center gap-1">
                       <Mail className="w-4 h-4" />
-                      {partner.contact_email || 'غير محدد'}
+                      {partner.contact_email || t('common.not_specified', 'غير محدد')}
                     </p>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-1 text-sm">الهاتف</h4>
                     <p className="text-sm text-muted-foreground flex items-center gap-1">
                       <Phone className="w-4 h-4" />
-                      {partner.contact_phone || 'غير محدد'}
+                      {partner.contact_phone || t('common.not_specified', 'غير محدد')}
                     </p>
                   </div>
                   <div>
