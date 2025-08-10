@@ -430,7 +430,7 @@ export function OrganizationalStructureManagement() {
                     <Label>{t('form.deputy_label')}</Label>
                     <Select value={departmentForm.deputy_id} onValueChange={(value) => setDepartmentForm({...departmentForm, deputy_id: value})}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select deputy" />
+                        <SelectValue placeholder={t('admin.select_deputy', 'Select deputy')} />
                       </SelectTrigger>
                       <SelectContent>
                         {deputies.map((deputy) => (
@@ -499,7 +499,7 @@ export function OrganizationalStructureManagement() {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>{editingDomain ? "Edit Domain" : "Add New Domain"}</DialogTitle>
+                  <DialogTitle>{editingDomain ? t('admin.edit_domain', 'Edit Domain') : t('admin.add_new_domain', 'Add New Domain')}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleDomainSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -524,7 +524,7 @@ export function OrganizationalStructureManagement() {
                     <Label>{t('form.department_label')}</Label>
                     <Select value={domainForm.department_id} onValueChange={(value) => setDomainForm({...domainForm, department_id: value})}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select department" />
+                        <SelectValue placeholder={t('admin.select_department', 'Select department')} />
                       </SelectTrigger>
                       <SelectContent>
                         {departments.map((department) => (

@@ -32,7 +32,7 @@ interface SystemListSettingsProps {
 
 export function SystemListSettings({ settings, onSettingChange }: SystemListSettingsProps) {
   const { toast } = useToast();
-  const { t } = useUnifiedTranslation();
+  const { t, getDynamicText } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [editingList, setEditingList] = useState<string | null>(null);
   const [newItem, setNewItem] = useState("");
@@ -65,19 +65,19 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
   };
 
   const listLabels = {
-    challenge_types: isRTL ? "أنواع التحديات" : "Challenge Types",
-    priority_levels: isRTL ? "مستويات الأولوية" : "Priority Levels",
-    status_options: isRTL ? "خيارات الحالة" : "Status Options",
-    event_types: isRTL ? "أنواع الفعاليات" : "Event Types",
-    event_categories: isRTL ? "فئات الفعاليات" : "Event Categories",
-    stakeholder_categories: isRTL ? "فئات المعنيين" : "Stakeholder Categories",
-    relationship_types: isRTL ? "أنواع العلاقات" : "Relationship Types",
-    team_specializations: isRTL ? "تخصصات الفريق" : "Team Specializations",
-    expert_roles: isRTL ? "أدوار الخبراء" : "Expert Roles",
-    idea_assignment_types: isRTL ? "أنواع تكليف الأفكار" : "Idea Assignment Types",
-    evaluator_types: isRTL ? "أنواع المقيمين" : "Evaluator Types",
-    campaign_themes: isRTL ? "مواضيع الحملات" : "Campaign Themes",
-    analytics_metrics: isRTL ? "مقاييس التحليلات" : "Analytics Metrics"
+    challenge_types: getDynamicText("أنواع التحديات", "Challenge Types"),
+    priority_levels: getDynamicText("مستويات الأولوية", "Priority Levels"),
+    status_options: getDynamicText("خيارات الحالة", "Status Options"),
+    event_types: getDynamicText("أنواع الفعاليات", "Event Types"),
+    event_categories: getDynamicText("فئات الفعاليات", "Event Categories"),
+    stakeholder_categories: getDynamicText("فئات المعنيين", "Stakeholder Categories"),
+    relationship_types: getDynamicText("أنواع العلاقات", "Relationship Types"),
+    team_specializations: getDynamicText("تخصصات الفريق", "Team Specializations"),
+    expert_roles: getDynamicText("أدوار الخبراء", "Expert Roles"),
+    idea_assignment_types: getDynamicText("أنواع تكليف الأفكار", "Idea Assignment Types"),
+    evaluator_types: getDynamicText("أنواع المقيمين", "Evaluator Types"),
+    campaign_themes: getDynamicText("مواضيع الحملات", "Campaign Themes"),
+    analytics_metrics: getDynamicText("مقاييس التحليلات", "Analytics Metrics")
   };
 
   const addItem = (listKey: string) => {

@@ -300,7 +300,7 @@ const TranslationManagement = () => {
                 <Label htmlFor="new-category">Category</Label>
                 <Select value={newTranslation.category} onValueChange={(value) => setNewTranslation(prev => ({ ...prev, category: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue placeholder={t('admin.select_category', 'Select category')} />
                   </SelectTrigger>
                   <SelectContent>
                     {categories.length > 0 ? categories.map(category => (
@@ -324,7 +324,7 @@ const TranslationManagement = () => {
                 <Label htmlFor="new-english">English Text</Label>
                 <Textarea
                   id="new-english"
-                  placeholder="English translation"
+                  placeholder={t('admin.english_translation', 'English translation')}
                   value={newTranslation.en}
                   onChange={(e) => setNewTranslation(prev => ({ ...prev, en: e.target.value }))}
                 />

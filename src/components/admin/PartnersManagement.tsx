@@ -239,7 +239,7 @@ export function PartnersManagement() {
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{editingPartner ? "Edit Partner" : "Add New Partner"}</DialogTitle>
+              <DialogTitle>{editingPartner ? t('admin.edit_partner', 'Edit Partner') : t('admin.add_new_partner', 'Add New Partner')}</DialogTitle>
               <DialogDescription>
                 {editingPartner ? "Update formal partnership details" : "Add a new business partner or strategic collaborator"}
               </DialogDescription>

@@ -177,7 +177,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="John Doe"
+                  placeholder={t('admin.full_name_placeholder', 'John Doe')}
                 />
               </div>
             </div>
@@ -205,7 +205,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
               <Input
                 value={formData.position}
                 onChange={(e) => setFormData(prev => ({ ...prev, position: e.target.value }))}
-                placeholder="Software Engineer"
+                placeholder={t('admin.job_title_placeholder', 'Software Engineer')}
               />
             </div>
           </div>
