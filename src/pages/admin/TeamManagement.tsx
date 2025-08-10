@@ -6,13 +6,33 @@ import { UserPlus, Users } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useAuth } from "@/contexts/AuthContext";
+import { useDirection } from "@/components/ui/direction-provider";
 
 export default function TeamManagement() {
   const { t } = useUnifiedTranslation();
+  const { hasRole } = useAuth();
+  const { isRTL } = useDirection();
   const [activeTab, setActiveTab] = useState('teams');
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
+
+  // Check if user has admin access
+  if (!hasRole('admin') && !hasRole('super_admin')) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-2">
+            {isRTL ? 'غير مصرح لك بالوصول' : 'Access Denied'}
+          </h2>
+          <p className="text-muted-foreground">
+            {isRTL ? 'هذه الصفحة مخصصة للمديرين فقط' : 'This page is only accessible to administrators'}
+          </p>
+        </div>
+      </div>
+    );
+  }
   
   const secondaryActions = (
     <>
