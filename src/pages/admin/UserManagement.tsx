@@ -28,30 +28,30 @@ export default function UserManagement() {
   const users = [
     {
       id: 1,
-      name: "أحمد محمد",
+      name: t("sample_user_ahmed"),
       email: "ahmed.mohamed@example.com",
-      role: "مدير",
+      role: t("admin"),
       status: "active",
       lastLogin: "2024-01-15",
-      department: "الإدارة"
+      department: t("department_administration")
     },
     {
       id: 2,
-      name: "فاطمة علي",
+      name: t("sample_user_fatima"),
       email: "fatima.ali@example.com", 
-      role: "خبير",
+      role: t("expert"),
       status: "active",
       lastLogin: "2024-01-14",
-      department: "التقنية"
+      department: t("department_technology")
     },
     {
       id: 3,
-      name: "محمد سالم",
+      name: t("sample_user_mohamed"),
       email: "mohamed.salem@example.com",
-      role: "مبتكر", 
+      role: t("innovator"), 
       status: "pending",
       lastLogin: null,
-      department: "البحث والتطوير"
+      department: t("department_research_development")
     }
   ];
 
@@ -96,7 +96,7 @@ export default function UserManagement() {
     {
       key: "lastLogin",
       title: t("lastLogin"),
-      render: (value: string | null) => value || t("neverLoggedIn")
+      render: (value: string | null) => value || t("never_logged_in")
     }
   ];
 
@@ -123,7 +123,7 @@ export default function UserManagement() {
         onClick={() => handleUserAction("edit", user)}
       >
         <Settings className="h-4 w-4" />
-        {t("editProfile")}
+        {t("edit_profile")}
       </Button>
       <Button
         variant="outline"
@@ -131,7 +131,7 @@ export default function UserManagement() {
         onClick={() => handleUserAction("role", user)}
       >
         <Users className="h-4 w-4" />
-        {t("manageRole")}
+        {t("manage_role")}
       </Button>
       <Button
         variant="outline"
@@ -139,16 +139,16 @@ export default function UserManagement() {
         onClick={() => handleUserAction("invite", user)}
       >
         <Mail className="h-4 w-4" />
-        {t("sendInvitation")}
+        {t("send_invitation")}
       </Button>
     </div>
   );
 
-  const title = t("userManagement");
-  const description = t("manageUsersRolesPermissions");
-  const createNewLabel = t("inviteUser");
-  const bulkActionsLabel = t("bulkActions");
-  const searchPlaceholder = t("searchUsers");
+  const title = t("user_management_title");
+  const description = t("manage_users_roles_permissions");
+  const createNewLabel = t("invite_user");
+  const bulkActionsLabel = t("bulk_actions");
+  const searchPlaceholder = t("search_users");
 
   const secondaryActions = (
     <>
@@ -174,10 +174,10 @@ export default function UserManagement() {
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder={t("filterByStatus")} />
+            <SelectValue placeholder={t("filter_by_status")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{t("allStatus")}</SelectItem>
+            <SelectItem value="all">{t("all_status")}</SelectItem>
             {userStatusOptions.filter(status => ['active', 'inactive', 'pending'].includes(status)).map(status => (
               <SelectItem key={status} value={status}>
                 {status === 'active' ? t("active") : status === 'inactive' ? t("inactive") : t("pending")}
@@ -189,10 +189,10 @@ export default function UserManagement() {
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder={t("filterByRole")} />
+            <SelectValue placeholder={t("filter_by_role")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{t("allRoles")}</SelectItem>
+            <SelectItem value="all">{t("all_roles")}</SelectItem>
             <SelectItem value="admin">{t("admin")}</SelectItem>
             <SelectItem value="expert">{t("expert")}</SelectItem>
             <SelectItem value="innovator">{t("innovator")}</SelectItem>
@@ -209,14 +209,14 @@ export default function UserManagement() {
         <Card>
           <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle className="text-sm font-medium">
-              {t("totalUsers")}
+              {t("total_users")}
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">156</div>
             <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-              +12% {t("fromLastMonth")}
+              +12% {t("from_last_month")}
             </p>
           </CardContent>
         </Card>
@@ -224,14 +224,14 @@ export default function UserManagement() {
         <Card>
           <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle className="text-sm font-medium">
-              {t("activeUsers")}
+              {t("active_users")}
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">142</div>
             <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-              +8% {t("fromLastMonth")}
+              +8% {t("from_last_month")}
             </p>
           </CardContent>
         </Card>
@@ -239,14 +239,14 @@ export default function UserManagement() {
         <Card>
           <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle className="text-sm font-medium">
-              {t("pendingInvitations")}
+              {t("pending_invitations")}
             </CardTitle>
             <Mail className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">14</div>
             <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-              -2% {t("fromLastMonth")}
+              -2% {t("from_last_month")}
             </p>
           </CardContent>
         </Card>
@@ -254,14 +254,14 @@ export default function UserManagement() {
         <Card>
           <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle className="text-sm font-medium">
-              {t("expertUsers")}
+              {t("expert_users")}
             </CardTitle>
             <Settings className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">28</div>
             <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-              +4% {t("fromLastMonth")}
+              +4% {t("from_last_month")}
             </p>
           </CardContent>
         </Card>

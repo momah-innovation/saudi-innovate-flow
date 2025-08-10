@@ -188,14 +188,14 @@ export class TranslationProgressTracker {
     this.addFix({
       id: 'admin-user-management',
       component: 'AdminUserManagement',
-      file: 'src/components/admin/AdminUserManagement.tsx',
+      file: 'src/pages/admin/UserManagement.tsx',
       category: 'management',
       priority: 'high',
-      status: 'pending',
-      estimatedStrings: 45,
-      fixedStrings: 0,
-      addedTranslationKeys: 0,
-      description: 'User management with role assignments and profile editing'
+      status: 'completed',
+      estimatedStrings: 30,
+      fixedStrings: 30,
+      addedTranslationKeys: 15,
+      description: 'User management interface with stats, filters, and mock data translated'
     });
 
     this.addFix({
