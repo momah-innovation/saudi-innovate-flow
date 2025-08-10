@@ -179,8 +179,8 @@ export function IdeasManagementList({
     } catch (error) {
       logger.error('Error fetching ideas', { component: 'IdeasManagementList', action: 'fetchIdeas' }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل الأفكار",
+        title: t('error.validation_error'),
+        description: t('error.load_failed'),
         variant: "destructive"
       });
     } finally {

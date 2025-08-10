@@ -451,14 +451,14 @@ export function IdeaWizard({
     },
     {
       id: "details",
-      title: "تفاصيل الفكرة",
-      description: "حدد حالة الفكرة ومستوى نضجها",
+      title: t('idea_wizard.details_title'),
+      description: t('idea_wizard.details_description'),
       validation: validateDetails,
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="status">حالة الفكرة *</Label>
+              <Label htmlFor="status">{t('idea_wizard.status_label')} *</Label>
               <Select 
                 value={formData.status} 
                 onValueChange={(value) => {
