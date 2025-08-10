@@ -5,12 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { IconActionButton } from '@/components/ui/icon-action-button';
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { TypeBadge } from '@/components/ui/TypeBadge';
 import { 
   CalendarIcon, Target, Users, Award, Star, Eye, BookmarkIcon, 
   TrendingUp, Clock, Zap, CheckCircle, AlertCircle, Heart,
   Share2, MessageSquare, Trophy
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { cn } from '@/lib/utils';
 import { getStatusMapping, getPriorityMapping, getDifficultyMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 
@@ -59,6 +62,7 @@ export const ChallengeCard = ({
   variant = 'enhanced'
 }: ChallengeCardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useTranslation();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
@@ -201,10 +205,10 @@ export const ChallengeCard = ({
                 {/* Actions */}
                 <div className="flex flex-col items-end gap-3">
                   <div className="flex items-center gap-2">
-                    <Badge className={getStatusColor(challenge.status)}>
-                      <StatusIcon className="w-3 h-3 mr-1" />
-                      {getStatusText(challenge.status)}
-                    </Badge>
+                    <StatusBadge status={challenge.status} size="sm" />
+                    {challenge.challenge_type && (
+                      <TypeBadge type={challenge.challenge_type} size="sm" />
+                    )}
                     <Badge className={getPriorityColor(challenge.priority_level || 'متوسط')}>
                       {challenge.priority_level || 'متوسط'}
                     </Badge>
@@ -282,20 +286,17 @@ export const ChallengeCard = ({
         
         {/* Status Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          <Badge className={getStatusColor(challenge.status)}>
-            <StatusIcon className="w-3 h-3 mr-1" />
-            {getStatusText(challenge.status)}
-          </Badge>
+          <StatusBadge status={challenge.status} size="sm" />
           {challenge.trending && (
             <Badge className={challengesPageConfig.badges.trending}>
               <TrendingUp className="w-3 h-3 mr-1" />
-              {isRTL ? 'رائج' : 'Trending'}
+              {t('trending', 'Trending')}
             </Badge>
           )}
           {isNew && (
             <Badge className={challengesPageConfig.badges.new}>
               <Star className="w-3 h-3 mr-1" />
-              {isRTL ? 'جديد' : 'New'}
+              {t('new', 'New')}
             </Badge>
           )}
         </div>
