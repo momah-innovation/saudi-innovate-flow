@@ -63,7 +63,7 @@ export default function ChallengeDetailPage() {
           deputies!challenges_deputy_id_fkey(id, name_ar, name_en, deputy_minister, contact_email),
           departments!challenges_department_id_fkey(id, name_ar, name_en, department_head),
           domains!challenges_domain_id_fkey(id, name_ar, name_en, domain_lead, specialization),
-          sub_domains(id, name_ar, name_en, technical_focus),
+          sub_domains(id, name_ar, technical_focus),
           services!challenges_service_id_fkey(id, name_ar, name_en, service_type, citizen_facing),
           challenge_experts(
             id,
@@ -537,7 +537,7 @@ export default function ChallengeDetailPage() {
                     {language === 'ar' ? 'المجال الفرعي' : 'Sub Domain'}
                   </label>
                   <p className="font-medium" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-                    {language === 'ar' ? challenge.sub_domains.name_ar : (challenge.sub_domains.name_en || challenge.sub_domains.name_ar)}
+                    {challenge.sub_domains.name_ar}
                   </p>
                   {challenge.sub_domains.technical_focus && (
                     <p className="text-sm text-muted-foreground">
