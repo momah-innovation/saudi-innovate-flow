@@ -43,10 +43,16 @@ export default function ChallengeDetailPage() {
   }, [challengeId]);
 
   const fetchChallenge = async () => {
-    if (!challengeId) return;
-    console.log('🔍 Fetching challenge with all related data:', challengeId);
+    if (!challengeId) {
+      console.error('🔴 ChallengeDetail: No challengeId provided');
+      return;
+    }
+    
+    console.log('🔍 ChallengeDetail: Starting fetchChallenge for ID:', challengeId);
+    
     try {
       setLoading(true);
+      console.log('🔍 ChallengeDetail: Building complex query...');
       
       // Fetch challenge with all related data
       const { data, error } = await supabase
@@ -55,7 +61,7 @@ export default function ChallengeDetailPage() {
           *,
           sectors!challenges_sector_id_fkey(id, name_ar, name_en),
           deputies!challenges_deputy_id_fkey(id, name_ar, name_en, deputy_minister, contact_email),
-          departments(id, name_ar, name_en, department_head),
+          departments!challenges_department_id_fkey(id, name_ar, name_en, department_head),
           domains(id, name_ar, name_en, domain_lead, specialization),
           sub_domains(id, name_ar, name_en, technical_focus),
           services(id, name_ar, name_en, service_type, citizen_facing),
@@ -126,8 +132,23 @@ export default function ChallengeDetailPage() {
         .eq('id', challengeId)
         .single();
 
+      console.log('🔍 ChallengeDetail: Query executed. Result:', { 
+        hasData: !!data, 
+        hasError: !!error,
+        errorDetails: error,
+        dataKeys: data ? Object.keys(data) : []
+      });
+
       if (error) {
-        console.error('Error fetching challenge:', error);
+        console.error('🔴 ChallengeDetail: Database error:', {
+          error,
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          challengeId
+        });
+        
         toast({
           title: language === 'ar' ? 'خطأ' : 'Error',
           description: language === 'ar' ? 'فشل في تحميل التحدي' : 'Failed to load challenge',
@@ -136,10 +157,37 @@ export default function ChallengeDetailPage() {
         return;
       }
 
-      console.log('🔍 Fetched challenge data:', data);
+      if (!data) {
+        console.warn('🟡 ChallengeDetail: No data returned for challengeId:', challengeId);
+        toast({
+          title: language === 'ar' ? 'غير موجود' : 'Not Found',
+          description: language === 'ar' ? 'التحدي غير موجود' : 'Challenge not found',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      console.log('✅ ChallengeDetail: Successfully fetched challenge:', {
+        id: data.id,
+        title: data.title_ar,
+        hasRelations: {
+          sectors: !!data.sectors,
+          deputies: !!data.deputies,
+          departments: !!data.departments,
+          domains: !!data.domains,
+          experts: Array.isArray(data.challenge_experts) ? data.challenge_experts.length : 0,
+          partners: Array.isArray(data.challenge_partners) ? data.challenge_partners.length : 0
+        }
+      });
+      
       setChallenge(data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('🔴 ChallengeDetail: Unexpected error:', {
+        error,
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+        challengeId
+      });
+      
       toast({
         title: language === 'ar' ? 'خطأ' : 'Error',
         description: language === 'ar' ? 'حدث خطأ غير متوقع' : 'An unexpected error occurred',
@@ -147,6 +195,7 @@ export default function ChallengeDetailPage() {
       });
     } finally {
       setLoading(false);
+      console.log('🔍 ChallengeDetail: fetchChallenge completed');
     }
   };
 

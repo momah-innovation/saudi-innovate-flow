@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
 
+// Debug logging for useSystemLists hook
+console.log('🔍 useSystemLists: Module loaded');
+
 interface SystemListsHook {
   challengePriorityLevels: string[];
   challengeSensitivityLevels: string[];

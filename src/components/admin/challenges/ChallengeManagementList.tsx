@@ -86,14 +86,24 @@ export function ChallengeManagementList() {
   const fetchChallenges = async () => {
     try {
       setLoading(true);
+      console.log('🔍 ChallengeManagementList: Starting fetchChallenges');
+      
       const { data, error } = await supabase
         .from('challenges')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      console.log('🔍 ChallengeManagementList: Query result:', { data, error, count: data?.length });
+      
+      if (error) {
+        console.error('🔴 ChallengeManagementList: Database error:', error);
+        throw error;
+      }
+      
+      console.log('✅ ChallengeManagementList: Successfully fetched challenges:', data?.length || 0);
       setChallenges(data || []);
     } catch (error) {
+      console.error('🔴 ChallengeManagementList: fetchChallenges failed:', error);
       logger.error('Error fetching challenges', { component: 'ChallengeManagementList', action: 'fetchChallenges' }, error as Error);
       toast({
         title: "خطأ",
@@ -102,6 +112,7 @@ export function ChallengeManagementList() {
       });
     } finally {
       setLoading(false);
+      console.log('🔍 ChallengeManagementList: fetchChallenges completed');
     }
   };
 
