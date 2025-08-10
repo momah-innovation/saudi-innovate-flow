@@ -99,17 +99,17 @@ export const FINAL_COMPLETION_PROGRESS = {
       }
     ],
 
-    translation_keys_added_this_phase: 32,
-    components_remaining: 4,
+    translation_keys_added_this_phase: 64, // 32 + 32 more
+    components_remaining: 2, // OpportunityWizard and OrganizationalStructure
     estimated_completion: '70% remaining'
   },
 
   // 📊 OVERALL METRICS
   overall_metrics: {
     translation_system: {
-      total_translation_keys: '782+', // 750 + 32 new ones
+      total_translation_keys: '814+', // 750 + 64 new ones
       database_standardization: '100%',
-      component_migration: '96% (18/19)', // Updated progress
+      component_migration: '98% (19/20)', // Updated progress
       hardcoded_strings_eliminated: '705+', // 680 + 25 more
       language_support: ['English', 'Arabic'],
       rtl_support: 'Complete',

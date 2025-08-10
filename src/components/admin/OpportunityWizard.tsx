@@ -152,19 +152,19 @@ export function OpportunityWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.title.trim()) {
-      newErrors.title = "عنوان الفرصة مطلوب";
+      newErrors.title = t('opportunity_wizard.title_required');
     } else if (formData.title.length < 5) {
-      newErrors.title = "يجب أن يكون عنوان الفرصة أكثر من 5 أحرف";
+      newErrors.title = t('opportunity_wizard.title_min_length');
     }
     
     if (!formData.description.trim()) {
-      newErrors.description = "وصف الفرصة مطلوب";
+      newErrors.description = t('opportunity_wizard.description_required');
     } else if (formData.description.length < 30) {
-      newErrors.description = "يجب أن يكون وصف الفرصة أكثر من 30 حرف";
+      newErrors.description = t('opportunity_wizard.description_min_length');
     }
     
     if (!formData.type) {
-      newErrors.type = "نوع الفرصة مطلوب";
+      newErrors.type = t('opportunity_wizard.type_required');
     }
     
     setErrors(newErrors);
@@ -234,7 +234,7 @@ export function OpportunityWizard({
           )}
           
           <div className="space-y-2">
-            <Label htmlFor="title">عنوان الفرصة *</Label>
+            <Label htmlFor="title">{t('opportunity_wizard.title_label')} *</Label>
             <Input
               id="title"
               value={formData.title}
