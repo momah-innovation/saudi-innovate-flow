@@ -11,6 +11,7 @@ import { TranslationProvider } from '@/contexts/TranslationContext';
 import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
 
 interface AppShellProps {
   children: ReactNode;
@@ -21,6 +22,54 @@ interface AppShellProps {
     entityType?: string;
     entityId?: string;
   };
+}
+
+// Error Boundary Component for AppShell
+class AppShellErrorBoundary extends React.Component<
+  { children: ReactNode; onError?: (error: Error) => void },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: ReactNode; onError?: (error: Error) => void }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('AppShell Error Boundary caught error', error, errorInfo);
+    this.props.onError?.(error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="text-center space-y-4 p-6">
+            <h2 className="text-2xl font-bold text-destructive">
+              خطأ في التطبيق | Application Error
+            </h2>
+            <p className="text-muted-foreground">
+              حدث خطأ غير متوقع. يرجى إعادة تحميل الصفحة.
+            </p>
+            <p className="text-muted-foreground text-sm">
+              An unexpected error occurred. Please reload the page.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-hover"
+            >
+              إعادة تحميل | Reload
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
 }
 
 // Global app context that provides all common hooks
@@ -164,47 +213,55 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
     setSidebarOpen,
   };
   
+  const handleError = (error: Error) => {
+    console.error('AppShell runtime error:', error, 'Route:', location.pathname);
+  };
+  
   const content = (
-    <TranslationProvider>
-      <AppContext.Provider value={appContextValue}>
-        <div className={cn(
-          "min-h-screen flex w-full bg-background transition-all duration-300",
-          direction.isRTL && "flex-row-reverse"
-        )}>
-          {/* Navigation Sidebar Overlay */}
-          <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
-          
-          {/* Main Content Area */}
-          <div className="flex-1 flex flex-col min-w-0">
-            {/* Global Header */}
-            <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
+    <AppShellErrorBoundary onError={handleError}>
+      <TranslationProvider>
+        <AppContext.Provider value={appContextValue}>
+          <div className={cn(
+            "min-h-screen flex w-full bg-background transition-all duration-300",
+            direction.isRTL && "flex-row-reverse"
+          )}>
+            {/* Navigation Sidebar Overlay */}
+            <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
             
-            {/* Page Content with Loading */}
-            <main className="flex-1 overflow-auto">
-              <Suspense fallback={<LoadingSpinner />}>
-                {children}
-              </Suspense>
-            </main>
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col min-w-0">
+              {/* Global Header */}
+              <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
+              
+              {/* Page Content with Loading */}
+              <main className="flex-1 overflow-auto">
+                <Suspense fallback={<LoadingSpinner />}>
+                  {children}
+                </Suspense>
+              </main>
+            </div>
           </div>
-        </div>
-      </AppContext.Provider>
-    </TranslationProvider>
+        </AppContext.Provider>
+      </TranslationProvider>
+    </AppShellErrorBoundary>
   );
 
   // Wrap with collaboration if enabled
   if (shouldEnableCollaboration) {
     const context = getCollaborationContext();
     return (
-      <RealTimeCollaborationWrapper
-        contextType={context.contextType}
-        contextId={context.contextId}
-        entityType={context.entityType}
-        entityId={context.entityId}
-        showWidget={true}
-        widgetPosition="bottom-right"
-      >
-        {content}
-      </RealTimeCollaborationWrapper>
+      <AppShellErrorBoundary onError={handleError}>
+        <RealTimeCollaborationWrapper
+          contextType={context.contextType}
+          contextId={context.contextId}
+          entityType={context.entityType}
+          entityId={context.entityId}
+          showWidget={true}
+          widgetPosition="bottom-right"
+        >
+          {content}
+        </RealTimeCollaborationWrapper>
+      </AppShellErrorBoundary>
     );
   }
 
