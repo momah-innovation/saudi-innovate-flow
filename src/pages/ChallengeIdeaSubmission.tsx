@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { AppShell } from "@/components/layout/AppShell";
 import { GlobalBreadcrumb } from "@/components/layout/GlobalBreadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -208,28 +207,24 @@ export default function ChallengeIdeaSubmission() {
 
   if (loading) {
     return (
-      <AppShell>
-        <div className="container mx-auto px-4 py-8">
-          <div className="h-8 bg-muted rounded animate-pulse mb-6" />
-          <div className="grid gap-4">
-            <div className="h-64 bg-muted rounded animate-pulse" />
-          </div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="h-8 bg-muted rounded animate-pulse mb-6" />
+        <div className="grid gap-4">
+          <div className="h-64 bg-muted rounded animate-pulse" />
         </div>
-      </AppShell>
+      </div>
     );
   }
 
   if (!challenge) {
     return (
-      <AppShell>
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center py-12">
-            <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">التحدي غير موجود</h3>
-            <Button onClick={() => navigate('/challenges')}>العودة للتحديات</Button>
-          </div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center py-12">
+          <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+          <h3 className="text-lg font-semibold mb-2">التحدي غير موجود</h3>
+          <Button onClick={() => navigate('/challenges')}>العودة للتحديات</Button>
         </div>
-      </AppShell>
+      </div>
     );
   }
 
@@ -397,118 +392,116 @@ export default function ChallengeIdeaSubmission() {
   };
 
   return (
-    <AppShell>
-      <div className="container mx-auto px-4 py-8">
-        <GlobalBreadcrumb customItems={breadcrumbs} />
-        
-        <div className="space-y-6">
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" onClick={handleBack}>
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                العودة للتحدي
-              </Button>
-              <div>
-                <h1 className="text-2xl font-bold">تقديم فكرة للتحدي</h1>
-                <p className="text-muted-foreground">{challenge.title_ar}</p>
-              </div>
-            </div>
-            <Badge variant={challenge.status === 'active' ? 'default' : 'secondary'}>
-              {challenge.status}
-            </Badge>
-          </div>
-
-          {/* Challenge Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5" />
-                تفاصيل التحدي
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm" dir="rtl">{challenge.description_ar}</p>
-              {challenge.end_date && (
-                <p className="text-sm text-muted-foreground mt-2">
-                  آخر موعد للتقديم: {new Date(challenge.end_date).toLocaleDateString('ar-SA')}
-                </p>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Progress Indicator */}
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between mb-4">
-                {Array.from({ length: totalSteps }, (_, i) => (
-                  <div key={i} className={`flex items-center ${i < totalSteps - 1 ? 'flex-1' : ''}`}>
-                    <div className={`
-                      w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium
-                      ${currentStep > i + 1 ? 'bg-primary text-primary-foreground' : 
-                        currentStep === i + 1 ? 'bg-primary text-primary-foreground' : 
-                        'bg-muted text-muted-foreground'}
-                    `}>
-                      {currentStep > i + 1 ? <CheckCircle className="h-4 w-4" /> : i + 1}
-                    </div>
-                    {i < totalSteps - 1 && (
-                      <div className={`flex-1 h-0.5 mx-2 ${currentStep > i + 1 ? 'bg-primary' : 'bg-muted'}`} />
-                    )}
-                  </div>
-                ))}
-              </div>
-              <div className="text-center">
-                <p className="text-sm font-medium">الخطوة {currentStep} من {totalSteps}</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Form Content */}
-          <Card>
-            <CardContent className="pt-6">
-              {renderStepContent()}
-            </CardContent>
-          </Card>
-
-          {/* Navigation */}
-          <div className="flex justify-between">
-            <Button
-              variant="outline"
-              onClick={prevStep}
-              disabled={currentStep === 1}
-            >
-              السابق
+    <div className="container mx-auto px-4 py-8">
+      <GlobalBreadcrumb customItems={breadcrumbs} />
+      
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="sm" onClick={handleBack}>
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              العودة للتحدي
             </Button>
-            
-            {currentStep < totalSteps ? (
-              <Button
-                onClick={nextStep}
-                disabled={!validateStep(currentStep)}
-              >
-                التالي
-              </Button>
-            ) : (
-              <Button
-                onClick={handleSubmit}
-                disabled={submitting || !validateStep(currentStep)}
-                className="bg-primary"
-              >
-                {submitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    جاري الإرسال...
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4 mr-2" />
-                    تقديم الفكرة
-                  </>
-                )}
-              </Button>
-            )}
+            <div>
+              <h1 className="text-2xl font-bold">تقديم فكرة للتحدي</h1>
+              <p className="text-muted-foreground">{challenge.title_ar}</p>
+            </div>
           </div>
+          <Badge variant={challenge.status === 'active' ? 'default' : 'secondary'}>
+            {challenge.status}
+          </Badge>
+        </div>
+
+        {/* Challenge Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Lightbulb className="h-5 w-5" />
+              تفاصيل التحدي
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm" dir="rtl">{challenge.description_ar}</p>
+            {challenge.end_date && (
+              <p className="text-sm text-muted-foreground mt-2">
+                آخر موعد للتقديم: {new Date(challenge.end_date).toLocaleDateString('ar-SA')}
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Progress Indicator */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between mb-4">
+              {Array.from({ length: totalSteps }, (_, i) => (
+                <div key={i} className={`flex items-center ${i < totalSteps - 1 ? 'flex-1' : ''}`}>
+                  <div className={`
+                    w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium
+                    ${currentStep > i + 1 ? 'bg-primary text-primary-foreground' : 
+                      currentStep === i + 1 ? 'bg-primary text-primary-foreground' : 
+                      'bg-muted text-muted-foreground'}
+                  `}>
+                    {currentStep > i + 1 ? <CheckCircle className="h-4 w-4" /> : i + 1}
+                  </div>
+                  {i < totalSteps - 1 && (
+                    <div className={`flex-1 h-0.5 mx-2 ${currentStep > i + 1 ? 'bg-primary' : 'bg-muted'}`} />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-medium">الخطوة {currentStep} من {totalSteps}</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Form Content */}
+        <Card>
+          <CardContent className="pt-6">
+            {renderStepContent()}
+          </CardContent>
+        </Card>
+
+        {/* Navigation */}
+        <div className="flex justify-between">
+          <Button
+            variant="outline"
+            onClick={prevStep}
+            disabled={currentStep === 1}
+          >
+            السابق
+          </Button>
+          
+          {currentStep < totalSteps ? (
+            <Button
+              onClick={nextStep}
+              disabled={!validateStep(currentStep)}
+            >
+              التالي
+            </Button>
+          ) : (
+            <Button
+              onClick={handleSubmit}
+              disabled={submitting || !validateStep(currentStep)}
+              className="bg-primary"
+            >
+              {submitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  جاري الإرسال...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  تقديم الفكرة
+                </>
+              )}
+            </Button>
+          )}
         </div>
       </div>
-    </AppShell>
+    </div>
   );
 }

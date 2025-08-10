@@ -14,7 +14,7 @@ import { useSystemLists } from '@/hooks/useSystemLists';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 import { Loader2 } from 'lucide-react';
-import { AppShell } from '@/components/layout/AppShell';
+
 
 const ProfileSetup = () => {
   const { user, userProfile, refreshProfile } = useAuth();
@@ -223,8 +223,7 @@ const ProfileSetup = () => {
   ];
 
   return (
-    <AppShell>
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
       <div className="max-w-2xl mx-auto py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold">Complete Your Profile</h1>
@@ -473,9 +472,8 @@ const ProfileSetup = () => {
             </form>
           </CardContent>
         </Card>
+        </div>
       </div>
-      </div>
-    </AppShell>
   );
 };
 

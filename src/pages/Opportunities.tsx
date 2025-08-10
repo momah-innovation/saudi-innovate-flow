@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -439,7 +438,7 @@ export default function Opportunities() {
   } : undefined;
 
   return (
-    <AppShell>
+    <div>
       {/* Enhanced Hero Section */}
       <EnhancedOpportunitiesHero 
         totalOpportunities={stats.totalOpportunities}
@@ -601,6 +600,6 @@ export default function Opportunities() {
           opportunities={opportunities as Opportunity[]}
         />
       </PageLayout>
-    </AppShell>
+    </div>
   );
 }

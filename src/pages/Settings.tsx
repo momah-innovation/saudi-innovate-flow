@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { RoleRequestWizard } from "@/components/admin/RoleRequestWizard";
-import { AppShell } from "@/components/layout/AppShell";
+
 import { ThemeCustomizer } from "@/components/ui/theme-customizer";
 import { useNavigate } from "react-router-dom";
 import { logger } from '@/utils/logger';
@@ -75,8 +75,7 @@ const Settings = () => {
   };
 
   return (
-    <AppShell>
-      <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-6 space-y-6">
         <div>
           <h1 className="text-3xl font-bold">الإعدادات</h1>
           <p className="text-muted-foreground">إدارة إعدادات حسابك وتفضيلاتك</p>
@@ -208,7 +207,6 @@ const Settings = () => {
           currentRoles={userRoles.map(role => role.role)}
         />
       </div>
-    </AppShell>
   );
 };
 

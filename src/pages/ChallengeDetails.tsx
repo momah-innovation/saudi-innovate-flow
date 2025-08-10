@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { AppShell } from "@/components/layout/AppShell";
 import { GlobalBreadcrumb } from "@/components/layout/GlobalBreadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -680,8 +679,7 @@ Status: ${challenge?.status}
   ];
 
   return (
-    <AppShell enableCollaboration={true}>
-      <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
         <GlobalBreadcrumb customItems={breadcrumbs} />
         <div className="space-y-6">
       {/* Header */}
@@ -1565,7 +1563,6 @@ Status: ${challenge?.status}
         />
         </div>
       </div>
-    </AppShell>
   );
 };
 

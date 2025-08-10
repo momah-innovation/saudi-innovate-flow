@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { EnhancedIdeasHero } from '@/components/ideas/EnhancedIdeasHero';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -926,7 +925,7 @@ export default function IdeasPage() {
   };
 
   return (
-    <AppShell enableCollaboration={true}>
+    <div>
         <EnhancedIdeasHero 
           totalIdeas={personalMetrics.totalIdeas}
           publishedIdeas={ideas.filter(idea => idea.status === 'published').length}
@@ -1259,8 +1258,7 @@ export default function IdeasPage() {
           onApplyFilters={setFilterState}
         />
 
-
         </PageLayout>
-      </AppShell>
+    </div>
   );
 }
