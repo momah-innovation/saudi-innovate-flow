@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Trash2, Plus, Download, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import type { TranslationPair, TranslationMergeResult } from '@/types/translation';
 
 interface SystemTranslation {
@@ -24,6 +25,7 @@ interface SystemTranslation {
 const TranslationManagement = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
 
   // Generate and download JSON file from database translations merged with existing static translations
   const downloadTranslationsJSON = async (language: 'en' | 'ar') => {
@@ -332,7 +334,7 @@ const TranslationManagement = () => {
                 <Label htmlFor="new-arabic">Arabic Text</Label>
                 <Textarea
                   id="new-arabic"
-                  placeholder="النص العربي"
+                  placeholder={t('translation_management.arabic_text_placeholder', 'النص العربي')}
                   value={newTranslation.ar}
                   onChange={(e) => setNewTranslation(prev => ({ ...prev, ar: e.target.value }))}
                 />

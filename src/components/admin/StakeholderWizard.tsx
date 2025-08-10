@@ -41,6 +41,7 @@ export function StakeholderWizard({
   onSave,
 }: StakeholderWizardProps) {
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -50,10 +51,10 @@ export function StakeholderWizard({
     position: "",
     email: "",
     phone: "",
-    stakeholder_type: "حكومي",
-    influence_level: "متوسط",
-    interest_level: "متوسط",
-    engagement_status: "محايد",
+    stakeholder_type: t('stakeholder.types.government', 'حكومي'),
+    influence_level: t('stakeholder.influence_levels.medium', 'متوسط'),
+    interest_level: t('stakeholder.interest_levels.medium', 'متوسط'),
+    engagement_status: t('stakeholder.engagement_status.neutral', 'محايد'),
     notes: "",
   });
 
@@ -105,10 +106,10 @@ export function StakeholderWizard({
         position: stakeholder.position || "",
         email: stakeholder.email || "",
         phone: stakeholder.phone || "",
-        stakeholder_type: stakeholder.stakeholder_type || "حكومي",
-        influence_level: stakeholder.influence_level || "متوسط",
-        interest_level: stakeholder.interest_level || "متوسط",
-        engagement_status: stakeholder.engagement_status || "محايد",
+        stakeholder_type: stakeholder.stakeholder_type || t('stakeholder.types.government', 'حكومي'),
+        influence_level: stakeholder.influence_level || t('stakeholder.influence_levels.medium', 'متوسط'),
+        interest_level: stakeholder.interest_level || t('stakeholder.interest_levels.medium', 'متوسط'),
+        engagement_status: stakeholder.engagement_status || t('stakeholder.engagement_status.neutral', 'محايد'),
         notes: stakeholder.notes || "",
       });
     } else {
@@ -120,10 +121,10 @@ export function StakeholderWizard({
         position: "",
         email: "",
         phone: "",
-        stakeholder_type: "حكومي",
-        influence_level: "متوسط",
-        interest_level: "متوسط",
-        engagement_status: "محايد",
+        stakeholder_type: t('stakeholder.types.government', 'حكومي'),
+        influence_level: t('stakeholder.influence_levels.medium', 'متوسط'),
+        interest_level: t('stakeholder.interest_levels.medium', 'متوسط'),
+        engagement_status: t('stakeholder.engagement_status.neutral', 'محايد'),
         notes: "",
       });
     }
@@ -236,7 +237,6 @@ export function StakeholderWizard({
     }
   };
 
-  const { t } = useUnifiedTranslation();
 
   const steps = [
     {

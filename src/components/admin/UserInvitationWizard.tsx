@@ -187,7 +187,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
                 <Input
                   value={formData.name_ar}
                   onChange={(e) => setFormData(prev => ({ ...prev, name_ar: e.target.value }))}
-                  placeholder="الاسم باللغة العربية"
+                  placeholder={t('user_invitation_wizard.arabic_name_placeholder', 'الاسم باللغة العربية')}
                   dir="rtl"
                 />
               </div>

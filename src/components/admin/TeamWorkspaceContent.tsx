@@ -281,13 +281,13 @@ export function TeamWorkspaceContent({
           <div className="space-y-4">
             <h3 className="font-medium">إنشاء مهمة جديدة</h3>
             <Input
-              placeholder="عنوان المهمة"
+              placeholder={t('workspace.task_title_placeholder', 'عنوان المهمة')}
               value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
             />
             <Select value={newTaskAssignee} onValueChange={setNewTaskAssignee}>
               <SelectTrigger>
-                <SelectValue placeholder="تكليف عضو" />
+                <SelectValue placeholder={t('workspace.assign_member_placeholder', 'تكليف عضو')} />
               </SelectTrigger>
               <SelectContent>
                 {teamData.teamMembers.map((member: TeamMemberData) => (
@@ -894,7 +894,7 @@ export function TeamWorkspaceContent({
           </div>
           <Select defaultValue="all">
             <SelectTrigger className="w-40">
-              <SelectValue placeholder="تصفية حسب الدور" />
+              <SelectValue placeholder={t('workspace.filter_by_role_placeholder', 'تصفية حسب الدور')} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">جميع الأدوار</SelectItem>
