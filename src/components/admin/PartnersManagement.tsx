@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Plus, Edit, Trash2, Building2, Phone, Mail, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface Partner {
@@ -46,6 +47,7 @@ export function PartnersManagement() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const { partnerStatusOptions, partnerTypeOptions } = useSystemLists();
 
   const [formData, setFormData] = useState({
@@ -246,7 +248,7 @@ export function PartnersManagement() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name">Name (English)</Label>
+                  <Label htmlFor="name">{t('form.name_english_label')}</Label>
                   <Input
                     id="name"
                     value={formData.name}
@@ -255,7 +257,7 @@ export function PartnersManagement() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="name_ar">Name (Arabic)</Label>
+                  <Label htmlFor="name_ar">{t('form.name_arabic_label')}</Label>
                   <Input
                     id="name_ar"
                     value={formData.name_ar}
@@ -266,7 +268,7 @@ export function PartnersManagement() {
 
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <Label htmlFor="description">Description (English)</Label>
+                  <Label htmlFor="description">{t('form.description_english_label')}</Label>
                   <Textarea
                     id="description"
                     value={formData.description}
@@ -275,7 +277,7 @@ export function PartnersManagement() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="description_ar">Description (Arabic)</Label>
+                  <Label htmlFor="description_ar">{t('form.description_arabic_label')}</Label>
                   <Textarea
                     id="description_ar"
                     value={formData.description_ar}

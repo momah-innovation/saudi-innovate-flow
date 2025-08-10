@@ -309,15 +309,15 @@ export function OrganizationalStructureManagement() {
                       </div>
                     </div>
                     <div>
-                      <Label>Deputy Minister</Label>
+                      <Label>{t('form.deputy_minister_label')}</Label>
                       <Input value={deputyForm.deputy_minister} onChange={(e) => setDeputyForm({...deputyForm, deputy_minister: e.target.value})} />
                     </div>
                     <div>
-                      <Label>Contact Email</Label>
+                      <Label>{t('form.contact_email_label')}</Label>
                       <Input type="email" value={deputyForm.contact_email} onChange={(e) => setDeputyForm({...deputyForm, contact_email: e.target.value})} />
                     </div>
                     <div>
-                      <Label>Sector</Label>
+                      <Label>{t('form.sector_label')}</Label>
                       <Select value={deputyForm.sector_id} onValueChange={(value) => setDeputyForm({...deputyForm, sector_id: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder={t('selectSector')} />
@@ -410,24 +410,24 @@ export function OrganizationalStructureManagement() {
                 <form onSubmit={handleDepartmentSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label>Name (English)</Label>
+                      <Label>{t('form.name_english_label')}</Label>
                       <Input value={departmentForm.name} onChange={(e) => setDepartmentForm({...departmentForm, name: e.target.value})} required />
                     </div>
                     <div>
-                      <Label>Name (Arabic)</Label>
+                      <Label>{t('form.name_arabic_label')}</Label>
                       <Input value={departmentForm.name_ar} onChange={(e) => setDepartmentForm({...departmentForm, name_ar: e.target.value})} />
                     </div>
                   </div>
                   <div>
-                    <Label>Department Head</Label>
+                    <Label>{t('form.department_head_label')}</Label>
                     <Input value={departmentForm.department_head} onChange={(e) => setDepartmentForm({...departmentForm, department_head: e.target.value})} />
                   </div>
                   <div>
-                    <Label>Budget Allocation</Label>
+                    <Label>{t('form.budget_allocation_label')}</Label>
                     <Input type="number" value={departmentForm.budget_allocation} onChange={(e) => setDepartmentForm({...departmentForm, budget_allocation: Number(e.target.value)})} />
                   </div>
                   <div>
-                    <Label>Deputy</Label>
+                    <Label>{t('form.deputy_label')}</Label>
                     <Select value={departmentForm.deputy_id} onValueChange={(value) => setDepartmentForm({...departmentForm, deputy_id: value})}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select deputy" />
@@ -504,24 +504,24 @@ export function OrganizationalStructureManagement() {
                 <form onSubmit={handleDomainSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label>Name (English)</Label>
+                      <Label>{t('form.name_english_label')}</Label>
                       <Input value={domainForm.name} onChange={(e) => setDomainForm({...domainForm, name: e.target.value})} required />
                     </div>
                     <div>
-                      <Label>Name (Arabic)</Label>
+                      <Label>{t('form.name_arabic_label')}</Label>
                       <Input value={domainForm.name_ar} onChange={(e) => setDomainForm({...domainForm, name_ar: e.target.value})} />
                     </div>
                   </div>
                   <div>
-                    <Label>Domain Lead</Label>
+                    <Label>{t('form.domain_lead_label')}</Label>
                     <Input value={domainForm.domain_lead} onChange={(e) => setDomainForm({...domainForm, domain_lead: e.target.value})} />
                   </div>
                   <div>
-                    <Label>Specialization</Label>
+                    <Label>{t('form.specialization_label')}</Label>
                     <Input value={domainForm.specialization} onChange={(e) => setDomainForm({...domainForm, specialization: e.target.value})} />
                   </div>
                   <div>
-                    <Label>Department</Label>
+                    <Label>{t('form.department_label')}</Label>
                     <Select value={domainForm.department_id} onValueChange={(value) => setDomainForm({...domainForm, department_id: value})}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select department" />
@@ -600,20 +600,20 @@ export function OrganizationalStructureManagement() {
                 <form onSubmit={handleSubDomainSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label>Name (English)</Label>
+                      <Label>{t('form.name_english_label')}</Label>
                       <Input value={subDomainForm.name} onChange={(e) => setSubDomainForm({...subDomainForm, name: e.target.value})} required />
                     </div>
                     <div>
-                      <Label>Name (Arabic)</Label>
+                      <Label>{t('form.name_arabic_label')}</Label>
                       <Input value={subDomainForm.name_ar} onChange={(e) => setSubDomainForm({...subDomainForm, name_ar: e.target.value})} />
                     </div>
                   </div>
                   <div>
-                    <Label>Technical Focus</Label>
+                    <Label>{t('form.technical_focus_label')}</Label>
                     <Input value={subDomainForm.technical_focus} onChange={(e) => setSubDomainForm({...subDomainForm, technical_focus: e.target.value})} />
                   </div>
                   <div>
-                    <Label>Domain</Label>
+                    <Label>{t('form.domain_label')}</Label>
                     <Select value={subDomainForm.domain_id} onValueChange={(value) => setSubDomainForm({...subDomainForm, domain_id: value})}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select domain" />
@@ -684,28 +684,28 @@ export function OrganizationalStructureManagement() {
                 <form onSubmit={handleServiceSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label>Name (English)</Label>
+                      <Label>{t('form.name_english_label')}</Label>
                       <Input value={serviceForm.name} onChange={(e) => setServiceForm({...serviceForm, name: e.target.value})} required />
                     </div>
                     <div>
-                      <Label>Name (Arabic)</Label>
+                      <Label>{t('form.name_arabic_label')}</Label>
                       <Input value={serviceForm.name_ar} onChange={(e) => setServiceForm({...serviceForm, name_ar: e.target.value})} />
                     </div>
                   </div>
                   <div>
-                    <Label>Service Type</Label>
+                    <Label>{t('form.service_type_label')}</Label>
                     <Input value={serviceForm.service_type} onChange={(e) => setServiceForm({...serviceForm, service_type: e.target.value})} />
                   </div>
                   <div>
-                    <Label>Citizen Facing</Label>
+                    <Label>{t('form.citizen_facing_label')}</Label>
                     <Input type="checkbox" checked={serviceForm.citizen_facing} onChange={(e) => setServiceForm({...serviceForm, citizen_facing: e.target.checked})} />
                   </div>
                   <div>
-                    <Label>Digital Maturity Score</Label>
+                    <Label>{t('form.digital_maturity_score_label')}</Label>
                     <Input type="number" value={serviceForm.digital_maturity_score} onChange={(e) => setServiceForm({...serviceForm, digital_maturity_score: Number(e.target.value)})} />
                   </div>
                   <div>
-                    <Label>Sub-domain</Label>
+                    <Label>{t('form.sub_domain_label')}</Label>
                     <Select value={serviceForm.sub_domain_id} onValueChange={(value) => setServiceForm({...serviceForm, sub_domain_id: value})}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select sub-domain" />
