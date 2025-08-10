@@ -416,7 +416,7 @@ export function FocusQuestionDetailView({
             {/* Responses */}
             <CollapsibleSection 
               id="responses" 
-              title="الردود والاستجابات" 
+              title={t('focus_question_detail.responses_reactions', 'الردود والاستجابات')} 
               icon={MessageSquare}
               count={relatedData.responses.length}
             >
@@ -458,7 +458,7 @@ export function FocusQuestionDetailView({
             {/* Related Events */}
             <CollapsibleSection 
               id="events" 
-              title="الفعاليات المرتبطة" 
+              title={t('focus_question_detail.related_events', 'الفعاليات المرتبطة')} 
               icon={Calendar}
               count={relatedData.events.length}
             >

@@ -544,7 +544,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                   <Label htmlFor="department_id">الإدارة</Label>
                   <Select value={formData.department_id} onValueChange={(value) => updateFormData('department_id', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="اختر الإدارة" />
+                      <SelectValue placeholder={t('challenges.select_management', 'اختر الإدارة')} />
                     </SelectTrigger>
                     <SelectContent>
                       {systemLists.departments.map((dept) => (
@@ -599,7 +599,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                          className="w-full justify-start font-normal text-right"
                        >
                          <CalendarIcon className="ml-2 h-4 w-4" />
-                         {startDate ? format(startDate, "PPP", { locale: ar }) : <span>اختر التاريخ</span>}
+                         {startDate ? format(startDate, "PPP", { locale: ar }) : <span>{t('challenges.select_date', 'اختر التاريخ')}</span>}
                        </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -622,7 +622,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                          className="w-full justify-start font-normal text-right"
                        >
                          <CalendarIcon className="ml-2 h-4 w-4" />
-                         {endDate ? format(endDate, "PPP", { locale: ar }) : <span>اختر التاريخ</span>}
+                         {endDate ? format(endDate, "PPP", { locale: ar }) : <span>{t('challenges.select_end_date', 'اختر تاريخ النهاية')}</span>}
                        </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
