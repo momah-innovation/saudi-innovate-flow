@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '
 import { Separator } from '@/components/ui/separator';
 import { CalendarIcon, Filter, X, MapPin, Clock, Users, DollarSign } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { format } from 'date-fns';
 
@@ -42,11 +43,12 @@ export const EventAdvancedFilters = ({
   onClearFilters
 }: EventAdvancedFiltersProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
 
   const eventTypes = [
-    { value: 'workshop', label: isRTL ? 'ورشة عمل' : 'Workshop' },
-    { value: 'conference', label: isRTL ? 'مؤتمر' : 'Conference' },
+    { value: 'workshop', label: t('event_type.workshop') },
+    { value: 'conference', label: t('event_type.conference') },
     { value: 'webinar', label: isRTL ? 'ندوة إلكترونية' : 'Webinar' },
     { value: 'meetup', label: isRTL ? 'لقاء' : 'Meetup' },
     { value: 'hackathon', label: isRTL ? 'هاكاثون' : 'Hackathon' },

@@ -42,6 +42,7 @@ import {
   List
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
 
 const mockRegistrations = [
@@ -238,6 +239,7 @@ const pastEvents = [
 
 const EventRegistration = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const [selectedTab, setSelectedTab] = useState('my-registrations');
   const [searchQuery, setSearchQuery] = useState('');
@@ -314,8 +316,8 @@ const EventRegistration = () => {
 
   const getTypeText = (type: string) => {
     switch (type) {
-      case 'conference': return isRTL ? 'مؤتمر' : 'Conference';
-      case 'workshop': return isRTL ? 'ورشة عمل' : 'Workshop';
+      case 'conference': return t('event_type.conference');
+      case 'workshop': return t('event_type.workshop');
       case 'exhibition': return isRTL ? 'معرض' : 'Exhibition';
       case 'summit': return isRTL ? 'ملتقى' : 'Summit';
       default: return type;
@@ -874,8 +876,8 @@ const EventRegistration = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{isRTL ? 'جميع الأنواع' : 'All Types'}</SelectItem>
-                <SelectItem value="conference">{isRTL ? 'مؤتمر' : 'Conference'}</SelectItem>
-                <SelectItem value="workshop">{isRTL ? 'ورشة عمل' : 'Workshop'}</SelectItem>
+                <SelectItem value="conference">{t('event_type.conference')}</SelectItem>
+                <SelectItem value="workshop">{t('event_type.workshop')}</SelectItem>
                 <SelectItem value="exhibition">{isRTL ? 'معرض' : 'Exhibition'}</SelectItem>
                 <SelectItem value="summit">{isRTL ? 'ملتقى' : 'Summit'}</SelectItem>
               </SelectContent>

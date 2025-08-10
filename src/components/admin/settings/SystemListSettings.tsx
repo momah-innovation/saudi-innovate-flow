@@ -44,8 +44,8 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     status_options: settings.status_options || ["نشط", "غير نشط", "معلق", "مكتمل", "ملغي"],
     
     // Event lists
-    event_types: settings.event_types || ["ورشة عمل", "ندوة", "مؤتمر", "شبكات تواصل", "هاكاثون"],
-    event_categories: settings.event_categories || ["حدث مستقل", "حدث حملة", "تدريب", "ورشة عمل"],
+    event_types: settings.event_types || ["event_type.workshop", "event_type.seminar", "event_type.conference", "event_type.meetup", "event_type.hackathon"],
+    event_categories: settings.event_categories || ["standalone_event", "campaign_event", "training", "workshop"],
     
     // Stakeholder lists
     stakeholder_categories: settings.stakeholder_categories || ["حكومي", "خاص", "أكاديمي", "مجتمع مدني"],

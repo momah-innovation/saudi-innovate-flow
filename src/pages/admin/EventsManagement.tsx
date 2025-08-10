@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDirection } from "@/components/ui/direction-provider";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export default function EventsManagementPage() {
   const { hasRole } = useAuth();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -81,8 +83,8 @@ export default function EventsManagementPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">جميع الأنواع</SelectItem>
-            <SelectItem value="workshop">ورشة عمل</SelectItem>
-            <SelectItem value="conference">مؤتمر</SelectItem>
+            <SelectItem value="workshop">{t('event_type.workshop')}</SelectItem>
+            <SelectItem value="conference">{t('event_type.conference')}</SelectItem>
             <SelectItem value="seminar">ندوة</SelectItem>
             <SelectItem value="training">تدريب</SelectItem>
             <SelectItem value="networking">شبكات تواصل</SelectItem>

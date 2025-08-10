@@ -36,10 +36,10 @@ import {
   Handshake
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 
 interface EventFormData {
@@ -139,6 +139,7 @@ export const ComprehensiveEventWizard = ({
   onSave
 }: ComprehensiveEventWizardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('basic');
@@ -414,8 +415,8 @@ export const ComprehensiveEventWizard = ({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="conference">{isRTL ? 'مؤتمر' : 'Conference'}</SelectItem>
-                        <SelectItem value="workshop">{isRTL ? 'ورشة عمل' : 'Workshop'}</SelectItem>
+                        <SelectItem value="conference">{t('event_type.conference')}</SelectItem>
+                        <SelectItem value="workshop">{t('event_type.workshop')}</SelectItem>
                         <SelectItem value="seminar">{isRTL ? 'ندوة' : 'Seminar'}</SelectItem>
                         <SelectItem value="training">{isRTL ? 'تدريب' : 'Training'}</SelectItem>
                         <SelectItem value="expo">{isRTL ? 'معرض' : 'Exhibition'}</SelectItem>
