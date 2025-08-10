@@ -27,8 +27,8 @@ const WorkspaceDocumentation = lazy(() => import('@/pages/WorkspaceDocumentation
 const PartnersManagement = lazy(() => import('@/pages/admin/PartnersManagement'));
 const SectorsManagement = lazy(() => import('@/pages/admin/SectorsManagement'));
 const ExpertAssignmentManagement = lazy(() => import('@/pages/admin/ExpertAssignmentManagement'));
-const AdminEvaluations = lazy(() => import('@/pages/AdminEvaluations'));
-const AdminRelationships = lazy(() => import('@/pages/AdminRelationships'));
+const AdminEvaluations = lazy(() => import('@/pages/admin/AdminEvaluations'));
+const AdminRelationships = lazy(() => import('@/pages/admin/AdminRelationships'));
 const Challenges = lazy(() => import('@/pages/Challenges'));
 const Ideas = lazy(() => import('@/pages/Ideas'));
 const ChallengeDetails = lazy(() => import('@/pages/ChallengeDetails'));
@@ -53,6 +53,15 @@ const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement')
 const AdminChallengeSubmissions = lazy(() => import('@/pages/admin/AdminChallengeSubmissions'));
 const ChallengeDetailAdmin = lazy(() => import('@/pages/admin/ChallengeDetail'));
 const TeamManagement = lazy(() => import('@/pages/admin/TeamManagement'));
+const EvaluationManagement = lazy(() => import('@/pages/admin/EvaluationManagement'));
+const EvaluationsManagement = lazy(() => import('@/pages/admin/EvaluationsManagement'));
+const FocusQuestionsManagement = lazy(() => import('@/pages/admin/FocusQuestionsManagement'));
+const OpportunitiesManagement = lazy(() => import('@/pages/admin/OpportunitiesManagement'));
+const RelationshipOverview = lazy(() => import('@/pages/admin/RelationshipOverview'));
+const UserManagementPage = lazy(() => import('@/pages/admin/UserManagementPage'));
+const SystemSettings = lazy(() => import('@/pages/admin/SystemSettings'));
+const SystemAnalytics = lazy(() => import('@/pages/admin/SystemAnalytics'));
+const StorageManagement = lazy(() => import('@/pages/admin/StorageManagement'));
 const CollaborationPage = lazy(() => import('@/pages/CollaborationPage'));
 const CollaborationLandingPage = lazy(() => import('@/pages/CollaborationLandingPage'));
 const CollaborativeIdeasPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeIdeasPage })));
@@ -250,14 +259,6 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
   {
-    path: ALL_ROUTES.ADMIN_ANALYTICS,
-    component: AnalyticsPage,
-    requireAuth: true,
-    requireProfile: true,
-    requiredRole: ['admin', 'super_admin'],
-    withAppShell: true,
-  },
-  {
     path: '/admin/relationships',
     component: AdminRelationships,
     requireAuth: true,
@@ -380,6 +381,70 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_CHALLENGE_SUBMISSIONS,
     component: AdminChallengeSubmissions,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_EVALUATION_MANAGEMENT,
+    component: EvaluationManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_EVALUATIONS_MANAGEMENT,
+    component: EvaluationsManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_FOCUS_QUESTIONS,
+    component: FocusQuestionsManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_OPPORTUNITIES,
+    component: OpportunitiesManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_RELATIONSHIPS,
+    component: RelationshipOverview,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_SETTINGS,
+    component: SystemSettings,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_ANALYTICS,
+    component: SystemAnalytics,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: ALL_ROUTES.ADMIN_STORAGE,
+    component: StorageManagement,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
