@@ -131,7 +131,7 @@ export function TeamMemberWizard({
       // Failed to fetch team member wizard users
       toast({
         title: "خطأ",
-        description: "فشل في تحميل قائمة المستخدمين",
+        description: t('errors.failed_to_load_users_list', 'فشل في تحميل قائمة المستخدمين'),
         variant: "destructive"
       });
     }
@@ -334,7 +334,7 @@ export function TeamMemberWizard({
       // Failed to save team member
       toast({
         title: "خطأ",
-        description: "فشل في حفظ بيانات عضو الفريق",
+        description: t('errors.failed_to_save_team_member', 'فشل في حفظ بيانات عضو الفريق'),
         variant: "destructive"
       });
     } finally {

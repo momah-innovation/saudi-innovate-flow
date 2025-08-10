@@ -121,7 +121,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
       logger.error('Error fetching comments', { component: 'IdeaCommentsPanel', action: 'fetchComments', data: { ideaId } }, error as Error);
       toast({
         title: "خطأ",
-        description: "فشل في تحميل التعليقات",
+        description: t('errors.failed_to_load_comments', 'فشل في تحميل التعليقات'),
         variant: "destructive"
       });
     } finally {
@@ -161,7 +161,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
       logger.error('Error submitting comment', { component: 'IdeaCommentsPanel', action: 'handleSubmitComment', data: { ideaId } }, error as Error);
       toast({
         title: "خطأ",
-        description: "فشل في إضافة التعليق",
+        description: t('errors.failed_to_add_comment', 'فشل في إضافة التعليق'),
         variant: "destructive"
       });
     } finally {

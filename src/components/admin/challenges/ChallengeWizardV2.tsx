@@ -329,7 +329,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
       logger.error('خطأ في حفظ التحدي', { component: 'ChallengeWizardV2', action: 'submitForm' }, error as Error);
       toast({
         title: 'خطأ',
-        description: 'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى.',
+        description: t('errors.failed_to_save_challenge', 'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى.'),
         variant: 'destructive'
       });
     } finally {

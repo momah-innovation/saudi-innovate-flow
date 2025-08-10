@@ -87,7 +87,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       logger.error('Error updating status', { component: 'BulkActionsPanel', action: 'handleBulkStatusChange', data: { selectedItems, newStatus } }, error as Error);
       toast({
         title: "خطأ",
-        description: "فشل في تحديث حالة الأفكار",
+        description: t('errors.failed_to_update_ideas_status', 'فشل في تحديث حالة الأفكار'),
         variant: "destructive"
       });
     } finally {
@@ -119,7 +119,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       logger.error('Error deleting ideas', { component: 'BulkActionsPanel', action: 'handleBulkDelete', data: { selectedItems } }, error as Error);
       toast({
         title: "خطأ",
-        description: "فشل في حذف الأفكار",
+        description: t('errors.failed_to_delete_ideas', 'فشل في حذف الأفكار'),
         variant: "destructive"
       });
     } finally {
@@ -166,7 +166,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       logger.error('Error adding tags', { component: 'BulkActionsPanel', action: 'handleBulkTagging', data: { selectedItems, selectedTags } }, error as Error);
       toast({
         title: "خطأ",
-        description: "فشل في إضافة العلامات",
+        description: t('errors.failed_to_add_tags', 'فشل في إضافة العلامات'),
         variant: "destructive"
       });
     } finally {
