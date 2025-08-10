@@ -1,5 +1,4 @@
 import { SectorsManagement } from "@/components/admin/SectorsManagement";
-import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useState } from "react";
@@ -60,8 +59,7 @@ export default function SectorsManagementPage() {
   );
 
   return (
-    <AppShell>
-      <PageLayout 
+    <PageLayout
         title={title}
         description={description}
         primaryAction={{
@@ -83,6 +81,5 @@ export default function SectorsManagementPage() {
       >
         <SectorsManagement />
       </PageLayout>
-    </AppShell>
   );
 }

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { TeamManagementContent } from '@/components/admin/TeamManagementContent';
 import { UserPlus, Users } from 'lucide-react';
@@ -70,8 +69,7 @@ export default function TeamManagement() {
   );
 
   return (
-    <AppShell>
-      <PageLayout 
+    <PageLayout
         title={t('innovationTeamsManagement')}
         description={t('manageInnovationTeamsAndGroups')}
         itemCount={0} // This will be updated from the content component
@@ -101,6 +99,5 @@ export default function TeamManagement() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
-    </AppShell>
   );
 }

@@ -1,4 +1,3 @@
-import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useState } from "react";
@@ -301,8 +300,7 @@ export default function UserManagement() {
   );
 
   return (
-    <AppShell>
-      <PageLayout 
+    <PageLayout
         title={title}
         description={description}
         primaryAction={{
@@ -323,29 +321,28 @@ export default function UserManagement() {
         maxWidth="full"
       >
         {renderContent()}
+        
+        {/* Dialogs */}
+        <UserInvitationWizard
+          open={showInviteDialog}
+          onOpenChange={setShowInviteDialog}
+        />
+        
+        <RoleRequestWizard
+          open={showRoleDialog}
+          onOpenChange={setShowRoleDialog}
+          currentRoles={selectedUser?.role ? [selectedUser.role] : []}
+          onRequestSubmitted={() => {
+            setShowRoleDialog(false);
+            setSelectedUser(null);
+          }}
+        />
+        
+        <ExpertProfileDialog
+          open={showExpertDialog}
+          onOpenChange={setShowExpertDialog}
+          expertId={selectedUser?.id?.toString() || null}
+        />
       </PageLayout>
-
-      {/* Dialogs */}
-      <UserInvitationWizard
-        open={showInviteDialog}
-        onOpenChange={setShowInviteDialog}
-      />
-      
-      <RoleRequestWizard
-        open={showRoleDialog}
-        onOpenChange={setShowRoleDialog}
-        currentRoles={selectedUser?.role ? [selectedUser.role] : []}
-        onRequestSubmitted={() => {
-          setShowRoleDialog(false);
-          setSelectedUser(null);
-        }}
-      />
-      
-      <ExpertProfileDialog
-        open={showExpertDialog}
-        onOpenChange={setShowExpertDialog}
-        expertId={selectedUser?.id?.toString() || null}
-      />
-    </AppShell>
   );
 };

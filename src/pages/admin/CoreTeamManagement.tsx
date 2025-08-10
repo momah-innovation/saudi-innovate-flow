@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { InnovationTeamsContent } from '@/components/admin/InnovationTeamsContent';
 import { UserPlus, Users, Zap } from 'lucide-react';
@@ -68,8 +67,7 @@ export default function CoreTeamManagement() {
   );
 
   return (
-    <AppShell>
-      <PageLayout 
+    <PageLayout
         title={t('coreTeam')}
         description={t('manageCoreTeamMembers')}
         itemCount={0}
@@ -99,6 +97,5 @@ export default function CoreTeamManagement() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
-    </AppShell>
   );
 }

@@ -1,5 +1,4 @@
 import { CampaignsManagement } from "@/components/admin/CampaignsManagement";
-import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
@@ -77,8 +76,7 @@ export default function CampaignsManagementPage() {
   );
 
   return (
-    <AppShell>
-      <PageLayout 
+    <PageLayout
         title="إدارة الحملات"
         description="إنشاء وإدارة حملات الابتكار"
         itemCount={6}
@@ -106,6 +104,5 @@ export default function CampaignsManagementPage() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
-    </AppShell>
   );
 }
