@@ -75,9 +75,9 @@ export function TeamWizard({
   // Status options
   const statusOptions = generalStatusOptions.map(status => ({ 
     value: status, 
-    label: status === 'active' ? 'نشط' :
-           status === 'inactive' ? 'غير نشط' :
-           status === 'disbanded' ? 'منحل' : status
+    label: status === 'active' ? t('team_wizard.status_active') :
+           status === 'inactive' ? t('team_wizard.status_inactive') :
+           status === 'disbanded' ? t('team_wizard.status_disbanded') : status
   }));
 
   useEffect(() => {
@@ -127,19 +127,19 @@ export function TeamWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.name.trim()) {
-      newErrors.name = "اسم الفريق مطلوب";
+      newErrors.name = t('team_wizard.name_required');
     } else if (formData.name.length < 3) {
-      newErrors.name = "يجب أن يكون اسم الفريق أكثر من 3 أحرف";
+      newErrors.name = t('team_wizard.name_min_length');
     }
     
     if (!formData.description?.trim()) {
-      newErrors.description = "وصف الفريق مطلوب";
+      newErrors.description = t('team_wizard.description_required');
     } else if (formData.description.length < 20) {
-      newErrors.description = "يجب أن يكون وصف الفريق أكثر من 20 حرف";
+      newErrors.description = t('team_wizard.description_min_length');
     }
     
     if (!formData.type) {
-      newErrors.type = "نوع الفريق مطلوب";
+      newErrors.type = t('team_wizard.type_required');
     }
     
     setErrors(newErrors);
@@ -150,15 +150,15 @@ export function TeamWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.status) {
-      newErrors.status = "حالة الفريق مطلوبة";
+      newErrors.status = t('team_wizard.status_required');
     }
     
     if (!formData.manager_id) {
-      newErrors.manager_id = "يجب اختيار مدير الفريق";
+      newErrors.manager_id = t('team_wizard.manager_required');
     }
     
     if (!formData.max_members || formData.max_members < 2) {
-      newErrors.max_members = "يجب أن يكون الحد الأقصى للأعضاء أكثر من 1";
+      newErrors.max_members = t('team_wizard.max_members_min');
     }
     
     setErrors(newErrors);
@@ -196,8 +196,8 @@ export function TeamWizard({
         logger.info('Create team data', teamData);
         
         toast({
-          title: "نجح الإنشاء",
-          description: "تم إنشاء الفريق بنجاح",
+          title: t('team_wizard.create_success'),
+          description: t('team_wizard.create_success_description'),
         });
       }
 
@@ -208,13 +208,13 @@ export function TeamWizard({
       
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       if (errorMessage.includes('duplicate')) {
-        setErrors({ name: "يوجد فريق بنفس الاسم بالفعل" });
+        setErrors({ name: t('team_wizard.duplicate_name_error') });
       } else if (errorMessage.includes('constraint')) {
-        setErrors({ general: "خطأ في القيود المدخلة" });
+        setErrors({ general: t('team_wizard.constraint_error') });
       } else {
         toast({
-          title: "خطأ",
-          description: errorMessage || "فشل في حفظ الفريق",
+          title: t('team_wizard.error'),
+          description: errorMessage || t('team_wizard.save_failed'),
           variant: "destructive",
         });
       }
@@ -226,8 +226,8 @@ export function TeamWizard({
   const steps = [
     {
       id: "basic-info",
-      title: "المعلومات الأساسية",
-      description: "أدخل المعلومات الأساسية للفريق",
+      title: t('team_wizard.basic_info'),
+      description: t('team_wizard.basic_info_description'),
       validation: validateBasicInfo,
       content: (
         <div className="space-y-6">
@@ -239,7 +239,7 @@ export function TeamWizard({
           )}
           
           <div className="space-y-2">
-            <Label htmlFor="name">اسم الفريق *</Label>
+            <Label htmlFor="name">{t('team_wizard.team_name')} *</Label>
             <Input
               id="name"
               value={formData.name}
@@ -249,7 +249,7 @@ export function TeamWizard({
                   setErrors({ ...errors, name: "" });
                 }
               }}
-              placeholder="أدخل اسم الفريق"
+              placeholder={t('team_wizard.team_name_placeholder')}
               dir="rtl"
               className={errors.name ? "border-destructive" : ""}
             />
@@ -257,7 +257,7 @@ export function TeamWizard({
               <p className="text-sm text-destructive">{errors.name}</p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                يجب أن يكون الاسم وصفياً وواضحاً
+                {t('team_wizard.name_hint')}
               </p>
             )}
           </div>

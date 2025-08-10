@@ -338,19 +338,19 @@ export function StakeholderWizard({
     },
     {
       id: "contact-info",
-      title: "معلومات الاتصال",
-      description: "أضف تفاصيل الاتصال",
+      title: t('stakeholder_wizard.contact_info'),
+      description: t('stakeholder_wizard.contact_info_description'),
       content: (
         <div className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">البريد الإلكتروني *</Label>
+              <Label htmlFor="email">{t('stakeholder_wizard.email')} *</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => updateFormData("email", e.target.value)}
-                placeholder="أدخل البريد الإلكتروني"
+                placeholder={t('stakeholder_wizard.email_placeholder')}
                 className={errors.email ? "border-destructive" : ""}
               />
               {errors.email && (
@@ -359,13 +359,13 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">رقم الهاتف</Label>
+              <Label htmlFor="phone">{t('stakeholder_wizard.phone')}</Label>
               <Input
                 id="phone"
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => updateFormData("phone", e.target.value)}
-                placeholder="أدخل رقم الهاتف (اختياري)"
+                placeholder={t('stakeholder_wizard.phone_placeholder')}
                 dir="rtl"
               />
             </div>
@@ -376,19 +376,19 @@ export function StakeholderWizard({
     },
     {
       id: "engagement-details",
-      title: "تفاصيل المشاركة",
-      description: "حدد مستويات التأثير والمشاركة",
+      title: t('stakeholder_wizard.engagement_details'),
+      description: t('stakeholder_wizard.engagement_details_description'),
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="influence_level">مستوى التأثير</Label>
+              <Label htmlFor="influence_level">{t('stakeholder_wizard.influence_level')}</Label>
               <Select
                 value={formData.influence_level}
                 onValueChange={(value) => updateFormData("influence_level", value)}
               >
                 <SelectTrigger id="influence_level">
-                  <SelectValue placeholder="اختر مستوى التأثير" />
+                  <SelectValue placeholder={t('stakeholder_wizard.select_influence_level')} />
                 </SelectTrigger>
                 <SelectContent>
                   {influenceLevels.map((level) => (
@@ -443,17 +443,17 @@ export function StakeholderWizard({
     },
     {
       id: "additional-notes",
-      title: "ملاحظات إضافية",
-      description: "أضف أي معلومات أو ملاحظات إضافية",
+      title: t('stakeholder_wizard.additional_notes'),
+      description: t('stakeholder_wizard.additional_notes_description'),
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="notes">ملاحظات</Label>
+            <Label htmlFor="notes">{t('stakeholder_wizard.notes')}</Label>
             <Textarea
               id="notes"
               value={formData.notes}
               onChange={(e) => updateFormData("notes", e.target.value)}
-              placeholder="أدخل أي ملاحظات إضافية حول صاحب المصلحة هذا..."
+              placeholder={t('stakeholder_wizard.notes_placeholder')}
               rows={4}
               className="resize-none"
               dir="rtl"
