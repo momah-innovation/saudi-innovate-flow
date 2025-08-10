@@ -147,6 +147,19 @@ export class TranslationProgressTracker {
     });
 
     this.addFix({
+      id: 'idea-wizard',
+      component: 'IdeaWizard',
+      file: 'src/components/admin/IdeaWizard.tsx',
+      category: 'wizard',
+      priority: 'high',
+      status: 'completed',
+      estimatedStrings: 80,
+      fixedStrings: 80,
+      addedTranslationKeys: 40,
+      description: 'Complete idea creation wizard with validation and multi-step forms'
+    });
+
+    this.addFix({
       id: 'admin-idea-management',
       component: 'AdminIdeaManagement',
       file: 'src/components/admin/AdminIdeaManagement.tsx',

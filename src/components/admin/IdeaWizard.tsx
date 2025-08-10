@@ -114,13 +114,7 @@ export function IdeaWizard({
   // Status options from system lists
   const statusOptions = generalStatusOptions.map(status => ({ 
     value: status, 
-    label: status === 'draft' ? 'مسودة' :
-           status === 'submitted' ? 'مُرسلة' :
-           status === 'under_review' ? 'قيد المراجعة' :
-           status === 'approved' ? 'موافق عليها' :
-           status === 'rejected' ? 'مرفوضة' :
-           status === 'in_development' ? 'قيد التطوير' :
-           status === 'implemented' ? 'منفذة' : status
+    label: t(`idea_status.${status}`, status)
   }));
 
   // Maturity options from system lists
@@ -128,10 +122,7 @@ export function IdeaWizard({
   
   const maturityOptions = ideaMaturityLevels.map(level => ({ 
     value: level, 
-    label: level === 'concept' ? 'مفهوم' :
-           level === 'prototype' ? 'نموذج أولي' :
-           level === 'pilot' ? 'تجريبي' :
-           level === 'scaling' ? 'قابل للتوسع' : level
+    label: t(`idea_maturity.${level}`, level)
   }));
 
   useEffect(() => {
@@ -220,14 +211,14 @@ export function IdeaWizard({
       const profilesMap = new Map((profilesRes.data || []).map(p => [p.id, p]));
       const enrichedInnovators = (innovatorsRes.data || []).map(innovator => {
         const profile = profilesMap.get(innovator.user_id);
-        return {
-          ...innovator,
-          display_name: profile?.name_ar || profile?.name || `مبتكر ${innovator.user_id?.slice(0, 8) || 'غير محدد'}`
-        };
+         return {
+           ...innovator,
+           display_name: profile?.name_ar || profile?.name || `${t('idea_wizard.innovator_prefix')} ${innovator.user_id?.slice(0, 8) || t('idea_wizard.not_specified')}`
+         };
       });
       setInnovators(enrichedInnovators);
     } catch (error) {
-      // Failed to fetch idea wizard data - using default options
+      // Failed to fetch idea wizard data
     }
   };
 
@@ -235,19 +226,19 @@ export function IdeaWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.title_ar.trim()) {
-      newErrors.title_ar = "عنوان الفكرة مطلوب";
+      newErrors.title_ar = t('idea_wizard.title_required');
     } else if (formData.title_ar.length < 10) {
-      newErrors.title_ar = "يجب أن يكون عنوان الفكرة أكثر من 10 أحرف";
+      newErrors.title_ar = t('idea_wizard.title_min_length');
     }
     
     if (!formData.description_ar.trim()) {
-      newErrors.description_ar = "وصف الفكرة مطلوب";
+      newErrors.description_ar = t('idea_wizard.description_required');
     } else if (formData.description_ar.length < 50) {
-      newErrors.description_ar = "يجب أن يكون وصف الفكرة أكثر من 50 حرف";
+      newErrors.description_ar = t('idea_wizard.description_min_length');
     }
     
     if (!formData.innovator_id) {
-      newErrors.innovator_id = "يجب اختيار المبتكر";
+      newErrors.innovator_id = t('idea_wizard.innovator_required');
     }
     
     setErrors(newErrors);
@@ -258,11 +249,11 @@ export function IdeaWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.status) {
-      newErrors.status = "حالة الفكرة مطلوبة";
+      newErrors.status = t('idea_wizard.status_required');
     }
     
     if (!formData.maturity_level) {
-      newErrors.maturity_level = "مستوى النضج مطلوب";
+      newErrors.maturity_level = t('idea_wizard.maturity_required');
     }
     
     setErrors(newErrors);
@@ -275,11 +266,11 @@ export function IdeaWizard({
     // Only validate mandatory associations if status is not draft
     if (formData.status !== 'draft') {
       if (!formData.challenge_id || formData.challenge_id.trim() === "") {
-        newErrors.challenge_id = "يجب اختيار التحدي المرتبط عند تقديم الفكرة";
+        newErrors.challenge_id = t('idea_wizard.challenge_required_when_submitted');
       }
       
       if (!formData.focus_question_id || formData.focus_question_id.trim() === "") {
-        newErrors.focus_question_id = "يجب اختيار السؤال المحوري المرتبط عند تقديم الفكرة";
+        newErrors.focus_question_id = t('idea_wizard.focus_question_required_when_submitted');
       }
     }
     
@@ -316,8 +307,8 @@ export function IdeaWizard({
         if (error) throw error;
         
         toast({
-          title: "نجح التحديث",
-          description: "تم تحديث الفكرة بنجاح",
+          title: t('idea_wizard.update_success_title'),
+          description: t('idea_wizard.update_success_description'),
         });
       } else {
         // Create new idea
@@ -328,8 +319,8 @@ export function IdeaWizard({
         if (error) throw error;
         
         toast({
-          title: "نجح الإنشاء",
-          description: "تم إنشاء الفكرة بنجاح",
+          title: t('idea_wizard.create_success_title'),
+          description: t('idea_wizard.create_success_description'),
         });
       }
 
@@ -342,13 +333,13 @@ export function IdeaWizard({
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       
       if (errorMessage.includes('duplicate')) {
-        setErrors({ title_ar: "يوجد فكرة بنفس العنوان بالفعل" });
+        setErrors({ title_ar: t('idea_wizard.duplicate_title_error') });
       } else if (errorMessage.includes('constraint')) {
-        setErrors({ general: "خطأ في القيود المدخلة" });
+        setErrors({ general: t('idea_wizard.constraint_error') });
       } else {
         toast({
-          title: "خطأ",
-          description: errorMessage || "فشل في حفظ الفكرة",
+          title: t('idea_wizard.save_error_title'),
+          description: errorMessage || t('idea_wizard.save_error_description'),
           variant: "destructive",
         });
       }
@@ -368,8 +359,8 @@ export function IdeaWizard({
   const steps = [
     {
       id: "basic-info",
-      title: "المعلومات الأساسية",
-      description: "أدخل المعلومات الأساسية للفكرة",
+      title: t('idea_wizard.basic_info_title'),
+      description: t('idea_wizard.basic_info_description'),
       validation: validateBasicInfo,
       content: (
         <div className="space-y-6">
@@ -381,7 +372,7 @@ export function IdeaWizard({
           )}
           
           <div className="space-y-2">
-            <Label htmlFor="title_ar">عنوان الفكرة *</Label>
+            <Label htmlFor="title_ar">{t('idea_wizard.title_label')}</Label>
             <Input
               id="title_ar"
               value={formData.title_ar}
@@ -391,7 +382,7 @@ export function IdeaWizard({
                   setErrors({ ...errors, title_ar: "" });
                 }
               }}
-              placeholder="أدخل عنوان الفكرة"
+              placeholder={t('idea_wizard.title_placeholder')}
               dir="rtl"
               className={errors.title_ar ? "border-destructive" : ""}
             />
@@ -399,13 +390,13 @@ export function IdeaWizard({
               <p className="text-sm text-destructive">{errors.title_ar}</p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                يجب أن يكون العنوان وصفياً وواضحاً
+                {t('idea_wizard.title_help')}
               </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description_ar">وصف الفكرة *</Label>
+            <Label htmlFor="description_ar">{t('idea_wizard.description_label')}</Label>
             <Textarea
               id="description_ar"
               value={formData.description_ar}
@@ -415,7 +406,7 @@ export function IdeaWizard({
                   setErrors({ ...errors, description_ar: "" });
                 }
               }}
-              placeholder="اكتب وصفاً مفصلاً للفكرة وأهدافها"
+              placeholder={t('idea_wizard.description_placeholder')}
               rows={4}
               dir="rtl"
               className={errors.description_ar ? "border-destructive" : ""}
@@ -424,13 +415,13 @@ export function IdeaWizard({
               <p className="text-sm text-destructive">{errors.description_ar}</p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                وصف شامل يوضح الفكرة وأهدافها (لا يقل عن 50 حرف)
+                {t('idea_wizard.description_help')}
               </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="innovator_id">المبتكر *</Label>
+            <Label htmlFor="innovator_id">{t('idea_wizard.innovator_label')}</Label>
             <Select 
               value={formData.innovator_id} 
               onValueChange={(value) => {
@@ -441,12 +432,12 @@ export function IdeaWizard({
               }}
             >
               <SelectTrigger className={errors.innovator_id ? "border-destructive" : ""}>
-                <SelectValue placeholder="اختر المبتكر" />
+                <SelectValue placeholder={t('idea_wizard.innovator_placeholder')} />
               </SelectTrigger>
               <SelectContent>
                  {innovators.map((innovator) => (
                    <SelectItem key={innovator.id} value={innovator.id}>
-                     {innovator.display_name} (نقاط: {innovator.innovation_score})
+                     {innovator.display_name} ({t('idea_wizard.points_label')}: {innovator.innovation_score})
                    </SelectItem>
                  ))}
               </SelectContent>
