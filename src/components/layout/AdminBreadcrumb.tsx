@@ -51,6 +51,31 @@ const adminRouteConfig: Record<string, BreadcrumbConfig> = {
     labelAr: 'إدارة الحملات',
     icon: Briefcase
   },
+  '/admin/core-team': {
+    label: 'Core Team Management',
+    labelAr: 'إدارة الفريق الأساسي',
+    icon: UserCheck
+  },
+  '/admin/teams': {
+    label: 'Teams Management',
+    labelAr: 'إدارة الفرق',
+    icon: Users
+  },
+  '/admin/sectors': {
+    label: 'Sectors Management',
+    labelAr: 'إدارة القطاعات',
+    icon: Building
+  },
+  '/admin/stakeholders': {
+    label: 'Stakeholders Management',
+    labelAr: 'إدارة أصحاب المصلحة',
+    icon: Users
+  },
+  '/admin/evaluations': {
+    label: 'Evaluations Management',
+    labelAr: 'إدارة التقييمات',
+    icon: Target
+  },
   '/admin/partners': {
     label: 'Partners Management',
     labelAr: 'إدارة الشركاء',

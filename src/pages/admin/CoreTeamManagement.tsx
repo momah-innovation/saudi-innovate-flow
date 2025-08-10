@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from '@/components/layout/PageLayout';
 import { InnovationTeamsContent } from '@/components/admin/InnovationTeamsContent';
 import { UserPlus, Users, Zap } from 'lucide-react';
@@ -67,7 +68,9 @@ export default function CoreTeamManagement() {
   );
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title={t('coreTeam')}
         description={t('manageCoreTeamMembers')}
         itemCount={0}
@@ -97,5 +100,6 @@ export default function CoreTeamManagement() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
+    </div>
   );
 }

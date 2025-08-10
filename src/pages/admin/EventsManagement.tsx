@@ -1,4 +1,5 @@
 import { EventsManagement } from "@/components/admin/EventsManagement";
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
@@ -92,7 +93,9 @@ export default function EventsManagementPage() {
   );
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title="إدارة الأحداث"
         description="إدارة وتنظيم الأحداث والفعاليات والورش التدريبية"
         itemCount={3}
@@ -120,5 +123,6 @@ export default function EventsManagementPage() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
+    </div>
   );
 }

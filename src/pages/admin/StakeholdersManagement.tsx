@@ -1,4 +1,5 @@
 import { StakeholdersManagement } from "@/components/admin/StakeholdersManagement";
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
@@ -64,7 +65,9 @@ export default function StakeholdersManagementPage() {
   );
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title="إدارة أصحاب المصلحة"
         description="إدارة وتنظيم علاقات أصحاب المصلحة ومستويات التأثير"
         itemCount={4}
@@ -92,5 +95,6 @@ export default function StakeholdersManagementPage() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
+    </div>
   );
 }

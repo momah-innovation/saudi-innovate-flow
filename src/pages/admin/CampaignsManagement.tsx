@@ -1,3 +1,4 @@
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { CampaignsManagement } from "@/components/admin/CampaignsManagement";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
@@ -76,7 +77,9 @@ export default function CampaignsManagementPage() {
   );
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title="إدارة الحملات"
         description="إنشاء وإدارة حملات الابتكار"
         itemCount={6}
@@ -104,5 +107,6 @@ export default function CampaignsManagementPage() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
+    </div>
   );
 }

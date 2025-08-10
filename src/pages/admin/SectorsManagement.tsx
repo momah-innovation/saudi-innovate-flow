@@ -1,4 +1,5 @@
 import { SectorsManagement } from "@/components/admin/SectorsManagement";
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useState } from "react";
@@ -59,7 +60,9 @@ export default function SectorsManagementPage() {
   );
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title={title}
         description={description}
         primaryAction={{
@@ -81,5 +84,6 @@ export default function SectorsManagementPage() {
       >
         <SectorsManagement />
       </PageLayout>
+    </div>
   );
 }

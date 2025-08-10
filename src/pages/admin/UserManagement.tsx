@@ -1,3 +1,4 @@
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useState } from "react";
@@ -300,7 +301,9 @@ export default function UserManagement() {
   );
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title={title}
         description={description}
         primaryAction={{
@@ -344,5 +347,6 @@ export default function UserManagement() {
           expertId={selectedUser?.id?.toString() || null}
         />
       </PageLayout>
+    </div>
   );
 };

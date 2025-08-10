@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from '@/components/layout/PageLayout';
 import { TeamManagementContent } from '@/components/admin/TeamManagementContent';
 import { UserPlus, Users } from 'lucide-react';
@@ -69,7 +70,9 @@ export default function TeamManagement() {
   );
 
   return (
-    <PageLayout
+    <div className="container mx-auto px-4 py-8">
+      <AdminBreadcrumb />
+      <PageLayout
         title={t('innovationTeamsManagement')}
         description={t('manageInnovationTeamsAndGroups')}
         itemCount={0} // This will be updated from the content component
@@ -99,5 +102,6 @@ export default function TeamManagement() {
           onAddDialogChange={setShowAddDialog}
         />
       </PageLayout>
+    </div>
   );
 }
