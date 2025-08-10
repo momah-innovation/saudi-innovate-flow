@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { 
   Home, Info, Megaphone, Target, Calendar, 
@@ -19,7 +20,7 @@ interface NavigationItem {
 }
 
 export function LandingNavigation() {
-  const { isRTL } = useUnifiedTranslation();
+  const { isRTL, language } = useDirection();
   const location = useLocation();
 
   const navigationItems: NavigationItem[] = [
