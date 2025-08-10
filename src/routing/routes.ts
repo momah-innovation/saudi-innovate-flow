@@ -106,6 +106,7 @@ export const ADMIN_ROUTES = {
   ADMIN_SETTINGS: '/admin/system-settings',
   ADMIN_ANALYTICS: '/admin/system-analytics',
   ADMIN_STORAGE: '/admin/storage',
+  ADMIN_STORAGE_POLICIES: '/admin/storage/policies',
   ADMIN_ENTITIES: '/admin/entities',
   ADMIN_SECURITY: '/admin/security',
   ADMIN_CORE_TEAM: '/admin/core-team',

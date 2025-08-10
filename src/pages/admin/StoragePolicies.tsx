@@ -524,3 +524,5 @@ export const StoragePoliciesPage: React.FC = () => {
     </div>
   )
 }
+
+export default StoragePoliciesPage;
