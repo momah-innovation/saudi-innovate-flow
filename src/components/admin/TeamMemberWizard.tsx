@@ -241,8 +241,8 @@ export function TeamMemberWizard({
         }
         if (formData.specialization.length === 0) {
           toast({
-            title: "خطأ في التحقق",
-            description: "يرجى اختيار تخصص واحد على الأقل",
+            title: t('team_member_wizard.validation_error', 'خطأ في التحقق'),
+            description: t('team_member_wizard.specialization_required', 'يرجى اختيار تخصص واحد على الأقل'),
             variant: "destructive"
           });
           return false;
@@ -345,7 +345,7 @@ export function TeamMemberWizard({
   const steps = [
     {
       title: editingMember ? t('team_member_wizard.member_info', 'معلومات العضو') : t('team_member_wizard.user_selection', 'اختيار المستخدم'),
-      description: editingMember ? "مراجعة معلومات العضو الأساسية" : "البحث عن المستخدم وإضافته إلى الفريق",
+      description: editingMember ? t('team_member_wizard.member_info_desc', 'مراجعة معلومات العضو الأساسية') : t('team_member_wizard.user_selection_desc', 'البحث عن المستخدم وإضافته إلى الفريق'),
       icon: <User className="w-5 h-5" />
     },
     {
@@ -354,8 +354,8 @@ export function TeamMemberWizard({
       icon: <Settings className="w-5 h-5" />
     },
     {
-      title: "القدرة والأداء",
-      description: "تحديد قدرة العمل وتقييم الأداء",
+      title: t('team_member_wizard.capacity_performance', 'القدرة والأداء'),
+      description: t('team_member_wizard.capacity_performance_desc', 'تحديد قدرة العمل وتقييم الأداء'),
       icon: <Trophy className="w-5 h-5" />
     }
   ];

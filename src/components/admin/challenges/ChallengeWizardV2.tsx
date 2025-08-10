@@ -228,16 +228,16 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
       case 'basic':
         if (!formData.title_ar.trim()) {
           toast({
-            title: 'خطأ في التحقق',
-            description: 'يرجى إدخال عنوان التحدي',
+            title: t('challenge_wizard.validation_error', 'خطأ في التحقق'),
+            description: t('challenge_wizard.title_required', 'يرجى إدخال عنوان التحدي'),
             variant: 'destructive'
           });
           return false;
         }
         if (!formData.description_ar.trim()) {
           toast({
-            title: 'خطأ في التحقق',
-            description: 'يرجى إدخال وصف التحدي',
+            title: t('challenge_wizard.validation_error', 'خطأ في التحقق'),
+            description: t('challenge_wizard.description_required', 'يرجى إدخال وصف التحدي'),
             variant: 'destructive'
           });
           return false;
@@ -248,8 +248,8 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
       case 'timeline':
         if (startDate && endDate && startDate >= endDate) {
           toast({
-            title: 'خطأ في التحقق',
-            description: 'تاريخ النهاية يجب أن يكون بعد تاريخ البداية',
+            title: t('challenge_wizard.validation_error', 'خطأ في التحقق'),
+            description: t('challenge_wizard.end_date_validation', 'تاريخ النهاية يجب أن يكون بعد تاريخ البداية'),
             variant: 'destructive'
           });
           return false;
@@ -284,8 +284,8 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         if (error) throw error;
 
         toast({
-          title: 'تم التحديث بنجاح',
-          description: 'تم تحديث التحدي بنجاح'
+          title: t('challenge_wizard.update_success', 'تم التحديث بنجاح'),
+          description: t('challenge_wizard.challenge_updated_success', 'تم تحديث التحدي بنجاح')
         });
       } else {
         const { data, error } = await supabase
@@ -318,8 +318,8 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         }
 
         toast({
-          title: 'تم الإنشاء بنجاح',
-          description: 'تم إنشاء التحدي بنجاح'
+          title: t('challenge_wizard.creation_success', 'تم الإنشاء بنجاح'),
+          description: t('challenge_wizard.challenge_created_success', 'تم إنشاء التحدي بنجاح')
         });
       }
 
@@ -328,7 +328,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
     } catch (error) {
       logger.error('خطأ في حفظ التحدي', { component: 'ChallengeWizardV2', action: 'submitForm' }, error as Error);
       toast({
-        title: 'خطأ',
+        title: t('common.error', 'خطأ'),
         description: t('errors.failed_to_save_challenge', 'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى.'),
         variant: 'destructive'
       });
