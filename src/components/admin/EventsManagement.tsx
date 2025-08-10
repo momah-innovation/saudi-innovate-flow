@@ -52,7 +52,7 @@ interface EventData {
 }
 
 export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: EventsManagementProps) {
-  const { language } = useUnifiedTranslation();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [viewEvent, setViewEvent] = useState<EventData | null>(null);
@@ -94,8 +94,8 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
     } catch (error) {
       logger.error('Error loading events', { component: 'EventsManagement', action: 'loadEvents' }, error as Error);
       toast({
-        title: 'خطأ في تحميل الفعاليات',
-        description: 'حدث خطأ أثناء تحميل الفعاليات',
+        title: t('events.load_error_title'),
+        description: t('events.load_error_description'),
         variant: 'destructive'
       });
     } finally {
@@ -140,15 +140,15 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
       if (error) throw error;
 
       toast({
-        title: 'تم حذف الفعالية بنجاح',
-        description: `تم حذف فعالية "${event.title_ar}" بنجاح`,
+        title: t('events.delete_success_title'),
+        description: t('events.delete_success_description', { title: event.title_ar }),
       });
 
       loadEvents(); // Reload events
     } catch (error) {
       logger.error('Error deleting event', { component: 'EventsManagement', action: 'handleDelete' }, error as Error);
       toast({
-        title: 'خطأ في حذف الفعالية',
+        title: t('events.delete_error_title'),
         variant: 'destructive'
       });
     }
@@ -165,15 +165,15 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
       if (error) throw error;
 
       toast({
-        title: 'تم تحديث حالة الفعالية',
-        description: `تم تغيير حالة الفعالية إلى ${newStatus}`,
+        title: t('events.status_update_success_title'),
+        description: t('events.status_update_success_description', { status: newStatus }),
       });
 
       loadEvents(); // Reload events
     } catch (error) {
       logger.error('Error updating event status', { component: 'EventsManagement', action: 'handleStatusChange' }, error as Error);
       toast({
-        title: 'خطأ في تحديث الحالة',
+        title: t('events.status_update_error_title'),
         variant: 'destructive'
       });
     }
@@ -187,11 +187,11 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
   // Calculate metrics for hero
   const totalEvents = events.length;
-  const activeEvents = events.filter(e => e.status === 'جاري').length;
+  const activeEvents = events.filter(e => e.status === 'active').length;
   const totalParticipants = events.reduce((sum, e) => sum + (e.registered_participants || 0), 0);
   const totalRevenue = events.reduce((sum, e) => sum + (e.budget || 0), 0);
-  const upcomingEvents = events.filter(e => e.status === 'مجدول').length;
-  const completedEvents = events.filter(e => e.status === 'مكتمل').length;
+  const upcomingEvents = events.filter(e => e.status === 'scheduled').length;
+  const completedEvents = events.filter(e => e.status === 'completed').length;
 
   return (
     <>
@@ -209,7 +209,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
         {loading ? [
           <div key="loading" className="text-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">جاري تحميل الفعاليات...</p>
+            <p className="text-muted-foreground">{t('events.loading')}</p>
           </div>
         ] : filteredEvents.length > 0 ? 
           filteredEvents.map((event) => (
@@ -237,8 +237,8 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           )) : [
           <div key="empty" className="text-center py-12">
             <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-            <p className="text-lg font-medium mb-2">لا توجد فعاليات</p>
-            <p className="text-muted-foreground">لا توجد فعاليات تطابق البحث الحالي</p>
+            <p className="text-lg font-medium mb-2">{t('events.no_events_title')}</p>
+            <p className="text-muted-foreground">{t('events.no_events_description')}</p>
           </div>
         ]}
       </ViewLayouts>

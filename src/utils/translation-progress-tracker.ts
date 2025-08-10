@@ -161,14 +161,14 @@ export class TranslationProgressTracker {
 
     this.addFix({
       id: 'admin-event-management',
-      component: 'AdminEventManagement',
-      file: 'src/components/admin/AdminEventManagement.tsx',
+      component: 'EventsManagement',
+      file: 'src/components/admin/EventsManagement.tsx',
       category: 'management',
       priority: 'high',
-      status: 'pending',
+      status: 'completed',
       estimatedStrings: 35,
-      fixedStrings: 0,
-      addedTranslationKeys: 0,
+      fixedStrings: 35,
+      addedTranslationKeys: 15,
       description: 'Event management interface with calendar and registration features'
     });
 
