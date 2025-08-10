@@ -492,6 +492,158 @@ export default function AdminDashboard() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Partners Management</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/partners'}>
+                  <Plus className="w-4 h-4" />
+                  Add Partner
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">28</div>
+                      <div className="text-sm text-muted-foreground">Total Partners</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">24</div>
+                      <div className="text-sm text-muted-foreground">Active Partners</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-info">15</div>
+                      <div className="text-sm text-muted-foreground">Active Projects</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/partners'}
+                    >
+                      <Users className="w-4 h-4 mr-2" />
+                      Manage Partners
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Sectors Management</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/sectors'}>
+                  <Plus className="w-4 h-4" />
+                  Add Sector
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">8</div>
+                      <div className="text-sm text-muted-foreground">Total Sectors</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">6</div>
+                      <div className="text-sm text-muted-foreground">Active Sectors</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-info">42</div>
+                      <div className="text-sm text-muted-foreground">Total Challenges</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/sectors'}
+                    >
+                      <Database className="w-4 h-4 mr-2" />
+                      Manage Sectors
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Ideas Management</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/ideas'}>
+                  <Plus className="w-4 h-4" />
+                  Review Ideas
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">245</div>
+                      <div className="text-sm text-muted-foreground">Total Ideas</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">156</div>
+                      <div className="text-sm text-muted-foreground">Approved Ideas</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-warning">23</div>
+                      <div className="text-sm text-muted-foreground">Pending Review</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/ideas'}
+                    >
+                      <TrendingUp className="w-4 h-4 mr-2" />
+                      Manage Ideas
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Challenges Management</CardTitle>
+                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/challenges'}>
+                  <Plus className="w-4 h-4" />
+                  Add Challenge
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">12</div>
+                      <div className="text-sm text-muted-foreground">Active Challenges</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-success">8</div>
+                      <div className="text-sm text-muted-foreground">Published</div>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <div className="text-2xl font-bold text-info">4</div>
+                      <div className="text-sm text-muted-foreground">Draft</div>
+                    </div>
+                  </div>
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.location.href = '/admin/challenges'}
+                    >
+                      <Activity className="w-4 h-4 mr-2" />
+                      Manage Challenges
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="storage" className="space-y-6">
