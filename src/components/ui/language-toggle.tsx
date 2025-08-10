@@ -8,6 +8,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Languages, Globe } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { cn } from '@/lib/utils';
 
 const languages = [
   { code: 'ar', name: 'العربية', nativeName: 'العربية', flag: '🇸🇦' },
@@ -44,8 +45,8 @@ export function LanguageToggle() {
               <span className="text-lg">{lang.flag}</span>
               <span className="font-medium">{lang.nativeName}</span>
               {language === lang.code && (
-                <Badge variant="secondary" className="mr-auto text-xs">
-                  نشط
+                <Badge variant="secondary" className={cn("text-xs", isRTL ? "ml-auto" : "mr-auto")}>
+                  {isRTL ? 'نشط' : 'Active'}
                 </Badge>
               )}
             </div>

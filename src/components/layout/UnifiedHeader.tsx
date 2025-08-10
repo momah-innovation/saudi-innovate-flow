@@ -111,11 +111,11 @@ export function UnifiedHeader({
 
   // Dynamic content based on variant
   const getSystemTitle = () => {
-    return language === 'ar' ? 'نظام رواد للابتكار' : 'Ruwād Innovation System';
+    return t('system_title', language === 'ar' ? 'نظام رواد للابتكار' : 'Ruwād Innovation System');
   };
 
   const getSearchPlaceholder = () => {
-    return searchPlaceholder || (language === 'ar' ? 'البحث...' : 'Search...');
+    return searchPlaceholder || t('search_placeholder', language === 'ar' ? 'البحث...' : 'Search...');
   };
 
   const handleSearchChange = (value: string) => {
@@ -213,12 +213,12 @@ export function UnifiedHeader({
                   size="sm" 
                   className="h-9 w-9 p-0"
                   onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-                  title="Switch Language"
-                >
-                  <Languages className="h-4 w-4" />
-                  <span className="sr-only">
-                    Switch Language
-                  </span>
+               title={t('switch_language', 'Switch Language')}
+             >
+               <Languages className="h-4 w-4" />
+               <span className="sr-only">
+                 {t('switch_language', 'Switch Language')}
+               </span>
                 </Button>
               )}
 
@@ -322,9 +322,9 @@ export function UnifiedHeader({
             )}>
               {title}
             </h1>
-            <Badge variant="outline" className="text-xs">
-              {language === 'ar' ? 'إدارة' : 'Admin'}
-            </Badge>
+             <Badge variant="outline" className="text-xs">
+               {t('admin_badge', language === 'ar' ? 'إدارة' : 'Admin')}
+             </Badge>
           </div>
         )}
         
@@ -347,12 +347,12 @@ export function UnifiedHeader({
           size="sm" 
           className="h-9 w-9 p-0"
           onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-          title="Switch Language"
-        >
-          <Languages className="h-4 w-4" />
-          <span className="sr-only">
-            Switch Language
-          </span>
+           title={t('switch_language', 'Switch Language')}
+         >
+           <Languages className="h-4 w-4" />
+           <span className="sr-only">
+             {t('switch_language', 'Switch Language')}
+           </span>
         </Button>
       )}
 

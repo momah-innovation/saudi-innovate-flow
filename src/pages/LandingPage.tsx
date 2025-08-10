@@ -7,6 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useLandingPageData } from "@/hooks/useLandingPageData";
 import { LandingNavigation } from "@/components/landing/LandingNavigation";
+import { cn } from "@/lib/utils";
 import { 
   Lightbulb, 
   Users, 
@@ -122,15 +123,17 @@ export default function LandingPage() {
       <LandingNavigation />
       
       {/* Language Toggle */}
-      <div className={`fixed top-20 ${isRTL ? 'left-4' : 'right-4'} z-50`}>
+      <div className={cn("fixed top-20 z-50", isRTL ? 'left-4' : 'right-4')}>
         <Button
           variant="outline"
           size="sm"
           onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-          className="bg-background/90 backdrop-blur-sm border-border/50"
+          className={cn("bg-background/90 backdrop-blur-sm border-border/50", isRTL ? "font-arabic" : "font-english")}
         >
-          <Languages className="w-4 h-4 mr-2" />
-          {language === 'en' ? 'العربية' : 'English'}
+          <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+            <Languages className="w-4 h-4" />
+            <span>{language === 'en' ? 'العربية' : 'English'}</span>
+          </div>
         </Button>
       </div>
       {/* Hero Section */}

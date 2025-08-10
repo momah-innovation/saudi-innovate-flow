@@ -113,19 +113,19 @@ export function LandingNavigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
+          <div className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+            <Link to="/" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Home className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold text-foreground">
+              <span className={cn("text-xl font-bold text-foreground", isRTL ? "font-arabic" : "font-english")}>
                 {isRTL ? 'رواد' : 'Ruwād'}
               </span>
             </Link>
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className={cn("hidden md:flex items-center gap-1", isRTL && "flex-row-reverse")}>
             {navigationItems.slice(0, 6).map((item) => (
               <Link
                 key={item.id}
@@ -136,24 +136,26 @@ export function LandingNavigation() {
                   isActive(item.path) 
                     ? "bg-primary text-primary-foreground" 
                     : "text-muted-foreground",
-                  isRTL && "ml-1 mr-0"
+                  isRTL ? "font-arabic" : "font-english"
                 )}
                 title={isRTL ? item.arabicDescription : item.description}
               >
-                <item.icon className={cn("w-4 h-4 inline", isRTL ? "ml-1" : "mr-1")} />
-                {isRTL ? item.arabicLabel : item.label}
+                <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
+                  <item.icon className="w-4 h-4" />
+                  <span>{isRTL ? item.arabicLabel : item.label}</span>
+                </div>
               </Link>
             ))}
           </div>
 
           {/* Auth Buttons */}
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" asChild>
+          <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+            <Button variant="ghost" asChild className={isRTL ? "font-arabic" : "font-english"}>
               <Link to="/login">
                 {isRTL ? 'تسجيل الدخول' : 'Login'}
               </Link>
             </Button>
-            <Button asChild>
+            <Button asChild className={isRTL ? "font-arabic" : "font-english"}>
               <Link to="/signup">
                 {isRTL ? 'البدء' : 'Get Started'}
               </Link>
