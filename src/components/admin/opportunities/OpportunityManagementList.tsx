@@ -234,22 +234,22 @@ export function OpportunityManagementList({
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'open': return 'مفتوح';
-      case 'closed': return 'مغلق';
-      case 'on_hold': return 'معلق';
-      case 'cancelled': return 'ملغي';
+      case 'open': return t('status.open', 'مفتوح');
+      case 'closed': return t('status.closed', 'مغلق');
+      case 'on_hold': return t('status.on_hold', 'معلق');
+      case 'cancelled': return t('status.cancelled', 'ملغي');
       default: return status;
     }
   };
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'job': return 'وظيفة';
-      case 'internship': return 'تدريب';
-      case 'volunteer': return 'تطوع';
-      case 'partnership': return 'شراكة';
-      case 'grant': return 'منحة';
-      case 'competition': return 'مسابقة';
+      case 'job': return t('opportunity_type.job', 'وظيفة');
+      case 'internship': return t('opportunity_type.internship', 'تدريب');
+      case 'volunteer': return t('opportunity_type.volunteer', 'تطوع');
+      case 'partnership': return t('opportunity_type.partnership', 'شراكة');
+      case 'grant': return t('opportunity_type.grant', 'منحة');
+      case 'competition': return t('opportunity_type.competition', 'مسابقة');
       default: return type;
     }
   };

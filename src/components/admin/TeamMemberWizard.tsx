@@ -510,7 +510,7 @@ export function TeamMemberWizard({
                   max={formData.max_concurrent_projects}
                 />
                 <p className="text-xs text-muted-foreground">
-                  المشاريع النشطة حالياً
+                  {t('team_member_wizard.active_projects_currently', 'المشاريع النشطة حالياً')}
                 </p>
               </div>
             </div>

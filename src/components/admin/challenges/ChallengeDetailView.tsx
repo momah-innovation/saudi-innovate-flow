@@ -225,11 +225,11 @@ export function ChallengeDetailView({
 
   const getStatusLabel = (status: string) => {
     const labels = {
-      draft: 'مسودة',
-      active: 'نشط',
-      completed: 'مكتمل',
-      cancelled: 'ملغي',
-      on_hold: 'معلق'
+      draft: t('status.draft', 'مسودة'),
+      active: t('status.active', 'نشط'),
+      completed: t('status.completed', 'مكتمل'),
+      cancelled: t('status.cancelled', 'ملغي'),
+      on_hold: t('status.on_hold', 'معلق')
     };
     return labels[status as keyof typeof labels] || status;
   };

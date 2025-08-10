@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { 
   BarChart3, 
   TrendingUp, 
@@ -53,6 +54,7 @@ export function FocusQuestionAnalytics() {
   const [timeRange, setTimeRange] = useState("all");
   const { toast } = useToast();
   const { timeRangeOptions } = useSystemLists();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     fetchAnalytics();
@@ -160,11 +162,11 @@ export function FocusQuestionAnalytics() {
 
   const getTypeLabel = (type: string) => {
     const labels = {
-      open_ended: 'سؤال مفتوح',
-      multiple_choice: 'متعدد الخيارات',
-      yes_no: 'نعم/لا',
-      rating: 'تقييم',
-      ranking: 'ترتيب'
+      open_ended: t('question_type.open_ended', 'سؤال مفتوح'),
+      multiple_choice: t('question_type.multiple_choice', 'متعدد الخيارات'),
+      yes_no: t('question_type.yes_no', 'نعم/لا'),
+      rating: t('question_type.rating', 'تقييم'),
+      ranking: t('question_type.ranking', 'ترتيب')
     };
     return labels[type as keyof typeof labels] || type;
   };

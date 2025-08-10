@@ -90,9 +90,9 @@ export function StakeholderWizard({
 
   const engagementStatuses = generalStatusOptions.map(status => ({ 
     value: status, 
-    label: status === 'active' ? 'نشط' :
-           status === 'inactive' ? 'غير نشط' :
-           status === 'pending' ? 'معلق' : status
+    label: status === 'active' ? t('status.active', 'نشط') :
+           status === 'inactive' ? t('status.inactive', 'غير نشط') :
+           status === 'pending' ? t('status.pending', 'معلق') : status
   }));
 
   useEffect(() => {
