@@ -57,6 +57,14 @@ export default function AdminDashboard() {
       label: "Active Users"
     },
     {
+      title: "Core Team Management",
+      description: "Manage core team members and assignments",
+      icon: Users,
+      href: "/admin/core-team",
+      count: "12",
+      label: "Team Members"
+    },
+    {
       title: "Expert Assignment Management",
       description: "Assign experts to challenges and manage evaluations", 
       icon: UserCheck,
