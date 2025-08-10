@@ -30,14 +30,12 @@ const ExpertAssignmentManagement = lazy(() => import('@/pages/admin/ExpertAssign
 const AdminEvaluations = lazy(() => import('@/pages/admin/AdminEvaluations'));
 const AdminRelationships = lazy(() => import('@/pages/admin/AdminRelationships'));
 const Challenges = lazy(() => import('@/pages/Challenges'));
-const Ideas = lazy(() => import('@/pages/Ideas'));
 const ChallengeDetails = lazy(() => import('@/pages/ChallengeDetails'));
 const ChallengeIdeaSubmission = lazy(() => import('@/pages/ChallengeIdeaSubmission'));
 const OpportunitiesPage = lazy(() => import('@/pages/Opportunities'));
 const UserDashboard = lazy(() => import('@/components/dashboard/UserDashboard'));
 const ProfileSetupPage = lazy(() => import('@/pages/ProfileSetup'));
 const SettingsPage = lazy(() => import('@/pages/Settings'));
-const AnalyticsPage = lazy(() => import('@/pages/AnalyticsPage'));
 const EventsBrowse = lazy(() => import('@/pages/EventsBrowse'));
 const ChallengesBrowse = lazy(() => import('@/pages/ChallengesBrowse'));
 const AccessControlManagement = lazy(() => import('@/pages/dashboard/AccessControlManagement'));
