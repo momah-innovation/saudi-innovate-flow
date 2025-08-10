@@ -1334,7 +1334,15 @@ export type Database = {
           updated_at?: string
           weight_percentage?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "challenge_requirements_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       challenge_scorecards: {
         Row: {
