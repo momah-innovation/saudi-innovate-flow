@@ -7816,6 +7816,45 @@ export type Database = {
         }
         Relationships: []
       }
+      system_lists: {
+        Row: {
+          cache_ttl_hours: number | null
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          last_updated: string | null
+          list_key: string
+          list_values: Json
+          updated_at: string | null
+        }
+        Insert: {
+          cache_ttl_hours?: number | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_updated?: string | null
+          list_key: string
+          list_values?: Json
+          updated_at?: string | null
+        }
+        Update: {
+          cache_ttl_hours?: number | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_updated?: string | null
+          list_key?: string
+          list_values?: Json
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       system_settings: {
         Row: {
           created_at: string

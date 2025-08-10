@@ -80,43 +80,23 @@ interface SystemListsHook {
 export const useSystemLists = (): SystemListsHook => {
   const { t } = useUnifiedTranslation();
   const [settings, setSettings] = useState<SystemListsHook>({
-    // Use standardized English values for database compatibility
-    challengePriorityLevels: ['low', 'medium', 'high', 'critical'],
-    challengeSensitivityLevels: ['normal', 'confidential', 'restricted'],
-    challengeTypes: ['innovation', 'improvement', 'research', 'development'],
-    challengeStatusOptions: ['draft', 'active', 'published', 'completed', 'closed', 'archived'],
-    partnerStatusOptions: ['active', 'inactive', 'pending', 'suspended'],
-    partnerTypeOptions: ['government', 'private', 'academic', 'non_profit', 'international'],
-    partnershipTypeOptions: ['collaborator', 'sponsor', 'technical_partner', 'strategic_partner', 'implementation_partner'],
-    expertStatusOptions: ['active', 'inactive', 'available', 'busy', 'unavailable'],
-    assignmentStatusOptions: ['active', 'inactive', 'pending', 'completed', 'cancelled'],
-    roleRequestStatusOptions: ['pending', 'approved', 'rejected', 'withdrawn'],
-    userStatusOptions: ['active', 'inactive', 'suspended', 'pending', 'revoked'],
-    generalStatusOptions: ['active', 'inactive', 'pending', 'completed', 'cancelled', 'draft', 'published', 'archived'],
-    availableUserRoles: [
-      { value: 'innovator', label: 'Innovator', description: 'Default role for new users' },
-      { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
-      { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' }
-    ],
-    requestableUserRoles: [
-      { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
-      { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' },
-      { value: 'team_leader', label: 'Team Leader', description: 'Lead innovation teams and coordinate projects' }
-    ],
-    teamRoleOptions: [
-      'Innovation Manager',
-      'Data Analyst', 
-      'Content Creator',
-      'Project Manager',
-      'Research Analyst'
-    ],
-    teamSpecializationOptions: [
-      'Innovation Strategy & Planning',
-      'Project Management & Execution', 
-      'Research & Market Analysis',
-      'Stakeholder Engagement',
-      'Change Management'
-    ],
+    // Initialize with empty arrays - will be populated from database
+    challengePriorityLevels: [],
+    challengeSensitivityLevels: [],
+    challengeTypes: [],
+    challengeStatusOptions: [],
+    partnerStatusOptions: [],
+    partnerTypeOptions: [],
+    partnershipTypeOptions: [],
+    expertStatusOptions: [],
+    assignmentStatusOptions: [],
+    roleRequestStatusOptions: [],
+    userStatusOptions: [],
+    generalStatusOptions: [],
+    availableUserRoles: [],
+    requestableUserRoles: [],
+    teamRoleOptions: [],
+    teamSpecializationOptions: [],
     focusQuestionTypes: ['general', 'technical', 'business', 'impact', 'implementation', 'social', 'ethical', 'medical', 'regulatory'],
     experienceLevels: ['beginner', 'intermediate', 'advanced', 'expert'],
     expertRoleTypes: ['lead_expert', 'evaluator', 'reviewer', 'subject_matter_expert', 'external_consultant'],
@@ -188,14 +168,16 @@ export const useSystemLists = (): SystemListsHook => {
   useEffect(() => {
     const loadSystemLists = async () => {
       try {
-        const { data } = await supabase
-          .from('system_settings')
-          .select('setting_key, setting_value')
-          .in('setting_key', [
-            'challenge_priority_levels',
-            'challenge_sensitivity_levels', 
-            'challenge_types',
-            'challenge_status_options',
+        // Load from both system_settings and system_lists tables
+        const [settingsData, listsData] = await Promise.all([
+          supabase
+            .from('system_settings')
+            .select('setting_key, setting_value')
+            .in('setting_key', [
+              'challenge_priority_levels',
+              'challenge_sensitivity_levels', 
+              'challenge_types',
+              'challenge_status_options',
             'partner_status_options',
             'partner_type_options',
             'partnership_type_options',
@@ -249,37 +231,26 @@ export const useSystemLists = (): SystemListsHook => {
             'challenge_filter_status_options',
             'navigation_menu_visibility_roles',
             'data_export_formats',
-            'chart_visualization_colors',
-            // New array-based settings for compatibility
-            'idea_categories',
-            'evaluation_criteria',
-            'available_themes',
-            'campaign_themes',
-            'opportunity_types',
-            'user_role_types',
-            'question_types',
-            'attachment_types',
-            'assignment_types',
-            'integration_types',
-            'notification_types',
-            'team_specializations',
-            'team_roles',
-            'file_categories',
-            'workflow_statuses',
-            'visibility_levels'
-          ]);
+            'chart_visualization_colors'
+          ]),
+          supabase
+            .from('system_lists')
+            .select('list_key, list_values')
+            .eq('is_active', true)
+        ]);
         
-        if (data) {
-          const newSettings = { ...settings };
-          
-          data.forEach(setting => {
+        const newSettings = { ...settings };
+        
+        // Process system_settings data
+        if (settingsData.data) {
+          settingsData.data.forEach(setting => {
             const value = typeof setting.setting_value === 'string' 
               ? JSON.parse(setting.setting_value) 
               : setting.setting_value;
               
             switch (setting.setting_key) {
               case 'challenge_priority_levels':
-                newSettings.challengePriorityLevels = value;
+                newSettings.challengePriorityLevels = Array.isArray(value) ? value : [];
                 break;
               case 'challenge_sensitivity_levels':
                 newSettings.challengeSensitivityLevels = value;
@@ -454,11 +425,59 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
             }
           });
-          
-          setSettings({ ...newSettings, loading: false });
-        } else {
-          setSettings(prev => ({ ...prev, loading: false }));
         }
+
+        // Process system_lists data 
+        if (listsData.data) {
+          listsData.data.forEach(list => {
+            const values = Array.isArray(list.list_values) ? list.list_values : [];
+            
+            // Extend newSettings with additional lists from system_lists table
+            switch (list.list_key) {
+              case 'opportunity_types':
+                (newSettings as any).opportunityTypes = values;
+                break;
+              case 'opportunity_status_options':
+                (newSettings as any).opportunityStatusOptions = values;
+                break;
+              case 'application_status_options':
+                (newSettings as any).applicationStatusOptions = values;
+                break;
+              case 'budget_ranges':
+                (newSettings as any).budgetRanges = values;
+                break;
+              case 'collaboration_types':
+                (newSettings as any).collaborationTypes = values;
+                break;
+              case 'attachment_types':
+                (newSettings as any).attachmentTypes = values;
+                break;
+              case 'notification_channels':
+                (newSettings as any).notificationChannels = values;
+                break;
+              case 'notification_types':
+                (newSettings as any).notificationTypeOptions = values;
+                break;
+              case 'workflow_statuses':
+                (newSettings as any).workflowStatuses = values;
+                break;
+              case 'visibility_levels':
+                (newSettings as any).visibilityLevels = values;
+                break;
+              case 'integration_types':
+                (newSettings as any).integrationTypes = values;
+                break;
+              case 'file_categories':
+                (newSettings as any).fileCategories = values;
+                break;
+            }
+          });
+        }
+          
+        setSettings({ ...newSettings, loading: false });
+      } catch (error) {
+        logger.error('Failed to load system lists', { component: 'useSystemLists', action: 'loadSystemLists' }, error as Error);
+        setSettings(prev => ({ ...prev, loading: false }));
       } catch (error) {
         logger.error('Failed to load system lists', { component: 'useSystemLists', action: 'loadSystemLists' }, error as Error);
         setSettings(prev => ({ ...prev, loading: false }));

@@ -59,12 +59,12 @@ export default function ChallengeDetailPage() {
         .from('challenges')
         .select(`
           *,
-          sectors!challenges_sector_id_fkey(id, name_ar, name_en),
-          deputies!challenges_deputy_id_fkey(id, name_ar, name_en, deputy_minister, contact_email),
-          departments!challenges_department_id_fkey(id, name_ar, name_en, department_head),
-          domains!challenges_domain_id_fkey(id, name_ar, name_en, domain_lead, specialization),
-          sub_domains(id, name_ar, technical_focus),
-          services!challenges_service_id_fkey(id, name_ar, service_type, citizen_facing),
+          sectors:sector_id(id, name_ar, name_en),
+          deputies:deputy_id(id, name_ar, name_en, deputy_minister, contact_email),
+          departments:department_id(id, name_ar, name_en, department_head),
+          domains:domain_id(id, name_ar, name_en, domain_lead, specialization),
+          sub_domains:sub_domain_id(id, name_ar, technical_focus),
+          services:service_id(id, name_ar, service_type, citizen_facing),
           challenge_experts(
             id,
             role_type,
@@ -81,7 +81,7 @@ export default function ChallengeDetailPage() {
             contribution_details,
             partners(id, name_ar, name_en, partner_type, email)
           ),
-          challenge_requirements!challenge_requirements_challenge_id_fkey(
+          challenge_requirements(
             id,
             title,
             description,
@@ -100,10 +100,9 @@ export default function ChallengeDetailPage() {
             participation_type,
             team_name,
             status,
-            registration_date,
-            profiles(id, name, name_ar, name_en, profile_image_url)
+            registration_date
           ),
-          focus_questions!focus_questions_challenge_id_fkey(
+          focus_questions(
             id,
             question_text_ar,
             question_text_en,
@@ -120,12 +119,11 @@ export default function ChallengeDetailPage() {
             status,
             score,
             submission_date,
-            submitted_by,
-            profiles(id, name, name_ar, name_en, profile_image_url)
+            submitted_by
           )
         `)
         .eq('id', challengeId)
-        .single();
+        .maybeSingle();
 
       console.log('🔍 ChallengeDetail: Query executed. Result:', { 
         hasData: !!data, 
