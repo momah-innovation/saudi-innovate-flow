@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useStatusTranslations } from "@/utils/statusMappings";
 import { logger } from "@/utils/logger";
 import { BulkActionsPanel } from "./BulkActionsPanel";
 import { IdeaCommentsPanel } from "./IdeaCommentsPanel";
@@ -311,14 +312,8 @@ export function IdeasManagementList({
   };
 
   const getStatusLabel = (status: string) => {
-    const labels = {
-      draft: 'مسودة',
-      submitted: 'مقدم',
-      under_review: 'قيد المراجعة',
-      approved: 'موافق عليه',
-      rejected: 'مرفوض'
-    };
-    return labels[status as keyof typeof labels] || status;
+    const { getStatusLabel: translateStatus } = useStatusTranslations();
+    return translateStatus(status as any);
   };
 
   const getMaturityLabel = (level: string) => {
@@ -422,7 +417,7 @@ export function IdeasManagementList({
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5 text-orange-500" />
                   <div>
-                    <p className="text-sm text-muted-foreground">قيد المراجعة</p>
+                    <p className="text-sm text-muted-foreground">{t('status.under_review', 'قيد المراجعة')}</p>
                     <p className="text-2xl font-bold">{ideas.filter(i => i.status === 'under_review').length}</p>
                   </div>
                 </div>
@@ -474,8 +469,7 @@ export function IdeasManagementList({
                 <SelectItem value="all">كل الحالات</SelectItem>
                 {generalStatusOptions.filter(status => ['draft', 'submitted', 'under_review', 'approved', 'rejected'].includes(status)).map(status => (
                   <SelectItem key={status} value={status}>
-                    {status === 'draft' ? 'مسودة' : status === 'submitted' ? 'مقدم' : status === 'under_review' ? 'قيد المراجعة' : 
-                     status === 'approved' ? 'موافق عليه' : 'مرفوض'}
+                    {getStatusLabel(status)}
                   </SelectItem>
                 ))}
               </SelectContent>

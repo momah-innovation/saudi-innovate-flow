@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useStatusTranslations } from "@/utils/statusMappings";
 import { logger } from "@/utils/logger";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
@@ -48,16 +49,10 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
   const [availableTags, setAvailableTags] = useState<IdeaTag[]>([]);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
-  // Status options from system lists
+  const { getStatusLabel } = useStatusTranslations();
   const statusOptions = generalStatusOptions.map(status => ({ 
     value: status, 
-    label: status === 'draft' ? 'مسودة' :
-           status === 'submitted' ? 'مُرسلة' :
-           status === 'under_review' ? 'قيد المراجعة' :
-           status === 'approved' ? 'موافق عليها' :
-           status === 'rejected' ? 'مرفوضة' :
-           status === 'in_development' ? 'قيد التطوير' :
-           status === 'implemented' ? 'منفذة' : status
+    label: getStatusLabel(status as any)
   }));
 
   const handleBulkStatusChange = async () => {

@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useStatusTranslations } from "@/utils/statusMappings";
 import { logger } from "@/utils/logger";
 import { 
   BarChart3, 
@@ -174,23 +175,13 @@ export function ChallengeAnalytics() {
   };
 
   const getStatusLabel = (status: string) => {
-    const labels = {
-      draft: 'مسودة',
-      active: 'نشط',
-      completed: 'مكتمل',
-      cancelled: 'ملغي',
-      on_hold: 'معلق'
-    };
-    return labels[status as keyof typeof labels] || status;
+    const { getStatusLabel: translateStatus } = useStatusTranslations();
+    return translateStatus(status as any);
   };
 
   const getPriorityLabel = (priority: string) => {
-    const labels = {
-      high: 'عالي',
-      medium: 'متوسط',
-      low: 'منخفض'
-    };
-    return labels[priority as keyof typeof labels] || priority;
+    const { getPriorityLabel: translatePriority } = useStatusTranslations();
+    return translatePriority(priority as any);
   };
 
   if (loading) {
