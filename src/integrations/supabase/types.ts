@@ -1523,6 +1523,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "challenge_submissions_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "fk_challenge_submissions_challenge"
             columns: ["challenge_id"]
             isOneToOne: false
