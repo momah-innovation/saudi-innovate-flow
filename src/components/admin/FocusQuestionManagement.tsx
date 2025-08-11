@@ -180,7 +180,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
             key={question.id}
             id={question.id}
             title={question.question_text_ar}
-            subtitle={question.challenge?.title_ar ? `${t('challenge', 'Challenge')}: ${question.challenge.title_ar}` : t('general_question', 'General Question')}
+            subtitle={question.challenge?.title_ar ? `${t('challenge')}: ${question.challenge.title_ar}` : t('general_question')}
             onClick={() => handleView(question)}
             badges={[
               {
@@ -192,14 +192,14 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
                 variant: question.is_sensitive ? sensitivityConfig.sensitive.variant : sensitivityConfig.normal.variant
               },
               {
-                label: question.challenge ? t('linked_to_challenge', 'Linked to Challenge') : t('general_question', 'General Question'),
+                label: question.challenge ? t('linked_to_challenge') : t('general_question'),
                 variant: question.challenge ? 'outline' : 'secondary'
               }
             ]}
             metadata={[
               {
                 icon: <Hash className="w-4 h-4" />,
-                label: t('order', 'Order'),
+                label: t('order'),
                 value: question.order_sequence.toString()
               },
               {
@@ -209,12 +209,12 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
               },
               {
                 icon: <Calendar className="w-4 h-4" />,
-                label: t('creation_date', 'Creation Date'),
+                label: t('creation_date'),
                 value: format(new Date(question.created_at), 'dd/MM/yyyy')
               },
               ...(question.challenge ? [{
                 icon: <Target className="w-4 h-4" />,
-                label: t('challenge', 'Challenge'),
+                label: t('challenge'),
                 value: question.challenge.title_ar
               }] : [])
             ]}

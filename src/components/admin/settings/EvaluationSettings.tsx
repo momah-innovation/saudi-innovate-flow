@@ -82,14 +82,14 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
       onSettingChange(key, value);
       
       toast({
-        title: t('success', 'Success'),
-        description: t('settingUpdated', 'Setting updated successfully')
+        title: t('success'),
+        description: t('settingUpdated')
       });
     } catch (error) {
       logger.error('Error updating evaluation setting', { component: 'EvaluationSettings', action: 'updateSystemSetting', key }, error as Error);
       toast({
-        title: t('error', 'Error'),
-        description: t('updateSettingError', 'Failed to update setting'),
+        title: t('error'),
+        description: t('updateSettingError'),
         variant: "destructive"
       });
     }

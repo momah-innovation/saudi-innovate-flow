@@ -61,7 +61,7 @@ export const TranslationManager: React.FC = () => {
     } catch (error) {
       logger.error('Error loading translations', { component: 'TranslationManager', action: 'loadTranslations' }, error as Error);
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('translations.loadError', 'Failed to load translations'),
         variant: "destructive",
       });
@@ -155,7 +155,7 @@ export const TranslationManager: React.FC = () => {
           .eq('id', editingTranslation.id);
         
         if (error) throw error;
-        toast({ title: t('success', 'Success'), description: t('translations.updateSuccess', 'Translation updated successfully') });
+        toast({ title: t('success'), description: t('translations.updateSuccess') });
       } else {
         // Ensure required fields are present for insert
         const insertData = {
@@ -170,7 +170,7 @@ export const TranslationManager: React.FC = () => {
           .insert([insertData]);
         
         if (error) throw error;
-        toast({ title: t('success', 'Success'), description: t('translations.createSuccess', 'Translation created successfully') });
+        toast({ title: t('success'), description: t('translations.createSuccess') });
       }
       
       await loadTranslations();
@@ -198,11 +198,11 @@ export const TranslationManager: React.FC = () => {
       if (error) throw error;
       
       await loadTranslations();
-      toast({ title: t('success', 'Success'), description: t('translations.deleteSuccess', 'Translation deleted successfully') });
+      toast({ title: t('success'), description: t('translations.deleteSuccess') });
     } catch (error) {
       logger.error('Error deleting translation', { component: 'TranslationManager', action: 'deleteTranslation' }, error as Error);
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('translations.deleteError', 'Failed to delete translation'),
         variant: "destructive",
       });

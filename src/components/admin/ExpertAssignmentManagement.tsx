@@ -286,7 +286,7 @@ export function ExpertAssignmentManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('toast.assign_expert_failed', 'Failed to assign expert. Please try again.'),
         variant: "destructive",
       });
