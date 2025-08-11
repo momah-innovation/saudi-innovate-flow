@@ -51,7 +51,7 @@ export function useUnifiedTranslation() {
             throw error;
           }
 
-          console.log(`📦 Received ${data?.length || 0} translations in this batch`);
+          console.log(`📦 Received ${data?.length || 0} translations in this batch`, data?.slice(0, 3));
 
           if (data && data.length > 0) {
             allTranslations = [...allTranslations, ...data];
@@ -63,8 +63,9 @@ export function useUnifiedTranslation() {
         }
         
         console.log(`✅ Pagination complete: Fetched ${allTranslations.length} total translations`);
+        console.log('🔍 First few translations:', allTranslations.slice(0, 5));
         
-        return allTranslations as SystemTranslation[];
+        return allTranslations;
       } catch (error) {
         console.error('❌ Failed to fetch translations:', error);
         throw error;
@@ -76,6 +77,14 @@ export function useUnifiedTranslation() {
     refetchOnMount: true,
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
+  });
+
+  // Log what we actually received
+  console.log('🎯 React Query result:', { 
+    dbTranslationsLength: dbTranslations.length, 
+    isLoading, 
+    error: error?.message,
+    firstFewItems: dbTranslations.slice(0, 3)
   });
 
   // Create optimized translation map
