@@ -33,7 +33,7 @@ interface NavigationSidebarProps {
 
 export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
   const location = useLocation();
-  const { isRTL } = useUnifiedTranslation();
+  const { isRTL, t } = useUnifiedTranslation();
   // const { user } = useAuth();
   // const { profile: userProfile } = useProfile();
   const userProfile = null; // Simplified for now
@@ -43,8 +43,8 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
     const baseItems = [
       { 
         id: 'dashboard', 
-        label: 'Dashboard', 
-        arabicLabel: 'لوحة التحكم',
+        label: t('nav.dashboard', 'Dashboard'), 
+        arabicLabel: t('nav.dashboard', 'لوحة التحكم'),
         icon: Home, 
         path: '/dashboard',
         group: 'main',
@@ -55,8 +55,8 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
     const discoverItems = [
       { 
         id: 'challenges-browse', 
-        label: 'Browse Challenges', 
-        arabicLabel: 'استكشاف التحديات',
+        label: t('nav.browse_challenges', 'Browse Challenges'), 
+        arabicLabel: t('nav.browse_challenges', 'استكشاف التحديات'),
         icon: Target, 
         path: '/challenges',
         badge: 12,
@@ -65,8 +65,8 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
       },
       { 
         id: 'events-browse', 
-        label: 'Browse Events', 
-        arabicLabel: 'استكشاف الفعاليات',
+        label: t('nav.browse_events', 'Browse Events'), 
+        arabicLabel: t('nav.browse_events', 'استكشاف الفعاليات'),
         icon: Calendar, 
         path: '/events',
         badge: 2,
@@ -75,8 +75,8 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
       },
       { 
         id: 'opportunities', 
-        label: 'Partnership Opportunities', 
-        arabicLabel: 'فرص الشراكة',
+        label: t('nav.partnership_opportunities', 'Partnership Opportunities'), 
+        arabicLabel: t('nav.partnership_opportunities', 'فرص الشراكة'),
         icon: Briefcase, 
         path: '/opportunities',
         group: 'discover',
@@ -84,8 +84,8 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
       },
       { 
         id: 'search', 
-        label: 'Smart Search', 
-        arabicLabel: 'البحث الذكي',
+        label: t('nav.smart_search', 'Smart Search'), 
+        arabicLabel: t('nav.smart_search', 'البحث الذكي'),
         icon: Search, 
         path: '/search',
         group: 'discover',
@@ -504,16 +504,16 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
   }, [menuItems, userProfile]);
 
   const groupLabels: GroupLabels = {
-    main: { en: 'Dashboard', ar: 'لوحة التحكم' },
-    discover: { en: 'Discover', ar: 'استكشاف' },
-    personal: { en: 'Personal', ar: 'شخصي' },
-    workflow: { en: 'Workflow', ar: 'سير العمل' },
-    workspace: { en: 'Workspaces', ar: 'مساحات العمل' },
-    subscription: { en: 'Subscription & AI', ar: 'الاشتراك والذكاء الاصطناعي' },
-    analytics: { en: 'Analytics & Reports', ar: 'التحليلات والتقارير' },
-    admin: { en: 'Administration', ar: 'الإدارة العامة' },
-    system: { en: 'System Management', ar: 'إدارة النظام' },
-    settings: { en: 'Settings & Help', ar: 'الإعدادات والمساعدة' }
+    main: { en: t('nav.group.dashboard', 'Dashboard'), ar: t('nav.group.dashboard', 'لوحة التحكم') },
+    discover: { en: t('nav.group.discover', 'Discover'), ar: t('nav.group.discover', 'استكشاف') },
+    personal: { en: t('nav.group.personal', 'Personal'), ar: t('nav.group.personal', 'شخصي') },
+    workflow: { en: t('nav.group.workflow', 'Workflow'), ar: t('nav.group.workflow', 'سير العمل') },
+    workspace: { en: t('nav.group.workspaces', 'Workspaces'), ar: t('nav.group.workspaces', 'مساحات العمل') },
+    subscription: { en: t('nav.group.subscription_ai', 'Subscription & AI'), ar: t('nav.group.subscription_ai', 'الاشتراك والذكاء الاصطناعي') },
+    analytics: { en: t('nav.group.analytics_reports', 'Analytics & Reports'), ar: t('nav.group.analytics_reports', 'التحليلات والتقارير') },
+    admin: { en: t('nav.group.administration', 'Administration'), ar: t('nav.group.administration', 'الإدارة العامة') },
+    system: { en: t('nav.group.system_management', 'System Management'), ar: t('nav.group.system_management', 'إدارة النظام') },
+    settings: { en: t('nav.group.settings_help', 'Settings & Help'), ar: t('nav.group.settings_help', 'الإعدادات والمساعدة') }
   };
 
   // Priority order for groups
@@ -600,7 +600,7 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
       >
         <SheetHeader className="p-6 border-b">
           <SheetTitle className={cn("text-left", isRTL && "text-right")}>
-            {isRTL ? 'القائمة الرئيسية' : 'Navigation Menu'}
+            {t('nav.navigation_menu', 'Navigation Menu')}
           </SheetTitle>
         </SheetHeader>
         

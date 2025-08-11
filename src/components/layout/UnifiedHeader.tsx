@@ -111,11 +111,11 @@ export function UnifiedHeader({
 
   // Dynamic content based on variant
   const getSystemTitle = () => {
-    return t('system_title', language === 'ar' ? 'نظام رواد للابتكار' : 'Ruwād Innovation System');
+    return t('system_title', 'Ruwād Innovation System');
   };
 
   const getSearchPlaceholder = () => {
-    return searchPlaceholder || t('search_placeholder', language === 'ar' ? 'البحث...' : 'Search...');
+    return searchPlaceholder || t('search_placeholder', 'Search...');
   };
 
   const handleSearchChange = (value: string) => {
@@ -148,7 +148,7 @@ export function UnifiedHeader({
               size="sm"
               onClick={onSidebarToggle}
               className="shrink-0 hover:bg-accent hover:text-accent-foreground transition-colors"
-              aria-label={t('open_navigation')}
+              aria-label={t('header.open_navigation', 'Open Navigation')}
             >
               <Menu className="h-4 w-4" />
             </Button>
@@ -213,11 +213,11 @@ export function UnifiedHeader({
                   size="sm" 
                   className="h-9 w-9 p-0"
                   onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-               title={t('switch_language', 'Switch Language')}
+                title={t('header.switch_language', 'Switch Language')}
              >
                <Languages className="h-4 w-4" />
                <span className="sr-only">
-                 {t('switch_language', 'Switch Language')}
+                 {t('header.switch_language', 'Switch Language')}
                </span>
                 </Button>
               )}
@@ -229,7 +229,7 @@ export function UnifiedHeader({
                   size="sm" 
                   className="h-9 w-9 p-0"
                   onClick={toggleTheme}
-                  title={t('toggle_theme')}
+                  title={t('header.toggle_theme', 'Toggle Theme')}
                 >
                   {theme.colorScheme === 'dark' ? (
                     <Sun className="h-4 w-4" />
@@ -323,7 +323,7 @@ export function UnifiedHeader({
               {title}
             </h1>
              <Badge variant="outline" className="text-xs">
-               {t('admin_badge', language === 'ar' ? 'إدارة' : 'Admin')}
+               {t('header.admin_badge', 'Admin')}
              </Badge>
           </div>
         )}
@@ -347,11 +347,11 @@ export function UnifiedHeader({
           size="sm" 
           className="h-9 w-9 p-0"
           onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-           title={t('switch_language', 'Switch Language')}
+           title={t('header.switch_language', 'Switch Language')}
          >
            <Languages className="h-4 w-4" />
            <span className="sr-only">
-             {t('switch_language', 'Switch Language')}
+             {t('header.switch_language', 'Switch Language')}
            </span>
         </Button>
       )}
@@ -362,7 +362,7 @@ export function UnifiedHeader({
           size="sm" 
           className="h-9 w-9 p-0"
           onClick={toggleTheme}
-          title={t('toggle_theme')}
+          title={t('header.toggle_theme', 'Toggle Theme')}
         >
           {theme.colorScheme === 'dark' ? (
             <Sun className="h-4 w-4" />
