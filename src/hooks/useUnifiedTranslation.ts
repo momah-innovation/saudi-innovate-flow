@@ -25,9 +25,9 @@ export function useUnifiedTranslation() {
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
 
-  // Fetch database translations with React Query - Optimized for large datasets with pagination
+  // Fetch database translations with React Query - Stable configuration
   const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
-    queryKey: queryKeys.system.translation(language),
+    queryKey: ['system-translations', language], // Simplified stable key
     queryFn: async () => {
       logger.debug('Fetching unified translations from database with pagination', { language });
       
@@ -69,12 +69,13 @@ export function useUnifiedTranslation() {
         throw error;
       }
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes - reasonable cache time
-    gcTime: 1000 * 60 * 10, // 10 minutes - keep in memory longer
+    staleTime: 1000 * 60 * 10, // 10 minutes - longer cache time
+    gcTime: 1000 * 60 * 30, // 30 minutes - keep in memory much longer
     refetchOnWindowFocus: false, // Don't refetch on window focus
-    refetchOnMount: false, // Only fetch once per mount
-    retry: 3,
-    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
+    refetchOnMount: false, // Only fetch once per mount unless stale
+    refetchInterval: false, // Disable automatic refetching
+    retry: 2, // Reduce retry attempts
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000)
   });
 
   // Create optimized translation map
