@@ -143,9 +143,14 @@ export function useUnifiedTranslation() {
         language,
         mapSize: translationMap.size,
         fallback,
-        stack: new Error().stack?.split('\n')[2]?.trim()
+        stack: new Error().stack?.split('\n')[2]?.trim(),
+        callerFunction: new Error().stack?.split('\n')[3]?.trim()
       });
-      logger.warn('No translation found for key', { key, mapSize: translationMap.size, language });
+      logger.warn('No translation found for key', { 
+        key, 
+        mapSize: translationMap.size, 
+        language
+      });
       return key;
     } catch (error) {
       logger.warn('Translation error occurred', { key, language }, error as Error);

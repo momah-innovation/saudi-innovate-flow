@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface DraftIdea {
   id: string;
@@ -33,7 +33,7 @@ interface Challenge {
 }
 
 export default function IdeaDrafts() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { userProfile } = useAuth();
   const navigate = useNavigate();
   const { isRTL } = useDirection();

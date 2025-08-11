@@ -1,6 +1,5 @@
 import React from 'react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useTranslation } from 'react-i18next';
 import { Plus, Filter, Download, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

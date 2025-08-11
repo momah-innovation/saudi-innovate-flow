@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 
 export interface BulkAction {
@@ -20,7 +20,7 @@ export interface UseBulkActionsConfig<T> {
 }
 
 export function useBulkActions<T>(config: UseBulkActionsConfig<T>) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [isProcessing, setIsProcessing] = useState(false);
 

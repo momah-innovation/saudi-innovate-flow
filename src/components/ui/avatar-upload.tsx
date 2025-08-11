@@ -6,7 +6,7 @@ import { Button } from './button';
 import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
-import { useTranslation } from 'react-i18next';
+
 
 interface AvatarUploadProps {
   currentAvatarUrl?: string | null;

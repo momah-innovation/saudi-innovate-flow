@@ -8,6 +8,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Languages, Globe } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 const languages = [
@@ -17,6 +18,7 @@ const languages = [
 
 export function LanguageToggle() {
   const { language, setLanguage, isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const currentLanguage = languages.find(lang => lang.code === language);
 
@@ -29,7 +31,7 @@ export function LanguageToggle() {
           className={`h-8 w-8 px-0 ${isRTL ? 'font-arabic' : 'font-english'}`}
         >
           <Globe className="h-4 w-4" />
-          <span className="sr-only">تبديل اللغة / Toggle language</span>
+          <span className="sr-only">{t('toggle_language', 'تبديل اللغة / Toggle language')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-48">
@@ -46,7 +48,7 @@ export function LanguageToggle() {
               <span className="font-medium">{lang.nativeName}</span>
               {language === lang.code && (
                 <Badge variant="secondary" className={cn("text-xs", isRTL ? "ml-auto" : "mr-auto")}>
-                  {isRTL ? 'نشط' : 'Active'}
+                  {t('active', isRTL ? 'نشط' : 'Active')}
                 </Badge>
               )}
             </div>

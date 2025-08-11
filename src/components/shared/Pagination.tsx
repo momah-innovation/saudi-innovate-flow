@@ -1,6 +1,5 @@
 import React from 'react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
