@@ -82,8 +82,8 @@ export function PartnersManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
-        description: "Failed to fetch partners",
+        title: t('error.title'),
+        description: t('error.fetch_partners_failed'),
         variant: "destructive",
       });
     } finally {
@@ -103,8 +103,8 @@ export function PartnersManagement() {
 
         if (error) throw error;
         toast({
-          title: "Success",
-          description: "Partner updated successfully",
+          title: t('success.title'),
+          description: t('success.partner_updated'),
         });
       } else {
         const { error } = await supabase
@@ -113,8 +113,8 @@ export function PartnersManagement() {
 
         if (error) throw error;
         toast({
-          title: "Success",
-          description: "Partner created successfully",
+          title: t('success.title'),
+          description: t('success.partner_created'),
         });
       }
 
@@ -125,8 +125,8 @@ export function PartnersManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
-        description: "Failed to save partner",
+        title: t('error.title'),
+        description: t('error.save_partner_failed'),
         variant: "destructive",
       });
     }
@@ -174,7 +174,7 @@ export function PartnersManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this partner?")) return;
+    if (!confirm(t('partners.delete_confirmation'))) return;
 
     try {
       const { error } = await supabase
@@ -185,15 +185,15 @@ export function PartnersManagement() {
       if (error) throw error;
       
       toast({
-        title: "Success",
-        description: "Partner deleted successfully",
+        title: t('success.title'),
+        description: t('success.partner_deleted'),
       });
       fetchPartners();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
-        description: "Failed to delete partner",
+        title: t('error.title'),
+        description: t('error.delete_partner_failed'),
         variant: "destructive",
       });
     }
@@ -219,29 +219,29 @@ export function PartnersManagement() {
 
 
   if (isLoading) {
-    return <div className="flex justify-center p-8">Loading...</div>;
+    return <div className="flex justify-center p-8">{t('loading.general')}</div>;
   }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Partners Management</h1>
-          <p className="text-muted-foreground">Manage formal business partnerships, funding relationships, and strategic collaborations</p>
+          <h1 className="text-3xl font-bold">{t('partners.management_title')}</h1>
+          <p className="text-muted-foreground">{t('partners.management_description')}</p>
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => { resetForm(); setEditingPartner(null); }}>
               <Plus className="w-4 h-4 me-2" />
-              Add Partner
+              {t('partners.add_partner')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingPartner ? t('admin.edit_partner', 'Edit Partner') : t('admin.add_new_partner', 'Add New Partner')}</DialogTitle>
               <DialogDescription>
-                {editingPartner ? "Update formal partnership details" : "Add a new business partner or strategic collaborator"}
+                {editingPartner ? t('partners.update_partner_description') : t('partners.add_partner_description')}
               </DialogDescription>
             </DialogHeader>
             
@@ -289,7 +289,7 @@ export function PartnersManagement() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="partner_type">Partner Type</Label>
+                  <Label htmlFor="partner_type">{t('form.partner_type_label')}</Label>
                   <Select value={formData.partner_type} onValueChange={(value) => setFormData({ ...formData, partner_type: value })}>
                     <SelectTrigger>
                       <SelectValue />
@@ -304,7 +304,7 @@ export function PartnersManagement() {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="status">Status</Label>
+                  <Label htmlFor="status">{t('form.status_label')}</Label>
                   <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
                     <SelectTrigger>
                       <SelectValue />
@@ -322,7 +322,7 @@ export function PartnersManagement() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t('form.email_label')}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -331,7 +331,7 @@ export function PartnersManagement() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="phone">{t('form.phone_label')}</Label>
                   <Input
                     id="phone"
                     value={formData.phone}
@@ -341,7 +341,7 @@ export function PartnersManagement() {
               </div>
 
               <div>
-                <Label htmlFor="contact_person">Contact Person</Label>
+                <Label htmlFor="contact_person">{t('form.contact_person_label')}</Label>
                 <Input
                   id="contact_person"
                   value={formData.contact_person}
@@ -350,7 +350,7 @@ export function PartnersManagement() {
               </div>
 
               <div>
-                <Label htmlFor="address">Address</Label>
+                <Label htmlFor="address">{t('form.address_label')}</Label>
                 <Textarea
                   id="address"
                   value={formData.address}
@@ -359,7 +359,7 @@ export function PartnersManagement() {
               </div>
 
               <div>
-                <Label htmlFor="funding_capacity">Funding Capacity</Label>
+                <Label htmlFor="funding_capacity">{t('form.funding_capacity_label')}</Label>
                 <Input
                   id="funding_capacity"
                   type="number"
@@ -369,7 +369,7 @@ export function PartnersManagement() {
               </div>
 
               <div>
-                <Label htmlFor="collaboration_history">Collaboration History</Label>
+                <Label htmlFor="collaboration_history">{t('form.collaboration_history_label')}</Label>
                 <Textarea
                   id="collaboration_history"
                   value={formData.collaboration_history}
@@ -379,10 +379,10 @@ export function PartnersManagement() {
 
               <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
+                  {t('ui.cancel')}
                 </Button>
                 <Button type="submit">
-                  {editingPartner ? "Update" : "Create"}
+                  {editingPartner ? t('ui.update') : t('ui.create')}
                 </Button>
               </div>
             </form>
@@ -394,7 +394,7 @@ export function PartnersManagement() {
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Partner Details</DialogTitle>
+            <DialogTitle>{t('partners.partner_details')}</DialogTitle>
           </DialogHeader>
           {viewingPartner && (
             <div className="space-y-6">
@@ -415,14 +415,14 @@ export function PartnersManagement() {
                     handleEdit(viewingPartner);
                   }}>
                     <Edit className="w-4 h-4 me-2" />
-                    Edit
+                    {t('ui.edit')}
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => {
                     setIsDetailOpen(false);
                     handleDelete(viewingPartner.id);
                   }}>
                     <Trash2 className="w-4 h-4 me-2" />
-                    Delete
+                    {t('ui.delete')}
                   </Button>
                 </div>
               </div>
@@ -430,13 +430,13 @@ export function PartnersManagement() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {viewingPartner.contact_person && (
                   <div>
-                    <span className="font-medium text-sm text-muted-foreground">Contact Person</span>
+                    <span className="font-medium text-sm text-muted-foreground">{t('form.contact_person_label')}</span>
                     <p>{viewingPartner.contact_person}</p>
                   </div>
                 )}
                 {viewingPartner.email && (
                   <div>
-                    <span className="font-medium text-sm text-muted-foreground">Email</span>
+                    <span className="font-medium text-sm text-muted-foreground">{t('form.email_label')}</span>
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4" />
                       <span>{viewingPartner.email}</span>
@@ -445,7 +445,7 @@ export function PartnersManagement() {
                 )}
                 {viewingPartner.phone && (
                   <div>
-                    <span className="font-medium text-sm text-muted-foreground">Phone</span>
+                    <span className="font-medium text-sm text-muted-foreground">{t('form.phone_label')}</span>
                     <div className="flex items-center gap-2">
                       <Phone className="w-4 h-4" />
                       <span>{viewingPartner.phone}</span>
@@ -454,7 +454,7 @@ export function PartnersManagement() {
                 )}
                 {viewingPartner.funding_capacity && (
                   <div>
-                    <span className="font-medium text-sm text-muted-foreground">Funding Capacity</span>
+                    <span className="font-medium text-sm text-muted-foreground">{t('form.funding_capacity_label')}</span>
                     <p>${viewingPartner.funding_capacity.toLocaleString()}</p>
                   </div>
                 )}
@@ -462,14 +462,14 @@ export function PartnersManagement() {
 
               {viewingPartner.address && (
                 <div>
-                  <span className="font-medium text-sm text-muted-foreground">Address</span>
+                  <span className="font-medium text-sm text-muted-foreground">{t('form.address_label')}</span>
                   <p className="mt-1">{viewingPartner.address}</p>
                 </div>
               )}
 
               {viewingPartner.collaboration_history && (
                 <div>
-                  <span className="font-medium text-sm text-muted-foreground">Collaboration History</span>
+                  <span className="font-medium text-sm text-muted-foreground">{t('form.collaboration_history_label')}</span>
                   <p className="mt-1 text-sm">{viewingPartner.collaboration_history}</p>
                 </div>
               )}

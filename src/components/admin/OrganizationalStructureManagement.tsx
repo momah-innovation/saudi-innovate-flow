@@ -149,8 +149,8 @@ export function OrganizationalStructureManagement() {
     } catch (error) {
       logger.error("Error fetching data", error);
       toast({
-        title: "Error",
-        description: "Failed to fetch organizational data",
+        title: t('error.title'),
+        description: t('error.fetch_organizational_data_failed'),
         variant: "destructive",
       });
     } finally {
@@ -163,17 +163,17 @@ export function OrganizationalStructureManagement() {
     try {
       if (editingDeputy) {
         await supabase.from("deputies").update(deputyForm).eq("id", editingDeputy.id);
-        toast({ title: t('success'), description: t('deputyUpdated') });
+        toast({ title: t('success.title'), description: t('success.deputy_updated') });
       } else {
         await supabase.from("deputies").insert([deputyForm]);
-        toast({ title: t('success'), description: t('deputyCreated') });
+        toast({ title: t('success.title'), description: t('success.deputy_created') });
       }
       setIsDeputyDialogOpen(false);
       setEditingDeputy(null);
       setDeputyForm({ name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: "" });
       fetchAllData();
     } catch (error) {
-      toast({ title: t('error'), description: t('failedToSaveDeputy'), variant: "destructive" });
+      toast({ title: t('error.title'), description: t('error.save_deputy_failed'), variant: "destructive" });
     }
   };
 
@@ -182,17 +182,17 @@ export function OrganizationalStructureManagement() {
     try {
       if (editingDepartment) {
         await supabase.from("departments").update(departmentForm).eq("id", editingDepartment.id);
-        toast({ title: "Success", description: "Department updated successfully" });
+        toast({ title: t('success.title'), description: t('success.department_updated') });
       } else {
         await supabase.from("departments").insert([departmentForm]);
-        toast({ title: "Success", description: "Department created successfully" });
+        toast({ title: t('success.title'), description: t('success.department_created') });
       }
       setIsDepartmentDialogOpen(false);
       setEditingDepartment(null);
       setDepartmentForm({ name: "", name_ar: "", department_head: "", budget_allocation: 0, deputy_id: "" });
       fetchAllData();
     } catch (error) {
-      toast({ title: "Error", description: "Failed to save department", variant: "destructive" });
+      toast({ title: t('error.title'), description: t('error.save_department_failed'), variant: "destructive" });
     }
   };
 
@@ -201,17 +201,17 @@ export function OrganizationalStructureManagement() {
     try {
       if (editingDomain) {
         await supabase.from("domains").update(domainForm).eq("id", editingDomain.id);
-        toast({ title: "Success", description: "Domain updated successfully" });
+        toast({ title: t('success.title'), description: t('success.domain_updated') });
       } else {
         await supabase.from("domains").insert([domainForm]);
-        toast({ title: "Success", description: "Domain created successfully" });
+        toast({ title: t('success.title'), description: t('success.domain_created') });
       }
       setIsDomainDialogOpen(false);
       setEditingDomain(null);
       setDomainForm({ name: "", name_ar: "", domain_lead: "", specialization: "", department_id: "" });
       fetchAllData();
     } catch (error) {
-      toast({ title: "Error", description: "Failed to save domain", variant: "destructive" });
+      toast({ title: t('error.title'), description: t('error.save_domain_failed'), variant: "destructive" });
     }
   };
 
@@ -220,17 +220,17 @@ export function OrganizationalStructureManagement() {
     try {
       if (editingSubDomain) {
         await supabase.from("sub_domains").update(subDomainForm).eq("id", editingSubDomain.id);
-        toast({ title: "Success", description: "Sub-domain updated successfully" });
+        toast({ title: t('success.title'), description: t('success.subdomain_updated') });
       } else {
         await supabase.from("sub_domains").insert([subDomainForm]);
-        toast({ title: "Success", description: "Sub-domain created successfully" });
+        toast({ title: t('success.title'), description: t('success.subdomain_created') });
       }
       setIsSubDomainDialogOpen(false);
       setEditingSubDomain(null);
       setSubDomainForm({ name: "", name_ar: "", technical_focus: "", domain_id: "" });
       fetchAllData();
     } catch (error) {
-      toast({ title: "Error", description: "Failed to save sub-domain", variant: "destructive" });
+      toast({ title: t('error.title'), description: t('error.save_subdomain_failed'), variant: "destructive" });
     }
   };
 
@@ -239,22 +239,22 @@ export function OrganizationalStructureManagement() {
     try {
       if (editingService) {
         await supabase.from("services").update(serviceForm).eq("id", editingService.id);
-        toast({ title: "Success", description: "Service updated successfully" });
+        toast({ title: t('success.title'), description: t('success.service_updated') });
       } else {
         await supabase.from("services").insert([serviceForm]);
-        toast({ title: "Success", description: "Service created successfully" });
+        toast({ title: t('success.title'), description: t('success.service_created') });
       }
       setIsServiceDialogOpen(false);
       setEditingService(null);
       setServiceForm({ name: "", name_ar: "", service_type: "", citizen_facing: false, digital_maturity_score: 0, sub_domain_id: "" });
       fetchAllData();
     } catch (error) {
-      toast({ title: "Error", description: "Failed to save service", variant: "destructive" });
+      toast({ title: t('error.title'), description: t('error.save_service_failed'), variant: "destructive" });
     }
   };
 
   if (isLoading) {
-    return <div className="flex justify-center p-8">Loading...</div>;
+    return <div className="flex justify-center p-8">{t('loading.general')}</div>;
   }
 
   return (
@@ -275,7 +275,7 @@ export function OrganizationalStructureManagement() {
 
         <TabsContent value="deputies">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Deputies</h2>
+            <h2 className="text-xl font-semibold">{t('organizational_structure.deputies')}</h2>
             <div className="flex gap-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -295,7 +295,7 @@ export function OrganizationalStructureManagement() {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>{editingDeputy ? t('editDeputy') : t('addNewDeputy')}</DialogTitle>
+                    <DialogTitle>{editingDeputy ? t('organizational_structure.edit_deputy') : t('organizational_structure.add_new_deputy')}</DialogTitle>
                   </DialogHeader>
                   <form onSubmit={handleDeputySubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -320,7 +320,7 @@ export function OrganizationalStructureManagement() {
                       <Label>{t('form.sector_label')}</Label>
                       <Select value={deputyForm.sector_id} onValueChange={(value) => setDeputyForm({...deputyForm, sector_id: value})}>
                         <SelectTrigger>
-                          <SelectValue placeholder={t('selectSector')} />
+                          <SelectValue placeholder={t('organizational_structure.select_sector')} />
                         </SelectTrigger>
                         <SelectContent>
                           {sectors.map((sector) => (
@@ -330,8 +330,8 @@ export function OrganizationalStructureManagement() {
                       </Select>
                     </div>
                     <div className="flex justify-end space-x-2">
-                      <Button type="button" variant="outline" onClick={() => setIsDeputyDialogOpen(false)}>Cancel</Button>
-                      <Button type="submit">{editingDeputy ? "Update" : "Create"}</Button>
+                      <Button type="button" variant="outline" onClick={() => setIsDeputyDialogOpen(false)}>{t('ui.cancel')}</Button>
+                      <Button type="submit">{editingDeputy ? t('ui.update') : t('ui.create')}</Button>
                     </div>
                   </form>
                 </DialogContent>
@@ -395,12 +395,12 @@ export function OrganizationalStructureManagement() {
 
         <TabsContent value="departments">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Departments</h2>
+            <h2 className="text-xl font-semibold">{t('organizational_structure.departments')}</h2>
             <Dialog open={isDepartmentDialogOpen} onOpenChange={setIsDepartmentDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={() => { setEditingDepartment(null); setDepartmentForm({ name: "", name_ar: "", department_head: "", budget_allocation: 0, deputy_id: "" }); }}>
                   <Plus className="w-4 h-4 mr-2" />
-                  Add Department
+                  {t('organizational_structure.add_department')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
