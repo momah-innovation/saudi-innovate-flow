@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Plus, Trash2, Edit, RotateCcw } from 'lucide-react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 // Simple List Editor Component
 interface SimpleListEditorProps {
@@ -19,6 +20,7 @@ interface SimpleListEditorProps {
 
 export function SimpleListEditor({ title, description, items, onChange, onReset, placeholder }: SimpleListEditorProps) {
   const [newItem, setNewItem] = useState('');
+  const { t } = useUnifiedTranslation();
 
   const addItem = () => {
     if (newItem.trim() && !items.includes(newItem.trim())) {
@@ -71,7 +73,7 @@ export function SimpleListEditor({ title, description, items, onChange, onReset,
         
         <div className="flex items-center gap-2">
           <Input
-            placeholder={placeholder || "Add new item..."}
+            placeholder={placeholder || t('ui.add_new_item')}
             value={newItem}
             onChange={(e) => setNewItem(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addItem()}
@@ -105,6 +107,7 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
   const [editingRole, setEditingRole] = useState<Role | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({ value: '', label: '', description: '' });
+  const { t } = useUnifiedTranslation();
 
   const openEditDialog = (role?: Role) => {
     if (role) {
@@ -150,7 +153,7 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
           </Button>
           <Button variant="outline" size="sm" onClick={() => openEditDialog()}>
             <Plus className="h-4 w-4 mr-1" />
-            Add Role
+            {t('ui.add_role')}
           </Button>
         </div>
       </div>
@@ -191,15 +194,15 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingRole ? 'Edit Role' : 'Add New Role'}</DialogTitle>
+            <DialogTitle>{editingRole ? t('ui.edit_role') : t('ui.add_new_role')}</DialogTitle>
             <DialogDescription>
-              Configure the role details. The value should be lowercase with underscores.
+              {t('ui.role_configuration_description')}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
             <div>
-              <Label htmlFor="value">Role Value (ID)</Label>
+              <Label htmlFor="value">{t('ui.role_value_id')}</Label>
               <Input
                 id="value"
                 placeholder="e.g., domain_expert"
@@ -210,7 +213,7 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
             </div>
             
             <div>
-              <Label htmlFor="label">Display Label</Label>
+              <Label htmlFor="label">{t('ui.display_label')}</Label>
               <Input
                 id="label"
                 placeholder="e.g., Domain Expert"
@@ -220,7 +223,7 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
             </div>
             
             <div>
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('form.description_label')}</Label>
               <Textarea
                 id="description"
                 placeholder="Describe what this role can do..."
@@ -233,10 +236,10 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
           
           <div className="flex justify-end gap-2 pt-4">
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Cancel
+              {t('ui.cancel')}
             </Button>
             <Button onClick={saveRole} disabled={!formData.value || !formData.label}>
-              {editingRole ? 'Update' : 'Add'} Role
+              {editingRole ? t('ui.update') : t('ui.add')} {t('ui.role')}
             </Button>
           </div>
         </DialogContent>

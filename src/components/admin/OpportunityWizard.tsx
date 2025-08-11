@@ -432,7 +432,7 @@ export function OpportunityWizard({
                     setErrors({ ...errors, contact_email: "" });
                   }
                 }}
-                placeholder="example@domain.com"
+                placeholder={t('form.email_placeholder')}
                 className={errors.contact_email ? "border-destructive" : ""}
               />
               {errors.contact_email && (
@@ -448,12 +448,12 @@ export function OpportunityWizard({
                 checked={formData.is_remote}
                 onCheckedChange={(checked) => setFormData({ ...formData, is_remote: checked })}
               />
-              <Label htmlFor="is_remote">عمل عن بُعد</Label>
+              <Label htmlFor="is_remote">{t('opportunity.remote_work')}</Label>
             </div>
 
             {!formData.is_remote && (
               <div className="space-y-2">
-                <Label htmlFor="location">الموقع</Label>
+                <Label htmlFor="location">{t('form.location_label')}</Label>
                 <Input
                   id="location"
                   value={formData.location}
@@ -476,7 +476,7 @@ export function OpportunityWizard({
                     type="number"
                     value={formData.salary_min || ''}
                     onChange={(e) => setFormData({ ...formData, salary_min: e.target.value ? Number(e.target.value) : undefined })}
-                    placeholder="0"
+                    placeholder={t('form.amount_placeholder')}
                     min="0"
                   />
                 </div>
@@ -492,7 +492,7 @@ export function OpportunityWizard({
                         setErrors({ ...errors, salary_max: "" });
                       }
                     }}
-                    placeholder="0"
+                    placeholder={t('form.amount_placeholder')}
                     min="0"
                     className={errors.salary_max ? "border-destructive" : ""}
                   />

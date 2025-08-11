@@ -146,8 +146,8 @@ export function EvaluationsManagement({
     } catch (error) {
       logger.error("Error fetching evaluations", error);
       toast({
-        title: "Error",
-        description: "Failed to fetch evaluations",
+        title: t('error.title'),
+        description: t('error.fetch_evaluations_failed'),
         variant: "destructive",
       });
     } finally {
@@ -206,7 +206,7 @@ export function EvaluationsManagement({
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">
           <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-          <p className="text-sm text-muted-foreground">Loading evaluations...</p>
+          <p className="text-sm text-muted-foreground">{t('loading.evaluations')}</p>
         </div>
       </div>
     );
@@ -230,7 +230,7 @@ export function EvaluationsManagement({
         {loading ? [
           <div key="loading" className="text-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading evaluations...</p>
+            <p className="text-muted-foreground">{t('loading.evaluations')}</p>
           </div>
         ] : filteredEvaluations.length > 0 ? 
           filteredEvaluations.map((evaluation) => (
@@ -266,8 +266,8 @@ export function EvaluationsManagement({
           )) : [
           <div key="empty" className="text-center py-12">
             <FileCheck className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-            <p className="text-lg font-medium mb-2">No Evaluations Found</p>
-            <p className="text-muted-foreground">No evaluations match the current search criteria</p>
+            <p className="text-lg font-medium mb-2">{t('evaluations.no_evaluations_found')}</p>
+            <p className="text-muted-foreground">{t('evaluations.no_evaluations_criteria')}</p>
           </div>
         ]}
       </ViewLayouts>
@@ -276,22 +276,22 @@ export function EvaluationsManagement({
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Evaluation Details</DialogTitle>
+            <DialogTitle>{t('evaluations.evaluation_details')}</DialogTitle>
           </DialogHeader>
           
           {selectedEvaluation && (
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="font-semibold mb-2">Idea Information</h3>
-                  <p className="text-sm"><strong>Title:</strong> {ideas[selectedEvaluation.idea_id]?.title_ar || "Unknown"}</p>
-                  <p className="text-sm"><strong>Status:</strong> {ideas[selectedEvaluation.idea_id]?.status || "Unknown"}</p>
+                  <h3 className="font-semibold mb-2">{t('evaluations.idea_information')}</h3>
+                  <p className="text-sm"><strong>{t('form.title_label')}:</strong> {ideas[selectedEvaluation.idea_id]?.title_ar || t('common.unknown')}</p>
+                  <p className="text-sm"><strong>{t('form.status_label')}:</strong> {ideas[selectedEvaluation.idea_id]?.status || t('common.unknown')}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Evaluator Information</h3>
-                  <p className="text-sm"><strong>Name:</strong> {profiles[selectedEvaluation.evaluator_id]?.name || "Unknown"}</p>
-                  <p className="text-sm"><strong>Type:</strong> {selectedEvaluation.evaluator_type}</p>
-                  <p className="text-sm"><strong>Date:</strong> {new Date(selectedEvaluation.evaluation_date || selectedEvaluation.created_at).toLocaleDateString()}</p>
+                  <h3 className="font-semibold mb-2">{t('evaluations.evaluator_information')}</h3>
+                  <p className="text-sm"><strong>{t('form.name_label')}:</strong> {profiles[selectedEvaluation.evaluator_id]?.name || t('common.unknown')}</p>
+                  <p className="text-sm"><strong>{t('form.type_label')}:</strong> {selectedEvaluation.evaluator_type}</p>
+                  <p className="text-sm"><strong>{t('form.date_label')}:</strong> {new Date(selectedEvaluation.evaluation_date || selectedEvaluation.created_at).toLocaleDateString()}</p>
                 </div>
               </div>
 

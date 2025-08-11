@@ -90,7 +90,7 @@
 *Status: READY - Comprehensive tool created to extract 31k+ hard-coded strings*
 
 ### **Fix #8: Critical Admin Components Translation** 🔄
-*Status: IN PROGRESS - Migrating high-priority admin interfaces (52 strings migrated)*
+*Status: IN PROGRESS - Migrating high-priority admin interfaces (92 strings migrated)*
 
 ---
 
@@ -102,9 +102,9 @@
 | Headers (RTL/LTR) | ✅ | 0 | 1 Applied | 🟢 |
 | Real-time Features | ✅ | SQL Issues | Fixed | 🟢 |
 | Database Security | ✅ | 4 Warnings | 2 Applied + 2 Manual | 🟡 |
-| Admin Translation | 🔄 | 1031 Strings | 52 Applied | 🟡 |
+| Admin Translation | 🔄 | 1031 Strings | 92 Applied | 🟡 |
 
-**Overall Progress: 84% Complete**
+**Overall Progress: 86% Complete**
 
 ---
 
@@ -124,6 +124,10 @@
 - ✅ **AdminChallengeManagement.tsx**: 1 hard-coded string migrated to translation keys
 - ✅ **ChallengeWizard.tsx**: 6 hard-coded strings migrated to translation keys
 - ✅ **ChallengeManagementList.tsx**: 6 hard-coded strings migrated + debug cleanup
+- ✅ **EvaluationsManagement.tsx**: 12 hard-coded strings migrated to translation keys
+- ✅ **ExpertAssignmentManagement.tsx**: 8 hard-coded strings migrated to translation keys
+- ✅ **ListEditors.tsx**: 10 hard-coded strings migrated to translation keys
+- ✅ **OpportunityWizard.tsx**: 10 hard-coded strings migrated to translation keys
 - 🔄 **In Progress**: Continuing systematic migration of admin interface strings
 
 **Security Status:**
@@ -136,4 +140,4 @@
 - Enable leaked password protection in Supabase Auth settings
 - Investigate security definer view warning (no public views found with this property)
 
-*Last Updated: 2025-01-11 00:30 - Continued admin components translation migration (13 additional strings + debug cleanup), overall progress: 84%*
+*Last Updated: 2025-01-11 01:15 - Continued admin components translation migration (40 additional strings), overall progress: 86%*

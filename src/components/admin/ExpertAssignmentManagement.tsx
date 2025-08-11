@@ -324,8 +324,8 @@ export function ExpertAssignmentManagement() {
       if (error) throw error;
 
       toast({
-        title: "Bulk Assignment Complete",
-        description: `Successfully assigned ${bulkSelectedExperts.length} experts to ${bulkSelectedChallenges.length} challenges.`,
+        title: t('expert_assignment_management.bulk_assignment_complete'),
+        description: t('expert_assignment_management.bulk_assignment_success', `Successfully assigned ${bulkSelectedExperts.length} experts to ${bulkSelectedChallenges.length} challenges.`),
       });
 
       setIsBulkAssignDialogOpen(false);
@@ -334,8 +334,8 @@ export function ExpertAssignmentManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
-        description: "Failed to complete bulk assignment. Please try again.",
+        title: t('error.title'),
+        description: t('error.bulk_assignment_failed'),
         variant: "destructive",
       });
     }
@@ -374,8 +374,8 @@ export function ExpertAssignmentManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
-        description: "Failed to update assignment. Please try again.",
+        title: t('error.title'),
+        description: t('error.update_assignment_failed'),
         variant: "destructive",
       });
     }
@@ -399,8 +399,8 @@ export function ExpertAssignmentManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
-        description: "Failed to remove assignment. Please try again.",
+        title: t('error.title'),
+        description: t('error.remove_assignment_failed'),
         variant: "destructive",
       });
     }
@@ -959,7 +959,7 @@ export function ExpertAssignmentManagement() {
               <Textarea
                 value={assignmentNotes}
                 onChange={(e) => setAssignmentNotes(e.target.value)}
-                placeholder="Notes applied to all assignments..."
+                placeholder={t('expert_assignment_management.bulk_notes_placeholder')}
                 rows={profileTextareaRows - 1}
               />
             </div>
@@ -1023,7 +1023,7 @@ export function ExpertAssignmentManagement() {
               <Textarea
                 value={assignmentNotes}
                 onChange={(e) => setAssignmentNotes(e.target.value)}
-                placeholder="Assignment notes..."
+                placeholder={t('expert_assignment_management.assignment_notes_placeholder')}
                 rows={profileTextareaRows}
               />
             </div>
