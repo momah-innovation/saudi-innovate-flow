@@ -1,5 +1,5 @@
 import { useState, ReactNode } from 'react';
-import { Search, Menu, Languages, Moon, Sun, Plus, Ticket } from 'lucide-react';
+import { Search, Menu, Languages, Moon, Sun, Plus, Ticket, AlignLeft, AlignRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -53,6 +53,7 @@ interface UnifiedHeaderProps {
   
   // System Features
   showLanguageSwitch?: boolean;
+  showDirectionToggle?: boolean;
   showThemeSwitch?: boolean;
   showNotifications?: boolean;
   showUserMenu?: boolean;
@@ -87,6 +88,7 @@ export function UnifiedHeader({
   onSearchChange,
   searchPlaceholder,
   showLanguageSwitch = true,
+  showDirectionToggle = true,
   showThemeSwitch = true,
   showNotifications = true,
   showUserMenu = true,
@@ -213,12 +215,32 @@ export function UnifiedHeader({
                   size="sm" 
                   className="h-9 w-9 p-0"
                   onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-                title={t('header.switch_language', 'Switch Language')}
-             >
-               <Languages className="h-4 w-4" />
-               <span className="sr-only">
-                 {t('header.switch_language', 'Switch Language')}
-               </span>
+                  title={t('header.switch_language', 'Switch Language')}
+                >
+                  <Languages className="h-4 w-4" />
+                  <span className="sr-only">
+                    {t('header.switch_language', 'Switch Language')}
+                  </span>
+                </Button>
+              )}
+
+              {/* Direction Toggle */}
+              {showDirectionToggle && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-9 w-9 p-0"
+                  onClick={toggleDirection}
+                  title={t('header.toggle_direction', 'Toggle Text Direction')}
+                >
+                  {isRTL ? (
+                    <AlignRight className="h-4 w-4" />
+                  ) : (
+                    <AlignLeft className="h-4 w-4" />
+                  )}
+                  <span className="sr-only">
+                    {t('header.toggle_direction', 'Toggle Text Direction')}
+                  </span>
                 </Button>
               )}
 
@@ -347,12 +369,31 @@ export function UnifiedHeader({
           size="sm" 
           className="h-9 w-9 p-0"
           onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-           title={t('header.switch_language', 'Switch Language')}
-         >
-           <Languages className="h-4 w-4" />
-           <span className="sr-only">
-             {t('header.switch_language', 'Switch Language')}
-           </span>
+          title={t('header.switch_language', 'Switch Language')}
+        >
+          <Languages className="h-4 w-4" />
+          <span className="sr-only">
+            {t('header.switch_language', 'Switch Language')}
+          </span>
+        </Button>
+      )}
+
+      {showDirectionToggle && (
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-9 w-9 p-0"
+          onClick={toggleDirection}
+          title={t('header.toggle_direction', 'Toggle Text Direction')}
+        >
+          {isRTL ? (
+            <AlignRight className="h-4 w-4" />
+          ) : (
+            <AlignLeft className="h-4 w-4" />
+          )}
+          <span className="sr-only">
+            {t('header.toggle_direction', 'Toggle Text Direction')}
+          </span>
         </Button>
       )}
 
