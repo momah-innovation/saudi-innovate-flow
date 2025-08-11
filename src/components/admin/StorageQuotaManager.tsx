@@ -86,8 +86,8 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
   const handleSetQuota = async () => {
     if (!selectedBucket || !quotaSize) {
       toast({
-        title: 'Validation Error',
-        description: 'Please select a bucket and enter quota size',
+        title: t('error.validation', 'Validation Error'),
+        description: t('storage.quota.select_bucket_size', 'Please select a bucket and enter quota size'),
         variant: 'destructive'
       })
       return
@@ -102,15 +102,15 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
     
     if (result.success) {
       toast({
-        title: 'Quota Set',
-        description: `Successfully set ${quotaSize} ${quotaUnit} quota for ${selectedBucket}`
+        title: t('storage.quota.set_success', 'Quota Set'),
+        description: t('storage.quota.set_success_desc', `Successfully set ${quotaSize} ${quotaUnit} quota for ${selectedBucket}`, { quotaSize, quotaUnit, selectedBucket })
       })
       setIsDialogOpen(false)
       setSelectedBucket('')
       setQuotaSize('')
     } else {
       toast({
-        title: 'Error',
+        title: t('error', 'Error'),
         description: result.error,
         variant: 'destructive'
       })
@@ -126,12 +126,12 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
     
     if (result.success) {
       toast({
-        title: 'Quota Removed',
-        description: `Successfully removed quota for ${bucketName}`
+        title: t('storage.quota.removed', 'Quota Removed'),
+        description: t('storage.quota.removed_desc', `Successfully removed quota for ${bucketName}`, { bucketName })
       })
     } else {
       toast({
-        title: 'Error',
+        title: t('error', 'Error'),
         description: result.error,
         variant: 'destructive'
       })
@@ -152,12 +152,12 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
       
       const data = result.data as AutoSetupData
       toast({
-        title: 'Auto Setup Complete',
-        description: `Successfully configured 5GB quotas for ${data?.buckets_configured || 0} buckets`
+        title: t('storage.quota.auto_setup_complete', 'Auto Setup Complete'),
+        description: t('storage.quota.auto_setup_desc', `Successfully configured 5GB quotas for ${data?.buckets_configured || 0} buckets`, { count: data?.buckets_configured || 0 })
       })
     } else {
       toast({
-        title: 'Auto Setup Failed',
+        title: t('storage.quota.auto_setup_failed', 'Auto Setup Failed'),
         description: result.error,
         variant: 'destructive'
       })
@@ -172,7 +172,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <HardDrive className="h-5 w-5" />
-            Storage Quotas
+            {t('storage.quotas.title', 'Storage Quotas')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -191,10 +191,10 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
           <div>
             <CardTitle className="flex items-center gap-2">
               <HardDrive className="h-5 w-5" />
-              Storage Quotas
+              {t('storage.quotas.title', 'Storage Quotas')}
             </CardTitle>
             <CardDescription>
-              Manage storage quotas for different buckets
+              {t('storage.quotas.description', 'Manage storage quotas for different buckets')}
             </CardDescription>
           </div>
           <div className="flex gap-2">
@@ -210,19 +210,19 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
               <DialogTrigger asChild>
                 <Button size="sm">
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Quota
+                  {t('storage.quota.add', 'Add Quota')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Set Storage Quota</DialogTitle>
+                  <DialogTitle>{t('storage.quota.set_title', 'Set Storage Quota')}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="bucket">Bucket</Label>
+                    <Label htmlFor="bucket">{t('storage.bucket', 'Bucket')}</Label>
                     <Select value={selectedBucket} onValueChange={setSelectedBucket}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a bucket" />
+                        <SelectValue placeholder={t('storage.select_bucket', 'Select a bucket')} />
                       </SelectTrigger>
                       <SelectContent>
                         {bucketsWithoutQuotas.map((bucket) => (
@@ -235,17 +235,17 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div className="col-span-2">
-                      <Label htmlFor="quota">Quota Size</Label>
+                      <Label htmlFor="quota">{t('storage.quota.size', 'Quota Size')}</Label>
                       <Input
                         id="quota"
                         type="number"
                         value={quotaSize}
                         onChange={(e) => setQuotaSize(e.target.value)}
-                        placeholder="100"
+                        placeholder={t('storage.quota.size_placeholder', '100')}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="unit">Unit</Label>
+                      <Label htmlFor="unit">{t('storage.unit', 'Unit')}</Label>
                       <Select value={quotaUnit} onValueChange={setQuotaUnit}>
                         <SelectTrigger>
                           <SelectValue />
@@ -263,7 +263,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
                     className="w-full"
                   >
                     {actionLoading === 'set' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
-                    Set Quota
+                    {t('storage.quota.set', 'Set Quota')}
                   </Button>
                 </div>
               </DialogContent>
@@ -282,7 +282,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
         {quotas.length === 0 ? (
           <div className="text-center py-8 space-y-4">
             <div className="text-muted-foreground">
-              No storage quotas configured
+              {t('storage.quota.none_configured', 'No storage quotas configured')}
             </div>
             <Button 
               onClick={handleAutoSetup} 
@@ -290,7 +290,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
               variant="outline"
             >
               {actionLoading === 'auto-setup' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
-              Auto Setup (5GB Default)
+              {t('storage.quota.auto_setup', 'Auto Setup (5GB Default)')}
             </Button>
           </div>
         ) : (
@@ -320,14 +320,14 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
                 <div className="space-y-2">
                   <Progress value={Math.min(quota.usage_percentage, 100)} className="h-2" />
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>{formatBytes(quota.current_usage_bytes)} used</span>
-                    <span>{formatBytes(quota.quota_bytes)} total</span>
+                    <span>{formatBytes(quota.current_usage_bytes)} {t('storage.used', 'used')}</span>
+                    <span>{formatBytes(quota.quota_bytes)} {t('storage.total', 'total')}</span>
                   </div>
                   {quota.current_usage_bytes > quota.quota_bytes && (
                     <Alert variant="destructive">
                       <AlertCircle className="h-4 w-4" />
                       <AlertDescription>
-                        Quota exceeded! Current usage is {formatBytes(quota.current_usage_bytes - quota.quota_bytes)} over the limit.
+                        {t('storage.quota.exceeded', 'Quota exceeded! Current usage is {{amount}} over the limit.', { amount: formatBytes(quota.current_usage_bytes - quota.quota_bytes) })}
                       </AlertDescription>
                     </Alert>
                   )}

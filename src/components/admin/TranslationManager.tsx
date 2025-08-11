@@ -187,7 +187,7 @@ export const TranslationManager: React.FC = () => {
   };
 
   const deleteTranslation = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this translation?')) return;
+    if (!confirm(t('translations.delete_confirm', 'Are you sure you want to delete this translation?'))) return;
     
     try {
       const { error } = await supabase
@@ -216,10 +216,10 @@ export const TranslationManager: React.FC = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5 text-blue-500" />
-            JSON Download
+            {t('translations.json_download', 'JSON Download')}
           </CardTitle>
           <CardDescription>
-            Download translation JSON files for manual deployment
+            {t('translations.json_download_desc', 'Download translation JSON files for manual deployment')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -228,9 +228,9 @@ export const TranslationManager: React.FC = () => {
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
                 <div className="text-sm">
-                  <p className="font-medium text-amber-800 dark:text-amber-200">Manual Process Required</p>
+                  <p className="font-medium text-amber-800 dark:text-amber-200">{t('translations.manual_process', 'Manual Process Required')}</p>
                   <p className="text-amber-700 dark:text-amber-300">
-                    After downloading, manually replace the JSON files in <code>src/i18n/locales/</code> to update static translations.
+                    {t('translations.manual_process_desc', 'After downloading, manually replace the JSON files in src/i18n/locales/ to update static translations.')}
                   </p>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export const TranslationManager: React.FC = () => {
                 className="flex items-center gap-2"
               >
                 <Download className="h-4 w-4" />
-                Download English JSON
+                {t('translations.download_english', 'Download English JSON')}
               </Button>
               <Button 
                 onClick={() => downloadTranslationsJSON('ar')}
@@ -250,7 +250,7 @@ export const TranslationManager: React.FC = () => {
                 className="flex items-center gap-2"
               >
                 <Download className="h-4 w-4" />
-                Download Arabic JSON
+                {t('translations.download_arabic', 'Download Arabic JSON')}
               </Button>
             </div>
           </div>
@@ -261,22 +261,22 @@ export const TranslationManager: React.FC = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            Bilingual Translation Management
+            {t('translations.bilingual_management', 'Bilingual Translation Management')}
             <div className="flex gap-2">
               <Button onClick={loadTranslations} disabled={isLoading} variant="outline">
-                Refresh
+                {t('common.refresh', 'Refresh')}
               </Button>
             </div>
           </CardTitle>
           <CardDescription>
-            Manage bilingual translations (English and Arabic in single records)
+            {t('translations.bilingual_desc', 'Manage bilingual translations (English and Arabic in single records)')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-4 mb-6">
             <div className="flex-1 min-w-[200px]">
               <Input
-                placeholder="Search translations..."
+                placeholder={t('translations.search_placeholder', 'Search translations...')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
@@ -284,10 +284,10 @@ export const TranslationManager: React.FC = () => {
             </div>
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-40">
-                <SelectValue placeholder="Category" />
+                <SelectValue placeholder={t('common.category', 'Category')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">{t('common.all_categories', 'All Categories')}</SelectItem>
                 {CATEGORIES.map(category => (
                   <SelectItem key={category} value={category}>
                     {category}
@@ -299,7 +299,7 @@ export const TranslationManager: React.FC = () => {
               <DialogTrigger asChild>
                 <Button onClick={() => setEditingTranslation(null)}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Translation
+                  {t('translations.add', 'Add Translation')}
                 </Button>
               </DialogTrigger>
               <TranslationDialog 
@@ -354,7 +354,7 @@ export const TranslationManager: React.FC = () => {
 
           {filteredTranslations.length === 0 && !isLoading && (
             <div className="text-center py-8 text-muted-foreground">
-              No translations found
+              {t('translations.no_translations_found', 'No translations found')}
             </div>
           )}
         </CardContent>
@@ -374,6 +374,7 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
   onSave, 
   onClose 
 }) => {
+  const { t } = useUnifiedTranslation();
   const [formData, setFormData] = useState({
     translation_key: '',
     text_en: '',
@@ -408,24 +409,24 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
     <DialogContent className="max-w-2xl">
       <DialogHeader>
         <DialogTitle>
-          {translation ? 'Edit Translation' : 'Add Translation'}
+          {translation ? t('translations.edit', 'Edit Translation') : t('translations.add', 'Add Translation')}
         </DialogTitle>
       </DialogHeader>
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <Label htmlFor="translation_key">Translation Key</Label>
+          <Label htmlFor="translation_key">{t('translations.key', 'Translation Key')}</Label>
           <Input
             id="translation_key"
             value={formData.translation_key}
             onChange={(e) => setFormData(prev => ({ ...prev, translation_key: e.target.value }))}
-            placeholder="e.g., settings.ui.theme"
+            placeholder={t('translations.key_placeholder', 'e.g., settings.ui.theme')}
             required
           />
         </div>
 
         <div>
-          <Label htmlFor="category">Category</Label>
+          <Label htmlFor="category">{t('common.category', 'Category')}</Label>
           <Select value={formData.category} onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}>
             <SelectTrigger>
               <SelectValue />
@@ -442,23 +443,23 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="text_en">English Text</Label>
+            <Label htmlFor="text_en">{t('translations.english_text', 'English Text')}</Label>
             <Textarea
               id="text_en"
               value={formData.text_en}
               onChange={(e) => setFormData(prev => ({ ...prev, text_en: e.target.value }))}
-              placeholder="Enter English text"
+              placeholder={t('translations.english_placeholder', 'Enter English text')}
               required
             />
           </div>
           
           <div>
-            <Label htmlFor="text_ar">Arabic Text</Label>
+            <Label htmlFor="text_ar">{t('translations.arabic_text', 'Arabic Text')}</Label>
             <Textarea
               id="text_ar"
               value={formData.text_ar}
               onChange={(e) => setFormData(prev => ({ ...prev, text_ar: e.target.value }))}
-              placeholder="أدخل النص العربي"
+              placeholder={t('translations.arabic_placeholder', 'أدخل النص العربي')}
               dir="rtl"
               required
             />
@@ -467,10 +468,10 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
 
         <div className="flex justify-end gap-2">
           <Button type="button" variant="outline" onClick={onClose}>
-            Cancel
+            {t('common.cancel', 'Cancel')}
           </Button>
           <Button type="submit">
-            {translation ? 'Update' : 'Create'}
+            {translation ? t('common.update', 'Update') : t('common.create', 'Create')}
           </Button>
         </div>
       </form>
