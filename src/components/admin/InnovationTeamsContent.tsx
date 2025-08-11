@@ -180,8 +180,8 @@ export function InnovationTeamsContent({
     } catch (error) {
       logger.error('Error fetching core team data', { component: 'InnovationTeamsContent', action: 'fetchCoreTeamData' }, error as Error);
       toast({
-        title: t('common.error', 'خطأ'),
-        description: t('errors.failed_to_load_core_team_data', 'فشل في تحميل بيانات فريق الابتكار الأساسي.'),
+        title: t('common.error'),
+        description: t('errors.failed_to_load_core_team_data'),
         variant: "destructive",
       });
     } finally {
@@ -204,16 +204,16 @@ export function InnovationTeamsContent({
       if (error) throw error;
 
       toast({
-        title: t('common.success', 'نجح'),
-        description: t('innovation_teams.member_removed_success', 'تم إزالة عضو الفريق بنجاح.'),
+        title: t('common.success'),
+        description: t('innovation_teams.member_removed_success'),
       });
 
       fetchCoreTeamData();
     } catch (error) {
       logger.error('Error removing team member', { component: 'InnovationTeamsContent', action: 'handleRemoveMember', data: { memberId } }, error as Error);
       toast({
-        title: t('common.error', 'خطأ'),
-        description: t('innovation_teams.member_removal_failed', 'فشل في إزالة عضو الفريق.'),
+        title: t('common.error'),
+        description: t('innovation_teams.member_removal_failed'),
         variant: "destructive",
       });
     }

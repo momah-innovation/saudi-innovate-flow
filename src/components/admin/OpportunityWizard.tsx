@@ -394,10 +394,10 @@ export function OpportunityWizard({
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={t('opportunity.select_department', 'اختر القسم')} />
+                  <SelectValue placeholder={t('opportunity.select_department')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">{t('department.no_department_specified', 'بدون قسم محدد')}</SelectItem>
+                  <SelectItem value="">{t('department.no_department_specified')}</SelectItem>
                   {departments.map((department) => (
                     <SelectItem key={department.id} value={department.id}>
                       {department.name_ar || department.name}
@@ -415,7 +415,7 @@ export function OpportunityWizard({
                 id="contact_person"
                 value={formData.contact_person}
                 onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-                placeholder={t('opportunity.responsible_person_name', 'اسم الشخص المسؤول')}
+                placeholder={t('opportunity.responsible_person_name')}
                 dir="rtl"
               />
             </div>
@@ -458,7 +458,7 @@ export function OpportunityWizard({
                   id="location"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  placeholder={t('opportunity.enter_work_location', 'أدخل موقع العمل')}
+                  placeholder={t('opportunity.enter_work_location')}
                   dir="rtl"
                 />
               </div>

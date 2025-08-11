@@ -202,7 +202,7 @@ export default function RoleRequestManagement() {
       }
 
       toast({
-        title: t('admin.request_reviewed', 'Request Reviewed'),
+        title: t('admin.request_reviewed'),
         description: `Role request has been ${reviewAction}d successfully.`,
       });
 
