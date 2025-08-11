@@ -9,6 +9,7 @@ import {
   Database
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { cn } from '@/lib/utils';
 
 interface StorageStatsCardsProps {
   stats: {
@@ -74,15 +75,24 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
   const recentUploads = getRecentUploadsCount();
 
   return (
-    <div dir={isRTL ? 'rtl' : 'ltr'} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+    <div 
+      dir={isRTL ? 'rtl' : 'ltr'} 
+      className={cn(
+        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 px-4 sm:px-0",
+        isRTL ? 'font-arabic' : 'font-english'
+      )}
+    >
       {/* Storage Usage */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={cn(
+          "flex flex-row items-center justify-between space-y-0 pb-2",
+          isRTL && "flex-row-reverse"
+        )}>
           <CardTitle className="text-sm font-medium">{t('storage.storage_usage')}</CardTitle>
           <HardDrive className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
+          <div className="text-xl sm:text-2xl font-bold">
             {formatFileSize(stats.usedSpace)}
           </div>
           <p className="text-xs text-muted-foreground mb-2">

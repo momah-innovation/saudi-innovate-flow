@@ -22,22 +22,25 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className={cn("min-h-screen flex w-full", isRTL && "flex-row-reverse")}>
+    <div className={cn("min-h-screen flex w-full overflow-hidden", isRTL && "flex-row-reverse")}>
       {/* Overlay NavigationSidebar */}
       <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header removed - AppShell provides unified header */}
         
         {/* Breadcrumb Navigation */}
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <div className={cn("h-12 border-b bg-muted/20 px-6 flex items-center gap-3", isRTL && "text-right flex-row-reverse")}>
+          <div className={cn(
+            "h-12 border-b bg-muted/20 px-3 sm:px-6 flex items-center gap-2 sm:gap-3 overflow-x-auto", 
+            isRTL && "text-right flex-row-reverse"
+          )}>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setSidebarOpen(true)}
-              className="shrink-0"
+              className="shrink-0 h-8 w-8 p-0 lg:hidden"
               aria-label="Open navigation menu"
             >
               <Menu className="h-4 w-4" />
@@ -66,8 +69,10 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
         )}
         
         {/* Page Content */}
-        <main className="flex-1 overflow-auto">
-          {children}
+        <main className="flex-1 overflow-auto overscroll-behavior-contain">
+          <div className="p-4 lg:p-6">
+            {children}
+          </div>
         </main>
       </div>
     </div>

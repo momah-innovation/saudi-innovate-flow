@@ -46,20 +46,20 @@ class AppShellErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <div className="text-center space-y-4 p-6">
-            <h2 className="text-2xl font-bold text-destructive">
+        <div className="min-h-screen flex items-center justify-center bg-background px-4">
+          <div className="text-center space-y-4 p-4 sm:p-6 max-w-md mx-auto">
+            <h2 className="text-xl sm:text-2xl font-bold text-destructive">
               خطأ في التطبيق | Application Error
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               حدث خطأ غير متوقع. يرجى إعادة تحميل الصفحة.
             </p>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               An unexpected error occurred. Please reload the page.
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-hover"
+              className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary-hover transition-colors touch-manipulation"
             >
               إعادة تحميل | Reload
             </button>
@@ -229,13 +229,17 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
             <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
             
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
               {/* Global Header */}
               <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
               
               {/* Page Content with Loading */}
-              <main className="flex-1 overflow-auto">
-                <Suspense fallback={<LoadingSpinner />}>
+              <main className="flex-1 overflow-auto overscroll-behavior-contain">
+                <Suspense fallback={
+                  <div className="flex items-center justify-center min-h-[50vh] px-4">
+                    <LoadingSpinner />
+                  </div>
+                }>
                   {children}
                 </Suspense>
               </main>

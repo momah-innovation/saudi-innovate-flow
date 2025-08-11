@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
@@ -51,16 +52,18 @@ export function DataTable<T extends Record<string, any>>({
   emptyState,
   className
 }: DataTableProps<T>) {
-  const { t } = useUnifiedTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
 
   const getSortIcon = (columnKey: string) => {
+    const iconClass = cn("h-4 w-4", isRTL ? "mr-2" : "ml-2");
+    
     if (!sortConfig || sortConfig.field !== columnKey) {
-      return <ChevronsUpDown className="ml-2 h-4 w-4 text-muted-foreground" />;
+      return <ChevronsUpDown className={cn(iconClass, "text-muted-foreground")} />;
     }
     
     return sortConfig.direction === 'asc' 
-      ? <ChevronUp className="ml-2 h-4 w-4" />
-      : <ChevronDown className="ml-2 h-4 w-4" />;
+      ? <ChevronUp className={iconClass} />
+      : <ChevronDown className={iconClass} />;
   };
 
   const renderCell = (item: T, column: Column<T>, index: number) => {
@@ -92,10 +95,13 @@ export function DataTable<T extends Record<string, any>>({
 
   if (data.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
+      <div className={cn(
+        "flex flex-col items-center justify-center py-8 sm:py-12 text-center px-4",
+        isRTL && "text-right"
+      )}>
         {emptyState || (
           <>
-            <p className="text-lg font-medium text-muted-foreground">
+            <p className="text-base sm:text-lg font-medium text-muted-foreground">
               {t('table.no_data', 'No data available')}
             </p>
             <p className="text-sm text-muted-foreground">
@@ -108,12 +114,16 @@ export function DataTable<T extends Record<string, any>>({
   }
 
   return (
-    <div className={`border rounded-md ${className || ''}`}>
+    <div className={cn(
+      "border rounded-md overflow-x-auto",
+      isRTL && "text-right",
+      className
+    )}>
       <Table>
         <TableHeader>
           <TableRow>
             {bulkSelection && (
-              <TableHead className="w-12">
+              <TableHead className="w-10 sm:w-12">
                 <Checkbox
                   checked={bulkSelection.isAllSelected(data)}
                   onCheckedChange={() => bulkSelection.onToggleAll(data)}
@@ -124,10 +134,17 @@ export function DataTable<T extends Record<string, any>>({
             {columns.map((column) => (
               <TableHead 
                 key={column.key}
-                className={`${column.headerClassName || ''} ${column.sortable ? 'cursor-pointer select-none' : ''}`}
+                className={cn(
+                  column.headerClassName,
+                  column.sortable && "cursor-pointer select-none hover:bg-muted/50 transition-colors",
+                  "text-xs sm:text-sm whitespace-nowrap"
+                )}
                 onClick={column.sortable && onSort ? () => onSort(column.key) : undefined}
               >
-                <div className="flex items-center">
+                <div className={cn(
+                  "flex items-center min-h-[44px] sm:min-h-[auto]",
+                  isRTL && "flex-row-reverse"
+                )}>
                   {column.label}
                   {column.sortable && onSort && getSortIcon(column.key)}
                 </div>
@@ -143,11 +160,18 @@ export function DataTable<T extends Record<string, any>>({
             return (
               <TableRow
                 key={itemId}
-                className={`${onRowClick ? 'cursor-pointer hover:bg-muted/50' : ''} ${isSelected ? 'bg-muted/50' : ''}`}
+                className={cn(
+                  onRowClick && "cursor-pointer hover:bg-muted/50 transition-colors",
+                  isSelected && "bg-muted/50",
+                  "min-h-[44px]"
+                )}
                 onClick={onRowClick ? () => onRowClick(item) : undefined}
               >
                 {bulkSelection && (
-                  <TableCell onClick={(e) => e.stopPropagation()}>
+                  <TableCell 
+                    onClick={(e) => e.stopPropagation()}
+                    className="py-2 px-2 sm:px-4"
+                  >
                     <Checkbox
                       checked={isSelected}
                       onCheckedChange={() => bulkSelection.onToggleItem(itemId)}
@@ -158,7 +182,10 @@ export function DataTable<T extends Record<string, any>>({
                 {columns.map((column) => (
                   <TableCell 
                     key={column.key}
-                    className={column.className || ''}
+                    className={cn(
+                      "py-2 px-2 sm:px-4 text-xs sm:text-sm",
+                      column.className
+                    )}
                   >
                     {renderCell(item, column, index)}
                   </TableCell>

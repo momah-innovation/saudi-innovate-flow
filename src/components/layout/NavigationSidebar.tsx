@@ -598,13 +598,13 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         side={isRTL ? "right" : "left"}
         className={cn("w-80 p-0", isRTL && "text-right")}
       >
-        <SheetHeader className="p-6 border-b">
-          <SheetTitle className={cn("text-left", isRTL && "text-right")}>
+        <SheetHeader className="p-4 sm:p-6 border-b">
+          <SheetTitle className={cn("text-left text-sm sm:text-base", isRTL && "text-right")}>
             {t('nav.navigation_menu', 'Navigation Menu')}
           </SheetTitle>
         </SheetHeader>
         
-        <div className="p-6 overflow-y-auto h-full">
+        <div className="p-4 sm:p-6 overflow-y-auto h-full pb-safe-area-inset-bottom">
           {/* Render groups in priority order */}
           {groupOrder.map(groupKey => {
             const items = groupedItems[groupKey];

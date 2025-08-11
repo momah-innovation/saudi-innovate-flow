@@ -97,10 +97,10 @@
 ### 🎨 **Layout Components**
 | Component | RTL/LTR | Mobile | Status | Notes |
 |-----------|---------|--------|--------|-------|
-| AppShell.tsx | ✅ | 🔄 | 🔄 | RTL complete, auditing mobile |
-| UnifiedHeader.tsx | ✅ | ❌ | 🔄 | RTL complete, needs mobile fixes |
-| NavigationSidebar.tsx | ❌ | ❌ | 🔄 | Needs RTL improvements and mobile |
-| AdminLayout.tsx | ⏳ | ⏳ | ⏳ | Admin layout wrapper |
+| AppShell.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| UnifiedHeader.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| NavigationSidebar.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| AdminLayout.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 
 ### 📝 **Form Components**
 | Component | RTL/LTR | Mobile | Status | Notes |
@@ -111,9 +111,9 @@
 ### 📊 **Data Display Components**
 | Component | RTL/LTR | Mobile | Status | Notes |
 |-----------|---------|--------|--------|-------|
-| DataTable.tsx | ⏳ | ⏳ | ⏳ | Data tables |
+| DataTable.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| StorageStatsCards.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | DashboardMetrics.tsx | ⏳ | ⏳ | ⏳ | Metrics cards |
-| StatsCards.tsx | ⏳ | ⏳ | ⏳ | Statistics display |
 
 ### 🔧 **UI Components**
 | Component | RTL/LTR | Mobile | Status | Notes |
@@ -128,7 +128,7 @@
 
 ## CURRENT AUDIT PROGRESS
 
-### ✅ Completed (42/50+ pages)
+### ✅ Completed (48/50+ pages)
 - AppShell.tsx (RTL ✅, Mobile pending)
 - UnifiedHeader.tsx (RTL ✅, Mobile ✅) 
 - NavigationSidebar.tsx (RTL ✅, Mobile ✅)
@@ -171,6 +171,12 @@
 - Card.tsx (RTL ✅, Mobile ✅)
 - Select.tsx (RTL ✅, Mobile ✅)
 - Dialog.tsx (RTL ✅, Mobile ✅)
+- AppShell.tsx (RTL ✅, Mobile ✅)
+- UnifiedHeader.tsx (RTL ✅, Mobile ✅)
+- NavigationSidebar.tsx (RTL ✅, Mobile ✅)
+- AdminLayout.tsx (RTL ✅, Mobile ✅)
+- DataTable.tsx (RTL ✅, Mobile ✅)
+- StorageStatsCards.tsx (RTL ✅, Mobile ✅)
 
 ### 🔄 In Progress (0/50+ pages)  
 - None currently
