@@ -12,6 +12,7 @@ import { Search, Filter, Clock, Target, AlertTriangle, Users } from "lucide-reac
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { logger } from "@/utils/logger";
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Challenge {
   id: string;
@@ -30,6 +31,7 @@ interface Challenge {
 }
 
 export const InnovatorDashboard = () => {
+  const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
   const { userProfile } = useAuth();
   const { toast } = useToast();
@@ -66,8 +68,8 @@ export const InnovatorDashboard = () => {
       if (error) {
         logger.error('Error fetching challenges', { component: 'InnovatorDashboard', action: 'fetchChallenges' }, error as Error);
         toast({
-          title: "Error Loading Challenges",
-          description: "Could not load available challenges. Please try again.",
+          title: t('innovator_dashboard.error_loading_challenges'),
+          description: t('innovator_dashboard.error_loading_description'),
           variant: "destructive",
         });
         return;
@@ -76,9 +78,9 @@ export const InnovatorDashboard = () => {
       // Transform data to match Challenge interface
       const transformedChallenges: Challenge[] = (challengesData || []).map(challenge => ({
         id: challenge.id,
-        title: challenge.title_ar || 'Untitled Challenge',
+        title: challenge.title_ar || t('innovator_dashboard.untitled_challenge'),
         title_ar: challenge.title_ar,
-        description: challenge.description_ar || 'No description available',
+        description: challenge.description_ar || t('innovator_dashboard.no_description'),
         description_ar: challenge.description_ar,
         status: challenge.status,
         priority_level: challenge.priority_level,
@@ -174,7 +176,7 @@ export const InnovatorDashboard = () => {
   };
 
   const formatBudget = (budget?: number) => {
-    if (!budget) return 'Not specified';
+    if (!budget) return t('innovator_dashboard.not_specified');
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'SAR',
@@ -220,9 +222,9 @@ export const InnovatorDashboard = () => {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Innovation Challenges</h1>
+        <h1 className="text-3xl font-bold">{t('innovator_dashboard.title')}</h1>
         <p className="text-muted-foreground">
-          Discover and participate in innovation challenges to drive government transformation
+          {t('innovator_dashboard.description')}
         </p>
       </div>
 
@@ -231,17 +233,17 @@ export const InnovatorDashboard = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Filter className="h-5 w-5" />
-            Filter Challenges
+            {t('innovator_dashboard.filter_challenges')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Search</label>
+              <label className="text-sm font-medium">{t('innovator_dashboard.search')}</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search challenges..."
+                  placeholder={t('innovator_dashboard.search_placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -250,13 +252,13 @@ export const InnovatorDashboard = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Status</label>
+              <label className="text-sm font-medium">{t('innovator_dashboard.status')}</label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="all">{t('innovator_dashboard.all_status')}</SelectItem>
                   {challengeStatusOptions.map((status) => (
                     <SelectItem key={status} value={status}>
                       {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -267,30 +269,30 @@ export const InnovatorDashboard = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Priority</label>
+              <label className="text-sm font-medium">{t('innovator_dashboard.priority')}</label>
               <Select value={priorityFilter} onValueChange={setPriorityFilter}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Priorities</SelectItem>
+                  <SelectItem value="all">{t('innovator_dashboard.all_priorities')}</SelectItem>
                   {challengePriorityLevels.map((level) => (
-                    <SelectItem key={level} value={level}>{level.charAt(0).toUpperCase() + level.slice(1)} Priority</SelectItem>
+                    <SelectItem key={level} value={level}>{t(`priority.${level}`, `${level.charAt(0).toUpperCase() + level.slice(1)} Priority`)}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Type</label>
+              <label className="text-sm font-medium">{t('innovator_dashboard.type')}</label>
               <Select value={typeFilter} onValueChange={setTypeFilter}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="all">{t('innovator_dashboard.all_types')}</SelectItem>
                   {challengeTypes.map((type) => (
-                    <SelectItem key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</SelectItem>
+                    <SelectItem key={type} value={type}>{t(`challenge_type.${type}`, type.charAt(0).toUpperCase() + type.slice(1))}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -303,20 +305,20 @@ export const InnovatorDashboard = () => {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Available Challenges</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('innovator_dashboard.available_challenges')}</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{filteredChallenges.length}</div>
             <p className="text-xs text-muted-foreground">
-              Active innovation opportunities
+              {t('innovator_dashboard.active_opportunities')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">High Priority</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('innovator_dashboard.high_priority')}</CardTitle>
             <AlertTriangle className="h-4 w-4 icon-confidential" />
           </CardHeader>
           <CardContent>
@@ -324,14 +326,14 @@ export const InnovatorDashboard = () => {
               {filteredChallenges.filter(c => c.priority_level === 'high').length}
             </div>
             <p className="text-xs text-muted-foreground">
-              Urgent challenges
+              {t('innovator_dashboard.urgent_challenges')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Budget</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('innovator_dashboard.total_budget')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -339,7 +341,7 @@ export const InnovatorDashboard = () => {
               {formatBudget(filteredChallenges.reduce((sum, c) => sum + (c.estimated_budget || 0), 0))}
             </div>
             <p className="text-xs text-muted-foreground">
-              Available funding
+              {t('innovator_dashboard.available_funding')}
             </p>
           </CardContent>
         </Card>
@@ -372,11 +374,11 @@ export const InnovatorDashboard = () => {
 
               <div className="flex flex-wrap gap-2">
                 <Badge variant={getPriorityColor(challenge.priority_level)}>
-                  {challenge.priority_level} priority
+                  {t(`priority.${challenge.priority_level}`, `${challenge.priority_level} priority`)}
                 </Badge>
                 {challenge.challenge_type && (
                   <Badge variant="outline">
-                    {challenge.challenge_type}
+                    {t(`challenge_type.${challenge.challenge_type}`, challenge.challenge_type)}
                   </Badge>
                 )}
               </div>
@@ -385,13 +387,13 @@ export const InnovatorDashboard = () => {
                 {challenge.end_date && (
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
-                    Deadline: {new Date(challenge.end_date).toLocaleDateString()}
+                    {t('innovator_dashboard.deadline')}: {new Date(challenge.end_date).toLocaleDateString()}
                   </div>
                 )}
                 {challenge.estimated_budget && (
                   <div className="flex items-center gap-2">
                     <Target className="h-4 w-4" />
-                    Budget: {formatBudget(challenge.estimated_budget)}
+                    {t('innovator_dashboard.budget')}: {formatBudget(challenge.estimated_budget)}
                   </div>
                 )}
               </div>
@@ -403,14 +405,14 @@ export const InnovatorDashboard = () => {
                   onClick={() => handleViewChallenge(challenge.id)}
                   className="flex-1"
                 >
-                  View Details
+                  {t('innovator_dashboard.view_details')}
                 </Button>
                 <Button 
                   size="sm" 
                   onClick={() => handleSubmitIdea(challenge.id)}
                   className="flex-1"
                 >
-                  Submit Idea
+                  {t('innovator_dashboard.submit_idea')}
                 </Button>
               </div>
             </CardContent>
@@ -421,9 +423,9 @@ export const InnovatorDashboard = () => {
       {filteredChallenges.length === 0 && (
         <div className="text-center py-12">
           <Target className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">No challenges found</h3>
+          <h3 className="text-lg font-semibold mb-2">{t('innovator_dashboard.no_challenges_found')}</h3>
           <p className="text-muted-foreground">
-            Try adjusting your filters or check back later for new opportunities.
+            {t('innovator_dashboard.no_challenges_description')}
           </p>
         </div>
       )}

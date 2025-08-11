@@ -22,6 +22,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { challengesPageConfig, getFilterOptions } from '@/config/challengesPageConfig';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface FilterState {
   search: string;
@@ -55,6 +56,7 @@ export const ChallengeFilters = ({
   dynamicMaxBudget = 10000000,
   dynamicMaxParticipants = 1000
 }: ChallengeFiltersProps) => {
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -276,7 +278,7 @@ export const ChallengeFilters = ({
                   className="h-8 min-w-[90px] text-sm transition-all duration-200 hover:border-primary/50"
                   title={isRTL ? 'ترتيب حسب' : 'Sort by'}
                 >
-                  <SelectValue placeholder="Sort" />
+                  <SelectValue placeholder={t('challenge_filters.sort', 'Sort')} />
                 </SelectTrigger>
                 <SelectContent className="z-50 bg-background border shadow-md">
                   {sortOptions.map((option) => (
@@ -294,7 +296,7 @@ export const ChallengeFilters = ({
                 size="sm"
                 onClick={() => updateFilter('sortOrder', filters.sortOrder === 'asc' ? 'desc' : 'asc')}
                 className="h-8 w-8 px-0 transition-all duration-200 hover:scale-105"
-                title={filters.sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+                title={filters.sortOrder === 'asc' ? t('challenge_filters.ascending', 'Ascending') : t('challenge_filters.descending', 'Descending')}
               >
                 {filters.sortOrder === 'asc' ? '↑' : '↓'}
               </Button>
@@ -386,7 +388,7 @@ export const ChallengeFilters = ({
                     animateFilters && "animate-pulse"
                   )}
                 >
-                  {activeFiltersCount} {isRTL ? 'فلتر نشط' : 'active filters'}
+                  {activeFiltersCount} {isRTL ? t('challenge_filters.filters_active_ar', 'فلتر نشط') : t('challenge_filters.filters_active', 'active filters')}
                 </Badge>
               </div>
               <Button
@@ -396,7 +398,7 @@ export const ChallengeFilters = ({
                 className="text-muted-foreground hover:text-destructive transition-colors duration-200"
               >
                 <X className="w-4 h-4 mr-2" />
-                {isRTL ? 'مسح الكل' : 'Clear all'}
+                {isRTL ? t('challenge_filters.clear_all_ar', 'مسح الكل') : t('challenge_filters.clear_all', 'Clear all')}
               </Button>
             </div>
           </CardContent>
