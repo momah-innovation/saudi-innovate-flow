@@ -30,9 +30,7 @@ const AICenter: React.FC = () => {
     {
       icon: Brain,
       title: t('ai.idea_evaluation'),
-      title_en: 'Idea Evaluation',
       description: t('ai.idea_evaluation_desc'),
-      description_en: 'Comprehensive AI-powered idea evaluation',
       feature_name: 'idea_evaluation',
       color: 'bg-blue-100 text-blue-800',
       path: '/ai/idea-evaluation'
@@ -40,9 +38,7 @@ const AICenter: React.FC = () => {
     {
       icon: Lightbulb,
       title: t('ai.challenge_assist'),
-      title_en: 'Challenge Assistant',
       description: t('ai.challenge_assist_desc'),
-      description_en: 'AI assistance for creating and developing challenges',
       feature_name: 'challenge_assist',
       color: 'bg-green-100 text-green-800',
       path: '/ai/challenge-assist'
@@ -50,9 +46,7 @@ const AICenter: React.FC = () => {
     {
       icon: MessageSquare,
       title: t('ai.similar_ideas'),
-      title_en: 'Similar Ideas Detection',
       description: t('ai.similar_ideas_desc'),
-      description_en: 'Detect similar ideas to prevent duplication',
       feature_name: 'similar_idea_detection',
       color: 'bg-orange-100 text-orange-800',
       path: '/ai/similarity-detection'
@@ -60,9 +54,7 @@ const AICenter: React.FC = () => {
     {
       icon: Users,
       title: t('ai.smart_partner_matching'),
-      title_en: 'Smart Partner Matching',
       description: t('ai.smart_partner_matching_desc'),
-      description_en: 'AI-powered partner recommendations',
       feature_name: 'smart_partner_matching',
       color: 'bg-purple-100 text-purple-800',
       path: '/ai/partner-matching'
@@ -70,9 +62,7 @@ const AICenter: React.FC = () => {
     {
       icon: Settings,
       title: t('ai.focus_questions'),
-      title_en: 'Focus Question Generation',
       description: t('ai.focus_questions_desc'),
-      description_en: 'Generate focus questions for challenges',
       feature_name: 'focus_question_generation',
       color: 'bg-indigo-100 text-indigo-800',
       path: '/ai/question-generation'
@@ -80,9 +70,7 @@ const AICenter: React.FC = () => {
     {
       icon: BarChart3,
       title: t('ai.smart_analytics'),
-      title_en: 'Smart Analytics',
       description: t('ai.smart_analytics_desc'),
-      description_en: 'Advanced AI-powered analytics',
       feature_name: 'smart_analytics',
       color: 'bg-cyan-100 text-cyan-800',
       path: '/ai/analytics'
