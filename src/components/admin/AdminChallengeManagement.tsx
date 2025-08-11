@@ -153,10 +153,10 @@ export function AdminChallengeManagement() {
   const filters = [
     {
       id: 'status',
-      label: t('ui.status_label', 'Status'),
+      label: t('ui.status_label'),
       type: 'select' as const,
       options: [
-        { label: t('ui.all', 'All'), value: 'all' },
+        { label: t('ui.all'), value: 'all' },
           { label: t('status.draft'), value: 'draft' },
           { label: t('status.active'), value: 'active' },
           { label: t('status.completed'), value: 'completed' },
@@ -171,11 +171,11 @@ export function AdminChallengeManagement() {
   return (
     <>
       <StandardPageLayout
-        title={t('admin.challenges.title', 'Challenge Management')}
-        description={t('admin.challenges.description', 'Create and manage innovation challenges')}
+        title={t('admin.challenges.title')}
+        description={t('admin.challenges.description')}
         itemCount={filteredChallenges.length}
         addButton={{
-          label: t('admin.challenges.new_challenge', 'New Challenge'),
+          label: t('admin.challenges.new_challenge'),
           onClick: () => {
             setSelectedChallenge(null);
             setShowWizard(true);
@@ -189,10 +189,10 @@ export function AdminChallengeManagement() {
         emptyState={
           <EmptyState
             icon={<Target className="w-6 h-6 text-muted-foreground" />}
-            title={t('admin.challenges.no_challenges', 'No challenges found')}
-            description={t('admin.challenges.no_challenges_description', 'Start by creating a new innovation challenge to attract creative ideas')}
+            title={t('admin.challenges.no_challenges')}
+            description={t('admin.challenges.no_challenges_description')}
             action={{
-              label: t('admin.challenges.create_new', 'Create New Challenge'),
+              label: t('admin.challenges.create_new'),
               onClick: () => {
                 setSelectedChallenge(null);
                 setShowWizard(true);
@@ -218,46 +218,46 @@ export function AdminChallengeManagement() {
             metadata={[
               ...(challenge.start_date ? [{ 
                 icon: <Calendar className="h-4 w-4" />, 
-                label: t('admin.challenges.start_date', 'Start Date'), 
+                label: t('admin.challenges.start_date'), 
                 value: format(new Date(challenge.start_date), 'PPP') 
               }] : []),
               ...(challenge.end_date ? [{ 
                 icon: <Clock className="h-4 w-4" />, 
-                label: t('admin.challenges.end_date', 'End Date'), 
+                label: t('admin.challenges.end_date'), 
                 value: format(new Date(challenge.end_date), 'PPP') 
               }] : []),
               ...(challenge.estimated_budget ? [{ 
                 icon: <DollarSign className="h-4 w-4" />, 
-                label: t('admin.challenges.estimated_budget', 'Estimated Budget'), 
-                value: `${challenge.estimated_budget.toLocaleString()} ${t('admin.challenges.currency', 'SAR')}` 
+                label: t('admin.challenges.estimated_budget'), 
+                value: `${challenge.estimated_budget.toLocaleString()} ${t('admin.challenges.currency')}`
               }] : []),
               { 
                 icon: <Lightbulb className="h-4 w-4" />, 
-                label: t('admin.challenges.sensitivity_level', 'Sensitivity Level'), 
+                label: t('admin.challenges.sensitivity_level'), 
                 value: challenge.sensitivity_level 
               }
             ]}
             actions={[
               {
                 type: 'view',
-                label: t('ui.view', 'View'),
+                label: t('ui.view'),
                 onClick: () => handleView(challenge)
               },
               {
                 type: 'edit',
-                label: t('ui.edit', 'Edit'),
+                label: t('ui.edit'),
                 onClick: () => handleEdit(challenge)
               },
               {
                 type: 'settings',
-                label: t('ui.settings', 'Settings'),
+                label: t('ui.settings'),
                 onClick: () => handleSettings(challenge)
               },
               {
                 type: 'delete',
-                label: t('ui.delete', 'Delete'),
+                label: t('ui.delete'),
                 onClick: () => {
-                  if (confirm(t('admin.challenges.delete_confirm', 'Are you sure you want to delete this challenge?'))) {
+                  if (confirm(t('admin.challenges.delete_confirm'))) {
                     handleDelete(challenge.id);
                   }
                 }

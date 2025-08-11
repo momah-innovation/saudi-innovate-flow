@@ -49,7 +49,7 @@ export function AdminDashboardHero({
         <CardContent>
           <div className="text-2xl font-bold">{totalUsers.toLocaleString()}</div>
           <p className="text-xs text-muted-foreground">
-            {t('active_users_count', `${activeUsers} active users`, { count: activeUsers })}
+            {t('active_users_count', { count: activeUsers })}
           </p>
           <div className="mt-2">
             <Progress value={(activeUsers / totalUsers) * 100} className="h-2" />
@@ -69,7 +69,7 @@ export function AdminDashboardHero({
             <div className="text-xl font-bold">{systemHealth}</div>
           </div>
           <p className="text-xs text-muted-foreground">
-            {t('uptime_this_month', `${uptime}% uptime this month`, { uptime })}
+            {t('uptime_this_month', { uptime })}
           </p>
           <div className="mt-2">
             <Progress value={uptime} className="h-2" />
@@ -86,7 +86,7 @@ export function AdminDashboardHero({
         <CardContent>
           <div className="text-2xl font-bold">{storageUsed} GB</div>
           <p className="text-xs text-muted-foreground">
-            {t('active_policies_count', `${activePolicies} active policies`, { count: activePolicies })}
+            {t('active_policies_count', { count: activePolicies })}
           </p>
           <div className="mt-2">
             <Progress value={25} className="h-2" />
@@ -108,11 +108,11 @@ export function AdminDashboardHero({
               <CheckCircle className="h-5 w-5 icon-success" />
             )}
             <div className="text-xl font-bold">
-              {securityAlerts > 0 ? t('alerts_count', `${securityAlerts} alerts`, { count: securityAlerts }) : t('secure', 'Secure')}
+              {securityAlerts > 0 ? t('alerts_count', { count: securityAlerts }) : t('secure')}
             </div>
           </div>
           <p className="text-xs text-muted-foreground">
-            {t('pending_updates_count', `${pendingUpdates} pending updates`, { count: pendingUpdates })}
+            {t('pending_updates_count', { count: pendingUpdates })}
           </p>
           {securityAlerts > 0 && (
             <Badge variant="destructive" className="mt-2">

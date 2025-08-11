@@ -117,9 +117,9 @@ export function AdminFocusQuestionWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.question_text_ar.trim()) {
-      newErrors.question_text_ar = t('admin.focus_questions.question_text_required', 'Question text is required');
+      newErrors.question_text_ar = t('admin.focus_questions.question_text_required');
     } else if (formData.question_text_ar.length < 10) {
-      newErrors.question_text_ar = t('admin.focus_questions.question_text_min_length', 'Question text must be more than 10 characters');
+      newErrors.question_text_ar = t('admin.focus_questions.question_text_min_length');
     }
     
     setErrors(newErrors);
@@ -130,11 +130,11 @@ export function AdminFocusQuestionWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.question_type) {
-      newErrors.question_type = t('admin.focus_questions.question_type_required', 'Question type is required');
+      newErrors.question_type = t('admin.focus_questions.question_type_required');
     }
     
     if (formData.order_sequence < 0) {
-      newErrors.order_sequence = t('admin.focus_questions.order_sequence_positive', 'Question order must be zero or positive');
+      newErrors.order_sequence = t('admin.focus_questions.order_sequence_positive');
     }
     
     setErrors(newErrors);
@@ -206,7 +206,7 @@ export function AdminFocusQuestionWizard({
   const steps = [
     {
       id: "question-content",
-      title: t('admin.focus_questions.content_step_title', 'Question Content'),
+      title: t('admin.focus_questions.content_step_title'),
       description: t('description.enter_question_details'),
       validation: validateQuestionText,
       content: (
@@ -219,7 +219,7 @@ export function AdminFocusQuestionWizard({
           )}
           
           <div className="space-y-2">
-            <Label htmlFor="question_text_ar">{t('admin.focus_questions.question_text_label', 'Focus Question Text *')}</Label>
+            <Label htmlFor="question_text_ar">{t('admin.focus_questions.question_text_label')}</Label>
             <Textarea
               id="question_text_ar"
               value={formData.question_text_ar}
@@ -238,7 +238,7 @@ export function AdminFocusQuestionWizard({
               <p className="text-sm text-destructive">{errors.question_text_ar}</p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                {t('admin.focus_questions.question_text_help', 'The question should be clear and understandable, not less than 10 characters')}
+                {t('admin.focus_questions.question_text_help')}
               </p>
             )}
           </div>
@@ -264,14 +264,14 @@ export function AdminFocusQuestionWizard({
     },
     {
       id: "question-details",
-      title: t('admin.focus_questions.details_step_title', 'Question Details'),
-      description: t('admin.focus_questions.details_step_description', 'Set question type and order'),
+      title: t('admin.focus_questions.details_step_title'),
+      description: t('admin.focus_questions.details_step_description'),
       validation: validateQuestionDetails,
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="question_type">{t('admin.focus_questions.question_type_label', 'Question Type *')}</Label>
+              <Label htmlFor="question_type">{t('admin.focus_questions.question_type_label')}</Label>
               <Select 
                 value={formData.question_type} 
                 onValueChange={(value) => {
@@ -298,7 +298,7 @@ export function AdminFocusQuestionWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="order_sequence">{t('admin.focus_questions.order_sequence_label', 'Question Order')}</Label>
+              <Label htmlFor="order_sequence">{t('admin.focus_questions.order_sequence_label')}</Label>
               <Input
                 id="order_sequence"
                 type="number"
@@ -323,12 +323,12 @@ export function AdminFocusQuestionWizard({
     },
     {
       id: "question-association",
-      title: t('admin.focus_questions.link_step_title', 'Link Question'),
-      description: t('admin.focus_questions.link_step_description', 'Link question to specific challenge (optional)'),
+      title: t('admin.focus_questions.link_step_title'),
+      description: t('admin.focus_questions.link_step_description'),
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="challenge_id">{t('admin.focus_questions.challenge_link_label', 'Linked Challenge (optional)')}</Label>
+            <Label htmlFor="challenge_id">{t('admin.focus_questions.challenge_link_label')}</Label>
             <Select 
               value={formData.challenge_id} 
               onValueChange={(value) => setFormData({ ...formData, challenge_id: value })}
@@ -337,7 +337,7 @@ export function AdminFocusQuestionWizard({
                 <SelectValue placeholder={t('placeholder.select_challenge')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">{t('admin.focus_questions.no_challenge_link', 'No specific challenge link')}</SelectItem>
+                <SelectItem value="none">{t('admin.focus_questions.no_challenge_link')}</SelectItem>
                 {challenges.map((challenge) => (
                   <SelectItem key={challenge.id} value={challenge.id}>
                     {challenge.title_ar}
@@ -346,7 +346,7 @@ export function AdminFocusQuestionWizard({
               </SelectContent>
             </Select>
             <p className="text-sm text-muted-foreground">
-              {t('admin.focus_questions.link_help', 'You can link the question to a specific challenge or keep it general for all challenges')}
+              {t('admin.focus_questions.link_help')}
             </p>
           </div>
         </div>
@@ -354,8 +354,8 @@ export function AdminFocusQuestionWizard({
     },
     {
       id: "question-settings",
-      title: t('admin.focus_questions.settings_step_title', 'Question Settings'),
-      description: t('admin.focus_questions.settings_step_description', 'Privacy and security settings'),
+      title: t('admin.focus_questions.settings_step_title'),
+      description: t('admin.focus_questions.settings_step_description'),
       content: (
         <div className="space-y-6">
           <div className="flex items-center space-x-2 space-x-reverse">
@@ -384,7 +384,7 @@ export function AdminFocusQuestionWizard({
         setErrors({});
         setIsLoading(false);
       }}
-      title={question ? t('admin.focus_questions.edit_title', 'Edit Focus Question') : t('admin.focus_questions.add_title', 'Add New Focus Question')}
+      title={question ? t('admin.focus_questions.edit_title') : t('admin.focus_questions.add_title')}
       steps={steps}
       onComplete={handleSave}
       showProgress={true}
