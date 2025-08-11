@@ -81,38 +81,54 @@ export function useUnifiedTranslation() {
   // Create optimized translation map
   const translationMap = useMemo(() => {
     const map = new Map<string, { en: string; ar: string }>();
-    logger.debug('Building translation map from database data', { 
-      totalTranslations: dbTranslations.length,
-      firstFew: dbTranslations.slice(0, 3).map(t => ({ key: t.translation_key, en: t.text_en, ar: t.text_ar }))
+    
+    console.log('🔍 DEBUGGING Translation Map Creation:', {
+      totalDbTranslations: dbTranslations.length,
+      firstFew: dbTranslations.slice(0, 5).map(t => ({ 
+        key: t.translation_key, 
+        en: t.text_en?.substring(0, 30), 
+        ar: t.text_ar?.substring(0, 30) 
+      })),
+      language
+    });
+    
+    // Check for specific missing keys in the raw data
+    const missingTestKeys = [
+      'settings.test_component_list.description',
+      'settings.test_component_names.label',
+      'settings.ui_initials_max_length.label',
+      'settings.category.UI & Form'
+    ];
+    
+    console.log('🔍 Checking specific keys in raw data:');
+    missingTestKeys.forEach(key => {
+      const found = dbTranslations.find(t => t.translation_key === key);
+      console.log(`Key: ${key}`, found ? 'FOUND' : 'NOT FOUND', found ? { en: found.text_en, ar: found.text_ar } : null);
     });
     
     dbTranslations.forEach(translation => {
+      if (!translation.translation_key || !translation.text_en || !translation.text_ar) {
+        console.warn('⚠️ Invalid translation record:', translation);
+        return;
+      }
+      
       map.set(translation.translation_key, {
         en: translation.text_en,
         ar: translation.text_ar
       });
     });
     
-    // Debug specific missing keys
-    const missingKeys = ['header.switch_language', 'header.toggle_theme', 'header.open_navigation', 'system_title'];
-    const foundKeys = missingKeys.filter(key => {
-      const found = dbTranslations.find(t => t.translation_key === key);
-      if (found) {
-        console.log(`✅ Found in DB: ${key} = ${found.text_en}`);
-        return true;
-      } else {
-        console.log(`❌ Missing from DB: ${key}`);
-        return false;
-      }
+    console.log('🔍 Final map check:');
+    missingTestKeys.forEach(key => {
+      const found = map.has(key);
+      console.log(`Map contains ${key}:`, found, found ? map.get(key) : null);
     });
     
-    console.log('🔍 Translation Map Debug:', {
+    console.log('🔍 Translation Map Final Stats:', {
       totalDbTranslations: dbTranslations.length,
       mapSize: map.size,
-      foundMissingKeys: foundKeys,
-      hasHeaderKeys: Array.from(map.keys()).filter(k => k.startsWith('header.')),
-      hasSystemTitle: map.has('system_title'),
-      language
+      language,
+      discrepancy: dbTranslations.length - map.size
     });
     
     logger.info('Translation map built successfully', { mapSize: map.size, language });
