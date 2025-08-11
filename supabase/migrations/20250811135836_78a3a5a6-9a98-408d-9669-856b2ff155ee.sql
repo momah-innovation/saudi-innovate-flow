@@ -1,0 +1,35 @@
+-- Add comprehensive set of remaining missing translation keys for 100% coverage
+INSERT INTO public.system_translations (translation_key, text_en, text_ar, category) VALUES
+  -- Notification and system settings
+  ('settings.notification_channels.label', 'Notification Channels', 'قنوات الإشعارات', 'settings'),
+  ('settings.rtl_languages.label', 'RTL Languages', 'اللغات من اليمين إلى اليسار', 'settings'),
+  ('settings.rtl_languages.description', 'Languages that display text from right to left', 'اللغات التي تعرض النص من اليمين إلى اليسار', 'settings'),
+  ('settings.idea_categories.label', 'Idea Categories', 'فئات الأفكار', 'settings'),
+  ('settings.idea_categories.description', 'Categories for organizing and classifying ideas', 'فئات لتنظيم وتصنيف الأفكار', 'settings'),
+  ('settings.backup_frequency_options.label', 'Backup Frequency Options', 'خيارات تكرار النسخ الاحتياطي', 'settings'),
+  ('settings.backup_frequency_options.description', 'Available frequency options for automated backups', 'خيارات التكرار المتاحة للنسخ الاحتياطي التلقائي', 'settings'),
+  ('settings.integration_types.label', 'Integration Types', 'أنواع التكامل', 'settings'),
+  ('settings.integration_types.description', 'Types of integrations available for external systems', 'أنواع التكامل المتاحة للأنظمة الخارجية', 'settings'),
+  ('settings.expert_role_types.label', 'Expert Role Types', 'أنواع أدوار الخبراء', 'settings'),
+  ('settings.expert_role_types.description', 'Different types of roles that experts can have in the system', 'أنواع مختلفة من الأدوار التي يمكن للخبراء الحصول عليها في النظام', 'settings'),
+  ('settings.focus_question_types.label', 'Focus Question Types', 'أنواع أسئلة التركيز', 'settings'),
+  ('settings.focus_question_types.description', 'Types of focus questions used in ideation and challenges', 'أنواع أسئلة التركيز المستخدمة في تطوير الأفكار والتحديات', 'settings'),
+  ('settings.navigation_menu_visibility_roles.label', 'Navigation Menu Visibility Roles', 'أدوار رؤية قائمة التنقل', 'settings'),
+  ('settings.navigation_menu_visibility_roles.description', 'User roles that determine navigation menu visibility', 'أدوار المستخدمين التي تحدد رؤية قائمة التنقل', 'settings'),
+  ('settings.reminder_frequency_options.label', 'Reminder Frequency Options', 'خيارات تكرار التذكيرات', 'settings'),
+  ('settings.reminder_frequency_options.description', 'Available frequency options for system reminders', 'خيارات التكرار المتاحة لتذكيرات النظام', 'settings'),
+  ('settings.notification_challenge_deadlines_enabled.label', 'Challenge Deadline Notifications', 'إشعارات مواعيد التحديات النهائية', 'settings'),
+  ('settings.notification_challenge_deadlines_enabled.description', 'Enable notifications for challenge deadline reminders', 'تفعيل الإشعارات لتذكيرات مواعيد التحديات النهائية', 'settings'),
+  ('settings.notification_email_enabled.label', 'Email Notifications', 'إشعارات البريد الإلكتروني', 'settings'),
+  ('settings.notification_email_enabled.description', 'Enable email notifications for system events', 'تفعيل إشعارات البريد الإلكتروني لأحداث النظام', 'settings'),
+  ('settings.notification_fetch_limit.label', 'Notification Fetch Limit', 'حد جلب الإشعارات', 'settings'),
+  ('settings.notification_fetch_limit.description', 'Maximum number of notifications to fetch at once', 'الحد الأقصى لعدد الإشعارات المراد جلبها في المرة الواحدة', 'settings'),
+  ('settings.notification_role_requests_enabled.label', 'Role Request Notifications', 'إشعارات طلبات الأدوار', 'settings'),
+  ('settings.notification_role_requests_enabled.description', 'Enable notifications for role assignment requests', 'تفعيل الإشعارات لطلبات تعيين الأدوار', 'settings'),
+  ('settings.notification_toast_limit.label', 'Toast Notification Limit', 'حد الإشعارات المنبثقة', 'settings'),
+  ('settings.notification_toast_limit.description', 'Maximum number of toast notifications displayed simultaneously', 'الحد الأقصى لعدد الإشعارات المنبثقة المعروضة في نفس الوقت', 'settings')
+ON CONFLICT (translation_key) DO UPDATE SET
+  text_en = EXCLUDED.text_en,
+  text_ar = EXCLUDED.text_ar,
+  category = EXCLUDED.category,
+  updated_at = NOW();
