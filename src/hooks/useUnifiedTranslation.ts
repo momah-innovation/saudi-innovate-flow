@@ -113,6 +113,18 @@ export function useUnifiedTranslation() {
           const result = interpolateText(text, interpolationOptions);
           return result;
         }
+      } else if (!isLoading && translationMap.size > 0) {
+        // Debug logging for specific missing keys only when not loading and we have data
+        if (key === 'welcome' || key === 'nav.dashboard') {
+          console.log('🔍 Debug: Key not found in translation map', { 
+            key, 
+            language, 
+            mapSize: translationMap.size,
+            hasWelcome: translationMap.has('welcome'),
+            hasNavDashboard: translationMap.has('nav.dashboard'),
+            firstFewKeys: Array.from(translationMap.keys()).slice(0, 10)
+          });
+        }
       }
 
       // Strategy 2: Provided fallback (only warn if not loading)
