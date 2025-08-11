@@ -46,17 +46,17 @@ interface FocusQuestionManagementProps {
   onAddDialogChange: (open: boolean) => void;
 }
 
-const getSensitivityConfig = (t: (key: string, fallback: string) => string) => ({
-  normal: { label: t('sensitivity.normal', 'Normal'), variant: 'secondary' as const },
-  sensitive: { label: t('sensitivity.sensitive', 'Sensitive'), variant: 'destructive' as const }
+const getSensitivityConfig = (t: (key: string) => string) => ({
+  normal: { label: t('sensitivity.normal'), variant: 'secondary' as const },
+  sensitive: { label: t('sensitivity.sensitive'), variant: 'destructive' as const }
 });
 
-const getTypeConfig = (t: (key: string, fallback: string) => string) => ({
-  open_ended: { label: t('question_type.open_ended', 'Open Ended'), variant: 'default' as const },
-  multiple_choice: { label: t('question_type.multiple_choice', 'Multiple Choice'), variant: 'secondary' as const },
-  yes_no: { label: t('question_type.yes_no', 'Yes/No'), variant: 'outline' as const },
-  rating: { label: t('question_type.rating', 'Rating'), variant: 'default' as const },
-  ranking: { label: t('question_type.ranking', 'Ranking'), variant: 'secondary' as const }
+const getTypeConfig = (t: (key: string) => string) => ({
+  open_ended: { label: t('question_type.open_ended'), variant: 'default' as const },
+  multiple_choice: { label: t('question_type.multiple_choice'), variant: 'secondary' as const },
+  yes_no: { label: t('question_type.yes_no'), variant: 'outline' as const },
+  rating: { label: t('question_type.rating'), variant: 'default' as const },
+  ranking: { label: t('question_type.ranking'), variant: 'secondary' as const }
 });
 
 export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: FocusQuestionManagementProps) {
@@ -159,10 +159,10 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
     return (
       <EmptyState
         icon={<HelpCircle className="w-12 h-12 text-muted-foreground" />}
-        title={t('focus_questions.empty_title', 'No Focus Questions')}
-        description={t('focus_questions.empty_description', 'Start by creating a new focus question to guide innovators')}
+        title={t('focus_questions.empty_title')}
+        description={t('focus_questions.empty_description')}
         action={{
-          label: t('focus_questions.create_new', 'Create New Focus Question'),
+          label: t('focus_questions.create_new'),
           onClick: () => {
             setSelectedQuestion(null);
             onAddDialogChange(true);
@@ -204,7 +204,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
               },
               {
                 icon: <Shield className="w-4 h-4" />,
-                label: t('focus_questions.sensitivity', 'الحساسية'),
+                label: t('focus_questions.sensitivity'),
                 value: question.is_sensitive ? sensitivityConfig.sensitive.label : sensitivityConfig.normal.label
               },
               {
@@ -221,17 +221,17 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
             actions={[
               {
                 type: 'view' as const,
-                label: t('button.view', 'View'),
+                label: t('button.view'),
                 onClick: () => handleView(question)
               },
               {
                 type: 'edit' as const,
-                label: t('button.edit', 'Edit'),
+                label: t('button.edit'),
                 onClick: () => handleEdit(question)
               },
               {
                 type: 'delete' as const,
-                label: t('button.delete', 'Delete'),
+                label: t('button.delete'),
                 onClick: () => handleDelete(question)
               }
             ]}
