@@ -138,7 +138,13 @@ export function useUnifiedTranslation() {
         return result;
       }
 
-      // Strategy 3: Return key as last resort
+      // Strategy 3: Return key as last resort - LOG MISSING TRANSLATION
+      console.warn('🔍 MISSING TRANSLATION KEY:', key, {
+        language,
+        mapSize: translationMap.size,
+        fallback,
+        stack: new Error().stack?.split('\n')[2]?.trim()
+      });
       logger.warn('No translation found for key', { key, mapSize: translationMap.size, language });
       return key;
     } catch (error) {
