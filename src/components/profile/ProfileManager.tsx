@@ -280,7 +280,7 @@ export const ProfileManager: React.FC = () => {
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="+966 50 123 4567"
+                    placeholder={t('phone_placeholder', '+966 50 123 4567')}
                   />
                 </div>
                 <div className="space-y-2">
@@ -290,7 +290,7 @@ export const ProfileManager: React.FC = () => {
                     value={formData.department}
                     onChange={(e) => setFormData({...formData, department: e.target.value})}
                     disabled={!isEditing}
-                    placeholder={t('it_department')}
+                     placeholder={t('it_department')}
                   />
                 </div>
               </div>
@@ -324,7 +324,7 @@ export const ProfileManager: React.FC = () => {
                     value={formData.position}
                     onChange={(e) => setFormData({...formData, position: e.target.value})}
                     disabled={!isEditing}
-                    placeholder={t('it_manager')}
+                     placeholder={t('it_manager')}
                   />
                 </div>
                 <div className="space-y-2">
@@ -334,7 +334,7 @@ export const ProfileManager: React.FC = () => {
                     value={formData.department}
                     onChange={(e) => setFormData({...formData, department: e.target.value})}
                     disabled={!isEditing}
-                    placeholder={t('it_department')}
+                     placeholder={t('it_department')}
                   />
                 </div>
               </div>
