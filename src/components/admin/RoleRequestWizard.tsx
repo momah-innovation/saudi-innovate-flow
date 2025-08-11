@@ -114,7 +114,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
       if (pendingError) throw pendingError;
 
       if (pendingRequests && pendingRequests.length > 0) {
-        toast.error(t('toast.pending_request_exists', 'You already have a pending request for this role. Please wait for review.'));
+        toast.error(t('toast.pending_request_exists'));
         return;
       }
 
@@ -177,7 +177,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
 
       if (error) throw error;
 
-      toast.success(t('toast.role_request_success', 'Role request submitted successfully! An administrator will review your request.'));
+      toast.success(t('toast.role_request_success'));
       
       // Reset form
       setSelectedRole("");
@@ -187,7 +187,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
       onRequestSubmitted?.();
     } catch (error) {
       logger.error('Error submitting role request', { component: 'RoleRequestWizard', action: 'handleSubmitRequest' }, error as Error);
-      toast.error(t('roleRequest.submitError', 'Failed to submit role request. Please try again.'));
+      toast.error(t('roleRequest.submitError'));
     } finally {
       setLoading(false);
     }

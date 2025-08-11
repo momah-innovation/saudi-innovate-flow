@@ -197,7 +197,7 @@ export function SectorsManagement() {
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>{editingSector ? t('admin.edit_sector', 'Edit Sector') : t('admin.add_new_sector', 'Add New Sector')}</DialogTitle>
+              <DialogTitle>{editingSector ? t('admin.edit_sector') : t('admin.add_new_sector')}</DialogTitle>
               <DialogDescription>
                 {editingSector ? "Update sector information" : "Create a new sector"}
               </DialogDescription>

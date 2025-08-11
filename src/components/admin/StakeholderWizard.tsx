@@ -51,10 +51,10 @@ export function StakeholderWizard({
     position: "",
     email: "",
     phone: "",
-    stakeholder_type: t('stakeholder.types.government', 'حكومي'),
-    influence_level: t('stakeholder.influence_levels.medium', 'متوسط'),
-    interest_level: t('stakeholder.interest_levels.medium', 'متوسط'),
-    engagement_status: t('stakeholder.engagement_status.neutral', 'محايد'),
+    stakeholder_type: t('stakeholder.types.government'),
+    influence_level: t('stakeholder.influence_levels.medium'),
+    interest_level: t('stakeholder.interest_levels.medium'),
+    engagement_status: t('stakeholder.engagement_status.neutral'),
     notes: "",
   });
 
@@ -66,34 +66,34 @@ export function StakeholderWizard({
   // Predefined options in Arabic
   const stakeholderTypes = partnerTypeOptions.map(type => ({ 
     value: type, 
-    label: type === 'government' ? t('stakeholder.types.government', 'حكومي') :
-           type === 'private' ? t('stakeholder.types.private', 'قطاع خاص') :
-           type === 'academic' ? t('stakeholder.types.academic', 'أكاديمي') :
-           type === 'non_profit' ? t('stakeholder.types.non_profit', 'منظمة غير ربحية') :
-           type === 'international' ? t('stakeholder.types.international', 'دولي') : type
+    label: type === 'government' ? t('stakeholder.types.government') :
+           type === 'private' ? t('stakeholder.types.private') :
+           type === 'academic' ? t('stakeholder.types.academic') :
+           type === 'non_profit' ? t('stakeholder.types.non_profit') :
+           type === 'international' ? t('stakeholder.types.international') : type
   }));
 
   const { stakeholderInfluenceLevels, stakeholderInterestLevels } = useSystemLists();
   
   const influenceLevels = stakeholderInfluenceLevels.map(level => ({ 
     value: level, 
-    label: level === 'high' ? t('stakeholder.levels.high', 'عالي') :
-           level === 'medium' ? t('stakeholder.levels.medium', 'متوسط') :
-           level === 'low' ? t('stakeholder.levels.low', 'منخفض') : level
+    label: level === 'high' ? t('stakeholder.levels.high') :
+           level === 'medium' ? t('stakeholder.levels.medium') :
+           level === 'low' ? t('stakeholder.levels.low') : level
   }));
 
   const interestLevels = stakeholderInterestLevels.map(level => ({ 
     value: level, 
-    label: level === 'high' ? t('stakeholder.levels.high', 'عالي') :
-           level === 'medium' ? t('stakeholder.levels.medium', 'متوسط') :
-           level === 'low' ? t('stakeholder.levels.low', 'منخفض') : level
+    label: level === 'high' ? t('stakeholder.levels.high') :
+           level === 'medium' ? t('stakeholder.levels.medium') :
+           level === 'low' ? t('stakeholder.levels.low') : level
   }));
 
   const engagementStatuses = generalStatusOptions.map(status => ({ 
     value: status, 
-    label: status === 'active' ? t('status.active', 'نشط') :
-           status === 'inactive' ? t('status.inactive', 'غير نشط') :
-           status === 'pending' ? t('status.pending', 'معلق') : status
+    label: status === 'active' ? t('status.active') :
+           status === 'inactive' ? t('status.inactive') :
+           status === 'pending' ? t('status.pending') : status
   }));
 
   useEffect(() => {
@@ -106,10 +106,10 @@ export function StakeholderWizard({
         position: stakeholder.position || "",
         email: stakeholder.email || "",
         phone: stakeholder.phone || "",
-        stakeholder_type: stakeholder.stakeholder_type || t('stakeholder.types.government', 'حكومي'),
-        influence_level: stakeholder.influence_level || t('stakeholder.influence_levels.medium', 'متوسط'),
-        interest_level: stakeholder.interest_level || t('stakeholder.interest_levels.medium', 'متوسط'),
-        engagement_status: stakeholder.engagement_status || t('stakeholder.engagement_status.neutral', 'محايد'),
+        stakeholder_type: stakeholder.stakeholder_type || t('stakeholder.types.government'),
+        influence_level: stakeholder.influence_level || t('stakeholder.influence_levels.medium'),
+        interest_level: stakeholder.interest_level || t('stakeholder.interest_levels.medium'),
+        engagement_status: stakeholder.engagement_status || t('stakeholder.engagement_status.neutral'),
         notes: stakeholder.notes || "",
       });
     } else {
@@ -121,10 +121,10 @@ export function StakeholderWizard({
         position: "",
         email: "",
         phone: "",
-        stakeholder_type: t('stakeholder.types.government', 'حكومي'),
-        influence_level: t('stakeholder.influence_levels.medium', 'متوسط'),
-        interest_level: t('stakeholder.interest_levels.medium', 'متوسط'),
-        engagement_status: t('stakeholder.engagement_status.neutral', 'محايد'),
+        stakeholder_type: t('stakeholder.types.government'),
+        influence_level: t('stakeholder.influence_levels.medium'),
+        interest_level: t('stakeholder.interest_levels.medium'),
+        engagement_status: t('stakeholder.engagement_status.neutral'),
         notes: "",
       });
     }
@@ -216,8 +216,8 @@ export function StakeholderWizard({
     } catch (error) {
       logger.error('Error saving stakeholder', { component: 'StakeholderWizard', action: 'handleSubmit' }, error as Error);
       toast({
-        title: t('stakeholder_wizard.error', 'Error'),
-        description: t('stakeholder_wizard.save_failed', 'Failed to save stakeholder'),
+        title: t('stakeholder_wizard.error'),
+        description: t('stakeholder_wizard.save_failed'),
         variant: "destructive",
       });
       return false;
