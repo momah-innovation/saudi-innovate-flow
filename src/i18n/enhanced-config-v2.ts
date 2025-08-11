@@ -64,14 +64,33 @@ const EnhancedDatabaseBackend = {
     try {
       logger.info(`Loading ${language} translations from database`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language });
       
-      const { data: translations, error } = await supabase
-        .from('system_translations')
-        .select('translation_key, text_en, text_ar');
+      // Fetch ALL translations with pagination to handle large datasets
+      let allTranslations: any[] = [];
+      let hasMore = true;
+      let start = 0;
+      const batchSize = 1000;
+      
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from('system_translations')
+          .select('translation_key, text_en, text_ar')
+          .range(start, start + batchSize - 1);
 
-      if (error) {
-        logger.error(`Database error for ${language}`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language }, error as Error);
-        throw error;
+        if (error) {
+          logger.error(`Database error for ${language}`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language }, error as Error);
+          throw error;
+        }
+        
+        if (data) {
+          allTranslations.push(...data);
+          start += batchSize;
+          hasMore = data.length === batchSize;
+        } else {
+          hasMore = false;
+        }
       }
+      
+      const translations = allTranslations;
 
       // Process translations into nested structure
       const processedTranslations: any = {};
