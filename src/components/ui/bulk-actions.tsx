@@ -4,6 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronRight, Users } from "lucide-react";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useDirection } from "@/components/ui/direction-provider";
+import { cn } from "@/lib/utils";
 
 interface BulkAction {
   id: string;
@@ -32,6 +34,7 @@ export function BulkActions({
 }: BulkActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useUnifiedTranslation();
+  const { isRTL } = useDirection();
   
   const isAllSelected = selectedItems.length === totalItems && totalItems > 0;
   const isIndeterminate = selectedItems.length > 0 && selectedItems.length < totalItems;
@@ -41,8 +44,14 @@ export function BulkActions({
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className={className}>
       <CollapsibleTrigger asChild>
-        <Button variant="outline" className="w-full justify-between">
-          <span className="flex items-center gap-2">
+        <Button variant="outline" className={cn(
+          "w-full justify-between touch-manipulation min-h-[44px]",
+          isRTL ? "flex-row-reverse" : "flex-row"
+        )}>
+          <span className={cn(
+            "flex items-center gap-2",
+            isRTL ? "flex-row-reverse" : "flex-row"
+          )}>
             <Users className="w-4 h-4" />
             {t('bulkActions')}
             {selectedItems.length > 0 && (
@@ -54,20 +63,32 @@ export function BulkActions({
           {isOpen ? (
             <ChevronDown className="w-4 h-4" />
           ) : (
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className={cn(
+              "w-4 h-4",
+              isRTL && "transform scale-x-[-1]"
+            )} />
           )}
         </Button>
       </CollapsibleTrigger>
       
       <CollapsibleContent className="space-y-4 pt-4">
-        <div className="flex items-center space-x-2">
+        <div className={cn(
+          "flex items-center gap-2",
+          isRTL ? "flex-row-reverse space-x-reverse" : "flex-row space-x-2"
+        )}>
           <Checkbox
             id="select-all"
             checked={isAllSelected}
             onCheckedChange={(checked) => onSelectAll(checked as boolean)}
-            className={isIndeterminate ? "data-[state=checked]:bg-primary" : ""}
+            className={cn(
+              "touch-manipulation min-h-[44px] min-w-[44px] sm:min-h-[20px] sm:min-w-[20px]",
+              isIndeterminate ? "data-[state=checked]:bg-primary" : ""
+            )}
           />
-          <label htmlFor="select-all" className="text-sm font-medium">
+          <label htmlFor="select-all" className={cn(
+            "text-sm font-medium cursor-pointer",
+            isRTL ? "text-right" : "text-left"
+          )}>
             {t('selectAllItems', { count: totalItems })}
           </label>
         </div>
@@ -80,7 +101,10 @@ export function BulkActions({
                 variant={action.variant || "outline"}
                 size="sm"
                 onClick={() => action.onClick(selectedItems)}
-                className="gap-2"
+                className={cn(
+                  "gap-2 touch-manipulation min-h-[44px]",
+                  isRTL ? "flex-row-reverse" : "flex-row"
+                )}
               >
                 {action.icon}
                 {action.label}

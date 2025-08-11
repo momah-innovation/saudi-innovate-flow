@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Edit, Eye, Trash2, Copy, Download, Share } from "lucide-react";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useDirection } from "@/components/ui/direction-provider";
+import { cn } from "@/lib/utils";
 
 export interface ActionItem {
   id: string;
@@ -20,8 +22,10 @@ interface ActionMenuProps {
 }
 
 export function ActionMenu({ actions, trigger, size = 'sm' }: ActionMenuProps) {
+  const { isRTL } = useDirection();
+  
   const defaultTrigger = (
-    <Button variant="ghost" size={size} className="h-8 w-8 p-0">
+    <Button variant="ghost" size={size} className="h-8 w-8 p-0 touch-manipulation min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px]">
       <MoreHorizontal className="h-4 w-4" />
     </Button>
   );
@@ -31,15 +35,22 @@ export function ActionMenu({ actions, trigger, size = 'sm' }: ActionMenuProps) {
       <DropdownMenuTrigger asChild>
         {trigger || defaultTrigger}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent 
+        align={isRTL ? "start" : "end"} 
+        className="w-48 z-50 bg-popover/95 backdrop-blur-sm border shadow-lg"
+      >
         {actions.map((action, index) => (
           <div key={action.id}>
             {action.separator && index > 0 && <DropdownMenuSeparator />}
             <DropdownMenuItem
               onClick={action.onClick}
-              className={action.variant === 'destructive' ? 'text-destructive focus:text-destructive' : ''}
+              className={cn(
+                "cursor-pointer touch-manipulation min-h-[44px] sm:min-h-[36px]",
+                isRTL ? "flex-row-reverse" : "flex-row",
+                action.variant === 'destructive' ? 'text-destructive focus:text-destructive' : ''
+              )}
             >
-              {action.icon && <span className="mr-2">{action.icon}</span>}
+              {action.icon && <span className={cn(isRTL ? "ml-2" : "mr-2")}>{action.icon}</span>}
               {action.label}
             </DropdownMenuItem>
           </div>

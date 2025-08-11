@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
+import { useDirection } from '@/components/ui/direction-provider';
 
 interface FileUploadFieldProps {
   value?: string[];
@@ -40,6 +41,7 @@ export function FileUploadField({
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const { toast } = useToast();
+  const { isRTL } = useDirection();
 
   const getFileIcon = (type: string) => {
     if (type.startsWith('image/')) return Image;
@@ -164,7 +166,8 @@ export function FileUploadField({
       {/* Upload Area */}
       <Card
         className={cn(
-          'border-2 border-dashed p-6 text-center transition-colors cursor-pointer',
+          'border-2 border-dashed p-4 sm:p-6 text-center transition-colors cursor-pointer touch-manipulation',
+          'min-h-[120px] sm:min-h-[140px] flex flex-col justify-center',
           dragActive && 'border-primary bg-primary/5',
           uploading && 'pointer-events-none opacity-50'
         )}
@@ -186,9 +189,15 @@ export function FileUploadField({
           input.click();
         }}
       >
-        <Upload className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
-        <p className="text-sm text-muted-foreground mb-2">{placeholder}</p>
-        <p className="text-xs text-muted-foreground">
+        <Upload className="mx-auto h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground mb-2" />
+        <p className={cn(
+          "text-sm text-muted-foreground mb-2 px-2",
+          isRTL ? "text-right" : "text-left"
+        )}>{placeholder}</p>
+        <p className={cn(
+          "text-xs text-muted-foreground px-2",
+          isRTL ? "text-right" : "text-left"
+        )}>
           الحد الأقصى: {maxFiles} ملفات، {maxFileSize} ميجابايت لكل ملف
         </p>
         {uploading && (
@@ -201,16 +210,25 @@ export function FileUploadField({
       {/* Uploaded Files List */}
       {value.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-sm font-medium">الملفات المرفوعة ({value.length})</h4>
+          <h4 className={cn(
+            "text-sm font-medium",
+            isRTL ? "text-right" : "text-left"
+          )}>الملفات المرفوعة ({value.length})</h4>
           <div className="grid gap-2">
             {value.map((fileUrl, index) => {
               const filename = fileUrl.split('/').pop() || 'ملف';
               const IconComponent = getFileIcon('');
               
               return (
-                <Card key={index} className="p-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                <Card key={index} className="p-2 sm:p-3">
+                  <div className={cn(
+                    "flex items-center justify-between gap-2",
+                    isRTL ? "flex-row-reverse" : "flex-row"
+                  )}>
+                    <div className={cn(
+                      "flex items-center gap-2 flex-1 min-w-0",
+                      isRTL ? "flex-row-reverse" : "flex-row"
+                    )}>
                       <IconComponent className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                       <span className="text-sm truncate">{filename}</span>
                       <Badge variant="secondary" className="text-xs">
@@ -221,7 +239,7 @@ export function FileUploadField({
                       variant="ghost"
                       size="sm"
                       onClick={() => removeFile(index)}
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 touch-manipulation min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px]"
                     >
                       <X className="h-4 w-4" />
                     </Button>
