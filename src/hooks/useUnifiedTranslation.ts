@@ -80,6 +80,12 @@ export function useUnifiedTranslation() {
     refetchOnMount: true, // Enable refetch on mount for debugging
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+    onSuccess: (data) => {
+      console.log('🎯 TRANSLATIONS LOADED:', { count: data?.length || 0, language });
+    },
+    onError: (error) => {
+      console.error('❌ TRANSLATION LOAD ERROR:', error);
+    }
   });
 
   // Create optimized translation map
@@ -105,6 +111,7 @@ export function useUnifiedTranslation() {
    * Old: t(key, options) - for backward compatibility during migration
    */
   const t = (key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
+    console.log('🔍 TRANSLATION REQUEST:', { key, language, mapSize: translationMap.size, isLoading });
     try {
       let fallback: string | undefined;
       let interpolationOptions: Record<string, any> | undefined;
@@ -126,6 +133,7 @@ export function useUnifiedTranslation() {
         const text = dbTranslation[language];
         if (text && text.trim() !== '') {
           const result = interpolateText(text, interpolationOptions);
+          console.log('✅ DB TRANSLATION FOUND:', { key, text: text.slice(0, 50) });
           logger.debug('Database translation found', { key, result: result.slice(0, 50) });
           return result;
         }
@@ -134,17 +142,19 @@ export function useUnifiedTranslation() {
       // Strategy 2: Provided fallback
       if (fallback && fallback.trim() !== '') {
         const result = interpolateText(fallback, interpolationOptions);
+        console.log('⚠️ USING FALLBACK:', { key, fallback: result.slice(0, 50) });
         logger.debug('Using fallback translation', { key, fallback: result.slice(0, 50) });
         return result;
       }
 
       // Strategy 3: Return key as last resort - LOG MISSING TRANSLATION
-      console.warn('🔍 MISSING TRANSLATION KEY:', key, {
+      console.error('❌ MISSING TRANSLATION KEY:', key, {
         language,
         mapSize: translationMap.size,
         fallback,
         stack: new Error().stack?.split('\n')[2]?.trim(),
-        callerFunction: new Error().stack?.split('\n')[3]?.trim()
+        callerFunction: new Error().stack?.split('\n')[3]?.trim(),
+        allKeys: Array.from(translationMap.keys()).slice(0, 10)
       });
       logger.warn('No translation found for key', { 
         key, 
