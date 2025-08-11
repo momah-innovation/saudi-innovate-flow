@@ -5,6 +5,8 @@ import { queryKeys } from '@/lib/query/query-keys';
 import { useMemo } from 'react';
 import { logger } from '@/utils/logger';
 
+console.log('🚀 useUnifiedTranslation module loaded');
+
 interface SystemTranslation {
   id: string;
   translation_key: string;
@@ -18,6 +20,7 @@ interface SystemTranslation {
  * Combines i18next with database translations for optimal performance and fallbacks
  */
 export function useUnifiedTranslation() {
+  console.log('🔥 useUnifiedTranslation hook called');
   const { t: i18nextT, i18n } = useI18nextTranslation();
   const queryClient = useQueryClient();
   
@@ -79,13 +82,7 @@ export function useUnifiedTranslation() {
     refetchOnWindowFocus: true, // Enable refetch on focus for debugging
     refetchOnMount: true, // Enable refetch on mount for debugging
     retry: 3,
-    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
-    onSuccess: (data) => {
-      console.log('🎯 TRANSLATIONS LOADED:', { count: data?.length || 0, language });
-    },
-    onError: (error) => {
-      console.error('❌ TRANSLATION LOAD ERROR:', error);
-    }
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
   });
 
   // Create optimized translation map
