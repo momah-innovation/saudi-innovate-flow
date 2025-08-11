@@ -9,6 +9,7 @@ import { AlertTriangle, Globe, Settings, Trash2, Save, Edit, Check, X } from "lu
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
+import { cn } from "@/lib/utils";
 import { ArrayEditor } from "./ArrayEditor";
 import { ObjectEditor } from "./ObjectEditor";
 

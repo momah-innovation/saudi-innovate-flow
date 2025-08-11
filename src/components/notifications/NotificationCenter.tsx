@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -35,6 +36,7 @@ export function NotificationCenter() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { notificationFetchLimit } = useSystemSettings();
+  const { t, isRTL } = useUnifiedTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -233,23 +235,42 @@ export function NotificationCenter() {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="sm" className="relative text-primary-foreground hover:bg-background/10">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="relative h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-accent hover:text-accent-foreground touch-manipulation"
+        >
           <Bell className="h-4 w-4" />
           {unreadCount > 0 && (
-            <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-warning text-warning-foreground animate-pulse">
+            <Badge className={cn(
+              "absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 p-0 text-xs bg-warning text-warning-foreground animate-pulse",
+              "min-w-[16px] sm:min-w-[20px] flex items-center justify-center"
+            )}>
               {unreadCount > 99 ? '99+' : unreadCount}
             </Badge>
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px]">
+      <SheetContent 
+        side={isRTL ? "left" : "right"}
+        className={cn(
+          "w-[90vw] sm:w-[400px] lg:w-[540px] max-w-[90vw]",
+          isRTL && "text-right"
+        )}
+      >
         <SheetHeader>
-          <SheetTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Bell className="w-5 h-5" />
-              Notifications
+          <SheetTitle className={cn(
+            "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3",
+            isRTL && "sm:flex-row-reverse text-right"
+          )}>
+            <div className={cn(
+              "flex items-center gap-2",
+              isRTL && "flex-row-reverse"
+            )}>
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="text-sm sm:text-base">{t('notifications.title', 'Notifications')}</span>
               {unreadCount > 0 && (
-                <Badge variant="secondary">{unreadCount}</Badge>
+                <Badge variant="secondary" className="text-xs">{unreadCount}</Badge>
               )}
             </div>
             {notifications.length > 0 && (
@@ -258,39 +279,52 @@ export function NotificationCenter() {
                 size="sm"
                 onClick={markAllAsRead}
                 disabled={unreadCount === 0}
+                className="h-8 text-xs sm:h-9 sm:text-sm"
               >
-                Mark all read
+                {t('notifications.mark_all_read', 'Mark all read')}
               </Button>
             )}
           </SheetTitle>
         </SheetHeader>
 
-        <div className="mt-6">
+        <div className="mt-4 sm:mt-6">
           {loading ? (
             <div className="flex items-center justify-center py-8">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
             </div>
           ) : notifications.length === 0 ? (
-            <div className="text-center py-8">
-              <Bell className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-              <p className="text-muted-foreground">No notifications yet</p>
+            <div className={cn(
+              "text-center py-8 px-4",
+              isRTL && "text-right"
+            )}>
+              <Bell className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-muted-foreground mb-4" />
+              <p className="text-sm sm:text-base text-muted-foreground">
+                {t('notifications.empty', 'No notifications yet')}
+              </p>
             </div>
           ) : (
-            <ScrollArea className="h-[calc(100vh-8rem)]">
-              <div className="space-y-2">
+            <ScrollArea className="h-[calc(100vh-10rem)] sm:h-[calc(100vh-8rem)]">
+              <div className="space-y-2 px-1">
                 {notifications.map((notification) => (
                   <Card 
                     key={notification.id}
-                    className={`transition-all duration-200 hover:shadow-md cursor-pointer border-l-4 ${getNotificationColor(notification.type)} ${
-                      notification.is_read ? 'bg-muted/30' : 'bg-primary/5 border-primary/20'
-                    }`}
+                    className={cn(
+                      "transition-all duration-200 hover:shadow-md cursor-pointer border-l-4",
+                      getNotificationColor(notification.type),
+                      notification.is_read ? 'bg-muted/30' : 'bg-primary/5 border-primary/20',
+                      "touch-manipulation"
+                    )}
                     onClick={() => handleNotificationClick(notification)}
                   >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-lg flex-shrink-0 ${
+                    <CardContent className="p-3 sm:p-4">
+                      <div className={cn(
+                        "flex items-start gap-2 sm:gap-3",
+                        isRTL && "flex-row-reverse"
+                      )}>
+                        <div className={cn(
+                          "p-1.5 sm:p-2 rounded-lg flex-shrink-0",
                           notification.is_read ? "bg-muted" : "bg-primary/10"
-                        }`}>
+                        )}>
                           {getNotificationIcon(notification.type)}
                         </div>
                         

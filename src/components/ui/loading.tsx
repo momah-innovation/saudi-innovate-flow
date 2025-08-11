@@ -30,7 +30,7 @@ export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) 
 // Loading Dots
 export function LoadingDots({ className }: { className?: string }) {
   return (
-    <div className={cn("flex space-x-1", className)}>
+    <div className={cn("flex space-x-1 justify-center", className)}>
       {[0, 1, 2].map((i) => (
         <div
           key={i}
@@ -194,12 +194,12 @@ export function LoadingOverlay({ message, className }: LoadingOverlayProps) {
   
   return (
     <div className={cn(
-      "fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center",
+      "fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4",
       className
     )}>
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-4 max-w-sm">
         <LoadingSpinner size="lg" />
-        <p className="text-muted-foreground">{defaultMessage}</p>
+        <p className="text-sm sm:text-base text-muted-foreground">{defaultMessage}</p>
       </div>
     </div>
   );
@@ -235,10 +235,13 @@ export function LoadingState({
   };
 
   return (
-    <div className={cn("flex flex-col items-center justify-center p-8 space-y-4", className)}>
+    <div className={cn(
+      "flex flex-col items-center justify-center p-4 sm:p-8 space-y-3 sm:space-y-4", 
+      className
+    )}>
       {renderLoader()}
       {message && (
-        <p className="text-muted-foreground text-sm text-center">{message}</p>
+        <p className="text-muted-foreground text-xs sm:text-sm text-center max-w-sm">{message}</p>
       )}
     </div>
   );

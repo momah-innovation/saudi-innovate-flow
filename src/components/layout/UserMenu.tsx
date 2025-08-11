@@ -54,13 +54,16 @@ export function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-          <Avatar className="h-9 w-9">
+        <Button 
+          variant="ghost" 
+          className="relative h-8 w-8 sm:h-9 sm:w-9 rounded-full touch-manipulation hover:bg-accent hover:text-accent-foreground"
+        >
+          <Avatar className="h-8 w-8 sm:h-9 sm:w-9">
             <AvatarImage 
               src={userProfile?.profile_image_url} 
               alt={getUserDisplayName()} 
             />
-            <AvatarFallback className="bg-primary text-primary-foreground font-medium text-sm">
+            <AvatarFallback className="bg-primary text-primary-foreground font-medium text-xs sm:text-sm">
               {getInitialsWithSettings(getUserDisplayName())}
             </AvatarFallback>
           </Avatar>
@@ -68,19 +71,21 @@ export function UserMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align={isRTL ? 'start' : 'end'} 
-        className="w-64"
+        className="w-56 sm:w-64"
+        side="bottom"
+        sideOffset={4}
       >
         {/* User Info Header */}
         <div className={cn(
-          "flex items-center gap-3 p-3 border-b",
+          "flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-b",
           isRTL && "flex-row-reverse"
         )}>
-          <Avatar className="h-10 w-10">
+          <Avatar className="h-8 w-8 sm:h-10 sm:w-10 shrink-0">
             <AvatarImage 
               src={userProfile?.profile_image_url} 
               alt={getUserDisplayName()} 
             />
-            <AvatarFallback className="bg-primary text-primary-foreground font-medium">
+            <AvatarFallback className="bg-primary text-primary-foreground font-medium text-xs sm:text-sm">
               {getInitialsWithSettings(getUserDisplayName())}
             </AvatarFallback>
           </Avatar>
@@ -88,21 +93,21 @@ export function UserMenu() {
             "flex-1 min-w-0",
             isRTL && "text-right"
           )}>
-            <p className="font-medium text-sm truncate">{getUserDisplayName()}</p>
+            <p className="font-medium text-xs sm:text-sm truncate">{getUserDisplayName()}</p>
             <p className="text-xs text-muted-foreground truncate">{userProfile?.email}</p>
           </div>
         </div>
 
         {/* Roles */}
         {getUserRoles().length > 0 && (
-          <div className="p-3 border-b">
-            <p className="text-xs font-medium text-muted-foreground mb-2">
+          <div className="p-2 sm:p-3 border-b">
+            <p className="text-xs font-medium text-muted-foreground mb-1 sm:mb-2">
               {getText('Active Roles', 'الأدوار النشطة')}
             </p>
             <div className="flex flex-wrap gap-1">
               {getUserRoles().map((role: string) => (
                 <Badge key={role} variant="secondary" className="text-xs">
-                  <Shield className="w-3 h-3 mr-1" />
+                  <Shield className={cn("w-3 h-3", isRTL ? "ml-1" : "mr-1")} />
                   {role.replace('_', ' ')}
                 </Badge>
               ))}
@@ -112,13 +117,19 @@ export function UserMenu() {
 
         {/* Menu Items */}
         <div className="py-1">
-          <DropdownMenuItem onClick={handleProfileClick} className="cursor-pointer">
+          <DropdownMenuItem 
+            onClick={handleProfileClick} 
+            className="cursor-pointer min-h-[44px] px-2 sm:px-3"
+          >
             <User className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
-            <span>{getText('View Profile', 'عرض الملف الشخصي')}</span>
+            <span className="text-sm">{getText('View Profile', 'عرض الملف الشخصي')}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleSettingsClick} className="cursor-pointer">
+          <DropdownMenuItem 
+            onClick={handleSettingsClick} 
+            className="cursor-pointer min-h-[44px] px-2 sm:px-3"
+          >
             <Settings className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
-            <span>{getText('Settings', 'الإعدادات')}</span>
+            <span className="text-sm">{getText('Settings', 'الإعدادات')}</span>
           </DropdownMenuItem>
         </div>
 
@@ -128,10 +139,10 @@ export function UserMenu() {
         <div className="py-1">
           <DropdownMenuItem 
             onClick={signOut} 
-            className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+            className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10 min-h-[44px] px-2 sm:px-3"
           >
             <LogOut className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
-            <span>{getText('Sign out', 'تسجيل الخروج')}</span>
+            <span className="text-sm">{getText('Sign out', 'تسجيل الخروج')}</span>
           </DropdownMenuItem>
         </div>
       </DropdownMenuContent>
