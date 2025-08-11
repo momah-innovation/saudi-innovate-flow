@@ -1,0 +1,41 @@
+-- Add new translation keys for ChallengeFilters and InnovatorDashboard components
+INSERT INTO system_translations (translation_key, text_en, text_ar, category) VALUES
+
+-- ChallengeFilters translations
+('challenge_filters.sort', 'Sort', 'ترتيب', 'challenge'),
+('challenge_filters.ascending', 'Ascending', 'تصاعدي', 'challenge'),
+('challenge_filters.descending', 'Descending', 'تنازلي', 'challenge'),
+('challenge_filters.filters_active', 'active filters', 'فلاتر نشطة', 'challenge'),
+('challenge_filters.filters_active_ar', 'فلتر نشط', 'فلتر نشط', 'challenge'),
+('challenge_filters.clear_all', 'Clear all', 'مسح الكل', 'challenge'),
+('challenge_filters.clear_all_ar', 'مسح الكل', 'مسح الكل', 'challenge'),
+
+-- InnovatorDashboard translations
+('innovator_dashboard.error_loading_challenges', 'Error Loading Challenges', 'خطأ في تحميل التحديات', 'dashboard'),
+('innovator_dashboard.error_loading_description', 'Could not load available challenges. Please try again.', 'لا يمكن تحميل التحديات المتاحة. يرجى المحاولة مرة أخرى.', 'dashboard'),
+('innovator_dashboard.untitled_challenge', 'Untitled Challenge', 'تحدي بدون عنوان', 'dashboard'),
+('innovator_dashboard.no_description', 'No description available', 'لا يوجد وصف متاح', 'dashboard'),
+('innovator_dashboard.not_specified', 'Not specified', 'غير محدد', 'dashboard'),
+('innovator_dashboard.title', 'Innovation Challenges', 'تحديات الابتكار', 'dashboard'),
+('innovator_dashboard.description', 'Discover and participate in innovation challenges to drive government transformation', 'اكتشف وشارك في تحديات الابتكار لدفع التحول الحكومي', 'dashboard'),
+('innovator_dashboard.filter_challenges', 'Filter Challenges', 'فلترة التحديات', 'dashboard'),
+('innovator_dashboard.search', 'Search', 'بحث', 'dashboard'),
+('innovator_dashboard.search_placeholder', 'Search challenges...', 'البحث في التحديات...', 'dashboard'),
+('innovator_dashboard.status', 'Status', 'الحالة', 'dashboard'),
+('innovator_dashboard.all_status', 'All Status', 'جميع الحالات', 'dashboard'),
+('innovator_dashboard.priority', 'Priority', 'الأولوية', 'dashboard'),
+('innovator_dashboard.all_priorities', 'All Priorities', 'جميع الأولويات', 'dashboard'),
+('innovator_dashboard.type', 'Type', 'النوع', 'dashboard'),
+('innovator_dashboard.all_types', 'All Types', 'جميع الأنواع', 'dashboard'),
+('innovator_dashboard.available_challenges', 'Available Challenges', 'التحديات المتاحة', 'dashboard'),
+('innovator_dashboard.active_opportunities', 'Active innovation opportunities', 'فرص الابتكار النشطة', 'dashboard'),
+('innovator_dashboard.high_priority', 'High Priority', 'أولوية عالية', 'dashboard'),
+('innovator_dashboard.urgent_challenges', 'Urgent challenges', 'التحديات العاجلة', 'dashboard'),
+('innovator_dashboard.total_budget', 'Total Budget', 'إجمالي الميزانية', 'dashboard'),
+('innovator_dashboard.available_funding', 'Available funding', 'التمويل المتاح', 'dashboard'),
+('innovator_dashboard.deadline', 'Deadline', 'الموعد النهائي', 'dashboard'),
+('innovator_dashboard.budget', 'Budget', 'الميزانية', 'dashboard'),
+('innovator_dashboard.view_details', 'View Details', 'عرض التفاصيل', 'dashboard'),
+('innovator_dashboard.submit_idea', 'Submit Idea', 'تقديم فكرة', 'dashboard'),
+('innovator_dashboard.no_challenges_found', 'No challenges found', 'لم يتم العثور على تحديات', 'dashboard'),
+('innovator_dashboard.no_challenges_description', 'Try adjusting your filters or check back later for new opportunities.', 'جرب تعديل المرشحات أو تحقق لاحقاً من الفرص الجديدة.', 'dashboard');
