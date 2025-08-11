@@ -24,10 +24,16 @@ export function useUnifiedTranslation() {
   // Normalize language code (en-US -> en, ar-SA -> ar)
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
+  
+  console.log('🌐 Translation Hook - Current Language:', { 
+    rawLanguage: i18n.language, 
+    normalizedLanguage: language, 
+    isRTL 
+  });
 
-  // Fetch database translations with React Query
+  // Fetch database translations with React Query - shared across all languages
   const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
-    queryKey: ['system-translations', language],
+    queryKey: ['system-translations'], // Remove language dependency
     queryFn: async () => {
       console.log('🔄 Fetching translations from database...');
       
