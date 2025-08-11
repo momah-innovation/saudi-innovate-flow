@@ -479,6 +479,8 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
 const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => {
   const { component: Component, ...routeProps } = config;
 
+  console.log('🔀 Route rendering:', { path: config.path, isPublic: config.public });
+
   // Public routes render directly
   if (config.public) {
     return <Component />;

@@ -5,6 +5,7 @@ import { Loader2 } from 'lucide-react';
 import { logger } from '@/utils/logger';
 
 const AuthPage = () => {
+  console.log('📝 AuthPage component rendered');
   const { user, loading, userProfile } = useAuth();
 
   logger.debug('AuthPage Debug', {
