@@ -10,7 +10,7 @@ const Slider = React.forwardRef<
   <SliderPrimitive.Root
     ref={ref}
     className={cn(
-      "relative flex w-full touch-none select-none items-center",
+      "relative flex w-full touch-none select-none items-center touch-manipulation min-h-[44px] sm:min-h-[24px]",
       className
     )}
     {...props}
@@ -19,8 +19,8 @@ const Slider = React.forwardRef<
       <SliderPrimitive.Range className="absolute h-full bg-gradient-to-r from-accent to-innovation" />
     </SliderPrimitive.Track>
     {/* Always render two thumbs for dual range support */}
-    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 border-accent bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-110" />
-    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 border-accent bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-110" />
+    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 border-accent bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-110 touch-manipulation min-h-[44px] min-w-[44px] sm:min-h-[20px] sm:min-w-[20px]" />
+    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 border-accent bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-110 touch-manipulation min-h-[44px] min-w-[44px] sm:min-h-[20px] sm:min-w-[20px]" />
   </SliderPrimitive.Root>
 ))
 Slider.displayName = SliderPrimitive.Root.displayName
