@@ -11,7 +11,7 @@ export default function ProfileManagementPage() {
       <PageLayout
         title={t('profile_management')}
         description={t('profile_management_description')}
-        className="space-y-6"
+        className="space-y-4 sm:space-y-6"
       >
         <ProfileManager />
       </PageLayout>

@@ -182,17 +182,17 @@ export const CollaborationLandingPage: React.FC = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-muted/30 rounded-lg p-8 text-center space-y-4">
-          <h3 className="text-2xl font-bold text-foreground">ابدأ التعاون الآن</h3>
+        <div className="bg-muted/30 rounded-lg p-6 sm:p-8 text-center space-y-4">
+          <h3 className="text-xl sm:text-2xl font-bold text-foreground">ابدأ التعاون الآن</h3>
           <p className="text-muted-foreground">انضم إلى مساحات التعاون أو أنشئ مساحة جديدة لفريقك</p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" asChild>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
+            <Button size="lg" asChild className="w-full sm:w-auto">
               <Link to="/dashboard">الذهاب إلى لوحة التحكم</Link>
             </Button>
-            <Button variant="outline" size="lg" asChild>
+            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
               <Link to="/help">دليل الاستخدام</Link>
             </Button>
-            <Button variant="outline" size="lg" asChild>
+            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
               <Link to="/workspace/user">مساحة العمل الشخصية</Link>
             </Button>
           </div>
