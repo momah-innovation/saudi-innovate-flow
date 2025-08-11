@@ -163,7 +163,7 @@ export default function UserManagement() {
       isRTL && "flex-row-reverse"
     )}>
       <Select>
-        <SelectTrigger className="w-20 sm:w-32">
+        <SelectTrigger className="w-20 sm:w-32 h-8 sm:h-9">
           <SelectValue placeholder="Export" />
         </SelectTrigger>
         <SelectContent>
@@ -172,7 +172,7 @@ export default function UserManagement() {
           <SelectItem value="csv">CSV</SelectItem>
         </SelectContent>
       </Select>
-      <Button variant="outline" className="gap-1 sm:gap-2 h-8 sm:h-auto px-2 sm:px-3">
+      <Button variant="outline" className="gap-1 sm:gap-2 h-8 sm:h-9 px-2 sm:px-3">
         <Users className="w-3 h-3 sm:w-4 sm:h-4" />
         <span className="hidden sm:inline">{bulkActionsLabel}</span>
       </Button>
@@ -304,19 +304,31 @@ export default function UserManagement() {
       {/* Users Table */}
       <Card>
         <CardHeader>
-          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <CardTitle>{t("users")}</CardTitle>
-            <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div className="relative">
-                <Search className={`absolute top-2.5 h-4 w-4 text-muted-foreground ${isRTL ? 'right-2' : 'left-2'}`} />
+          <div className={cn(
+            "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3",
+            isRTL && "sm:flex-row-reverse"
+          )}>
+            <CardTitle className="text-lg sm:text-xl">{t("users")}</CardTitle>
+            <div className={cn(
+              "flex items-center gap-2 w-full sm:w-auto",
+              isRTL && "flex-row-reverse"
+            )}>
+              <div className="relative flex-1 sm:flex-initial">
+                <Search className={cn(
+                  "absolute top-2.5 h-4 w-4 text-muted-foreground",
+                  isRTL ? "right-2" : "left-2"
+                )} />
                 <Input
                   placeholder={searchPlaceholder}
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  className={`w-[300px] ${isRTL ? 'pr-8 pl-3' : 'pl-8 pr-3'}`}
+                  className={cn(
+                    "w-full sm:w-[300px] h-9",
+                    isRTL ? "pr-8 pl-3 text-right" : "pl-8 pr-3"
+                  )}
                 />
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="h-9 w-9 p-0 shrink-0">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </div>
@@ -335,7 +347,7 @@ export default function UserManagement() {
   );
 
   return (
-    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-none">
       <AdminBreadcrumb />
       <PageLayout
         title={title}

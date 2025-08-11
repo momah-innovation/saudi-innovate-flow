@@ -113,8 +113,15 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
     const isArrayExpanded = expandedArrays.has(setting.setting_key);
 
     return (
-      <div key={setting.id} className={`space-y-3 p-4 border rounded-lg transition-colors ${hasChanges ? 'border-amber-200 bg-amber-50/50' : ''} ${isRTL ? 'text-right' : 'text-left'}`}>
-        <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div key={setting.id} className={cn(
+        "space-y-3 p-3 sm:p-4 border rounded-lg transition-colors",
+        hasChanges ? 'border-amber-200 bg-amber-50/50' : '',
+        isRTL && 'text-right'
+      )}>
+        <div className={cn(
+          "flex flex-col sm:flex-row items-start justify-between gap-3",
+          isRTL && "sm:flex-row-reverse"
+        )}>
           <div className="flex-1">
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Label className="font-medium">{label}</Label>
@@ -151,7 +158,10 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
             )}
           </div>
           
-          <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={cn(
+            "flex items-center gap-1 sm:gap-2 flex-wrap",
+            isRTL && "flex-row-reverse"
+          )}>
             {hasChanges && (
               <>
                 <Button
@@ -310,7 +320,10 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
   };
 
   return (
-    <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+    <div className={cn(
+      "space-y-4 sm:space-y-6 p-4 sm:p-0",
+      isRTL && 'text-right'
+    )}>
       {Object.entries(groupedSettings).map(([categoryName, categorySettings]) => (
         <Card key={categoryName}>
           <CardHeader>
