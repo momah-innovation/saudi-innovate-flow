@@ -257,7 +257,7 @@ export function AdminChallengeManagement() {
                 type: 'delete',
                 label: t('ui.delete', 'Delete'),
                 onClick: () => {
-                  if (confirm(t('admin.challenges.delete_confirm', 'Are you sure you want to delete "{title}"?', { title: challenge.title_ar }))) {
+                  if (confirm(t('admin.challenges.delete_confirm', 'Are you sure you want to delete this challenge?'))) {
                     handleDelete(challenge.id);
                   }
                 }

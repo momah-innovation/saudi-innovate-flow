@@ -222,16 +222,16 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       case 'basic':
         if (!formData.title_ar.trim()) {
           toast({
-            title: t('dialog.validation_error'),
-            description: t('placeholder.enter_title'),
+             title: t('admin.challenges.validation_error', 'Validation Error'),
+             description: t('admin.challenges.enter_title', 'Please enter a challenge title'),
             variant: 'destructive'
           });
           return false;
         }
         if (!formData.description_ar.trim()) {
           toast({
-            title: t('dialog.validation_error'),
-            description: t('placeholder.enter_description'),
+             title: t('admin.challenges.validation_error', 'Validation Error'),
+             description: t('admin.challenges.enter_description', 'Please enter a challenge description'),
             variant: 'destructive'
           });
           return false;
@@ -269,8 +269,8 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
         if (error) throw error;
 
         toast({
-          title: t('dialog.update_success'),
-          description: t('dialog.update_success')
+           title: t('admin.challenges.update_success', 'Challenge Updated'),
+           description: t('admin.challenges.update_success_desc', 'Challenge has been updated successfully')
         });
       } else {
         // Create new challenge
@@ -306,21 +306,21 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           await supabase.from('challenge_partners').insert(partnerLinks);
         }
 
-        toast({
-          title: t('dialog.create_success'),
-          description: t('dialog.create_success')
-        });
+         toast({
+           title: t('admin.challenges.create_success', 'Challenge Created'),
+           description: t('admin.challenges.create_success_desc', 'Challenge has been created successfully')
+         });
       }
 
       onSuccess();
       onClose();
     } catch (error) {
       // Failed to save challenge
-      toast({
-        title: t('dialog.save_failed'),
-        description: t('dialog.try_again'),
-        variant: 'destructive'
-      });
+       toast({
+         title: t('admin.challenges.save_failed', 'Save Failed'),
+         description: t('admin.challenges.try_again', 'Please try again'),
+         variant: 'destructive'
+       });
     } finally {
       setLoading(false);
     }
@@ -815,7 +815,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
     <MultiStepForm
       isOpen={isOpen}
       onClose={onClose}
-      title={challenge ? t('dialog.update_success') : t('dialog.create_success')}
+      title={challenge ? t('admin.challenges.edit_challenge', 'Edit Challenge') : t('admin.challenges.create_challenge', 'Create Challenge')}
       steps={steps}
       onComplete={handleComplete}
       showProgress={true}

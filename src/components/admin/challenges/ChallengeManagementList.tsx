@@ -91,24 +91,24 @@ export function ChallengeManagementList() {
   const fetchChallenges = async () => {
     try {
       setLoading(true);
-      console.log('🔍 ChallengeManagementList: Starting fetchChallenges');
+      // Starting challenge fetch
       
       const { data, error } = await supabase
         .from('challenges')
         .select('*')
         .order('created_at', { ascending: false });
       
-      console.log('🔍 ChallengeManagementList: Query result:', { data, error, count: data?.length });
+      // Query completed
       
       if (error) {
-        console.error('🔴 ChallengeManagementList: Database error:', error);
+        // Database error logged
         throw error;
       }
       
-      console.log('✅ ChallengeManagementList: Successfully fetched challenges:', data?.length || 0);
+      // Successfully fetched challenges
       setChallenges(data || []);
     } catch (error) {
-      console.error('🔴 ChallengeManagementList: fetchChallenges failed:', error);
+      // Error occurred during fetch
       logger.error('Error fetching challenges', { component: 'ChallengeManagementList', action: 'fetchChallenges' }, error as Error);
       toast({
         title: t('challenge_management.load_error_title'),
@@ -117,7 +117,7 @@ export function ChallengeManagementList() {
       });
     } finally {
       setLoading(false);
-      console.log('🔍 ChallengeManagementList: fetchChallenges completed');
+      // fetchChallenges completed
     }
   };
 
@@ -152,7 +152,7 @@ export function ChallengeManagementList() {
 
   const handleView = (challenge: Challenge) => {
     // Navigate to full page view instead of dialog
-    console.log('🔍 Navigating to challenge detail:', `/admin/challenges/${challenge.id}`);
+    // Navigate to challenge detail page
     window.location.href = `/admin/challenges/${challenge.id}`;
   };
 
@@ -249,7 +249,7 @@ export function ChallengeManagementList() {
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <Input
-              placeholder="البحث في التحديات..."
+              placeholder={t('admin.challenges.search_placeholder', 'Search challenges...')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full"
@@ -267,13 +267,13 @@ export function ChallengeManagementList() {
                     {getStatusLabel(status as any)}
                   </SelectItem>
                 ))}
-                <SelectItem value="on_hold">معلق</SelectItem>
+                <SelectItem value="on_hold">{t('status.on_hold', 'On Hold')}</SelectItem>
               </SelectContent>
             </Select>
             
             <Select value={priorityFilter} onValueChange={setPriorityFilter}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder="الأولوية" />
+                <SelectValue placeholder={t('admin.challenges.priority_placeholder', 'Priority')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('common.all_priorities', 'كل الأولويات')}</SelectItem>
@@ -369,19 +369,19 @@ export function ChallengeManagementList() {
                 actions={[
                   {
                     type: 'view',
-                    label: 'عرض تفصيلي',
+                    label: t('ui.view_details', 'View Details'),
                     onClick: () => handleView(challenge)
                   },
                   {
                     type: 'edit',
-                    label: 'تعديل',
+                    label: t('ui.edit', 'Edit'),
                     onClick: () => handleEdit(challenge)
                   },
                   {
                     type: 'delete',
-                    label: 'حذف',
+                    label: t('ui.delete', 'Delete'),
                     onClick: () => {
-                      if (confirm(`هل أنت متأكد من حذف "${challenge.title_ar}"؟`)) {
+                      if (confirm(t('admin.challenges.delete_confirm', 'Are you sure you want to delete this challenge?'))) {
                         handleDelete(challenge.id);
                       }
                     }
