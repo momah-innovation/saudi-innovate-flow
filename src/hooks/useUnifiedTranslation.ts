@@ -33,7 +33,7 @@ export function useUnifiedTranslation() {
 
   // Fetch database translations with React Query - shared across all languages
   const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
-    queryKey: ['system-translations'], // Remove language dependency
+    queryKey: ['system-translations', Date.now()], // Force refresh with timestamp
     queryFn: async () => {
       console.log('🔄 Fetching translations from database...');
       
