@@ -46,7 +46,20 @@ export default function LandingPage() {
     };
   }, []);
 
-  const { language, setLanguage, isRTL } = useDirection();
+  // Safely get direction context (fallback to 'ar' if not available)
+  let direction;
+  try {
+    direction = useDirection();
+  } catch (error) {
+    // Fallback for when DirectionProvider is not available
+    console.warn('DirectionProvider not available, using fallback values');
+    direction = { 
+      language: 'ar' as const, 
+      setLanguage: () => {}, 
+      isRTL: true 
+    };
+  }
+  const { language, setLanguage, isRTL } = direction;
   const { faqs, statistics, loading: dataLoading, getText, getProcessSteps } = useLandingPageData(language);
 
   const features = [
