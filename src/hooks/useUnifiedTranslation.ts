@@ -25,11 +25,11 @@ export function useUnifiedTranslation() {
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
 
-  // Fetch database translations with React Query - Force fresh data with timestamp
+  // Fetch database translations with React Query
   const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
-    queryKey: ['system-translations-v2', language, Date.now()], // Force fresh data
+    queryKey: ['system-translations', language],
     queryFn: async () => {
-      logger.debug('Fetching unified translations from database with pagination', { language });
+      console.log('🔄 Fetching translations from database...');
       
       try {
         let allTranslations: SystemTranslation[] = [];
@@ -38,6 +38,8 @@ export function useUnifiedTranslation() {
         let hasMore = true;
 
         while (hasMore) {
+          console.log(`📥 Fetching batch starting from ${from}...`);
+          
           const { data, error } = await supabase
             .from('system_translations')
             .select('*')
@@ -45,37 +47,35 @@ export function useUnifiedTranslation() {
             .range(from, from + batchSize - 1);
 
           if (error) {
-            logger.error('Database translation fetch failed', { language }, error);
+            console.error('❌ Database translation fetch failed:', error);
             throw error;
           }
+
+          console.log(`📦 Received ${data?.length || 0} translations in this batch`);
 
           if (data && data.length > 0) {
             allTranslations = [...allTranslations, ...data];
             from += batchSize;
             hasMore = data.length === batchSize;
-            
-            logger.debug('Fetched batch', { language });
           } else {
             hasMore = false;
           }
         }
         
-        logger.info('All database translations fetched successfully', { language });
-        console.log(`🎉 Pagination complete: Fetched ${allTranslations.length} total translations`);
+        console.log(`✅ Pagination complete: Fetched ${allTranslations.length} total translations`);
         
         return allTranslations as SystemTranslation[];
       } catch (error) {
-        logger.error('Failed to fetch translations', { language }, error as Error);
+        console.error('❌ Failed to fetch translations:', error);
         throw error;
       }
     },
-    staleTime: 0, // Always consider data stale - force fresh fetch
-    gcTime: 0, // Don't cache
-    refetchOnWindowFocus: true, // Refetch on window focus
-    refetchOnMount: true, // Always refetch on mount
-    refetchInterval: false, // Disable automatic refetching
-    retry: 2, // Reduce retry attempts
-    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000)
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    retry: 3,
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
   });
 
   // Create optimized translation map
