@@ -32,11 +32,12 @@ export function useUnifiedTranslation() {
       logger.debug('Fetching unified translations from database', { language });
       
       try {
-        // Fetch all translations in a single query - let Supabase handle the optimization
+        // Fetch ALL translations - override default 1000 row limit
         const { data, error } = await supabase
           .from('system_translations')
           .select('*')
-          .order('translation_key');
+          .order('translation_key')
+          .limit(10000); // Set high limit to get all translations
 
         if (error) {
           logger.error('Database translation fetch failed', { language }, error);
