@@ -11,6 +11,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface AdminEventsHeroProps {
   totalEvents: number;
@@ -30,40 +31,41 @@ export const AdminEventsHero = ({
   completedEvents
 }: AdminEventsHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const metrics = [
     {
-      title: isRTL ? 'إجمالي الفعاليات' : 'Total Events',
+      title: t('events.metrics.total', 'Total Events'),
       value: totalEvents,
       icon: Calendar,
-      trend: isRTL ? '+12% من الشهر الماضي' : '+12% from last month',
+      trend: t('events.metrics.trend_month', '+12% from last month'),
       color: 'bg-blue-500',
       bgColor: 'bg-blue-50 dark:bg-blue-900/20',
       textColor: 'text-blue-600 dark:text-blue-400'
     },
     {
-      title: isRTL ? 'الفعاليات النشطة' : 'Active Events',
+      title: t('events.metrics.active', 'Active Events'),
       value: activeEvents,
       icon: TrendingUp,
-      trend: isRTL ? `${activeEvents} جارية الآن` : `${activeEvents} ongoing now`,
+      trend: t('events.metrics.ongoing_now', '{{count}} ongoing now', { count: activeEvents }),
       color: 'bg-green-500',
       bgColor: 'bg-green-50 dark:bg-green-900/20',
       textColor: 'text-green-600 dark:text-green-400'
     },
     {
-      title: isRTL ? 'إجمالي المشاركين' : 'Total Participants',
+      title: t('events.metrics.participants', 'Total Participants'),
       value: totalParticipants.toLocaleString(),
       icon: Users,
-      trend: isRTL ? '+8% معدل التسجيل' : '+8% registration rate',
+      trend: t('events.metrics.registration_rate', '+8% registration rate'),
       color: 'bg-innovation',
       bgColor: 'bg-innovation/10 dark:bg-innovation/20',
       textColor: 'text-innovation'
     },
     {
-      title: isRTL ? 'الإيرادات' : 'Revenue',
-      value: `${totalRevenue.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}`,
+      title: t('events.metrics.revenue', 'Revenue'),
+      value: `${totalRevenue.toLocaleString()} ${t('common.currency.sar', 'SAR')}`,
       icon: DollarSign,
-      trend: isRTL ? '+15% من الشهر الماضي' : '+15% from last month',
+      trend: t('events.metrics.revenue_growth', '+15% from last month'),
       color: 'bg-success',
       bgColor: 'bg-success/10 dark:bg-success/20',
       textColor: 'text-success'
@@ -72,25 +74,25 @@ export const AdminEventsHero = ({
 
   const quickStats = [
     {
-      label: isRTL ? 'القادمة' : 'Upcoming',
+      label: t('events.status.upcoming', 'Upcoming'),
       value: upcomingEvents,
       icon: Clock,
       color: 'icon-warning'
     },
     {
-      label: isRTL ? 'مكتملة' : 'Completed',
+      label: t('events.status.completed', 'Completed'),
       value: completedEvents,
       icon: CheckCircle2,
       color: 'icon-success'
     },
     {
-      label: isRTL ? 'المواقع' : 'Venues',
+      label: t('events.venues', 'Venues'),
       value: 8,
       icon: MapPin,
       color: 'icon-info'
     },
     {
-      label: isRTL ? 'تحتاج انتباه' : 'Need Attention',
+      label: t('events.need_attention', 'Need Attention'),
       value: 3,
       icon: AlertCircle,
       color: 'icon-error'
@@ -133,7 +135,7 @@ export const AdminEventsHero = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
-            {isRTL ? 'إحصائيات سريعة' : 'Quick Stats'}
+            {t('events.quick_stats', 'Quick Stats')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -155,21 +157,21 @@ export const AdminEventsHero = ({
       {/* Event Status Distribution */}
       <Card>
         <CardHeader>
-          <CardTitle>{isRTL ? 'توزيع حالة الفعاليات' : 'Event Status Distribution'}</CardTitle>
+          <CardTitle>{t('events.status_distribution', 'Event Status Distribution')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-3">
             <Badge variant="default" className="badge-success">
-              {isRTL ? 'مجدولة' : 'Scheduled'} ({upcomingEvents})
+              {t('events.status.scheduled', 'Scheduled')} ({upcomingEvents})
             </Badge>
             <Badge variant="secondary" className="badge-info">
-              {isRTL ? 'جارية' : 'Ongoing'} ({activeEvents})
+              {t('events.status.ongoing', 'Ongoing')} ({activeEvents})
             </Badge>
             <Badge variant="outline" className="bg-muted text-muted-foreground border-muted">
-              {isRTL ? 'مكتملة' : 'Completed'} ({completedEvents})
+              {t('events.status.completed', 'Completed')} ({completedEvents})
             </Badge>
             <Badge variant="destructive" className="badge-error">
-              {isRTL ? 'ملغية' : 'Cancelled'} (0)
+              {t('events.status.cancelled', 'Cancelled')} (0)
             </Badge>
           </div>
         </CardContent>
