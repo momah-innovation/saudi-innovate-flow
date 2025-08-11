@@ -49,14 +49,14 @@
 | Challenges.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | ChallengeActivityHub.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | ChallengeIdeaSubmission.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
-| IdeaSubmissionWizard.tsx | ⏳ | ⏳ | ⏳ | Multi-step idea form |
-| IdeaDrafts.tsx | ⏳ | ⏳ | ⏳ | Draft ideas |
+| IdeaSubmissionWizard.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| IdeaDrafts.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 
 ### 📅 **Events & Opportunities**
 | Page | RTL/LTR | Mobile | Status | Notes |
 |------|---------|--------|--------|-------|
 | EventRegistration.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
-| Opportunities.tsx | ⏳ | ⏳ | ⏳ | Opportunities listing |
+| Opportunities.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | EvaluationsPage.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 
 ### 👥 **Profile & Management**
@@ -73,11 +73,11 @@
 | SystemSettings.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | UserManagement.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | ChallengesManagement.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
-| EventsManagement.tsx | ⏳ | ⏳ | ⏳ | Event administration |
-| EntitiesManagement.tsx | ⏳ | ⏳ | ⏳ | Entity administration |
+| EventsManagement.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| EntitiesManagement.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | OrganizationalStructure.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
-| SecurityMonitor.tsx | ⏳ | ⏳ | ⏳ | Security monitoring |
-| StorageManagement.tsx | ⏳ | ⏳ | ⏳ | File storage admin |
+| SecurityMonitor.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| StorageManagement.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | SystemAnalytics.tsx | ⏳ | ⏳ | ⏳ | Analytics dashboard |
 
 ### 🤝 **Collaboration Pages**

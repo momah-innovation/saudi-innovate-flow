@@ -82,7 +82,7 @@ export default function SecurityMonitor() {
         </div>
 
         {/* Security Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {securityMetrics.map((metric, index) => {
             const Icon = metric.icon;
             return (
