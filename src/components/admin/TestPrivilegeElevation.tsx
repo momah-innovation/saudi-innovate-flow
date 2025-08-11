@@ -59,12 +59,12 @@ export function TestPrivilegeElevation() {
           className="w-full"
         >
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Call Elevate Privileges Function
+          {t('admin.callElevateFunction', 'Call Elevate Privileges Function')}
         </Button>
         
         {result && (
           <div className="mt-4 p-4 border rounded-lg bg-muted">
-            <h4 className="font-semibold mb-2">Function Result:</h4>
+            <h4 className="font-semibold mb-2">{t('admin.functionResult', 'Function Result:')}</h4>
             <pre className="text-sm overflow-auto">
               {JSON.stringify(result, null, 2)}
             </pre>

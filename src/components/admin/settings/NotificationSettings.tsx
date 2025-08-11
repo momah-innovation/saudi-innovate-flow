@@ -59,7 +59,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
       {/* Notification Types */}
       <Card>
         <CardHeader>
-          <CardTitle>{isRTL ? 'أنواع الإشعارات' : 'Notification Types'}</CardTitle>
+          <CardTitle>{t('admin.notifications.types', 'Notification Types')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -79,7 +79,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
           
           <div className="mt-4">
             <p className="text-sm text-muted-foreground mb-2">
-              {isRTL ? 'الأنواع المفعلة:' : 'Enabled Types:'}
+              {t('admin.notifications.enabledTypes', 'Enabled Types:')}
             </p>
             <div className="flex flex-wrap gap-2">
               {selectedTypes.map((type) => (
@@ -95,12 +95,12 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
       {/* General Settings */}
       <Card>
         <CardHeader>
-          <CardTitle>{isRTL ? 'الإعدادات العامة' : 'General Settings'}</CardTitle>
+          <CardTitle>{t('admin.notifications.generalSettings', 'General Settings')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <Label htmlFor="email-notifications">
-              {isRTL ? 'إشعارات البريد الإلكتروني' : 'Email Notifications'}
+              {t('admin.notifications.emailNotifications', 'Email Notifications')}
             </Label>
             <Switch
               id="email-notifications"
@@ -111,7 +111,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
 
           <div className="flex items-center justify-between">
             <Label htmlFor="sms-notifications">
-              {isRTL ? 'إشعارات الرسائل النصية' : 'SMS Notifications'}
+              {t('admin.notifications.smsNotifications', 'SMS Notifications')}
             </Label>
             <Switch
               id="sms-notifications"
@@ -122,7 +122,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
 
           <div className="flex items-center justify-between">
             <Label htmlFor="push-notifications">
-              {isRTL ? 'الإشعارات الفورية' : 'Push Notifications'}
+              {t('admin.notifications.pushNotifications', 'Push Notifications')}
             </Label>
             <Switch
               id="push-notifications"
@@ -133,14 +133,14 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
 
           <div>
             <Label htmlFor="digest-frequency">
-              {isRTL ? 'تكرار ملخص الإشعارات' : 'Digest Frequency'}
+              {t('admin.notifications.digestFrequency', 'Digest Frequency')}
             </Label>
             <Select
               value={getStringSetting('digestFrequency', 'daily')}
               onValueChange={(value) => onSettingChange('digestFrequency', value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder={isRTL ? 'اختر التكرار' : 'Select frequency'} />
+                <SelectValue placeholder={t('admin.notifications.selectFrequency', 'Select frequency')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="daily">{isRTL ? 'يومياً' : 'Daily'}</SelectItem>

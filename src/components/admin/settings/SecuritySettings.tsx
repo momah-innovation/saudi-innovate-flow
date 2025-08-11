@@ -29,7 +29,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
       setNewSecurityRole("");
       toast({
         title: t('success'),
-        description: "تم إضافة دور الأمان بنجاح"
+        description: t('admin.security.roleAddedSuccess', 'Security role added successfully')
       });
     }
   };
@@ -39,7 +39,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
     onSettingChange('security_roles', updatedRoles);
     toast({
       title: t('success'),
-      description: "تم حذف دور الأمان بنجاح"
+      description: t('admin.security.roleRemovedSuccess', 'Security role removed successfully')
     });
   };
 
@@ -48,14 +48,14 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
       <Card>
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
           <CardTitle>{t('systemLists.securityRoles')}</CardTitle>
-          <CardDescription>إدارة أدوار الأمان والحماية</CardDescription>
+          <CardDescription>{t('admin.security.manageRolesDesc', 'Manage security and protection roles')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Input
               value={newSecurityRole}
               onChange={(e) => setNewSecurityRole(e.target.value)}
-              placeholder="أضف دور أمان جديد"
+              placeholder={t('admin.security.addRolePlaceholder', 'Add new security role')}
               className={isRTL ? 'text-right' : 'text-left'}
             />
             <Button onClick={addSecurityRole} size="sm">

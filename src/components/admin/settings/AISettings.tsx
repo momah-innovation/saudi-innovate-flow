@@ -71,10 +71,10 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
           <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Bot className="w-5 h-5" />
-            {isRTL ? 'ميزات الذكاء الاصطناعي' : 'AI Features'}
+            {t('admin.ai.aiFeatures', 'AI Features')}
           </CardTitle>
           <CardDescription>
-            {isRTL ? 'إدارة ميزات الذكاء الاصطناعي المتاحة في النظام' : 'Manage AI features available in the system'}
+            {t('admin.ai.manageFeaturesDesc', 'Manage AI features available in the system')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -82,7 +82,7 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
             <Input
               value={newFeature}
               onChange={(e) => setNewFeature(e.target.value)}
-              placeholder={isRTL ? "أضف ميزة ذكاء اصطناعي جديدة" : "Add new AI feature"}
+              placeholder={t('admin.ai.addFeaturePlaceholder', 'Add new AI feature')}
               className={isRTL ? 'text-right' : 'text-left'}
             />
             <Button onClick={addAIFeature} size="sm">
@@ -110,9 +110,9 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
 
       <Card>
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
-          <CardTitle>{isRTL ? 'نماذج الذكاء الاصطناعي' : 'AI Models'}</CardTitle>
+          <CardTitle>{t('admin.ai.aiModels', 'AI Models')}</CardTitle>
           <CardDescription>
-            {isRTL ? 'إدارة نماذج الذكاء الاصطناعي المتاحة' : 'Manage available AI models'}
+            {t('admin.ai.manageModelsDesc', 'Manage available AI models')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -120,7 +120,7 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
             <Input
               value={newModel}
               onChange={(e) => setNewModel(e.target.value)}
-              placeholder={isRTL ? "أضف نموذج ذكاء اصطناعي جديد" : "Add new AI model"}
+              placeholder={t('admin.ai.addModelPlaceholder', 'Add new AI model')}
               className={isRTL ? 'text-right' : 'text-left'}
             />
             <Button onClick={addAIModel} size="sm">
