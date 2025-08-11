@@ -25,54 +25,34 @@ export function useUnifiedTranslation() {
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
 
-  // Fetch database translations with React Query
+  // Fetch database translations with React Query - Optimized for large datasets
   const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
     queryKey: queryKeys.system.translation(language),
     queryFn: async () => {
       logger.debug('Fetching unified translations from database', { language });
       
-      // Multiple attempts to fetch ALL translations
-      let allTranslations: any[] = [];
-      let hasMore = true;
-      let start = 0;
-      const batchSize = 1000;
-      
-      while (hasMore) {
-        const { data, error, count } = await supabase
+      try {
+        // Fetch all translations in a single query - let Supabase handle the optimization
+        const { data, error } = await supabase
           .from('system_translations')
-          .select('*', { count: 'exact' })
-          .range(start, start + batchSize - 1);
+          .select('*')
+          .order('translation_key');
 
         if (error) {
           logger.error('Database translation fetch failed', { language }, error);
           throw error;
         }
         
-        if (data) {
-          allTranslations.push(...data);
-          start += batchSize;
-          hasMore = data.length === batchSize;
-        } else {
-          hasMore = false;
-        }
-        
-        logger.debug('Translation batch loaded', { 
-          batch: Math.floor(start/batchSize), 
-          batchSize: data?.length || 0, 
-          totalSoFar: allTranslations.length 
+        logger.info('Database translations fetched successfully', { 
+          language, 
+          count: data?.length || 0
         });
+        
+        return data as SystemTranslation[];
+      } catch (error) {
+        logger.error('Failed to fetch translations', { language }, error as Error);
+        throw error;
       }
-      
-      logger.info('All translations loaded successfully', { 
-        totalLoaded: allTranslations.length,
-        language
-      });
-      
-      logger.info('Database translations fetched successfully', { 
-        language, 
-        count: allTranslations.length
-      });
-      return allTranslations as SystemTranslation[];
     },
     staleTime: 1 * 60 * 1000, // 1 minute - reduced for debugging
     gcTime: 5 * 60 * 1000, // 5 minutes - reduced for debugging
