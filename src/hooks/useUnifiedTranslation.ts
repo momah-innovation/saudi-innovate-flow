@@ -100,6 +100,11 @@ export function useUnifiedTranslation() {
         fallback = undefined;
       }
 
+      // If still loading and we have a fallback, use it without warnings
+      if (isLoading && translationMap.size === 0 && fallback) {
+        return interpolateText(fallback, interpolationOptions);
+      }
+
       // Strategy 1: Database translation (highest priority)
       const dbTranslation = translationMap.get(key);
       if (dbTranslation) {
@@ -110,15 +115,19 @@ export function useUnifiedTranslation() {
         }
       }
 
-      // Strategy 2: Provided fallback
+      // Strategy 2: Provided fallback (only warn if not loading)
       if (fallback && fallback.trim() !== '') {
         const result = interpolateText(fallback, interpolationOptions);
-        console.warn('⚠️ MISSING KEY - USING FALLBACK:', { key, fallback: result.slice(0, 50) });
+        if (!isLoading) {
+          console.warn('⚠️ MISSING KEY - USING FALLBACK:', { key, fallback: result.slice(0, 50) });
+        }
         return result;
       }
 
-      // Strategy 3: Return key as last resort - LOG MISSING TRANSLATION
-      console.error('❌ MISSING TRANSLATION KEY:', { key, language, mapSize: translationMap.size });
+      // Strategy 3: Return key as last resort - LOG MISSING TRANSLATION (only if not loading)
+      if (!isLoading) {
+        console.error('❌ MISSING TRANSLATION KEY:', { key, language, mapSize: translationMap.size });
+      }
       return key;
     } catch (error) {
       logger.warn('Translation error occurred', { key, language }, error as Error);
