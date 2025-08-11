@@ -6,6 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Link } from "react-router-dom";
 import { Home } from "lucide-react";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from "@/components/ui/direction-provider";
@@ -72,9 +73,11 @@ export const BreadcrumbNav = ({ activeTab }: BreadcrumbNavProps) => {
     <Breadcrumb className={direction === 'rtl' ? 'flex-row-reverse' : ''}>
       <BreadcrumbList className={direction === 'rtl' ? 'flex-row-reverse' : ''}>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className={`flex items-center gap-2 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-            <Home className="h-4 w-4" />
-            {t("platformName")}
+          <BreadcrumbLink asChild>
+            <Link to="/" className={`flex items-center gap-2 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+              <Home className="h-4 w-4" />
+              {t("platformName")}
+            </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         
