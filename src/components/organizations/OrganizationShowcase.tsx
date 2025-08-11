@@ -50,6 +50,7 @@ interface Sector {
 }
 
 export function OrganizationShowcase() {
+  const { t } = useUnifiedTranslation();
   const [teams, setTeams] = useState<Team[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [sectors, setSectors] = useState<Sector[]>([]);
@@ -98,7 +99,7 @@ export function OrganizationShowcase() {
         component: 'OrganizationShowcase', 
         action: 'loadData' 
       }, error as Error);
-      toast.error('Error loading organization data');
+      toast.error(t('organization_showcase.error_loading_data'));
     } finally {
       setLoading(false);
     }
@@ -129,7 +130,7 @@ export function OrganizationShowcase() {
   const handleViewDetails = (type: string, id: string) => {
     // This would navigate to detailed profile pages
     // Navigate to detailed profile pages
-    toast.info(`Opening ${type} profile page - Feature coming soon!`);
+    toast.info(t('organization_showcase.profile_coming_soon', `Opening ${type} profile page - Feature coming soon!`));
   };
 
   if (loading) {
@@ -144,31 +145,31 @@ export function OrganizationShowcase() {
     switch (activeTab) {
       case 'teams':
         return [
-          { value: 'all', label: 'All Status' },
-          { value: 'active', label: 'Active' },
-          { value: 'inactive', label: 'Inactive' },
-          { value: 'forming', label: 'Forming' }
+          { value: 'all', label: t('organization_showcase.all_status') },
+          { value: 'active', label: t('organization_showcase.active') },
+          { value: 'inactive', label: t('organization_showcase.inactive') },
+          { value: 'forming', label: t('organization_showcase.forming') }
         ];
       case 'partners':
         return [
-          { value: 'all', label: 'All Types' },
-          { value: 'corporate', label: 'Corporate' },
-          { value: 'academic', label: 'Academic' },
-          { value: 'government', label: 'Government' },
-          { value: 'technology', label: 'Technology' },
-          { value: 'media', label: 'Media' }
+          { value: 'all', label: t('organization_showcase.all_types') },
+          { value: 'corporate', label: t('organization_showcase.corporate') },
+          { value: 'academic', label: t('organization_showcase.academic') },
+          { value: 'government', label: t('organization_showcase.government') },
+          { value: 'technology', label: t('organization_showcase.technology') },
+          { value: 'media', label: t('organization_showcase.media') }
         ];
       default:
-        return [{ value: 'all', label: 'All' }];
+        return [{ value: 'all', label: t('organization_showcase.all') }];
     }
   };
 
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Organization Directory</h1>
+        <h1 className="text-3xl font-bold mb-2">{t('organization_showcase.title')}</h1>
         <p className="text-muted-foreground">
-          Explore our innovation ecosystem - teams, partners, and sectors
+          {t('organization_showcase.description')}
         </p>
       </div>
 
@@ -177,7 +178,7 @@ export function OrganizationShowcase() {
         <div className="relative flex-1 min-w-[300px]">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search organizations..."
+            placeholder={t('organization_showcase.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -186,7 +187,7 @@ export function OrganizationShowcase() {
         <Select value={filterType} onValueChange={setFilterType}>
           <SelectTrigger className="w-[180px]">
             <Filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Filter by..." />
+            <SelectValue placeholder={t('organization_showcase.filter_placeholder')} />
           </SelectTrigger>
           <SelectContent>
             {getFilterOptions().map(option => (
@@ -202,39 +203,39 @@ export function OrganizationShowcase() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Innovation Teams</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('organization_showcase.innovation_teams')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{teams.length}</div>
             <p className="text-xs text-muted-foreground">
-              {teams.filter(t => t.status === 'active').length} active teams
+              {t('organization_showcase.active_teams_count', `${teams.filter(t => t.status === 'active').length} active teams`)}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Strategic Partners</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('organization_showcase.strategic_partners')}</CardTitle>
             <Building className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{partners.length}</div>
             <p className="text-xs text-muted-foreground">
-              {partners.filter(p => p.status === 'active').length} active partnerships
+              {t('organization_showcase.active_partnerships_count', `${partners.filter(p => p.status === 'active').length} active partnerships`)}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Focus Sectors</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('organization_showcase.focus_sectors')}</CardTitle>
             <Globe className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{sectors.length}</div>
             <p className="text-xs text-muted-foreground">
-              Vision 2030 aligned
+              {t('organization_showcase.vision_2030_aligned')}
             </p>
           </CardContent>
         </Card>
@@ -243,9 +244,9 @@ export function OrganizationShowcase() {
       {/* Organization Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="teams">Innovation Teams</TabsTrigger>
-          <TabsTrigger value="partners">Strategic Partners</TabsTrigger>
-          <TabsTrigger value="sectors">Focus Sectors</TabsTrigger>
+          <TabsTrigger value="teams">{t('organization_showcase.innovation_teams')}</TabsTrigger>
+          <TabsTrigger value="partners">{t('organization_showcase.strategic_partners')}</TabsTrigger>
+          <TabsTrigger value="sectors">{t('organization_showcase.focus_sectors')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="teams" className="mt-6">
@@ -261,9 +262,9 @@ export function OrganizationShowcase() {
           {filteredTeams.length === 0 && (
             <div className="text-center py-12">
               <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">No teams found</h3>
+              <h3 className="text-lg font-medium mb-2">{t('organization_showcase.no_teams_found')}</h3>
               <p className="text-muted-foreground">
-                Try adjusting your search criteria
+                {t('organization_showcase.adjust_search_criteria')}
               </p>
             </div>
           )}
@@ -282,9 +283,9 @@ export function OrganizationShowcase() {
           {filteredPartners.length === 0 && (
             <div className="text-center py-12">
               <Building className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">No partners found</h3>
+              <h3 className="text-lg font-medium mb-2">{t('organization_showcase.no_partners_found')}</h3>
               <p className="text-muted-foreground">
-                Try adjusting your search criteria
+                {t('organization_showcase.adjust_search_criteria')}
               </p>
             </div>
           )}
@@ -303,9 +304,9 @@ export function OrganizationShowcase() {
           {filteredSectors.length === 0 && (
             <div className="text-center py-12">
               <Globe className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">No sectors found</h3>
+              <h3 className="text-lg font-medium mb-2">{t('organization_showcase.no_sectors_found')}</h3>
               <p className="text-muted-foreground">
-                Try adjusting your search criteria
+                {t('organization_showcase.adjust_search_criteria')}
               </p>
             </div>
           )}

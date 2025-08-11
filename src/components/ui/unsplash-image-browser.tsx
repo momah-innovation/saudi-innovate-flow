@@ -21,6 +21,7 @@ import {
 import { supabase } from '@/integrations/supabase/client'
 import { toast } from 'sonner'
 import { logger } from '@/utils/logger'
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
 
 interface UnsplashImage {
   id: string
@@ -104,6 +105,7 @@ export function UnsplashImageBrowser({
   maxSelection = 1,
   className
 }: UnsplashImageBrowserProps) {
+  const { t } = useUnifiedTranslation();
   // Core state
   const [images, setImages] = useState<UnsplashImage[]>([])
   const [loading, setLoading] = useState(false)
@@ -238,7 +240,7 @@ export function UnsplashImageBrowser({
       }
     } catch (error) {
       logger.error('Error searching images', { component: 'UnsplashImageBrowser', action: 'searchImages', query }, error as Error)
-      toast.error('Failed to search images')
+      toast.error(t('unsplash_browser.search_failed', 'Failed to search images'))
     } finally {
       setLoading(false)
     }
@@ -410,7 +412,7 @@ export function UnsplashImageBrowser({
                 <Input
                   ref={searchInputRef}
                   type="text"
-                  placeholder="Search for images..."
+                  placeholder={t('unsplash_browser.search_placeholder', 'Search for images...')}
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value)
@@ -428,7 +430,7 @@ export function UnsplashImageBrowser({
                     <ScrollArea className="max-h-64">
                       {searchSuggestions.length > 0 && (
                         <div className="p-2">
-                          <div className="text-xs font-medium text-muted-foreground mb-2">Suggestions</div>
+                          <div className="text-xs font-medium text-muted-foreground mb-2">{t('unsplash_browser.suggestions', 'Suggestions')}</div>
                           {searchSuggestions.map(suggestion => (
                             <button
                               key={suggestion}
@@ -446,7 +448,7 @@ export function UnsplashImageBrowser({
                       )}
                       {recentSearches.length > 0 && (
                         <div className="p-2 border-t">
-                          <div className="text-xs font-medium text-muted-foreground mb-2">Recent</div>
+                          <div className="text-xs font-medium text-muted-foreground mb-2">{t('unsplash_browser.recent', 'Recent')}</div>
                           {recentSearches.slice(0, 5).map(search => (
                             <button
                               key={search}
@@ -468,7 +470,7 @@ export function UnsplashImageBrowser({
                 )}
               </div>
               <Button type="submit" disabled={loading} className="bg-success hover:bg-success-hover text-success-foreground">
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : t('unsplash_browser.search', 'Search')}
               </Button>
             </form>
 
@@ -478,9 +480,9 @@ export function UnsplashImageBrowser({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="landscape">Landscape</SelectItem>
-                <SelectItem value="portrait">Portrait</SelectItem>
+                 <SelectItem value="all">{t('unsplash_browser.all', 'All')}</SelectItem>
+                 <SelectItem value="landscape">{t('unsplash_browser.landscape', 'Landscape')}</SelectItem>
+                 <SelectItem value="portrait">{t('unsplash_browser.portrait', 'Portrait')}</SelectItem>
                 <SelectItem value="squarish">Square</SelectItem>
               </SelectContent>
             </Select>
