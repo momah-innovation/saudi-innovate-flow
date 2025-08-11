@@ -31,14 +31,8 @@ export default function LandingPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   
-  // Redirect authenticated users to dashboard
-  useEffect(() => {
-    if (!loading && user) {
-      console.log('🔄 Redirecting authenticated user from landing to dashboard');
-      navigate('/dashboard', { replace: true });
-      return;
-    }
-  }, [user, loading, navigate]);
+  // Note: Allow both authenticated and unauthenticated users to view landing page
+  // Show different content based on auth status
 
   // Force light mode for landing page
   useEffect(() => {
@@ -51,15 +45,6 @@ export default function LandingPage() {
       root.className = originalClasses;
     };
   }, []);
-
-  // Show loading state while checking auth
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   const { language, setLanguage, isRTL } = useDirection();
   const { faqs, statistics, loading: dataLoading, getText, getProcessSteps } = useLandingPageData(language);
@@ -141,7 +126,7 @@ export default function LandingPage() {
 
   return (
     <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : ''}`}>
-      <LandingNavigation />
+      <LandingNavigation user={user} loading={loading} />
       
       {/* Language Toggle */}
       <div className={cn("fixed top-20 z-50", isRTL ? 'left-4' : 'right-4')}>

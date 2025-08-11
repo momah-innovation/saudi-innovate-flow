@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 import { 
   Home, Info, Megaphone, Target, Calendar, 
-  ShoppingBag, DollarSign, BarChart3, HelpCircle 
+  ShoppingBag, DollarSign, BarChart3, HelpCircle, User, ArrowRight
 } from 'lucide-react';
 
 interface NavigationItem {
@@ -19,9 +20,15 @@ interface NavigationItem {
   arabicDescription: string;
 }
 
-export function LandingNavigation() {
+interface LandingNavigationProps {
+  user?: SupabaseUser | null;
+  loading?: boolean;
+}
+
+export function LandingNavigation({ user, loading }: LandingNavigationProps) {
   const { isRTL, language } = useDirection();
   const location = useLocation();
+  const { t } = useUnifiedTranslation();
 
   const navigationItems: NavigationItem[] = [
     {
@@ -149,18 +156,39 @@ export function LandingNavigation() {
             ))}
           </div>
 
-          {/* Auth Buttons */}
+          {/* Auth Actions - Different content for authenticated/unauthenticated users */}
           <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-            <Button variant="ghost" asChild className={isRTL ? "font-arabic" : "font-english"}>
-              <Link to="/login">
-                {isRTL ? 'تسجيل الدخول' : 'Login'}
-              </Link>
-            </Button>
-            <Button asChild className={isRTL ? "font-arabic" : "font-english"}>
-              <Link to="/signup">
-                {isRTL ? 'البدء' : 'Get Started'}
-              </Link>
-            </Button>
+            {loading ? (
+              <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary/30 border-t-primary"></div>
+            ) : user ? (
+              /* Authenticated User Menu */
+              <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
+                <span className={cn("text-sm text-muted-foreground", isRTL ? "font-arabic" : "font-english")}>
+                  {t('welcome', isRTL ? 'مرحباً' : 'Welcome')}
+                </span>
+                <Button asChild>
+                  <Link to="/dashboard">
+                    <User className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                    {t('dashboard', isRTL ? 'لوحة التحكم' : 'Dashboard')}
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              /* Unauthenticated User Actions */
+              <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+                <Button variant="ghost" asChild className={isRTL ? "font-arabic" : "font-english"}>
+                  <Link to="/login">
+                    {isRTL ? 'تسجيل الدخول' : 'Login'}
+                  </Link>
+                </Button>
+                <Button asChild className={isRTL ? "font-arabic" : "font-english"}>
+                  <Link to="/signup">
+                    {isRTL ? 'البدء' : 'Get Started'}
+                    <ArrowRight className={cn("h-4 w-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
+                  </Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 
