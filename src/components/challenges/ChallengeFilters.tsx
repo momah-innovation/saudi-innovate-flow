@@ -278,7 +278,7 @@ export const ChallengeFilters = ({
                   className="h-8 min-w-[90px] text-sm transition-all duration-200 hover:border-primary/50"
                   title={isRTL ? 'ترتيب حسب' : 'Sort by'}
                 >
-                  <SelectValue placeholder={t('challenge_filters.sort', 'Sort')} />
+                  <SelectValue placeholder={t('challenge_filters.sort')} />
                 </SelectTrigger>
                 <SelectContent className="z-50 bg-background border shadow-md">
                   {sortOptions.map((option) => (

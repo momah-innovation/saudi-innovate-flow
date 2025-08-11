@@ -86,10 +86,10 @@ export const AdminEventCard = ({
   };
 
   const getStatusText = (status: string) => {
-    if (status === 'مجدول') return t('events.status.scheduled', 'Scheduled');
-    if (status === 'جاري') return t('events.status.ongoing', 'Ongoing');
-    if (status === 'مكتمل') return t('events.status.completed', 'Completed');
-    if (status === 'ملغي') return t('events.status.cancelled', 'Cancelled');
+    if (status === 'مجدول') return t('events.status.scheduled');
+    if (status === 'جاري') return t('events.status.ongoing');
+    if (status === 'مكتمل') return t('events.status.completed');
+    if (status === 'ملغي') return t('events.status.cancelled');
     return status;
   };
 

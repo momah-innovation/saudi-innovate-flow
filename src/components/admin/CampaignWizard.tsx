@@ -549,14 +549,14 @@ export function CampaignWizard({
                 id="success_metrics"
                 value={formData.success_metrics}
                 onChange={(e) => setFormData(prev => ({ ...prev, success_metrics: e.target.value }))}
-                placeholder={t('admin.campaigns.success_metrics_placeholder', 'Enter success metrics and required indicators')}
+                placeholder={t('admin.campaigns.success_metrics_placeholder')}
                 dir="rtl"
                 rows={4}
               />
             </div>
 
             <div className="space-y-2">
-              <Label>{t('admin.campaigns.manager_label', 'Campaign Manager')}</Label>
+              <Label>{t('admin.campaigns.manager_label')}</Label>
               <Popover open={openManager} onOpenChange={setOpenManager}>
                 <PopoverTrigger asChild>
                   <Button
@@ -568,18 +568,18 @@ export function CampaignWizard({
                     {formData.campaign_manager_id
                       ? managers.find(manager => manager.id === formData.campaign_manager_id)?.name_ar || 
                         managers.find(manager => manager.id === formData.campaign_manager_id)?.name
-                      : t('admin.campaigns.choose_manager', 'Choose Campaign Manager')}
+                      : t('admin.campaigns.choose_manager')}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
                   <Command>
                     <CommandInput 
-                      placeholder={t('admin.campaigns.search_manager', 'Search for manager...')}
+                      placeholder={t('admin.campaigns.search_manager')}
                       value={managerSearch}
                       onValueChange={setManagerSearch}
                     />
-                    <CommandEmpty>{t('admin.campaigns.no_results', 'No results found')}</CommandEmpty>
+                    <CommandEmpty>{t('admin.campaigns.no_results')}</CommandEmpty>
                     <CommandGroup>
                       <CommandList>
                         {managers

@@ -134,7 +134,7 @@ export function ChallengeViewDialog({
       }, error as Error);
       toast({
         title: t('error'),
-        description: t('challenges.submissions_error', 'Failed to load submissions'),
+        description: t('challenges.submissions_error'),
         variant: "destructive"
       });
     } finally {

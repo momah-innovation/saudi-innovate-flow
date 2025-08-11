@@ -222,16 +222,16 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       case 'basic':
         if (!formData.title_ar.trim()) {
           toast({
-             title: t('admin.challenges.validation_error', 'Validation Error'),
-             description: t('admin.challenges.enter_title', 'Please enter a challenge title'),
+             title: t('admin.challenges.validation_error'),
+             description: t('admin.challenges.enter_title'),
             variant: 'destructive'
           });
           return false;
         }
         if (!formData.description_ar.trim()) {
           toast({
-             title: t('admin.challenges.validation_error', 'Validation Error'),
-             description: t('admin.challenges.enter_description', 'Please enter a challenge description'),
+             title: t('admin.challenges.validation_error'),
+             description: t('admin.challenges.enter_description'),
             variant: 'destructive'
           });
           return false;
