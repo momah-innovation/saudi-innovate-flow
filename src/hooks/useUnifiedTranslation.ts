@@ -54,10 +54,10 @@ export function useUnifiedTranslation() {
         throw error;
       }
     },
-    staleTime: 1 * 60 * 1000, // 1 minute - reduced for debugging
-    gcTime: 5 * 60 * 1000, // 5 minutes - reduced for debugging
-    refetchOnWindowFocus: true, // Enable refetch on focus for debugging
-    refetchOnMount: true, // Enable refetch on mount for debugging
+    staleTime: 0, // Always refetch to ensure we get latest data
+    gcTime: 0, // Don't cache to avoid stale data issues
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
   });
