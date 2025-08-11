@@ -148,13 +148,13 @@ export const DashboardOverview = () => {
 
   if (loading) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
         {/* Loading Skeleton */}
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-muted rounded w-1/3"></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="h-6 sm:h-8 bg-muted rounded w-1/3"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-32 bg-muted rounded-lg"></div>
+              <div key={i} className="h-24 sm:h-32 bg-muted rounded-lg"></div>
             ))}
           </div>
         </div>
@@ -163,150 +163,191 @@ export const DashboardOverview = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8 p-3 sm:p-0">
       {/* Welcome Section */}
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      <div className={cn(
+        "text-center space-y-3 sm:space-y-4 px-4",
+        isRTL && "text-right"
+      )}>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           {user ? 
             t('dashboard_overview.welcome_message_with_name', { name: user.user_metadata?.name || (isRTL ? 'مبتكر' : 'Innovator') }) : 
             t('dashboard_overview.welcome_message')
           }
         </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
           {t('dashboard_overview.platform_description')}
         </p>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="border-l-4 border-l-blue-500 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-2xl font-bold text-blue-700 dark:text-blue-300">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <Card className={cn(
+          "border-l-4 border-l-blue-500 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30",
+          isRTL && "border-l-0 border-r-4 border-r-blue-500"
+        )}>
+          <CardHeader className="pb-2 sm:pb-3">
+            <div className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse"
+            )}>
+              <div className={cn(isRTL && "text-right")}>
+                <CardTitle className="text-xl sm:text-2xl font-bold text-blue-700 dark:text-blue-300">
                   {stats.totalIdeas}
                 </CardTitle>
-                <CardDescription className="font-medium">
+                <CardDescription className="font-medium text-xs sm:text-sm">
                   {t('dashboard_overview.total_ideas')}
                 </CardDescription>
               </div>
-              <Lightbulb className="w-8 h-8 text-blue-500" />
+              <Lightbulb className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
             </div>
           </CardHeader>
           {user && (
             <CardContent className="pt-0">
-              <div className="text-sm text-muted-foreground">
+              <div className="text-xs sm:text-sm text-muted-foreground">
                 {t('dashboard_overview.your_ideas', { count: stats.userIdeas })}
               </div>
             </CardContent>
           )}
         </Card>
 
-        <Card className="border-l-4 border-l-green-500 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/50 dark:to-green-900/30">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-2xl font-bold text-green-700 dark:text-green-300">
+        <Card className={cn(
+          "border-l-4 border-l-green-500 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/50 dark:to-green-900/30",
+          isRTL && "border-l-0 border-r-4 border-r-green-500"
+        )}>
+          <CardHeader className="pb-2 sm:pb-3">
+            <div className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse"
+            )}>
+              <div className={cn(isRTL && "text-right")}>
+                <CardTitle className="text-xl sm:text-2xl font-bold text-green-700 dark:text-green-300">
                   {stats.totalChallenges}
                 </CardTitle>
-                <CardDescription className="font-medium">
+                <CardDescription className="font-medium text-xs sm:text-sm">
                   {t('dashboard_overview.active_challenges')}
                 </CardDescription>
               </div>
-              <Target className="w-8 h-8 text-green-500" />
+              <Target className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
             </div>
           </CardHeader>
           {user && (
             <CardContent className="pt-0">
-              <div className="text-sm text-muted-foreground">
+              <div className="text-xs sm:text-sm text-muted-foreground">
                 {t('dashboard_overview.your_participations', { count: stats.userChallenges })}
               </div>
             </CardContent>
           )}
         </Card>
 
-        <Card className="border-l-4 border-l-orange-500 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/50 dark:to-orange-900/30">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-2xl font-bold text-orange-700 dark:text-orange-300">
+        <Card className={cn(
+          "border-l-4 border-l-orange-500 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/50 dark:to-orange-900/30",
+          isRTL && "border-l-0 border-r-4 border-r-orange-500"
+        )}>
+          <CardHeader className="pb-2 sm:pb-3">
+            <div className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse"
+            )}>
+              <div className={cn(isRTL && "text-right")}>
+                <CardTitle className="text-xl sm:text-2xl font-bold text-orange-700 dark:text-orange-300">
                   {stats.totalEvents}
                 </CardTitle>
-                <CardDescription className="font-medium">
+                <CardDescription className="font-medium text-xs sm:text-sm">
                   {t('dashboard_overview.upcoming_events')}
                 </CardDescription>
               </div>
-              <Calendar className="w-8 h-8 text-orange-500" />
+              <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" />
             </div>
           </CardHeader>
           {user && (
             <CardContent className="pt-0">
-              <div className="text-sm text-muted-foreground">
+              <div className="text-xs sm:text-sm text-muted-foreground">
                 {t('dashboard_overview.your_registrations', { count: stats.userEvents })}
               </div>
             </CardContent>
           )}
         </Card>
 
-        <Card className="border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/50 dark:to-purple-900/30">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+        <Card className={cn(
+          "border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/50 dark:to-purple-900/30",
+          isRTL && "border-l-0 border-r-4 border-r-purple-500"
+        )}>
+          <CardHeader className="pb-2 sm:pb-3">
+            <div className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse"
+            )}>
+              <div className={cn(isRTL && "text-right")}>
+                <CardTitle className="text-xl sm:text-2xl font-bold text-purple-700 dark:text-purple-300">
                   {stats.totalUsers}
                 </CardTitle>
-                <CardDescription className="font-medium">
+                <CardDescription className="font-medium text-xs sm:text-sm">
                   {t('dashboard_overview.active_innovators')}
                 </CardDescription>
               </div>
-              <Users className="w-8 h-8 text-purple-500" />
+              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500" />
             </div>
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs sm:text-sm text-muted-foreground">
               {t('dashboard_overview.join_community')}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
         {/* Quick Actions */}
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Zap className="w-5 h-5" />
+              <CardTitle className={cn(
+                "flex items-center gap-2 text-base sm:text-lg",
+                isRTL && "flex-row-reverse"
+              )}>
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
                 {t('dashboard_overview.quick_actions')}
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-xs sm:text-sm">
                 {t('dashboard_overview.start_innovation_journey')}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {quickActions.map((action, index) => {
                   const IconComponent = action.icon;
                   return (
-                    <Card key={index} className="group hover:shadow-md transition-all duration-300 cursor-pointer border-2 hover:border-primary/20">
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3">
+                    <Card 
+                      key={index} 
+                      className="group hover:shadow-md transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 touch-manipulation"
+                    >
+                      <CardContent className="p-3 sm:p-4">
+                        <div className={cn(
+                          "flex items-start gap-2 sm:gap-3",
+                          isRTL && "flex-row-reverse"
+                        )}>
                           <div className={cn(
-                            "p-2 rounded-lg bg-gradient-to-r",
-                            action.color,
-                            "text-white group-hover:scale-110 transition-transform"
+                            "p-1.5 sm:p-2 rounded-lg bg-gradient-to-r text-white group-hover:scale-110 transition-transform shrink-0",
+                            action.color
                           )}>
-                            <IconComponent className="w-5 h-5" />
+                            <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
+                          <div className={cn(
+                            "flex-1 min-w-0",
+                            isRTL && "text-right"
+                          )}>
+                            <h3 className="font-semibold text-sm sm:text-base mb-1 group-hover:text-primary transition-colors">
                               {action.title}
                             </h3>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
                               {action.description}
                             </p>
                           </div>
-                          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <ArrowRight className={cn(
+                            "w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0",
+                            isRTL && "rotate-180"
+                          )} />
                         </div>
                       </CardContent>
                     </Card>
