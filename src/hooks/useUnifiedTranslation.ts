@@ -69,10 +69,10 @@ export function useUnifiedTranslation() {
         throw error;
       }
     },
-    staleTime: 0, // Always refetch to ensure we get latest data
-    gcTime: 0, // Don't cache to avoid stale data issues
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
+    staleTime: 1000 * 60 * 5, // 5 minutes - reasonable cache time
+    gcTime: 1000 * 60 * 10, // 10 minutes - keep in memory longer
+    refetchOnWindowFocus: false, // Don't refetch on window focus
+    refetchOnMount: false, // Only fetch once per mount
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
   });
