@@ -173,26 +173,26 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
     <div className="space-y-6">
       <div className="flex items-center gap-2">
         <Settings className="h-5 w-5" />
-        <h2 className="text-xl font-semibold">{t('settings.notification.admin.title')}</h2>
+        <h2 className="text-xl font-semibold">{t('admin.notification.settings.title', 'Admin Notification Settings')}</h2>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="global" className="flex items-center gap-2">
             <Settings className="h-4 w-4" />
-            {t('settings.notification.global')}
+            {t('admin.notification.tabs.global', 'Global')}
           </TabsTrigger>
           <TabsTrigger value="channels" className="flex items-center gap-2">
             <Bell className="h-4 w-4" />
-            {t('settings.notification.channels')}
+            {t('admin.notification.tabs.channels', 'Channels')}
           </TabsTrigger>
           <TabsTrigger value="templates" className="flex items-center gap-2">
             <Mail className="h-4 w-4" />
-            {t('settings.notification.templates')}
+            {t('admin.notification.tabs.templates', 'Templates')}
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            {t('settings.notification.analytics')}
+            {t('admin.notification.tabs.analytics', 'Analytics')}
           </TabsTrigger>
         </TabsList>
 
@@ -201,17 +201,17 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
-                {t('settings.notification.global.settings')}
+                {t('admin.notification.global.title', 'Global Settings')}
               </CardTitle>
               <CardDescription>
-                {t('settings.notification.global.description')}
+                {t('admin.notification.global.description', 'Configure system-wide notification settings')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="enableDigestEmails">{t('settings.notification.digest.enabled')}</Label>
+                    <Label htmlFor="enableDigestEmails">{t('admin.notification.digest.enabled', 'Enable Digest Emails')}</Label>
                     <Switch
                       id="enableDigestEmails"
                       checked={getGlobalSetting('enableDigestEmails')}
@@ -220,7 +220,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('settings.notification.digest.frequency')}</Label>
+                    <Label>{t('admin.notification.digest.frequency', 'Digest Frequency')}</Label>
                     <Select
                       value={getGlobalSetting('digestFrequency', 'weekly')}
                       onValueChange={(value) => handleGlobalSettingChange('digestFrequency', value)}
@@ -237,7 +237,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('settings.notification.retention.days')}</Label>
+                    <Label>{t('admin.notification.retention.days', 'Retention Days')}</Label>
                     <Input
                       type="number"
                       value={getGlobalSetting('notificationRetentionDays', 90)}
@@ -248,7 +248,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('settings.notification.fetch.limit')}</Label>
+                    <Label>{t('admin.notification.fetch.limit', 'Fetch Limit')}</Label>
                     <Input
                       type="number"
                       value={getGlobalSetting('notificationFetchLimit', 50)}
@@ -261,7 +261,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="enableQuietHours">{t('settings.notification.quiet.hours.enabled')}</Label>
+                    <Label htmlFor="enableQuietHours">{t('admin.notification.quiet.hours.enabled', 'Enable Quiet Hours')}</Label>
                     <Switch
                       id="enableQuietHours"
                       checked={getGlobalSetting('enableQuietHours')}
@@ -270,7 +270,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('settings.notification.quiet.hours.start')}</Label>
+                    <Label>{t('admin.notification.quiet.hours.start', 'Quiet Hours Start')}</Label>
                     <Input
                       type="time"
                       value={getGlobalSetting('defaultQuietHoursStart', '22:00')}
@@ -279,7 +279,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('settings.notification.quiet.hours.end')}</Label>
+                    <Label>{t('admin.notification.quiet.hours.end', 'Quiet Hours End')}</Label>
                     <Input
                       type="time"
                       value={getGlobalSetting('defaultQuietHoursEnd', '08:00')}
@@ -288,7 +288,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('settings.notification.admin.email')}</Label>
+                    <Label>{t('admin.notification.admin.email', 'Admin Email')}</Label>
                     <Input
                       type="email"
                       value={getGlobalSetting('adminNotificationEmail', '')}
@@ -302,10 +302,10 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
               <Separator />
 
               <div className="space-y-4">
-                <h4 className="text-lg font-medium">{t('settings.notification.user.controls')}</h4>
+                <h4 className="text-lg font-medium">{t('admin.notification.user.controls', 'User Controls')}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="allowUserOptOut">{t('settings.notification.user.opt.out')}</Label>
+                    <Label htmlFor="allowUserOptOut">{t('admin.notification.user.opt.out', 'Allow User Opt Out')}</Label>
                     <Switch
                       id="allowUserOptOut"
                       checked={getGlobalSetting('allowUserOptOut', true)}
@@ -314,7 +314,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="requireEmailVerification">{t('settings.notification.email.verification')}</Label>
+                    <Label htmlFor="requireEmailVerification">{t('admin.notification.email.verification', 'Require Email Verification')}</Label>
                     <Switch
                       id="requireEmailVerification"
                       checked={getGlobalSetting('requireEmailVerification', true)}
@@ -323,7 +323,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="emergencyNotificationOverride">{t('settings.notification.emergency.override')}</Label>
+                    <Label htmlFor="emergencyNotificationOverride">{t('admin.notification.emergency.override', 'Emergency Override')}</Label>
                     <Switch
                       id="emergencyNotificationOverride"
                       checked={getGlobalSetting('emergencyNotificationOverride', true)}
@@ -340,7 +340,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('settings.notification.email')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.notification.channel.email', 'Email')}</CardTitle>
                 <Mail className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -355,7 +355,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                     onClick={() => testNotificationMutation.mutate({ type: 'test', channel: 'email' })}
                     disabled={testNotificationMutation.isPending}
                   >
-                    {t('settings.notification.test')}
+                    {t('admin.notification.test', 'Test')}
                   </Button>
                 </div>
               </CardContent>
@@ -363,7 +363,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('settings.notification.sms')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.notification.channel.sms', 'SMS')}</CardTitle>
                 <MessageSquare className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -378,7 +378,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                     onClick={() => testNotificationMutation.mutate({ type: 'test', channel: 'sms' })}
                     disabled={testNotificationMutation.isPending}
                   >
-                    {t('settings.notification.test')}
+                    {t('admin.notification.test', 'Test')}
                   </Button>
                 </div>
               </CardContent>
@@ -386,7 +386,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('settings.notification.push')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.notification.channel.push', 'Push')}</CardTitle>
                 <Smartphone className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -401,7 +401,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                     onClick={() => testNotificationMutation.mutate({ type: 'test', channel: 'push' })}
                     disabled={testNotificationMutation.isPending}
                   >
-                    {t('settings.notification.test')}
+                    {t('admin.notification.test', 'Test')}
                   </Button>
                 </div>
               </CardContent>
@@ -409,7 +409,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('settings.notification.system')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.notification.channel.system', 'System')}</CardTitle>
                 <Bell className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>

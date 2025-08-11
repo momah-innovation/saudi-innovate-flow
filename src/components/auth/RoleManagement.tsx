@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Shield, 
   Users, 
@@ -29,53 +30,53 @@ import {
   ChevronDown
 } from 'lucide-react';
 
-// Role hierarchy definition
-export const ROLE_HIERARCHY = {
+// Role hierarchy definition (static labels for now)
+export const ROLE_HIERARCHY_STATIC = {
   super_admin: {
     level: 10,
-    label: 'مدير النظام الرئيسي',
-    description: 'صلاحيات كاملة على النظام',
+    labelKey: 'roles.super_admin.label',
+    descriptionKey: 'roles.super_admin.description',
     color: 'destructive',
     icon: Crown
   },
   admin: {
     level: 8,
-    label: 'مدير النظام',
-    description: 'إدارة المستخدمين والإعدادات',
+    labelKey: 'roles.admin.label',
+    descriptionKey: 'roles.admin.description',
     color: 'destructive',
     icon: Shield
   },
   org_admin: {
     level: 6,
-    label: 'مدير الجهة',
-    description: 'إدارة مستخدمي الجهة',
+    labelKey: 'roles.org_admin.label',
+    descriptionKey: 'roles.org_admin.description',
     color: 'secondary',
     icon: Building2
   },
   expert: {
     level: 5,
-    label: 'خبير تقييم',
-    description: 'تقييم الأفكار والمشاريع',
+    labelKey: 'roles.expert.label',
+    descriptionKey: 'roles.expert.description',
     color: 'default',
     icon: Star
   },
   innovator: {
     level: 3,
-    label: 'مبتكر',
-    description: 'تقديم الأفكار والمشاركة',
+    labelKey: 'roles.innovator.label',
+    descriptionKey: 'roles.innovator.description',
     color: 'secondary',
     icon: UserCheck
   },
   viewer: {
     level: 1,
-    label: 'مطلع',
-    description: 'عرض المحتوى فقط',
+    labelKey: 'roles.viewer.label',
+    descriptionKey: 'roles.viewer.description',
     color: 'outline',
     icon: Users
   }
 } as const;
 
-export type UserRole = keyof typeof ROLE_HIERARCHY;
+export type UserRole = keyof typeof ROLE_HIERARCHY_STATIC;
 
 // Permission definitions
 export const PERMISSIONS = {
@@ -156,6 +157,41 @@ interface RoleManagementProps {
 }
 
 export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) => {
+  const { t } = useUnifiedTranslation();
+
+  // Dynamic role hierarchy with translations
+  const ROLE_HIERARCHY = {
+    super_admin: {
+      ...ROLE_HIERARCHY_STATIC.super_admin,
+      label: t('roles.super_admin.label', 'Super Admin'),
+      description: t('roles.super_admin.description', 'Full system privileges'),
+    },
+    admin: {
+      ...ROLE_HIERARCHY_STATIC.admin,
+      label: t('roles.admin.label', 'Admin'),
+      description: t('roles.admin.description', 'User and settings management'),
+    },
+    org_admin: {
+      ...ROLE_HIERARCHY_STATIC.org_admin,
+      label: t('roles.org_admin.label', 'Organization Admin'),
+      description: t('roles.org_admin.description', 'Organization user management'),
+    },
+    expert: {
+      ...ROLE_HIERARCHY_STATIC.expert,
+      label: t('roles.expert.label', 'Expert'),
+      description: t('roles.expert.description', 'Evaluate ideas and projects'),
+    },
+    innovator: {
+      ...ROLE_HIERARCHY_STATIC.innovator,
+      label: t('roles.innovator.label', 'Innovator'),
+      description: t('roles.innovator.description', 'Submit ideas and participate'),
+    },
+    viewer: {
+      ...ROLE_HIERARCHY_STATIC.viewer,
+      label: t('roles.viewer.label', 'Viewer'),
+      description: t('roles.viewer.description', 'View content only'),
+    }
+  };
   const [selectedRole, setSelectedRole] = useState<UserRole>('innovator');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState<UserRole | 'all'>('all');
@@ -193,13 +229,13 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
       onRoleUpdate?.(userId, newRole);
       
       toast({
-        title: "تم تحديث الدور",
-        description: `تم تغيير دور المستخدم بنجاح`,
+        title: t('roles.update.success.title', 'Role Updated'),
+        description: t('roles.update.success.description', 'User role has been successfully updated'),
       });
     } catch (error) {
       toast({
-        title: "خطأ في التحديث",
-        description: "حدث خطأ أثناء تحديث دور المستخدم",
+        title: t('roles.update.error.title', 'Update Error'),
+        description: t('roles.update.error.description', 'An error occurred while updating user role'),
         variant: "destructive"
       });
     }
@@ -227,10 +263,10 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
-            هيكل الأدوار والصلاحيات
+            {t('roles.hierarchy.title', 'Role Hierarchy & Permissions')}
           </CardTitle>
           <CardDescription>
-            نظام إدارة الأدوار المتدرج لضمان الأمان والتحكم المناسب
+            {t('roles.hierarchy.description', 'Hierarchical role management system for security and proper control')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -244,7 +280,7 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
                       {role.label}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
-                      مستوى {role.level}
+                      {t('roles.level', 'Level')} {role.level}
                     </span>
                   </div>
                 </CardHeader>
@@ -253,9 +289,9 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
                     {role.description}
                   </p>
                   <div className="text-xs">
-                    <span className="font-medium">الصلاحيات: </span>
+                    <span className="font-medium">{t('roles.permissions.count', 'Permissions')}: </span>
                     <span className="text-muted-foreground">
-                      {ROLE_PERMISSIONS[roleKey as UserRole].length} صلاحية
+                      {ROLE_PERMISSIONS[roleKey as UserRole].length} {t('roles.permissions.unit', 'permissions')}
                     </span>
                   </div>
                 </CardContent>
@@ -270,10 +306,10 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5" />
-            إدارة المستخدمين
+            {t('roles.user.management.title', 'User Management')}
           </CardTitle>
           <CardDescription>
-            تعيين وإدارة أدوار المستخدمين في النظام
+            {t('roles.user.management.description', 'Assign and manage user roles in the system')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -283,7 +319,7 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="بحث بالاسم أو البريد الإلكتروني..."
+                  placeholder={t('roles.search.placeholder', 'Search by name or email...')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -293,10 +329,10 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
             <Select value={filterRole} onValueChange={(value) => setFilterRole(value as UserRole | 'all')}>
               <SelectTrigger className="w-full sm:w-48">
                 <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="تصفية حسب الدور" />
+                <SelectValue placeholder={t('roles.filter.placeholder', 'Filter by role')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">جميع الأدوار</SelectItem>
+                <SelectItem value="all">{t('roles.filter.all', 'All Roles')}</SelectItem>
                 {Object.entries(ROLE_HIERARCHY).map(([key, role]) => (
                   <SelectItem key={key} value={key}>
                     {role.label}
@@ -311,11 +347,11 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>المستخدم</TableHead>
-                  <TableHead>الدور الحالي</TableHead>
-                  <TableHead>الجهة</TableHead>
-                  <TableHead>آخر نشاط</TableHead>
-                  <TableHead>الإجراءات</TableHead>
+                  <TableHead>{t('roles.table.user', 'User')}</TableHead>
+                  <TableHead>{t('roles.table.current.role', 'Current Role')}</TableHead>
+                  <TableHead>{t('roles.table.organization', 'Organization')}</TableHead>
+                  <TableHead>{t('roles.table.last.activity', 'Last Activity')}</TableHead>
+                  <TableHead>{t('roles.table.actions', 'Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -357,14 +393,14 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
-                              <DialogTitle>تحديث دور المستخدم</DialogTitle>
+                            <DialogTitle>{t('roles.update.dialog.title', 'Update User Role')}</DialogTitle>
                               <DialogDescription>
-                                اختر الدور الجديد للمستخدم {user.name}
+                                {t('roles.update.dialog.description', 'Select new role for user')} {user.name}
                               </DialogDescription>
                             </DialogHeader>
                             <div className="space-y-4">
                               <div className="space-y-2">
-                                <Label>الدور الجديد</Label>
+                                <Label>{t('roles.new.role', 'New Role')}</Label>
                                 <Select value={selectedRole} onValueChange={(value) => setSelectedRole(value as UserRole)}>
                                   <SelectTrigger>
                                     <SelectValue />
@@ -385,7 +421,7 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
                                 onClick={() => handleRoleChange(user.id, selectedRole)}
                                 className="w-full"
                               >
-                                تحديث الدور
+                                {t('roles.update.button', 'Update Role')}
                               </Button>
                             </div>
                           </DialogContent>
@@ -400,7 +436,7 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
 
           {filteredUsers.length === 0 && (
             <div className="text-center py-8 text-muted-foreground">
-              لا توجد نتائج مطابقة للبحث
+              {t('roles.no.results', 'No matching results found')}
             </div>
           )}
         </CardContent>
@@ -411,10 +447,10 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings className="h-5 w-5" />
-            مصفوفة الصلاحيات
+            {t('roles.permissions.matrix.title', 'Permissions Matrix')}
           </CardTitle>
           <CardDescription>
-            عرض تفصيلي للصلاحيات المخصصة لكل دور
+            {t('roles.permissions.matrix.description', 'Detailed view of permissions assigned to each role')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -422,7 +458,7 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="min-w-48">الصلاحية</TableHead>
+                  <TableHead className="min-w-48">{t('roles.permissions.permission', 'Permission')}</TableHead>
                   {Object.entries(ROLE_HIERARCHY).map(([roleKey, role]) => (
                     <TableHead key={roleKey} className="text-center min-w-24">
                       <div className="flex flex-col items-center gap-1">
