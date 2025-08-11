@@ -5,8 +5,6 @@ import { queryKeys } from '@/lib/query/query-keys';
 import { useMemo } from 'react';
 import { logger } from '@/utils/logger';
 
-console.log('🚀 useUnifiedTranslation module loaded');
-
 interface SystemTranslation {
   id: string;
   translation_key: string;
@@ -20,7 +18,6 @@ interface SystemTranslation {
  * Combines i18next with database translations for optimal performance and fallbacks
  */
 export function useUnifiedTranslation() {
-  console.log('🔥 useUnifiedTranslation hook called');
   const { t: i18nextT, i18n } = useI18nextTranslation();
   const queryClient = useQueryClient();
   
@@ -108,7 +105,6 @@ export function useUnifiedTranslation() {
    * Old: t(key, options) - for backward compatibility during migration
    */
   const t = (key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
-    console.log('🔍 TRANSLATION REQUEST:', { key, language, mapSize: translationMap.size, isLoading });
     try {
       let fallback: string | undefined;
       let interpolationOptions: Record<string, any> | undefined;
@@ -130,8 +126,6 @@ export function useUnifiedTranslation() {
         const text = dbTranslation[language];
         if (text && text.trim() !== '') {
           const result = interpolateText(text, interpolationOptions);
-          console.log('✅ DB TRANSLATION FOUND:', { key, text: text.slice(0, 50) });
-          logger.debug('Database translation found', { key, result: result.slice(0, 50) });
           return result;
         }
       }
@@ -139,25 +133,12 @@ export function useUnifiedTranslation() {
       // Strategy 2: Provided fallback
       if (fallback && fallback.trim() !== '') {
         const result = interpolateText(fallback, interpolationOptions);
-        console.log('⚠️ USING FALLBACK:', { key, fallback: result.slice(0, 50) });
-        logger.debug('Using fallback translation', { key, fallback: result.slice(0, 50) });
+        console.warn('⚠️ MISSING KEY - USING FALLBACK:', { key, fallback: result.slice(0, 50) });
         return result;
       }
 
       // Strategy 3: Return key as last resort - LOG MISSING TRANSLATION
-      console.error('❌ MISSING TRANSLATION KEY:', key, {
-        language,
-        mapSize: translationMap.size,
-        fallback,
-        stack: new Error().stack?.split('\n')[2]?.trim(),
-        callerFunction: new Error().stack?.split('\n')[3]?.trim(),
-        allKeys: Array.from(translationMap.keys()).slice(0, 10)
-      });
-      logger.warn('No translation found for key', { 
-        key, 
-        mapSize: translationMap.size, 
-        language
-      });
+      console.error('❌ MISSING TRANSLATION KEY:', { key, language, mapSize: translationMap.size });
       return key;
     } catch (error) {
       logger.warn('Translation error occurred', { key, language }, error as Error);
