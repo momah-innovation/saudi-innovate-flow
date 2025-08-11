@@ -42,17 +42,17 @@ interface Campaign {
   theme?: string;
 }
 
-const getStatusConfig = (t: (key: string, fallback: string) => string) => ({
-  planning: { label: t('status.planning', 'Planning'), variant: 'secondary' as const },
-  active: { label: t('status.active', 'Active'), variant: 'default' as const },
-  paused: { label: t('status.paused', 'Paused'), variant: 'destructive' as const },
-  completed: { label: t('status.completed', 'Completed'), variant: 'outline' as const }
+const getStatusConfig = (t: (key: string) => string) => ({
+  planning: { label: t('status.planning'), variant: 'secondary' as const },
+  active: { label: t('status.active'), variant: 'default' as const },
+  paused: { label: t('status.paused'), variant: 'destructive' as const },
+  completed: { label: t('status.completed'), variant: 'outline' as const }
 });
 
-const getPriorityConfig = (t: (key: string, fallback: string) => string) => ({
-  low: { label: t('priority.low', 'Low'), variant: 'secondary' as const },
-  medium: { label: t('priority.medium', 'Medium'), variant: 'default' as const },
-  high: { label: t('priority.high', 'High'), variant: 'destructive' as const }
+const getPriorityConfig = (t: (key: string) => string) => ({
+  low: { label: t('priority.low'), variant: 'secondary' as const },
+  medium: { label: t('priority.medium'), variant: 'default' as const },
+  high: { label: t('priority.high'), variant: 'destructive' as const }
 });
 
 interface CampaignsManagementProps {
@@ -138,39 +138,39 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
             metadata={[
               {
                 icon: <Calendar className="w-4 h-4" />,
-                label: 'تاريخ البداية',
+                label: t('campaign.start_date'),
                 value: new Date(campaign.start_date).toLocaleDateString('ar-SA')
               },
               ...(campaign.target_participants ? [{
                 icon: <Users className="w-4 h-4" />,
-                label: 'المشاركون',
+                label: t('campaign.participants'),
                 value: `${campaign.registered_participants || 0}/${campaign.target_participants}`
               }] : []),
               ...(campaign.target_ideas ? [{
                 icon: <Target className="w-4 h-4" />,
-                label: 'الأفكار',
+                label: t('campaign.ideas'),
                 value: `${campaign.submitted_ideas || 0}/${campaign.target_ideas}`
               }] : []),
               ...(campaign.budget ? [{
                 icon: <DollarSign className="w-4 h-4" />,
-                label: 'الميزانية',
-                value: `${campaign.budget.toLocaleString()} ريال`
+                label: t('campaign.budget'),
+                value: `${campaign.budget.toLocaleString()} ${t('campaign.currency_sar')}`
               }] : [])
             ]}
             actions={[
               {
                 type: 'view' as const,
-                label: t('button.view', 'View'),
+                label: t('button.view'),
                 onClick: () => handleView(campaign)
               },
               {
                 type: 'edit' as const,
-                label: t('button.edit', 'Edit'),
+                label: t('button.edit'),
                 onClick: () => handleEdit(campaign)
               },
               {
                 type: 'delete' as const,
-                label: t('button.delete', 'Delete'),
+                label: t('button.delete'),
                 onClick: () => handleDelete(campaign)
               }
             ]}
