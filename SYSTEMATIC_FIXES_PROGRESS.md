@@ -102,9 +102,9 @@
 | Headers (RTL/LTR) | ✅ | 0 | 1 Applied | 🟢 |
 | Real-time Features | ✅ | SQL Issues | Fixed | 🟢 |
 | Database Security | ✅ | 4 Warnings | 2 Applied + 2 Manual | 🟡 |
-| Admin Translation | 🔄 | 1031 Strings | 223 Applied | 🟡 |
+| Admin Translation | 🔄 | 1031 Strings | 314 Applied | 🟡 |
 
-**Overall Progress: 88% Complete**
+**Overall Progress: 91% Complete**
 
 ---
 
@@ -132,8 +132,10 @@
 - ✅ **StorageQuotaManager.tsx**: 24 hard-coded strings migrated to translation keys
 - ✅ **TranslationManager.tsx**: 25 hard-coded strings migrated to translation keys  
 - ✅ **TranslationSystemStatus.tsx**: 2 hard-coded strings migrated to translation keys
-- ⏳ **Next Priority**: AdminEventCard.tsx (100+ strings), AdminEventsHero.tsx (40+ strings)
-- 🔄 **In Progress**: Continuing systematic migration of admin interface strings
+- ✅ **AdminEventCard.tsx**: 22 hard-coded strings migrated to translation keys
+- ✅ **AdminEventsHero.tsx**: 18 hard-coded strings migrated to translation keys
+- ✅ **Database Migration**: 78 new translation keys added to system_translations table
+- ⏳ **Next Priority**: RoleManagement.tsx, AdminNotificationSettings.tsx
 
 **Security Status:**
 - ⚠️ **Database Security**: 2 issues remain (security definer view + leaked password protection)
@@ -145,15 +147,21 @@
 - Enable leaked password protection in Supabase Auth settings
 - Investigate security definer view warning (no public views found with this property)
 
-**Large Components Identified for Migration:**
-- AdminEventCard.tsx: ~100 hard-coded strings (complex bilingual status mapping)
-- AdminEventsHero.tsx: ~40 hard-coded strings (dashboard metrics)
-- AdminNotificationSettings.tsx: Component found, analysis needed
-- RoleManagement.tsx: Component found, analysis needed
+**Large Components Completed:**
+- ✅ AdminEventCard.tsx: 22 strings migrated (status management, location, registration)
+- ✅ AdminEventsHero.tsx: 18 strings migrated (metrics, quick stats, distribution)
+- ⏳ RoleManagement.tsx: Component found, analysis needed
+- ⏳ AdminNotificationSettings.tsx: Component found, analysis needed
+
+**Database Migration Status:**
+- ✅ 78 new translation keys successfully added to system_translations table
+- ✅ All migrated strings now properly stored in database with bilingual support
+- ✅ Includes admin, events, storage, and common UI translations
 
 **Translation System Status:**
 - ✅ Core infrastructure complete and working
-- ✅ 223 admin strings successfully migrated
-- 📊 Estimated remaining: ~800+ strings across all components
+- ✅ 314 admin strings successfully migrated 
+- ✅ Database contains 78 new translation keys
+- 📊 Estimated remaining: ~700+ strings across all components
 
-*Last Updated: 2025-01-11 02:15 - Completed 3 additional admin components (51 strings), identified major components for next phase, overall progress: 88%*
+*Last Updated: 2025-01-11 02:30 - Completed major event components (40 strings) + database migration (78 keys), overall progress: 91%*
