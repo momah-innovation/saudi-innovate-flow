@@ -1060,7 +1060,7 @@ export function TeamWorkspaceContent({
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="dashboard" className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4" />
-            {t('dashboard')}
+            {t('nav.dashboard')}
           </TabsTrigger>
           <TabsTrigger value="projects" className="flex items-center gap-2">
             <Target className="h-4 w-4" />

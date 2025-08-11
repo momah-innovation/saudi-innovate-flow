@@ -197,7 +197,7 @@ const Index = () => {
   };
 
   const breadcrumbs = [
-    { label: t('dashboard'), href: "/" }
+    { label: t('nav.dashboard'), href: "/" }
   ];
 
   return (

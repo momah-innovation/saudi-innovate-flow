@@ -169,7 +169,7 @@ export function LandingNavigation({ user, loading }: LandingNavigationProps) {
                 <Button asChild>
                   <Link to="/dashboard">
                     <User className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
-                    {t('dashboard', isRTL ? 'لوحة التحكم' : 'Dashboard')}
+                    {t('nav.dashboard', isRTL ? 'لوحة التحكم' : 'Dashboard')}
                   </Link>
                 </Button>
               </div>
