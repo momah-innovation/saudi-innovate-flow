@@ -1,0 +1,41 @@
+-- Add new translation keys for OrganizationShowcase and UnsplashImageBrowser components
+INSERT INTO system_translations (translation_key, text_en, text_ar, category) VALUES
+
+-- OrganizationShowcase translations
+('organization_showcase.error_loading_data', 'Error loading organization data', 'خطأ في تحميل بيانات المؤسسة', 'organization'),
+('organization_showcase.profile_coming_soon', 'Opening {{type}} profile page - Feature coming soon!', 'فتح صفحة ملف {{type}} - الميزة قريباً!', 'organization'),
+('organization_showcase.all_status', 'All Status', 'جميع الحالات', 'organization'),
+('organization_showcase.active', 'Active', 'نشط', 'organization'),
+('organization_showcase.inactive', 'Inactive', 'غير نشط', 'organization'),
+('organization_showcase.forming', 'Forming', 'قيد التكوين', 'organization'),
+('organization_showcase.all_types', 'All Types', 'جميع الأنواع', 'organization'),
+('organization_showcase.corporate', 'Corporate', 'شركات', 'organization'),
+('organization_showcase.academic', 'Academic', 'أكاديمي', 'organization'),
+('organization_showcase.government', 'Government', 'حكومي', 'organization'),
+('organization_showcase.technology', 'Technology', 'تقنية', 'organization'),
+('organization_showcase.media', 'Media', 'إعلام', 'organization'),
+('organization_showcase.all', 'All', 'الكل', 'organization'),
+('organization_showcase.title', 'Organization Directory', 'دليل المؤسسات', 'organization'),
+('organization_showcase.description', 'Explore our innovation ecosystem - teams, partners, and sectors', 'استكشف نظام الابتكار لدينا - الفرق والشركاء والقطاعات', 'organization'),
+('organization_showcase.search_placeholder', 'Search organizations...', 'البحث في المؤسسات...', 'organization'),
+('organization_showcase.filter_placeholder', 'Filter by...', 'تصفية حسب...', 'organization'),
+('organization_showcase.innovation_teams', 'Innovation Teams', 'فرق الابتكار', 'organization'),
+('organization_showcase.active_teams_count', '{{count}} active teams', '{{count}} فريق نشط', 'organization'),
+('organization_showcase.strategic_partners', 'Strategic Partners', 'الشركاء الاستراتيجيون', 'organization'),
+('organization_showcase.active_partnerships_count', '{{count}} active partnerships', '{{count}} شراكة نشطة', 'organization'),
+('organization_showcase.focus_sectors', 'Focus Sectors', 'القطاعات المستهدفة', 'organization'),
+('organization_showcase.vision_2030_aligned', 'Vision 2030 aligned', 'متوافقة مع رؤية 2030', 'organization'),
+('organization_showcase.no_teams_found', 'No teams found', 'لم يتم العثور على فرق', 'organization'),
+('organization_showcase.adjust_search_criteria', 'Try adjusting your search criteria', 'جرب تعديل معايير البحث', 'organization'),
+('organization_showcase.no_partners_found', 'No partners found', 'لم يتم العثور على شركاء', 'organization'),
+('organization_showcase.no_sectors_found', 'No sectors found', 'لم يتم العثور على قطاعات', 'organization'),
+
+-- UnsplashImageBrowser translations
+('unsplash_browser.search_failed', 'Failed to search images', 'فشل في البحث عن الصور', 'media'),
+('unsplash_browser.search_placeholder', 'Search for images...', 'البحث عن الصور...', 'media'),
+('unsplash_browser.suggestions', 'Suggestions', 'اقتراحات', 'media'),
+('unsplash_browser.recent', 'Recent', 'الأخيرة', 'media'),
+('unsplash_browser.search', 'Search', 'بحث', 'media'),
+('unsplash_browser.all', 'All', 'الكل', 'media'),
+('unsplash_browser.landscape', 'Landscape', 'أفقي', 'media'),
+('unsplash_browser.portrait', 'Portrait', 'عمودي', 'media');
