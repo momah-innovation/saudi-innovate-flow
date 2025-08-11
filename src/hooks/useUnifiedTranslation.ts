@@ -69,12 +69,36 @@ export function useUnifiedTranslation() {
       totalTranslations: dbTranslations.length,
       firstFew: dbTranslations.slice(0, 3).map(t => ({ key: t.translation_key, en: t.text_en, ar: t.text_ar }))
     });
+    
     dbTranslations.forEach(translation => {
       map.set(translation.translation_key, {
         en: translation.text_en,
         ar: translation.text_ar
       });
     });
+    
+    // Debug specific missing keys
+    const missingKeys = ['header.switch_language', 'header.toggle_theme', 'header.open_navigation', 'system_title'];
+    const foundKeys = missingKeys.filter(key => {
+      const found = dbTranslations.find(t => t.translation_key === key);
+      if (found) {
+        console.log(`✅ Found in DB: ${key} = ${found.text_en}`);
+        return true;
+      } else {
+        console.log(`❌ Missing from DB: ${key}`);
+        return false;
+      }
+    });
+    
+    console.log('🔍 Translation Map Debug:', {
+      totalDbTranslations: dbTranslations.length,
+      mapSize: map.size,
+      foundMissingKeys: foundKeys,
+      hasHeaderKeys: Array.from(map.keys()).filter(k => k.startsWith('header.')),
+      hasSystemTitle: map.has('system_title'),
+      language
+    });
+    
     logger.info('Translation map built successfully', { mapSize: map.size, language });
     return map;
   }, [dbTranslations, language]);
