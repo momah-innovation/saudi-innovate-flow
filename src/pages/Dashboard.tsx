@@ -182,9 +182,9 @@ export default function Dashboard() {
           </div>
         </section>
 
-        <div className="container mx-auto px-6 py-12">
+        <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
             {stats.map((stat, index) => (
               <Card key={index} className={cn(
                 "relative overflow-hidden border-2 transition-all duration-300 hover:shadow-lg hover:scale-105",
@@ -225,7 +225,7 @@ export default function Dashboard() {
               </Button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {quickActions.map((action, index) => (
                 <Card key={index} className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 border-2 hover:border-primary/20">
                   <CardContent className="p-6 text-center">

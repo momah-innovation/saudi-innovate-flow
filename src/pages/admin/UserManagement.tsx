@@ -13,6 +13,7 @@ import { UserInvitationWizard } from "@/components/admin/UserInvitationWizard";
 import { RoleRequestWizard } from "@/components/admin/RoleRequestWizard";
 import { ExpertProfileDialog } from "@/components/admin/ExpertProfileDialog";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { cn } from "@/lib/utils";
 
 export default function UserManagement() {
   const { t, language, isRTL } = useUnifiedTranslation();
