@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface PartnerProfileCardProps {
   partner: {
@@ -25,6 +26,7 @@ interface PartnerProfileCardProps {
 }
 
 export function PartnerProfileCard({ partner, onViewDetails, showActions = true }: PartnerProfileCardProps) {
+  const { t } = useUnifiedTranslation();
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -86,7 +88,7 @@ export function PartnerProfileCard({ partner, onViewDetails, showActions = true 
               </div>
               {partner.status && (
                 <Badge className={`text-xs ${getStatusColor(partner.status)}`}>
-                  {partner.status}
+                  {t(`partner_status.${partner.status}`, partner.status)}
                 </Badge>
               )}
             </div>
@@ -99,7 +101,7 @@ export function PartnerProfileCard({ partner, onViewDetails, showActions = true 
           {partner.partner_type && (
             <Badge className={`text-xs ${getPartnerTypeColor(partner.partner_type)}`}>
               <Building className="h-3 w-3 mr-1" />
-              {partner.partner_type}
+              {t(`partner_type.${partner.partner_type}`, partner.partner_type)}
             </Badge>
           )}
           {partner.funding_capacity && (
@@ -112,7 +114,7 @@ export function PartnerProfileCard({ partner, onViewDetails, showActions = true 
 
         {partner.contact_person && (
           <div className="text-sm">
-            <span className="font-medium">Contact: </span>
+            <span className="font-medium">{t('partner_profile.contact_label')}: </span>
             <span className="text-muted-foreground">{partner.contact_person}</span>
           </div>
         )}
@@ -133,7 +135,7 @@ export function PartnerProfileCard({ partner, onViewDetails, showActions = true 
             ))}
             {partner.capabilities.length > 3 && (
               <Badge variant="secondary" className="text-xs">
-                +{partner.capabilities.length - 3} more
+                {t('partner_profile.more_capabilities', `+${partner.capabilities.length - 3} more`)}
               </Badge>
             )}
           </div>
@@ -148,7 +150,7 @@ export function PartnerProfileCard({ partner, onViewDetails, showActions = true 
               className="flex-1"
             >
               <ExternalLink className="h-4 w-4 mr-2" />
-              View Details
+              {t('partner_profile.view_details')}
             </Button>
           </div>
         )}

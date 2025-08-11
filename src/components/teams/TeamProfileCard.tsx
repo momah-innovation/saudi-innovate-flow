@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface TeamProfileCardProps {
   team: {
@@ -22,6 +23,7 @@ interface TeamProfileCardProps {
 }
 
 export function TeamProfileCard({ team, onViewDetails, showActions = true }: TeamProfileCardProps) {
+  const { t } = useUnifiedTranslation();
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -63,7 +65,7 @@ export function TeamProfileCard({ team, onViewDetails, showActions = true }: Tea
               </div>
               {team.status && (
                 <Badge className={`text-xs ${getStatusColor(team.status)}`}>
-                  {team.status}
+                  {t(`team_status.${team.status}`, team.status)}
                 </Badge>
               )}
             </div>
@@ -94,7 +96,7 @@ export function TeamProfileCard({ team, onViewDetails, showActions = true }: Tea
           {team.max_members && (
             <Badge variant="outline" className="text-xs">
               <Users className="h-3 w-3 mr-1" />
-              Max {team.max_members} members
+              {t('team_profile.max_members', `Max ${team.max_members} members`)}
             </Badge>
           )}
         </div>
@@ -108,7 +110,7 @@ export function TeamProfileCard({ team, onViewDetails, showActions = true }: Tea
               className="flex-1"
             >
               <ExternalLink className="h-4 w-4 mr-2" />
-              View Details
+              {t('team_profile.view_details')}
             </Button>
           </div>
         )}

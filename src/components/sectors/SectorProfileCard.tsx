@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface SectorProfileCardProps {
   sector: {
@@ -19,6 +20,7 @@ interface SectorProfileCardProps {
 }
 
 export function SectorProfileCard({ sector, onViewDetails, showActions = true }: SectorProfileCardProps) {
+  const { t } = useUnifiedTranslation();
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -61,7 +63,7 @@ export function SectorProfileCard({ sector, onViewDetails, showActions = true }:
           <div className="flex items-start gap-2">
             <Target className="h-4 w-4 mt-0.5 text-primary shrink-0" />
             <div>
-              <p className="text-sm font-medium">Vision 2030 Alignment</p>
+              <p className="text-sm font-medium">{t('sector_profile.vision_2030_alignment')}</p>
               <p className="text-xs text-muted-foreground line-clamp-2">
                 {sector.vision_2030_alignment}
               </p>
@@ -72,11 +74,11 @@ export function SectorProfileCard({ sector, onViewDetails, showActions = true }:
         <div className="flex flex-wrap gap-2">
           <Badge variant="secondary" className="text-xs">
             <Globe className="h-3 w-3 mr-1" />
-            Government Sector
+            {t('sector_profile.government_sector')}
           </Badge>
           <Badge variant="outline" className="text-xs">
             <TrendingUp className="h-3 w-3 mr-1" />
-            Strategic Priority
+            {t('sector_profile.strategic_priority')}
           </Badge>
         </div>
 
@@ -89,7 +91,7 @@ export function SectorProfileCard({ sector, onViewDetails, showActions = true }:
               className="flex-1"
             >
               <ExternalLink className="h-4 w-4 mr-2" />
-              View Details
+              {t('sector_profile.view_details')}
             </Button>
           </div>
         )}
