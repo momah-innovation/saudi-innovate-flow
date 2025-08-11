@@ -76,11 +76,11 @@ const ParticipantManagementPage = () => {
 
   return (
     <AppShell>
-      <div className="p-6">
-        <div className="space-y-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="space-y-4 sm:space-y-6">
           <div>
-            <h1 className="text-3xl font-bold">{event.title_ar}</h1>
-            <p className="text-muted-foreground">Manage participants for this event</p>
+            <h1 className="text-2xl sm:text-3xl font-bold">{event.title_ar}</h1>
+            <p className="text-muted-foreground mt-1">Manage participants for this event</p>
           </div>
           <ParticipantManagement eventId={eventId!} eventTitle={event.title_ar} />
         </div>
