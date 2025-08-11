@@ -2,11 +2,24 @@ import React from 'react';
 import { AdminLayout } from '@/components/layout/AdminLayout';
 import { UnifiedSettingsManager } from '@/components/admin/settings/UnifiedSettingsManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Settings, RefreshCw } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { toast } from 'sonner';
 
 export default function SystemSettings() {
-  const { t } = useUnifiedTranslation();
+  const { t, refreshTranslations } = useUnifiedTranslation();
+  
+  const handleRefreshTranslations = async () => {
+    try {
+      toast.info('Refreshing translations...');
+      await refreshTranslations();
+      toast.success('Translations refreshed successfully');
+    } catch (error) {
+      toast.error('Failed to refresh translations');
+      console.error('Translation refresh error:', error);
+    }
+  };
   
   return (
     <AdminLayout
@@ -17,16 +30,27 @@ export default function SystemSettings() {
       ]}
     >
       <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
-            <Settings className="h-5 w-5 text-orange-600" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+              <Settings className="h-5 w-5 text-orange-600" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">{t('system_settings_page.title', 'System Settings')}</h1>
+              <p className="text-muted-foreground">
+                {t('system_settings_page.description', 'Configure system-wide settings and preferences')}
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold">{t('system_settings_page.title', 'System Settings')}</h1>
-            <p className="text-muted-foreground">
-              {t('system_settings_page.description', 'Configure system-wide settings and preferences')}
-            </p>
-          </div>
+          <Button
+            onClick={handleRefreshTranslations}
+            variant="outline"
+            size="sm"
+            className="gap-2"
+          >
+            <RefreshCw className="h-4 w-4" />
+            Refresh Translations
+          </Button>
         </div>
 
         <Card>

@@ -155,14 +155,14 @@ export function useUnifiedTranslation() {
         }
       } else if (!isLoading && translationMap.size > 0) {
         // Debug logging for missing keys when we have data loaded
-        if (key.startsWith('header.') || key === 'system_title') {
-          console.log('🔍 Debug: Key not found in translation map', { 
+        if (key.startsWith('settings.') && (key.includes('test_component') || key.includes('ui_initials'))) {
+          console.log('🔍 Debug: Missing settings key in translation map', { 
             key, 
             language, 
             mapSize: translationMap.size,
             hasKey: translationMap.has(key),
-            firstFewKeys: Array.from(translationMap.keys()).slice(0, 15),
-            keyPattern: `Keys starting with "${key.split('.')[0]}": ${Array.from(translationMap.keys()).filter(k => k.startsWith(key.split('.')[0])).slice(0, 5)}`
+            settingsKeys: Array.from(translationMap.keys()).filter(k => k.startsWith('settings.')).slice(0, 10),
+            testKeys: Array.from(translationMap.keys()).filter(k => k.includes('test_component') || k.includes('ui_initials'))
           });
         }
       }
@@ -304,12 +304,23 @@ export function useUnifiedTranslation() {
     };
   };
 
-  // Function to refresh translations
+  // Function to refresh translations - invalidate all translation queries
   const refreshTranslations = async () => {
+    console.log('🔄 Refreshing translations cache...');
+    
+    // Invalidate all translation-related queries
     await queryClient.invalidateQueries({
-      queryKey: queryKeys.system.translation(language)
+      predicate: (query) => {
+        const key = Array.isArray(query.queryKey) ? query.queryKey : [];
+        return key.includes('system-translations') || key.includes('translations') || 
+               (key[0] === 'system' && key[1] === 'translations');
+      }
     });
+    
+    // Force refetch
     await refetch();
+    
+    console.log('✅ Translation cache refreshed');
   };
 
   return {
