@@ -3,14 +3,17 @@ import { AdminLayout } from '@/components/layout/AdminLayout';
 import { UnifiedSettingsManager } from '@/components/admin/settings/UnifiedSettingsManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Settings } from 'lucide-react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export default function SystemSettings() {
+  const { t } = useUnifiedTranslation();
+  
   return (
     <AdminLayout
-      title="System Settings"
+      title={t('system_settings_page.title', 'System Settings')}
       breadcrumbs={[
-        { label: 'Admin', href: '/admin/dashboard' },
-        { label: 'System Settings', href: '/admin/system-settings' }
+        { label: t('admin.label', 'Admin'), href: '/admin/dashboard' },
+        { label: t('system_settings_page.title', 'System Settings'), href: '/admin/system-settings' }
       ]}
     >
       <div className="space-y-6">
@@ -19,18 +22,18 @@ export default function SystemSettings() {
             <Settings className="h-5 w-5 text-orange-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">System Settings</h1>
+            <h1 className="text-2xl font-bold">{t('system_settings_page.title', 'System Settings')}</h1>
             <p className="text-muted-foreground">
-              Configure system-wide settings and preferences
+              {t('system_settings_page.description', 'Configure system-wide settings and preferences')}
             </p>
           </div>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Settings Management</CardTitle>
+            <CardTitle>{t('settings_management.title', 'Settings Management')}</CardTitle>
             <CardDescription>
-              Manage all system settings from categories like general, security, AI features, and more.
+              {t('settings_management.description', 'Manage all system settings from categories like general, security, AI features, and more.')}
             </CardDescription>
           </CardHeader>
           <CardContent>
