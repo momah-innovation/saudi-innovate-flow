@@ -135,13 +135,13 @@ export function UnifiedHeader({
   const renderSystemHeader = () => (
     <header className="h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className={cn(
-        "container flex items-center justify-between px-4 h-full max-w-none",
+        "container flex items-center justify-between px-3 sm:px-4 h-full max-w-none",
         isRTL && "flex-row-reverse"
       )}>
         
         {/* Left Section: Logo, Sidebar Toggle, Title */}
         <div className={cn(
-          "flex items-center gap-3 min-w-0",
+          "flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial",
           isRTL && "flex-row-reverse"
         )}>
           {onSidebarToggle && (
@@ -149,7 +149,7 @@ export function UnifiedHeader({
               variant="ghost"
               size="sm"
               onClick={onSidebarToggle}
-              className="shrink-0 hover:bg-accent hover:text-accent-foreground transition-colors"
+              className="shrink-0 hover:bg-accent hover:text-accent-foreground transition-colors h-8 w-8 sm:h-auto sm:w-auto"
               aria-label={t('header.open_navigation', 'Open Navigation')}
             >
               <Menu className="h-4 w-4" />
@@ -158,11 +158,11 @@ export function UnifiedHeader({
           
           {/* Logo & Title */}
           <div className={cn(
-            "flex items-center gap-2 min-w-0",
+            "flex items-center gap-1 sm:gap-2 min-w-0 flex-1 sm:flex-initial",
             isRTL && "flex-row-reverse"
           )}>
-            <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center shrink-0 shadow-lg">
-              <span className="text-primary-foreground font-bold text-sm">🏗️</span>
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-md bg-primary flex items-center justify-center shrink-0 shadow-lg">
+              <span className="text-primary-foreground font-bold text-xs sm:text-sm">🏗️</span>
             </div>
             <div className={cn(
               "hidden sm:block min-w-0",
@@ -178,10 +178,10 @@ export function UnifiedHeader({
           </div>
         </div>
 
-        {/* Center Section: Search or Custom Content */}
-        <div className="flex-1 max-w-md mx-4">
+        {/* Center Section: Search or Custom Content - Hidden on small screens */}
+        <div className="hidden md:flex flex-1 max-w-md mx-4">
           {centerContent || (showSearch && (
-            <div className="relative">
+            <div className="relative w-full">
               <Search className={cn(
                 "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors",
                 isRTL ? "right-3" : "left-3"
@@ -203,7 +203,7 @@ export function UnifiedHeader({
 
         {/* Right Section: Actions & User */}
         <div className={cn(
-          "flex items-center gap-2",
+          "flex items-center gap-1 sm:gap-2",
           isRTL && "flex-row-reverse"
         )}>
           {rightContent || (
@@ -213,11 +213,11 @@ export function UnifiedHeader({
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="h-9 w-9 p-0"
+                  className="h-8 w-8 sm:h-9 sm:w-9 p-0"
                   onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
                   title={t('header.switch_language', 'Switch Language')}
                 >
-                  <Languages className="h-4 w-4" />
+                  <Languages className="h-3 w-3 sm:h-4 sm:w-4" />
                   <span className="sr-only">
                     {t('header.switch_language', 'Switch Language')}
                   </span>
@@ -229,14 +229,14 @@ export function UnifiedHeader({
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="h-9 w-9 p-0"
+                  className="h-8 w-8 sm:h-9 sm:w-9 p-0"
                   onClick={toggleDirection}
                   title={t('header.toggle_direction', 'Toggle Text Direction')}
                 >
                   {isRTL ? (
-                    <AlignRight className="h-4 w-4" />
+                    <AlignRight className="h-3 w-3 sm:h-4 sm:w-4" />
                   ) : (
-                    <AlignLeft className="h-4 w-4" />
+                    <AlignLeft className="h-3 w-3 sm:h-4 sm:w-4" />
                   )}
                   <span className="sr-only">
                     {t('header.toggle_direction', 'Toggle Text Direction')}
@@ -249,14 +249,14 @@ export function UnifiedHeader({
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="h-9 w-9 p-0"
+                  className="h-8 w-8 sm:h-9 sm:w-9 p-0"
                   onClick={toggleTheme}
                   title={t('header.toggle_theme', 'Toggle Theme')}
                 >
                   {theme.colorScheme === 'dark' ? (
-                    <Sun className="h-4 w-4" />
+                    <Sun className="h-3 w-3 sm:h-4 sm:w-4" />
                   ) : (
-                    <Moon className="h-4 w-4" />
+                    <Moon className="h-3 w-3 sm:h-4 sm:w-4" />
                   )}
                 </Button>
               )}
@@ -367,11 +367,11 @@ export function UnifiedHeader({
         <Button 
           variant="ghost" 
           size="sm" 
-          className="h-9 w-9 p-0"
+          className="h-8 w-8 sm:h-9 sm:w-9 p-0"
           onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
           title={t('header.switch_language', 'Switch Language')}
         >
-          <Languages className="h-4 w-4" />
+          <Languages className="h-3 w-3 sm:h-4 sm:w-4" />
           <span className="sr-only">
             {t('header.switch_language', 'Switch Language')}
           </span>
@@ -382,14 +382,14 @@ export function UnifiedHeader({
         <Button 
           variant="ghost" 
           size="sm" 
-          className="h-9 w-9 p-0"
+          className="h-8 w-8 sm:h-9 sm:w-9 p-0"
           onClick={toggleDirection}
           title={t('header.toggle_direction', 'Toggle Text Direction')}
         >
           {isRTL ? (
-            <AlignRight className="h-4 w-4" />
+            <AlignRight className="h-3 w-3 sm:h-4 sm:w-4" />
           ) : (
-            <AlignLeft className="h-4 w-4" />
+            <AlignLeft className="h-3 w-3 sm:h-4 sm:w-4" />
           )}
           <span className="sr-only">
             {t('header.toggle_direction', 'Toggle Text Direction')}
@@ -401,14 +401,14 @@ export function UnifiedHeader({
         <Button 
           variant="ghost" 
           size="sm" 
-          className="h-9 w-9 p-0"
+          className="h-8 w-8 sm:h-9 sm:w-9 p-0"
           onClick={toggleTheme}
           title={t('header.toggle_theme', 'Toggle Theme')}
         >
           {theme.colorScheme === 'dark' ? (
-            <Sun className="h-4 w-4" />
+            <Sun className="h-3 w-3 sm:h-4 sm:w-4" />
           ) : (
-            <Moon className="h-4 w-4" />
+            <Moon className="h-3 w-3 sm:h-4 sm:w-4" />
           )}
         </Button>
       )}

@@ -116,30 +116,36 @@ export default function UserManagement() {
   };
 
   const renderUserActions = (user: User) => (
-    <div className="flex items-center gap-2">
+    <div className={cn(
+      "flex items-center gap-1 sm:gap-2",
+      isRTL && "flex-row-reverse"
+    )}>
       <Button
         variant="outline"
         size="sm"
         onClick={() => handleUserAction("edit", user)}
+        className="h-8 px-2 sm:h-auto sm:px-3"
       >
-        <Settings className="h-4 w-4" />
-        {t("edit_profile")}
+        <Settings className="h-3 w-3 sm:h-4 sm:w-4" />
+        <span className="hidden sm:inline ml-1">{t("edit_profile")}</span>
       </Button>
       <Button
         variant="outline"
         size="sm"
         onClick={() => handleUserAction("role", user)}
+        className="h-8 px-2 sm:h-auto sm:px-3"
       >
-        <Users className="h-4 w-4" />
-        {t("manage_role")}
+        <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+        <span className="hidden sm:inline ml-1">{t("manage_role")}</span>
       </Button>
       <Button
         variant="outline"
         size="sm"
         onClick={() => handleUserAction("invite", user)}
+        className="h-8 px-2 sm:h-auto sm:px-3"
       >
-        <Mail className="h-4 w-4" />
-        {t("send_invitation")}
+        <Mail className="h-3 w-3 sm:h-4 sm:w-4" />
+        <span className="hidden sm:inline ml-1">{t("send_invitation")}</span>
       </Button>
     </div>
   );
@@ -151,9 +157,12 @@ export default function UserManagement() {
   const searchPlaceholder = t("search_users");
 
   const secondaryActions = (
-    <>
+    <div className={cn(
+      "flex items-center gap-2 flex-wrap",
+      isRTL && "flex-row-reverse"
+    )}>
       <Select>
-        <SelectTrigger className="w-32">
+        <SelectTrigger className="w-20 sm:w-32">
           <SelectValue placeholder="Export" />
         </SelectTrigger>
         <SelectContent>
@@ -162,11 +171,11 @@ export default function UserManagement() {
           <SelectItem value="csv">CSV</SelectItem>
         </SelectContent>
       </Select>
-      <Button variant="outline" className="gap-2">
-        <Users className="w-4 h-4" />
-        {bulkActionsLabel}
+      <Button variant="outline" className="gap-1 sm:gap-2 h-8 sm:h-auto px-2 sm:px-3">
+        <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+        <span className="hidden sm:inline">{bulkActionsLabel}</span>
       </Button>
-    </>
+    </div>
   );
 
   const filters = (
@@ -203,64 +212,88 @@ export default function UserManagement() {
   );
 
   const renderContent = () => (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
         <Card>
-          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <CardTitle className="text-sm font-medium">
+          <CardHeader className={cn(
+            "flex flex-row items-center justify-between space-y-0 pb-2",
+            isRTL ? 'flex-row-reverse' : ''
+          )}>
+            <CardTitle className="text-xs sm:text-sm font-medium">
               {t("total_users")}
             </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">156</div>
-            <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className="text-lg sm:text-2xl font-bold">156</div>
+            <p className={cn(
+              "text-xs text-muted-foreground",
+              isRTL ? 'text-right' : 'text-left'
+            )}>
               +12% {t("from_last_month")}
             </p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <CardTitle className="text-sm font-medium">
+          <CardHeader className={cn(
+            "flex flex-row items-center justify-between space-y-0 pb-2",
+            isRTL ? 'flex-row-reverse' : ''
+          )}>
+            <CardTitle className="text-xs sm:text-sm font-medium">
               {t("active_users")}
             </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">142</div>
-            <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className="text-lg sm:text-2xl font-bold">142</div>
+            <p className={cn(
+              "text-xs text-muted-foreground",
+              isRTL ? 'text-right' : 'text-left'
+            )}>
               +8% {t("from_last_month")}
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <CardTitle className="text-sm font-medium">
+          <CardHeader className={cn(
+            "flex flex-row items-center justify-between space-y-0 pb-2",
+            isRTL ? 'flex-row-reverse' : ''
+          )}>
+            <CardTitle className="text-xs sm:text-sm font-medium">
               {t("pending_invitations")}
             </CardTitle>
-            <Mail className="h-4 w-4 text-muted-foreground" />
+            <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">14</div>
-            <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className="text-lg sm:text-2xl font-bold">14</div>
+            <p className={cn(
+              "text-xs text-muted-foreground",
+              isRTL ? 'text-right' : 'text-left'
+            )}>
               -2% {t("from_last_month")}
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <CardTitle className="text-sm font-medium">
+          <CardHeader className={cn(
+            "flex flex-row items-center justify-between space-y-0 pb-2",
+            isRTL ? 'flex-row-reverse' : ''
+          )}>
+            <CardTitle className="text-xs sm:text-sm font-medium">
               {t("expert_users")}
             </CardTitle>
-            <Settings className="h-4 w-4 text-muted-foreground" />
+            <Settings className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">28</div>
-            <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className="text-lg sm:text-2xl font-bold">28</div>
+            <p className={cn(
+              "text-xs text-muted-foreground",
+              isRTL ? 'text-right' : 'text-left'
+            )}>
               +4% {t("from_last_month")}
             </p>
           </CardContent>
@@ -301,7 +334,7 @@ export default function UserManagement() {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
       <AdminBreadcrumb />
       <PageLayout
         title={title}
