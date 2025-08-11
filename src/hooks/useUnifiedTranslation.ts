@@ -114,15 +114,15 @@ export function useUnifiedTranslation() {
           return result;
         }
       } else if (!isLoading && translationMap.size > 0) {
-        // Debug logging for specific missing keys only when not loading and we have data
-        if (key === 'welcome' || key === 'nav.dashboard') {
+        // Debug logging for missing keys when we have data loaded
+        if (key.startsWith('header.') || key === 'system_title') {
           console.log('🔍 Debug: Key not found in translation map', { 
             key, 
             language, 
             mapSize: translationMap.size,
-            hasWelcome: translationMap.has('welcome'),
-            hasNavDashboard: translationMap.has('nav.dashboard'),
-            firstFewKeys: Array.from(translationMap.keys()).slice(0, 10)
+            hasKey: translationMap.has(key),
+            firstFewKeys: Array.from(translationMap.keys()).slice(0, 15),
+            keyPattern: `Keys starting with "${key.split('.')[0]}": ${Array.from(translationMap.keys()).filter(k => k.startsWith(key.split('.')[0])).slice(0, 5)}`
           });
         }
       }
