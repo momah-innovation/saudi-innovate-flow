@@ -280,7 +280,7 @@ export const ProfileManager: React.FC = () => {
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     disabled={!isEditing}
-                    placeholder={t('phone_placeholder', '+966 50 123 4567')}
+                    placeholder={t('phone_placeholder')}
                   />
                 </div>
                 <div className="space-y-2">

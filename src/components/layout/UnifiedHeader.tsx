@@ -111,11 +111,11 @@ export function UnifiedHeader({
 
   // Dynamic content based on variant
   const getSystemTitle = () => {
-    return t('system_title', 'Ruwād Innovation System');
+    return t('system_title');
   };
 
   const getSearchPlaceholder = () => {
-    return searchPlaceholder || t('search_placeholder', 'Search...');
+    return searchPlaceholder || t('search_placeholder');
   };
 
   const handleSearchChange = (value: string) => {
