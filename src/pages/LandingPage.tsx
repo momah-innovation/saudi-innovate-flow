@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useNavigate, Link } from "react-router-dom";
 import { useDirection } from "@/components/ui/direction-provider";
+import { useAuth } from "@/contexts/AuthContext";
 import { useLandingPageData } from "@/hooks/useLandingPageData";
 import { LandingNavigation } from "@/components/landing/LandingNavigation";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,18 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!loading && user) {
+      console.log('🔄 Redirecting authenticated user from landing to dashboard');
+      navigate('/dashboard', { replace: true });
+      return;
+    }
+  }, [user, loading, navigate]);
+
   // Force light mode for landing page
   useEffect(() => {
     const root = document.documentElement;
@@ -39,9 +52,17 @@ export default function LandingPage() {
     };
   }, []);
 
-  const navigate = useNavigate();
+  // Show loading state while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   const { language, setLanguage, isRTL } = useDirection();
-  const { faqs, statistics, loading, getText, getProcessSteps } = useLandingPageData(language);
+  const { faqs, statistics, loading: dataLoading, getText, getProcessSteps } = useLandingPageData(language);
 
   const features = [
     {
@@ -191,7 +212,7 @@ export default function LandingPage() {
       </section>
 
       {/* Statistics Section */}
-      {!loading && statistics.length > 0 && (
+      {!dataLoading && statistics.length > 0 && (
         <section className="py-16 px-4 bg-muted/30">
           <div className="container mx-auto">
             <div className={`text-center mb-12 ${isRTL ? 'text-right' : ''}`}>
@@ -229,7 +250,7 @@ export default function LandingPage() {
       )}
 
       {/* How It Works Section */}
-      {!loading && processSteps.length > 0 && (
+      {!dataLoading && processSteps.length > 0 && (
         <section className="py-20 px-4">
           <div className="container mx-auto">
             <div className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}>
@@ -376,7 +397,7 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ Section */}
-      {!loading && faqs.length > 0 && (
+      {!dataLoading && faqs.length > 0 && (
         <section className="py-20 px-4 bg-muted/30">
           <div className="container mx-auto max-w-4xl">
             <div className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}>
