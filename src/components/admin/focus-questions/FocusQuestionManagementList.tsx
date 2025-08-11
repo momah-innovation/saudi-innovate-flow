@@ -81,7 +81,7 @@ export function FocusQuestionManagementList() {
     } catch (error) {
       logger.error('Error fetching focus questions', { component: 'FocusQuestionManagementList', action: 'fetchFocusQuestions' }, error as Error);
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('focusQuestions.loadError', 'Failed to load focus questions'),
         variant: "destructive"
       });
@@ -107,7 +107,7 @@ export function FocusQuestionManagementList() {
     } catch (error) {
       logger.error('Error deleting focus question', { component: 'FocusQuestionManagementList', action: 'handleDelete' }, error as Error);
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('focusQuestions.deleteError', 'Failed to delete focus question'),
         variant: "destructive"
       });

@@ -133,13 +133,13 @@ export const TranslationManager: React.FC = () => {
       URL.revokeObjectURL(url);
 
       toast({
-        title: t('success', 'Success'),
+        title: t('success'),
         description: t('translations.downloadSuccess', `${language.toUpperCase()} translations downloaded successfully`),
       });
     } catch (error) {
       logger.error('Translation download error', { component: 'TranslationManager', action: 'downloadTranslationsJSON', language }, error as Error);
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('translations.downloadError', `Failed to download ${language.toUpperCase()} translations`),
         variant: "destructive",
       });
@@ -179,7 +179,7 @@ export const TranslationManager: React.FC = () => {
     } catch (error) {
       logger.error('Error saving translation', { component: 'TranslationManager', action: 'saveTranslation' }, error as Error);
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('translations.saveError', 'Failed to save translation'),
         variant: "destructive",
       });

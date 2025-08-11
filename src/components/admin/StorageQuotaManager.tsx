@@ -110,7 +110,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
       setQuotaSize('')
     } else {
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: result.error,
         variant: 'destructive'
       })
@@ -131,7 +131,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
       })
     } else {
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: result.error,
         variant: 'destructive'
       })

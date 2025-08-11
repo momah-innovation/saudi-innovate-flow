@@ -80,14 +80,14 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
       onSettingChange(key, value);
       
       toast({
-        title: t('success', 'Success'),
-        description: t('settingUpdated', 'Setting updated successfully')
+        title: t('success'),
+        description: t('settingUpdated')
       });
     } catch (error) {
       logger.error('Error updating idea setting', { component: 'IdeaSettings', action: 'updateSystemSetting', key }, error as Error);
       toast({
-        title: t('error', 'Error'),
-        description: t('updateSettingError', 'Failed to update setting'),
+        title: t('error'),
+        description: t('updateSettingError'),
         variant: "destructive"
       });
     }

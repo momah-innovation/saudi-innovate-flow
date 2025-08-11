@@ -213,7 +213,7 @@ export function OpportunityManagementList({
         filters 
       }, error as Error);
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('opportunities.fetch_error', 'Failed to fetch opportunities list'),
         variant: "destructive",
       });

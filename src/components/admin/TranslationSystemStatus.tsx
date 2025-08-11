@@ -30,12 +30,12 @@ export const TranslationSystemStatus: React.FC = () => {
       window.location.reload();
       
       toast({
-        title: t('success', 'Success'),
+        title: t('success'),
         description: t('translation.cache.refresh_success', 'Translation cache refreshed successfully'),
       });
     } catch (error) {
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('translation.cache.refresh_error', 'Failed to refresh translation cache'),
         variant: "destructive",
       });

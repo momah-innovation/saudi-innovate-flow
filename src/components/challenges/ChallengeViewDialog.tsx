@@ -133,7 +133,7 @@ export function ChallengeViewDialog({
         challengeId: challenge.id 
       }, error as Error);
       toast({
-        title: t('error', 'Error'),
+        title: t('error'),
         description: t('challenges.submissions_error', 'Failed to load submissions'),
         variant: "destructive"
       });
