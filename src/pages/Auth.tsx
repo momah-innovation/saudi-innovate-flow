@@ -38,7 +38,7 @@ const AuthPage = () => {
   // Show loading spinner while checking auth state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );

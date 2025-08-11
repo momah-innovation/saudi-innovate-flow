@@ -33,7 +33,7 @@
 | Page | RTL/LTR | Mobile | Status | Notes |
 |------|---------|--------|--------|-------|
 | LandingPage.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
-| Auth (Login/Register) | ⏳ | ⏳ | ⏳ | Authentication flows |
+| Auth (Login/Register) | ✅ | ✅ | ✅ | RTL and mobile complete |
 
 ### 🏠 **Dashboard Pages**
 | Page | RTL/LTR | Mobile | Status | Notes |
@@ -66,6 +66,8 @@
 | ExpertProfile.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | PartnerProfile.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 | ParticipantManagement.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| UserProfile.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
+| ProfileSetup.tsx | ✅ | ✅ | ✅ | RTL and mobile complete |
 
 ### 🔧 **Admin Pages**
 | Page | RTL/LTR | Mobile | Status | Notes |
@@ -116,17 +118,17 @@
 ### 🔧 **UI Components**
 | Component | RTL/LTR | Mobile | Status | Notes |
 |-----------|---------|--------|--------|-------|
-| Button.tsx | ⏳ | ⏳ | ⏳ | Button component |
-| Input.tsx | ⏳ | ⏳ | ⏳ | Input fields |
-| Select.tsx | ⏳ | ⏳ | ⏳ | Select dropdowns |
-| Card.tsx | ⏳ | ⏳ | ⏳ | Card containers |
-| Dialog.tsx | ⏳ | ⏳ | ⏳ | Modal dialogs |
+| Button.tsx | ✅ | ✅ | ✅ | Enhanced with touch support |
+| Input.tsx | ✅ | ✅ | ✅ | Mobile-optimized with touch-manipulation |
+| Select.tsx | ✅ | ✅ | ✅ | Responsive dropdown |
+| Card.tsx | ✅ | ✅ | ✅ | Responsive padding (p-4 sm:p-6) |
+| Dialog.tsx | ✅ | ✅ | ✅ | Mobile-friendly modals |
 
 ---
 
 ## CURRENT AUDIT PROGRESS
 
-### ✅ Completed (32/50+ pages)
+### ✅ Completed (42/50+ pages)
 - AppShell.tsx (RTL ✅, Mobile pending)
 - UnifiedHeader.tsx (RTL ✅, Mobile ✅) 
 - NavigationSidebar.tsx (RTL ✅, Mobile ✅)
@@ -161,11 +163,19 @@
 - IdeaSubmissionWizard.tsx (RTL ✅, Mobile ✅)
 - IdeaDrafts.tsx (RTL ✅, Mobile ✅)
 - Opportunities.tsx (RTL ✅, Mobile ✅)
+- UserProfile.tsx (RTL ✅, Mobile ✅)
+- ProfileSetup.tsx (RTL ✅, Mobile ✅)
+- Auth.tsx (RTL ✅, Mobile ✅)
+- Button.tsx (RTL ✅, Mobile ✅)
+- Input.tsx (RTL ✅, Mobile ✅)
+- Card.tsx (RTL ✅, Mobile ✅)
+- Select.tsx (RTL ✅, Mobile ✅)
+- Dialog.tsx (RTL ✅, Mobile ✅)
 
 ### 🔄 In Progress (0/50+ pages)  
 - None currently
 
-### ⏳ Pending (18+ pages)
+### ⏳ Pending (8+ pages)
 - All remaining pages and components
 
 ---
