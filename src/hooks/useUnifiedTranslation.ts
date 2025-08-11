@@ -25,31 +25,45 @@ export function useUnifiedTranslation() {
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
 
-  // Fetch database translations with React Query - Optimized for large datasets
+  // Fetch database translations with React Query - Optimized for large datasets with pagination
   const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
     queryKey: queryKeys.system.translation(language),
     queryFn: async () => {
-      logger.debug('Fetching unified translations from database', { language });
+      logger.debug('Fetching unified translations from database with pagination', { language });
       
       try {
-        // Fetch ALL translations - override default 1000 row limit
-        const { data, error } = await supabase
-          .from('system_translations')
-          .select('*')
-          .order('translation_key')
-          .limit(10000); // Set high limit to get all translations
+        let allTranslations: SystemTranslation[] = [];
+        let from = 0;
+        const batchSize = 1000;
+        let hasMore = true;
 
-        if (error) {
-          logger.error('Database translation fetch failed', { language }, error);
-          throw error;
+        while (hasMore) {
+          const { data, error } = await supabase
+            .from('system_translations')
+            .select('*')
+            .order('translation_key')
+            .range(from, from + batchSize - 1);
+
+          if (error) {
+            logger.error('Database translation fetch failed', { language }, error);
+            throw error;
+          }
+
+          if (data && data.length > 0) {
+            allTranslations = [...allTranslations, ...data];
+            from += batchSize;
+            hasMore = data.length === batchSize;
+            
+            logger.debug('Fetched batch', { language });
+          } else {
+            hasMore = false;
+          }
         }
         
-        logger.info('Database translations fetched successfully', { 
-          language, 
-          count: data?.length || 0
-        });
+        logger.info('All database translations fetched successfully', { language });
+        console.log(`🎉 Pagination complete: Fetched ${allTranslations.length} total translations`);
         
-        return data as SystemTranslation[];
+        return allTranslations as SystemTranslation[];
       } catch (error) {
         logger.error('Failed to fetch translations', { language }, error as Error);
         throw error;
