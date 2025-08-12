@@ -43,6 +43,12 @@ export default function Challenges() {
   console.log('🔍 About to call useChallengesData...');
   // Use enhanced challenges data hook
   const { challenges, loading, stats, refetch } = useChallengesData();
+  
+  console.log('🚀 Challenges Page Debug:');
+  console.log('🚀 Loading:', loading);
+  console.log('🚀 Challenges length:', challenges?.length || 0);
+  console.log('🚀 Challenges data:', challenges);
+  console.log('🚀 Stats:', stats);
   console.log('✅ useChallengesData called, got:', { challengesCount: challenges.length, loading, stats });
   
   // State management
