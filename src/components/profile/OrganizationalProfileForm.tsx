@@ -13,12 +13,12 @@ import { logger } from '@/utils/logger';
 import { Building, MapPin, Briefcase, Globe, Settings } from 'lucide-react';
 
 interface OrganizationalProfileFormProps {
-  userId: string;
-  currentProfile?: any;
-  onUpdate?: () => void;
+  userProfile: any;
+  isEditing: boolean;
+  onSave: () => Promise<void>;
 }
 
-export function OrganizationalProfileForm({ userId, currentProfile, onUpdate }: OrganizationalProfileFormProps) {
+export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: OrganizationalProfileFormProps) {
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const {
@@ -58,26 +58,26 @@ export function OrganizationalProfileForm({ userId, currentProfile, onUpdate }: 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (currentProfile) {
+    if (userProfile) {
       setFormData({
-        name: currentProfile.name || '',
-        email: currentProfile.email || '',
-        phone: currentProfile.phone || '',
-        position: currentProfile.position || '',
-        department: currentProfile.department || '',
-        sector: currentProfile.sector || '',
-        sector_id: currentProfile.sector_id || '',
-        entity_id: currentProfile.entity_id || '',
-        deputy_id: currentProfile.deputy_id || '',
-        department_id: currentProfile.department_id || '',
-        domain_id: currentProfile.domain_id || '',
-        sub_domain_id: currentProfile.sub_domain_id || '',
-        service_id: currentProfile.service_id || '',
-        bio: currentProfile.bio || '',
-        organization: currentProfile.organization || '',
+        name: userProfile.name || '',
+        email: userProfile.email || '',
+        phone: userProfile.phone || '',
+        position: userProfile.position || '',
+        department: userProfile.department || '',
+        sector: userProfile.sector || '',
+        sector_id: userProfile.sector_id || '',
+        entity_id: userProfile.entity_id || '',
+        deputy_id: userProfile.deputy_id || '',
+        department_id: userProfile.department_id || '',
+        domain_id: userProfile.domain_id || '',
+        sub_domain_id: userProfile.sub_domain_id || '',
+        service_id: userProfile.service_id || '',
+        bio: userProfile.bio || '',
+        organization: userProfile.organization || '',
       });
     }
-  }, [currentProfile]);
+  }, [userProfile]);
 
   // Filter functions for hierarchical dropdowns
   const getFilteredEntities = () => {
@@ -178,7 +178,7 @@ export function OrganizationalProfileForm({ userId, currentProfile, onUpdate }: 
           organization: formData.organization,
           updated_at: new Date().toISOString()
         })
-        .eq('id', userId);
+        .eq('id', userProfile?.id);
 
       if (error) throw error;
 
@@ -187,9 +187,9 @@ export function OrganizationalProfileForm({ userId, currentProfile, onUpdate }: 
         description: isRTL ? 'تم تحديث البيانات التنظيمية بنجاح' : 'Organizational data updated successfully'
       });
 
-      onUpdate?.();
+      await onSave();
     } catch (error) {
-      logger.error('Failed to update organizational profile', { userId }, error as Error);
+      logger.error('Failed to update organizational profile', { userId: userProfile?.id }, error as Error);
       toast({
         title: 'Error',
         description: 'Failed to update organizational data',
@@ -219,6 +219,7 @@ export function OrganizationalProfileForm({ userId, currentProfile, onUpdate }: 
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 placeholder={isRTL ? 'أدخل الاسم' : 'Enter name'}
+                disabled={!isEditing}
               />
             </div>
             

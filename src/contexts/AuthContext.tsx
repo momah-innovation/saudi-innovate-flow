@@ -59,6 +59,15 @@ interface UserProfile {
   linkedin_url?: string;
   twitter_url?: string;
   roles?: string[];
+  
+  // New organizational hierarchy fields
+  sector_id?: string;
+  entity_id?: string;
+  deputy_id?: string;
+  department_id?: string;
+  domain_id?: string;
+  sub_domain_id?: string;
+  service_id?: string;
 }
 
 interface ProfileUpdateData {

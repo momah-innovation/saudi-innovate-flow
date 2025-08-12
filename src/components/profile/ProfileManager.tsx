@@ -17,6 +17,7 @@ import {
   Bell, Lock, Camera, Save, Edit2, CheckCircle
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { OrganizationalProfileForm } from './OrganizationalProfileForm';
 
 interface ProfileSettings {
   emailNotifications: boolean;
@@ -311,35 +312,11 @@ export const ProfileManager: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="professional" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('professional_information')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="position">{t('current_position')}</Label>
-                  <Input
-                    id="position"
-                    value={formData.position}
-                    onChange={(e) => setFormData({...formData, position: e.target.value})}
-                    disabled={!isEditing}
-                     placeholder={t('it_manager')}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="department">{t('department_administration')}</Label>
-                  <Input
-                    id="department"
-                    value={formData.department}
-                    onChange={(e) => setFormData({...formData, department: e.target.value})}
-                    disabled={!isEditing}
-                     placeholder={t('it_department')}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <OrganizationalProfileForm 
+            isEditing={isEditing}
+            onSave={handleSaveProfile}
+            userProfile={userProfile}
+          />
         </TabsContent>
 
         <TabsContent value="notifications" className="space-y-6">
