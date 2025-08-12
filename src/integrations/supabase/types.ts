@@ -9381,6 +9381,7 @@ export type Database = {
         | "facilitator"
         | "team_member"
         | "organization_admin"
+        | "organization_member"
       role_hierarchy_level: "1" | "2" | "3" | "4" | "5"
     }
     CompositeTypes: {
@@ -9539,6 +9540,7 @@ export const Constants = {
         "facilitator",
         "team_member",
         "organization_admin",
+        "organization_member",
       ],
       role_hierarchy_level: ["1", "2", "3", "4", "5"],
     },
