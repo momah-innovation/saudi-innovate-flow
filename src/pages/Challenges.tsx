@@ -453,19 +453,21 @@ export default function Challenges() {
     <div className="space-y-6">
       <AppShell enableCollaboration={true}>
         <div className="container mx-auto px-4 py-8">
-          <GlobalBreadcrumb />
-
-          <div className="mb-6">
-            {/* Simple hero without complex props */}
-            <div className="text-center py-8">
-              <h1 className="text-3xl font-bold mb-4">
-                {isRTL ? 'التحديات' : 'Challenges'}
-              </h1>
-              <p className="text-muted-foreground">
-                {isRTL ? 'استكشف التحديات المتاحة وشارك فيها' : 'Explore available challenges and participate'}
-              </p>
-            </div>
-          </div>
+          {/* Enhanced Hero Section */}
+          <EnhancedChallengesHero 
+            totalChallenges={stats.totalChallenges}
+            activeChallenges={stats.activeChallenges}
+            participantsCount={stats.totalParticipants}
+            completedChallenges={challenges.filter(c => c.status === 'completed').length}
+            canCreateChallenge={hasRole('admin') || hasRole('evaluator')}
+            onCreateChallenge={() => navigate('/admin/challenges/create')}
+            featuredChallenge={challenges.find(c => c.trending) ? {
+              id: challenges.find(c => c.trending)!.id,
+              title_ar: challenges.find(c => c.trending)!.title_ar,
+              participant_count: challenges.find(c => c.trending)!.participants,
+              end_date: challenges.find(c => c.trending)!.end_date || ''
+            } : undefined}
+          />
 
           {/* Enhanced Filters */}
           <ChallengeFilters
@@ -530,7 +532,7 @@ export default function Challenges() {
                     {filteredChallenges.map((challenge) => (
                       <EnhancedChallengeCard
                         key={challenge.id}
-                        challenge={challenge}
+                        challenge={challenge as any}
                         onViewDetails={handleViewDetails}
                         onParticipate={handleParticipate}
                         onLike={handleLike}
@@ -546,7 +548,7 @@ export default function Challenges() {
                     {filteredChallenges.map((challenge) => (
                       <EnhancedChallengeCard
                         key={challenge.id}
-                        challenge={challenge}
+                        challenge={challenge as any}
                         onViewDetails={handleViewDetails}
                         onParticipate={handleParticipate}
                         onLike={handleLike}
