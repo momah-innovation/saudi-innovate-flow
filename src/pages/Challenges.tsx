@@ -214,6 +214,9 @@ export default function Challenges() {
   };
 
   const handleViewDetails = (challenge: any) => {
+    console.log('🔍 handleViewDetails called with challenge:', challenge);
+    console.log('🔍 Challenge ID:', challenge.id);
+    console.log('🔍 Will navigate to:', `/challenges/${challenge.id}`);
     navigate(`/challenges/${challenge.id}`);
   };
 
