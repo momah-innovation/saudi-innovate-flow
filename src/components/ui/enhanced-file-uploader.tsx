@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
 import { logger } from '@/utils/logger'
 
 export interface EnhancedFileUploaderProps {
@@ -64,6 +65,7 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
   const [dragOver, setDragOver] = useState(false)
   const { uploadFiles: uploadFilesHook, commitTemporaryFiles, cleanupTemporaryFiles, getFileUrl } = useFileUploader()
   const { toast } = useToast()
+  const { t } = useUnifiedTranslation()
 
   // Use temporary upload config
   const tempConfig: FileUploadConfig = {
@@ -126,7 +128,7 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
     const validation = validateFiles(files)
     if (!validation.valid) {
       toast({
-        title: 'Upload validation failed',
+        title: t('ui.file_upload.validation_failed'),
         description: validation.errors.join('\n'),
         variant: 'destructive'
       })
@@ -157,8 +159,8 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
         onUploadComplete?.(result.files)
         
         toast({
-          title: 'Upload successful',
-          description: `${result.files.length} file(s) uploaded successfully`
+          title: t('ui.file_upload.upload_successful'),
+          description: t('ui.file_upload.files_uploaded_successfully', { count: result.files.length })
         })
       } else {
         throw new Error(result.errors?.[0]?.error || 'Upload failed')
@@ -166,8 +168,8 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
     } catch (error) {
       logger.error('Upload error', { component: 'EnhancedFileUploader', action: 'upload' }, error as Error);
       toast({
-        title: 'Upload failed',
-        description: error instanceof Error ? error.message : 'An error occurred during upload',
+        title: t('ui.file_upload.upload_failed'),
+        description: error instanceof Error ? error.message : t('ui.file_upload.upload_error_occurred'),
         variant: 'destructive'
       })
     } finally {
@@ -311,7 +313,7 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
           {/* File List */}
           {uploadedFiles.length > 0 && (
             <div className="space-y-2">
-              <h4 className="text-sm font-medium">Uploaded Files</h4>
+              <h4 className="text-sm font-medium">{t('ui.file_uploader.uploaded_files')}</h4>
               {uploadedFiles.map((file, index) => (
                 <div
                   key={index}

@@ -77,8 +77,8 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
     } catch (error) {
       logger.error('Error fetching file versions', { component: 'VersionedFileUploader', action: 'fetchVersions', fileRecordId }, error as Error)
       toast({
-        title: 'Error',
-        description: 'Failed to fetch file versions',
+        title: t('ui.file_versioned.error'),
+        description: t('ui.file_versioned.failed_fetch_versions'),
         variant: 'destructive'
       })
     } finally {
@@ -96,8 +96,8 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
   const createNewVersion = async () => {
     if (!selectedFile) {
       toast({
-        title: 'Error',
-        description: 'Please select a file',
+        title: t('ui.file_versioned.error'),
+        description: t('ui.file_versioned.please_select_file'),
         variant: 'destructive'
       })
       return
@@ -126,7 +126,7 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
       if (versionError) throw versionError
 
       toast({
-        title: 'Success',
+        title: t('ui.file_versioned.success'),
         description: 'New file version created successfully'
       })
 
@@ -142,8 +142,8 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
     } catch (error) {
       logger.error('Error creating version', { component: 'VersionedFileUploader', action: 'createNewVersion', fileRecordId }, error as Error)
       toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to create new version',
+        title: t('ui.file_versioned.error'),
+        description: error instanceof Error ? error.message : t('ui.file_versioned.failed_create_version'),
         variant: 'destructive'
       })
     } finally {
@@ -162,16 +162,16 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
       if (error) throw error
 
       toast({
-        title: 'Success',
-        description: `Version ${versionNumber} restored successfully`
+        title: t('ui.file_versioned.success'),
+        description: t('ui.file_versioned.version_restored', { version: versionNumber })
       })
 
       await fetchVersions()
     } catch (error) {
       logger.error('Error restoring version', { component: 'VersionedFileUploader', action: 'restoreVersion', versionId }, error as Error)
       toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to restore version',
+        title: t('ui.file_versioned.error'),
+        description: error instanceof Error ? error.message : t('ui.file_versioned.failed_restore_version'),
         variant: 'destructive'
       })
     } finally {
@@ -234,11 +234,11 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Upload New Version</DialogTitle>
+                <DialogTitle>{t('ui.file_versioned.upload_new_version')}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="file">Select File</Label>
+                  <Label htmlFor="file">{t('ui.file_versioned.select_file')}</Label>
                   <Input
                     id="file"
                     type="file"
@@ -299,7 +299,7 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
               <Card className="border-primary/50 bg-primary/5">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <Badge variant="default">Current Version</Badge>
+                    <Badge variant="default">{t('ui.file_versioned.current_version')}</Badge>
                     <span className="text-sm text-muted-foreground">
                       v{currentVersion.version_number}
                     </span>
@@ -340,7 +340,7 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
               <>
                 <Separator />
                 <div>
-                  <h4 className="font-medium mb-3">Previous Versions</h4>
+                  <h4 className="font-medium mb-3">{t('ui.file_versioned.previous_versions')}</h4>
                   <div className="space-y-3">
                     {versions
                       .filter(v => !v.is_current)
