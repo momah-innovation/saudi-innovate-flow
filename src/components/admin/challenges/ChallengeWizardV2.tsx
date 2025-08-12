@@ -513,11 +513,11 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_sector', 'اختر القطاع')} />
                     </SelectTrigger>
                     <SelectContent>
-                      {systemLists.sectors.map((sector) => (
-                        <SelectItem key={sector.id} value={sector.id}>
-                          {sector.name_ar || sector.name}
-                        </SelectItem>
-                      ))}
+                       {systemLists.sectors.map((sector) => (
+                         <SelectItem key={sector.id} value={sector.id}>
+                           {sector.name_ar || sector.name_en || 'Unnamed Sector'}
+                         </SelectItem>
+                       ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -529,11 +529,11 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_deputy', 'اختر الوكالة')} />
                     </SelectTrigger>
                     <SelectContent>
-                      {systemLists.deputies.map((deputy) => (
-                        <SelectItem key={deputy.id} value={deputy.id}>
-                          {deputy.name_ar || deputy.name}
-                        </SelectItem>
-                      ))}
+                       {systemLists.deputies.map((deputy) => (
+                         <SelectItem key={deputy.id} value={deputy.id}>
+                           {deputy.name_ar || deputy.name || 'Unnamed Deputy'}
+                         </SelectItem>
+                       ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -547,11 +547,11 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_management', 'اختر الإدارة')} />
                     </SelectTrigger>
                     <SelectContent>
-                      {systemLists.departments.map((dept) => (
-                        <SelectItem key={dept.id} value={dept.id}>
-                          {dept.name_ar || dept.name}
-                        </SelectItem>
-                      ))}
+                       {systemLists.departments.map((dept) => (
+                         <SelectItem key={dept.id} value={dept.id}>
+                           {dept.name_ar || dept.name || 'Unnamed Department'}
+                         </SelectItem>
+                       ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -563,11 +563,11 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_domain', 'اختر المجال')} />
                     </SelectTrigger>
                     <SelectContent>
-                      {systemLists.domains.map((domain) => (
-                        <SelectItem key={domain.id} value={domain.id}>
-                          {domain.name_ar || domain.name}
-                        </SelectItem>
-                      ))}
+                       {systemLists.domains.map((domain) => (
+                         <SelectItem key={domain.id} value={domain.id}>
+                           {domain.name_ar || domain.name || 'Unnamed Domain'}
+                         </SelectItem>
+                       ))}
                     </SelectContent>
                   </Select>
                 </div>

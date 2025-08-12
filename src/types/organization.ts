@@ -156,5 +156,5 @@ export interface EntityWithChildren {
 }
 
 // Import and re-export from common types
-import { SystemSector } from './common';
-export { SystemSector } from './common';
+import type { SystemSector } from './common';
+export type { SystemSector } from './common';
