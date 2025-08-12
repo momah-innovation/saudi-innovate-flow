@@ -45,7 +45,7 @@ interface AdvancedFiltersProps {
 export function AdvancedFilters({
   searchTerm,
   onSearchChange,
-  searchPlaceholder = "Search...",
+  searchPlaceholder,
   filters,
   filtersOpen = false,
   onFiltersOpenChange,
@@ -72,7 +72,7 @@ export function AdvancedFilters({
         <div className="relative flex-1">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={searchPlaceholder || t('searchPlaceholder')}
+            placeholder={searchPlaceholder || t('ui.filters.search_placeholder')}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-10"
@@ -104,7 +104,7 @@ export function AdvancedFilters({
           <Button variant="outline" className="w-full justify-between">
             <span className="flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4" />
-              {t('advancedFilters')}
+              {t('ui.filters.advanced_filters')}
               {hasActiveFilters && (
                 <Badge variant="secondary" className="ml-2">
                   {activeFilterCount}
@@ -135,7 +135,7 @@ export function AdvancedFilters({
                 className="gap-2"
               >
                 <X className="w-4 h-4" />
-                {t('clearAllFilters')}
+                {t('ui.filters.clear_all_filters')}
               </Button>
             </div>
           )}
@@ -155,10 +155,10 @@ function FilterField({ filter }: { filter: FilterConfig }) {
           <Label>{filter.label}</Label>
           <Select value={filter.value || 'all'} onValueChange={filter.onChange}>
             <SelectTrigger>
-              <SelectValue placeholder={filter.placeholder || t('selectPlaceholder', { label: filter.label.toLowerCase() })} />
+              <SelectValue placeholder={filter.placeholder || t('ui.filters.select_placeholder', { label: filter.label.toLowerCase() })} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{t('allOption')}</SelectItem>
+              <SelectItem value="all">{t('ui.filters.all_option')}</SelectItem>
               {filter.options?.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
@@ -242,14 +242,14 @@ function FilterField({ filter }: { filter: FilterConfig }) {
               type="date"
               value={filter.value?.from || ''}
               onChange={(e) => filter.onChange?.({ ...filter.value, from: e.target.value })}
-              placeholder={t('fromPlaceholder')}
+              placeholder={t('ui.filters.from_placeholder')}
             />
-            <span>{t('to')}</span>
+            <span>{t('ui.filters.to')}</span>
             <Input
               type="date"
               value={filter.value?.to || ''}
               onChange={(e) => filter.onChange?.({ ...filter.value, to: e.target.value })}
-              placeholder={t('toPlaceholder')}
+              placeholder={t('ui.filters.to_placeholder')}
             />
           </div>
         </div>

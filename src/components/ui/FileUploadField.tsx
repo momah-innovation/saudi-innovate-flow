@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface FileUploadFieldProps {
   value?: string[];
@@ -35,13 +36,14 @@ export function FileUploadField({
   maxFiles = 5,
   maxFileSize = 10,
   acceptedTypes = ['image/*', 'application/pdf', '.doc', '.docx'],
-  placeholder = 'اسحب الملفات هنا أو اضغط للاختيار',
+  placeholder,
   className
 }: FileUploadFieldProps) {
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const getFileIcon = (type: string) => {
     if (type.startsWith('image/')) return Image;
@@ -64,8 +66,8 @@ export function FileUploadField({
     // Check file limits
     if (value.length + files.length > maxFiles) {
       toast({
-        title: 'تجاوز الحد الأقصى',
-        description: `يمكن رفع ${maxFiles} ملفات كحد أقصى`,
+        title: t('ui.file_upload.max_files_exceeded'),
+        description: t('ui.file_upload.max_files_description', { maxFiles }),
         variant: 'destructive',
       });
       return;
@@ -81,8 +83,8 @@ export function FileUploadField({
         // Check file size
         if (file.size > maxFileSize * 1024 * 1024) {
           toast({
-            title: 'ملف كبير جداً',
-            description: `حجم الملف يجب أن يكون أقل من ${maxFileSize} ميجابايت`,
+            title: t('ui.file_upload.file_too_large'),
+            description: t('ui.file_upload.file_size_limit', { maxSize: maxFileSize }),
             variant: 'destructive',
           });
           continue;
@@ -193,12 +195,12 @@ export function FileUploadField({
         <p className={cn(
           "text-sm text-muted-foreground mb-2 px-2",
           isRTL ? "text-right" : "text-left"
-        )}>{placeholder}</p>
+        )}>{placeholder || t('ui.file_upload.drag_files_here')}</p>
         <p className={cn(
           "text-xs text-muted-foreground px-2",
           isRTL ? "text-right" : "text-left"
         )}>
-          الحد الأقصى: {maxFiles} ملفات، {maxFileSize} ميجابايت لكل ملف
+          {t('ui.file_upload.max_limit_description', { maxFiles, maxSize: maxFileSize })}
         </p>
         {uploading && (
           <div className="mt-2">
@@ -213,7 +215,7 @@ export function FileUploadField({
           <h4 className={cn(
             "text-sm font-medium",
             isRTL ? "text-right" : "text-left"
-          )}>الملفات المرفوعة ({value.length})</h4>
+          )}>{t('ui.file_upload.uploaded_files', { count: value.length })}</h4>
           <div className="grid gap-2">
             {value.map((fileUrl, index) => {
               const filename = fileUrl.split('/').pop() || 'ملف';
@@ -232,7 +234,7 @@ export function FileUploadField({
                       <IconComponent className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                       <span className="text-sm truncate">{filename}</span>
                       <Badge variant="secondary" className="text-xs">
-                        مرفوع
+                        {t('ui.file_upload.uploaded')}
                       </Badge>
                     </div>
                     <Button
