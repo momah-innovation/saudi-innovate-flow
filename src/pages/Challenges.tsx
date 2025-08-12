@@ -433,14 +433,21 @@ export default function Challenges() {
     });
   };
 
-  const activeFiltersCount = Object.entries(filters).filter(([key, value]) => {
-    if (key === 'search') return value !== '';
-    if (key === 'status' || key === 'category' || key === 'difficulty') return value !== 'all';
-    if (key === 'features') return Array.isArray(value) && value.length > 0;
-    if (key === 'prizeRange') return value[0] !== 0 || value[1] !== dynamicMaxBudget;
-    if (key === 'participantRange') return value[0] !== 0 || value[1] !== dynamicMaxParticipants;
-    return false;
-  }).length;
+  const getActiveFiltersCount = () => {
+    return Object.entries(filters).filter(([key, value]) => {
+      if (key === 'search') return value !== '';
+      if (key === 'status' || key === 'category' || key === 'difficulty') return value !== 'all';
+      if (key === 'features') return Array.isArray(value) && value.length > 0;
+      if (key === 'prizeRange') return value[0] !== 0 || value[1] !== dynamicMaxBudget;
+      if (key === 'participantRange') return value[0] !== 0 || value[1] !== dynamicMaxParticipants;
+      return false;
+    }).length;
+  };
+
+  const handleSort = (field: string) => {
+    const newOrder = filters.sortBy === field && filters.sortOrder === 'asc' ? 'desc' : 'asc';
+    setFilters(prev => ({ ...prev, sortBy: field, sortOrder: newOrder }));
+  };
 
   return (
     <div className="space-y-6">
@@ -465,10 +472,10 @@ export default function Challenges() {
             filters={filters}
             onFiltersChange={handleFiltersChange}
             onClearFilters={handleClearFilters}
-            maxBudget={dynamicMaxBudget}
-            maxParticipants={dynamicMaxParticipants}
+            activeFiltersCount={getActiveFiltersCount()}
             className="mb-6"
-            challenges={challenges}
+            dynamicMaxBudget={dynamicMaxBudget}
+            dynamicMaxParticipants={dynamicMaxParticipants}
           />
 
           {/* Results Summary */}
@@ -480,9 +487,9 @@ export default function Challenges() {
                   : `Found ${filteredChallenges.length} of ${challenges.length} challenges`
                 )}
               </span>
-              {activeFiltersCount > 0 && (
+              {getActiveFiltersCount() > 0 && (
                 <Badge variant="secondary" className="text-xs">
-                  {activeFiltersCount} {isRTL ? 'مرشحات نشطة' : 'active filters'}
+                  {getActiveFiltersCount()} {isRTL ? 'مرشحات نشطة' : 'active filters'}
                 </Badge>
               )}
               {isConnected && (
@@ -552,18 +559,19 @@ export default function Challenges() {
                 )}
 
                 {viewMode === 'list' && (
-                  <ChallengeListView
-                    challenges={filteredChallenges}
-                    onViewDetails={handleViewDetails}
-                    onParticipate={handleParticipate}
-                    onShare={handleShare}
-                    likedChallenges={likedChallenges}
-                  />
+                <ChallengeListView
+                  challenges={filteredChallenges as any[]}
+                  onViewDetails={handleViewDetails}
+                  onParticipate={handleParticipate}
+                  sortBy={filters.sortBy}
+                  sortOrder={filters.sortOrder}
+                  onSort={handleSort}
+                />
                 )}
 
                 {viewMode === 'table' && (
                   <ChallengeTableView
-                    challenges={filteredChallenges}
+                    challenges={filteredChallenges as any[]}
                     onViewDetails={handleViewDetails}
                     onParticipate={handleParticipate}
                     onLike={handleLike}
@@ -574,7 +582,7 @@ export default function Challenges() {
 
                 {viewMode === 'calendar' && (
                   <ChallengeCalendarView
-                    challenges={filteredChallenges}
+                    challenges={filteredChallenges as any[]}
                     onViewDetails={handleViewDetails}
                     onParticipate={handleParticipate}
                     onLike={handleLike}
@@ -608,7 +616,7 @@ export default function Challenges() {
 
           {/* Collaboration */}
           <div className="mt-8">
-            <WorkspaceCollaboration />
+            <WorkspaceCollaboration workspaceType="team" />
           </div>
         </div>
       </AppShell>
