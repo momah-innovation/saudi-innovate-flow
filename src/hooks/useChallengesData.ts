@@ -50,11 +50,33 @@ export const useChallengesData = () => {
 
       // Check user authentication
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('🔍 Authentication check:', { userId: user?.id, isAuthenticated: !!user });
+      console.log('🔍 Authentication check:', { 
+        userId: user?.id, 
+        isAuthenticated: !!user,
+        userEmail: user?.email,
+        userMetadata: user?.user_metadata 
+      });
 
-      // Simplified challenge fetching - let RLS handle the access control
-      console.log('🔍 Attempting to fetch challenges...');
+      // Test basic connection first
+      console.log('🔍 Testing basic Supabase connection...');
+      const { data: testData, error: testError } = await supabase
+        .from('challenges')
+        .select('id, title_ar, status, sensitivity_level')
+        .limit(5);
       
+      console.log('🧪 Basic connection test:', { 
+        testDataCount: testData?.length, 
+        testError: testError,
+        testSample: testData?.slice(0, 2)
+      });
+
+      if (testError) {
+        console.error('❌ Basic connection failed:', testError);
+        throw testError;
+      }
+
+      // Now try full query
+      console.log('🔍 Attempting full challenges fetch...');
       const { data: challengesData, error: challengesError } = await supabase
         .from('challenges')
         .select(`
@@ -63,7 +85,7 @@ export const useChallengesData = () => {
         `)
         .order('created_at', { ascending: false });
 
-      console.log('📊 Challenge fetch result:', { 
+      console.log('📊 Full challenge fetch result:', { 
         dataCount: challengesData?.length, 
         error: challengesError,
         userAuthenticated: !!user,
@@ -190,6 +212,7 @@ export const useChallengesData = () => {
   };
 
   useEffect(() => {
+    console.log('🎯 useChallengesData useEffect triggered');
     fetchChallenges();
   }, []);
 
