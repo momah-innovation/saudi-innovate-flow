@@ -221,28 +221,8 @@ export default function Challenges() {
 
   const handleViewDetails = (challenge: any) => {
     console.log('🔍 handleViewDetails called with challenge:', challenge);
-    console.log('🔍 Challenge keys:', Object.keys(challenge || {}));
-    console.log('🔍 Challenge ID:', challenge?.id);
-    console.log('🔍 Challenge type:', typeof challenge);
-    console.log('🔍 All challenges count:', challenges.length);
-    console.log('🔍 Sample challenge from challenges array:', challenges[0]);
     
-    // More defensive checking
-    if (!challenge) {
-      console.error('❌ Challenge object is null/undefined');
-      toast({
-        title: 'خطأ',
-        description: 'لم يتم العثور على بيانات التحدي',
-        variant: 'destructive',
-      });
-      return;
-    }
-    
-    // Check for ID in different possible formats
-    const challengeId = challenge.id || challenge.challenge_id || challenge.uuid;
-    console.log('🔍 Found challenge ID:', challengeId);
-    
-    if (!challengeId) {
+    if (!challenge?.id) {
       console.error('❌ Challenge ID is missing:', challenge);
       toast({
         title: 'خطأ',
@@ -252,8 +232,8 @@ export default function Challenges() {
       return;
     }
     
-    console.log('✅ Navigating to challenge details:', challengeId);
-    navigate(`/challenges/${challengeId}`);
+    console.log('✅ Navigating to challenge details:', challenge.id);
+    navigate(`/challenges/${challenge.id}`);
   };
 
   const handleParticipate = async (challenge: any) => {
