@@ -3,6 +3,7 @@ import { BarChart3, TrendingUp, PieChart, Activity, Target, Users, DollarSign } 
 import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Badge } from './badge';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface ChartDataPoint {
   label: string;
@@ -238,6 +239,8 @@ export function SimpleDonutChart({
 
 // Pre-built analytics cards
 export function AnalyticsOverview() {
+  const { t } = useUnifiedTranslation();
+  
   const chartData = [
     { label: 'Jan', value: 65 },
     { label: 'Feb', value: 78 },
@@ -255,9 +258,9 @@ export function AnalyticsOverview() {
   ];
 
   const donutData = [
-    { label: 'Completed', value: 45, color: 'hsl(var(--success))' },
-    { label: 'In Progress', value: 30, color: 'hsl(var(--warning))' },
-    { label: 'Planning', value: 25, color: 'hsl(var(--info))' }
+    { label: t('ui.chart.completed'), value: 45, color: 'hsl(var(--success))' },
+    { label: t('ui.chart.in_progress'), value: 30, color: 'hsl(var(--warning))' },
+    { label: t('ui.chart.planning'), value: 25, color: 'hsl(var(--info))' }
   ];
 
   return (
