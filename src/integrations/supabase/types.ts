@@ -9672,6 +9672,11 @@ export type Database = {
         | "team_member"
         | "organization_admin"
         | "organization_member"
+        | "entity_manager"
+        | "deputy_manager"
+        | "domain_manager"
+        | "sub_domain_manager"
+        | "service_manager"
       role_hierarchy_level: "1" | "2" | "3" | "4" | "5"
     }
     CompositeTypes: {
@@ -9831,6 +9836,11 @@ export const Constants = {
         "team_member",
         "organization_admin",
         "organization_member",
+        "entity_manager",
+        "deputy_manager",
+        "domain_manager",
+        "sub_domain_manager",
+        "service_manager",
       ],
       role_hierarchy_level: ["1", "2", "3", "4", "5"],
     },
