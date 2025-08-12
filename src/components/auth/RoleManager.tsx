@@ -42,7 +42,9 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
     'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager',
     'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager',
     'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager',
-    'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'team_member'
+    'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 
+    'team_member', 'organization_admin', 'organization_member', 'entity_manager', 
+    'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'
   ];
 
   const roleDescriptions: Record<AppRole, string> = {
@@ -73,7 +75,14 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
     external_expert: 'خبير خارجي - خبير من خارج المؤسسة',
     judge: 'محكم - تحكيم المسابقات والتحديات',
     facilitator: 'ميسر - تسهيل العمليات والأنشطة',
-    team_member: 'عضو فريق - عضو في فريق العمل'
+    team_member: 'عضو فريق - عضو في فريق العمل',
+    organization_admin: 'مدير منظمة - إدارة منظمة معينة',
+    organization_member: 'عضو منظمة - عضو في منظمة',
+    entity_manager: 'مدير كيان - إدارة كيان تنظيمي',
+    deputy_manager: 'مدير وكالة - إدارة وكالة',
+    domain_manager: 'مدير مجال - إدارة مجال عمل',
+    sub_domain_manager: 'مدير مجال فرعي - إدارة مجال فرعي',
+    service_manager: 'مدير خدمة - إدارة خدمة محددة'
   };
 
   const userId = targetUserId || userProfile?.id;

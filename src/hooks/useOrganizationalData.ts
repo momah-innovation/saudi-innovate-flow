@@ -46,6 +46,10 @@ export function useOrganizationalData() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [deputies, setDeputies] = useState<Deputy[]>([]);
   const [sectors, setSectors] = useState<Sector[]>([]);
+  const [entities, setEntities] = useState<any[]>([]);
+  const [domains, setDomains] = useState<any[]>([]);
+  const [subDomains, setSubDomains] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
