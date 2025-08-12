@@ -31,7 +31,7 @@ import {
   Eye,
   UserCheck
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { useQuery } from '@tanstack/react-query';
@@ -39,9 +39,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const ElevationMonitor: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t, language } = useUnifiedTranslation();
   const { toast } = useToast();
-  const isRTL = i18n.language === 'ar';
+  const isRTL = language === 'ar';
   
   // State management
   const [searchTerm, setSearchTerm] = useState('');
@@ -145,8 +145,8 @@ const ElevationMonitor: React.FC = () => {
 
   return (
     <AdminPageWrapper
-      title="مراقب رفع الصلاحيات الإدارية"
-      description="تتبع ومراقبة عمليات رفع الصلاحيات الإدارية والكشف عن الأنماط المشبوهة"
+      title={language === 'ar' ? 'مراقب رفع الصلاحيات الإدارية' : 'Admin Privilege Elevation Monitor'}
+      description={language === 'ar' ? 'تتبع ومراقبة عمليات رفع الصلاحيات الإدارية والكشف عن الأنماط المشبوهة' : 'Track and monitor admin privilege escalations and detect suspicious patterns'}
     >
       <AdminBreadcrumb />
       <div className="space-y-6">

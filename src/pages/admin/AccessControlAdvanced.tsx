@@ -1,6 +1,7 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, Users, UserCheck, Clock } from 'lucide-react';
 import UserRoleManager from '@/components/admin/security/UserRoleManager';
@@ -8,10 +9,11 @@ import PermissionMatrix from '@/components/admin/security/PermissionMatrix';
 import RoleApprovalQueue from '@/components/admin/security/RoleApprovalQueue';
 
 const AccessControlAdvanced: React.FC = () => {
+  const { t, language } = useUnifiedTranslation();
   return (
     <AdminPageWrapper
-      title="مركز التحكم بالصلاحيات المتقدم"
-      description="إدارة وتتبع صلاحيات المستخدمين وطلبات الموافقة"
+      title={language === 'ar' ? 'مركز التحكم بالصلاحيات المتقدم' : 'Advanced Access Control Center'}
+      description={language === 'ar' ? 'إدارة وتتبع صلاحيات المستخدمين وطلبات الموافقة' : 'Manage and track user permissions and approval requests'}
     >
       <AdminBreadcrumb />
       <div className="space-y-6">

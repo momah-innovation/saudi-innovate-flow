@@ -1,6 +1,7 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -23,6 +24,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import UserBehaviorAnalytics from '@/components/admin/analytics/UserBehaviorAnalytics';
 
 const AnalyticsAdvanced: React.FC = () => {
+  const { t, language } = useUnifiedTranslation();
   // Mock analytics data
   const mockUserBehaviorData = [
     { day: 'الأحد', views: 1200, interactions: 850, users: 320 },
@@ -51,8 +53,8 @@ const AnalyticsAdvanced: React.FC = () => {
 
   return (
     <AdminPageWrapper
-      title="التحليلات المتقدمة"
-      description="مراقبة وتحليل سلوك المستخدمين والأداء"
+      title={language === 'ar' ? 'التحليلات المتقدمة' : 'Advanced Analytics'}
+      description={language === 'ar' ? 'مراقبة وتحليل سلوك المستخدمين والأداء' : 'Monitor and analyze user behavior and performance'}
     >
       <AdminBreadcrumb />
       <div className="space-y-6">

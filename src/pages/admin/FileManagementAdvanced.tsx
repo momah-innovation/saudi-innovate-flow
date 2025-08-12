@@ -1,6 +1,7 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,7 @@ import {
 } from 'lucide-react';
 
 const FileManagementAdvanced: React.FC = () => {
+  const { t, language } = useUnifiedTranslation();
   // Mock file system data
   const mockStorageData = {
     totalStorage: 1247483648, // bytes
@@ -78,8 +80,8 @@ const FileManagementAdvanced: React.FC = () => {
 
   return (
     <AdminPageWrapper
-      title="إدارة الملفات المتقدمة"
-      description="مراقبة وإدارة نظام الملفات والتخزين السحابي"
+      title={language === 'ar' ? 'إدارة الملفات المتقدمة' : 'Advanced File Management'}
+      description={language === 'ar' ? 'مراقبة وإدارة نظام الملفات والتخزين السحابي' : 'Monitor and manage file system and cloud storage'}
     >
       <AdminBreadcrumb />
       <div className="space-y-6">

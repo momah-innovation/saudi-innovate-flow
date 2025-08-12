@@ -1,12 +1,14 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Bot, TrendingUp, DollarSign, Zap, Settings, Users } from 'lucide-react';
 import AIFeatureTogglePanel from '@/components/admin/analytics/AIFeatureTogglePanel';
 
 const AIManagement: React.FC = () => {
+  const { t, language } = useUnifiedTranslation();
   // Mock AI service health data
   const mockAIServices = [
     { name: 'مساعد التحديات', status: 'healthy', uptime: '99.9%', responseTime: '120ms' },
@@ -35,8 +37,8 @@ const AIManagement: React.FC = () => {
 
   return (
     <AdminPageWrapper
-      title="إدارة خدمات الذكاء الاصطناعي"
-      description="مراقبة وإدارة جميع خدمات الذكاء الاصطناعي والتحكم في استهلاك الموارد"
+      title={language === 'ar' ? 'إدارة خدمات الذكاء الاصطناعي' : 'AI Services Management'}
+      description={language === 'ar' ? 'مراقبة وإدارة جميع خدمات الذكاء الاصطناعي والتحكم في استهلاك الموارد' : 'Monitor and manage all AI services and control resource consumption'}
     >
       <AdminBreadcrumb />
       <div className="space-y-6">
