@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
-import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface Challenge {
   id: string;
@@ -41,7 +40,7 @@ export const useChallengesData = () => {
     totalPrizes: 0,
   });
   const { toast } = useToast();
-  const { t } = useUnifiedTranslation();
+  // Remove useUnifiedTranslation to prevent infinite loops
 
   const fetchChallenges = async () => {
     try {
@@ -54,6 +53,7 @@ export const useChallengesData = () => {
       console.log('🔐 User auth result:', user?.id ? 'authenticated' : 'not authenticated');
 
       // Fetch challenges data
+      console.log('📊 About to fetch challenges from DB...');
       const { data: challengesData, error: challengesError } = await supabase
         .from('challenges')
         .select(`
@@ -61,6 +61,8 @@ export const useChallengesData = () => {
           challenge_participants(count)
         `)
         .order('created_at', { ascending: false });
+
+      console.log('📊 Challenges DB response:', { challengesData, challengesError });
 
       if (challengesError) {
         logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, challengesError);
@@ -165,8 +167,8 @@ export const useChallengesData = () => {
     } catch (error) {
       logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, error as Error);
       toast({
-        title: t('fetch_error', 'خطأ في جلب البيانات'),
-        description: t('challenges_fetch_error', 'حدث خطأ أثناء جلب بيانات التحديات'),
+        title: 'خطأ في جلب البيانات',
+        description: 'حدث خطأ أثناء جلب بيانات التحديات',
         variant: 'destructive',
       });
     } finally {
