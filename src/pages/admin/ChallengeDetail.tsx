@@ -160,19 +160,19 @@ export default function ChallengeDetailPage() {
       }
 
       console.log('✅ ChallengeDetail: Successfully fetched challenge:', {
-        id: data.id,
-        title: data.title_ar,
+        id: (data as any).id,
+        title: (data as any).title_ar,
         hasRelations: {
-          sectors: !!data.sectors,
-          deputies: !!data.deputies,
-          departments: !!data.departments,
-          domains: !!data.domains,
-          experts: Array.isArray(data.challenge_experts) ? data.challenge_experts.length : 0,
-          partners: Array.isArray(data.challenge_partners) ? data.challenge_partners.length : 0
+          sectors: !!(data as any).sectors,
+          deputies: !!(data as any).deputies,
+          departments: !!(data as any).departments,
+          domains: !!(data as any).domains,
+          experts: Array.isArray((data as any).challenge_experts) ? (data as any).challenge_experts.length : 0,
+          partners: Array.isArray((data as any).challenge_partners) ? (data as any).challenge_partners.length : 0
         }
       });
       
-      setChallenge(data);
+      setChallenge(data as any);
     } catch (error) {
       console.error('🔴 ChallengeDetail: Unexpected error:', {
         error,

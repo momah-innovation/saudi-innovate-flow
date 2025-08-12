@@ -2,7 +2,7 @@
 // Centralized route protection with role-based access control
 
 import React from 'react';
-console.log('🔒 ProtectedRoute component loaded');
+// ProtectedRoute component loaded
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { ALL_ROUTES } from '@/routing/routes';
@@ -95,7 +95,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (requiredRole) {
     // If user profile hasn't loaded yet, wait for it
     if (!userProfile) {
-      console.log('🔐 Waiting for user profile to load for role check');
+      // Waiting for user profile to load
       return (
         <div className="min-h-[400px] flex items-center justify-center">
           <div className="text-center space-y-4">
