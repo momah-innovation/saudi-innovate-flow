@@ -1,5 +1,6 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Shield, AlertTriangle, Eye, Activity } from 'lucide-react';
@@ -15,6 +16,7 @@ const SecurityAdvanced: React.FC = () => {
       title="الأمان المتقدم"
       description="مراقبة شاملة للأمان والتهديدات"
     >
+      <AdminBreadcrumb />
       <div className="space-y-6">
         {/* Security Status Overview */}
         <Card>

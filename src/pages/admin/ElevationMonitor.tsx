@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -147,6 +148,7 @@ const ElevationMonitor: React.FC = () => {
       title="مراقب رفع الصلاحيات الإدارية"
       description="تتبع ومراقبة عمليات رفع الصلاحيات الإدارية والكشف عن الأنماط المشبوهة"
     >
+      <AdminBreadcrumb />
       <div className="space-y-6">
         {/* Header Actions */}
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">

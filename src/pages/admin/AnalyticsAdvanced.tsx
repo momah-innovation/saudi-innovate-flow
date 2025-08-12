@@ -1,5 +1,6 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -53,6 +54,7 @@ const AnalyticsAdvanced: React.FC = () => {
       title="التحليلات المتقدمة"
       description="مراقبة وتحليل سلوك المستخدمين والأداء"
     >
+      <AdminBreadcrumb />
       <div className="space-y-6">
         {/* Real-time Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

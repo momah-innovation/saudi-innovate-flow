@@ -1,5 +1,6 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -80,6 +81,7 @@ const FileManagementAdvanced: React.FC = () => {
       title="إدارة الملفات المتقدمة"
       description="مراقبة وإدارة نظام الملفات والتخزين السحابي"
     >
+      <AdminBreadcrumb />
       <div className="space-y-6">
         {/* Storage Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

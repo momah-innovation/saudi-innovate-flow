@@ -110,6 +110,41 @@ const adminRouteConfig: Record<string, BreadcrumbConfig> = {
     label: 'Access Control',
     labelAr: 'التحكم في الوصول',
     icon: Shield
+  },
+  '/admin/security-advanced': {
+    label: 'Security Advanced',
+    labelAr: 'الأمان المتقدم',
+    icon: Shield
+  },
+  '/admin/access-control-advanced': {
+    label: 'Access Control Advanced',
+    labelAr: 'مركز التحكم بالصلاحيات المتقدم',
+    icon: Shield
+  },
+  '/admin/elevation-monitor': {
+    label: 'Elevation Monitor',
+    labelAr: 'مراقب رفع الصلاحيات',
+    icon: Shield
+  },
+  '/admin/analytics-advanced': {
+    label: 'Analytics Advanced',
+    labelAr: 'التحليلات المتقدمة',
+    icon: BarChart3
+  },
+  '/admin/ai-management': {
+    label: 'AI Management',
+    labelAr: 'إدارة الذكاء الاصطناعي',
+    icon: Settings
+  },
+  '/admin/file-management-advanced': {
+    label: 'File Management Advanced',
+    labelAr: 'إدارة الملفات المتقدمة',
+    icon: Settings
+  },
+  '/admin/challenges-analytics-advanced': {
+    label: 'Challenge Analytics Advanced',
+    labelAr: 'تحليلات التحديات المتقدمة',
+    icon: Target
   }
 };
 

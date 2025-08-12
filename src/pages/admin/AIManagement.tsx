@@ -1,5 +1,6 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Bot, TrendingUp, DollarSign, Zap, Settings, Users } from 'lucide-react';
@@ -37,6 +38,7 @@ const AIManagement: React.FC = () => {
       title="إدارة خدمات الذكاء الاصطناعي"
       description="مراقبة وإدارة جميع خدمات الذكاء الاصطناعي والتحكم في استهلاك الموارد"
     >
+      <AdminBreadcrumb />
       <div className="space-y-6">
         {/* AI Service Health Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

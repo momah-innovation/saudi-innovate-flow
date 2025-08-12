@@ -1,5 +1,6 @@
 import React from 'react';
 import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, Users, UserCheck, Clock } from 'lucide-react';
 import UserRoleManager from '@/components/admin/security/UserRoleManager';
@@ -12,6 +13,7 @@ const AccessControlAdvanced: React.FC = () => {
       title="مركز التحكم بالصلاحيات المتقدم"
       description="إدارة وتتبع صلاحيات المستخدمين وطلبات الموافقة"
     >
+      <AdminBreadcrumb />
       <div className="space-y-6">
         {/* Overview Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
