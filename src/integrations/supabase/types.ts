@@ -9494,6 +9494,10 @@ export type Database = {
         Args: { p_opportunity_id: string }
         Returns: undefined
       }
+      is_team_member: {
+        Args: { user_uuid: string }
+        Returns: boolean
+      }
       log_security_event: {
         Args: {
           action_type: string
