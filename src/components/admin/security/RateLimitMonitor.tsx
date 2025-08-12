@@ -270,7 +270,7 @@ export const RateLimitMonitor = ({ className }: RateLimitMonitorProps) => {
                 <div key={index} className="flex items-center justify-between p-2 border rounded">
                   <span className="font-medium">{item.action}</span>
                   <Badge variant="secondary">
-                    {item.count} {isRTL ? 'انتهاك' : 'violations'}
+                    {String(item.count)} {isRTL ? 'انتهاك' : 'violations'}
                   </Badge>
                 </div>
               ))}
