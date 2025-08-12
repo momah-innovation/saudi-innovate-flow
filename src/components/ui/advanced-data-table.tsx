@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -65,6 +66,7 @@ export function AdvancedDataTable<T extends Record<string, any>>({
   onSelectionChange,
   className
 }: AdvancedDataTableProps<T>) {
+  const { t } = useUnifiedTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(null);
@@ -169,7 +171,7 @@ export function AdvancedDataTable<T extends Record<string, any>>({
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search..."
+                  placeholder={t('search')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -306,11 +308,11 @@ export function AdvancedDataTable<T extends Record<string, any>>({
                 disabled={currentPage === 1}
               >
                 <ChevronLeft className="w-4 h-4" />
-                Previous
+                {t('previous')}
               </Button>
               
               <span className="text-sm text-muted-foreground">
-                Page {currentPage} of {totalPages}
+                {t('page')} {currentPage} {t('of')} {totalPages}
               </span>
               
               <Button
@@ -319,7 +321,7 @@ export function AdvancedDataTable<T extends Record<string, any>>({
                 onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
               >
-                Next
+                {t('next')}
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>

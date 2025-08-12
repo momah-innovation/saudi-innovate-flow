@@ -593,13 +593,13 @@ export function UnsplashImageBrowser({
 
                     {/* Category Filter */}
                     <div>
-                      <Label className="text-sm font-medium mb-2 block">Category</Label>
+                      <Label className="text-sm font-medium mb-2 block">{t('category')}</Label>
                       <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                         <SelectTrigger>
-                          <SelectValue placeholder="All Categories" />
+                          <SelectValue placeholder={t('allCategories')} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="all">All Categories</SelectItem>
+                          <SelectItem value="all">{t('allCategories')}</SelectItem>
                           {CATEGORY_TAGS.map(category => (
                             <SelectItem key={category} value={category.toLowerCase()}>
                               {category}

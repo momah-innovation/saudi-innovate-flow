@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -60,6 +61,7 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [versionNotes, setVersionNotes] = useState('')
   const { toast } = useToast()
+  const { t } = useUnifiedTranslation()
 
   const fetchVersions = async () => {
     try {
@@ -250,12 +252,12 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="notes">Version Notes (Optional)</Label>
+                  <Label htmlFor="notes">{t('versionNotesOptional')}</Label>
                   <Textarea
                     id="notes"
                     value={versionNotes}
                     onChange={(e) => setVersionNotes(e.target.value)}
-                    placeholder="Describe what changed in this version..."
+                    placeholder={t('describeChanges')}
                     rows={3}
                   />
                 </div>
