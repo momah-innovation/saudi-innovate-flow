@@ -63,32 +63,13 @@ export const useChallengesData = () => {
         logger.debug('User roles loaded', { userId: user.id, roles: userRoles });
       }
 
-      // Determine which challenges to fetch based on user permissions
-      let challengesQuery = supabase
+      // Fetch challenges - RLS policies handle access control automatically
+      const { data: challengesData, error: challengesError } = await supabase
         .from('challenges')
         .select(`
           *,
           challenge_participants(count)
-        `);
-
-      // Apply sensitivity level filtering based on user access
-      if (!user) {
-        // Non-authenticated users can only see normal sensitivity challenges
-        challengesQuery = challengesQuery.eq('sensitivity_level', 'sensitivity.normal');
-      } else {
-        // Check if user has admin/manager privileges
-        const hasAdminAccess = userRoles.some(role => 
-          ['admin', 'super_admin', 'moderator', 'challenge_manager', 'sector_lead'].includes(role)
-        );
-        
-        if (!hasAdminAccess) {
-          // Regular users can only see normal sensitivity challenges
-          challengesQuery = challengesQuery.eq('sensitivity_level', 'sensitivity.normal');
-        }
-        // Admin users can see all challenges (no filter applied)
-      }
-
-      const { data: challengesData, error: challengesError } = await challengesQuery
+        `)
         .order('created_at', { ascending: false });
 
       if (challengesError) {
