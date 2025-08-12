@@ -511,7 +511,7 @@ export function UnsplashImageBrowser({
                     <Grid className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Grid View</TooltipContent>
+                <TooltipContent>{t('ui.unsplash_browser.grid_view')}</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -524,7 +524,7 @@ export function UnsplashImageBrowser({
                     <Grid3X3 className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Masonry View</TooltipContent>
+                <TooltipContent>{t('ui.unsplash_browser.masonry_view')}</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -537,7 +537,7 @@ export function UnsplashImageBrowser({
                     <List className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>List View</TooltipContent>
+                <TooltipContent>{t('ui.unsplash_browser.list_view')}</TooltipContent>
               </Tooltip>
             </div>
 
@@ -552,7 +552,7 @@ export function UnsplashImageBrowser({
                   <SlidersHorizontal className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Advanced Filters</TooltipContent>
+              <TooltipContent>{t('ui.unsplash_browser.advanced_filters')}</TooltipContent>
             </Tooltip>
           </div>
 
@@ -562,7 +562,7 @@ export function UnsplashImageBrowser({
               <CardContent className="p-4">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-medium">Advanced Filters</h3>
+                    <h3 className="font-medium">{t('ui.unsplash_browser.advanced_filters')}</h3>
                     <Button variant="ghost" size="sm" onClick={clearAllFilters}>
                       <RotateCcw className="h-4 w-4 mr-2" />
                       Clear All
@@ -650,7 +650,7 @@ export function UnsplashImageBrowser({
                         checked={showDetails}
                         onCheckedChange={setShowDetails}
                       />
-                      <Label htmlFor="show-details">Show Details</Label>
+                      <Label htmlFor="show-details">{t('ui.unsplash_browser.show_details')}</Label>
                     </div>
                     
                     <div className="flex items-center space-x-2">
@@ -659,7 +659,7 @@ export function UnsplashImageBrowser({
                         checked={infiniteScroll}
                         onCheckedChange={setInfiniteScroll}
                       />
-                      <Label htmlFor="infinite-scroll">Infinite Scroll</Label>
+                      <Label htmlFor="infinite-scroll">{t('ui.unsplash_browser.infinite_scroll')}</Label>
                     </div>
 
                     <div className="flex items-center space-x-2">
@@ -668,7 +668,7 @@ export function UnsplashImageBrowser({
                         checked={bulkSelectMode}
                         onCheckedChange={setBulkSelectMode}
                       />
-                      <Label htmlFor="bulk-select">Bulk Select</Label>
+                      <Label htmlFor="bulk-select">{t('ui.unsplash_browser.bulk_select')}</Label>
                     </div>
                   </div>
                 </div>
@@ -917,10 +917,10 @@ export function UnsplashImageBrowser({
           {/* Empty State */}
           {!loading && images.length === 0 && searchQuery && (
             <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-2">No images found for "{searchQuery}"</p>
-              <p className="text-sm text-muted-foreground mb-4">Try a different search term or adjust your filters</p>
+              <p className="text-muted-foreground text-lg mb-2">{t('ui.unsplash_browser.no_images_found', { query: searchQuery })}</p>
+              <p className="text-sm text-muted-foreground mb-4">{t('ui.unsplash_browser.try_different_search')}</p>
               <Button variant="outline" onClick={clearAllFilters}>
-                Clear Filters
+                {t('ui.unsplash_browser.clear_filters')}
               </Button>
             </div>
           )}
@@ -942,7 +942,7 @@ export function UnsplashImageBrowser({
           <DialogContent className="max-w-4xl max-h-[90vh] p-0">
             <DialogHeader className="p-6 pb-0">
               <DialogTitle className="flex items-center justify-between">
-                <span>Image Preview</span>
+                <span>{t('ui.unsplash_browser.image_preview')}</span>
                 <div className="flex items-center gap-2">
                   <Button
                     size="sm"
@@ -972,23 +972,23 @@ export function UnsplashImageBrowser({
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="font-medium mb-2">Image Details</h3>
+                    <h3 className="font-medium mb-2">{t('ui.unsplash_browser.image_details')}</h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Dimensions:</span>
+                        <span className="text-muted-foreground">{t('ui.unsplash_browser.dimensions')}</span>
                         <span>{previewImage.width} × {previewImage.height}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Likes:</span>
+                        <span className="text-muted-foreground">{t('ui.unsplash_browser.likes')}</span>
                         <span>{previewImage.likes}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Downloads:</span>
+                        <span className="text-muted-foreground">{t('ui.unsplash_browser.downloads')}</span>
                         <span>{previewImage.downloads || 'N/A'}</span>
                       </div>
                       {previewImage.description && (
                         <div>
-                          <span className="text-muted-foreground block">Description:</span>
+                          <span className="text-muted-foreground block">{t('ui.unsplash_browser.description')}</span>
                           <span>{previewImage.description}</span>
                         </div>
                       )}
@@ -996,7 +996,7 @@ export function UnsplashImageBrowser({
                   </div>
                   
                   <div>
-                    <h3 className="font-medium mb-2">Photographer</h3>
+                    <h3 className="font-medium mb-2">{t('ui.unsplash_browser.photographer')}</h3>
                     <div className="flex items-center gap-3 mb-3">
                       <img
                         src={previewImage.user.profile_image.small}

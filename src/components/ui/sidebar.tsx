@@ -1,10 +1,10 @@
 import * as React from "react"
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeft } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
-import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -286,6 +286,7 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
+  const { t } = useUnifiedTranslation()
   const { toggleSidebar } = useSidebar()
 
   return (
@@ -302,7 +303,7 @@ const SidebarTrigger = React.forwardRef<
       {...props}
     >
       <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only">{t('ui.sidebar.toggle_sidebar')}</span>
     </Button>
   )
 })

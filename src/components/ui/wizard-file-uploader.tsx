@@ -123,8 +123,8 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
         onUploadComplete?.(result.files)
         
         toast({
-          title: "Files committed successfully",
-          description: `${result.files.length} file(s) moved to permanent storage`
+          title: t('ui.wizard_uploader.files_committed_successfully'),
+          description: t('ui.wizard_uploader.files_moved_to_storage', { count: result.files.length })
         })
         
         return result.files
@@ -134,8 +134,8 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
     } catch (error) {
       logger.error('File commit error', { component: 'WizardFileUploader', action: 'commitFiles' }, error as Error)
       toast({
-        title: "Commit failed",
-        description: error instanceof Error ? error.message : "Failed to commit files",
+        title: t('ui.wizard_uploader.commit_failed'),
+        description: error instanceof Error ? error.message : t('ui.wizard_uploader.failed_commit_files'),
         variant: "destructive"
       })
       return []
@@ -230,7 +230,7 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
             >
               <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
               <div className="space-y-2">
-                <p className="text-lg font-medium">Drag and drop files here</p>
+                <p className="text-lg font-medium">{t('ui.wizard_uploader.drag_drop_files')}</p>
                 <p className="text-sm text-muted-foreground">
                   or click to browse files
                 </p>
@@ -263,7 +263,7 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
         {currentStep === 'review' && uploadedFiles.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium">Review uploaded files</h3>
+              <h3 className="text-lg font-medium">{t('ui.wizard_uploader.review_uploaded_files')}</h3>
               <Badge variant="outline">
                 {uploadedFiles.length} file(s)
               </Badge>
