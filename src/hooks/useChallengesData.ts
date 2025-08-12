@@ -54,6 +54,17 @@ export const useChallengesData = () => {
 
       // Fetch challenges data
       console.log('📊 About to fetch challenges from DB...');
+      
+      // First try a simple query without joins to test RLS
+      console.log('🔍 Testing simple query first...');
+      const { data: simpleTest, error: simpleError } = await supabase
+        .from('challenges')
+        .select('id, title_ar, status, sensitivity_level')
+        .limit(5);
+      
+      console.log('🔍 Simple query result:', { simpleTest, simpleError });
+      
+      // Now try the full query
       const { data: challengesData, error: challengesError } = await supabase
         .from('challenges')
         .select(`
@@ -65,7 +76,16 @@ export const useChallengesData = () => {
       console.log('📊 Challenges DB response:', { challengesData, challengesError });
 
       if (challengesError) {
+        console.error('❌ Error fetching challenges:', challengesError);
         logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, challengesError);
+        
+        // Show error to user
+        toast({
+          title: 'خطأ في جلب التحديات',
+          description: challengesError.message || 'حدث خطأ أثناء جلب البيانات',
+          variant: 'destructive',
+        });
+        
         setChallenges([]);
         setStats({
           totalChallenges: 0,
@@ -73,6 +93,7 @@ export const useChallengesData = () => {
           totalParticipants: 0,
           totalPrizes: 0,
         });
+        setLoading(false);
         return;
       }
 
