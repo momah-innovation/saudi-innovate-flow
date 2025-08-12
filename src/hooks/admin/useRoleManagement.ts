@@ -2,32 +2,19 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-// Types
+// Simple types to match database returns
 interface RoleApprovalRequest {
   id: string;
   requester_id: string;
   target_user_id: string;
   requested_role: string;
   justification: string;
-  status: 'pending' | 'approved' | 'rejected' | 'expired';
+  status: string;
   expires_at?: string;
   approver_id?: string;
   reviewer_notes?: string;
   created_at: string;
   reviewed_at?: string;
-  // Joined data
-  requester?: {
-    display_name: string;
-    email: string;
-  };
-  target_user?: {
-    display_name: string;
-    email: string;
-  };
-  approver?: {
-    display_name: string;
-    email: string;
-  };
 }
 
 interface UserRole {
@@ -37,14 +24,10 @@ interface UserRole {
   is_active: boolean;
   expires_at?: string;
   granted_at: string;
-  user?: {
-    display_name: string;
-    email: string;
-  };
 }
 
 interface UseRoleApprovalRequestsOptions {
-  status?: 'pending' | 'approved' | 'rejected' | 'expired' | 'all';
+  status?: string;
   requester?: string;
   targetUser?: string;
   autoRefresh?: boolean;
@@ -76,31 +59,7 @@ export const useRoleApprovalRequests = (options: UseRoleApprovalRequestsOptions 
       try {
         let query = supabase
           .from('role_approval_requests')
-          .select(`
-            id,
-            requester_id,
-            target_user_id,
-            requested_role,
-            justification,
-            status,
-            expires_at,
-            approver_id,
-            reviewer_notes,
-            created_at,
-            reviewed_at,
-            requester:profiles!role_approval_requests_requester_id_fkey(
-              display_name,
-              email
-            ),
-            target_user:profiles!role_approval_requests_target_user_id_fkey(
-              display_name,
-              email
-            ),
-            approver:profiles!role_approval_requests_approver_id_fkey(
-              display_name,
-              email
-            )
-          `)
+          .select('*')
           .order('created_at', { ascending: false })
           .limit(limit);
 
@@ -136,8 +95,8 @@ export const useRoleApprovalRequests = (options: UseRoleApprovalRequestsOptions 
         throw error;
       }
     },
-    refetchInterval: autoRefresh ? 30000 : false, // 30 seconds
-    staleTime: 5000, // 5 seconds
+    refetchInterval: autoRefresh ? 30000 : false,
+    staleTime: 5000,
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)
   });
@@ -160,18 +119,7 @@ export const useUserRoles = (options: UseUserRolesOptions = {}) => {
       try {
         let query = supabase
           .from('user_roles')
-          .select(`
-            id,
-            user_id,
-            role,
-            is_active,
-            expires_at,
-            granted_at,
-            user:profiles!user_roles_user_id_fkey(
-              display_name,
-              email
-            )
-          `)
+          .select('*')
           .order('granted_at', { ascending: false })
           .limit(limit);
 
@@ -182,7 +130,7 @@ export const useUserRoles = (options: UseUserRolesOptions = {}) => {
 
         // Apply role filter
         if (role) {
-          query = query.eq('role', role);
+          query = query.eq('role', role as any);
         }
 
         // Apply active filter
@@ -207,8 +155,8 @@ export const useUserRoles = (options: UseUserRolesOptions = {}) => {
         throw error;
       }
     },
-    refetchInterval: autoRefresh ? 30000 : false, // 30 seconds
-    staleTime: 5000, // 5 seconds
+    refetchInterval: autoRefresh ? 30000 : false,
+    staleTime: 5000,
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)
   });
@@ -234,7 +182,7 @@ export const useRoleManagement = () => {
     }) => {
       const { data, error } = await supabase.rpc('assign_role_with_validation', {
         target_user_id: targetUserId,
-        target_role: role,
+        target_role: role as any,
         justification: justification || null,
         expires_at: expiresAt || null
       });
@@ -242,14 +190,13 @@ export const useRoleManagement = () => {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
-      // Invalidate and refetch related queries
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['user-roles'] });
       queryClient.invalidateQueries({ queryKey: ['role-approval-requests'] });
       
       toast({
         title: "تم تعيين الدور بنجاح",
-        description: data.requires_approval 
+        description: data?.requires_approval 
           ? "تم إرسال طلب الموافقة للمراجعة"
           : "تم تعيين الدور مباشرة",
         variant: "default"
@@ -277,7 +224,7 @@ export const useRoleManagement = () => {
     }) => {
       const { data, error } = await supabase.rpc('revoke_role_with_validation', {
         target_user_id: targetUserId,
-        target_role: role,
+        target_role: role as any,
         reason: reason || null
       });
 
@@ -285,7 +232,6 @@ export const useRoleManagement = () => {
       return data;
     },
     onSuccess: () => {
-      // Invalidate and refetch related queries
       queryClient.invalidateQueries({ queryKey: ['user-roles'] });
       
       toast({
@@ -324,7 +270,6 @@ export const useRoleManagement = () => {
       return data;
     },
     onSuccess: (data, variables) => {
-      // Invalidate and refetch related queries
       queryClient.invalidateQueries({ queryKey: ['role-approval-requests'] });
       queryClient.invalidateQueries({ queryKey: ['user-roles'] });
       
