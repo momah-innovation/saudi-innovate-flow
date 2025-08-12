@@ -86,13 +86,18 @@ export default function Challenges() {
     try {
       setLoading(true);
       
-      // Use basic challenges query
+      // Get user authentication first
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Use the challenges table directly (will filter via RLS)
       const { data, error } = await supabase
         .from('challenges')
         .select('*')
         .order('created_at', { ascending: false });
         
       if (error) throw error;
+      
+      console.log('Challenges data fetched:', { count: data?.length, user: user?.id });
 
       // Transform the data to match our Challenge interface
       const transformedData: Challenge[] = (data || []).map(challenge => ({
