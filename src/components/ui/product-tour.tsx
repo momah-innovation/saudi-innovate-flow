@@ -3,6 +3,7 @@ import { X, ArrowLeft, ArrowRight, Check, Target, Users, Star } from 'lucide-rea
 import { Button } from './button';
 import { Card, CardContent } from './card';
 import { Badge } from './badge';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 export interface TourStep {
@@ -36,6 +37,7 @@ export function ProductTour({
   currentStep = 0,
   className
 }: ProductTourProps) {
+  const { t } = useUnifiedTranslation()
   const [activeStep, setActiveStep] = useState(currentStep);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
@@ -184,7 +186,7 @@ export function ProductTour({
             <div className="flex gap-2">
               {currentStepData.showSkip !== false && (
                 <Button variant="ghost" size="sm" onClick={handleSkip}>
-                  Skip Tour
+                  {t('ui.tour.skip')}
                 </Button>
               )}
             </div>
@@ -193,7 +195,7 @@ export function ProductTour({
               {activeStep > 0 && (
                 <Button variant="outline" size="sm" onClick={prevStep}>
                   <ArrowLeft className="w-4 h-4 mr-1" />
-                  Back
+                  {t('ui.tour.previous')}
                 </Button>
               )}
               
@@ -202,11 +204,11 @@ export function ProductTour({
                   {activeStep === steps.length - 1 ? (
                     <>
                       <Check className="w-4 h-4 mr-1" />
-                      Finish
+                      {t('ui.tour.finish')}
                     </>
                   ) : (
                     <>
-                      Next
+                      {t('ui.tour.next')}
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </>
                   )}
@@ -280,32 +282,33 @@ export function useProductTour(steps: TourStep[]) {
 
 // Welcome tour for new users
 export function WelcomeTour({ onComplete }: { onComplete: () => void }) {
+  const { t } = useUnifiedTranslation()
   const tourSteps: TourStep[] = [
     {
       id: 'welcome',
-      title: 'Welcome to Innovation Hub! 🎉',
-      content: 'Take a quick tour to discover how to make the most of your innovation journey.',
+      title: t('ui.tour.welcome_title'),
+      content: t('ui.tour.welcome_content'),
       target: 'body',
       showSkip: true
     },
     {
       id: 'navigation',
-      title: 'Navigation Menu',
-      content: 'Use the sidebar to navigate between different sections like challenges, ideas, and analytics.',
+      title: t('ui.tour.navigation_title'),
+      content: t('ui.tour.navigation_content'),
       target: '[data-tour="sidebar"]',
       placement: 'right'
     },
     {
       id: 'create',
-      title: 'Create Content',
-      content: 'Click here to create new challenges, submit ideas, or start collaborating.',
+      title: t('ui.tour.create_title'),
+      content: t('ui.tour.create_content'),
       target: '[data-tour="create-button"]',
       placement: 'bottom'
     },
     {
       id: 'notifications',
-      title: 'Stay Updated',
-      content: 'Check your notifications for updates on evaluations, challenges, and team activities.',
+      title: t('ui.tour.notifications_title'),
+      content: t('ui.tour.notifications_content'),
       target: '[data-tour="notifications"]',
       placement: 'bottom'
     }
