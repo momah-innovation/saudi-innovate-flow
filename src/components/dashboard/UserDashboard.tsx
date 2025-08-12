@@ -27,6 +27,8 @@ import { PartnerDashboard } from './PartnerDashboard';
 import { ManagerDashboard } from './ManagerDashboard';
 import { CoordinatorDashboard } from './CoordinatorDashboard';
 import { AnalystDashboard } from './AnalystDashboard';
+import { ContentDashboard } from './ContentDashboard';
+import { OrganizationDashboard } from './OrganizationDashboard';
 import { logger } from '@/utils/logger';
 // Collaboration imports
 import { CollaborationProvider } from '@/components/collaboration';
@@ -392,14 +394,34 @@ export default function UserDashboard() {
         {['data_analyst', 'system_auditor'].includes(primaryRole) && (
           <AnalystDashboard 
             userProfile={userProfile}
-            canAccessAnalytics={permissions.canViewAnalytics}
-            canViewSystemData={permissions.canManageSystem}
-            canGenerateReports={permissions.canViewAnalytics}
+            canAccessAnalytics={permissions.canAccessAnalytics}
+            canViewSystemData={permissions.canViewSystemData}
+            canGenerateReports={permissions.canGenerateReports}
+          />
+        )}
+        
+        {/* Content Dashboard - for content and research roles */}
+        {['content_manager', 'challenge_manager', 'research_lead'].includes(primaryRole) && (
+          <ContentDashboard 
+            userProfile={userProfile}
+            canManageContent={permissions.canManageContent}
+            canManageChallenges={permissions.canManageChallenges}
+            canResearch={permissions.canResearch}
+          />
+        )}
+        
+        {/* Organization Dashboard - for organizational roles */}
+        {['organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'].includes(primaryRole) && (
+          <OrganizationDashboard 
+            userProfile={userProfile}
+            canManageOrganization={permissions.canManageOrganization}
+            canManageEntities={permissions.canManageEntities}
+            canViewOrgAnalytics={permissions.canViewOrgAnalytics}
           />
         )}
         
         {/* Default Innovator Dashboard for other roles */}
-        {!['admin', 'super_admin', 'expert', 'partner', 'team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager', 'expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'data_analyst', 'system_auditor'].includes(primaryRole) && (
+        {!['admin', 'super_admin', 'expert', 'partner', 'team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager', 'expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'data_analyst', 'system_auditor', 'content_manager', 'challenge_manager', 'research_lead', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'].includes(primaryRole) && (
           <div>
         {/* Hero Banner */}
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-innovation to-innovation-foreground text-white">
