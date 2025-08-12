@@ -91,11 +91,11 @@ export function ImageSourceSelector({
           <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
             <TabsTrigger value="unsplash" className="flex items-center gap-2">
               <Image className="h-4 w-4" />
-              Browse Stock Images
+              {t('ui.image_source.browse_stock_images')}
             </TabsTrigger>
             <TabsTrigger value="upload" className="flex items-center gap-2">
               <Upload className="h-4 w-4" />
-              Upload Files
+              {t('ui.image_source.upload_files')}
             </TabsTrigger>
           </TabsList>
           
@@ -112,9 +112,9 @@ export function ImageSourceSelector({
               <CardContent className="p-4">
                 <div className="space-y-4">
                   <div className="text-center">
-                    <h3 className="text-lg font-medium mb-2">Upload Your Own Images</h3>
+                    <h3 className="text-lg font-medium mb-2">{t('ui.image_source.upload_your_own_images')}</h3>
                     <p className="text-sm text-muted-foreground">
-                      Upload images from your device. Supported formats: {config.allowedTypes?.join(', ')}
+                      {t('ui.image_source.upload_description', { formats: config.allowedTypes?.join(', ') })}
                     </p>
                   </div>
                   
