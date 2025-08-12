@@ -217,6 +217,14 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       category: 'management'
     },
     {
+      title: language === 'ar' ? 'إدارة التقييم' : 'Evaluation Management',
+      description: language === 'ar' ? 'إدارة معايير التقييم والقوالب والقواعد' : 'Manage evaluation criteria, templates, and rules',
+      icon: Target,
+      action: () => navigate('/admin/evaluation-management'),
+      show: canManageSystem,
+      category: 'management'
+    },
+    {
       title: "Storage Management", 
       description: "Monitor and manage file storage",
       icon: Database,

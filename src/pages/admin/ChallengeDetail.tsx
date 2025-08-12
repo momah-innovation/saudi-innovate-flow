@@ -56,71 +56,7 @@ export default function ChallengeDetailPage() {
       // Fetch challenge with all related data
       const { data, error } = await supabase
         .from('challenges')
-        .select(`
-          *,
-          sectors:sector_id(id, name_ar, name_en),
-          deputies:deputy_id(id, name_ar, name_en, deputy_minister, contact_email),
-          departments:department_id(id, name_ar, name_en, department_head),
-          domains:domain_id(id, name_ar, name_en, domain_lead, specialization),
-          sub_domains:sub_domain_id(id, name_ar, technical_focus),
-          services:service_id(id, name_ar, service_type, citizen_facing),
-          challenge_experts(
-            id,
-            role_type,
-            status,
-            assignment_date,
-            notes,
-            expert_id
-          ),
-          challenge_partners(
-            id,
-            partnership_type,
-            status,
-            funding_amount,
-            contribution_details,
-            partners(id, name_ar, name_en, partner_type, email)
-          ),
-          challenge_requirements(
-            id,
-            title,
-            description,
-            requirement_type,
-            is_mandatory,
-            weight_percentage,
-            order_sequence
-          ),
-          challenge_tags(
-            id,
-            tags(id, name_ar, name_en, category, color)
-          ),
-          challenge_participants(
-            id,
-            user_id,
-            participation_type,
-            team_name,
-            status,
-            registration_date
-          ),
-          focus_questions(
-            id,
-            question_text_ar,
-            question_text_en,
-            question_type,
-            order_sequence,
-            is_sensitive
-          ),
-          challenge_submissions(
-            id,
-            title_ar,
-            title_en,
-            description_ar,
-            description_en,
-            status,
-            score,
-            submission_date,
-            submitted_by
-          )
-        `)
+        .select('*')
         .eq('id', challengeId)
         .maybeSingle();
 

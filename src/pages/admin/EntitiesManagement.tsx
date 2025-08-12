@@ -13,6 +13,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AdminPageWrapper } from '@/components/ui';
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 
 interface Entity {
   id: string;
@@ -243,6 +244,7 @@ export default function EntitiesManagement() {
 
   return (
     <AdminPageWrapper>
+      <AdminBreadcrumb />
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>

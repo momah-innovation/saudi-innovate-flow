@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, FileText, Filter, Search, Eye, MessageSquare, Star } from "lucide-react";
-import { GlobalBreadcrumb } from "@/components/layout/GlobalBreadcrumb";
+import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface Challenge {
@@ -245,7 +245,7 @@ export default function AdminChallengeSubmissions() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <GlobalBreadcrumb customItems={breadcrumbs} />
+      <AdminBreadcrumb />
       
       <div className="space-y-6">
         {/* Header */}
