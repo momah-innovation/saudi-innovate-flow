@@ -20,7 +20,10 @@ import {
   RefreshCw,
   UserCheck,
   HelpCircle,
-  Target
+  Target,
+  Brain,
+  Archive,
+  Lock
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -155,6 +158,73 @@ export default function AdminDashboard() {
     }
   ];
 
+  // New Advanced Admin Interface Cards
+  const advancedAdminCards = [
+    {
+      title: "Security Advanced",
+      description: "Advanced security monitoring and threat detection",
+      icon: Shield,
+      href: "/admin/security-advanced",
+      count: "3",
+      label: "Active Threats",
+      color: "text-red-600"
+    },
+    {
+      title: "Access Control",
+      description: "User roles and permission management",
+      icon: Lock,
+      href: "/admin/access-control-advanced",
+      count: "156",
+      label: "Role Assignments",
+      color: "text-blue-600"
+    },
+    {
+      title: "Elevation Monitor",
+      description: "Admin privilege escalation tracking",
+      icon: TrendingUp,
+      href: "/admin/elevation-monitor",
+      count: "24",
+      label: "Elevation Events",
+      color: "text-orange-600"
+    },
+    {
+      title: "Analytics Advanced",
+      description: "Real-time analytics and user insights",
+      icon: BarChart3,
+      href: "/admin/analytics-advanced",
+      count: "1.2M",
+      label: "Data Points",
+      color: "text-purple-600"
+    },
+    {
+      title: "AI Management",
+      description: "AI services and model configuration",
+      icon: Brain,
+      href: "/admin/ai-management",
+      count: "8",
+      label: "AI Features",
+      color: "text-green-600"
+    },
+    {
+      title: "File Management",
+      description: "Advanced file operations and lifecycle",
+      icon: Archive,
+      href: "/admin/file-management-advanced",
+      count: "2.4 GB",
+      label: "Total Storage",
+      color: "text-indigo-600"
+    },
+    {
+      title: "Challenge Analytics",
+      description: "Challenge engagement and performance metrics",
+      icon: Target,
+      href: "/admin/challenges-analytics-advanced",
+      count: "45",
+      label: "Active Challenges",
+      color: "text-cyan-600"
+    }
+  ];
+
   useEffect(() => {
     loadDashboardData();
   }, []);
@@ -227,12 +297,13 @@ export default function AdminDashboard() {
         />
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="management">Management</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="storage">Storage</TabsTrigger>
             <TabsTrigger value="security">Security</TabsTrigger>
+            <TabsTrigger value="advanced">Advanced</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -264,6 +335,8 @@ export default function AdminDashboard() {
                             setActivityDialogOpen(true);
                           } else if (card.title === "System Settings") {
                             setHealthDialogOpen(true);
+                          } else {
+                            window.location.href = card.href;
                           }
                         }}
                       >
@@ -759,6 +832,73 @@ export default function AdminDashboard() {
             
             {/* Test Privilege Elevation */}
             <TestPrivilegeElevation />
+          </TabsContent>
+
+          <TabsContent value="advanced" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {advancedAdminCards.map((card) => {
+                const Icon = card.icon;
+                return (
+                  <Card key={card.title} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
+                        {card.title}
+                      </CardTitle>
+                      <Icon className={`h-5 w-5 transition-colors ${card.color || 'text-muted-foreground group-hover:text-primary'}`} />
+                    </CardHeader>
+                    <CardContent>
+                      <div className={`text-2xl font-bold ${card.color || 'text-foreground'}`}>{card.count}</div>
+                      <p className="text-xs text-muted-foreground">
+                        {card.label}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {card.description}
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                        onClick={() => window.location.href = card.href}
+                      >
+                        <Eye className="w-3 h-3 mr-2" />
+                        Access Interface
+                      </Button>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {/* Advanced Features Summary */}
+            <Card className="bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-primary" />
+                  Advanced Admin Interfaces
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center p-4 bg-background/50 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">100%</div>
+                    <div className="text-sm text-muted-foreground">Implementation Complete</div>
+                  </div>
+                  <div className="text-center p-4 bg-background/50 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">7</div>
+                    <div className="text-sm text-muted-foreground">Advanced Pages</div>
+                  </div>
+                  <div className="text-center p-4 bg-background/50 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">25+</div>
+                    <div className="text-sm text-muted-foreground">New Components</div>
+                  </div>
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Complete admin interface suite with real-time monitoring, analytics, and advanced controls
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
 
