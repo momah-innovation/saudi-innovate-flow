@@ -67,6 +67,7 @@ const ElevationMonitor = lazy(() => import('@/pages/admin/ElevationMonitor'));
 const AnalyticsAdvanced = lazy(() => import('@/pages/admin/AnalyticsAdvanced'));
 const AIManagement = lazy(() => import('@/pages/admin/AIManagement'));
 const FileManagementAdvanced = lazy(() => import('@/pages/admin/FileManagementAdvanced'));
+const ChallengesAnalyticsAdvanced = lazy(() => import('@/pages/admin/ChallengesAnalyticsAdvanced'));
 const CollaborationLandingPage = lazy(() => import('@/pages/CollaborationLandingPage'));
 const CollaborativeIdeasPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeIdeasPage })));
 const CollaborativeChallengesPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeChallengesPage })));
@@ -295,6 +296,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: '/admin/file-management-advanced',
     component: FileManagementAdvanced,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: '/admin/challenges-analytics-advanced',
+    component: ChallengesAnalyticsAdvanced,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
