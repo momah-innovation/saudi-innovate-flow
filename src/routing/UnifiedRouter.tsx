@@ -63,7 +63,7 @@ const StoragePolicies = lazy(() => import('@/pages/admin/StoragePolicies'));
 const SecurityMonitor = lazy(() => import('@/pages/admin/SecurityMonitor'));
 const SecurityAdvanced = lazy(() => import('@/pages/admin/SecurityAdvanced'));
 const AccessControlAdvanced = lazy(() => import('@/pages/admin/AccessControlAdvanced'));
-const CollaborationPage = lazy(() => import('@/pages/CollaborationPage'));
+const ElevationMonitor = lazy(() => import('@/pages/admin/ElevationMonitor'));
 const CollaborationLandingPage = lazy(() => import('@/pages/CollaborationLandingPage'));
 const CollaborativeIdeasPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeIdeasPage })));
 const CollaborativeChallengesPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeChallengesPage })));
@@ -260,6 +260,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: '/admin/access-control-advanced',
     component: AccessControlAdvanced,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: '/admin/elevation-monitor',
+    component: ElevationMonitor,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
