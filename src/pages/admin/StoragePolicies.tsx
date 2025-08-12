@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { PageLayout } from '@/components/layout/PageLayout'
+import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb'
 import { PageHeader } from '@/components/ui/page-header'
 import { StoragePoliciesHero } from '@/components/storage/StoragePoliciesHero'
 import { useToast } from '@/hooks/use-toast'
@@ -281,8 +282,9 @@ export const StoragePoliciesPage: React.FC = () => {
   }
 
   if (!isAdmin) {
-    return (
-      <PageLayout>
+  return (
+    <PageLayout>
+      <AdminBreadcrumb />
         <Card>
           <CardContent className="p-6 text-center">
             <Shield className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
