@@ -308,33 +308,35 @@ export default function Challenges() {
     user: user?.id
   });
 
-  // Show auth prompt for unauthenticated users with no data
-  if (!user && challenges.length === 0 && !loading) {
+  // Show empty state only if loading is complete and no challenges found
+  if (challenges.length === 0 && !loading) {
     return (
       <AppShell enableCollaboration={true}>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-16">
             <Target className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
             <h1 className="text-3xl font-bold mb-4">
-              {isRTL ? 'مرحباً بك في منصة التحديات' : 'Welcome to Challenges Platform'}
+              {isRTL ? 'لا توجد تحديات متاحة' : 'No Challenges Available'}
             </h1>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               {isRTL 
-                ? 'يرجى تسجيل الدخول لعرض التحديات المتاحة والمشاركة فيها. ستتمكن من الوصول إلى تحديات مثيرة ومكافآت قيمة!'
-                : 'Please sign in to view available challenges and participate. You\'ll gain access to exciting challenges and valuable rewards!'
+                ? 'لا توجد تحديات متاحة حالياً. يرجى المراجعة لاحقاً أو التواصل مع فريق الإدارة.'
+                : 'No challenges are currently available. Please check back later or contact the admin team.'
               }
             </p>
-            <div className="space-y-3">
-              <Button onClick={() => navigate('/auth/login')} size="lg">
-                {isRTL ? 'تسجيل الدخول' : 'Sign In'}
-              </Button>
-              <div className="text-sm text-muted-foreground">
-                {isRTL ? 'أو' : 'or'}{' '}
-                <Button variant="link" onClick={() => navigate('/auth/register')} className="p-0 h-auto">
-                  {isRTL ? 'إنشاء حساب جديد' : 'create a new account'}
+            {!user && (
+              <div className="space-y-3">
+                <Button onClick={() => navigate('/auth/login')} size="lg">
+                  {isRTL ? 'تسجيل الدخول' : 'Sign In'}
                 </Button>
+                <div className="text-sm text-muted-foreground">
+                  {isRTL ? 'أو' : 'or'}{' '}
+                  <Button variant="link" onClick={() => navigate('/auth/register')} className="p-0 h-auto">
+                    {isRTL ? 'إنشاء حساب جديد' : 'create a new account'}
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </AppShell>
