@@ -5,6 +5,7 @@ import { Button } from './button';
 import { Textarea } from './textarea';
 import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Badge } from './badge';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 import { cn } from '@/lib/utils';
 interface StarRatingProps {
@@ -94,12 +95,13 @@ interface FeedbackFormProps {
 
 export function FeedbackForm({
   onSubmit,
-  title = "Share your feedback",
-  placeholder = "Tell us what you think...",
+  title,
+  placeholder,
   showRating = true,
   showLikeDislike = true,
   className
 }: FeedbackFormProps) {
+  const { t } = useUnifiedTranslation();
   const [rating, setRating] = useState(0);
   const [type, setType] = useState<'like' | 'dislike' | null>(null);
   const [comment, setComment] = useState('');
@@ -122,14 +124,14 @@ export function FeedbackForm({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <MessageSquare className="w-5 h-5" />
-          {title}
+          {title || t('ui.feedback.share_feedback')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {showRating && (
           <div>
             <label className="text-sm font-medium mb-2 block">
-              How would you rate your experience?
+              {t('ui.feedback.rate_experience')}
             </label>
             <StarRating
               rating={rating}
@@ -142,7 +144,7 @@ export function FeedbackForm({
         {showLikeDislike && (
           <div>
             <label className="text-sm font-medium mb-2 block">
-              Did this help you?
+              {t('ui.feedback.did_this_help')}
             </label>
             <div className="flex gap-2">
               <Button
@@ -151,7 +153,7 @@ export function FeedbackForm({
                 onClick={() => setType(type === 'like' ? null : 'like')}
               >
                 <ThumbsUp className="w-4 h-4 mr-2" />
-                Yes
+                {t('ui.feedback.yes')}
               </Button>
               <Button
                 variant={type === 'dislike' ? 'destructive' : 'outline'}
@@ -159,7 +161,7 @@ export function FeedbackForm({
                 onClick={() => setType(type === 'dislike' ? null : 'dislike')}
               >
                 <ThumbsDown className="w-4 h-4 mr-2" />
-                No
+                {t('ui.feedback.no')}
               </Button>
             </div>
           </div>
@@ -167,12 +169,12 @@ export function FeedbackForm({
 
         <div>
           <label className="text-sm font-medium mb-2 block">
-            Additional comments
+            {t('ui.feedback.additional_comments')}
           </label>
           <Textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder={placeholder}
+            placeholder={placeholder || t('ui.feedback.tell_us_what_you_think')}
             rows={3}
           />
         </div>
@@ -182,7 +184,7 @@ export function FeedbackForm({
           disabled={isSubmitting || (!showRating && !comment.trim()) || (showRating && rating === 0 && !comment.trim())}
           className="w-full"
         >
-          {isSubmitting ? "Submitting..." : "Submit Feedback"}
+          {isSubmitting ? t('ui.feedback.submitting') : t('ui.feedback.submit_feedback')}
         </Button>
       </CardContent>
     </Card>
@@ -208,6 +210,7 @@ interface ReviewCardProps {
 }
 
 export function ReviewCard({ review, onHelpful, className }: ReviewCardProps) {
+  const { t } = useUnifiedTranslation();
   return (
     <Card className={className}>
       <CardContent className="p-4">
@@ -231,7 +234,7 @@ export function ReviewCard({ review, onHelpful, className }: ReviewCardProps) {
                   <span className="font-medium text-sm">{review.author.name}</span>
                   {review.verified && (
                     <Badge variant="secondary" className="text-xs">
-                      Verified
+                      {t('ui.feedback.verified')}
                     </Badge>
                   )}
                 </div>
@@ -257,7 +260,7 @@ export function ReviewCard({ review, onHelpful, className }: ReviewCardProps) {
                   className="text-xs h-7"
                 >
                   <ThumbsUp className="w-3 h-3 mr-1" />
-                  Helpful {review.helpful ? `(${review.helpful})` : ''}
+                  {t('ui.feedback.helpful')} {review.helpful ? `(${review.helpful})` : ''}
                 </Button>
               </div>
             )}

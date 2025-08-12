@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Upload, X, FileText, Image, FileIcon, CheckCircle, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { logger } from '@/utils/logger'
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
 
 export interface WizardFileUploaderProps {
   config: Omit<FileUploadConfig, 'isTemporary' | 'tempSessionId'>
@@ -32,9 +33,10 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
   onCancel,
   className,
   disabled = false,
-  title = "File Upload Wizard",
-  description = "Upload your files in a guided process"
+  title,
+  description
 }, ref) => {
+  const { t } = useUnifiedTranslation();
   const sessionId = useId()
   const [currentStep, setCurrentStep] = useState<'upload' | 'review' | 'complete'>('upload')
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
@@ -89,17 +91,17 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
         setCurrentStep('review')
         
         toast({
-          title: "Files uploaded successfully",
-          description: `${result.files.length} file(s) uploaded to temporary storage`
+          title: t('ui.wizard_uploader.files_uploaded_successfully'),
+          description: t('ui.wizard_uploader.files_uploaded_temp', { count: result.files.length })
         })
       } else {
-        throw new Error(result.errors?.[0]?.error || 'Upload failed')
+        throw new Error(result.errors?.[0]?.error || t('ui.wizard_uploader.upload_failed'))
       }
     } catch (error) {
       logger.error('File upload error', { component: 'WizardFileUploader', action: 'uploadFiles' }, error as Error)
       toast({
-        title: "Upload failed",
-        description: error instanceof Error ? error.message : "Failed to upload files",
+        title: t('ui.wizard_uploader.upload_failed'),
+        description: error instanceof Error ? error.message : t('ui.wizard_uploader.failed_to_upload'),
         variant: "destructive"
       })
     } finally {
@@ -181,9 +183,9 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Upload className="w-5 h-5" />
-          {title}
+          {title || t('ui.wizard_uploader.file_upload_wizard')}
         </CardTitle>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-sm text-muted-foreground">{description || t('ui.wizard_uploader.guided_process')}</p>
         
         {/* Step Indicator */}
         <div className="flex items-center gap-2 mt-4">
@@ -191,21 +193,21 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
             "flex items-center gap-2 px-3 py-1 rounded-full text-xs",
             currentStep === 'upload' ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
           )}>
-            1. Upload
+            1. {t('ui.wizard_uploader.upload')}
           </div>
           <div className="h-px bg-border flex-1" />
           <div className={cn(
             "flex items-center gap-2 px-3 py-1 rounded-full text-xs",
             currentStep === 'review' ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
           )}>
-            2. Review
+            2. {t('ui.wizard_uploader.review')}
           </div>
           <div className="h-px bg-border flex-1" />
           <div className={cn(
             "flex items-center gap-2 px-3 py-1 rounded-full text-xs",
             currentStep === 'complete' ? "bg-success text-success-foreground" : "bg-muted text-muted-foreground"
           )}>
-            3. Complete
+            3. {t('ui.wizard_uploader.complete')}
           </div>
         </div>
       </CardHeader>

@@ -4,6 +4,7 @@ import { Dialog, DialogContent } from './dialog';
 import { Input } from './input';
 import { Badge } from './badge';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface CommandAction {
   id: string;
@@ -29,10 +30,11 @@ export function CommandPalette({
   isOpen,
   onClose,
   actions,
-  placeholder = "Type a command or search...",
+  placeholder,
   recentActions = [],
   onRecentUpdate
 }: CommandPaletteProps) {
+  const { t } = useUnifiedTranslation();
   const [search, setSearch] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -118,7 +120,7 @@ export function CommandPalette({
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder={placeholder}
+            placeholder={placeholder || t('ui.command_palette.placeholder')}
             className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             onKeyDown={handleKeyDown}
             autoFocus
@@ -133,8 +135,8 @@ export function CommandPalette({
           {Object.keys(groupedActions).length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
               <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p>No commands found</p>
-              <p className="text-sm">Try a different search term</p>
+              <p>{t('ui.command_palette.no_commands_found')}</p>
+              <p className="text-sm">{t('ui.command_palette.try_different_search')}</p>
             </div>
           ) : (
             <div className="p-2">
@@ -142,11 +144,11 @@ export function CommandPalette({
                 <div key={category}>
                   {/* Category Header */}
                   {Object.keys(groupedActions).length > 1 && (
-                    <div className="px-2 py-1 text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      {category === 'General' && !search && recentActions.length > 0 && categoryActions.some(a => recentActions.includes(a.id))
-                        ? 'Recent'
-                        : category
-                      }
+                     <div className="px-2 py-1 text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                       {category === 'General' && !search && recentActions.length > 0 && categoryActions.some(a => recentActions.includes(a.id))
+                         ? t('ui.command_palette.recent')
+                         : category
+                       }
                     </div>
                   )}
 
@@ -207,7 +209,7 @@ export function CommandPalette({
 
         {filteredActions.length > 0 && (
           <div className="border-t px-4 py-2 text-xs text-muted-foreground">
-            Use ↑↓ to navigate, ⏎ to select, ⎋ to close
+            {t('ui.command_palette.navigation_help')}
           </div>
         )}
       </DialogContent>

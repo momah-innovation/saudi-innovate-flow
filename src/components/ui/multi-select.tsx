@@ -5,6 +5,7 @@ import { Button } from './button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from './command';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Badge } from './badge';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface MultiSelectOption {
   value: string;
@@ -28,13 +29,14 @@ export function MultiSelect({
   options,
   value,
   onChange,
-  placeholder = "Select items...",
-  searchPlaceholder = "Search...",
-  emptyText = "No items found.",
+  placeholder,
+  searchPlaceholder,
+  emptyText,
   maxDisplay = 3,
   disabled = false,
   className
 }: MultiSelectProps) {
+  const { t } = useUnifiedTranslation();
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
@@ -55,14 +57,14 @@ export function MultiSelect({
 
   const displayText = () => {
     if (selectedOptions.length === 0) {
-      return placeholder;
+      return placeholder || t('ui.multi_select.select_items');
     }
     
     if (selectedOptions.length <= maxDisplay) {
       return selectedOptions.map(option => option.label).join(', ');
     }
     
-    return `${selectedOptions.slice(0, maxDisplay).map(option => option.label).join(', ')} +${selectedOptions.length - maxDisplay} more`;
+    return `${selectedOptions.slice(0, maxDisplay).map(option => option.label).join(', ')} ${t('ui.multi_select.more_items', { count: selectedOptions.length - maxDisplay })}`;  
   };
 
   return (
@@ -86,12 +88,12 @@ export function MultiSelect({
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput
-            placeholder={searchPlaceholder}
+            placeholder={searchPlaceholder || t('ui.multi_select.search')}
             value={searchValue}
             onValueChange={setSearchValue}
           />
           <CommandList>
-            <CommandEmpty>{emptyText}</CommandEmpty>
+            <CommandEmpty>{emptyText || t('ui.multi_select.no_items_found')}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
@@ -129,10 +131,11 @@ interface TagInputProps {
 export function TagInput({
   value,
   onChange,
-  placeholder = "Type and press Enter to add tags...",
+  placeholder,
   disabled = false,
   className
 }: TagInputProps) {
+  const { t } = useUnifiedTranslation();
   const [inputValue, setInputValue] = useState('');
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -178,7 +181,7 @@ export function TagInput({
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder={value.length === 0 ? placeholder : ''}
+        placeholder={value.length === 0 ? (placeholder || t('ui.multi_select.add_tags_placeholder')) : ''}
         disabled={disabled}
         className="flex-1 outline-none bg-transparent placeholder:text-muted-foreground min-w-[120px]"
       />

@@ -7,6 +7,7 @@ import { EnhancedFileUploader } from '@/components/ui/enhanced-file-uploader'
 import { UnsplashImageBrowser } from '@/components/ui/unsplash-image-browser'
 import { Upload, Image, Plus } from 'lucide-react'
 import { FileUploadConfig, UploadedFile } from '@/hooks/useFileUploader'
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
 
 interface UnsplashImage {
   id: string
@@ -53,11 +54,12 @@ export function ImageSourceSelector({
   config,
   onFileUpload,
   onUnsplashSelect,
-  triggerButtonText = "Add Image",
-  dialogTitle = "Select Image Source",
+  triggerButtonText,
+  dialogTitle,
   allowMultiple = false,
   className
 }: ImageSourceSelectorProps) {
+  const { t } = useUnifiedTranslation();
   const [open, setOpen] = useState(false)
   const [selectedTab, setSelectedTab] = useState<'upload' | 'unsplash'>('unsplash')
 

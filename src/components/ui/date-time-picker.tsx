@@ -6,6 +6,7 @@ import { Button } from './button';
 import { Calendar } from './calendar';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface DateTimePickerProps {
   value?: Date;
@@ -19,11 +20,12 @@ interface DateTimePickerProps {
 export function DateTimePicker({
   value,
   onChange,
-  placeholder = "Pick a date",
+  placeholder,
   showTime = false,
   disabled = false,
   className
 }: DateTimePickerProps) {
+  const { t } = useUnifiedTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState({
     hours: value?.getHours() || 9,
@@ -75,7 +77,7 @@ export function DateTimePicker({
           disabled={disabled}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? formatDateTime(value) : placeholder}
+          {value ? formatDateTime(value) : (placeholder || t('ui.date_picker.pick_date'))}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
@@ -92,7 +94,7 @@ export function DateTimePicker({
             <div className="border-t p-3 space-y-3">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Time</span>
+                <span className="text-sm font-medium">{t('ui.date_picker.time')}</span>
               </div>
               
               <div className="flex items-center gap-2">
@@ -133,7 +135,7 @@ export function DateTimePicker({
               
               <div className="flex justify-end">
                 <Button size="sm" onClick={() => setIsOpen(false)}>
-                  Done
+                  {t('ui.date_picker.done')}
                 </Button>
               </div>
             </div>
@@ -158,9 +160,10 @@ export function DateRangePicker({
   endDate,
   onStartDateChange,
   onEndDateChange,
-  placeholder = "Pick a date range",
+  placeholder,
   className
 }: DateRangePickerProps) {
+  const { t } = useUnifiedTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const formatRange = () => {
@@ -170,7 +173,7 @@ export function DateRangePicker({
     if (startDate) {
       return `${format(startDate, "LLL dd, y")} - End date`;
     }
-    return placeholder;
+    return placeholder || t('ui.date_picker.pick_date_range');
   };
 
   return (
@@ -191,7 +194,7 @@ export function DateRangePicker({
       <PopoverContent className="w-auto p-0" align="start">
         <div className="grid grid-cols-2 gap-3 p-3">
           <div className="space-y-2">
-            <p className="text-sm font-medium">Start Date</p>
+            <p className="text-sm font-medium">{t('ui.date_picker.start_date')}</p>
             <Calendar
               mode="single"
               selected={startDate}
@@ -201,7 +204,7 @@ export function DateRangePicker({
           </div>
           
           <div className="space-y-2">
-            <p className="text-sm font-medium">End Date</p>
+            <p className="text-sm font-medium">{t('ui.date_picker.end_date')}</p>
             <Calendar
               mode="single"
               selected={endDate}
@@ -214,7 +217,7 @@ export function DateRangePicker({
         
         <div className="border-t p-3 flex justify-end">
           <Button size="sm" onClick={() => setIsOpen(false)}>
-            Apply Range
+            {t('ui.date_picker.apply_range')}
           </Button>
         </div>
       </PopoverContent>

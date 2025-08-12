@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Checkbox } from './checkbox';
 import { DateTimePicker } from './date-time-picker';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface SearchFilter {
   id: string;
@@ -43,11 +44,12 @@ export function AdvancedSearch({
   onSortChange,
   filters = [],
   sortOptions = [],
-  placeholder = "Search...",
+  placeholder,
   showFilters = true,
   showSort = true,
   className
 }: AdvancedSearchProps) {
+  const { t } = useUnifiedTranslation();
   const [query, setQuery] = useState('');
   const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
   const [currentSort, setCurrentSort] = useState<{ field: string; direction: 'asc' | 'desc' } | null>(null);

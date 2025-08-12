@@ -3,6 +3,7 @@ import { AlertCircle, FileX, Search, RefreshCw, Plus } from 'lucide-react';
 import { Button } from './button';
 import { Card } from './card';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface EmptyStateProps {
   icon?: React.ComponentType<{ className?: string }> | React.ReactNode;
@@ -70,23 +71,27 @@ export function EmptyState({
 
 // Pre-built empty state variants
 export function NoDataFound({ onRefresh }: { onRefresh?: () => void }) {
+  const { t } = useUnifiedTranslation();
+  
   return (
     <EmptyState
       icon={Search}
-      title="No data found"
-      description="We couldn't find any data matching your criteria. Try adjusting your filters or search terms."
-      action={onRefresh ? { label: "Refresh", onClick: onRefresh } : undefined}
+      title={t('ui.empty_state.no_data_found')}
+      description={t('ui.empty_state.no_data_description')}
+      action={onRefresh ? { label: t('ui.empty_state.refresh'), onClick: onRefresh } : undefined}
     />
   );
 }
 
 export function NoResultsFound({ onClearFilters }: { onClearFilters?: () => void }) {
+  const { t } = useUnifiedTranslation();
+  
   return (
     <EmptyState
       icon={Search}
-      title="No results found"
-      description="Your search didn't return any results. Try different keywords or clear your filters."
-      action={onClearFilters ? { label: "Clear Filters", onClick: onClearFilters, variant: "outline" } : undefined}
+      title={t('ui.empty_state.no_results_found')}
+      description={t('ui.empty_state.no_results_description')}
+      action={onClearFilters ? { label: t('ui.empty_state.clear_filters'), onClick: onClearFilters, variant: "outline" } : undefined}
     />
   );
 }
@@ -98,12 +103,14 @@ export function CreateFirstItem({
   itemName: string; 
   onCreate: () => void;
 }) {
+  const { t } = useUnifiedTranslation();
+  
   return (
     <EmptyState
       icon={Plus}
-      title={`Create your first ${itemName.toLowerCase()}`}
-      description={`Get started by creating your first ${itemName.toLowerCase()}. You can always edit or delete it later.`}
-      action={{ label: `Create ${itemName}`, onClick: onCreate }}
+      title={t('ui.empty_state.create_first_item', { itemName: itemName.toLowerCase() })}
+      description={t('ui.empty_state.create_first_description', { itemName: itemName.toLowerCase() })}
+      action={{ label: t('ui.empty_state.create', { itemName }), onClick: onCreate }}
     />
   );
 }
@@ -115,23 +122,27 @@ export function ErrorState({
   onRetry?: () => void; 
   error?: string;
 }) {
+  const { t } = useUnifiedTranslation();
+  
   return (
     <EmptyState
       icon={AlertCircle}
-      title="Something went wrong"
-      description={error || "We encountered an error while loading your data. Please try again."}
-      action={onRetry ? { label: "Try Again", onClick: onRetry } : undefined}
-      secondaryAction={{ label: "Contact Support", onClick: () => window.open('/help', '_blank') }}
+      title={t('ui.empty_state.something_went_wrong')}
+      description={error || t('ui.empty_state.error_description')}
+      action={onRetry ? { label: t('ui.empty_state.try_again'), onClick: onRetry } : undefined}
+      secondaryAction={{ label: t('ui.empty_state.contact_support'), onClick: () => window.open('/help', '_blank') }}
     />
   );
 }
 
-export function LoadingState({ message = "Loading..." }: { message?: string }) {
+export function LoadingState({ message }: { message?: string }) {
+  const { t } = useUnifiedTranslation();
+  
   return (
     <EmptyState
       icon={RefreshCw}
-      title={message}
-      description="Please wait while we fetch your data."
+      title={message || t('ui.empty_state.loading')}
+      description={t('ui.empty_state.loading_description')}
       className="animate-pulse"
     />
   );
