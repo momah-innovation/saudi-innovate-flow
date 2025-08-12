@@ -230,6 +230,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 placeholder={isRTL ? 'أدخل رقم الهاتف' : 'Enter phone number'}
+                disabled={!isEditing}
               />
             </div>
           </div>
@@ -242,6 +243,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 value={formData.position}
                 onChange={(e) => handleInputChange('position', e.target.value)}
                 placeholder={isRTL ? 'أدخل المنصب' : 'Enter position'}
+                disabled={!isEditing}
               />
             </div>
             
@@ -252,6 +254,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 value={formData.organization}
                 onChange={(e) => handleInputChange('organization', e.target.value)}
                 placeholder={isRTL ? 'أدخل المؤسسة' : 'Enter organization'}
+                disabled={!isEditing}
               />
             </div>
           </div>
@@ -264,6 +267,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
               onChange={(e) => handleInputChange('bio', e.target.value)}
               placeholder={isRTL ? 'أدخل نبذة مختصرة' : 'Enter bio'}
               rows={3}
+              disabled={!isEditing}
             />
           </div>
         </CardContent>
@@ -291,7 +295,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 <Globe className="h-4 w-4" />
                 {isRTL ? 'القطاع' : 'Sector'}
               </Label>
-              <Select value={formData.sector_id} onValueChange={(value) => handleInputChange('sector_id', value)}>
+              <Select value={formData.sector_id} onValueChange={(value) => handleInputChange('sector_id', value)} disabled={!isEditing}>
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? 'اختر القطاع' : 'Select sector'} />
                 </SelectTrigger>
@@ -314,7 +318,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
               <Select 
                 value={formData.entity_id} 
                 onValueChange={(value) => handleInputChange('entity_id', value)}
-                disabled={!formData.sector_id}
+                disabled={!formData.sector_id || !isEditing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? 'اختر الجهة' : 'Select entity'} />
@@ -340,7 +344,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
               <Select 
                 value={formData.deputy_id} 
                 onValueChange={(value) => handleInputChange('deputy_id', value)}
-                disabled={!formData.entity_id}
+                disabled={!formData.entity_id || !isEditing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? 'اختر الوكالة' : 'Select deputy'} />
@@ -364,7 +368,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
               <Select 
                 value={formData.department_id} 
                 onValueChange={(value) => handleInputChange('department_id', value)}
-                disabled={!formData.deputy_id}
+                disabled={!formData.deputy_id || !isEditing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? 'اختر الإدارة' : 'Select department'} />
@@ -390,7 +394,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
               <Select 
                 value={formData.domain_id} 
                 onValueChange={(value) => handleInputChange('domain_id', value)}
-                disabled={!formData.department_id}
+                disabled={!formData.department_id || !isEditing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? 'اختر النطاق' : 'Select domain'} />
@@ -414,7 +418,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
               <Select 
                 value={formData.sub_domain_id} 
                 onValueChange={(value) => handleInputChange('sub_domain_id', value)}
-                disabled={!formData.domain_id}
+                disabled={!formData.domain_id || !isEditing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? 'اختر النطاق الفرعي' : 'Select sub domain'} />
@@ -438,7 +442,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
               <Select 
                 value={formData.service_id} 
                 onValueChange={(value) => handleInputChange('service_id', value)}
-                disabled={!formData.sub_domain_id}
+                disabled={!formData.sub_domain_id || !isEditing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? 'اختر الخدمة' : 'Select service'} />
@@ -476,6 +480,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 value={formData.department}
                 onChange={(e) => handleInputChange('department', e.target.value)}
                 placeholder={isRTL ? 'الإدارة الحالية' : 'Current department'}
+                disabled={!isEditing}
               />
             </div>
             
@@ -486,6 +491,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 value={formData.sector}
                 onChange={(e) => handleInputChange('sector', e.target.value)}
                 placeholder={isRTL ? 'القطاع الحالي' : 'Current sector'}
+                disabled={!isEditing}
               />
             </div>
           </div>

@@ -32,7 +32,13 @@ export function useUserWorkspaceData() {
               title_ar,
               status,
               start_date,
-              end_date
+              end_date,
+              sector_id,
+              deputy_id,
+              department_id,
+              domain_id,
+              sub_domain_id,
+              service_id
             )
           `)
           .eq('user_id', user.id)
@@ -47,7 +53,10 @@ export function useUserWorkspaceData() {
             challenges (
               id,
               title_ar,
-              status
+              status,
+              sector_id,
+              deputy_id,
+              department_id
             )
           `)
           .eq('user_id', user.id)
@@ -107,7 +116,13 @@ export function useExpertWorkspaceData() {
               title_ar,
               status,
               start_date,
-              end_date
+              end_date,
+              sector_id,
+              deputy_id,
+              department_id,
+              domain_id,
+              sub_domain_id,
+              service_id
             )
           `)
           .eq('expert_id', user.id)
@@ -210,7 +225,13 @@ export function usePartnerWorkspaceData() {
             challenges (
               id,
               title_ar,
-              status
+              status,
+              sector_id,
+              deputy_id,
+              department_id,
+              domain_id,
+              sub_domain_id,
+              service_id
             )
           `)
           .eq('status', 'active')

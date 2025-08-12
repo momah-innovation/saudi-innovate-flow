@@ -78,9 +78,25 @@ export function ChallengeForm({ challenge, onSuccess, onCancel }: ChallengeFormP
           description: t('challenges.update_success')
         });
       } else {
+        const currentUser = await supabase.auth.getUser();
         const { error } = await supabase
           .from('challenges')
-          .insert([{ ...data, created_by: (await supabase.auth.getUser()).data.user?.id }]);
+          .insert({ 
+            title_ar: data.title_ar,
+            description_ar: data.description_ar,
+            title_en: data.title_en || null,
+            description_en: data.description_en || null,
+            sector_id: data.sector_id || null,
+            deputy_id: data.deputy_id || null,
+            department_id: data.department_id || null,
+            domain_id: data.domain_id || null,
+            sub_domain_id: data.sub_domain_id || null,
+            service_id: data.service_id || null,
+            priority_level: data.priority_level,
+            sensitivity_level: data.sensitivity_level,
+            challenge_type: data.challenge_type || null,
+            created_by: currentUser.data.user?.id
+          });
         
         if (error) throw error;
         
