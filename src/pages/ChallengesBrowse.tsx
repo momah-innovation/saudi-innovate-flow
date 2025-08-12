@@ -565,7 +565,7 @@ interface ChallengeData {
           title={isRTL ? 'التحديات المتاحة' : 'Available Challenges'}
           description={isRTL ? 'تصفح واختر التحديات التي تناسب مهاراتك واهتماماتك' : 'Browse and select challenges that match your skills and interests'}
           itemCount={tabFilteredChallenges.length}
-          primaryAction={user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) ? {
+          primaryAction={user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager') || hasRole('moderator')) ? {
             label: isRTL ? 'تحدي جديد' : 'New Challenge',
             onClick: () => setCreateChallengeOpen(true),
             icon: <Plus className="w-4 h-4" />
@@ -573,7 +573,7 @@ interface ChallengeData {
           secondaryActions={
             <div className="flex items-center gap-4">
               {/* Management Actions - Admin/Sector Lead/Challenge Manager Only */}
-              {user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) && (
+              {user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager') || hasRole('moderator')) && (
                 <>
                   <div className="flex items-center gap-2">
                     <Button
@@ -809,7 +809,7 @@ interface ChallengeData {
           </Dialog>
 
           {/* Create Challenge Dialog - Only for Admins/Managers */}
-          {user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) && (
+          {user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager') || hasRole('moderator')) && (
             <ChallengeCreateDialog
               open={createChallengeOpen}
               onOpenChange={setCreateChallengeOpen}

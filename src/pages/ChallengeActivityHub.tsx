@@ -55,7 +55,9 @@ export default function ChallengeActivityHub() {
 
   // Check if user has access to admin tools
   useEffect(() => {
-    if (!hasRole('admin') && !hasRole('moderator')) {
+    if (!user) return; // Don't check until user is loaded
+    
+    if (!hasRole('admin') && !hasRole('super_admin') && !hasRole('moderator') && !hasRole('challenge_manager') && !hasRole('sector_lead')) {
       toast({
         variant: "destructive",
         title: isRTL ? "غير مصرح" : "Access Denied",
@@ -63,7 +65,7 @@ export default function ChallengeActivityHub() {
       });
       navigate('/challenges');
     }
-  }, [hasRole, navigate, toast, isRTL]);
+  }, [user, hasRole, navigate, toast, isRTL]);
 
   const fetchChallenge = async () => {
     if (!challengeId) return;
