@@ -46,37 +46,11 @@ export const useChallengesData = () => {
   const fetchChallenges = async () => {
     try {
       setLoading(true);
-      console.log('🚀 Starting fetchChallenges...');
-
-      // Check user authentication
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('🔍 Authentication check:', { 
-        userId: user?.id, 
-        isAuthenticated: !!user,
-        userEmail: user?.email,
-        userMetadata: user?.user_metadata 
-      });
-
-      // Test basic connection first
-      console.log('🔍 Testing basic Supabase connection...');
-      const { data: testData, error: testError } = await supabase
-        .from('challenges')
-        .select('id, title_ar, status, sensitivity_level')
-        .limit(5);
       
-      console.log('🧪 Basic connection test:', { 
-        testDataCount: testData?.length, 
-        testError: testError,
-        testSample: testData?.slice(0, 2)
-      });
+      // Get user authentication
+      const { data: { user } } = await supabase.auth.getUser();
 
-      if (testError) {
-        console.error('❌ Basic connection failed:', testError);
-        throw testError;
-      }
-
-      // Now try full query
-      console.log('🔍 Attempting full challenges fetch...');
+      // Fetch challenges data
       const { data: challengesData, error: challengesError } = await supabase
         .from('challenges')
         .select(`
@@ -85,18 +59,8 @@ export const useChallengesData = () => {
         `)
         .order('created_at', { ascending: false });
 
-      console.log('📊 Full challenge fetch result:', { 
-        dataCount: challengesData?.length, 
-        error: challengesError,
-        userAuthenticated: !!user,
-        firstChallenge: challengesData?.[0] 
-      });
-
       if (challengesError) {
-        console.error('❌ Database error fetching challenges:', challengesError);
         logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, challengesError);
-        
-        // Set empty state on error
         setChallenges([]);
         setStats({
           totalChallenges: 0,
@@ -107,20 +71,26 @@ export const useChallengesData = () => {
         return;
       }
 
-      logger.info('Challenges data fetched', { 
-        count: challengesData?.length,
-        sampleId: challengesData?.[0]?.id 
-      });
+      if (!challengesData || challengesData.length === 0) {
+        setChallenges([]);
+        setStats({
+          totalChallenges: 0,
+          activeChallenges: 0,
+          totalParticipants: 0,
+          totalPrizes: 0,
+        });
+        return;
+      }
 
       // Fetch submissions count for each challenge
-      const challengeIds = challengesData?.map(c => c.id) || [];
+      const challengeIds = challengesData.map(c => c.id);
       const { data: submissionsData } = await supabase
         .from('challenge_submissions')
         .select('challenge_id')
         .in('challenge_id', challengeIds);
 
       // Transform data
-      const transformedChallenges: Challenge[] = (challengesData || []).map((challenge, index) => {
+      const transformedChallenges: Challenge[] = challengesData.map((challenge, index) => {
         const participantCount = challenge.challenge_participants?.[0]?.count || 0;
         const submissionCount = submissionsData?.filter(s => s.challenge_id === challenge.id).length || 0;
         
@@ -173,16 +143,6 @@ export const useChallengesData = () => {
           experts: [], // Will be populated separately if needed
         };
       });
-
-      console.log('✅ Challenges transformation completed:', { 
-        transformedCount: transformedChallenges.length,
-        statusSample: transformedChallenges.slice(0, 3).map(c => ({ id: c.id, status: c.status, sensitivity: c.sensitivity_level }))
-      });
-      
-      console.log('🔧 Challenge transformation debug:', {
-        originalData: challengesData?.slice(0, 2),
-        transformedData: transformedChallenges.slice(0, 2)
-      });
       
       setChallenges(transformedChallenges);
 
@@ -212,7 +172,6 @@ export const useChallengesData = () => {
   };
 
   useEffect(() => {
-    console.log('🎯 useChallengesData useEffect triggered');
     fetchChallenges();
   }, []);
 

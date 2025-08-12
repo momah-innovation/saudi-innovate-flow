@@ -214,9 +214,14 @@ export default function Challenges() {
   };
 
   const handleViewDetails = (challenge: any) => {
-    console.log('🔍 handleViewDetails called with challenge:', challenge);
-    console.log('🔍 Challenge ID:', challenge.id);
-    console.log('🔍 Will navigate to:', `/challenges/${challenge.id}`);
+    if (!challenge || !challenge.id) {
+      toast({
+        title: t('error', 'Error'),
+        description: t('challenge_not_found', 'Challenge not found'),
+        variant: 'destructive',
+      });
+      return;
+    }
     navigate(`/challenges/${challenge.id}`);
   };
 
