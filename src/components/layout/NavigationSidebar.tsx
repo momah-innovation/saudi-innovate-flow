@@ -311,6 +311,69 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
         roles: ['admin'] 
       },
       { 
+        id: 'security-advanced', 
+        label: 'Security Advanced', 
+        arabicLabel: 'الأمان المتقدم',
+        icon: Shield, 
+        path: '/admin/security-advanced',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'access-control-advanced', 
+        label: 'Access Control', 
+        arabicLabel: 'التحكم بالوصول',
+        icon: UserCheck, 
+        path: '/admin/access-control-advanced',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'elevation-monitor', 
+        label: 'Elevation Monitor', 
+        arabicLabel: 'مراقب الصلاحيات',
+        icon: TrendingUp, 
+        path: '/admin/elevation-monitor',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'analytics-advanced', 
+        label: 'Analytics Advanced', 
+        arabicLabel: 'التحليلات المتقدمة',
+        icon: BarChart3, 
+        path: '/admin/analytics-advanced',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'ai-management', 
+        label: 'AI Management', 
+        arabicLabel: 'إدارة الذكاء الاصطناعي',
+        icon: Brain, 
+        path: '/admin/ai-management',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'file-management-advanced', 
+        label: 'File Management', 
+        arabicLabel: 'إدارة الملفات المتقدمة',
+        icon: Archive, 
+        path: '/admin/file-management-advanced',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'challenges-analytics-advanced', 
+        label: 'Challenge Analytics', 
+        arabicLabel: 'تحليلات التحديات',
+        icon: Target, 
+        path: '/admin/challenges-analytics-advanced',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
         id: 'admin-challenges', 
         label: 'Manage Challenges', 
         arabicLabel: 'إدارة التحديات',
