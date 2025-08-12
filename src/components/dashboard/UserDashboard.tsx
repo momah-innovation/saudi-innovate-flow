@@ -24,6 +24,9 @@ import { DashboardHero } from './DashboardHero';
 import { AdminDashboard } from './AdminDashboardComponent';
 import { ExpertDashboard } from './ExpertDashboard';
 import { PartnerDashboard } from './PartnerDashboard';
+import { ManagerDashboard } from './ManagerDashboard';
+import { CoordinatorDashboard } from './CoordinatorDashboard';
+import { AnalystDashboard } from './AnalystDashboard';
 import { logger } from '@/utils/logger';
 // Collaboration imports
 import { CollaborationProvider } from '@/components/collaboration';
@@ -365,8 +368,38 @@ export default function UserDashboard() {
           />
         )}
         
+        {/* Manager Dashboard - for leadership roles */}
+        {['team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager'].includes(primaryRole) && (
+          <ManagerDashboard 
+            userProfile={userProfile}
+            canManageTeams={permissions.canManageTeams}
+            canViewAnalytics={permissions.canViewAnalytics}
+            canManageProjects={permissions.canManageTeams} // Using existing permission
+          />
+        )}
+        
+        {/* Coordinator Dashboard - for coordination roles */}
+        {['expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager'].includes(primaryRole) && (
+          <CoordinatorDashboard 
+            userProfile={userProfile}
+            canCoordinateExperts={permissions.canManageUsers}
+            canManageEvents={permissions.canViewAnalytics}
+            canViewAnalytics={permissions.canViewAnalytics}
+          />
+        )}
+        
+        {/* Analyst Dashboard - for data and analysis roles */}
+        {['data_analyst', 'system_auditor'].includes(primaryRole) && (
+          <AnalystDashboard 
+            userProfile={userProfile}
+            canAccessAnalytics={permissions.canViewAnalytics}
+            canViewSystemData={permissions.canManageSystem}
+            canGenerateReports={permissions.canViewAnalytics}
+          />
+        )}
+        
         {/* Default Innovator Dashboard for other roles */}
-        {!['admin', 'super_admin', 'expert', 'partner'].includes(primaryRole) && (
+        {!['admin', 'super_admin', 'expert', 'partner', 'team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager', 'expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'data_analyst', 'system_auditor'].includes(primaryRole) && (
           <div>
         {/* Hero Banner */}
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-innovation to-innovation-foreground text-white">

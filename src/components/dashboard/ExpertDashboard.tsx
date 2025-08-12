@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, Brain, FileText, Clock, Award } from 'lucide-react';
+import { Star, Brain, FileText, Clock, Award, ArrowRight } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useNavigate } from 'react-router-dom';
 
@@ -68,32 +68,51 @@ export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpert
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {expertStats.map((stat, index) => (
-          <Card key={index}>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">{stat.title}</p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
-                </div>
-                <stat.icon className={`w-8 h-8 ${stat.color}`} />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {expertStats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
+                  {stat.title}
+                </CardTitle>
+                <Icon className={`h-5 w-5 transition-colors ${stat.color || 'text-muted-foreground group-hover:text-primary'}`} />
+              </CardHeader>
+              <CardContent>
+                <div className={`text-2xl font-bold ${stat.color || 'text-foreground'}`}>{stat.value}</div>
+                <p className="text-xs text-muted-foreground">
+                  {index === 0 ? (language === 'ar' ? '+3 هذا الأسبوع' : '+3 this week') : 
+                   index === 1 ? (language === 'ar' ? 'يحتاج انتباه' : 'needs attention') :
+                   (language === 'ar' ? 'متوسط ممتاز' : 'excellent average')}
+                </p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {expertActions.filter(action => action.show).map((action, index) => (
-          <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer" onClick={action.action}>
-            <CardHeader>
-              <CardTitle className="text-base">{action.title}</CardTitle>
+          <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
+                {action.title}
+              </CardTitle>
+              <Brain className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-3">{action.description}</p>
-              <Button variant="outline" size="sm">
-                {language === 'ar' ? 'انتقال' : 'Access'}
+              <p className="text-sm text-muted-foreground mt-2">
+                {action.description}
+              </p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                onClick={action.action}
+              >
+                <ArrowRight className="w-3 h-3 mr-2" />
+                {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
               </Button>
             </CardContent>
           </Card>
