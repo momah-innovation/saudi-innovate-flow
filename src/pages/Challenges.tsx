@@ -32,14 +32,18 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 
 export default function Challenges() {
+  console.log('🚀 Challenges component rendering...');
+  
   const { t, isRTL } = useUnifiedTranslation();
   const { toast } = useToast();
   const { user, hasRole } = useAuth();
   const { ui } = useChallengeDefaults();
   const navigate = useNavigate();
   
+  console.log('🔍 About to call useChallengesData...');
   // Use enhanced challenges data hook
   const { challenges, loading, stats, refetch } = useChallengesData();
+  console.log('✅ useChallengesData called, got:', { challengesCount: challenges.length, loading, stats });
   
   // State management
   const [selectedChallenge, setSelectedChallenge] = useState<any>(null);
