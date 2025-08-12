@@ -49,7 +49,7 @@ export const useChallengesData = () => {
 
       // Check user authentication
       const { data: { user } } = await supabase.auth.getUser();
-      logger.debug('Fetching challenges for user', { userId: user?.id });
+      console.log('🔍 Authentication check:', { userId: user?.id, isAuthenticated: !!user });
       
       // Check user roles if authenticated
       let userRoles: string[] = [];
@@ -60,27 +60,56 @@ export const useChallengesData = () => {
           .eq('user_id', user.id)
           .eq('is_active', true);
         userRoles = roles?.map(r => r.role) || [];
-        logger.debug('User roles loaded', { userId: user.id, roles: userRoles });
+        console.log('🔐 User roles loaded:', { userId: user.id, roles: userRoles });
       }
 
       // Fetch challenges - RLS policies handle access control automatically
       console.log('🔍 Attempting to fetch challenges...');
-      const { data: challengesData, error: challengesError } = await supabase
+      
+      // For unauthenticated users, try to fetch public challenges first
+      let challengesQuery = supabase
         .from('challenges')
         .select(`
           *,
           challenge_participants(count)
-        `)
+        `);
+
+      // For unauthenticated users, only fetch public challenges
+      // For authenticated users, get all accessible challenges  
+      if (!user) {
+        challengesQuery = challengesQuery.in('sensitivity_level', ['normal', 'sensitivity.normal']);
+        console.log('👥 Fetching public challenges only (unauthenticated user)');
+      } else {
+        console.log('🔑 Fetching all accessible challenges (authenticated user)');
+      }
+      
+      const { data: challengesData, error: challengesError } = await challengesQuery
         .order('created_at', { ascending: false });
 
       console.log('📊 Challenge fetch result:', { 
         dataCount: challengesData?.length, 
         error: challengesError,
+        userAuthenticated: !!user,
         firstChallenge: challengesData?.[0] 
       });
 
       if (challengesError) {
         console.error('❌ Database error fetching challenges:', challengesError);
+        
+        // If we get an auth error and user is not authenticated, this is expected
+        if (!user && challengesError.message?.includes('JWT')) {
+          console.log('💡 Auth error for unauthenticated user - this is normal for RLS');
+          // For unauthenticated users, return empty array - they need to sign in
+          setChallenges([]);
+          setStats({
+            totalChallenges: 0,
+            activeChallenges: 0,
+            totalParticipants: 0,
+            totalPrizes: 0,
+          });
+          return;
+        }
+        
         logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, challengesError);
         throw challengesError;
       }
