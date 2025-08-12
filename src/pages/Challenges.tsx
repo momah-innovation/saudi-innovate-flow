@@ -214,6 +214,12 @@ export default function Challenges() {
   };
 
   const handleViewDetails = (challenge: any) => {
+    console.log('🔍 handleViewDetails called with challenge:', challenge);
+    console.log('🔍 Challenge keys:', Object.keys(challenge || {}));
+    console.log('🔍 Challenge ID:', challenge?.id);
+    console.log('🔍 All challenges count:', challenges.length);
+    console.log('🔍 Sample challenge from challenges array:', challenges[0]);
+    
     if (!challenge || !challenge.id) {
       toast({
         title: t('error', 'Error'),
