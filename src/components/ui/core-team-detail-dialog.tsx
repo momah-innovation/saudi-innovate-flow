@@ -144,8 +144,8 @@ export function CoreTeamDetailDialog({
 
   if (!data) return null;
 
-  const displayName = data.name || data.name_ar || 'مستخدم غير معروف';
-  const displayEmail = data.email || 'غير محدد';
+  const displayName = data.name || data.name_ar || t('general.unknown_user');
+  const displayEmail = data.email || t('general.not_specified');
   const avatarFallback = displayName.charAt(0) || 'U';
 
   const getStatusColor = (status?: string) => {
@@ -170,11 +170,11 @@ export function CoreTeamDetailDialog({
 
   const getStatusText = (status?: string) => {
     switch (status) {
-      case 'active': return 'نشط';
-      case 'busy': return 'مشغول';
-      case 'leave': return 'في إجازة';
-      case 'inactive': return 'غير نشط';
-      default: return 'غير محدد';
+      case 'active': return t('ui.status.active');
+      case 'busy': return t('ui.status.busy');
+      case 'leave': return t('ui.status.leave');
+      case 'inactive': return t('ui.status.inactive');
+      default: return t('ui.status.unknown');
     }
   };
 

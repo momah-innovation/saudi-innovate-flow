@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Button } from './button';
 import { Progress } from './progress';
 import { Badge } from './badge';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface FileItem {
   id: string;
@@ -34,6 +35,7 @@ export function FileUploader({
   multiple = true,
   className
 }: FileUploaderProps) {
+  const { t } = useUnifiedTranslation();
   const [files, setFiles] = useState<FileItem[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -131,17 +133,17 @@ export function FileUploader({
       >
         <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
         <h3 className="text-lg font-medium mb-2">
-          {isDragging ? "Drop files here" : "Upload files"}
+          {isDragging ? t('ui.file_advanced.drop_files_here') : t('ui.file_advanced.upload_files')}
         </h3>
         <p className="text-sm text-muted-foreground mb-4">
-          Drag and drop files here, or click to browse
+          {t('ui.file_advanced.drag_and_drop')}
         </p>
         
         <Button 
           onClick={() => fileInputRef.current?.click()}
           variant="outline"
         >
-          Choose Files
+          {t('ui.file_advanced.choose_files', 'Choose Files')}
         </Button>
         
         <input
@@ -211,11 +213,11 @@ export function FileUploader({
                       <span className="text-xs text-success">Upload complete</span>
                     )}
                     
-                    {fileItem.status === 'error' && (
-                      <span className="text-xs text-destructive">
-                        {fileItem.error || 'Upload failed'}
-                      </span>
-                    )}
+                     {fileItem.status === 'error' && (
+                       <span className="text-xs text-destructive">
+                         {fileItem.error || t('ui.file_advanced.upload_failed')}
+                       </span>
+                     )}
                   </div>
                 </div>
               </div>

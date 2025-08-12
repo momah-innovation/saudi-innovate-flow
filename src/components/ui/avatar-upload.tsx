@@ -159,7 +159,7 @@ export function AvatarUpload({
             disabled={uploading}
           >
             <Upload className="h-4 w-4 mr-2" />
-            {uploading ? 'Uploading...' : 'Upload'}
+            {uploading ? t('ui.avatar_upload.uploading') : t('ui.avatar_upload.upload')}
           </Button>
           
           {avatarUrl && (

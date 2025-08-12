@@ -171,7 +171,7 @@ export function DateRangePicker({
       return `${format(startDate, "LLL dd")} - ${format(endDate, "LLL dd, y")}`;
     }
     if (startDate) {
-      return `${format(startDate, "LLL dd, y")} - End date`;
+      return `${format(startDate, "LLL dd, y")} - ${t('ui.date_picker.end_date')}`;
     }
     return placeholder || t('ui.date_picker.pick_date_range');
   };
