@@ -3,12 +3,13 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Grid3X3, LayoutGrid, List, Table } from 'lucide-react';
 
-export type ViewMode = 'cards' | 'grid' | 'list' | 'table';
+export type ViewMode = 'cards' | 'grid' | 'list' | 'table' | 'calendar' | 'map' | 'columns' | 'kanban';
 
 interface LayoutSelectorProps {
   viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;
   className?: string;
+  supportedLayouts?: string[];
 }
 
 const viewModeOptions = [
@@ -18,10 +19,14 @@ const viewModeOptions = [
   { key: 'table' as ViewMode, icon: Table, label: 'Table' },
 ];
 
-export const LayoutSelector = ({ viewMode, onViewModeChange, className }: LayoutSelectorProps) => {
+export const LayoutSelector = ({ viewMode, onViewModeChange, className, supportedLayouts }: LayoutSelectorProps) => {
+  const filteredOptions = supportedLayouts 
+    ? viewModeOptions.filter(option => supportedLayouts.includes(option.key))
+    : viewModeOptions;
+
   return (
     <div className={cn("flex gap-1 p-1 bg-muted rounded-lg", className)}>
-      {viewModeOptions.map((option) => {
+      {filteredOptions.map((option) => {
         const Icon = option.icon;
         return (
           <Button
