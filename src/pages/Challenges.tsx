@@ -6,8 +6,9 @@ import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallenge
 import { EnhancedChallengesHero } from '@/components/challenges/EnhancedChallengesHero';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
+import { ChallengeTableView } from '@/components/challenges/ChallengeTableView';
+import { ChallengeCalendarView } from '@/components/challenges/ChallengeCalendarView';
 import { LayoutSelector, ViewMode } from '@/components/ui/layout-selector';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -44,7 +45,6 @@ export default function Challenges() {
   // State management
   const [selectedChallenge, setSelectedChallenge] = useState<any>(null);
   const [viewMode, setViewMode] = useState<ViewMode>(challengesPageConfig.defaultViewMode as ViewMode);
-  const [activeTab, setActiveTab] = useState(challengesPageConfig.defaultTab);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [likedChallenges, setLikedChallenges] = useState<Set<string>>(new Set());
   
@@ -277,45 +277,13 @@ export default function Challenges() {
     return filtered;
   };
 
-  const getTabFilteredChallenges = (challenges: any[]) => {
-    logger.debug('Starting tab filtering', { 
-      component: 'Challenges',
-      action: 'getTabFilteredChallenges',
-      data: { inputCount: challenges.length, activeTab }
-    });
-    
-    let tabFiltered;
-    switch (activeTab) {
-      case 'active':
-        tabFiltered = challenges.filter(c => c.status === 'active');
-        break;
-      case 'upcoming':
-        tabFiltered = challenges.filter(c => c.status === 'planning' || c.status === 'upcoming');
-        break;
-      case 'trending':
-        tabFiltered = challenges.filter(c => c.priority_level === 'عالي' || (c.participants || 0) > 50);
-        break;
-      default:
-        tabFiltered = challenges;
-        break;
-    }
-    
-    logger.debug('Tab filtering completed', { 
-      component: 'Challenges',
-      action: 'getTabFilteredChallenges',
-      data: { afterTabFilter: tabFiltered.length, activeTab }
-    });
-    
-    return tabFiltered;
-  };
-
+  // Get final filtered challenges without tab filtering since we removed tabs
   const filteredChallenges = getFilteredChallenges();
-  const tabFilteredChallenges = getTabFilteredChallenges(filteredChallenges);
   
   logger.info('Challenge data processing completed', { 
     component: 'Challenges',
     action: 'finalCounts',
-    data: { filteredCount: filteredChallenges.length, tabFilteredCount: tabFilteredChallenges.length }
+    data: { filteredCount: filteredChallenges.length }
   });
 
   // Event handlers
@@ -474,157 +442,176 @@ export default function Challenges() {
     return false;
   }).length;
 
-  // Render content based on view mode
-  const renderChallenges = () => {
-    const currentViewModeConfig = getViewModeConfig(viewMode);
-    
-    if (viewMode === 'list') {
-      return (
-        <ChallengeListView
-          challenges={tabFilteredChallenges}
-          onViewDetails={handleViewDetails}
-          onParticipate={handleParticipate}
-          sortBy={filters.sortBy}
-          sortOrder={filters.sortOrder}
-          onSort={(field) => setFilters(prev => ({ ...prev, sortBy: field }))}
-        />
-      );
-    }
-
-    const gridClasses = `grid ${currentViewModeConfig.gridConfig.gap} ` +
-      `grid-cols-${currentViewModeConfig.gridConfig.cols.mobile} ` +
-      `md:grid-cols-${currentViewModeConfig.gridConfig.cols.tablet} ` +
-      `lg:grid-cols-${currentViewModeConfig.gridConfig.cols.desktop}` +
-      (currentViewModeConfig.gridConfig.cols.xl ? ` xl:grid-cols-${currentViewModeConfig.gridConfig.cols.xl}` : '');
-
-    return (
-      <div className={gridClasses}>
-        {tabFilteredChallenges.map((challenge) => (
-          <EnhancedChallengeCard
-            key={challenge.id}
-            challenge={challenge}
-            onViewDetails={() => handleViewDetails(challenge)}
-            onParticipate={() => handleParticipate(challenge)}
-            onLike={() => handleLike(challenge)}
-            onShare={() => handleShare(challenge)}
-            isLiked={likedChallenges.has(challenge.id)}
-            variant={currentViewModeConfig.variant as any}
-            showActions={true}
-            showStats={true}
-            showOwner={true}
-          />
-        ))}
-      </div>
-    );
-  };
-
-  if (loading) {
-    return (
+  return (
+    <div className="space-y-6">
       <AppShell enableCollaboration={true}>
         <div className="container mx-auto px-4 py-8">
           <GlobalBreadcrumb />
-          <div className="mb-8">
-            <h1 className={cn("text-3xl font-bold mb-2", isRTL && "text-right")}>التحديات الابتكارية</h1>
-            <p className={cn("text-muted-foreground", isRTL && "text-right")}>استكشف التحديات المتاحة وشارك في الابتكار</p>
+
+          <div className="mb-6">
+            {/* Simple hero without complex props */}
+            <div className="text-center py-8">
+              <h1 className="text-3xl font-bold mb-4">
+                {isRTL ? 'التحديات' : 'Challenges'}
+              </h1>
+              <p className="text-muted-foreground">
+                {isRTL ? 'استكشف التحديات المتاحة وشارك فيها' : 'Explore available challenges and participate'}
+              </p>
+            </div>
           </div>
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+
+          {/* Enhanced Filters */}
+          <ChallengeFilters
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            onClearFilters={handleClearFilters}
+            maxBudget={dynamicMaxBudget}
+            maxParticipants={dynamicMaxParticipants}
+            className="mb-6"
+            challenges={challenges}
+          />
+
+          {/* Results Summary */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-muted-foreground">
+                {t('challengesCount', isRTL 
+                  ? `عُثر على ${filteredChallenges.length} تحدي من أصل ${challenges.length}`
+                  : `Found ${filteredChallenges.length} of ${challenges.length} challenges`
+                )}
+              </span>
+              {activeFiltersCount > 0 && (
+                <Badge variant="secondary" className="text-xs">
+                  {activeFiltersCount} {isRTL ? 'مرشحات نشطة' : 'active filters'}
+                </Badge>
+              )}
+              {isConnected && (
+                <Badge variant="outline" className="text-xs">
+                  {isRTL ? 'متصل مباشرة' : 'Live'}
+                </Badge>
+              )}
+            </div>
+            
+            <LayoutSelector
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              supportedLayouts={['cards', 'grid', 'list', 'table', 'calendar']}
+            />
+          </div>
+
+          {/* Challenge Views */}
+          <div className="space-y-6">
+            {loading ? (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {[...Array(6)].map((_, i) => (
+                  <Card key={i} className="animate-pulse">
+                    <CardContent className="p-6">
+                      <div className="h-4 bg-muted rounded w-3/4 mb-2" />
+                      <div className="h-3 bg-muted rounded w-1/2 mb-4" />
+                      <div className="space-y-2">
+                        <div className="h-2 bg-muted rounded" />
+                        <div className="h-2 bg-muted rounded w-5/6" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <>
+                {viewMode === 'cards' && (
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {filteredChallenges.map((challenge) => (
+                      <EnhancedChallengeCard
+                        key={challenge.id}
+                        challenge={challenge}
+                        onViewDetails={handleViewDetails}
+                        onParticipate={handleParticipate}
+                        onLike={handleLike}
+                        onShare={handleShare}
+                        isLiked={likedChallenges.has(challenge.id)}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {viewMode === 'grid' && (
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {filteredChallenges.map((challenge) => (
+                      <EnhancedChallengeCard
+                        key={challenge.id}
+                        challenge={challenge}
+                        onViewDetails={handleViewDetails}
+                        onParticipate={handleParticipate}
+                        onLike={handleLike}
+                        onShare={handleShare}
+                        isLiked={likedChallenges.has(challenge.id)}
+                        variant="compact"
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {viewMode === 'list' && (
+                  <ChallengeListView
+                    challenges={filteredChallenges}
+                    onViewDetails={handleViewDetails}
+                    onParticipate={handleParticipate}
+                    onShare={handleShare}
+                    likedChallenges={likedChallenges}
+                  />
+                )}
+
+                {viewMode === 'table' && (
+                  <ChallengeTableView
+                    challenges={filteredChallenges}
+                    onViewDetails={handleViewDetails}
+                    onParticipate={handleParticipate}
+                    onLike={handleLike}
+                    onShare={handleShare}
+                    likedChallenges={likedChallenges}
+                  />
+                )}
+
+                {viewMode === 'calendar' && (
+                  <ChallengeCalendarView
+                    challenges={filteredChallenges}
+                    onViewDetails={handleViewDetails}
+                    onParticipate={handleParticipate}
+                    onLike={handleLike}
+                    onShare={handleShare}
+                    likedChallenges={likedChallenges}
+                  />
+                )}
+
+                {filteredChallenges.length === 0 && !loading && (
+                  <Card>
+                    <CardContent className="flex flex-col items-center justify-center py-12">
+                      <Target className="w-12 h-12 text-muted-foreground mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">
+                        {t('noChallenges', isRTL ? 'لا توجد تحديات' : 'No Challenges Found')}
+                      </h3>
+                      <p className="text-muted-foreground text-center mb-4">
+                        {t('noChallengesDescription', isRTL 
+                          ? 'لم يتم العثور على تحديات تطابق المعايير المحددة. جرب تعديل المرشحات.' 
+                          : 'No challenges match your current filters. Try adjusting your search criteria.'
+                        )}
+                      </p>
+                      <Button onClick={handleClearFilters} variant="outline">
+                        {t('clearFilters', isRTL ? 'مسح المرشحات' : 'Clear Filters')}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Collaboration */}
+          <div className="mt-8">
+            <WorkspaceCollaboration />
           </div>
         </div>
       </AppShell>
-    );
-  }
-
-  return (
-    <AppShell enableCollaboration={true}>
-      <div className="space-y-6">
-        {/* Hero Section */}
-        <EnhancedChallengesHero
-          totalChallenges={stats.totalChallenges}
-          activeChallenges={stats.activeChallenges}
-          participantsCount={stats.totalParticipants}
-          completedChallenges={challenges.filter(c => c.status === 'completed').length}
-          canCreateChallenge={hasRole('admin')}
-          featuredChallenge={challenges.find(c => c.status === 'active') ? {
-            id: challenges.find(c => c.status === 'active')!.id,
-            title_ar: challenges.find(c => c.status === 'active')!.title_ar,
-            participant_count: challenges.find(c => c.status === 'active')!.participants || 0,
-            end_date: challenges.find(c => c.status === 'active')!.end_date || ''
-          } : undefined}
-        />
-        
-        <div className="container mx-auto px-4 py-8">
-          <GlobalBreadcrumb />
-          
-          <div className="space-y-6">
-            {/* Enhanced Filters */}
-            <ChallengeFilters
-              filters={filters}
-              onFiltersChange={handleFiltersChange}
-              onClearFilters={handleClearFilters}
-              activeFiltersCount={activeFiltersCount}
-              dynamicMaxBudget={dynamicMaxBudget}
-              dynamicMaxParticipants={dynamicMaxParticipants}
-            />
-
-            {/* View Controls */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <LayoutSelector
-                  viewMode={viewMode}
-                  onViewModeChange={setViewMode}
-                />
-                
-                {hasRole('admin') && (
-                  <Button className={cn("gap-2", isRTL && "flex-row-reverse")}>
-                    <Plus className="w-4 h-4" />
-                    إضافة تحدي جديد
-                  </Button>
-                )}
-              </div>
-              
-              <div className="text-sm text-muted-foreground">
-                {tabFilteredChallenges.length} من {stats.totalChallenges} تحدي
-              </div>
-            </div>
-
-            {/* Tabs */}
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="all">جميع التحديات ({filteredChallenges.length})</TabsTrigger>
-                <TabsTrigger value="active">النشطة ({filteredChallenges.filter(c => c.status === 'active').length})</TabsTrigger>
-                <TabsTrigger value="upcoming">القادمة ({filteredChallenges.filter(c => c.status === 'planning').length})</TabsTrigger>
-                <TabsTrigger value="trending">الرائجة ({filteredChallenges.filter(c => c.trending).length})</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value={activeTab} className="mt-6">
-                {tabFilteredChallenges.length === 0 ? (
-                  <Card>
-                    <CardContent className="flex flex-col items-center justify-center py-16">
-                      <Target className="h-12 w-12 text-muted-foreground mb-4" />
-                      <h3 className="text-lg font-semibold mb-2">لا توجد تحديات</h3>
-                      <p className="text-muted-foreground text-center">
-                        لا توجد تحديات متاحة حاليًا وفقًا للمعايير المحددة
-                      </p>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  renderChallenges()
-                )}
-              </TabsContent>
-            </Tabs>
-          </div>
-          
-          {/* Collaboration Integration */}
-          <WorkspaceCollaboration
-            workspaceType="user"
-            entityId="challenges"
-            showWidget={false}
-            showPresence={true}
-            showActivity={false}
-          />
-        </div>
-      </div>
-    </AppShell>
+    </div>
   );
 }

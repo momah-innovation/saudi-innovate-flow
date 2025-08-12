@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Grid3X3, LayoutGrid, List, Table } from 'lucide-react';
+import { Grid3X3, LayoutGrid, List, Table, Calendar } from 'lucide-react';
 
 export type ViewMode = 'cards' | 'grid' | 'list' | 'table' | 'calendar' | 'map' | 'columns' | 'kanban';
 
@@ -17,6 +17,7 @@ const viewModeOptions = [
   { key: 'grid' as ViewMode, icon: Grid3X3, label: 'Grid' },
   { key: 'list' as ViewMode, icon: List, label: 'List' },
   { key: 'table' as ViewMode, icon: Table, label: 'Table' },
+  { key: 'calendar' as ViewMode, icon: Calendar, label: 'Calendar' },
 ];
 
 export const LayoutSelector = ({ viewMode, onViewModeChange, className, supportedLayouts }: LayoutSelectorProps) => {
