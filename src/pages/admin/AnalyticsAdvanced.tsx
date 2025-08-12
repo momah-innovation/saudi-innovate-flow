@@ -19,6 +19,7 @@ import {
   Clock
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import UserBehaviorAnalytics from '@/components/admin/analytics/UserBehaviorAnalytics';
 
 const AnalyticsAdvanced: React.FC = () => {
   // Mock analytics data
@@ -112,44 +113,10 @@ const AnalyticsAdvanced: React.FC = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* User Behavior Analytics */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5" />
-                تحليل سلوك المستخدمين
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={mockUserBehaviorData}>
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                    <XAxis 
-                      dataKey="day" 
-                      className="text-xs fill-muted-foreground"
-                      tick={{ fontSize: 12 }}
-                    />
-                    <YAxis 
-                      className="text-xs fill-muted-foreground"
-                      tick={{ fontSize: 12 }}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--background))', 
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '6px'
-                      }}
-                    />
-                    <Bar dataKey="views" fill="hsl(var(--primary))" name="المشاهدات" />
-                    <Bar dataKey="interactions" fill="hsl(var(--success))" name="التفاعلات" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
+        {/* User Behavior Analytics Component */}
+        <UserBehaviorAnalytics />
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Engagement Trends */}
           <Card>
             <CardHeader>
@@ -194,6 +161,43 @@ const AnalyticsAdvanced: React.FC = () => {
                       name="التفاعلات"
                     />
                   </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Weekly Summary */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="w-5 h-5" />
+                ملخص أسبوعي
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={mockUserBehaviorData}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                    <XAxis 
+                      dataKey="day" 
+                      className="text-xs fill-muted-foreground"
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis 
+                      className="text-xs fill-muted-foreground"
+                      tick={{ fontSize: 12 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--background))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '6px'
+                      }}
+                    />
+                    <Bar dataKey="views" fill="hsl(var(--primary))" name="المشاهدات" />
+                    <Bar dataKey="interactions" fill="hsl(var(--success))" name="التفاعلات" />
+                  </BarChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>

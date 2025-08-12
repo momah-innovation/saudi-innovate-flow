@@ -65,6 +65,8 @@ const SecurityAdvanced = lazy(() => import('@/pages/admin/SecurityAdvanced'));
 const AccessControlAdvanced = lazy(() => import('@/pages/admin/AccessControlAdvanced'));
 const ElevationMonitor = lazy(() => import('@/pages/admin/ElevationMonitor'));
 const AnalyticsAdvanced = lazy(() => import('@/pages/admin/AnalyticsAdvanced'));
+const AIManagement = lazy(() => import('@/pages/admin/AIManagement'));
+const FileManagementAdvanced = lazy(() => import('@/pages/admin/FileManagementAdvanced'));
 const CollaborationLandingPage = lazy(() => import('@/pages/CollaborationLandingPage'));
 const CollaborativeIdeasPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeIdeasPage })));
 const CollaborativeChallengesPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeChallengesPage })));
@@ -277,6 +279,22 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: '/admin/analytics-advanced',
     component: AnalyticsAdvanced,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: '/admin/ai-management',
+    component: AIManagement,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: '/admin/file-management-advanced',
+    component: FileManagementAdvanced,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
