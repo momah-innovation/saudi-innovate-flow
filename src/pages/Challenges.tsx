@@ -219,11 +219,11 @@ export default function Challenges() {
     setFilters(prev => ({ ...prev, sortBy: field, sortOrder: newOrder }));
   };
 
-  const handleViewDetails = (challenge: any) => {
-    console.log('🔍 handleViewDetails called with challenge:', challenge);
+  const handleViewDetailsById = (challengeId: string) => {
+    console.log('🔍 handleViewDetailsById called with challengeId:', challengeId);
     
-    if (!challenge?.id) {
-      console.error('❌ Challenge ID is missing:', challenge);
+    if (!challengeId) {
+      console.error('❌ Challenge ID is missing:', challengeId);
       toast({
         title: 'خطأ',
         description: 'معرف التحدي غير موجود',
@@ -232,8 +232,24 @@ export default function Challenges() {
       return;
     }
     
-    console.log('✅ Navigating to challenge details:', challenge.id);
-    navigate(`/challenges/${challenge.id}`);
+    console.log('✅ Navigating to challenge details:', challengeId);
+    navigate(`/challenges/${challengeId}`);
+  };
+
+  const handleViewDetails = (challenge: any) => {
+    console.log('🔍 handleViewDetails called with challenge:', challenge);
+    
+    if (!challenge?.id) {
+      console.error('❌ Challenge object or ID is missing:', challenge);
+      toast({
+        title: 'خطأ',
+        description: 'معرف التحدي غير موجود',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
+    handleViewDetailsById(challenge.id);
   };
 
   const handleParticipate = async (challenge: any) => {
@@ -451,7 +467,7 @@ export default function Challenges() {
                       <EnhancedChallengeCard
                         key={challenge.id}
                         challenge={challenge as any}
-                        onViewDetails={handleViewDetails}
+                        onViewDetails={handleViewDetailsById}
                         onParticipate={handleParticipate}
                         onLike={handleLike}
                         onShare={handleShare}
@@ -467,7 +483,7 @@ export default function Challenges() {
                       <EnhancedChallengeCard
                         key={challenge.id}
                         challenge={challenge as any}
-                        onViewDetails={handleViewDetails}
+                        onViewDetails={handleViewDetailsById}
                         onParticipate={handleParticipate}
                         onLike={handleLike}
                         onShare={handleShare}
