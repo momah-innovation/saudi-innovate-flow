@@ -64,6 +64,7 @@ export const useChallengesData = () => {
       }
 
       // Fetch challenges - RLS policies handle access control automatically
+      console.log('🔍 Attempting to fetch challenges...');
       const { data: challengesData, error: challengesError } = await supabase
         .from('challenges')
         .select(`
@@ -72,7 +73,14 @@ export const useChallengesData = () => {
         `)
         .order('created_at', { ascending: false });
 
+      console.log('📊 Challenge fetch result:', { 
+        dataCount: challengesData?.length, 
+        error: challengesError,
+        firstChallenge: challengesData?.[0] 
+      });
+
       if (challengesError) {
+        console.error('❌ Database error fetching challenges:', challengesError);
         logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, challengesError);
         throw challengesError;
       }

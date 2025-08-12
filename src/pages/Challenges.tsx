@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
-import { GlobalBreadcrumb } from '@/components/layout/GlobalBreadcrumb';
 import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallengeCard';
 import { EnhancedChallengesHero } from '@/components/challenges/EnhancedChallengesHero';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
@@ -102,325 +101,86 @@ export default function Challenges() {
     }
   }, [challenges]);
 
-  // Filter and search logic
-  const getFilteredChallenges = () => {
-    logger.debug('Starting challenge filtering', { 
-      component: 'Challenges', 
-      action: 'getFilteredChallenges',
-      data: { 
-        totalChallenges: challenges.length,
-        filters: {
-          search: filters.search,
-          status: filters.status,
-          category: filters.category,
-          difficulty: filters.difficulty,
-          prizeRange: filters.prizeRange,
-          participantRange: filters.participantRange,
-          features: filters.features
-        }
-      }
-    });
-    
-    let filtered = [...challenges];
-
-    // Apply search filter
+  // Advanced filtering logic with optimized performance
+  const filteredChallenges = challenges.filter(challenge => {
+    // Search filter
     if (filters.search) {
-      const beforeSearch = filtered.length;
-      filtered = filtered.filter(challenge =>
-        (isRTL ? challenge.title_ar : challenge.title_ar).toLowerCase().includes(filters.search.toLowerCase()) ||
-        (isRTL ? challenge.description_ar : challenge.description_ar).toLowerCase().includes(filters.search.toLowerCase())
-      );
-      logger.debug('Applied search filter', { 
-        component: 'Challenges',
-        action: 'searchFilter',
-        data: { searchTerm: filters.search, beforeCount: beforeSearch, afterCount: filtered.length }
-      });
+      const searchTerm = filters.search.toLowerCase();
+      const title = (challenge.title_ar || '').toLowerCase();
+      const description = (challenge.description_ar || '').toLowerCase();
+      
+      if (!title.includes(searchTerm) && !description.includes(searchTerm)) {
+        return false;
+      }
     }
 
-    // Apply status filter
-    if (filters.status !== 'all') {
-      const beforeStatus = filtered.length;
-      filtered = filtered.filter(challenge => challenge.status === filters.status);
-      logger.debug('Applied status filter', { 
-        component: 'Challenges',
-        action: 'statusFilter',
-        data: { status: filters.status, beforeCount: beforeStatus, afterCount: filtered.length, availableStatuses: [...new Set(challenges.map(c => c.status))] }
-      });
+    // Status filter
+    if (filters.status !== 'all' && challenge.status !== filters.status) {
+      return false;
     }
 
-    // Apply category filter
-    if (filters.category !== 'all') {
-      const beforeCategory = filtered.length;
-      filtered = filtered.filter(challenge => {
-        const categoryKey = isRTL ? challenge.category : challenge.category || challenge.category;
-        return categoryKey && categoryKey.toLowerCase().includes(filters.category.toLowerCase());
-      });
-      logger.debug('Applied category filter', { 
-        component: 'Challenges',
-        action: 'categoryFilter',
-        data: { category: filters.category, beforeCount: beforeCategory, afterCount: filtered.length, availableCategories: [...new Set(challenges.map(c => c.category))] }
-      });
+    // Category filter
+    if (filters.category !== 'all' && challenge.category !== filters.category) {
+      return false;
     }
 
-    // Apply difficulty filter
-    if (filters.difficulty !== 'all') {
-      const beforeDifficulty = filtered.length;
-      filtered = filtered.filter(challenge => challenge.difficulty && challenge.difficulty.toLowerCase() === filters.difficulty.toLowerCase());
-      logger.debug('Applied difficulty filter', { 
-        component: 'Challenges',
-        action: 'difficultyFilter',
-        data: { 
-          difficulty: filters.difficulty, 
-          beforeCount: beforeDifficulty, 
-          afterCount: filtered.length, 
-          availableDifficulties: [...new Set(challenges.map(c => c.difficulty).filter(Boolean))]
+    // Difficulty filter
+    if (filters.difficulty !== 'all' && challenge.difficulty !== filters.difficulty) {
+      return false;
+    }
+
+    // Prize range filter
+    const budget = challenge.estimated_budget || 0;
+    if (budget < filters.prizeRange[0] || budget > filters.prizeRange[1]) {
+      return false;
+    }
+
+    // Participant range filter
+    const participants = challenge.participants || 0;
+    if (participants < filters.participantRange[0] || participants > filters.participantRange[1]) {
+      return false;
+    }
+
+    // Features filter
+    if (filters.features.length > 0) {
+      const hasFeature = filters.features.some(feature => {
+        switch (feature) {
+          case 'trending': return challenge.trending;
+          case 'new': return new Date(challenge.created_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
+          case 'ending_soon': return challenge.end_date && new Date(challenge.end_date).getTime() < Date.now() + 7 * 24 * 60 * 60 * 1000;
+          case 'high_prize': return (challenge.estimated_budget || 0) > 100000;
+          default: return false;
         }
       });
+      if (!hasFeature) return false;
     }
 
-    // Apply prize range filter
-    const beforePrize = filtered.length;
-    filtered = filtered.filter(challenge => {
-      const budgetValue = challenge.estimated_budget || 0;
-      return budgetValue >= filters.prizeRange[0] && budgetValue <= filters.prizeRange[1];
-    });
-    logger.debug('Applied prize range filter', { 
-      component: 'Challenges',
-      action: 'prizeRangeFilter',
-      data: { 
-        prizeRange: filters.prizeRange, 
-        beforeCount: beforePrize, 
-        afterCount: filtered.length
-      }
-    });
+    return true;
+  });
 
-    // Apply participant range filter
-    const beforeParticipants = filtered.length;
-    filtered = filtered.filter(challenge => {
-      const participantCount = challenge.participants || 0;
-      return participantCount >= filters.participantRange[0] && participantCount <= filters.participantRange[1];
-    });
-    logger.debug('Applied participant range filter', { 
-      component: 'Challenges',
-      action: 'participantRangeFilter',
-      data: { 
-        participantRange: filters.participantRange, 
-        beforeCount: beforeParticipants, 
-        afterCount: filtered.length
-      }
-    });
-
-    // Apply feature filters
-    if (filters.features.includes('trending')) {
-      const beforeTrending = filtered.length;
-      filtered = filtered.filter(challenge => challenge.trending || challenge.priority_level === 'عالي');
-      logger.debug('Applied trending filter', { 
-        component: 'Challenges',
-        action: 'trendingFilter',
-        data: { beforeCount: beforeTrending, afterCount: filtered.length }
-      });
+  // Sorting logic
+  const sortedChallenges = [...filteredChallenges].sort((a, b) => {
+    const order = filters.sortOrder === 'asc' ? 1 : -1;
+    
+    switch (filters.sortBy) {
+      case 'title':
+        return order * (a.title_ar || '').localeCompare(b.title_ar || '');
+      case 'date':
+        return order * (new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+      case 'participants':
+        return order * ((a.participants || 0) - (b.participants || 0));
+      case 'prize':
+        return order * ((a.estimated_budget || 0) - (b.estimated_budget || 0));
+      case 'deadline':
+        const aDeadline = a.end_date ? new Date(a.end_date).getTime() : Infinity;
+        const bDeadline = b.end_date ? new Date(b.end_date).getTime() : Infinity;
+        return order * (aDeadline - bDeadline);
+      default:
+        return 0;
     }
-    if (filters.features.includes('ending-soon')) {
-      const beforeEndingSoon = filtered.length;
-      filtered = filtered.filter(challenge => {
-        if (!challenge.end_date) return false;
-        const deadline = new Date(challenge.end_date);
-        const now = new Date();
-        const daysLeft = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        return daysLeft <= 7 && daysLeft > 0;
-      });
-      logger.debug('Applied ending-soon filter', { 
-        component: 'Challenges',
-        action: 'endingSoonFilter',
-        data: { beforeCount: beforeEndingSoon, afterCount: filtered.length }
-      });
-    }
-
-    // Apply sorting
-    filtered.sort((a, b) => {
-      let aValue, bValue;
-      
-      switch (filters.sortBy) {
-        case 'participants':
-          aValue = a.participants || 0;
-          bValue = b.participants || 0;
-          break;
-        case 'submissions':
-          aValue = a.submissions || 0;
-          bValue = b.submissions || 0;
-          break;
-        case 'prize':
-          aValue = a.estimated_budget || 0;
-          bValue = b.estimated_budget || 0;
-          break;
-        case 'deadline':
-          aValue = a.end_date ? new Date(a.end_date).getTime() : 0;
-          bValue = b.end_date ? new Date(b.end_date).getTime() : 0;
-          break;
-        default:
-          aValue = a.title_ar || '';
-          bValue = b.title_ar || '';
-      }
-
-      if (filters.sortOrder === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
-
-    logger.info('Challenge filtering completed', { 
-      component: 'Challenges',
-      action: 'getFilteredChallenges',
-      data: { finalCount: filtered.length, originalCount: challenges.length }
-    });
-    return filtered;
-  };
-
-  // Get final filtered challenges without tab filtering since we removed tabs
-  const filteredChallenges = getFilteredChallenges();
-  
-  logger.info('Challenge data processing completed', { 
-    component: 'Challenges',
-    action: 'finalCounts',
-    data: { filteredCount: filteredChallenges.length }
   });
 
   // Event handlers
-  const handleViewDetails = (challenge: any) => {
-    navigate(`/challenges/${challenge.id}`);
-  };
-
-  const handleParticipate = async (challenge: any) => {
-    if (!user) {
-      toast({
-        title: t('pleaseSignIn', isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in'),
-        description: t('signInToParticipate', isRTL ? 'يجب تسجيل الدخول للمشاركة في التحديات' : 'You need to sign in to participate in challenges'),
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      // Register participation
-      const { error } = await supabase
-        .from('challenge_participants')
-        .insert({
-          challenge_id: challenge.id,
-          user_id: user.id,
-          participation_type: 'individual'
-        });
-
-      if (error) throw error;
-
-      toast({
-        title: t('successfullyRegistered', isRTL ? 'تم التسجيل بنجاح' : 'Successfully Registered'),
-        description: t('challengeRegistrationSuccess', isRTL ? 
-          `تم تسجيلك في تحدي "${challenge.title_ar}"` : 
-          `You have been registered for "${challenge.title_ar}"`),
-      });
-      
-      // Refresh challenges to update participant count
-      refetch();
-    } catch (error) {
-      logger.error('Challenge participation failed', { component: 'Challenges', action: 'handleParticipate', key: challenge.id }, error as Error);
-      toast({
-        title: t('error', isRTL ? 'خطأ' : 'Error'),
-        description: t('registrationFailed', isRTL ? 'فشل في التسجيل' : 'Failed to register'),
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleLike = async (challenge: any) => {
-    if (!user) {
-      toast({
-        title: t('pleaseSignIn', isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in'),
-        description: t('signInToBookmark', isRTL ? 'يجب تسجيل الدخول لحفظ التحديات' : 'You need to sign in to bookmark challenges'),
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const isLiked = likedChallenges.has(challenge.id);
-      
-      if (isLiked) {
-        // Remove like
-        await supabase
-          .from('challenge_bookmarks')
-          .delete()
-          .eq('challenge_id', challenge.id)
-          .eq('user_id', user.id);
-        
-        setLikedChallenges(prev => {
-          const newSet = new Set(prev);
-          newSet.delete(challenge.id);
-          return newSet;
-        });
-      } else {
-        // Add like
-        await supabase
-          .from('challenge_bookmarks')
-          .insert({
-            challenge_id: challenge.id,
-            user_id: user.id
-          });
-        
-        setLikedChallenges(prev => new Set([...prev, challenge.id]));
-      }
-
-      toast({
-        title: isLiked ? 'تم إلغاء الإعجاب' : 'تم الإعجاب',
-        description: isLiked ? 'تم إلغاء إعجابك بالتحدي' : 'تم إضافة إعجابك للتحدي',
-      });
-      
-    } catch (error) {
-      logger.error('Failed to toggle like', { component: 'Challenges', action: 'like', challengeId: challenge.id }, error as Error);
-      toast({
-        title: 'خطأ',
-        description: 'فشل في تحديث الإعجاب',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const handleShare = async (challenge: any) => {
-    const shareData = {
-      title: challenge.title_ar,
-      text: challenge.description_ar,
-      url: `${window.location.origin}/challenges/${challenge.id}`
-    };
-
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-        toast({
-          title: 'تم المشاركة بنجاح',
-          description: 'تم مشاركة التحدي بنجاح',
-        });
-      } catch (error) {
-        // User cancelled share
-      }
-    } else {
-      // Fallback: copy to clipboard
-      try {
-        await navigator.clipboard.writeText(shareData.url);
-        toast({
-          title: 'تم نسخ الرابط',
-          description: 'تم نسخ رابط التحدي إلى الحافظة',
-        });
-      } catch (error) {
-        toast({
-          title: 'خطأ',
-          description: 'فشل في نسخ الرابط',
-          variant: 'destructive',
-        });
-      }
-    }
-  };
-
-  // Filter management
   const handleFiltersChange = (newFilters: FilterState) => {
     setFilters(newFilters);
   };
@@ -449,26 +209,127 @@ export default function Challenges() {
     setFilters(prev => ({ ...prev, sortBy: field, sortOrder: newOrder }));
   };
 
-  return (
-    <div className="space-y-6">
-      <AppShell enableCollaboration={true}>
-        <div className="container mx-auto px-4 py-8">
-          {/* Enhanced Hero Section */}
-          <EnhancedChallengesHero 
-            totalChallenges={stats.totalChallenges}
-            activeChallenges={stats.activeChallenges}
-            participantsCount={stats.totalParticipants}
-            completedChallenges={challenges.filter(c => c.status === 'completed').length}
-            canCreateChallenge={hasRole('admin') || hasRole('evaluator')}
-            onCreateChallenge={() => navigate('/admin/challenges/create')}
-            featuredChallenge={challenges.find(c => c.trending) ? {
-              id: challenges.find(c => c.trending)!.id,
-              title_ar: challenges.find(c => c.trending)!.title_ar,
-              participant_count: challenges.find(c => c.trending)!.participants,
-              end_date: challenges.find(c => c.trending)!.end_date || ''
-            } : undefined}
-          />
+  const handleViewDetails = (challenge: any) => {
+    navigate(`/challenges/${challenge.id}`);
+  };
 
+  const handleParticipate = async (challenge: any) => {
+    if (!user) {
+      toast({
+        title: t('auth_required', 'Authentication Required'),
+        description: t('please_login_to_participate', 'Please log in to participate in challenges.'),
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      await supabase.from('challenge_participants').insert({
+        challenge_id: challenge.id,
+        user_id: user.id,
+        participation_type: 'individual'
+      });
+
+      toast({
+        title: t('participation_success', 'Successfully Registered'),
+        description: t('challenge_participation_confirmed', 'You have been registered for this challenge.'),
+      });
+
+      refetch();
+    } catch (error) {
+      toast({
+        title: t('participation_error', 'Registration Failed'),
+        description: t('challenge_participation_failed', 'Failed to register for this challenge.'),
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleLike = async (challenge: any) => {
+    if (!user) {
+      toast({
+        title: t('auth_required', 'Authentication Required'),
+        description: t('please_login_to_like', 'Please log in to like challenges.'),
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const isLiked = likedChallenges.has(challenge.id);
+      
+      if (isLiked) {
+        await supabase.from('challenge_likes').delete().eq('challenge_id', challenge.id).eq('user_id', user.id);
+        setLikedChallenges(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(challenge.id);
+          return newSet;
+        });
+      } else {
+        await supabase.from('challenge_likes').insert({
+          challenge_id: challenge.id,
+          user_id: user.id
+        });
+        setLikedChallenges(prev => new Set([...prev, challenge.id]));
+      }
+    } catch (error) {
+      console.error('Like error:', error);
+    }
+  };
+
+  const handleShare = async (challenge: any) => {
+    const shareData = {
+      title: challenge.title_ar,
+      text: challenge.description_ar,
+      url: `${window.location.origin}/challenges/${challenge.id}`
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (error) {
+        // User cancelled sharing
+      }
+    } else {
+      await navigator.clipboard.writeText(shareData.url);
+      toast({
+        title: t('link_copied', 'Link Copied'),
+        description: t('challenge_link_copied', 'Challenge link copied to clipboard.'),
+      });
+    }
+  };
+
+  // Debug console logs
+  console.log('🎯 Challenges Page Debug:', {
+    challengesCount: challenges.length,
+    filteredCount: sortedChallenges.length,
+    loading,
+    stats,
+    filters,
+    user: user?.id
+  });
+
+  return (
+    <AppShell enableCollaboration={true}>
+      {/* Enhanced Hero Section - Full Width */}
+      <EnhancedChallengesHero 
+        totalChallenges={stats.totalChallenges}
+        activeChallenges={stats.activeChallenges}
+        participantsCount={stats.totalParticipants}
+        completedChallenges={challenges.filter(c => c.status === 'completed').length}
+        canCreateChallenge={hasRole('admin') || hasRole('evaluator')}
+        onCreateChallenge={() => navigate('/admin/challenges/create')}
+        featuredChallenge={challenges.find(c => c.trending) ? {
+          id: challenges.find(c => c.trending)!.id,
+          title_ar: challenges.find(c => c.trending)!.title_ar,
+          participant_count: challenges.find(c => c.trending)!.participants,
+          end_date: challenges.find(c => c.trending)!.end_date || ''
+        } : undefined}
+      />
+
+      {/* Main Content - Full Width without extra containers */}
+      <div className="w-full">
+        <div className="container mx-auto px-4 py-8">
           {/* Enhanced Filters */}
           <ChallengeFilters
             filters={filters}
@@ -485,8 +346,8 @@ export default function Challenges() {
             <div className="flex items-center gap-4">
               <span className="text-sm text-muted-foreground">
                 {t('challengesCount', isRTL 
-                  ? `عُثر على ${filteredChallenges.length} تحدي من أصل ${challenges.length}`
-                  : `Found ${filteredChallenges.length} of ${challenges.length} challenges`
+                  ? `عُثر على ${sortedChallenges.length} تحدي من أصل ${challenges.length}`
+                  : `Found ${sortedChallenges.length} of ${challenges.length} challenges`
                 )}
               </span>
               {getActiveFiltersCount() > 0 && (
@@ -529,7 +390,7 @@ export default function Challenges() {
               <>
                 {viewMode === 'cards' && (
                   <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {filteredChallenges.map((challenge) => (
+                    {sortedChallenges.map((challenge) => (
                       <EnhancedChallengeCard
                         key={challenge.id}
                         challenge={challenge as any}
@@ -545,7 +406,7 @@ export default function Challenges() {
 
                 {viewMode === 'grid' && (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {filteredChallenges.map((challenge) => (
+                    {sortedChallenges.map((challenge) => (
                       <EnhancedChallengeCard
                         key={challenge.id}
                         challenge={challenge as any}
@@ -561,19 +422,19 @@ export default function Challenges() {
                 )}
 
                 {viewMode === 'list' && (
-                <ChallengeListView
-                  challenges={filteredChallenges as any[]}
-                  onViewDetails={handleViewDetails}
-                  onParticipate={handleParticipate}
-                  sortBy={filters.sortBy}
-                  sortOrder={filters.sortOrder}
-                  onSort={handleSort}
-                />
+                  <ChallengeListView
+                    challenges={sortedChallenges as any[]}
+                    onViewDetails={handleViewDetails}
+                    onParticipate={handleParticipate}
+                    sortBy={filters.sortBy}
+                    sortOrder={filters.sortOrder}
+                    onSort={handleSort}
+                  />
                 )}
 
                 {viewMode === 'table' && (
                   <ChallengeTableView
-                    challenges={filteredChallenges as any[]}
+                    challenges={sortedChallenges as any[]}
                     onViewDetails={handleViewDetails}
                     onParticipate={handleParticipate}
                     onLike={handleLike}
@@ -584,7 +445,7 @@ export default function Challenges() {
 
                 {viewMode === 'calendar' && (
                   <ChallengeCalendarView
-                    challenges={filteredChallenges as any[]}
+                    challenges={sortedChallenges as any[]}
                     onViewDetails={handleViewDetails}
                     onParticipate={handleParticipate}
                     onLike={handleLike}
@@ -593,7 +454,7 @@ export default function Challenges() {
                   />
                 )}
 
-                {filteredChallenges.length === 0 && !loading && (
+                {sortedChallenges.length === 0 && !loading && (
                   <Card>
                     <CardContent className="flex flex-col items-center justify-center py-12">
                       <Target className="w-12 h-12 text-muted-foreground mb-4" />
@@ -615,13 +476,8 @@ export default function Challenges() {
               </>
             )}
           </div>
-
-          {/* Collaboration */}
-          <div className="mt-8">
-            <WorkspaceCollaboration workspaceType="team" />
-          </div>
         </div>
-      </AppShell>
-    </div>
+      </div>
+    </AppShell>
   );
 }
