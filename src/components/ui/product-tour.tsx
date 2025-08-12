@@ -126,12 +126,12 @@ export function ProductTour({
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 bg-black/50 z-1000" />
+      <div className="fixed inset-0 bg-black/50 z-[100]" />
       
       {/* Tooltip */}
       <Card
         className={cn(
-          "fixed z-1002 w-80 max-w-sm",
+          "fixed z-[101] w-80 max-w-sm",
           className
         )}
         style={{

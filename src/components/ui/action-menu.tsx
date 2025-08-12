@@ -37,7 +37,7 @@ export function ActionMenu({ actions, trigger, size = 'sm' }: ActionMenuProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align={isRTL ? "start" : "end"} 
-        className="w-48 z-50 bg-popover/95 backdrop-blur-sm border shadow-lg"
+        className="w-48 z-[102] bg-popover/95 backdrop-blur-sm border shadow-lg"
       >
         {actions.map((action, index) => (
           <div key={action.id}>

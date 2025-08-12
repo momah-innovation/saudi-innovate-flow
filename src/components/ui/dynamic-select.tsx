@@ -54,7 +54,7 @@ export function DynamicSelect({
         <SelectTrigger className={className}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent className="bg-background border shadow-lg z-50">
+        <SelectContent className="bg-background border shadow-lg z-[102]">
           {loading ? (
             <SelectItem value="loading" disabled>
               <div className="flex items-center gap-2">

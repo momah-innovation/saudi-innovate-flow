@@ -426,7 +426,7 @@ export function UnsplashImageBrowser({
                 
                 {/* Search Suggestions */}
                 {showSuggestions && (searchSuggestions.length > 0 || recentSearches.length > 0) && (
-                  <div className="absolute top-full left-0 right-0 bg-background border rounded-md shadow-lg z-50 mt-1">
+                  <div className="absolute top-full left-0 right-0 bg-background border rounded-md shadow-lg z-[102] mt-1">
                     <ScrollArea className="max-h-64">
                       {searchSuggestions.length > 0 && (
                         <div className="p-2">
@@ -928,7 +928,7 @@ export function UnsplashImageBrowser({
           {/* Jump to Top Button */}
           {showJumpToTop && (
             <Button
-              className="fixed bottom-4 right-4 z-50"
+              className="fixed bottom-4 right-4 z-[102]"
               size="sm"
               onClick={jumpToTop}
             >

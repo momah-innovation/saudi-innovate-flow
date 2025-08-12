@@ -194,7 +194,7 @@ export function LoadingOverlay({ message, className }: LoadingOverlayProps) {
   
   return (
     <div className={cn(
-      "fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4",
+      "fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4",
       className
     )}>
       <div className="text-center space-y-4 max-w-sm">
