@@ -1,83 +1,89 @@
 import React from 'react';
+import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Shield, Users, UserCheck, Clock } from 'lucide-react';
+import UserRoleManager from '@/components/admin/security/UserRoleManager';
+import PermissionMatrix from '@/components/admin/security/PermissionMatrix';
+import RoleApprovalQueue from '@/components/admin/security/RoleApprovalQueue';
 
 const AccessControlAdvanced: React.FC = () => {
   return (
-    <div className="container mx-auto p-6">
+    <AdminPageWrapper
+      title="مركز التحكم بالصلاحيات المتقدم"
+      description="إدارة وتتبع صلاحيات المستخدمين وطلبات الموافقة"
+    >
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">مركز التحكم بالصلاحيات المتقدم</h1>
-            <p className="text-muted-foreground mt-2">
-              إدارة وتتبع صلاحيات المستخدمين وطلبات الموافقة
-            </p>
-          </div>
+        {/* Overview Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">
+                    طلبات قيد الانتظار
+                  </p>
+                  <p className="text-2xl font-bold">3</p>
+                </div>
+                <Clock className="w-8 h-8 text-warning" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">
+                    إجمالي الأدوار النشطة
+                  </p>
+                  <p className="text-2xl font-bold">28</p>
+                </div>
+                <Shield className="w-8 h-8 text-primary" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">
+                    المستخدمون النشطون
+                  </p>
+                  <p className="text-2xl font-bold">142</p>
+                </div>
+                <Users className="w-8 h-8 text-success" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">
+                    أنواع الصلاحيات
+                  </p>
+                  <p className="text-2xl font-bold">10</p>
+                </div>
+                <UserCheck className="w-8 h-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-card rounded-lg border p-6">
-            <div className="flex items-center justify-between space-y-0 pb-2">
-              <h3 className="text-sm font-medium">طلبات قيد الانتظار</h3>
-            </div>
-            <div className="text-2xl font-bold">0</div>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* User Role Manager */}
+          <UserRoleManager />
           
-          <div className="bg-card rounded-lg border p-6">
-            <div className="flex items-center justify-between space-y-0 pb-2">
-              <h3 className="text-sm font-medium">إجمالي الأدوار النشطة</h3>
-            </div>
-            <div className="text-2xl font-bold">0</div>
-          </div>
-          
-          <div className="bg-card rounded-lg border p-6">
-            <div className="flex items-center justify-between space-y-0 pb-2">
-              <h3 className="text-sm font-medium">المستخدمون النشطون</h3>
-            </div>
-            <div className="text-2xl font-bold">0</div>
-          </div>
-          
-          <div className="bg-card rounded-lg border p-6">
-            <div className="flex items-center justify-between space-y-0 pb-2">
-              <h3 className="text-sm font-medium">أنواع الصلاحيات</h3>
-            </div>
-            <div className="text-2xl font-bold">0</div>
-          </div>
+          {/* Role Approval Queue */}
+          <RoleApprovalQueue />
         </div>
 
-        {/* Main Content */}
-        <div className="bg-card rounded-lg border p-6">
-          <h2 className="text-xl font-semibold mb-4">طلبات الموافقة على الأدوار</h2>
-          <p className="text-muted-foreground">
-            مراجعة والموافقة على طلبات تعيين الأدوار المقدمة من المستخدمين
-          </p>
-          <div className="mt-6 text-center py-8 text-muted-foreground">
-            لا توجد طلبات حالياً
-          </div>
-        </div>
-
-        {/* Active Roles */}
-        <div className="bg-card rounded-lg border p-6">
-          <h2 className="text-xl font-semibold mb-4">الأدوار النشطة</h2>
-          <p className="text-muted-foreground">
-            عرض وإدارة جميع الأدوار المعينة للمستخدمين
-          </p>
-          <div className="mt-6 text-center py-8 text-muted-foreground">
-            لا توجد أدوار نشطة حالياً
-          </div>
-        </div>
-
-        {/* Permissions Matrix */}
-        <div className="bg-card rounded-lg border p-6">
-          <h2 className="text-xl font-semibold mb-4">مصفوفة الصلاحيات</h2>
-          <p className="text-muted-foreground">
-            عرض شامل لصلاحيات كل دور ومستوى الوصول
-          </p>
-          <div className="mt-6 text-center py-8 text-muted-foreground">
-            ستتم إضافة مصفوفة الصلاحيات في التحديث القادم
-          </div>
-        </div>
+        {/* Permission Matrix */}
+        <PermissionMatrix />
       </div>
-    </div>
+    </AdminPageWrapper>
   );
 };
 
