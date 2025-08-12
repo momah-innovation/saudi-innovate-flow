@@ -11,7 +11,7 @@ export default function StorageManagement() {
     <AdminLayout
       title="Storage Management"
       breadcrumbs={[
-        { label: 'Admin', href: '/admin/dashboard' },
+        { label: 'Admin', href: '/dashboard' },
         { label: 'Storage Management', href: '/admin/storage' }
       ]}
     >

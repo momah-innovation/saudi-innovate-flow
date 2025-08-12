@@ -38,7 +38,7 @@ export default function FocusQuestionsManagement() {
     <AdminLayout
       title={language === 'ar' ? 'إدارة الأسئلة المحورية' : 'Focus Questions Management'}
       breadcrumbs={[
-        { label: language === 'ar' ? 'لوحة الإدارة' : 'Admin', href: '/admin/dashboard' },
+        { label: language === 'ar' ? 'لوحة الإدارة' : 'Admin', href: '/dashboard' },
         { label: language === 'ar' ? 'الأسئلة المحورية' : 'Focus Questions' }
       ]}
     >

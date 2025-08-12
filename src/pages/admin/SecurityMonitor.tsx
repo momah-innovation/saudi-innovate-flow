@@ -59,7 +59,7 @@ export default function SecurityMonitor() {
     <AdminLayout
       title={language === 'ar' ? 'مراقب الأمان' : 'Security Monitor'}
       breadcrumbs={[
-        { label: language === 'ar' ? 'لوحة الإدارة' : 'Admin', href: '/admin/dashboard' },
+        { label: language === 'ar' ? 'لوحة الإدارة' : 'Admin', href: '/dashboard' },
         { label: language === 'ar' ? 'مراقب الأمان' : 'Security Monitor' }
       ]}
     >

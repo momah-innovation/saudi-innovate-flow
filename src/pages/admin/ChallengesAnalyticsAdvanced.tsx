@@ -14,7 +14,7 @@ export default function ChallengesAnalyticsAdvanced() {
   const [timeRange, setTimeRange] = useState("7d");
 
   const breadcrumbs = [
-    { label: t("admin"), href: "/admin" },
+    { label: t("admin"), href: "/dashboard" },
     { label: t("analytics"), href: "/admin/analytics-advanced" },
     { label: t("challenges_analytics") }
   ];

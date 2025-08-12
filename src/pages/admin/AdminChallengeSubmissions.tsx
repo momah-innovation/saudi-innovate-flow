@@ -237,7 +237,7 @@ export default function AdminChallengeSubmissions() {
   }
 
   const breadcrumbs = [
-    { label: "لوحة التحكم", href: "/admin/dashboard" },
+    { label: "لوحة التحكم", href: "/dashboard" },
     { label: "التحديات", href: "/admin/challenges" },
     { label: challenge.title_ar, href: `/admin/challenges/${challengeId}` },
     { label: "المشاريع المقدمة" }

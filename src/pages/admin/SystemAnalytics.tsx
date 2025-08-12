@@ -10,7 +10,7 @@ export default function SystemAnalytics() {
     <AdminLayout
       title="System Analytics"
       breadcrumbs={[
-        { label: 'Admin', href: '/admin/dashboard' },
+        { label: 'Admin', href: '/dashboard' },
         { label: 'System Analytics', href: '/admin/system-analytics' }
       ]}
     >

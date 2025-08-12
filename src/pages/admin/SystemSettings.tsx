@@ -25,7 +25,7 @@ export default function SystemSettings() {
     <AdminLayout
       title={t('system_settings_page.title', 'System Settings')}
       breadcrumbs={[
-        { label: t('admin.label', 'Admin'), href: '/admin/dashboard' },
+        { label: t('admin.label', 'Admin'), href: '/dashboard' },
         { label: t('system_settings_page.title', 'System Settings'), href: '/admin/system-settings' }
       ]}
     >
