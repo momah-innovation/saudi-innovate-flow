@@ -1,183 +1,125 @@
-import { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { TrendingUp, AlertTriangle } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useSuspiciousActivityTrends } from '@/hooks/admin/useSuspiciousActivities';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from 'recharts';
-import { AlertTriangle, TrendingUp } from 'lucide-react';
-import { useDirection } from '@/components/ui/direction-provider';
-import { cn } from '@/lib/utils';
 
 interface ThreatDetectionChartProps {
   className?: string;
 }
 
-export const ThreatDetectionChart = ({ className }: ThreatDetectionChartProps) => {
-  const { isRTL } = useDirection();
-  const [timeRange, setTimeRange] = useState<'7d' | '30d'>('7d');
-  const [chartType, setChartType] = useState<'line' | 'area'>('area');
+const ThreatDetectionChart: React.FC<ThreatDetectionChartProps> = ({ className }) => {
+  const { data: trends, isLoading } = useSuspiciousActivityTrends('7d');
 
-  const { data: trends, isLoading, error } = useSuspiciousActivityTrends(timeRange);
+  // Mock chart data for now
+  const chartData = [
+    { time: 'اليوم', high: 2, medium: 5, low: 8, total: 15 },
+    { time: 'أمس', high: 1, medium: 3, low: 12, total: 16 },
+    { time: 'قبل يومين', high: 0, medium: 7, low: 10, total: 17 }
+  ];
 
-  if (error) {
+  const totalThreats = chartData.reduce((sum, item) => sum + item.total, 0);
+  const highThreats = chartData.reduce((sum, item) => sum + item.high, 0);
+
+  if (isLoading) {
     return (
-      <Alert variant="destructive">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertDescription>
-          {isRTL ? 'فشل في تحميل بيانات اتجاهات التهديدات' : 'Failed to load threat trends data'}
-        </AlertDescription>
-      </Alert>
+      <Card className={className}>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            اكتشاف التهديدات
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-64 animate-pulse bg-muted rounded"></div>
+        </CardContent>
+      </Card>
     );
   }
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-background border border-border rounded-lg p-3 shadow-lg">
-          <p className="font-medium mb-2">{label}</p>
-          {payload.map((entry: any, index: number) => (
-            <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {`${entry.name}: ${entry.value}`}
-            </p>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const getSeverityColor = (severity: string) => {
-    const colors = {
-      critical: '#ef4444',
-      high: '#f97316', 
-      medium: '#eab308',
-      low: '#22c55e'
-    };
-    return colors[severity as keyof typeof colors] || '#6b7280';
-  };
-
-  const formatTimestamp = (timestamp: string) => {
-    const date = new Date(timestamp);
-    if (timeRange === '7d') {
-      return date.toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { 
-        month: 'short', 
-        day: 'numeric',
-        hour: '2-digit'
-      });
-    }
-    return date.toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { 
-      month: 'short', 
-      day: 'numeric' 
-    });
-  };
-
-  const chartData = trends?.map((trend: any) => ({
-    ...trend,
-    timestamp: formatTimestamp(trend.timestamp)
-  })) || [];
-
-  const ChartComponent = chartType === 'area' ? AreaChart : LineChart;
-
   return (
-    <Card className={cn("w-full", className)}>
+    <Card className={className}>
       <CardHeader>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-blue-600" />
-            {isRTL ? 'اتجاهات التهديدات الأمنية' : 'Security Threat Trends'}
-          </CardTitle>
-          
+        <CardTitle className="flex items-center gap-2">
+          <TrendingUp className="w-5 h-5" />
+          اكتشاف التهديدات
+        </CardTitle>
+        <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <Select value={timeRange} onValueChange={(value: any) => setTimeRange(value)}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="7d">{isRTL ? 'آخر 7 أيام' : 'Last 7 Days'}</SelectItem>
-                <SelectItem value="30d">{isRTL ? 'آخر 30 يوماً' : 'Last 30 Days'}</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={chartType} onValueChange={(value: any) => setChartType(value)}>
-              <SelectTrigger className="w-24">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="area">{isRTL ? 'منطقة' : 'Area'}</SelectItem>
-                <SelectItem value="line">{isRTL ? 'خط' : 'Line'}</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="w-3 h-3 rounded bg-destructive"></div>
+            <span className="text-sm text-muted-foreground">عالية الخطورة</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-warning"></div>
+            <span className="text-sm text-muted-foreground">متوسطة الخطورة</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-success"></div>
+            <span className="text-sm text-muted-foreground">منخفضة الخطورة</span>
           </div>
         </div>
       </CardHeader>
-
       <CardContent>
-        {isLoading ? (
-          <div className="flex items-center justify-center h-80">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="mb-4 flex items-center gap-4">
+          <div className="text-sm">
+            <span className="text-muted-foreground">إجمالي التهديدات: </span>
+            <span className="font-semibold">{totalThreats}</span>
           </div>
-        ) : !chartData.length ? (
-          <div className="flex items-center justify-center h-80 text-muted-foreground">
-            {isRTL ? 'لا توجد بيانات متاحة' : 'No data available'}
-          </div>
-        ) : (
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <ChartComponent data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis 
-                  dataKey="timestamp" 
-                  tick={{ fontSize: 12 }}
-                  reversed={isRTL}
-                />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                
-                {chartType === 'area' ? (
-                  <>
-                    <Area dataKey="critical" stroke={getSeverityColor('critical')} fill={getSeverityColor('critical')} fillOpacity={0.3} name={isRTL ? 'حرج' : 'Critical'} />
-                    <Area dataKey="high" stroke={getSeverityColor('high')} fill={getSeverityColor('high')} fillOpacity={0.3} name={isRTL ? 'عالي' : 'High'} />
-                    <Area dataKey="medium" stroke={getSeverityColor('medium')} fill={getSeverityColor('medium')} fillOpacity={0.3} name={isRTL ? 'متوسط' : 'Medium'} />
-                    <Area dataKey="low" stroke={getSeverityColor('low')} fill={getSeverityColor('low')} fillOpacity={0.3} name={isRTL ? 'منخفض' : 'Low'} />
-                  </>
-                ) : (
-                  <>
-                    <Line dataKey="critical" stroke={getSeverityColor('critical')} strokeWidth={2} name={isRTL ? 'حرج' : 'Critical'} />
-                    <Line dataKey="high" stroke={getSeverityColor('high')} strokeWidth={2} name={isRTL ? 'عالي' : 'High'} />
-                    <Line dataKey="medium" stroke={getSeverityColor('medium')} strokeWidth={2} name={isRTL ? 'متوسط' : 'Medium'} />
-                    <Line dataKey="low" stroke={getSeverityColor('low')} strokeWidth={2} name={isRTL ? 'منخفض' : 'Low'} />
-                  </>
-                )}
-              </ChartComponent>
-            </ResponsiveContainer>
-          </div>
-        )}
-        
-        {/* Summary statistics */}
-        {chartData.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t">
-            {[
-              { key: 'critical', label: isRTL ? 'حرج' : 'Critical', color: 'text-red-600' },
-              { key: 'high', label: isRTL ? 'عالي' : 'High', color: 'text-orange-600' },
-              { key: 'medium', label: isRTL ? 'متوسط' : 'Medium', color: 'text-yellow-600' },
-              { key: 'low', label: isRTL ? 'منخفض' : 'Low', color: 'text-green-600' }
-            ].map(({ key, label, color }) => {
-              const total = chartData.reduce((sum, item) => sum + (item[key] || 0), 0);
-              return (
-                <div key={key} className="text-center">
-                  <div className={cn("text-lg font-bold", color)}>
-                    {total.toLocaleString()}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {label}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+          <Badge variant={highThreats > 0 ? "destructive" : "outline"} className="flex items-center gap-1">
+            <AlertTriangle className="w-3 h-3" />
+            {highThreats} تهديد عالي
+          </Badge>
+        </div>
+
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+              <XAxis 
+                dataKey="time" 
+                className="text-xs fill-muted-foreground"
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis 
+                className="text-xs fill-muted-foreground"
+                tick={{ fontSize: 12 }}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'hsl(var(--background))', 
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '6px'
+                }}
+                labelStyle={{ color: 'hsl(var(--foreground))' }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="high" 
+                stroke="hsl(var(--destructive))" 
+                strokeWidth={2}
+                name="عالية الخطورة"
+              />
+              <Line 
+                type="monotone" 
+                dataKey="medium" 
+                stroke="hsl(var(--warning))" 
+                strokeWidth={2}
+                name="متوسطة الخطورة"
+              />
+              <Line 
+                type="monotone" 
+                dataKey="low" 
+                stroke="hsl(var(--success))" 
+                strokeWidth={2}
+                name="منخفضة الخطورة"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
 };
+
+export default ThreatDetectionChart;

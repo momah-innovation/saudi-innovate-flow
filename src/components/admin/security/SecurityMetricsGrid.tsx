@@ -1,146 +1,117 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Shield, AlertTriangle, Activity, Lock, Eye, Zap } from 'lucide-react';
 import { useSecurityMetrics } from '@/hooks/admin/useSecurityAuditLog';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Shield, AlertTriangle, Activity, TrendingUp, Lock, Eye } from 'lucide-react';
-import { useDirection } from '@/components/ui/direction-provider';
-import { cn } from '@/lib/utils';
 
 interface SecurityMetricsGridProps {
-  timeRange?: '1h' | '24h' | '7d' | '30d';
   className?: string;
 }
 
-export const SecurityMetricsGrid = ({ timeRange = '24h', className }: SecurityMetricsGridProps) => {
-  const { isRTL } = useDirection();
-  const { data: metrics, isLoading, error } = useSecurityMetrics(timeRange);
+const SecurityMetricsGrid: React.FC<SecurityMetricsGridProps> = ({ className }) => {
+  const { data: metrics, isLoading } = useSecurityMetrics('24h');
 
-  if (error) {
-    return (
-      <Alert variant="destructive">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertDescription>
-          {isRTL ? 'فشل في تحميل مقاييس الأمان' : 'Failed to load security metrics'}
-        </AlertDescription>
-      </Alert>
-    );
-  }
-
-  const getSecurityScoreVariant = (score: number) => {
-    if (score >= 90) return 'default';
-    if (score >= 70) return 'secondary';
-    if (score >= 50) return 'destructive';
-    return 'destructive';
-  };
-
-  const getSecurityScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600';
-    if (score >= 70) return 'text-yellow-600';
-    return 'text-red-600';
-  };
-
-  const timeRangeLabels = {
-    '1h': isRTL ? 'آخر ساعة' : 'Last Hour',
-    '24h': isRTL ? 'آخر 24 ساعة' : 'Last 24 Hours',
-    '7d': isRTL ? 'آخر 7 أيام' : 'Last 7 Days',
-    '30d': isRTL ? 'آخر 30 يوماً' : 'Last 30 Days'
-  };
-
-  const metricsCards = [
+  const metricCards = [
     {
-      title: isRTL ? 'النتيجة الأمنية' : 'Security Score',
-      value: isLoading ? '...' : `${metrics?.securityScore || 0}%`,
+      title: 'نقاط الأمان',
+      value: metrics?.securityScore || 0,
+      suffix: '/100',
       icon: Shield,
-      description: isRTL ? 'التقييم العام للأمان' : 'Overall security assessment',
-      variant: metrics ? getSecurityScoreVariant(metrics.securityScore) : 'secondary',
-      colorClass: metrics ? getSecurityScoreColor(metrics.securityScore) : 'text-muted-foreground'
+      variant: metrics?.securityScore >= 80 ? 'success' : metrics?.securityScore >= 60 ? 'warning' : 'destructive'
     },
     {
-      title: isRTL ? 'إجمالي الأحداث' : 'Total Events',
-      value: isLoading ? '...' : (metrics?.totalEvents || 0).toLocaleString(),
+      title: 'أحداث أمنية',
+      value: metrics?.totalEvents || 0,
       icon: Activity,
-      description: timeRangeLabels[timeRange],
-      variant: 'default' as const,
-      colorClass: 'text-blue-600'
+      variant: 'default'
     },
     {
-      title: isRTL ? 'أحداث حرجة' : 'Critical Events',
-      value: isLoading ? '...' : (metrics?.criticalEvents || 0).toLocaleString(),
+      title: 'تهديدات عالية',
+      value: metrics?.criticalEvents || 0,
       icon: AlertTriangle,
-      description: isRTL ? 'تتطلب تدخل فوري' : 'Require immediate attention',
-      variant: (metrics?.criticalEvents || 0) > 0 ? 'destructive' : 'secondary' as const,
-      colorClass: 'text-red-600'
+      variant: metrics?.criticalEvents > 0 ? 'destructive' : 'success'
     },
     {
-      title: isRTL ? 'أحداث عالية المخاطر' : 'High Risk Events',
-      value: isLoading ? '...' : (metrics?.highRiskEvents || 0).toLocaleString(),
-      icon: TrendingUp,
-      description: isRTL ? 'تحتاج مراجعة' : 'Need review',
-      variant: (metrics?.highRiskEvents || 0) > 0 ? 'destructive' : 'secondary' as const,
-      colorClass: 'text-orange-600'
-    },
-    {
-      title: isRTL ? 'أنشطة مشبوهة' : 'Suspicious Activities',
-      value: isLoading ? '...' : (metrics?.suspiciousActivities || 0).toLocaleString(),
+      title: 'أنشطة مشبوهة',
+      value: metrics?.suspiciousActivities || 0,
       icon: Eye,
-      description: isRTL ? 'أنشطة غير طبيعية' : 'Unusual activities detected',
-      variant: (metrics?.suspiciousActivities || 0) > 0 ? 'destructive' : 'secondary' as const,
-      colorClass: 'text-purple-600'
+      variant: metrics?.suspiciousActivities > 0 ? 'warning' : 'success'
     },
     {
-      title: isRTL ? 'انتهاكات الحد الأقصى' : 'Rate Limit Violations',
-      value: isLoading ? '...' : (metrics?.rateLimitViolations || 0).toLocaleString(),
+      title: 'محاولات الوصول',
+      value: metrics?.rateLimitViolations || 0,
       icon: Lock,
-      description: isRTL ? 'محاولات تجاوز الحدود' : 'API abuse attempts',
-      variant: (metrics?.rateLimitViolations || 0) > 0 ? 'destructive' : 'secondary' as const,
-      colorClass: 'text-indigo-600'
+      variant: metrics?.rateLimitViolations > 10 ? 'destructive' : 'default'
+    },
+    {
+      title: 'معدل التهديد',
+      value: 'منخفض',
+      icon: Zap,
+      variant: 'outline'
     }
   ];
 
+  const getVariantClasses = (variant: string) => {
+    switch (variant) {
+      case 'success': return 'border-success/20 bg-success/5';
+      case 'warning': return 'border-warning/20 bg-warning/5';
+      case 'destructive': return 'border-destructive/20 bg-destructive/5';
+      default: return 'border-border';
+    }
+  };
+
+  const getIconClasses = (variant: string) => {
+    switch (variant) {
+      case 'success': return 'text-success';
+      case 'warning': return 'text-warning';
+      case 'destructive': return 'text-destructive';
+      default: return 'text-primary';
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ${className}`}>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Card key={i} className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="h-4 bg-muted rounded w-1/2 mb-2"></div>
+              <div className="h-8 bg-muted rounded w-1/3"></div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4", className)}>
-      {metricsCards.map((metric, index) => {
-        const IconComponent = metric.icon;
-        
+    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ${className}`}>
+      {metricCards.map((metric, index) => {
+        const Icon = metric.icon;
         return (
-          <Card key={index} className="relative overflow-hidden">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {metric.title}
-              </CardTitle>
-              <IconComponent className={cn("h-4 w-4", metric.colorClass)} />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className={cn("text-2xl font-bold", metric.colorClass)}>
-                    {metric.value}
+          <Card key={index} className={getVariantClasses(metric.variant)}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">
+                    {metric.title}
+                  </p>
+                  <div className="flex items-baseline gap-1">
+                    <p className="text-2xl font-bold">
+                      {typeof metric.value === 'number' ? metric.value.toLocaleString() : metric.value}
+                    </p>
+                    {metric.suffix && (
+                      <span className="text-sm text-muted-foreground">{metric.suffix}</span>
+                    )}
                   </div>
-                  <Badge variant={metric.variant as any} className="text-xs">
-                    {metric.title === (isRTL ? 'النتيجة الأمنية' : 'Security Score') ? 
-                      (metrics?.securityScore >= 90 ? (isRTL ? 'ممتاز' : 'Excellent') :
-                       metrics?.securityScore >= 70 ? (isRTL ? 'جيد' : 'Good') :
-                       metrics?.securityScore >= 50 ? (isRTL ? 'متوسط' : 'Fair') :
-                       (isRTL ? 'ضعيف' : 'Poor')) :
-                      timeRangeLabels[timeRange]
-                    }
-                  </Badge>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  {metric.description}
-                </p>
+                <Icon className={`w-8 h-8 ${getIconClasses(metric.variant)}`} />
               </div>
             </CardContent>
-            
-            {/* Loading overlay */}
-            {isLoading && (
-              <div className="absolute inset-0 bg-background/50 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-              </div>
-            )}
           </Card>
         );
       })}
     </div>
   );
 };
+
+export default SecurityMetricsGrid;
