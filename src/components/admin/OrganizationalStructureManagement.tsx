@@ -1,811 +1,192 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Edit, Trash2, Users, Building, Network, Mail, Search, Filter, Eye } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from "@/utils/error-handler";
-
-interface Deputy {
-  id: string;
-  name: string;
-  name_ar?: string;
-  deputy_minister?: string;
-  contact_email?: string;
-  sector_id?: string;
-  created_at: string;
-}
-
-interface Department {
-  id: string;
-  name: string;
-  name_ar?: string;
-  department_head?: string;
-  budget_allocation?: number;
-  deputy_id?: string;
-  created_at: string;
-}
-
-interface Domain {
-  id: string;
-  name: string;
-  name_ar?: string;
-  domain_lead?: string;
-  specialization?: string;
-  department_id?: string;
-  created_at: string;
-}
-
-interface SubDomain {
-  id: string;
-  name: string;
-  name_ar?: string;
-  technical_focus?: string;
-  domain_id?: string;
-  created_at: string;
-}
-
-interface Service {
-  id: string;
-  name: string;
-  name_ar?: string;
-  service_type?: string;
-  citizen_facing: boolean;
-  digital_maturity_score: number;
-  sub_domain_id?: string;
-  created_at: string;
-}
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useOrganizationalHierarchy } from '@/hooks/useOrganizationalHierarchy';
+import { useDirection } from '@/components/ui/direction-provider';
+import { Building, Users, MapPin, Briefcase, Globe, Settings } from 'lucide-react';
 
 export function OrganizationalStructureManagement() {
-  const [deputies, setDeputies] = useState<Deputy[]>([]);
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [domains, setDomains] = useState<Domain[]>([]);
-  const [subDomains, setSubDomains] = useState<SubDomain[]>([]);
-  const [services, setServices] = useState<Service[]>([]);
-  interface SectorData {
-    id: string;
-    name?: string;
-    name_ar?: string;
-    description?: string;
-  }
+  const { isRTL } = useDirection();
+  const [activeTab, setActiveTab] = useState('hierarchy');
   
-  const [sectors, setSectors] = useState<SectorData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  interface SelectedItemData {
-    id: string;
-    name?: string;
-    name_ar?: string;
-    description?: string;
-    type?: string;
-    deputy_minister?: string;
-    contact_email?: string;
-    created_at?: string;
-  }
-  
-  const [selectedItem, setSelectedItem] = useState<SelectedItemData | null>(null);
-  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
-  const { toast } = useToast();
-  const { t } = useUnifiedTranslation();
+  const {
+    sectors,
+    entities,
+    deputies,
+    departments,
+    domains,
+    subDomains,
+    services,
+    loading
+  } = useOrganizationalHierarchy();
 
-  // States for dialogs and editing
-  const [isDeputyDialogOpen, setIsDeputyDialogOpen] = useState(false);
-  const [isDepartmentDialogOpen, setIsDepartmentDialogOpen] = useState(false);
-  const [isDomainDialogOpen, setIsDomainDialogOpen] = useState(false);
-  const [isSubDomainDialogOpen, setIsSubDomainDialogOpen] = useState(false);
-  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const entityTypes = [
+    { value: 'sector', label: isRTL ? 'قطاع' : 'Sector', icon: Globe },
+    { value: 'entity', label: isRTL ? 'جهة' : 'Entity', icon: Building },
+    { value: 'deputy', label: isRTL ? 'نائب' : 'Deputy', icon: Users },
+    { value: 'department', label: isRTL ? 'إدارة' : 'Department', icon: Briefcase },
+    { value: 'domain', label: isRTL ? 'نطاق' : 'Domain', icon: MapPin },
+    { value: 'sub_domain', label: isRTL ? 'نطاق فرعي' : 'Sub Domain', icon: MapPin },
+    { value: 'service', label: isRTL ? 'خدمة' : 'Service', icon: Settings }
+  ];
 
-  const [editingDeputy, setEditingDeputy] = useState<Deputy | null>(null);
-  const [editingDepartment, setEditingDepartment] = useState<Department | null>(null);
-  const [editingDomain, setEditingDomain] = useState<Domain | null>(null);
-  const [editingSubDomain, setEditingSubDomain] = useState<SubDomain | null>(null);
-  const [editingService, setEditingService] = useState<Service | null>(null);
-
-  // Form states
-  const [deputyForm, setDeputyForm] = useState({
-    name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: ""
-  });
-  const [departmentForm, setDepartmentForm] = useState({
-    name: "", name_ar: "", department_head: "", budget_allocation: 0, deputy_id: ""
-  });
-  const [domainForm, setDomainForm] = useState({
-    name: "", name_ar: "", domain_lead: "", specialization: "", department_id: ""
-  });
-  const [subDomainForm, setSubDomainForm] = useState({
-    name: "", name_ar: "", technical_focus: "", domain_id: ""
-  });
-  const [serviceForm, setServiceForm] = useState({
-    name: "", name_ar: "", service_type: "", citizen_facing: false, digital_maturity_score: 0, sub_domain_id: ""
+  const getEntityCounts = () => ({
+    sectors: sectors.length,
+    entities: entities.length,
+    deputies: deputies.length,
+    departments: departments.length,
+    domains: domains.length,
+    subDomains: subDomains.length,
+    services: services.length
   });
 
-  useEffect(() => {
-    fetchAllData();
-  }, []);
+  const counts = getEntityCounts();
 
-  const fetchAllData = async () => {
-    try {
-      const [deputiesRes, departmentsRes, domainsRes, subDomainsRes, servicesRes, sectorsRes] = await Promise.all([
-        supabase.from("deputies").select("*").order("created_at", { ascending: false }),
-        supabase.from("departments").select("*").order("created_at", { ascending: false }),
-        supabase.from("domains").select("*").order("created_at", { ascending: false }),
-        supabase.from("sub_domains").select("*").order("created_at", { ascending: false }),
-        supabase.from("services").select("*").order("created_at", { ascending: false }),
-        supabase.from("sectors").select("*").order("created_at", { ascending: false })
-      ]);
-
-      setDeputies(deputiesRes.data || []);
-      setDepartments(departmentsRes.data || []);
-      setDomains(domainsRes.data || []);
-      setSubDomains(subDomainsRes.data || []);
-      setServices(servicesRes.data || []);
-      setSectors(sectorsRes.data || []);
-    } catch (error) {
-      logger.error("Error fetching data", error);
-      toast({
-        title: t('error.title'),
-        description: t('error.fetch_organizational_data_failed'),
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDeputySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (editingDeputy) {
-        await supabase.from("deputies").update(deputyForm).eq("id", editingDeputy.id);
-        toast({ title: t('success.title'), description: t('success.deputy_updated') });
-      } else {
-        await supabase.from("deputies").insert([deputyForm]);
-        toast({ title: t('success.title'), description: t('success.deputy_created') });
-      }
-      setIsDeputyDialogOpen(false);
-      setEditingDeputy(null);
-      setDeputyForm({ name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: "" });
-      fetchAllData();
-    } catch (error) {
-      toast({ title: t('error.title'), description: t('error.save_deputy_failed'), variant: "destructive" });
-    }
-  };
-
-  const handleDepartmentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (editingDepartment) {
-        await supabase.from("departments").update(departmentForm).eq("id", editingDepartment.id);
-        toast({ title: t('success.title'), description: t('success.department_updated') });
-      } else {
-        await supabase.from("departments").insert([departmentForm]);
-        toast({ title: t('success.title'), description: t('success.department_created') });
-      }
-      setIsDepartmentDialogOpen(false);
-      setEditingDepartment(null);
-      setDepartmentForm({ name: "", name_ar: "", department_head: "", budget_allocation: 0, deputy_id: "" });
-      fetchAllData();
-    } catch (error) {
-      toast({ title: t('error.title'), description: t('error.save_department_failed'), variant: "destructive" });
-    }
-  };
-
-  const handleDomainSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (editingDomain) {
-        await supabase.from("domains").update(domainForm).eq("id", editingDomain.id);
-        toast({ title: t('success.title'), description: t('success.domain_updated') });
-      } else {
-        await supabase.from("domains").insert([domainForm]);
-        toast({ title: t('success.title'), description: t('success.domain_created') });
-      }
-      setIsDomainDialogOpen(false);
-      setEditingDomain(null);
-      setDomainForm({ name: "", name_ar: "", domain_lead: "", specialization: "", department_id: "" });
-      fetchAllData();
-    } catch (error) {
-      toast({ title: t('error.title'), description: t('error.save_domain_failed'), variant: "destructive" });
-    }
-  };
-
-  const handleSubDomainSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (editingSubDomain) {
-        await supabase.from("sub_domains").update(subDomainForm).eq("id", editingSubDomain.id);
-        toast({ title: t('success.title'), description: t('success.subdomain_updated') });
-      } else {
-        await supabase.from("sub_domains").insert([subDomainForm]);
-        toast({ title: t('success.title'), description: t('success.subdomain_created') });
-      }
-      setIsSubDomainDialogOpen(false);
-      setEditingSubDomain(null);
-      setSubDomainForm({ name: "", name_ar: "", technical_focus: "", domain_id: "" });
-      fetchAllData();
-    } catch (error) {
-      toast({ title: t('error.title'), description: t('error.save_subdomain_failed'), variant: "destructive" });
-    }
-  };
-
-  const handleServiceSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (editingService) {
-        await supabase.from("services").update(serviceForm).eq("id", editingService.id);
-        toast({ title: t('success.title'), description: t('success.service_updated') });
-      } else {
-        await supabase.from("services").insert([serviceForm]);
-        toast({ title: t('success.title'), description: t('success.service_created') });
-      }
-      setIsServiceDialogOpen(false);
-      setEditingService(null);
-      setServiceForm({ name: "", name_ar: "", service_type: "", citizen_facing: false, digital_maturity_score: 0, sub_domain_id: "" });
-      fetchAllData();
-    } catch (error) {
-      toast({ title: t('error.title'), description: t('error.save_service_failed'), variant: "destructive" });
-    }
-  };
-
-  if (isLoading) {
-    return <div className="flex justify-center p-8">{t('loading.general')}</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-muted-foreground">
+            {isRTL ? 'جاري تحميل الهيكل التنظيمي...' : 'Loading organizational structure...'}
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">{t('organizational_structure.title')}</h1>
-        <p className="text-muted-foreground">{t('organizational_structure.description')}</p>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        {entityTypes.map((type) => {
+          const Icon = type.icon;
+          const count = counts[type.value as keyof typeof counts] || 0;
+          
+          return (
+            <Card key={type.value} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                  <Icon className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-2xl font-bold">{count}</p>
+                    <p className="text-xs text-muted-foreground">{type.label}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      <Tabs defaultValue="deputies" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="deputies">{t('organizational_structure.deputies')}</TabsTrigger>
-          <TabsTrigger value="departments">{t('organizational_structure.departments')}</TabsTrigger>
-          <TabsTrigger value="domains">{t('organizational_structure.domains')}</TabsTrigger>
-          <TabsTrigger value="subdomains">{t('organizational_structure.sub_domains')}</TabsTrigger>
-          <TabsTrigger value="services">{t('organizational_structure.services')}</TabsTrigger>
+      {/* Main Content */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="hierarchy">
+            {isRTL ? 'الهيكل الهرمي' : 'Hierarchy'}
+          </TabsTrigger>
+          <TabsTrigger value="entities">
+            {isRTL ? 'إدارة العناصر' : 'Manage Entities'}
+          </TabsTrigger>
+          <TabsTrigger value="analytics">
+            {isRTL ? 'التحليلات' : 'Analytics'}
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="deputies">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">{t('organizational_structure.deputies')}</h2>
-            <div className="flex gap-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                  <Input
-                    placeholder={t('organizational_structure.search_deputies')}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9 w-64"
-                  />
+        <TabsContent value="hierarchy" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>{isRTL ? 'الهيكل التنظيمي الهرمي' : 'Organizational Hierarchy'}</CardTitle>
+              <CardDescription>
+                {isRTL 
+                  ? 'عرض الهيكل التنظيمي في شكل شجرة هرمية' 
+                  : 'View the organizational structure in a hierarchical tree format'
+                }
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <Building className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">
+                  {isRTL ? 'مكونات الهيكل التنظيمي قيد التطوير' : 'Organizational structure components under development'}
+                </p>
               </div>
-              <Dialog open={isDeputyDialogOpen} onOpenChange={setIsDeputyDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button onClick={() => { setEditingDeputy(null); setDeputyForm({ name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: "" }); }}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    {t('organizational_structure.add_deputy')}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>{editingDeputy ? t('organizational_structure.edit_deputy') : t('organizational_structure.add_new_deputy')}</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleDeputySubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>{t('form.name_english_label')}</Label>
-                        <Input value={deputyForm.name} onChange={(e) => setDeputyForm({...deputyForm, name: e.target.value})} required />
-                      </div>
-                      <div>
-                        <Label>{t('form.name_arabic_label')}</Label>
-                        <Input value={deputyForm.name_ar} onChange={(e) => setDeputyForm({...deputyForm, name_ar: e.target.value})} />
-                      </div>
-                    </div>
-                    <div>
-                      <Label>{t('form.deputy_minister_label')}</Label>
-                      <Input value={deputyForm.deputy_minister} onChange={(e) => setDeputyForm({...deputyForm, deputy_minister: e.target.value})} />
-                    </div>
-                    <div>
-                      <Label>{t('form.contact_email_label')}</Label>
-                      <Input type="email" value={deputyForm.contact_email} onChange={(e) => setDeputyForm({...deputyForm, contact_email: e.target.value})} />
-                    </div>
-                    <div>
-                      <Label>{t('form.sector_label')}</Label>
-                      <Select value={deputyForm.sector_id} onValueChange={(value) => setDeputyForm({...deputyForm, sector_id: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t('organizational_structure.select_sector')} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {sectors.map((sector) => (
-                            <SelectItem key={sector.id} value={sector.id}>{sector.name}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="flex justify-end space-x-2">
-                      <Button type="button" variant="outline" onClick={() => setIsDeputyDialogOpen(false)}>{t('ui.cancel')}</Button>
-                      <Button type="submit">{editingDeputy ? t('ui.update') : t('ui.create')}</Button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
-          <div className="grid gap-4">
-            {deputies
-              .filter(deputy => 
-                deputy.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                deputy.name_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                deputy.deputy_minister?.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((deputy) => (
-              <Card key={deputy.id} className="cursor-pointer hover:shadow-lg transition-shadow">
-                <CardHeader onClick={() => { setSelectedItem(deputy); setIsDetailDialogOpen(true); }}>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <Users className="w-5 h-5" />
-                        {deputy.name}
-                        {deputy.name_ar && <span className="text-sm text-muted-foreground">({deputy.name_ar})</span>}
-                      </CardTitle>
-                      {deputy.deputy_minister && <CardDescription>{deputy.deputy_minister}</CardDescription>}
-                    </div>
-                    <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
-                      <Button variant="outline" size="sm" onClick={() => {
-                        setSelectedItem(deputy);
-                        setIsDetailDialogOpen(true);
-                      }}>
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={() => {
-                        setEditingDeputy(deputy);
-                        setDeputyForm({
-                          name: deputy.name,
-                          name_ar: deputy.name_ar || "",
-                          deputy_minister: deputy.deputy_minister || "",
-                          contact_email: deputy.contact_email || "",
-                          sector_id: deputy.sector_id || ""
-                        });
-                        setIsDeputyDialogOpen(true);
-                      }}>
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                {deputy.contact_email && (
-                  <CardContent>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Mail className="w-4 h-4" />
-                      <span>{deputy.contact_email}</span>
-                    </div>
-                  </CardContent>
-                )}
-              </Card>
-            ))}
-          </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
-        <TabsContent value="departments">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">{t('organizational_structure.departments')}</h2>
-            <Dialog open={isDepartmentDialogOpen} onOpenChange={setIsDepartmentDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => { setEditingDepartment(null); setDepartmentForm({ name: "", name_ar: "", department_head: "", budget_allocation: 0, deputy_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  {t('organizational_structure.add_department')}
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>{editingDepartment ? t('organizational_structure.edit_department') : t('organizational_structure.add_new_department')}</DialogTitle>
-                  </DialogHeader>
-                <form onSubmit={handleDepartmentSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label>{t('form.name_english_label')}</Label>
-                      <Input value={departmentForm.name} onChange={(e) => setDepartmentForm({...departmentForm, name: e.target.value})} required />
-                    </div>
-                    <div>
-                      <Label>{t('form.name_arabic_label')}</Label>
-                      <Input value={departmentForm.name_ar} onChange={(e) => setDepartmentForm({...departmentForm, name_ar: e.target.value})} />
-                    </div>
-                  </div>
-                  <div>
-                    <Label>{t('form.department_head_label')}</Label>
-                    <Input value={departmentForm.department_head} onChange={(e) => setDepartmentForm({...departmentForm, department_head: e.target.value})} />
-                  </div>
-                  <div>
-                    <Label>{t('form.budget_allocation_label')}</Label>
-                    <Input type="number" value={departmentForm.budget_allocation} onChange={(e) => setDepartmentForm({...departmentForm, budget_allocation: Number(e.target.value)})} />
-                  </div>
-                  <div>
-                    <Label>{t('form.deputy_label')}</Label>
-                    <Select value={departmentForm.deputy_id} onValueChange={(value) => setDepartmentForm({...departmentForm, deputy_id: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t('admin.select_deputy')} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {deputies.map((deputy) => (
-                          <SelectItem key={deputy.id} value={deputy.id}>{deputy.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => setIsDepartmentDialogOpen(false)}>Cancel</Button>
-                    <Button type="submit">{editingDepartment ? "Update" : "Create"}</Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-          <div className="grid gap-4">
-            {departments.map((department) => (
-              <Card key={department.id}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <Building className="w-5 h-5" />
-                        {department.name}
-                        {department.name_ar && <span className="text-sm text-muted-foreground">({department.name_ar})</span>}
-                      </CardTitle>
-                      {department.department_head && <CardDescription>Head: {department.department_head}</CardDescription>}
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => {
-                        setEditingDepartment(department);
-                        setDepartmentForm({
-                          name: department.name,
-                          name_ar: department.name_ar || "",
-                          department_head: department.department_head || "",
-                          budget_allocation: department.budget_allocation || 0,
-                          deputy_id: department.deputy_id || ""
-                        });
-                        setIsDepartmentDialogOpen(true);
-                      }}>
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm">
-                    Budget: ${department.budget_allocation?.toLocaleString()}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        <TabsContent value="entities" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>{isRTL ? 'إدارة العناصر التنظيمية' : 'Manage Organizational Entities'}</CardTitle>
+              <CardDescription>
+                {isRTL 
+                  ? 'إضافة وتحرير وحذف العناصر التنظيمية' 
+                  : 'Add, edit, and delete organizational entities'
+                }
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <Building className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">
+                  {isRTL ? 'نماذج إدارة العناصر قيد التطوير' : 'Entity management forms under development'}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
-        <TabsContent value="domains">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Domains</h2>
-            <Dialog open={isDomainDialogOpen} onOpenChange={setIsDomainDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => { setEditingDomain(null); setDomainForm({ name: "", name_ar: "", domain_lead: "", specialization: "", department_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Domain
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{editingDomain ? t('admin.edit_domain') : t('admin.add_new_domain')}</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleDomainSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label>{t('form.name_english_label')}</Label>
-                      <Input value={domainForm.name} onChange={(e) => setDomainForm({...domainForm, name: e.target.value})} required />
-                    </div>
-                    <div>
-                      <Label>{t('form.name_arabic_label')}</Label>
-                      <Input value={domainForm.name_ar} onChange={(e) => setDomainForm({...domainForm, name_ar: e.target.value})} />
-                    </div>
-                  </div>
-                  <div>
-                    <Label>{t('form.domain_lead_label')}</Label>
-                    <Input value={domainForm.domain_lead} onChange={(e) => setDomainForm({...domainForm, domain_lead: e.target.value})} />
-                  </div>
-                  <div>
-                    <Label>{t('form.specialization_label')}</Label>
-                    <Input value={domainForm.specialization} onChange={(e) => setDomainForm({...domainForm, specialization: e.target.value})} />
-                  </div>
-                  <div>
-                    <Label>{t('form.department_label')}</Label>
-                    <Select value={domainForm.department_id} onValueChange={(value) => setDomainForm({...domainForm, department_id: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t('admin.select_department')} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {departments.map((department) => (
-                          <SelectItem key={department.id} value={department.id}>{department.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => setIsDomainDialogOpen(false)}>Cancel</Button>
-                    <Button type="submit">{editingDomain ? "Update" : "Create"}</Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-          <div className="grid gap-4">
-            {domains.map((domain) => (
-              <Card key={domain.id}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <Network className="w-5 h-5" />
-                        {domain.name}
-                        {domain.name_ar && <span className="text-sm text-muted-foreground">({domain.name_ar})</span>}
-                      </CardTitle>
-                      {domain.specialization && <CardDescription>{domain.specialization}</CardDescription>}
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => {
-                        setEditingDomain(domain);
-                        setDomainForm({
-                          name: domain.name,
-                          name_ar: domain.name_ar || "",
-                          domain_lead: domain.domain_lead || "",
-                          specialization: domain.specialization || "",
-                          department_id: domain.department_id || ""
-                        });
-                        setIsDomainDialogOpen(true);
-                      }}>
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                {domain.domain_lead && (
-                  <CardContent>
-                    <div className="text-sm">
-                      Lead: {domain.domain_lead}
-                    </div>
-                  </CardContent>
-                )}
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
+        <TabsContent value="analytics" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">
+                  {isRTL ? 'إجمالي العناصر' : 'Total Entities'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {Object.values(counts).reduce((a, b) => a + b, 0)}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {isRTL ? 'عبر جميع المستويات' : 'Across all levels'}
+                </p>
+              </CardContent>
+            </Card>
 
-        <TabsContent value="subdomains">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Sub-domains</h2>
-            <Dialog open={isSubDomainDialogOpen} onOpenChange={setIsSubDomainDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => { setEditingSubDomain(null); setSubDomainForm({ name: "", name_ar: "", technical_focus: "", domain_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Sub-domain
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{editingSubDomain ? "Edit Sub-domain" : "Add New Sub-domain"}</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubDomainSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label>{t('form.name_english_label')}</Label>
-                      <Input value={subDomainForm.name} onChange={(e) => setSubDomainForm({...subDomainForm, name: e.target.value})} required />
-                    </div>
-                    <div>
-                      <Label>{t('form.name_arabic_label')}</Label>
-                      <Input value={subDomainForm.name_ar} onChange={(e) => setSubDomainForm({...subDomainForm, name_ar: e.target.value})} />
-                    </div>
-                  </div>
-                  <div>
-                    <Label>{t('form.technical_focus_label')}</Label>
-                    <Input value={subDomainForm.technical_focus} onChange={(e) => setSubDomainForm({...subDomainForm, technical_focus: e.target.value})} />
-                  </div>
-                  <div>
-                    <Label>{t('form.domain_label')}</Label>
-                    <Select value={subDomainForm.domain_id} onValueChange={(value) => setSubDomainForm({...subDomainForm, domain_id: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select domain" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {domains.map((domain) => (
-                          <SelectItem key={domain.id} value={domain.id}>{domain.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => setIsSubDomainDialogOpen(false)}>Cancel</Button>
-                    <Button type="submit">{editingSubDomain ? "Update" : "Create"}</Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-          <div className="grid gap-4">
-            {subDomains.map((subDomain) => (
-              <Card key={subDomain.id}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <Network className="w-5 h-5" />
-                        {subDomain.name}
-                        {subDomain.name_ar && <span className="text-sm text-muted-foreground">({subDomain.name_ar})</span>}
-                      </CardTitle>
-                      {subDomain.technical_focus && <CardDescription>{subDomain.technical_focus}</CardDescription>}
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => {
-                        setEditingSubDomain(subDomain);
-                        setSubDomainForm({
-                          name: subDomain.name,
-                          name_ar: subDomain.name_ar || "",
-                          technical_focus: subDomain.technical_focus || "",
-                          domain_id: subDomain.domain_id || ""
-                        });
-                        setIsSubDomainDialogOpen(true);
-                      }}>
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">
+                  {isRTL ? 'أعمق مستوى' : 'Deepest Level'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">7</div>
+                <p className="text-xs text-muted-foreground">
+                  {isRTL ? 'مستويات في الهيكل' : 'Levels in structure'}
+                </p>
+              </CardContent>
+            </Card>
 
-        <TabsContent value="services">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Services</h2>
-            <Dialog open={isServiceDialogOpen} onOpenChange={setIsServiceDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => { setEditingService(null); setServiceForm({ name: "", name_ar: "", service_type: "", citizen_facing: false, digital_maturity_score: 0, sub_domain_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Service
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{editingService ? "Edit Service" : "Add New Service"}</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleServiceSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label>{t('form.name_english_label')}</Label>
-                      <Input value={serviceForm.name} onChange={(e) => setServiceForm({...serviceForm, name: e.target.value})} required />
-                    </div>
-                    <div>
-                      <Label>{t('form.name_arabic_label')}</Label>
-                      <Input value={serviceForm.name_ar} onChange={(e) => setServiceForm({...serviceForm, name_ar: e.target.value})} />
-                    </div>
-                  </div>
-                  <div>
-                    <Label>{t('form.service_type_label')}</Label>
-                    <Input value={serviceForm.service_type} onChange={(e) => setServiceForm({...serviceForm, service_type: e.target.value})} />
-                  </div>
-                  <div>
-                    <Label>{t('form.citizen_facing_label')}</Label>
-                    <Input type="checkbox" checked={serviceForm.citizen_facing} onChange={(e) => setServiceForm({...serviceForm, citizen_facing: e.target.checked})} />
-                  </div>
-                  <div>
-                    <Label>{t('form.digital_maturity_score_label')}</Label>
-                    <Input type="number" value={serviceForm.digital_maturity_score} onChange={(e) => setServiceForm({...serviceForm, digital_maturity_score: Number(e.target.value)})} />
-                  </div>
-                  <div>
-                    <Label>{t('form.sub_domain_label')}</Label>
-                    <Select value={serviceForm.sub_domain_id} onValueChange={(value) => setServiceForm({...serviceForm, sub_domain_id: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select sub-domain" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {subDomains.map((subDomain) => (
-                          <SelectItem key={subDomain.id} value={subDomain.id}>{subDomain.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => setIsServiceDialogOpen(false)}>Cancel</Button>
-                    <Button type="submit">{editingService ? "Update" : "Create"}</Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-          <div className="grid gap-4">
-            {services.map((service) => (
-              <Card key={service.id}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <Network className="w-5 h-5" />
-                        {service.name}
-                        {service.name_ar && <span className="text-sm text-muted-foreground">({service.name_ar})</span>}
-                      </CardTitle>
-                      {service.service_type && <CardDescription>{service.service_type}</CardDescription>}
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => {
-                        setEditingService(service);
-                        setServiceForm({
-                          name: service.name,
-                          name_ar: service.name_ar || "",
-                          service_type: service.service_type || "",
-                          citizen_facing: service.citizen_facing || false,
-                          digital_maturity_score: service.digital_maturity_score || 0,
-                          sub_domain_id: service.sub_domain_id || ""
-                        });
-                        setIsServiceDialogOpen(true);
-                      }}>
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            ))}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">
+                  {isRTL ? 'معدل التكليفات' : 'Assignment Rate'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">85%</div>
+                <p className="text-xs text-muted-foreground">
+                  {isRTL ? 'العناصر المكلفة' : 'Entities assigned'}
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* Detail Dialog */}
-      <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>
-              {selectedItem?.name} Details
-            </DialogTitle>
-          </DialogHeader>
-          {selectedItem && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-sm font-medium">Name (English)</Label>
-                  <p className="text-sm text-muted-foreground">{selectedItem.name}</p>
-                </div>
-                {selectedItem.name_ar && (
-                  <div>
-                    <Label className="text-sm font-medium">Name (Arabic)</Label>
-                    <p className="text-sm text-muted-foreground">{selectedItem.name_ar}</p>
-                  </div>
-                )}
-              </div>
-              {selectedItem.deputy_minister && (
-                <div>
-                  <Label className="text-sm font-medium">Deputy Minister</Label>
-                  <p className="text-sm text-muted-foreground">{selectedItem.deputy_minister}</p>
-                </div>
-              )}
-              {selectedItem.contact_email && (
-                <div>
-                  <Label className="text-sm font-medium">Contact Email</Label>
-                  <p className="text-sm text-muted-foreground">{selectedItem.contact_email}</p>
-                </div>
-              )}
-              <div>
-                <Label className="text-sm font-medium">Created</Label>
-                <p className="text-sm text-muted-foreground">
-                  {new Date(selectedItem.created_at).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
