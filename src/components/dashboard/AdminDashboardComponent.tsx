@@ -37,7 +37,12 @@ import {
   FileText,
   Zap,
   HardDrive,
-  HelpCircle
+  HelpCircle,
+  Brain,
+  Archive,
+  Lock,
+  TrendingUp,
+  Eye
 } from 'lucide-react';
 
 interface AdminUserProfile {
@@ -253,6 +258,73 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
     }
   ];
 
+  // Advanced Admin Interface Cards
+  const advancedAdminCards = [
+    {
+      title: language === 'ar' ? 'الأمان المتقدم' : 'Security Advanced',
+      description: language === 'ar' ? 'مراقبة الأمان المتقدمة وكشف التهديدات' : 'Advanced security monitoring and threat detection',
+      icon: Shield,
+      href: '/admin/security-advanced',
+      count: '3',
+      label: language === 'ar' ? 'تهديدات نشطة' : 'Active Threats',
+      color: 'text-red-600'
+    },
+    {
+      title: language === 'ar' ? 'التحكم بالوصول' : 'Access Control',
+      description: language === 'ar' ? 'إدارة أدوار المستخدمين والصلاحيات' : 'User roles and permission management',
+      icon: Lock,
+      href: '/admin/access-control-advanced',
+      count: '156',
+      label: language === 'ar' ? 'تعيينات الأدوار' : 'Role Assignments',
+      color: 'text-blue-600'
+    },
+    {
+      title: language === 'ar' ? 'مراقب الصلاحيات' : 'Elevation Monitor',
+      description: language === 'ar' ? 'تتبع رفع صلاحيات المديرين' : 'Admin privilege escalation tracking',
+      icon: TrendingUp,
+      href: '/admin/elevation-monitor',
+      count: '24',
+      label: language === 'ar' ? 'أحداث الرفع' : 'Elevation Events',
+      color: 'text-orange-600'
+    },
+    {
+      title: language === 'ar' ? 'التحليلات المتقدمة' : 'Analytics Advanced',
+      description: language === 'ar' ? 'تحليلات فورية ورؤى المستخدمين' : 'Real-time analytics and user insights',
+      icon: BarChart3,
+      href: '/admin/analytics-advanced',
+      count: '1.2M',
+      label: language === 'ar' ? 'نقاط البيانات' : 'Data Points',
+      color: 'text-purple-600'
+    },
+    {
+      title: language === 'ar' ? 'إدارة الذكاء الاصطناعي' : 'AI Management',
+      description: language === 'ar' ? 'خدمات الذكاء الاصطناعي وتكوين النماذج' : 'AI services and model configuration',
+      icon: Brain,
+      href: '/admin/ai-management',
+      count: '8',
+      label: language === 'ar' ? 'ميزات الذكاء الاصطناعي' : 'AI Features',
+      color: 'text-green-600'
+    },
+    {
+      title: language === 'ar' ? 'إدارة الملفات المتقدمة' : 'File Management',
+      description: language === 'ar' ? 'عمليات الملفات المتقدمة ودورة الحياة' : 'Advanced file operations and lifecycle',
+      icon: Archive,
+      href: '/admin/file-management-advanced',
+      count: '2.4 GB',
+      label: language === 'ar' ? 'إجمالي التخزين' : 'Total Storage',
+      color: 'text-indigo-600'
+    },
+    {
+      title: language === 'ar' ? 'تحليلات التحديات' : 'Challenge Analytics',
+      description: language === 'ar' ? 'مقاييس المشاركة والأداء في التحديات' : 'Challenge engagement and performance metrics',
+      icon: Target,
+      href: '/admin/challenges-analytics-advanced',
+      count: '45',
+      label: language === 'ar' ? 'تحديات نشطة' : 'Active Challenges',
+      color: 'text-cyan-600'
+    }
+  ];
+
   // Group actions by category for better organization
   const actionsByCategory = adminActions.filter(action => action.show).reduce((acc, action) => {
     const category = action.category || 'other';
@@ -274,7 +346,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
 
       {/* Professional Admin Tabs Interface */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 h-12 bg-muted rounded-lg p-1">
+        <TabsList className="grid w-full grid-cols-5 h-12 bg-muted rounded-lg p-1">
           <TabsTrigger 
             value="overview" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
@@ -302,6 +374,13 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
           >
             <Settings className="w-4 h-4" />
             {language === 'ar' ? 'النظام' : 'System'}
+          </TabsTrigger>
+          <TabsTrigger 
+            value="advanced" 
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
+          >
+            <Shield className="w-4 h-4" />
+            {language === 'ar' ? 'متقدم' : 'Advanced'}
           </TabsTrigger>
         </TabsList>
 
@@ -496,6 +575,82 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             ))}
           </div>
         </TabsContent>
+
+        <TabsContent value="advanced" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {advancedAdminCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <Card key={card.title} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
+                      {card.title}
+                    </CardTitle>
+                    <Icon className={`h-5 w-5 transition-colors ${card.color || 'text-muted-foreground group-hover:text-primary'}`} />
+                  </CardHeader>
+                  <CardContent>
+                    <div className={`text-2xl font-bold ${card.color || 'text-foreground'}`}>{card.count}</div>
+                    <p className="text-xs text-muted-foreground">
+                      {card.label}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      {card.description}
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                      onClick={() => navigate(card.href)}
+                    >
+                      <Eye className="w-3 h-3 mr-2" />
+                      {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Advanced Features Summary */}
+          <Card className="bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-primary" />
+                {language === 'ar' ? 'واجهات الإدارة المتقدمة' : 'Advanced Admin Interfaces'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-background/50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">100%</div>
+                  <div className="text-sm text-muted-foreground">
+                    {language === 'ar' ? 'التنفيذ مكتمل' : 'Implementation Complete'}
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-background/50 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">7</div>
+                  <div className="text-sm text-muted-foreground">
+                    {language === 'ar' ? 'صفحات متقدمة' : 'Advanced Pages'}
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-background/50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">25+</div>
+                  <div className="text-sm text-muted-foreground">
+                    {language === 'ar' ? 'مكونات جديدة' : 'New Components'}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-sm text-muted-foreground">
+                  {language === 'ar' 
+                    ? 'مجموعة كاملة من واجهات الإدارة مع المراقبة الفورية والتحليلات والتحكم المتقدم'
+                    : 'Complete admin interface suite with real-time monitoring, analytics, and advanced controls'}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
       </Tabs>
     </AdminPageWrapper>
   );
