@@ -115,7 +115,7 @@ export default function Challenges() {
     }
 
     // Status filter
-    if (filters.status !== 'all' && challenge.status !== filters.status) {
+    if (filters.status !== 'all' && !challenge.status?.includes(filters.status) && challenge.status !== filters.status) {
       return false;
     }
 
@@ -316,7 +316,7 @@ export default function Challenges() {
         totalChallenges={stats.totalChallenges}
         activeChallenges={stats.activeChallenges}
         participantsCount={stats.totalParticipants}
-        completedChallenges={challenges.filter(c => c.status === 'completed').length}
+        completedChallenges={challenges.filter(c => c.status === 'completed' || c.status?.includes('completed')).length}
         canCreateChallenge={hasRole('admin') || hasRole('evaluator')}
         onCreateChallenge={() => navigate('/admin/challenges/create')}
         featuredChallenge={challenges.find(c => c.trending) ? {

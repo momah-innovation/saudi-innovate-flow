@@ -99,22 +99,38 @@ export const EnhancedChallengesHero = ({
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
-                  {t('challenges.platform_badge', 'Innovation Challenges Platform')}
+                  {isRTL ? 'منصة تحديات الابتكار' : 'Innovation Challenges Platform'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  {t('challenges.hero_title_part1', 'Take on')} {' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
-                    {t('challenges.hero_title_part2', 'Challenges')}
-                  </span>
-                  <br />
-                  {t('challenges.hero_title_part3', 'Shape the Future')}
+                  {isRTL ? (
+                    <>
+                      اشترك في {' '}
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+                        التحديات
+                      </span>
+                      <br />
+                      اصنع المستقبل
+                    </>
+                  ) : (
+                    <>
+                      Take on {' '}
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+                        Challenges
+                      </span>
+                      <br />
+                      Shape the Future
+                    </>
+                  )}
                 </h1>
                 
                 <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
-                  {t('challenges.hero_description', 'Join innovators worldwide in solving real-world challenges and contributing to Saudi Arabia\'s Vision 2030 transformation.')}
+                  {isRTL 
+                    ? 'انضم إلى المبدعين من جميع أنحاء العالم في حل التحديات الحقيقية والمساهمة في تحقيق رؤية السعودية 2030.'
+                    : 'Join innovators worldwide in solving real-world challenges and contributing to Saudi Arabia\'s Vision 2030 transformation.'
+                  }
                 </p>
               </div>
             </div>

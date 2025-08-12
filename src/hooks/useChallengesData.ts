@@ -130,7 +130,7 @@ export const useChallengesData = () => {
           title_en: challenge.title_ar, // Using Arabic as fallback
           description_ar: challenge.description_ar,
           description_en: challenge.description_ar, // Using Arabic as fallback
-          status: challenge.status,
+          status: challenge.status?.replace('status.', '') || 'draft', // Remove status prefix
           priority_level: challenge.priority_level,
           challenge_type: challenge.challenge_type,
           start_date: challenge.start_date,
@@ -138,7 +138,7 @@ export const useChallengesData = () => {
           estimated_budget: challenge.estimated_budget,
           image_url: challenge.image_url,
           vision_2030_goal: challenge.vision_2030_goal,
-          sensitivity_level: challenge.sensitivity_level,
+          sensitivity_level: challenge.sensitivity_level?.replace('sensitivity.', '') || 'normal', // Remove sensitivity prefix
           created_at: challenge.created_at,
           participants: participantCount,
           submissions: submissionCount,
@@ -146,15 +146,20 @@ export const useChallengesData = () => {
           category_en: category?.en || 'Technical',
           prize: challenge.estimated_budget ? `${(challenge.estimated_budget / 1000).toFixed(0)}K ريال` : 'غير محدد',
           difficulty: difficultyMap[challenge.priority_level] || 'متوسط',
-          trending: index < 3 && challenge.status === 'active', // Mark first 3 active as trending
+          trending: index < 3 && (challenge.status?.includes('active') || challenge.status === 'active'), // Mark first 3 active as trending
           deadline: challenge.end_date ? `${daysLeft} ${daysLeft === 1 ? 'يوم' : 'أيام'} متبقية` : 'غير محدد',
           experts: [], // Will be populated separately if needed
         };
       });
 
-      logger.info('Challenges transformation completed', { 
+      console.log('✅ Challenges transformation completed:', { 
         transformedCount: transformedChallenges.length,
-        sensitivityLevels: transformedChallenges.map(c => ({ id: c.id, sensitivity: c.sensitivity_level }))
+        statusSample: transformedChallenges.slice(0, 3).map(c => ({ id: c.id, status: c.status, sensitivity: c.sensitivity_level }))
+      });
+      
+      console.log('🔧 Challenge transformation debug:', {
+        originalData: challengesData?.slice(0, 2),
+        transformedData: transformedChallenges.slice(0, 2)
       });
       
       setChallenges(transformedChallenges);
