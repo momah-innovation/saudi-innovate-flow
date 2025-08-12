@@ -45,10 +45,13 @@ export const useChallengesData = () => {
 
   const fetchChallenges = async () => {
     try {
+      console.log('🚨 STARTING fetchChallenges...');
       setLoading(true);
       
       // Get user authentication
+      console.log('🔐 Getting user auth...');
       const { data: { user } } = await supabase.auth.getUser();
+      console.log('🔐 User auth result:', user?.id ? 'authenticated' : 'not authenticated');
 
       // Fetch challenges data
       const { data: challengesData, error: challengesError } = await supabase
