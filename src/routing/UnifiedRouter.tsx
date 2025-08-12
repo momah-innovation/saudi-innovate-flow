@@ -61,6 +61,7 @@ const SystemAnalytics = lazy(() => import('@/pages/admin/SystemAnalytics'));
 const StorageManagement = lazy(() => import('@/pages/admin/StorageManagement'));
 const StoragePolicies = lazy(() => import('@/pages/admin/StoragePolicies'));
 const SecurityMonitor = lazy(() => import('@/pages/admin/SecurityMonitor'));
+const SecurityAdvanced = lazy(() => import('@/pages/admin/SecurityAdvanced'));
 const CollaborationPage = lazy(() => import('@/pages/CollaborationPage'));
 const CollaborationLandingPage = lazy(() => import('@/pages/CollaborationLandingPage'));
 const CollaborativeIdeasPage = lazy(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeIdeasPage })));
@@ -242,6 +243,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_DASHBOARD,
     component: AdminDashboardPage,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: '/admin/security-advanced',
+    component: SecurityAdvanced,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
