@@ -2137,6 +2137,13 @@ export type Database = {
             referencedRelation: "entities"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_departments_deputy"
+            columns: ["deputy_id"]
+            isOneToOne: false
+            referencedRelation: "deputies"
+            referencedColumns: ["id"]
+          },
         ]
       }
       deputies: {
@@ -2189,6 +2196,13 @@ export type Database = {
             columns: ["sector_id"]
             isOneToOne: false
             referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_deputies_entity"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
             referencedColumns: ["id"]
           },
         ]
@@ -2294,6 +2308,13 @@ export type Database = {
             columns: ["entity_id"]
             isOneToOne: false
             referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_domains_department"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
             referencedColumns: ["id"]
           },
         ]
@@ -3824,6 +3845,77 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "fk_focus_question_bookmarks_focus_question_id"
+            columns: ["focus_question_id"]
+            isOneToOne: false
+            referencedRelation: "focus_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      focus_question_challenge_links: {
+        Row: {
+          challenge_id: string
+          created_at: string | null
+          focus_question_id: string
+          id: string
+          relevance_score: number | null
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string | null
+          focus_question_id: string
+          id?: string
+          relevance_score?: number | null
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string | null
+          focus_question_id?: string
+          id?: string
+          relevance_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "focus_question_challenge_links_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "focus_question_challenge_links_focus_question_id_fkey"
+            columns: ["focus_question_id"]
+            isOneToOne: false
+            referencedRelation: "focus_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      focus_question_entity_links: {
+        Row: {
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          focus_question_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          focus_question_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          focus_question_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "focus_question_entity_links_focus_question_id_fkey"
             columns: ["focus_question_id"]
             isOneToOne: false
             referencedRelation: "focus_questions"
@@ -6535,6 +6627,107 @@ export type Database = {
           },
         ]
       }
+      organization_members: {
+        Row: {
+          created_at: string | null
+          department: string | null
+          id: string
+          join_date: string | null
+          member_role: string | null
+          organization_id: string
+          permissions: Json | null
+          position: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          department?: string | null
+          id?: string
+          join_date?: string | null
+          member_role?: string | null
+          organization_id: string
+          permissions?: Json | null
+          position?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          department?: string | null
+          id?: string
+          join_date?: string | null
+          member_role?: string | null
+          organization_id?: string
+          permissions?: Json | null
+          position?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          address_ar: string | null
+          address_en: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string | null
+          description_ar: string | null
+          description_en: string | null
+          id: string
+          is_active: boolean | null
+          name_ar: string
+          name_en: string | null
+          organization_type: string | null
+          updated_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          address_ar?: string | null
+          address_en?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_ar: string
+          name_en?: string | null
+          organization_type?: string | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          address_ar?: string | null
+          address_en?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_ar?: string
+          name_en?: string | null
+          organization_type?: string | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       partner_bookmarks: {
         Row: {
           created_at: string | null
@@ -7408,6 +7601,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_services_sub_domain"
+            columns: ["sub_domain_id"]
+            isOneToOne: false
+            referencedRelation: "sub_domains"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "services_entity_id_fkey"
             columns: ["entity_id"]
             isOneToOne: false
@@ -7692,6 +7892,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_sub_domains_domain"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "sub_domains_domain_id_fkey"
             columns: ["domain_id"]
@@ -8178,6 +8385,47 @@ export type Database = {
           },
         ]
       }
+      team_entity_assignments: {
+        Row: {
+          assigned_date: string | null
+          assignment_type: string | null
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          status: string | null
+          team_id: string
+        }
+        Insert: {
+          assigned_date?: string | null
+          assignment_type?: string | null
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          status?: string | null
+          team_id: string
+        }
+        Update: {
+          assigned_date?: string | null
+          assignment_type?: string | null
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          status?: string | null
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_entity_assignments_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_performance_metrics: {
         Row: {
           assignments_completed: number | null
@@ -8573,6 +8821,48 @@ export type Database = {
           prediction_type?: string
           predictions?: Json
           recommendation_scores?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_entity_assignments: {
+        Row: {
+          assigned_by: string | null
+          assignment_date: string | null
+          assignment_role: string
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          permissions: Json | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          assigned_by?: string | null
+          assignment_date?: string | null
+          assignment_role: string
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          permissions?: Json | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          assigned_by?: string | null
+          assignment_date?: string | null
+          assignment_role?: string
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          permissions?: Json | null
+          status?: string | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
