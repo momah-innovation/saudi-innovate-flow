@@ -54,12 +54,22 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
 
     const discoverItems = [
       { 
-        id: 'challenges-browse', 
-        label: t('nav.browse_challenges', 'Browse Challenges'), 
-        arabicLabel: t('nav.browse_challenges', 'استكشاف التحديات'),
+        id: 'challenges-basic', 
+        label: t('nav.challenges_basic', 'Challenges (Basic)'), 
+        arabicLabel: t('nav.challenges_basic', 'التحديات (أساسي)'),
         icon: Target, 
         path: '/challenges',
         badge: 12,
+        group: 'discover',
+        roles: ['all'] 
+      },
+      { 
+        id: 'challenges-browse', 
+        label: t('nav.challenges_browse', 'Challenges (Advanced)'), 
+        arabicLabel: t('nav.challenges_browse', 'التحديات (متقدم)'),
+        icon: Target, 
+        path: '/challenges-browse',
+        badge: 25,
         group: 'discover',
         roles: ['all'] 
       },

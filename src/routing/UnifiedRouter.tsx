@@ -123,6 +123,11 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     public: true,
   },
   {
+    path: '/challenges-browse',
+    component: ChallengesBrowse,
+    public: true,
+  },
+  {
     path: ALL_ROUTES.CHALLENGE_DETAILS,
     component: ChallengeDetails,
     requireAuth: true,
