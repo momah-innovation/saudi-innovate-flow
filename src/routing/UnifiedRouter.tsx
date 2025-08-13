@@ -560,21 +560,8 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
 const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => {
   const { component: Component, ...routeProps } = config;
 
-  console.log('🔀 ROUTER DEBUG: Route rendering started', { 
-    path: config.path, 
-    isPublic: config.public,
-    requireAuth: config.requireAuth,
-    withAppShell: config.withAppShell,
-    timestamp: Date.now()
-  });
-
   // Public routes render directly
   if (config.public) {
-    console.log('🔀 ROUTER DEBUG: Rendering public route', { 
-      path: config.path, 
-      componentName: Component.name,
-      timestamp: Date.now() 
-    });
     try {
       return <Component />;
     } catch (error) {

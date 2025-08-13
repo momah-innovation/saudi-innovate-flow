@@ -37,7 +37,6 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('📊 LANDING DATA DEBUG: Starting fetch', { timestamp: Date.now() });
       try {
         // Add timeout to prevent hanging requests
         const fetchTimeout = (promise: Promise<any>, timeout: number) => {
@@ -83,17 +82,9 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
         setFaqs(faqResult.data || []);
         setStatistics(statsResult.data || []);
         setContent(contentResult.data || []);
-        console.log('📊 LANDING DATA DEBUG: Fetch successful', {
-          faqCount: (faqResult.data || []).length,
-          statsCount: (statsResult.data || []).length,
-          contentCount: (contentResult.data || []).length,
-          timestamp: Date.now()
-        });
       } catch (error) {
-        console.error('📊 LANDING DATA DEBUG: Fetch failed', error);
         logger.error('Failed to fetch landing page data', { component: 'useLandingPageData', action: 'fetchLandingPageData' }, error as Error);
       } finally {
-        console.log('📊 LANDING DATA DEBUG: Setting loading to false', { timestamp: Date.now() });
         setLoading(false);
       }
     };
