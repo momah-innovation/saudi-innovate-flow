@@ -10,7 +10,6 @@ import {
 import { cn } from '@/lib/utils';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { MenuItem, GroupedMenuItems } from '@/types/navigation';
 
@@ -192,17 +191,17 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
         <Collapsible key={groupKey} open={isExpanded} onOpenChange={() => toggleGroup(groupKey)}>
           <div className="mb-4">
             <CollapsibleTrigger className={cn(
-              "flex w-full items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground mb-2",
+              "flex w-full items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground mb-2 p-0 border-0 bg-transparent cursor-pointer",
               isRTL && "text-right"
             )}>
               <span>{isRTL ? groupLabels[groupKey]?.ar : groupLabels[groupKey]?.en}</span>
-              <Button variant="ghost" size="sm" className="h-4 w-4 p-0">
+              <span className="h-4 w-4 flex items-center justify-center">
                 {isExpanded ? (
                   <ChevronDown className="h-3 w-3" />
                 ) : (
                   <ChevronRight className="h-3 w-3" />
                 )}
-              </Button>
+              </span>
             </CollapsibleTrigger>
             <CollapsibleContent>
               <ul className="space-y-1">
