@@ -55,7 +55,8 @@ export const DashboardOverview = () => {
   const loadDashboardStats = async () => {
     try {
       // Get overall platform stats
-      const [ideasRes, challengesRes, eventsRes] = await Promise.all([
+      const [usersRes, ideasRes, challengesRes, eventsRes] = await Promise.all([
+        supabase.from('profiles').select('id', { count: 'exact' }),
         supabase.from('ideas').select('id', { count: 'exact' }),
         supabase.from('challenges').select('id', { count: 'exact' }),
         supabase.from('events').select('id', { count: 'exact' }),
@@ -81,7 +82,7 @@ export const DashboardOverview = () => {
         totalIdeas: ideasRes.count || 0,
         totalChallenges: challengesRes.count || 0,
         totalEvents: eventsRes.count || 0,
-        totalUsers: 150, // Placeholder
+        totalUsers: usersRes?.count || 0,
         ...userStats,
       });
     } catch (error) {

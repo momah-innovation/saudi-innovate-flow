@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   FileText, 
   Plus, 
@@ -13,8 +16,6 @@ import {
   Award,
   TrendingUp
 } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-
 interface ChallengeSubmissionHubProps {
   challengeId: string;
 }
@@ -23,6 +24,8 @@ export const ChallengeSubmissionHub: React.FC<ChallengeSubmissionHubProps> = ({
   challengeId
 }) => {
   const { user } = useAuth();
+  const { metrics } = useAdminDashboardMetrics();
+  const navigate = useNavigate();
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [userSubmission, setUserSubmission] = useState<any>(null);
 
@@ -130,7 +133,7 @@ export const ChallengeSubmissionHub: React.FC<ChallengeSubmissionHubProps> = ({
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <TrendingUp className="h-5 w-5 text-green-500" />
               <div>
-                <p className="text-2xl font-bold">15</p>
+                <p className="text-2xl font-bold">{metrics?.challenges?.submissions || 0}</p>
                 <p className="text-sm text-muted-foreground">مقترحات مقبولة</p>
               </div>
             </div>

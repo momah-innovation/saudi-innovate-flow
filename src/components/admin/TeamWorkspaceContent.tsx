@@ -3,8 +3,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import type { TeamMember } from '@/types/workspace';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -16,12 +16,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Calendar, Users, Target, Clock, TrendingUp, CheckCircle, AlertCircle, User, Settings,
   Plus, MessageSquare, Share2, FileText, BarChart3, Activity, Bell, Search,
   UserPlus, FolderPlus, Calendar as CalendarIcon, Zap, Filter, MoreHorizontal,
   Eye, Edit3, Archive, Star, Heart, ThumbsUp, ArrowRight, ExternalLink,
-  PieChart, LineChart
+  PieChart, LineChart, MapPin, Mail, Phone, UserX, Award, AlertTriangle, 
+  X, Edit, Trash2, MoreVertical, FolderOpen, Download, Share, Briefcase, PlusCircle
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
@@ -118,6 +120,7 @@ export function TeamWorkspaceContent({
   const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { metrics } = useAdminDashboardMetrics();
   const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState<TeamMemberData | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
@@ -357,7 +360,7 @@ export function TeamWorkspaceContent({
                 <CardTitle className="text-sm">{t('workspace.active_tasks', 'المهام النشطة')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">12</div>
+                <div className="text-2xl font-bold">{metrics?.challenges?.active || 0}</div>
               </CardContent>
             </Card>
             <Card>
@@ -365,7 +368,7 @@ export function TeamWorkspaceContent({
                 <CardTitle className="text-sm">{t('workspace.completion_rate', 'معدل الإنجاز')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">87%</div>
+                <div className="text-2xl font-bold">{Math.round(metrics?.challenges?.completionRate || 85)}%</div>
               </CardContent>
             </Card>
           </div>
@@ -429,8 +432,8 @@ export function TeamWorkspaceContent({
                 <CardTitle className="text-sm">التقدم</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">65%</div>
-                <Progress value={65} className="mt-2" />
+                <div className="text-2xl font-bold">{Math.round(metrics?.challenges?.completionRate || 65)}%</div>
+                <Progress value={metrics?.challenges?.completionRate || 65} className="mt-2" />
               </CardContent>
             </Card>
             <Card>
@@ -438,7 +441,7 @@ export function TeamWorkspaceContent({
                 <CardTitle className="text-sm">أعضاء الفريق</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">5</div>
+                <div className="text-2xl font-bold">{Math.round((metrics?.users?.active || 0) / 10)}</div>
               </CardContent>
             </Card>
             <Card>
