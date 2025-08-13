@@ -48,10 +48,10 @@ export const EnhancedPartnerDashboardHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const partnerStats = [
-    { icon: Handshake, value: stats.activePartnerships, label: t('activePartnerships'), color: 'text-blue-400' },
-    { icon: Target, value: stats.supportedProjects, label: t('supportedProjects'), color: 'text-green-400' },
-    { icon: Award, value: `${Math.floor(stats.totalInvestment / 1000)}K`, label: t('sarInvested'), color: 'text-purple-400' },
-    { icon: Trophy, value: `${stats.partnershipScore}%`, label: t('partnershipScore'), color: 'text-yellow-400' }
+    { icon: Handshake, value: stats.activePartnerships, label: t('activePartnerships'), color: 'text-info' },
+    { icon: Target, value: stats.supportedProjects, label: t('supportedProjects'), color: 'text-success' },
+    { icon: Award, value: `${Math.floor(stats.totalInvestment / 1000)}K`, label: t('sarInvested'), color: 'text-primary' },
+    { icon: Trophy, value: `${stats.partnershipScore}%`, label: t('partnershipScore'), color: 'text-warning' }
   ];
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export const EnhancedPartnerDashboardHero = ({
             <div className="space-y-6">
               <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
                 <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Sparkles className="w-6 h-6 text-yellow-300" />
+                  <Sparkles className="w-6 h-6 text-warning" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className={cn("w-3 h-3", isRTL ? "ml-1" : "mr-1")} />
@@ -94,7 +94,7 @@ export const EnhancedPartnerDashboardHero = ({
               
               <div className="space-y-4">
                 <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight", isRTL && "text-right")}>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+                  <span className="text-transparent bg-clip-text bg-gradient-warning">
                     {t('partnerDashboardWelcome')}
                   </span>
                 </h1>
@@ -170,7 +170,7 @@ export const EnhancedPartnerDashboardHero = ({
                   <h3 className="text-xl font-bold text-white mb-2">
                     {t('partnershipRating')}
                   </h3>
-                  <div className="text-3xl font-bold text-yellow-300 mb-4">
+                  <div className="text-3xl font-bold text-warning mb-4">
                     {stats.partnershipScore}%
                   </div>
                   <Progress 
@@ -211,7 +211,7 @@ export const EnhancedPartnerDashboardHero = ({
                 onClick={() => onNavigate('/events')}
               >
                 <CardContent className="p-4 text-center">
-                  <Calendar className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                  <Calendar className="w-8 h-8 text-info mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {t('events')}
                   </div>
@@ -226,7 +226,7 @@ export const EnhancedPartnerDashboardHero = ({
                 onClick={() => onNavigate('/ideas')}
               >
                 <CardContent className="p-4 text-center">
-                  <Building className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                  <Building className="w-8 h-8 text-success mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {t('projects')}
                   </div>

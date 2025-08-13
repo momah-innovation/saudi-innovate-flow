@@ -96,9 +96,9 @@ export const DashboardHero = ({
           icon: Lightbulb,
           stats: [
             { icon: Lightbulb, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكاري' : 'My Ideas', color: 'text-primary-foreground' },
-            { icon: Target, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-white' },
-            { icon: Award, value: stats.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-white' },
-            { icon: Trophy, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-white' },
+            { icon: Target, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-primary-foreground' },
+            { icon: Award, value: stats.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-primary-foreground' },
+            { icon: Trophy, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'تصفح التحديات' : 'Browse Challenges', path: '/challenges', icon: Target },
@@ -152,11 +152,11 @@ export const DashboardHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {language === 'ar' ? (
                     <>
-                      مرحباً <span className="text-yellow-300">{userProfile?.display_name || 'المستخدم'}</span>
+                      مرحباً <span className="text-warning">{userProfile?.display_name || 'المستخدم'}</span>
                     </>
                   ) : (
                     <>
-                      Welcome <span className="text-yellow-300">{userProfile?.display_name || 'User'}</span>
+                      Welcome <span className="text-warning">{userProfile?.display_name || 'User'}</span>
                     </>
                   )}
                 </h1>
@@ -306,7 +306,7 @@ export const DashboardHero = ({
                     <h3 className="text-xl font-bold text-white mb-2">
                       {language === 'ar' ? 'مستوى الابتكار' : 'Innovation Level'}
                     </h3>
-                    <div className="text-3xl font-bold text-yellow-300 mb-4">
+                    <div className="text-3xl font-bold text-warning mb-4">
                       {stats.innovationScore}%
                     </div>
                     <Progress 
