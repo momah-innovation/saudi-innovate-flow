@@ -232,16 +232,19 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
           'fixed top-0 h-full bg-background border-r shadow-lg transition-transform duration-300 ease-in-out',
           'flex flex-col overflow-hidden',
           // Positioning and visibility - ensure proper stacking
-          'z-[60]',
+          'z-[9999]', // Much higher z-index
           isRTL ? 'right-0' : 'left-0',
           'w-80 max-w-[80vw] lg:w-72',
-          // Transform based on state and direction
+          // Transform based on state and direction - add debug border when open
           open 
-            ? 'translate-x-0' 
+            ? 'translate-x-0 border-4 border-red-500' 
             : isRTL 
               ? 'translate-x-full' 
               : '-translate-x-full'
         )}
+        style={{
+          display: open ? 'flex' : 'none' // Force display when open for debugging
+        }}
       >
         {/* Header */}
         <div className={cn(
