@@ -229,14 +229,16 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
       {/* Sidebar panel */}
       <div
         className={cn(
-          'fixed top-0 h-full bg-background border-r shadow-lg z-50 transform transition-all duration-300 ease-in-out',
+          'fixed top-0 h-full bg-background border-r shadow-lg transform transition-all duration-300 ease-in-out',
           'flex flex-col overflow-hidden',
-          // Positioning and width
-          open ? 'translate-x-0' : isRTL ? 'translate-x-full' : '-translate-x-full',
+          // Positioning and width - ensure proper z-index stacking
+          open ? 'translate-x-0 z-50' : isRTL ? 'translate-x-full z-40' : '-translate-x-full z-40',
           isRTL ? 'right-0' : 'left-0',
           'w-80 max-w-[80vw]',
           // Mobile adjustments
-          'lg:w-72'
+          'lg:w-72',
+          // Ensure visibility when open
+          open ? 'pointer-events-auto' : 'pointer-events-none'
         )}
       >
         {/* Header */}
