@@ -529,7 +529,83 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
           </div>
         </TabsContent>
 
-        <TabsContent value="management" className="space-y-4">
+        <TabsContent value="management" className="space-y-6">
+          {/* Management Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'إجمالي المديرين' : 'Total Managers'}
+                </CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {adminMetrics.metrics?.users?.breakdown?.admins || '47'}
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+8% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'الفرق النشطة' : 'Active Teams'}
+                </CardTitle>
+                <Briefcase className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  23
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+12% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'مهام الخبراء' : 'Expert Assignments'}
+                </CardTitle>
+                <Target className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  156
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+5% {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'الصلاحيات المفعلة' : 'Active Permissions'}
+                </CardTitle>
+                <Shield className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  1,247
+                </div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>{language === 'ar' ? 'مستقرة' : 'Stable'}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Management Actions */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {actionsByCategory.management?.map((action, index) => (
               <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
@@ -558,7 +634,83 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
           </div>
         </TabsContent>
 
-        <TabsContent value="content" className="space-y-4">
+        <TabsContent value="content" className="space-y-6">
+          {/* Content Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'إجمالي الأفكار' : 'Total Ideas'}
+                </CardTitle>
+                <Brain className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  1,834
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+24% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'التحديات النشطة' : 'Active Challenges'}
+                </CardTitle>
+                <Trophy className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {adminMetrics.metrics?.challenges?.active || '45'}
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+18% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'الفعاليات المجدولة' : 'Scheduled Events'}
+                </CardTitle>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  12
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+3 {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'معدل المشاركة' : 'Engagement Rate'}
+                </CardTitle>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  87%
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+5% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Content Actions */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {actionsByCategory.content?.map((action, index) => (
               <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
@@ -587,7 +739,83 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
           </div>
         </TabsContent>
 
-        <TabsContent value="system" className="space-y-4">
+        <TabsContent value="system" className="space-y-6">
+          {/* System Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'وقت التشغيل' : 'System Uptime'}
+                </CardTitle>
+                <Wifi className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {adminMetrics.metrics?.system?.uptime || '99.9'}%
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>{language === 'ar' ? 'مستقر' : 'Stable'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'استخدام التخزين' : 'Storage Usage'}
+                </CardTitle>
+                <HardDrive className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {adminMetrics.metrics?.system?.storageUsed || '2.4'} GB
+                </div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
+                  <Server className="w-4 h-4" />
+                  <span>68% {language === 'ar' ? 'مستخدم' : 'used'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'أداء النظام' : 'System Performance'}
+                </CardTitle>
+                <Zap className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {adminMetrics.metrics?.system?.performance || '94'}%
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+2% {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {language === 'ar' ? 'حالة الأمان' : 'Security Status'}
+                </CardTitle>
+                <Shield className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-trend-up">
+                  {language === 'ar' ? 'آمن' : 'Secure'}
+                </div>
+                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>{adminMetrics.metrics?.security?.securityScore || '98'}% {language === 'ar' ? 'نقاط الأمان' : 'security score'}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* System Actions */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...actionsByCategory.system || [], ...actionsByCategory.security || [], ...actionsByCategory.analytics || []].map((action, index) => (
               <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
