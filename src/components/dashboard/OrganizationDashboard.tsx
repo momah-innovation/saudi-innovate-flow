@@ -35,7 +35,7 @@ export function OrganizationDashboard({ userProfile, canManageOrganization, canM
       change: '+18',
       changeText: language === 'ar' ? 'هذا الشهر' : 'this month',
       icon: Users,
-      color: 'text-blue-600'
+      color: 'text-info'
     },
     {
       title: language === 'ar' ? 'الكيانات المدارة' : 'Managed Entities',
@@ -43,7 +43,7 @@ export function OrganizationDashboard({ userProfile, canManageOrganization, canM
       change: '+2',
       changeText: language === 'ar' ? 'جديدة' : 'new',
       icon: Building,
-      color: 'text-green-600'
+      color: 'text-success'
     },
     {
       title: language === 'ar' ? 'الأدوار النشطة' : 'Active Roles',
@@ -51,7 +51,7 @@ export function OrganizationDashboard({ userProfile, canManageOrganization, canM
       change: '100%',
       changeText: language === 'ar' ? 'مفعلة' : 'activated',
       icon: Shield,
-      color: 'text-purple-600'
+      color: 'text-primary'
     },
     {
       title: language === 'ar' ? 'كفاءة العمليات' : 'Operational Efficiency',
@@ -59,7 +59,7 @@ export function OrganizationDashboard({ userProfile, canManageOrganization, canM
       change: '+5%',
       changeText: language === 'ar' ? 'تحسن' : 'improvement',
       icon: TrendingUp,
-      color: 'text-orange-600'
+      color: 'text-warning'
     }
   ];
 

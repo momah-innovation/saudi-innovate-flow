@@ -35,7 +35,7 @@ export function ContentDashboard({ userProfile, canManageContent, canManageChall
       change: '+12',
       changeText: language === 'ar' ? 'هذا الشهر' : 'this month',
       icon: FileText,
-      color: 'text-blue-600'
+      color: 'text-info'
     },
     {
       title: language === 'ar' ? 'التحديات المدارة' : 'Managed Challenges',
@@ -43,7 +43,7 @@ export function ContentDashboard({ userProfile, canManageContent, canManageChall
       change: '+2',
       changeText: language === 'ar' ? 'نشطة' : 'active',
       icon: Target,
-      color: 'text-green-600'
+      color: 'text-success'
     },
     {
       title: language === 'ar' ? 'البحوث الجارية' : 'Ongoing Research',
@@ -51,7 +51,7 @@ export function ContentDashboard({ userProfile, canManageContent, canManageChall
       change: '100%',
       changeText: language === 'ar' ? 'مكتملة' : 'completed',
       icon: Search,
-      color: 'text-purple-600'
+      color: 'text-primary'
     },
     {
       title: language === 'ar' ? 'معدل التفاعل' : 'Engagement Rate',
@@ -59,7 +59,7 @@ export function ContentDashboard({ userProfile, canManageContent, canManageChall
       change: '+4%',
       changeText: language === 'ar' ? 'تحسن' : 'improvement',
       icon: TrendingUp,
-      color: 'text-orange-600'
+      color: 'text-warning'
     }
   ];
 

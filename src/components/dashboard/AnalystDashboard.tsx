@@ -35,7 +35,7 @@ export function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSyste
       change: '+12K',
       changeText: language === 'ar' ? 'يومياً' : 'daily',
       icon: Database,
-      color: 'text-blue-600'
+      color: 'text-info'
     },
     {
       title: language === 'ar' ? 'التقارير المولدة' : 'Reports Generated',
@@ -43,7 +43,7 @@ export function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSyste
       change: '+23',
       changeText: language === 'ar' ? 'هذا الشهر' : 'this month',
       icon: BarChart3,
-      color: 'text-green-600'
+      color: 'text-success'
     },
     {
       title: language === 'ar' ? 'دقة التحليل' : 'Analysis Accuracy',
@@ -51,7 +51,7 @@ export function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSyste
       change: '+2.1%',
       changeText: language === 'ar' ? 'تحسن' : 'improvement',
       icon: TrendingUp,
-      color: 'text-purple-600'
+      color: 'text-primary'
     },
     {
       title: language === 'ar' ? 'أحداث الأمان' : 'Security Events',
@@ -59,7 +59,7 @@ export function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSyste
       change: '-7',
       changeText: language === 'ar' ? 'انخفاض' : 'decrease',
       icon: Shield,
-      color: 'text-orange-600'
+      color: 'text-warning'
     }
   ];
 

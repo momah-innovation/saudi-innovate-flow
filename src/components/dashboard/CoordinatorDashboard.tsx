@@ -35,7 +35,7 @@ export function CoordinatorDashboard({ userProfile, canCoordinateExperts, canMan
       change: '+4',
       changeText: language === 'ar' ? 'هذا الشهر' : 'this month',
       icon: Users,
-      color: 'text-blue-600'
+      color: 'text-info'
     },
     {
       title: language === 'ar' ? 'الفعاليات النشطة' : 'Active Events',
@@ -43,7 +43,7 @@ export function CoordinatorDashboard({ userProfile, canCoordinateExperts, canMan
       change: '+2',
       changeText: language === 'ar' ? 'قادمة' : 'upcoming',
       icon: Calendar,
-      color: 'text-green-600'
+      color: 'text-success'
     },
     {
       title: language === 'ar' ? 'الحملات الجارية' : 'Running Campaigns',
@@ -51,7 +51,7 @@ export function CoordinatorDashboard({ userProfile, canCoordinateExperts, canMan
       change: '100%',
       changeText: language === 'ar' ? 'نشطة' : 'active',
       icon: Briefcase,
-      color: 'text-purple-600'
+      color: 'text-primary'
     },
     {
       title: language === 'ar' ? 'معدل المشاركة' : 'Engagement Rate',
@@ -59,7 +59,7 @@ export function CoordinatorDashboard({ userProfile, canCoordinateExperts, canMan
       change: '+7%',
       changeText: language === 'ar' ? 'تحسن' : 'improvement',
       icon: TrendingUp,
-      color: 'text-orange-600'
+      color: 'text-warning'
     }
   ];
 

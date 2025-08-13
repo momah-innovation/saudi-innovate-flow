@@ -35,7 +35,7 @@ export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics
       change: '+2',
       changeText: language === 'ar' ? 'هذا الشهر' : 'this month',
       icon: Users,
-      color: 'text-blue-600'
+      color: 'text-info'
     },
     {
       title: language === 'ar' ? 'المشاريع النشطة' : 'Active Projects',
@@ -43,7 +43,7 @@ export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics
       change: '+1',
       changeText: language === 'ar' ? 'مشروع جديد' : 'new project',
       icon: Target,
-      color: 'text-green-600'
+      color: 'text-success'
     },
     {
       title: language === 'ar' ? 'التحديات المكتملة' : 'Challenges Completed',
@@ -51,7 +51,7 @@ export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics
       change: '+3',
       changeText: language === 'ar' ? 'هذا الأسبوع' : 'this week',
       icon: ClipboardList,
-      color: 'text-purple-600'
+      color: 'text-primary'
     },
     {
       title: language === 'ar' ? 'أداء الفريق' : 'Team Performance',
@@ -59,7 +59,7 @@ export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics
       change: '+5%',
       changeText: language === 'ar' ? 'تحسن' : 'improvement',
       icon: TrendingUp,
-      color: 'text-orange-600'
+      color: 'text-warning'
     }
   ];
 
