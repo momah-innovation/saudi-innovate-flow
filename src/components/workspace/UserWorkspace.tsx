@@ -154,11 +154,11 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'under_review': return 'bg-yellow-100 text-yellow-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-blue-100 text-blue-800';
+      case 'approved': return 'bg-success-light text-success border-success-border';
+      case 'under_review': return 'bg-warning-light text-warning border-warning-border';
+      case 'rejected': return 'bg-destructive/10 text-destructive border-destructive/20';
+      case 'draft': return 'bg-muted text-muted-foreground border-border';
+      default: return 'bg-info-light text-info border-info-border';
     }
   };
 
@@ -251,7 +251,7 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <Target className="h-5 w-5 text-blue-500" />
+              <Target className="h-5 w-5 text-info" />
               <div>
                 <p className="text-2xl font-bold">{stats.challenges_count}</p>
                 <p className="text-sm text-muted-foreground">التحديات</p>
@@ -263,7 +263,7 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <Calendar className="h-5 w-5 text-green-500" />
+              <Calendar className="h-5 w-5 text-success" />
               <div>
                 <p className="text-2xl font-bold">{stats.events_count}</p>
                 <p className="text-sm text-muted-foreground">الفعاليات</p>
@@ -275,7 +275,7 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <Users className="h-5 w-5 text-purple-500" />
+              <Users className="h-5 w-5 text-secondary-foreground" />
               <div>
                 <p className="text-2xl font-bold">{stats.collaborations_count}</p>
                 <p className="text-sm text-muted-foreground">التعاونات</p>
@@ -287,7 +287,7 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <Trophy className="h-5 w-5 text-yellow-500" />
+              <Trophy className="h-5 w-5 text-warning" />
               <div>
                 <p className="text-2xl font-bold">{stats.achievements_count}</p>
                 <p className="text-sm text-muted-foreground">الإنجازات</p>
@@ -330,9 +330,9 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
                       <div className="flex items-center space-x-3 rtl:space-x-reverse">
                         <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                           {item.type === 'idea' && <Lightbulb className="h-5 w-5 text-primary" />}
-                          {item.type === 'challenge' && <Target className="h-5 w-5 text-blue-500" />}
-                          {item.type === 'event' && <Calendar className="h-5 w-5 text-green-500" />}
-                          {item.type === 'collaboration' && <Users className="h-5 w-5 text-purple-500" />}
+                          {item.type === 'challenge' && <Target className="h-5 w-5 text-info" />}
+                          {item.type === 'event' && <Calendar className="h-5 w-5 text-success" />}
+                          {item.type === 'collaboration' && <Users className="h-5 w-5 text-secondary-foreground" />}
                         </div>
                         <div>
                           <h4 className="font-semibold">{item.title}</h4>

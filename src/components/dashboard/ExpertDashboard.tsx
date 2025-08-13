@@ -21,19 +21,19 @@ export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpert
       title: language === 'ar' ? 'الأفكار المراجعة' : 'Ideas Reviewed',
       value: '24',
       icon: FileText,
-      color: 'text-blue-600'
+      color: 'text-info'
     },
     {
       title: language === 'ar' ? 'قيد المراجعة' : 'Pending Review',
       value: '5',
       icon: Clock,
-      color: 'text-orange-600'
+      color: 'text-warning'
     },
     {
       title: language === 'ar' ? 'التقييم المتوسط' : 'Average Rating',
       value: '4.6',
       icon: Star,
-      color: 'text-yellow-600'
+      color: 'text-success'
     }
   ];
 

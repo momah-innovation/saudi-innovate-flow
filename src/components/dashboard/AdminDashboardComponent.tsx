@@ -416,12 +416,13 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-primary">
                   {adminMetrics.metrics?.users?.total.toLocaleString() || '2,847'}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  +{adminMetrics.metrics?.users?.growthRate || 12}% {language === 'ar' ? 'هذا الشهر' : 'this month'}
-                </p>
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+{adminMetrics.metrics?.users?.growthRate || 12}% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                </div>
               </CardContent>
             </Card>
 
@@ -433,12 +434,13 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-info">
                   {adminMetrics.metrics?.challenges?.active || 18}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  +{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {language === 'ar' ? 'جديدة' : 'new'}
-                </p>
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {language === 'ar' ? 'جديدة' : 'new'}</span>
+                </div>
               </CardContent>
             </Card>
 
@@ -450,10 +452,11 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Database className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">1,251</div>
-                <p className="text-xs text-muted-foreground">
-                  +47 {language === 'ar' ? 'هذا الأسبوع' : 'this week'}
-                </p>
+                <div className="text-2xl font-bold text-warning">1,251</div>
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+47 {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
+                </div>
               </CardContent>
             </Card>
 
@@ -465,10 +468,11 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Zap className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">99.2%</div>
-                <p className="text-xs text-muted-foreground">
-                  {language === 'ar' ? 'وقت التشغيل' : 'uptime'}
-                </p>
+                <div className="text-2xl font-bold text-success">99.2%</div>
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>{language === 'ar' ? 'وقت التشغيل' : 'uptime'}</span>
+                </div>
               </CardContent>
             </Card>
           </div>

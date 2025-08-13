@@ -20,19 +20,19 @@ export function PartnerDashboard({ userProfile, canManageOpportunities, canViewP
       title: language === 'ar' ? 'الفرص النشطة' : 'Active Opportunities',
       value: '8',
       icon: Target,
-      color: 'text-green-600'
+      color: 'text-success'
     },
     {
       title: language === 'ar' ? 'الشراكات' : 'Partnerships',
       value: '3',
       icon: Handshake,
-      color: 'text-blue-600'
+      color: 'text-info'
     },
     {
       title: language === 'ar' ? 'معدل النجاح' : 'Success Rate',
       value: '85%',
       icon: TrendingUp,
-      color: 'text-purple-600'
+      color: 'text-primary'
     }
   ];
 
