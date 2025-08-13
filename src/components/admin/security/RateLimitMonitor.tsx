@@ -2,12 +2,14 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Zap, Activity } from 'lucide-react';
+import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
 
 interface RateLimitMonitorProps {
   className?: string;
 }
 
 const RateLimitMonitor: React.FC<RateLimitMonitorProps> = ({ className }) => {
+  const { metrics } = useAdminDashboardMetrics();
   return (
     <Card className={className}>
       <CardHeader>
@@ -19,15 +21,15 @@ const RateLimitMonitor: React.FC<RateLimitMonitorProps> = ({ className }) => {
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-muted/50 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold">2,847</div>
+            <div className="text-2xl font-bold">{metrics?.system?.activity?.events24h || 0}</div>
             <p className="text-sm text-muted-foreground">إجمالي الطلبات</p>
           </div>
           <div className="bg-destructive/10 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-destructive">3</div>
+            <div className="text-2xl font-bold text-destructive">{metrics?.security?.incidents || 0}</div>
             <p className="text-sm text-muted-foreground">تجاوزات الحد</p>
           </div>
           <div className="bg-warning/10 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-warning">12</div>
+            <div className="text-2xl font-bold text-warning">{metrics?.users?.active || 0}</div>
             <p className="text-sm text-muted-foreground">مستخدمين نشطين</p>
           </div>
           <div className="bg-primary/10 rounded-lg p-4 text-center">

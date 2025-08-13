@@ -417,7 +417,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-primary">
-                  {adminMetrics.metrics?.users?.total.toLocaleString() || '2,847'}
+                  {adminMetrics.metrics?.users?.total.toLocaleString() || '0'}
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
@@ -452,10 +452,10 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Database className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-warning">1,251</div>
+                <div className="text-2xl font-bold text-warning">{adminMetrics.metrics?.challenges?.submissions || 0}</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+47 {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
                 </div>
               </CardContent>
             </Card>
@@ -468,7 +468,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Zap className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-success">99.2%</div>
+                <div className="text-2xl font-bold text-success">{adminMetrics.metrics?.system?.uptime || 99}%</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <CheckCircle className="w-4 h-4" />
                   <span>{language === 'ar' ? 'وقت التشغيل' : 'uptime'}</span>
@@ -650,7 +650,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  1,834
+                  {adminMetrics.metrics?.challenges?.submissions || 0}
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
