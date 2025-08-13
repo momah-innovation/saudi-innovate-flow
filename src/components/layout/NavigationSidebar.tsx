@@ -235,23 +235,29 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
             console.log('Overlay clicked, closing sidebar');
             onOpenChange(false);
           }}
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
         />
       )}
       
       {/* Sidebar */}
       <div 
         className={cn(
-          "fixed top-0 h-full w-80 bg-background border-r shadow-lg z-50 transition-transform duration-300 ease-out",
+          "fixed top-0 h-full w-80 bg-background border-r shadow-lg transition-transform duration-300 ease-out",
           isRTL ? "right-0" : "left-0",
-          open ? "translate-x-0" : (isRTL ? "translate-x-full" : "-translate-x-full"),
           isRTL && "text-right"
         )}
         style={{
+          zIndex: 51,
           transform: open 
             ? 'translateX(0)' 
             : isRTL 
               ? 'translateX(100%)' 
-              : 'translateX(-100%)'
+              : 'translateX(-100%)',
+          backgroundColor: 'white',
+          border: '1px solid #e5e7eb'
+        }}
+        onTransitionEnd={() => {
+          console.log('Sidebar transition ended, open:', open);
         }}
       >
         {/* Header */}
