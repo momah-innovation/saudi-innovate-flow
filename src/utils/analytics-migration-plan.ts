@@ -238,7 +238,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
   {
     name: "Phase 5: Component Migration - Secondary",
     description: "Migrate remaining analytics components",
-    status: 'in-progress',
+    status: 'completed',
     tasks: [
       {
         id: "COMP-004",
@@ -374,7 +374,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
         priority: 'medium',
         estimatedHours: 4,
         dependencies: ["TEST-002"],
-        status: 'pending'
+        status: 'completed'
       },
       {
         id: "CLEAN-002",
@@ -388,7 +388,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
         priority: 'low',
         estimatedHours: 3,
         dependencies: ["CLEAN-001"],
-        status: 'pending'
+        status: 'completed'
       }
     ]
   }
