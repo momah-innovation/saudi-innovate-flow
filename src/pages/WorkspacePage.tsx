@@ -1,13 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { CollaborationProvider } from '@/contexts/CollaborationContext';
-import { UserWorkspace } from '@/components/workspace/UserWorkspace';
-import { ExpertWorkspace } from '@/components/workspace/ExpertWorkspace';
-import { OrganizationWorkspace } from '@/components/workspace/OrganizationWorkspace';
-import { PartnerWorkspace } from '@/components/workspace/PartnerWorkspace';
+import UserWorkspace from '@/pages/workspace/UserWorkspace';
+import ExpertWorkspace from '@/pages/workspace/ExpertWorkspace';
+import OrganizationWorkspace from '@/pages/workspace/OrganizationWorkspace';
+import PartnerWorkspace from '@/pages/workspace/PartnerWorkspace';
+import AdminWorkspace from '@/pages/workspace/AdminWorkspace';
+import TeamWorkspace from '@/pages/workspace/TeamWorkspace';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
-import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 
 export default function WorkspacePage() {
   const { type, id } = useParams<{ type: string; id: string }>();
@@ -15,24 +16,17 @@ export default function WorkspacePage() {
   const renderWorkspace = () => {
     switch (type) {
       case 'user':
-        return <UserWorkspace userId={id} />;
+        return <UserWorkspace />;
       case 'expert':
-        return <ExpertWorkspace expertId={id} />;
+        return <ExpertWorkspace />;
       case 'organization':
-        return <OrganizationWorkspace organizationId={id} />;
+        return <OrganizationWorkspace />;
       case 'partner':
-        return <PartnerWorkspace partnerId={id} />;
+        return <PartnerWorkspace />;
       case 'admin':
-        return (
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <div className="py-8">
-                <h3 className="text-lg font-semibold mb-2">مساحة عمل الإدارة</h3>
-                <p className="text-muted-foreground">قادمة قريباً</p>
-              </div>
-            </CardContent>
-          </Card>
-        );
+        return <AdminWorkspace />;
+      case 'team':
+        return <TeamWorkspace />;
       default:
         return (
           <Card>
