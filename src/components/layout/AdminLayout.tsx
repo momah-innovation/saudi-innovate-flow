@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 // Removed UnifiedHeader import - AppShell provides unified header
-import { NavigationSidebar } from './NavigationSidebar';
+import { EnhancedNavigationSidebar } from './EnhancedNavigationSidebar';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
@@ -24,7 +24,7 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
   return (
     <div className={cn("min-h-screen flex w-full overflow-hidden", isRTL && "flex-row-reverse")}>
       {/* Overlay NavigationSidebar */}
-      <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
+      <EnhancedNavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
       
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">

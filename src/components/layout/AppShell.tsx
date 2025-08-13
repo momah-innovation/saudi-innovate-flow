@@ -1,6 +1,6 @@
 import React, { ReactNode, Suspense, useState, createContext, useContext } from 'react';
 import { SystemHeader } from './UnifiedHeader';
-import { NavigationSidebar } from './NavigationSidebar';
+import { EnhancedNavigationSidebar } from './EnhancedNavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -240,7 +240,7 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
               direction.isRTL && "flex-row-reverse"
             )}>
               {/* Navigation Sidebar Overlay */}
-              <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
+              <EnhancedNavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
               
               {/* Main Content Area */}
               <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
