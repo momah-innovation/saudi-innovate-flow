@@ -35,7 +35,7 @@ interface ChallengeAnalyticsData {
   }>;
 }
 
-interface ChallengeFilters {
+interface ChallengeFilters extends Record<string, unknown> {
   timeframe?: string;
   status?: string;
   priority?: string;
@@ -153,7 +153,7 @@ class ChallengeAnalyticsService {
       this.setCache(cacheKey, data);
       return data;
     } catch (error) {
-      logger.error('Error fetching user behavior analytics', { userId, timeRange }, error as Error);
+      logger.error('Error fetching user behavior analytics', { userId }, error as Error);
       return this.getFallbackUserBehaviorData(userId);
     }
   }
@@ -168,7 +168,7 @@ class ChallengeAnalyticsService {
       this.setCache(cacheKey, data);
       return data;
     } catch (error) {
-      logger.error('Error fetching viewing session analytics', { userId, timeRange }, error as Error);
+      logger.error('Error fetching viewing session analytics', { userId }, error as Error);
       return this.getFallbackViewingSessionData();
     }
   }
@@ -183,7 +183,7 @@ class ChallengeAnalyticsService {
       this.setCache(cacheKey, data);
       return data;
     } catch (error) {
-      logger.error('Error fetching participation trends', { userId, timeRange }, error as Error);
+      logger.error('Error fetching participation trends', { userId }, error as Error);
       return this.getFallbackParticipationTrendData();
     }
   }
@@ -244,20 +244,20 @@ class ChallengeAnalyticsService {
   }
 
   private async fetchUserBehaviorData(userId: string, timeRange: string): Promise<UserBehaviorData> {
-    // Fetch user activity data
-    const { data: activities } = await supabase
-      .from('user_activities')
+    // Fetch analytics events data instead of non-existent tables
+    const { data: analyticsEvents } = await supabase
+      .from('analytics_events')
       .select('*')
       .eq('user_id', userId)
-      .gte('created_at', this.getTimeRangeDate(timeRange));
+      .gte('timestamp', this.getTimeRangeDate(timeRange));
 
-    // Fetch page views
-    const { data: pageViews } = await supabase
-      .from('page_views')
+    // Use challenge view sessions for page analytics
+    const { data: viewSessions } = await supabase
+      .from('challenge_view_sessions')
       .select('*')
       .gte('created_at', this.getTimeRangeDate(timeRange));
 
-    const totalUsers = activities?.length || 234;
+    const totalUsers = analyticsEvents?.length || 234;
     const activeUsers = Math.floor(totalUsers * 0.65);
 
     // Calculate user journey
