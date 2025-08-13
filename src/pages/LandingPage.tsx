@@ -28,31 +28,8 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
-  console.log('🏠 LANDING PAGE DEBUG: Component mounting', { timestamp: Date.now() });
-  
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  
-  console.log('🏠 LANDING PAGE DEBUG: Auth state', {
-    hasUser: !!user,
-    loading,
-    userEmail: user?.email,
-    timestamp: Date.now()
-  });
-
-  // Check if authenticated user should be redirected to dashboard
-  useEffect(() => {
-    if (user && !loading) {
-      console.log('🔀 LANDING PAGE DEBUG: Authenticated user detected, considering redirect', {
-        userEmail: user.email,
-        timestamp: Date.now()
-      });
-      
-      // Optional: Redirect authenticated users to dashboard
-      // Commenting this out to allow authenticated users to view landing page
-      // navigate('/dashboard', { replace: true });
-    }
-  }, [user, loading, navigate]);
   
   // Note: Allow both authenticated and unauthenticated users to view landing page
   // Show different content based on auth status
