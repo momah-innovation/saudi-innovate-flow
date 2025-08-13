@@ -347,30 +347,25 @@ export default React.memo(function UserDashboard() {
         
         <div className="container mx-auto px-6 py-8 space-y-6">
         {/* Role-specific Dashboard Content */}
-        {useMemo(() => {
-          if (primaryRole === 'admin' || primaryRole === 'super_admin') {
-            return (
-              <AdminDashboard 
-                userProfile={userProfile ? {
-                  id: userProfile.id,
-                  name: userProfile.name || '',
-                  position: userProfile.position,
-                  organization: userProfile.organization,
-                  profile_completion_percentage: userProfile.profile_completion_percentage,
-                  user_roles: userProfile.user_roles
-                } : {
-                  id: '',
-                  name: '',
-                  profile_completion_percentage: 0
-                }}
-                canManageUsers={permissions.canManageUsers}
-                canManageSystem={permissions.canManageSystem}
-                canViewAnalytics={permissions.canViewAnalytics}
-              />
-            );
-          }
-          return null;
-        }, [primaryRole, userProfile, permissions])}
+        {(primaryRole === 'admin' || primaryRole === 'super_admin') && (
+          <AdminDashboard 
+            userProfile={userProfile ? {
+              id: userProfile.id,
+              name: userProfile.name || '',
+              position: userProfile.position,
+              organization: userProfile.organization,
+              profile_completion_percentage: userProfile.profile_completion_percentage,
+              user_roles: userProfile.user_roles
+            } : {
+              id: '',
+              name: '',
+              profile_completion_percentage: 0
+            }}
+            canManageUsers={permissions.canManageUsers}
+            canManageSystem={permissions.canManageSystem}
+            canViewAnalytics={permissions.canViewAnalytics}
+          />
+        )}
         
         {primaryRole === 'expert' && (
           <ExpertDashboard 
