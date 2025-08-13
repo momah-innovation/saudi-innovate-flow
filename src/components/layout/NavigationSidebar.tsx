@@ -242,19 +242,27 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
       {/* Sidebar */}
       <div 
         className={cn(
-          "fixed top-0 h-full w-80 bg-background border-r shadow-lg transition-transform duration-300 ease-out",
+          "fixed top-0 h-screen w-80 shadow-2xl transition-transform duration-300 ease-out",
           isRTL ? "right-0" : "left-0",
           isRTL && "text-right"
         )}
         style={{
-          zIndex: 51,
+          zIndex: 9999,
+          position: 'fixed',
+          top: 0,
+          left: isRTL ? 'auto' : 0,
+          right: isRTL ? 0 : 'auto',
+          width: '320px',
+          height: '100vh',
+          backgroundColor: '#ffffff',
+          border: '2px solid #000000',
+          boxShadow: '0 0 20px rgba(0,0,0,0.5)',
           transform: open 
-            ? 'translateX(0)' 
+            ? 'translateX(0px)' 
             : isRTL 
               ? 'translateX(100%)' 
               : 'translateX(-100%)',
-          backgroundColor: 'white',
-          border: '1px solid #e5e7eb'
+          transition: 'transform 0.3s ease-out'
         }}
         onTransitionEnd={() => {
           console.log('Sidebar transition ended, open:', open);
