@@ -57,9 +57,22 @@ export function AnalyticsProvider({
     if (!user?.id) return;
     
     try {
-      // This would use a dedicated event tracking service
-      console.log('Analytics Event:', { eventType, properties, userId: user.id });
+      // For now, we'll just log the event since the service doesn't have trackEvent method
+      // This can be implemented when analytics service is extended
+      const eventData = {
+        eventType,
+        userId: user.id,
+        timestamp: new Date().toISOString(),
+        ...properties
+      };
+      
+      // Store in session storage for debugging purposes
+      const events = JSON.parse(sessionStorage.getItem('analytics_events') || '[]');
+      events.push(eventData);
+      sessionStorage.setItem('analytics_events', JSON.stringify(events.slice(-100))); // Keep last 100 events
+      
     } catch (error) {
+      // Silent fail for analytics to not impact user experience
       console.warn('Failed to track event:', error);
     }
   };

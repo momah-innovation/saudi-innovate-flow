@@ -44,7 +44,20 @@ export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsPr
   };
 
   const handleExport = () => {
-    console.log("Exporting session analytics data...");
+    // Export functionality would be implemented here
+    // For now, just show a toast notification
+    if (viewingData) {
+      const dataStr = JSON.stringify(viewingData, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `viewing-session-analytics-${timeRange}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
   };
 
   const sessionDuration = viewingData?.sessionDuration || [];
