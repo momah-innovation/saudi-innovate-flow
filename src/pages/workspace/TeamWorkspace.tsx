@@ -3,14 +3,17 @@ import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { TeamWorkspaceContent } from '@/components/admin/TeamWorkspaceContent';
 import { EnhancedTeamWorkspaceHero } from '@/components/team-workspace/EnhancedTeamWorkspaceHero';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { Users, UserPlus, Calendar, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useAuth } from '@/contexts/AuthContext';
 import { logger } from '@/utils/logger';
 
 export default function TeamWorkspace() {
   const { t } = useUnifiedTranslation();
+  const { user } = useAuth();
   const [activeView, setActiveView] = useState('dashboard');
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
@@ -102,6 +105,15 @@ export default function TeamWorkspace() {
           searchTerm={searchValue}
         />
       </PageLayout>
+      
+      {/* Team Workspace Collaboration */}
+      <WorkspaceCollaboration
+        workspaceType="team"
+        entityId={user?.id}
+        showWidget={true}
+        showPresence={true}
+        showActivity={true}
+      />
     </AppShell>
   );
 }

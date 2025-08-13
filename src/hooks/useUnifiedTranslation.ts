@@ -77,12 +77,11 @@ export function useUnifiedTranslation() {
         throw error;
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
-    refetchOnWindowFocus: false,
-    refetchOnMount: true,
-    retry: 3,
-    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
+    staleTime: 10 * 60 * 1000, // 10 minutes - increased to reduce frequency
+    gcTime: 30 * 60 * 1000, // 30 minutes cache (replaces cacheTime)
+    refetchOnWindowFocus: false, // Prevent unnecessary refetches
+    refetchOnMount: false, // Only fetch if cache is stale
+    retry: 2
   });
 
   // Log what we actually received

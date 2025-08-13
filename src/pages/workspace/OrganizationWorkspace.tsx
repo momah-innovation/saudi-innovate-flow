@@ -3,6 +3,7 @@ import { WorkspaceLayout } from '@/components/workspace/WorkspaceLayout';
 import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { useOrganizationWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -16,7 +17,7 @@ import { ALL_ROUTES } from '@/routing/routes';
 
 export default function OrganizationWorkspace() {
   const { t } = useUnifiedTranslation();
-  const { userProfile } = useAuth();
+  const { user, userProfile } = useAuth();
   const navigate = useNavigate();
   const permissions = useWorkspacePermissions();
   const { data: workspaceData, isLoading } = useOrganizationWorkspaceData();
@@ -250,6 +251,15 @@ export default function OrganizationWorkspace() {
           </div>
         </div>
       </div>
+      
+      {/* Organization Workspace Collaboration */}
+      <WorkspaceCollaboration
+        workspaceType="organization"
+        entityId={user?.id}
+        showWidget={true}
+        showPresence={true}
+        showActivity={true}
+      />
     </WorkspaceLayout>
   );
 }
