@@ -238,13 +238,17 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
     >
       <SheetContent
         side={isRTL ? "right" : "left"}
-        className={cn("w-80 p-0 border-0", isRTL && "text-right")}
-        style={{ transition: 'transform 0.15s ease-out' }} // Faster transition
+        className={cn("w-80 p-0 border-0 z-50", isRTL && "text-right")}
+        style={{ 
+          transition: 'transform 0.15s ease-out',
+          position: 'fixed',
+          zIndex: 50
+        }}
         onAnimationStart={() => {
-          // Animation started (debug removed to prevent re-renders)
+          console.log('Sheet animation started');
         }}
         onAnimationEnd={() => {
-          // Animation ended (debug removed to prevent re-renders)
+          console.log('Sheet animation ended');
         }}
       >
         <SheetHeader className="p-4 sm:p-6 border-b">
