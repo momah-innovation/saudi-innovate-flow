@@ -54,7 +54,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Home,
     path: '/dashboard',
     group: MENU_GROUPS.MAIN,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
   {
     id: 'challenges',
@@ -63,7 +63,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Target,
     path: '/challenges',
     group: MENU_GROUPS.MAIN,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
   {
     id: 'events',
@@ -72,7 +72,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Calendar,
     path: '/events',
     group: MENU_GROUPS.MAIN,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
 
   // Innovation Hub
@@ -83,7 +83,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Lightbulb,
     path: '/ideas',
     group: MENU_GROUPS.INNOVATION,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
   {
     id: 'opportunities',
@@ -92,7 +92,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Star,
     path: '/opportunities',
     group: MENU_GROUPS.INNOVATION,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
   {
     id: 'collaboration',
@@ -101,7 +101,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Users,
     path: '/collaboration',
     group: MENU_GROUPS.INNOVATION,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
   {
     id: 'workspace',
@@ -110,7 +110,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Briefcase,
     path: '/workspace',
     group: MENU_GROUPS.INNOVATION,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
 
   // Administration
@@ -159,7 +159,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Settings,
     path: '/settings',
     group: MENU_GROUPS.SYSTEM,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
   {
     id: 'security',
@@ -188,7 +188,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: HelpCircle,
     path: '/help',
     group: MENU_GROUPS.HELP,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
   {
     id: 'notifications',
@@ -197,7 +197,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     icon: Bell,
     path: '/notifications',
     group: MENU_GROUPS.HELP,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   }
 ];
 
