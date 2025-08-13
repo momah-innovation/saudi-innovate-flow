@@ -241,6 +241,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     let isSubscribed = true;
+    let profileFetched = false; // Prevent duplicate profile fetching
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -258,15 +259,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Defer profile fetching to avoid auth state change deadlock
-        if (session?.user) {
+        // Only fetch profile if not already fetched and user exists
+        if (session?.user && !profileFetched) {
+          profileFetched = true;
           // Use a small delay to ensure auth state is fully set
           setTimeout(() => {
             if (isSubscribed) {
               fetchUserProfile(session.user.id);
             }
           }, 100);
-        } else {
+        } else if (!session?.user) {
+          profileFetched = false;
           setUserProfile(null);
         }
       }
@@ -286,7 +289,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(session?.user ?? null);
       setLoading(false);
 
-      if (session?.user) {
+      // Only fetch profile if not already fetched and user exists
+      if (session?.user && !profileFetched) {
+        profileFetched = true;
         setTimeout(() => {
           if (isSubscribed) {
             fetchUserProfile(session.user.id);
