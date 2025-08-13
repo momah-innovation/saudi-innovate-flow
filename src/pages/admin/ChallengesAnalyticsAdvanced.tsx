@@ -100,11 +100,11 @@ export default function ChallengesAnalyticsAdvanced() {
           </TabsList>
 
           <TabsContent value="live-engagement" className="space-y-4">
-            <LiveEngagementMonitor timeRange={timeRange} />
+            <LiveEngagementMonitor />
           </TabsContent>
 
           <TabsContent value="participation-trends" className="space-y-4">
-            <ParticipationTrendAnalyzer />
+            <ParticipationTrendAnalyzer timeRange={timeRange} />
           </TabsContent>
 
           <TabsContent value="viewing-sessions" className="space-y-4">
