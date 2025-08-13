@@ -31,7 +31,7 @@ interface Notification {
   created_at: string;
 }
 
-const NotificationCenter = memo(function NotificationCenter() {
+export const NotificationCenter = memo(function NotificationCenter() {
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -392,3 +392,5 @@ const NotificationCenter = memo(function NotificationCenter() {
     </Sheet>
   );
 });
+
+export default NotificationCenter;
