@@ -37,6 +37,7 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log('📊 LANDING DATA DEBUG: Starting fetch', { timestamp: Date.now() });
       try {
         // Fetch FAQs
         const { data: faqData } = await supabase
@@ -62,9 +63,17 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
         setFaqs(faqData || []);
         setStatistics(statsData || []);
         setContent(contentData || []);
+        console.log('📊 LANDING DATA DEBUG: Fetch successful', {
+          faqCount: (faqData || []).length,
+          statsCount: (statsData || []).length,
+          contentCount: (contentData || []).length,
+          timestamp: Date.now()
+        });
       } catch (error) {
+        console.error('📊 LANDING DATA DEBUG: Fetch failed', error);
         logger.error('Failed to fetch landing page data', { component: 'useLandingPageData', action: 'fetchLandingPageData' }, error as Error);
       } finally {
+        console.log('📊 LANDING DATA DEBUG: Setting loading to false', { timestamp: Date.now() });
         setLoading(false);
       }
     };

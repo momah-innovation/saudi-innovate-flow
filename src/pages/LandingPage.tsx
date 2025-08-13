@@ -28,8 +28,17 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
+  console.log('🏠 LANDING PAGE DEBUG: Component mounting', { timestamp: Date.now() });
+  
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  
+  console.log('🏠 LANDING PAGE DEBUG: Auth state', {
+    hasUser: !!user,
+    loading,
+    userEmail: user?.email,
+    timestamp: Date.now()
+  });
   
   // Note: Allow both authenticated and unauthenticated users to view landing page
   // Show different content based on auth status
