@@ -82,61 +82,41 @@ export function TeamManagementContent({
     try {
       setLoading(true);
 
-      // For now, create mock data since we don't have innovation_teams table yet
-      // In a real implementation, you would fetch from a proper teams table
-      const mockTeams = [
-        {
-          id: '1',
-          name: 'فريق التقنيات الناشئة',
-          description: 'يركز على استكشاف وتطوير التقنيات المبتكرة',
-          leader_id: user?.id || '',
-          leader_name: 'أحمد محمد',
-          status: 'active',
-          created_at: new Date().toISOString(),
-          member_count: 8,
-          active_projects: 3
-        },
-        {
-          id: '2',
-          name: 'فريق الاستدامة والبيئة',
-          description: 'يعمل على حلول الاستدامة والحفاظ على البيئة',
-          leader_id: user?.id || '',
-          leader_name: 'فاطمة علي',
-          status: 'active',
-          created_at: new Date().toISOString(),
-          member_count: 6,
-          active_projects: 2
-        },
-        {
-          id: '3',
-          name: 'فريق الصحة الرقمية',
-          description: 'يطور حلول تقنية للرعاية الصحية',
-          leader_id: user?.id || '',
-          leader_name: 'محمد الأحمد',
-          status: 'active',
-          created_at: new Date().toISOString(),
-          member_count: 12,
-          active_projects: 5
-        }
-      ];
+      // Fetch from innovation_team_members table for team-related data
+      const { data: teamMembersData, error: teamMembersError } = await supabase
+        .from('innovation_team_members')
+        .select(`
+          user_id,
+          status,
+          created_at,
+          profiles!inner(display_name, full_name_ar)
+        `)
+        .eq('status', 'active');
 
-      // Calculate metrics
-      const totalTeams = mockTeams.length;
-      const activeTeams = mockTeams.filter(t => t.status === 'active').length;
-      const totalMembers = mockTeams.reduce((sum, t) => sum + t.member_count, 0);
-      const activeProjects = mockTeams.reduce((sum, t) => sum + t.active_projects, 0);
+      if (teamMembersError) {
+        console.error('Error fetching team members:', teamMembersError);
+      }
+
+      // Calculate metrics from real data
+      const totalMembers = teamMembersData?.length || 0;
+      const activeMembers = teamMembersData?.filter(member => member.status === 'active').length || 0;
+
+      // For now, set empty teams array until we have proper innovation_teams table
+      const emptyTeams: InnovationTeam[] = [];
+
+      const metrics = {
+        totalTeams: 0,
+        activeTeams: 0,
+        totalMembers,
+        activeProjects: 0
+      };
 
       setTeamsData({
-        teams: mockTeams,
-        metrics: {
-          totalTeams,
-          activeTeams,
-          totalMembers,
-          activeProjects
-        }
+        teams: emptyTeams,
+        metrics
       });
 
-      setInnovationTeams(mockTeams);
+      setInnovationTeams(emptyTeams);
 
     } catch (error) {
       logger.error('Error fetching teams data', { component: 'TeamManagementContent', action: 'fetchTeamsData' }, error as Error);

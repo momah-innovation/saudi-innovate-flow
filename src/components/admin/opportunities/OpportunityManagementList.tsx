@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
+import { supabase } from '@/integrations/supabase/client';
 import { ManagementCard } from "@/components/ui/management-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/logger";
@@ -91,136 +91,68 @@ export function OpportunityManagementList({
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
 
-  // Mock data for opportunities
-  const mockOpportunities: OpportunityListItem[] = [
-    {
-      id: '1',
-      title: 'مطور تطبيقات موبايل',
-      description: 'نبحث عن مطور تطبيقات موبايل متمرس للانضمام إلى فريق التكنولوجيا',
-      type: 'job',
-      status: 'open',
-      department_id: '1',
-      contact_person: 'أحمد محمد',
-      contact_email: 'ahmed@example.com',
-      application_deadline: '2024-02-15',
-      start_date: '2024-03-01',
-      location: 'الرياض',
-      is_remote: false,
-      salary_min: 8000,
-      salary_max: 12000,
-      currency: 'SAR',
-      application_count: 15,
-      view_count: 120,
-      created_at: '2024-01-15T10:00:00Z',
-      updated_at: '2024-01-20T10:00:00Z',
-      department: {
-        id: '1',
-        name: 'Technology Department',
-        name_ar: 'قسم التكنولوجيا'
-      }
-    },
-    {
-      id: '2',
-      title: 'برنامج تدريب صيفي',
-      description: 'برنامج تدريب صيفي للطلاب المتفوقين في مجال الابتكار',
-      type: 'internship',
-      status: 'open',
-      department_id: '2',
-      contact_person: 'فاطمة علي',
-      contact_email: 'fatima@example.com',
-      application_deadline: '2024-03-31',
-      start_date: '2024-06-01',
-      end_date: '2024-08-31',
-      location: 'جدة',
-      is_remote: true,
-      application_count: 45,
-      view_count: 280,
-      created_at: '2024-01-10T10:00:00Z',
-      updated_at: '2024-01-18T10:00:00Z',
-      department: {
-        id: '2',
-        name: 'Innovation Department',
-        name_ar: 'قسم الابتكار'
-      }
-    },
-    {
-      id: '3',
-      title: 'مسابقة الابتكار التقني',
-      description: 'مسابقة سنوية لأفضل الحلول التقنية المبتكرة',
-      type: 'competition',
-      status: 'open',
-      department_id: '1',
-      contact_person: 'خالد الأحمد',
-      contact_email: 'khalid@example.com',
-      application_deadline: '2024-04-30',
-      start_date: '2024-05-15',
-      end_date: '2024-06-15',
-      location: 'الدمام',
-      is_remote: false,
-      application_count: 32,
-      view_count: 450,
-      created_at: '2024-01-05T10:00:00Z',
-      updated_at: '2024-01-25T10:00:00Z',
-      department: {
-        id: '1',
-        name: 'Technology Department',
-        name_ar: 'قسم التكنولوجيا'
-      }
-    }
-  ];
-
   useEffect(() => {
     fetchOpportunities();
   }, [filters, searchTerm]);
 
   const fetchOpportunities = async () => {
-    setLoading(true);
     try {
-      // Simulate API call with filtering
-      let filteredOpportunities = [...mockOpportunities];
+      setLoading(true);
       
-      // Apply filters
-      if (filters.status !== 'all') {
-        filteredOpportunities = filteredOpportunities.filter(opp => opp.status === filters.status);
+      // Fetch from opportunities table - remove department relation for now
+      const { data, error } = await supabase
+        .from('opportunities')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching opportunities:', error);
+        setOpportunities([]);
+        return;
       }
-      
-      if (filters.type !== 'all') {
-        filteredOpportunities = filteredOpportunities.filter(opp => opp.type === filters.type);
-      }
-      
-      if (filters.department !== 'all') {
-        filteredOpportunities = filteredOpportunities.filter(opp => opp.department_id === filters.department);
-      }
-      
-      if (filters.is_remote !== 'all') {
-        const isRemote = filters.is_remote === 'true';
-        filteredOpportunities = filteredOpportunities.filter(opp => opp.is_remote === isRemote);
-      }
-      
-      // Apply search
-      if (searchTerm) {
-        filteredOpportunities = filteredOpportunities.filter(opp => 
-          opp.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          opp.description.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-      
-      setOpportunities(filteredOpportunities);
+
+      // Transform data to match interface using correct column names
+      const transformedOpportunities = (data || []).map(item => ({
+        id: item.id,
+        title: item.title_ar || item.title_en || 'غير محدد',
+        description: item.description_ar || item.description_en || '',
+        type: (item.opportunity_type || 'job') as 'job' | 'internship' | 'volunteer' | 'partnership' | 'grant' | 'competition',
+        status: (item.status === 'published' ? 'open' : 
+                 item.status === 'draft' ? 'closed' : 
+                 item.status || 'closed') as 'open' | 'closed' | 'on_hold' | 'cancelled',
+        department_id: item.department_id,
+        contact_person: item.contact_person || '',
+        contact_email: item.contact_email || '',
+        application_deadline: item.deadline, // Database uses 'deadline'
+        start_date: undefined, // Column doesn't exist in current schema
+        end_date: undefined, // Column doesn't exist in current schema
+        location: item.location || '',
+        is_remote: false, // Column doesn't exist, defaulting to false
+        salary_min: item.budget_min,
+        salary_max: item.budget_max,
+        currency: 'SAR',
+        application_count: 0,
+        view_count: 0,
+        created_at: item.created_at,
+        updated_at: item.updated_at,
+        department: undefined
+      }));
+
+      setOpportunities(transformedOpportunities);
     } catch (error) {
-      logger.error('Failed to fetch opportunities list', { 
-        component: 'OpportunityManagementList', 
-        action: 'fetchOpportunities',
-        filters 
-      }, error as Error);
-      toast({
-        title: t('error'),
-        description: t('opportunities.fetch_error', 'Failed to fetch opportunities list'),
-        variant: "destructive",
-      });
+      console.error('Error in fetchOpportunities:', error);
+      setOpportunities([]);
     } finally {
       setLoading(false);
     }
   };
+
+  const filteredOpportunities = opportunities.filter(opportunity =>
+    !searchTerm || 
+    opportunity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    opportunity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    opportunity.type.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -345,7 +277,7 @@ export function OpportunityManagementList({
     );
   }
 
-  if (opportunities.length === 0) {
+  if (filteredOpportunities.length === 0) {
     return (
       <EmptyState
         icon={<Briefcase className="w-12 h-12 text-muted-foreground" />}
@@ -393,7 +325,7 @@ export function OpportunityManagementList({
           )}
           
           <Checkbox
-            checked={selectedItems.length === opportunities.length}
+            checked={selectedItems.length === filteredOpportunities.length}
             onCheckedChange={handleSelectAll}
           />
           <span className="text-sm text-muted-foreground">{t('ui.select_all', 'تحديد الكل')}</span>
@@ -406,7 +338,7 @@ export function OpportunityManagementList({
         viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4' :
         'grid-cols-1'
       }`}>
-        {opportunities.map(renderOpportunityCard)}
+        {filteredOpportunities.map(renderOpportunityCard)}
       </div>
 
       {/* Wizard Dialog */}
