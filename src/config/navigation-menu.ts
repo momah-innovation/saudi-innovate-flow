@@ -49,7 +49,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   // Main Navigation
   {
     id: 'dashboard',
-    label: 'nav.dashboard',
+    label: 'nav.dashboard', // ✅ Exists in DB
     arabicLabel: 'لوحة التحكم',
     icon: Home,
     path: '/dashboard',
@@ -58,7 +58,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'challenges',
-    label: 'nav.challenges',
+    label: 'nav.challenges', // ✅ Exists in DB
     arabicLabel: 'التحديات',
     icon: Target,
     path: '/challenges',
@@ -67,7 +67,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'events',
-    label: 'nav.events',
+    label: 'nav.events', // ✅ Exists in DB
     arabicLabel: 'الفعاليات',
     icon: Calendar,
     path: '/events',
@@ -78,7 +78,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   // Innovation Hub
   {
     id: 'ideas',
-    label: 'nav.ideas',
+    label: 'nav.ideas', // ✅ Exists in DB
     arabicLabel: 'الأفكار',
     icon: Lightbulb,
     path: '/ideas',
@@ -87,7 +87,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'opportunities',
-    label: 'nav.opportunities', 
+    label: 'nav.opportunities', // ✅ Exists in DB
     arabicLabel: 'الفرص',
     icon: Star,
     path: '/opportunities',
@@ -96,7 +96,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'collaboration',
-    label: 'nav.collaboration',
+    label: 'nav.collaboration', // ✅ Exists in DB
     arabicLabel: 'التعاون',
     icon: Users,
     path: '/collaboration',
@@ -105,7 +105,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'workspace',
-    label: 'nav.workspace',
+    label: 'nav.workspace', // ✅ Added to DB
     arabicLabel: 'مساحة العمل',
     icon: Briefcase,
     path: '/workspace',
@@ -116,7 +116,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   // Administration
   {
     id: 'admin-dashboard',
-    label: 'nav.admin_dashboard',
+    label: 'nav.admin_dashboard', // ✅ Exists in DB  
     arabicLabel: 'لوحة الإدارة',
     icon: BarChart3,
     path: '/admin/dashboard',
@@ -125,7 +125,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'user-management',
-    label: 'nav.user_management',
+    label: 'nav.user_management', // ✅ Added to DB
     arabicLabel: 'إدارة المستخدمين',
     icon: Users,
     path: '/admin/users',
@@ -134,7 +134,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'content-management',
-    label: 'nav.content_management',
+    label: 'nav.content_management', // ✅ Added to DB
     arabicLabel: 'إدارة المحتوى',
     icon: FileText,
     path: '/admin/content',
@@ -143,7 +143,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'analytics',
-    label: 'nav.analytics',
+    label: 'nav.analytics', // ✅ Exists in DB
     arabicLabel: 'التحليلات',
     icon: BarChart3,
     path: '/admin/analytics',
@@ -154,7 +154,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   // System
   {
     id: 'settings',
-    label: 'nav.settings',
+    label: 'nav.settings', // ✅ Exists in DB
     arabicLabel: 'الإعدادات',
     icon: Settings,
     path: '/settings',
@@ -163,7 +163,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'security',
-    label: 'nav.security',
+    label: 'nav.security', // ✅ Added to DB
     arabicLabel: 'الأمان',
     icon: Shield,
     path: '/security',
@@ -172,7 +172,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'database',
-    label: 'nav.database',
+    label: 'nav.database', // ✅ Added to DB
     arabicLabel: 'قاعدة البيانات',
     icon: Database,
     path: '/admin/database',
@@ -183,7 +183,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   // Help & Support
   {
     id: 'help',
-    label: 'nav.help',
+    label: 'nav.help', // ✅ Exists in DB
     arabicLabel: 'المساعدة',
     icon: HelpCircle,
     path: '/help',
@@ -192,7 +192,7 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
   },
   {
     id: 'notifications',
-    label: 'nav.notifications',
+    label: 'nav.notifications', // ✅ Added to DB
     arabicLabel: 'الإشعارات',
     icon: Bell,
     path: '/notifications',
