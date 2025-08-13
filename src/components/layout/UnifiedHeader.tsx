@@ -1,4 +1,4 @@
-import { useState, useMemo, ReactNode } from 'react';
+import { useState, useMemo, ReactNode, memo } from 'react';
 import { Search, Menu, Languages, Moon, Sun, Plus, Ticket, AlignLeft, AlignRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -74,7 +74,7 @@ interface UnifiedHeaderProps {
  * - Responsive design
  * - Modern animations and design
  */
-export function UnifiedHeader({
+const UnifiedHeader = memo(function UnifiedHeader({
   variant = 'system',
   onSidebarToggle,
   className,
@@ -150,11 +150,7 @@ export function UnifiedHeader({
               variant="ghost" 
               size="sm"
               onClick={() => {
-                console.log('🍔 SIDEBAR DEBUG: Hamburger button clicked', {
-                  timestamp: Date.now(),
-                  currentTime: new Date().toISOString(),
-                  onSidebarToggle: !!onSidebarToggle
-                });
+                // Hamburger button clicked (debug removed to prevent re-renders)
                 performance.mark('sidebar-toggle-start');
                 onSidebarToggle?.();
               }}
@@ -436,7 +432,7 @@ export function UnifiedHeader({
     default:
       return renderSystemHeader();
   }
-}
+});
 
 // Specialized header components for easier migration
 export function SystemHeader({ onSidebarToggle, ...props }: { onSidebarToggle: () => void } & Partial<UnifiedHeaderProps>) {
@@ -479,3 +475,5 @@ export function RoleAwareHeader({ userRole, ...props }: { userRole?: UserRole } 
 
   return <UnifiedHeader {...filteredProps} />;
 }
+
+export default UnifiedHeader;

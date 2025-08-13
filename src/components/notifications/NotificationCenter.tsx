@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,7 @@ interface Notification {
   created_at: string;
 }
 
-export function NotificationCenter() {
+const NotificationCenter = memo(function NotificationCenter() {
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -391,4 +391,4 @@ export function NotificationCenter() {
       </SheetContent>
     </Sheet>
   );
-}
+});
