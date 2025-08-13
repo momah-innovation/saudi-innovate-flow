@@ -39,34 +39,54 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
     const fetchData = async () => {
       console.log('📊 LANDING DATA DEBUG: Starting fetch', { timestamp: Date.now() });
       try {
-        // Fetch FAQs
-        const { data: faqData } = await supabase
+        // Add timeout to prevent hanging requests
+        const fetchTimeout = (promise: Promise<any>, timeout: number) => {
+          return Promise.race([
+            promise,
+            new Promise((_, reject) => 
+              setTimeout(() => reject(new Error('Request timeout')), timeout)
+            )
+          ]);
+        };
+
+        // Fetch FAQs with timeout and limit
+        const faqPromise = supabase
           .from('landing_page_faqs')
           .select('*')
           .eq('is_active', true)
-          .order('order_sequence');
+          .order('order_sequence')
+          .limit(10); // Limit to prevent memory issues
 
-        // Fetch public statistics
-        const { data: statsData } = await supabase
+        // Fetch public statistics with timeout and limit
+        const statsPromise = supabase
           .from('public_statistics')
           .select('*')
           .eq('is_visible', true)
-          .order('display_order');
+          .order('display_order')
+          .limit(10); // Limit to prevent memory issues
 
-        // Fetch content sections
-        const { data: contentData } = await supabase
+        // Fetch content sections with timeout and limit
+        const contentPromise = supabase
           .from('landing_page_content')
           .select('*')
           .eq('is_active', true)
-          .order('display_order');
+          .order('display_order')
+          .limit(20); // Limit to prevent memory issues
 
-        setFaqs(faqData || []);
-        setStatistics(statsData || []);
-        setContent(contentData || []);
+        // Execute all promises with 10-second timeout
+        const [faqResult, statsResult, contentResult] = await Promise.all([
+          fetchTimeout(faqPromise, 10000),
+          fetchTimeout(statsPromise, 10000),
+          fetchTimeout(contentPromise, 10000)
+        ]);
+
+        setFaqs(faqResult.data || []);
+        setStatistics(statsResult.data || []);
+        setContent(contentResult.data || []);
         console.log('📊 LANDING DATA DEBUG: Fetch successful', {
-          faqCount: (faqData || []).length,
-          statsCount: (statsData || []).length,
-          contentCount: (contentData || []).length,
+          faqCount: (faqResult.data || []).length,
+          statsCount: (statsResult.data || []).length,
+          contentCount: (contentResult.data || []).length,
           timestamp: Date.now()
         });
       } catch (error) {

@@ -11,37 +11,51 @@ import { useMemo } from 'react';
 export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
   const queryClient = useQueryClient();
 
-  // Fetch all translations once with aggressive caching
+  // Fetch essential translations only to prevent crash
   const { data: translations = [], isLoading, error } = useQuery({
     queryKey: queryKeys.system.translations(),
     queryFn: async (): Promise<SystemTranslation[]> => {
       try {
+        console.log('🌐 SYSTEM TRANSLATIONS: Starting fetch with limit to prevent crash');
+        
+        // Only fetch first 200 most essential translations to prevent crash
         const { data, error } = await supabase
           .from('system_translations')
           .select('id, translation_key, text_en, text_ar, category, created_at, updated_at')
-          .order('translation_key');
+          .order('translation_key')
+          .limit(200); // Strict limit to prevent memory issues
 
         if (error) {
-          console.error('Failed to fetch translations:', error);
+          console.error('🚨 SYSTEM TRANSLATIONS: Failed to fetch', error);
           throw error;
         }
 
+        console.log('✅ SYSTEM TRANSLATIONS: Loaded successfully', { 
+          count: data?.length || 0,
+          timestamp: Date.now() 
+        });
+
         return data || [];
       } catch (error) {
-        console.error('Error in useSystemTranslations:', error);
+        console.error('🚨 SYSTEM TRANSLATIONS: Error in fetch', error);
         return [];
       }
     },
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 30 * 60 * 1000, // 30 minutes  
-    refetchOnWindowFocus: false, // Reduce unnecessary fetches
+    staleTime: 30 * 60 * 1000, // 30 minutes
+    gcTime: 60 * 60 * 1000, // 60 minutes  
+    refetchOnWindowFocus: false, // Prevent unnecessary refetches
     refetchOnMount: false, // Don't always refetch on mount
-    retry: 2,
-    refetchInterval: 10 * 60 * 1000 // Refresh every 10 minutes in background
+    retry: 1, // Reduce retries to prevent endless loading
+    refetchInterval: false // Disable background refresh to prevent crashes
   });
 
-  // Create optimized translation map
+  // Create optimized translation map with debug logging
   const translationMap = useMemo(() => {
+    console.log('🌐 SYSTEM TRANSLATIONS: Creating translation map', { 
+      translationCount: translations.length,
+      timestamp: Date.now() 
+    });
+    
     const map = new Map<string, { en: string; ar: string; category: string }>();
     
     translations.forEach(translation => {
@@ -52,6 +66,11 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
         ar: translation.text_ar || translation.text_en || translation.translation_key,
         category: translation.category || 'general'
       });
+    });
+    
+    console.log('✅ SYSTEM TRANSLATIONS: Map created', { 
+      mapSize: map.size,
+      timestamp: Date.now() 
     });
     
     return map;
