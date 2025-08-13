@@ -110,8 +110,8 @@ export default React.memo(function UserDashboard() {
 
   // Memoize dashboard data loading to prevent unnecessary calls
   const loadDashboardData = useCallback(async () => {
-    if (!userProfile?.id || loading) {
-      console.log('Skipping loadDashboardData', { userId: userProfile?.id, loading });
+    if (!userProfile?.id) {
+      console.log('Skipping loadDashboardData - no user ID');
       return;
     }
     
