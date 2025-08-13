@@ -55,35 +55,71 @@ export function RelationshipOverview({
     try {
       setLoading(true);
       
-      // Mock data since we don't have relationships table yet
-      const mockRelationships: RelationshipData[] = [
-        {
-          id: '1',
+      // Fetch challenge-partner relationships
+      const { data: challengePartners } = await supabase
+        .from('challenge_partners')
+        .select(`
+          id,
+          challenge_id,
+          partner_id,
+          partnership_type,
+          status,
+          created_at,
+          challenges!challenge_partners_challenge_id_fkey(title_ar, title_en),
+          partners!challenge_partners_partner_id_fkey(name_ar, name_en)
+        `)
+        .eq('status', 'active');
+
+      // Fetch campaign-partner relationships  
+      const { data: campaignPartners } = await supabase
+        .from('campaign_partners')
+        .select(`
+          id,
+          campaign_id,
+          partner_id,
+          partnership_role,
+          partnership_status,
+          created_at,
+          campaigns!campaign_partners_campaign_id_fkey(title_ar, title_en),
+          partners!campaign_partners_partner_id_fkey(name_ar, name_en)
+        `)
+        .eq('partnership_status', 'active');
+
+      const relationships: RelationshipData[] = [];
+
+      // Process challenge-partner relationships
+      challengePartners?.forEach(cp => {
+        relationships.push({
+          id: cp.id,
           source_entity_type: 'challenge',
-          source_entity_id: 'ch1',
-          target_entity_type: 'campaign',
-          target_entity_id: 'ca1',
-          relationship_type: 'supports',
-          strength: 8,
-          created_at: '2024-01-15',
-          source_name: 'Digital Innovation Challenge',
-          target_name: 'Innovation Awareness Campaign'
-        },
-        {
-          id: '2',
-          source_entity_type: 'partner',
-          source_entity_id: 'p1',
-          target_entity_type: 'challenge',
-          target_entity_id: 'ch1',
-          relationship_type: 'sponsors',
-          strength: 9,
-          created_at: '2024-01-10',
-          source_name: 'Tech Corp',
-          target_name: 'Digital Innovation Challenge'
-        }
-      ];
+          source_entity_id: cp.challenge_id,
+          target_entity_type: 'partner',
+          target_entity_id: cp.partner_id,
+          relationship_type: cp.partnership_type || 'collaborator',
+          strength: 8, // Default strength
+          created_at: cp.created_at,
+          source_name: cp.challenges?.title_ar || cp.challenges?.title_en || 'Challenge',
+          target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
+        });
+      });
+
+      // Process campaign-partner relationships
+      campaignPartners?.forEach(cp => {
+        relationships.push({
+          id: cp.id,
+          source_entity_type: 'campaign',
+          source_entity_id: cp.campaign_id,
+          target_entity_type: 'partner',
+          target_entity_id: cp.partner_id,
+          relationship_type: cp.partnership_role || 'supporter',
+          strength: 7, // Default strength
+          created_at: cp.created_at,
+          source_name: cp.campaigns?.title_ar || cp.campaigns?.title_en || 'Campaign',
+          target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
+        });
+      });
       
-      setRelationships(mockRelationships);
+      setRelationships(relationships);
     } catch (error) {
       logger.error('Error loading relationships', error);
       toast({
