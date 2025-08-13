@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
-  Sheet, SheetContent, SheetHeader, SheetTitle
+  Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -24,10 +24,10 @@ interface NavigationSidebarProps {
 }
 
 export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
-  // Debug logging removed to prevent re-renders
+  console.log('NavigationSidebar render', { open });
   
   React.useEffect(() => {
-    // Open state changed (debug removed to prevent re-renders)
+    console.log('NavigationSidebar open state changed', { open });
   }, [open]);
   
   useLayoutEffect(() => {
@@ -232,7 +232,7 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
     <Sheet 
       open={open} 
       onOpenChange={(newOpen) => {
-        // Sheet onOpenChange triggered (debug removed to prevent re-renders)
+        console.log('Sheet onOpenChange triggered', { from: open, to: newOpen });
         onOpenChange(newOpen);
       }}
     >
@@ -251,6 +251,9 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
           <SheetTitle className={cn("text-left text-sm sm:text-base", isRTL && "text-right")}>
             {t('nav.navigation_menu', 'Navigation Menu')}
           </SheetTitle>
+          <SheetDescription className="sr-only">
+            Navigation menu for the innovation system
+          </SheetDescription>
         </SheetHeader>
         
         <div className="p-4 sm:p-6 overflow-y-auto h-full pb-safe-area-inset-bottom">
