@@ -51,16 +51,6 @@ export default function WorkspacePage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {renderWorkspace()}
         
-        {/* Workspace Collaboration */}
-        <div className="mt-8">
-          <WorkspaceCollaboration
-            workspaceType={type as any}
-            entityId={id}
-            showWidget={true}
-            showPresence={true}
-            showActivity={true}
-          />
-        </div>
       </div>
     </CollaborationProvider>
   );
