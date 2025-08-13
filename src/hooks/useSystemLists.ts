@@ -160,10 +160,10 @@ export const useSystemLists = (): SystemListsHook => {
   });
 
   useEffect(() => {
+    let isMounted = true; // Prevent state updates if component unmounts
+    
     const loadSystemLists = async () => {
       try {
-        // Loading lists using translation keys (debug removed to prevent re-renders)
-        
         // Use key-based translation system for core lists that have mappings
         const keyBasedSettings = {
           // Core challenge/opportunity/status lists from VALUE_KEY_MAPPINGS
@@ -432,16 +432,22 @@ export const useSystemLists = (): SystemListsHook => {
           });
         }
           
-        // Lists loaded successfully (debug removed to prevent re-renders)
-        
-        setSettings({ ...newSettings, loading: false });
+        if (isMounted) {
+          setSettings({ ...newSettings, loading: false });
+        }
       } catch (error) {
         logger.error('Failed to load system lists', { component: 'useSystemLists', action: 'loadSystemLists' }, error as Error);
-        setSettings(prev => ({ ...prev, loading: false }));
+        if (isMounted) {
+          setSettings(prev => ({ ...prev, loading: false }));
+        }
       }
     };
 
     loadSystemLists();
+    
+    return () => {
+      isMounted = false; // Cleanup
+    };
   }, []);
 
   return settings;

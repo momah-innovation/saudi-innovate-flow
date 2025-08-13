@@ -77,7 +77,7 @@ interface Goal {
   type: 'ideas' | 'challenges' | 'events';
 }
 
-export default function UserDashboard() {
+export default React.memo(function UserDashboard() {
   const { userProfile } = useAuth();
   const { permissions, getPrimaryRole: getRoleFromHook, canAccess } = useRoleAccess();
   const { t, language } = useUnifiedTranslation();
@@ -133,26 +133,12 @@ export default function UserDashboard() {
   }, [userProfile, getPrimaryRole]);
 
   useEffect(() => {
-    if (userProfile?.id) {
+    if (userProfile?.id && !loading) {
       loadDashboardData();
       
-      // Set up real-time updates
-      const channel = supabase
-        .channel('user-dashboard-updates')
-        .on('postgres_changes', {
-          event: '*',
-          schema: 'public',
-          table: 'ideas'
-        }, () => {
-        loadDashboardData();
-        })
-        .subscribe();
-
-      return () => {
-        supabase.removeChannel(channel);
-      };
+      // Set up real-time updates (removed to prevent multiple renders)
     }
-  }, [userProfile?.id, loadDashboardData]);
+  }, [userProfile?.id]);
 
   const loadUserStats = async () => {
     if (!userProfile?.id) return;
@@ -349,25 +335,30 @@ export default function UserDashboard() {
         
         <div className="container mx-auto px-6 py-8 space-y-6">
         {/* Role-specific Dashboard Content */}
-        {(primaryRole === 'admin' || primaryRole === 'super_admin') && (
-          <AdminDashboard 
-            userProfile={userProfile ? {
-              id: userProfile.id,
-              name: userProfile.name || '',
-              position: userProfile.position,
-              organization: userProfile.organization,
-              profile_completion_percentage: userProfile.profile_completion_percentage,
-              user_roles: userProfile.user_roles
-            } : {
-              id: '',
-              name: '',
-              profile_completion_percentage: 0
-            }}
-            canManageUsers={permissions.canManageUsers}
-            canManageSystem={permissions.canManageSystem}
-            canViewAnalytics={permissions.canViewAnalytics}
-          />
-        )}
+        {useMemo(() => {
+          if (primaryRole === 'admin' || primaryRole === 'super_admin') {
+            return (
+              <AdminDashboard 
+                userProfile={userProfile ? {
+                  id: userProfile.id,
+                  name: userProfile.name || '',
+                  position: userProfile.position,
+                  organization: userProfile.organization,
+                  profile_completion_percentage: userProfile.profile_completion_percentage,
+                  user_roles: userProfile.user_roles
+                } : {
+                  id: '',
+                  name: '',
+                  profile_completion_percentage: 0
+                }}
+                canManageUsers={permissions.canManageUsers}
+                canManageSystem={permissions.canManageSystem}
+                canViewAnalytics={permissions.canViewAnalytics}
+              />
+            );
+          }
+          return null;
+        }, [primaryRole, userProfile, permissions])}
         
         {primaryRole === 'expert' && (
           <ExpertDashboard 
@@ -769,4 +760,4 @@ export default function UserDashboard() {
       </div>
     </CollaborationProvider>
   );
-}
+});
