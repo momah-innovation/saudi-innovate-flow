@@ -233,7 +233,7 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
               {/* Main Content Area */}
               <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 {/* Global Header */}
-                <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
+                <SystemHeader onSidebarToggle={() => setSidebarOpen(prev => !prev)} />
                 
                 {/* Page Content with Loading */}
                 <main className="flex-1 overflow-auto overscroll-behavior-contain">

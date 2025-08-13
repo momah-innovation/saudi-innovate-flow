@@ -27,114 +27,104 @@ interface NavigationSidebarProps {
 export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
   const location = useLocation();
   const { isRTL, t } = useUnifiedTranslation();
-  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['main']));
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => new Set(['main'])); // Optimize initialization
 
-  // Core menu items matching actual UnifiedRouter routes
-  const menuItems = useMemo(() => [
-    // Main navigation - authenticated routes
-    { 
-      id: 'dashboard', 
-      label: t('nav.dashboard', 'Dashboard'), 
-      arabicLabel: 'لوحة التحكم',
-      icon: Home, 
-      path: '/dashboard', // ✓ Matches AUTHENTICATED_ROUTES.DASHBOARD
-      group: 'main',
-      roles: ['all'] 
-    },
-    
-    // Public routes accessible to all
-    { 
-      id: 'challenges', 
-      label: t('nav.challenges', 'Challenges'), 
-      arabicLabel: 'التحديات',
-      icon: Target, 
-      path: '/challenges', // ✓ Matches PUBLIC_ROUTES.CHALLENGES
-      group: 'main',
-      roles: ['all'] 
-    },
-    { 
-      id: 'events', 
-      label: t('nav.events', 'Events'), 
-      arabicLabel: 'الفعاليات',
-      icon: Calendar, 
-      path: '/events', // ✓ Matches PUBLIC_ROUTES.EVENTS  
-      group: 'main',
-      roles: ['all'] 
-    },
-    
-    // Authenticated routes
-    { 
-      id: 'ideas', 
-      label: t('nav.ideas', 'Ideas'), 
-      arabicLabel: 'الأفكار',
-      icon: Lightbulb, 
-      path: '/ideas', // ✓ Matches AUTHENTICATED_ROUTES.IDEAS
-      group: 'main',
-      roles: ['all'] 
-    },
-    { 
-      id: 'opportunities', 
-      label: t('nav.opportunities', 'Opportunities'), 
-      arabicLabel: 'الفرص',
-      icon: Briefcase, 
-      path: '/opportunities', // ✓ Matches AUTHENTICATED_ROUTES.OPPORTUNITIES
-      group: 'main',
-      roles: ['all'] 
-    },
+  // Static menu items - optimized for performance
+  const menuItems = useMemo(() => {
+    // Only compute when translation function changes, not on every render
+    return [
+      // Main navigation - authenticated routes  
+      { 
+        id: 'dashboard', 
+        label: t('nav.dashboard', 'Dashboard'), 
+        arabicLabel: 'لوحة التحكم',
+        icon: Home, 
+        path: '/dashboard',
+        group: 'main',
+        roles: ['all'] 
+      },
+      { 
+        id: 'challenges', 
+        label: t('nav.challenges', 'Challenges'), 
+        arabicLabel: 'التحديات',
+        icon: Target, 
+        path: '/challenges',
+        group: 'main',
+        roles: ['all'] 
+      },
+      { 
+        id: 'events', 
+        label: t('nav.events', 'Events'), 
+        arabicLabel: 'الفعاليات',
+        icon: Calendar, 
+        path: '/events',
+        group: 'main',
+        roles: ['all'] 
+      },
+      { 
+        id: 'ideas', 
+        label: t('nav.ideas', 'Ideas'), 
+        arabicLabel: 'الأفكار',
+        icon: Lightbulb, 
+        path: '/ideas',
+        group: 'main',
+        roles: ['all'] 
+      },
+      { 
+        id: 'opportunities', 
+        label: t('nav.opportunities', 'Opportunities'), 
+        arabicLabel: 'الفرص',
+        icon: Briefcase, 
+        path: '/opportunities',
+        group: 'main',
+        roles: ['all'] 
+      },
+      { 
+        id: 'collaboration', 
+        label: t('nav.collaboration', 'Collaboration'), 
+        arabicLabel: 'التعاون',
+        icon: Users, 
+        path: '/collaboration',
+        group: 'workspace',
+        roles: ['all'] 
+      },
+      { 
+        id: 'admin-dashboard', 
+        label: t('nav.admin_dashboard', 'Admin Dashboard'), 
+        arabicLabel: 'لوحة التحكم الإدارية',
+        icon: Shield, 
+        path: '/admin/dashboard',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'settings', 
+        label: t('nav.settings', 'Settings'), 
+        arabicLabel: 'الإعدادات',
+        icon: Settings, 
+        path: '/settings',
+        group: 'settings',
+        roles: ['all'] 
+      }
+    ];
+  }, [t]); // Only depend on translation function
 
-    // Workspace
-    { 
-      id: 'collaboration', 
-      label: t('nav.collaboration', 'Collaboration'), 
-      arabicLabel: 'التعاون',
-      icon: Users, 
-      path: '/collaboration', // ✓ Matches PUBLIC_ROUTES.COLLABORATION
-      group: 'workspace',
-      roles: ['all'] 
-    },
-
-    // Admin routes
-    { 
-      id: 'admin-dashboard', 
-      label: t('nav.admin_dashboard', 'Admin Dashboard'), 
-      arabicLabel: 'لوحة التحكم الإدارية',
-      icon: Shield, 
-      path: '/admin/dashboard', // ✓ Matches ADMIN_ROUTES.ADMIN_DASHBOARD
-      group: 'admin',
-      roles: ['admin'] 
-    },
-    
-    // Settings
-    { 
-      id: 'settings', 
-      label: t('nav.settings', 'Settings'), 
-      arabicLabel: 'الإعدادات',
-      icon: Settings, 
-      path: '/settings', // ✓ Matches AUTHENTICATED_ROUTES.SETTINGS
-      group: 'settings',
-      roles: ['all'] 
-    }
-  ], [t]);
-
-  // Group labels for better organization
-  const groupLabels = useMemo(() => ({
+  // Static group labels - no need to recompute
+  const groupLabels = {
     main: { en: 'Explore', ar: 'استكشف' },
     workspace: { en: 'Workspace', ar: 'مساحة العمل' },
     admin: { en: 'Administration', ar: 'الإدارة' },
     settings: { en: 'Settings', ar: 'الإعدادات' }
-  }), []);
+  };
 
-  // Group menu items efficiently
+  // Pre-grouped items for performance
   const groupedItems = useMemo(() => {
-    const groups: GroupedMenuItems = {};
-    
-    menuItems.forEach(item => {
-      if (!groups[item.group]) {
-        groups[item.group] = [];
-      }
-      groups[item.group].push(item);
-    });
-    
+    const groups: GroupedMenuItems = {
+      main: menuItems.filter(item => item.group === 'main'),
+      workspace: menuItems.filter(item => item.group === 'workspace'),
+      admin: menuItems.filter(item => item.group === 'admin'),
+      settings: menuItems.filter(item => item.group === 'settings')
+    };
     return groups;
   }, [menuItems]);
 
@@ -156,12 +146,12 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
         <li key={item.id} className="mb-1">
           <NavLink 
             to={item.path}
-            onClick={() => onOpenChange(false)} // Close overlay on navigation
+            onClick={() => onOpenChange(false)}
             className={({ isActive }) => cn(
-              "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors w-full",
+              "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors w-full duration-150", // Faster transition
               isActive 
-                ? "bg-primary text-primary-foreground" 
-                : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                ? "bg-primary text-primary-foreground shadow-sm" 
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
               isRTL && "flex-row-reverse text-right"
             )}
           >
@@ -230,7 +220,8 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent 
         side={isRTL ? "right" : "left"}
-        className={cn("w-80 p-0", isRTL && "text-right")}
+        className={cn("w-80 p-0 border-0", isRTL && "text-right")}
+        style={{ transition: 'transform 0.15s ease-out' }} // Faster transition
       >
         <SheetHeader className="p-4 sm:p-6 border-b">
           <SheetTitle className={cn("text-left text-sm sm:text-base", isRTL && "text-right")}>

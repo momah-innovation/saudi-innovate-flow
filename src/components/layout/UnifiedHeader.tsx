@@ -145,11 +145,11 @@ export function UnifiedHeader({
           isRTL && "flex-row-reverse"
         )}>
           {onSidebarToggle && (
-            <Button
-              variant="ghost"
+            <Button 
+              variant="ghost" 
               size="sm"
               onClick={onSidebarToggle}
-              className="shrink-0 hover:bg-accent hover:text-accent-foreground transition-colors h-8 w-8 sm:h-auto sm:w-auto"
+              className="shrink-0 hover:bg-accent hover:text-accent-foreground transition-colors duration-150 h-8 w-8 sm:h-auto sm:w-auto"
               aria-label={t('header.open_navigation', 'Open Navigation')}
             >
               <Menu className="h-4 w-4" />
