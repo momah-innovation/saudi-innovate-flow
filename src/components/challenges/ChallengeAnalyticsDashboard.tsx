@@ -19,6 +19,7 @@ import {
   Activity
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { RTLAware, useRTLAwareClasses } from '@/components/ui/rtl-aware';
 import { supabase } from '@/integrations/supabase/client';
 import { getStatusMapping, getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -45,6 +46,8 @@ export const ChallengeAnalyticsDashboard = ({
   className = "" 
 }: ChallengeAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
+  const { flexRow } = useRTLAwareClasses();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
@@ -218,13 +221,13 @@ export const ChallengeAnalyticsDashboard = ({
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">
-            {isRTL ? 'نظرة عامة' : 'Overview'}
+            {t('challenge_analytics.overview', 'نظرة عامة')}
           </TabsTrigger>
           <TabsTrigger value="participation">
-            {isRTL ? 'المشاركة' : 'Participation'}
+            {t('challenge_analytics.participation', 'المشاركة')}
           </TabsTrigger>
           <TabsTrigger value="performance">
-            {isRTL ? 'الأداء' : 'Performance'}
+            {t('challenge_analytics.performance', 'الأداء')}
           </TabsTrigger>
         </TabsList>
 
@@ -232,29 +235,29 @@ export const ChallengeAnalyticsDashboard = ({
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard
-              title={isRTL ? 'إجمالي التحديات' : 'Total Challenges'}
+              title={t('challenge_analytics.total_challenges', 'إجمالي التحديات')}
               value={analytics.totalChallenges}
               change="+12%"
               icon={Target}
               color="blue"
             />
             <MetricCard
-              title={isRTL ? 'التحديات النشطة' : 'Active Challenges'}
+              title={t('challenge_analytics.active_challenges', 'التحديات النشطة')}
               value={analytics.activeChallenges}
               change="+8%"
               icon={Zap}
               color="green"
             />
             <MetricCard
-              title={isRTL ? 'إجمالي المشاركين' : 'Total Participants'}
+              title={t('challenge_analytics.total_participants', 'إجمالي المشاركين')}
               value={`${Math.floor(analytics.totalParticipants / 1000)}K+`}
               change="+23%"
               icon={Users}
               color="purple"
             />
             <MetricCard
-              title={isRTL ? 'إجمالي الجوائز' : 'Total Prizes'}
-              value={`${Math.floor(analytics.totalPrizes / 1000000)}M+ ${isRTL ? 'ر.س' : 'SAR'}`}
+              title={t('challenge_analytics.total_prizes', 'إجمالي الجوائز')}
+              value={`${Math.floor(analytics.totalPrizes / 1000000)}M+ ${t('common.currency', 'ر.س')}`}
               change="+15%"
               icon={Trophy}
               color="yellow"
@@ -264,9 +267,9 @@ export const ChallengeAnalyticsDashboard = ({
           {/* Category Breakdown */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={`flex items-center gap-2 ${flexRow}`}>
                 <PieChart className="w-5 h-5" />
-                {isRTL ? 'التوزيع حسب الفئة' : 'Category Breakdown'}
+                {t('challenge_analytics.category_breakdown', 'التوزيع حسب الفئة')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -289,21 +292,21 @@ export const ChallengeAnalyticsDashboard = ({
           {/* Participation Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <MetricCard
-              title={isRTL ? 'متوسط المشاركة' : 'Avg Participation'}
+              title={t('challenge_analytics.avg_participation', 'متوسط المشاركة')}
               value={analytics.averageParticipation}
               change="+5%"
               icon={Users}
               color="blue"
             />
             <MetricCard
-              title={isRTL ? 'التحديات الرائجة' : 'Trending Challenges'}
+              title={t('challenge_analytics.trending_challenges', 'التحديات الرائجة')}
               value={analytics.trendingChallenges}
               change="+18%"
               icon={TrendingUp}
               color="orange"
             />
             <MetricCard
-              title={isRTL ? 'التحديات المكتملة' : 'Completed'}
+              title={t('challenge_analytics.completed_challenges', 'التحديات المكتملة')}
               value={analytics.completedChallenges}
               change="+7%"
               icon={Award}
@@ -314,9 +317,9 @@ export const ChallengeAnalyticsDashboard = ({
           {/* Top Challenges */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={`flex items-center gap-2 ${flexRow}`}>
                 <BarChart3 className="w-5 h-5" />
-                {isRTL ? 'أكثر التحديات مشاركة' : 'Top Challenges by Participation'}
+                {t('challenge_analytics.top_challenges', 'أكثر التحديات مشاركة')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -333,11 +336,11 @@ export const ChallengeAnalyticsDashboard = ({
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Users className="w-3 h-3" />
-                          {challenge.participants} {isRTL ? 'مشارك' : 'participants'}
+                          {challenge.participants} {t('challenge_analytics.participants', 'مشارك')}
                         </span>
                         <span className="flex items-center gap-1">
                           <Trophy className="w-3 h-3" />
-                          {Math.floor(challenge.prize / 1000)}K {isRTL ? 'ر.س' : 'SAR'}
+                          {Math.floor(challenge.prize / 1000)}K {t('common.currency', 'ر.س')}
                         </span>
                       </div>
                     </div>
@@ -357,9 +360,9 @@ export const ChallengeAnalyticsDashboard = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className={`flex items-center gap-2 ${flexRow}`}>
                   <Activity className="w-5 h-5" />
-                  {isRTL ? 'اتجاه المشاركة' : 'Participation Trend'}
+                  {t('challenge_analytics.participation_trend', 'اتجاه المشاركة')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -369,10 +372,10 @@ export const ChallengeAnalyticsDashboard = ({
                       <div className="text-sm font-medium">{period.period}</div>
                       <div className="flex items-center gap-4">
                         <span className="text-sm text-muted-foreground">
-                          {period.participants} {isRTL ? 'مشارك' : 'participants'}
+                          {period.participants} {t('challenge_analytics.participants', 'مشارك')}
                         </span>
                         <span className="text-sm text-muted-foreground">
-                          {period.challenges} {isRTL ? 'تحدي' : 'challenges'}
+                          {period.challenges} {t('challenge_analytics.challenges', 'تحدي')}
                         </span>
                       </div>
                     </div>
@@ -383,27 +386,27 @@ export const ChallengeAnalyticsDashboard = ({
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className={`flex items-center gap-2 ${flexRow}`}>
                   <Calendar className="w-5 h-5" />
-                  {isRTL ? 'إحصائيات سريعة' : 'Quick Stats'}
+                  {t('challenge_analytics.quick_stats', 'إحصائيات سريعة')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">{isRTL ? 'معدل النجاح' : 'Success Rate'}</span>
+                    <span className="text-sm">{t('challenge_analytics.success_rate', 'معدل النجاح')}</span>
                     <Badge variant="secondary">87%</Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">{isRTL ? 'متوسط مدة التحدي' : 'Avg Challenge Duration'}</span>
-                    <Badge variant="secondary">{isRTL ? '45 يوم' : '45 days'}</Badge>
+                    <span className="text-sm">{t('challenge_analytics.avg_duration', 'متوسط مدة التحدي')}</span>
+                    <Badge variant="secondary">{t('challenge_analytics.duration_days', '45 يوم')}</Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">{isRTL ? 'معدل الإكمال' : 'Completion Rate'}</span>
+                    <span className="text-sm">{t('challenge_analytics.completion_rate', 'معدل الإكمال')}</span>
                     <Badge variant="secondary">72%</Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">{isRTL ? 'رضا المشاركين' : 'Participant Satisfaction'}</span>
+                    <span className="text-sm">{t('challenge_analytics.satisfaction', 'رضا المشاركين')}</span>
                     <Badge variant="secondary">4.6/5</Badge>
                   </div>
                 </div>

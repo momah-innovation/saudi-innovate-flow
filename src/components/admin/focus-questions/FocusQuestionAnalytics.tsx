@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useDirection } from '@/components/ui/direction-provider';
+import { RTLAware, useRTLAwareClasses } from '@/components/ui/rtl-aware';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -55,6 +57,8 @@ export function FocusQuestionAnalytics() {
   const { toast } = useToast();
   const { timeRangeOptions } = useSystemLists();
   const { t } = useUnifiedTranslation();
+  const { isRTL } = useDirection();
+  const { flexRow } = useRTLAwareClasses();
 
   useEffect(() => {
     fetchAnalytics();
@@ -202,8 +206,8 @@ export function FocusQuestionAnalytics() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">تحليلات الأسئلة المحورية</h2>
-          <p className="text-muted-foreground">نظرة شاملة على أداء الأسئلة المحورية والتفاعل معها</p>
+          <h2 className="text-2xl font-bold">{t('focus_question_analytics.title', 'تحليلات الأسئلة المحورية')}</h2>
+          <p className="text-muted-foreground">{t('focus_question_analytics.description', 'نظرة شاملة على أداء الأسئلة المحورية والتفاعل معها')}</p>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger className="w-48">
@@ -223,9 +227,9 @@ export function FocusQuestionAnalytics() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
+            <div className={`flex items-center ${flexRow}`}>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">إجمالي الأسئلة</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('focus_question_analytics.total_questions', 'إجمالي الأسئلة')}</p>
                 <p className="text-3xl font-bold">{analytics.overview.totalQuestions}</p>
               </div>
               <HelpCircle className="w-8 h-8 text-primary" />
@@ -235,9 +239,9 @@ export function FocusQuestionAnalytics() {
 
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
+            <div className={`flex items-center ${flexRow}`}>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">الأسئلة النشطة</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('focus_question_analytics.active_questions', 'الأسئلة النشطة')}</p>
                 <p className="text-3xl font-bold hero-stats-challenges">{analytics.overview.activeQuestions}</p>
               </div>
               <CheckCircle className="w-8 h-8 icon-success" />
@@ -247,9 +251,9 @@ export function FocusQuestionAnalytics() {
 
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
+            <div className={`flex items-center ${flexRow}`}>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">إجمالي الأفكار</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('focus_question_analytics.total_ideas', 'إجمالي الأفكار')}</p>
                 <p className="text-3xl font-bold hero-stats-ideas">{analytics.overview.totalIdeas}</p>
               </div>
               <Users className="w-8 h-8 icon-info" />
@@ -259,9 +263,9 @@ export function FocusQuestionAnalytics() {
 
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
+            <div className={`flex items-center ${flexRow}`}>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">الفعاليات المرتبطة</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('focus_question_analytics.total_events', 'الفعاليات المرتبطة')}</p>
                 <p className="text-3xl font-bold hero-stats-users">{analytics.overview.totalEvents}</p>
               </div>
               <Calendar className="w-8 h-8 icon-info" />
