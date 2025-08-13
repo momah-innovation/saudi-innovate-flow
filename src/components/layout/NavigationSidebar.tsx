@@ -4,9 +4,6 @@ import {
   Settings, Shield, ChevronDown, ChevronRight
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { 
-  Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription
-} from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
@@ -229,37 +226,42 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
   const groupOrder = ['main', 'workspace', 'admin', 'settings'];
 
   return (
-    <Sheet 
-      open={open} 
-      onOpenChange={(newOpen) => {
-        console.log('Sheet onOpenChange triggered', { from: open, to: newOpen });
-        onOpenChange(newOpen);
-      }}
-    >
-      <SheetContent
-        side={isRTL ? "right" : "left"}
-        className={cn("w-80 p-0 border-0 z-50", isRTL && "text-right")}
-        style={{ 
-          transition: 'transform 0.15s ease-out',
-          position: 'fixed',
-          zIndex: 50
-        }}
-        onAnimationStart={() => {
-          console.log('Sheet animation started');
-        }}
-        onAnimationEnd={() => {
-          console.log('Sheet animation ended');
+    <>
+      {/* Overlay */}
+      {open && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 transition-opacity"
+          onClick={() => {
+            console.log('Overlay clicked, closing sidebar');
+            onOpenChange(false);
+          }}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div 
+        className={cn(
+          "fixed top-0 h-full w-80 bg-background border-r shadow-lg z-50 transition-transform duration-300 ease-out",
+          isRTL ? "right-0" : "left-0",
+          open ? "translate-x-0" : (isRTL ? "translate-x-full" : "-translate-x-full"),
+          isRTL && "text-right"
+        )}
+        style={{
+          transform: open 
+            ? 'translateX(0)' 
+            : isRTL 
+              ? 'translateX(100%)' 
+              : 'translateX(-100%)'
         }}
       >
-        <SheetHeader className="p-4 sm:p-6 border-b">
-          <SheetTitle className={cn("text-left text-sm sm:text-base", isRTL && "text-right")}>
+        {/* Header */}
+        <div className="p-4 sm:p-6 border-b">
+          <h2 className={cn("text-left text-sm sm:text-base font-semibold", isRTL && "text-right")}>
             {t('nav.navigation_menu', 'Navigation Menu')}
-          </SheetTitle>
-          <SheetDescription className="sr-only">
-            Navigation menu for the innovation system
-          </SheetDescription>
-        </SheetHeader>
+          </h2>
+        </div>
         
+        {/* Content */}
         <div className="p-4 sm:p-6 overflow-y-auto h-full pb-safe-area-inset-bottom">
           {/* Render groups in priority order */}
           {groupOrder.map(groupKey => {
@@ -274,8 +276,8 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
             return renderGroup(groupKey, items);
           })}
         </div>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </>
   );
 });
 
