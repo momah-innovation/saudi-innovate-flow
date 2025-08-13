@@ -130,8 +130,20 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   const systemSettings = useSystemSettings();
   const location = useLocation();
   
-  // Local state
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Local state with debug logging
+  const [sidebarOpen, setSidebarOpenInternal] = useState(false);
+  
+  const setSidebarOpen = (open: boolean | ((prev: boolean) => boolean)) => {
+    const newValue = typeof open === 'function' ? open(sidebarOpen) : open;
+    console.log('🔄 SIDEBAR DEBUG: State change requested', {
+      timestamp: Date.now(),
+      from: sidebarOpen,
+      to: newValue,
+      isFunction: typeof open === 'function',
+      stackTrace: new Error().stack?.split('\n').slice(1, 4)
+    });
+    setSidebarOpenInternal(newValue);
+  };
   
   // Determine if collaboration should be enabled based on route
   const shouldEnableCollaboration = enableCollaboration !== false && (
@@ -233,7 +245,32 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
               {/* Main Content Area */}
               <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 {/* Global Header */}
-                <SystemHeader onSidebarToggle={() => setSidebarOpen(prev => !prev)} />
+                <SystemHeader onSidebarToggle={() => {
+                  console.log('🔀 SIDEBAR DEBUG: Toggle function called from header', {
+                    timestamp: Date.now(),
+                    currentSidebarState: sidebarOpen
+                  });
+                  setSidebarOpen(prev => {
+                    const newState = !prev;
+                    console.log('🔄 SIDEBAR DEBUG: Toggle executed', {
+                      timestamp: Date.now(),
+                      prev,
+                      newState
+                    });
+                    performance.mark('sidebar-toggle-end');
+                    try {
+                      performance.measure('sidebar-toggle-duration', 'sidebar-toggle-start', 'sidebar-toggle-end');
+                      const measure = performance.getEntriesByName('sidebar-toggle-duration')[0];
+                      console.log('⏱️ SIDEBAR DEBUG: Toggle performance', {
+                        duration: measure.duration,
+                        startTime: measure.startTime
+                      });
+                    } catch (e) {
+                      console.log('⚠️ SIDEBAR DEBUG: Performance measurement failed', e);
+                    }
+                    return newState;
+                  });
+                }} />
                 
                 {/* Page Content with Loading */}
                 <main className="flex-1 overflow-auto overscroll-behavior-contain">

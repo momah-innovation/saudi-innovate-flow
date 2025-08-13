@@ -148,7 +148,15 @@ export function UnifiedHeader({
             <Button 
               variant="ghost" 
               size="sm"
-              onClick={onSidebarToggle}
+              onClick={() => {
+                console.log('🍔 SIDEBAR DEBUG: Hamburger button clicked', {
+                  timestamp: Date.now(),
+                  currentTime: new Date().toISOString(),
+                  onSidebarToggle: !!onSidebarToggle
+                });
+                performance.mark('sidebar-toggle-start');
+                onSidebarToggle?.();
+              }}
               className="shrink-0 hover:bg-accent hover:text-accent-foreground transition-colors duration-150 h-8 w-8 sm:h-auto sm:w-auto"
               aria-label={t('header.open_navigation', 'Open Navigation')}
             >

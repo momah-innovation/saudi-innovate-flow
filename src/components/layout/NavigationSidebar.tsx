@@ -1,4 +1,4 @@
-import React, { useMemo, memo, useState } from 'react';
+import React, { useMemo, memo, useState, useLayoutEffect } from 'react';
 import { 
   Home, Calendar, Users, Lightbulb, Briefcase, Target, 
   Settings, Shield, ChevronDown, ChevronRight
@@ -25,6 +25,30 @@ interface NavigationSidebarProps {
 }
 
 export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
+  console.log('🎯 SIDEBAR DEBUG: NavigationSidebar render', {
+    timestamp: Date.now(),
+    open,
+    rerenderReason: 'Component re-rendered'
+  });
+  
+  React.useEffect(() => {
+    console.log('📱 SIDEBAR DEBUG: Open state changed', {
+      timestamp: Date.now(),
+      open,
+      visibility: open ? 'OPENING' : 'CLOSING'
+    });
+    performance.mark(`sidebar-${open ? 'open' : 'close'}-effect`);
+  }, [open]);
+  
+  useLayoutEffect(() => {
+    console.log('🎯 SIDEBAR DEBUG: Layout effect - DOM measurements', {
+      timestamp: Date.now(),
+      open,
+      windowWidth: window.innerWidth,
+      scrollPosition: window.scrollY
+    });
+  }, [open]);
+  
   const location = useLocation();
   const { isRTL, t } = useUnifiedTranslation();
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => new Set(['main'])); // Optimize initialization
@@ -146,7 +170,15 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
         <li key={item.id} className="mb-1">
           <NavLink 
             to={item.path}
-            onClick={() => onOpenChange(false)}
+            onClick={() => {
+              console.log('🔗 SIDEBAR DEBUG: Navigation item clicked', {
+                timestamp: Date.now(),
+                item: item.id,
+                path: item.path,
+                action: 'Closing sidebar'
+              });
+              onOpenChange(false);
+            }}
             className={({ isActive }) => cn(
               "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors w-full duration-150", // Faster transition
               isActive 
@@ -217,11 +249,45 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
   const groupOrder = ['main', 'workspace', 'admin', 'settings'];
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent 
+    <Sheet 
+      open={open} 
+      onOpenChange={(newOpen) => {
+        console.log('📋 SIDEBAR DEBUG: Sheet onOpenChange triggered', {
+          timestamp: Date.now(),
+          newOpen,
+          trigger: 'Sheet component'
+        });
+        onOpenChange(newOpen);
+      }}
+    >
+      <SheetContent
         side={isRTL ? "right" : "left"}
         className={cn("w-80 p-0 border-0", isRTL && "text-right")}
         style={{ transition: 'transform 0.15s ease-out' }} // Faster transition
+        onAnimationStart={() => {
+          console.log('🎬 SIDEBAR DEBUG: Animation started', {
+            timestamp: Date.now(),
+            phase: 'opening'
+          });
+          performance.mark('sidebar-animation-start');
+        }}
+        onAnimationEnd={() => {
+          console.log('🎬 SIDEBAR DEBUG: Animation ended', {
+            timestamp: Date.now(),
+            phase: 'opened'
+          });
+          performance.mark('sidebar-animation-end');
+          try {
+            performance.measure('sidebar-animation-duration', 'sidebar-animation-start', 'sidebar-animation-end');
+            const measure = performance.getEntriesByName('sidebar-animation-duration')[0];
+            console.log('⏱️ SIDEBAR DEBUG: Animation performance', {
+              duration: measure.duration,
+              startTime: measure.startTime
+            });
+          } catch (e) {
+            console.log('⚠️ SIDEBAR DEBUG: Animation measurement failed', e);
+          }
+        }}
       >
         <SheetHeader className="p-4 sm:p-6 border-b">
           <SheetTitle className={cn("text-left text-sm sm:text-base", isRTL && "text-right")}>
