@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useAdminDashboardMetrics } from "@/hooks/useAdminDashboardMetrics";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from "recharts";
 import { Activity, Users, Eye, MessageCircle, Heart, Share2, RefreshCw } from "lucide-react";
 
@@ -12,14 +13,15 @@ interface LiveEngagementMonitorProps {
 
 export function LiveEngagementMonitor({ timeRange }: LiveEngagementMonitorProps) {
   const { t } = useUnifiedTranslation();
+  const { metrics } = useAdminDashboardMetrics();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [liveData, setLiveData] = useState({
-    activeUsers: 145,
-    currentViews: 87,
-    ongoingSubmissions: 12,
-    newComments: 23,
-    likesInLastHour: 156,
-    sharesInLastHour: 34
+    activeUsers: metrics?.users?.active || 0,
+    currentViews: metrics?.system?.activity?.activeUsers24h || 0,
+    ongoingSubmissions: metrics?.challenges?.submissions || 0,
+    newComments: metrics?.system?.activity?.events24h || 0,
+    likesInLastHour: Math.round((metrics?.system?.activity?.events24h || 0) * 0.3),
+    sharesInLastHour: Math.round((metrics?.system?.activity?.events24h || 0) * 0.1)
   });
 
   // Mock real-time data

@@ -89,7 +89,7 @@ export function AdminDashboardHero({
             {t('active_policies_count', { count: activePolicies })}
           </p>
           <div className="mt-2">
-            <Progress value={25} className="h-2" />
+            <Progress value={Math.min((storageUsed / 100) * 100, 100)} className="h-2" />
           </div>
         </CardContent>
       </Card>

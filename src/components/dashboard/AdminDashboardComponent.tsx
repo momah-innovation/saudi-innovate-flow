@@ -654,7 +654,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+24% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
                 </div>
               </CardContent>
             </Card>
@@ -668,11 +668,11 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {adminMetrics.metrics?.challenges?.active || '45'}
+                  {adminMetrics.metrics?.challenges?.active || 0}
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+18% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 0} {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
                 </div>
               </CardContent>
             </Card>

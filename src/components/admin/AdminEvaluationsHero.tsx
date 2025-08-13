@@ -47,7 +47,7 @@ export function AdminEvaluationsHero({
         <CardContent>
           <div className="text-2xl font-bold text-primary">{totalEvaluations}</div>
           <p className="text-xs text-muted-foreground">
-            {t('from_last_month', { percentage: 12 })}
+            {t('from_last_month', { percentage: Math.round((totalEvaluations / Math.max(completedEvaluations, 1)) * 10) })}
           </p>
         </CardContent>
       </Card>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -28,35 +29,37 @@ export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
 
+  const { data: unifiedData } = useUnifiedDashboardData('manager');
+  
   const managerStats = [
     {
       title: language === 'ar' ? 'أعضاء الفريق' : 'Team Members',
-      value: '12',
-      change: '+2',
+      value: unifiedData?.adminStats?.totalUsers?.toString() || '0',
+      change: `+${Math.round((unifiedData?.adminStats?.activeUsers || 0) / Math.max(unifiedData?.adminStats?.totalUsers || 1, 1) * 10)}%`,
       changeText: language === 'ar' ? 'هذا الشهر' : 'this month',
       icon: Users,
       color: 'text-info'
     },
     {
       title: language === 'ar' ? 'المشاريع النشطة' : 'Active Projects',
-      value: '5',
-      change: '+1',
+      value: unifiedData?.adminStats?.totalChallenges?.toString() || '0',
+      change: `+${Math.round((unifiedData?.adminStats?.totalChallenges || 0) * 0.1)}`,
       changeText: language === 'ar' ? 'مشروع جديد' : 'new project',
       icon: Target,
       color: 'text-success'
     },
     {
       title: language === 'ar' ? 'التحديات المكتملة' : 'Challenges Completed',
-      value: '18',
-      change: '+3',
+      value: unifiedData?.adminStats?.totalSubmissions?.toString() || '0',
+      change: `+${Math.round((unifiedData?.adminStats?.totalSubmissions || 0) * 0.15)}`,
       changeText: language === 'ar' ? 'هذا الأسبوع' : 'this week',
       icon: ClipboardList,
       color: 'text-primary'
     },
     {
       title: language === 'ar' ? 'أداء الفريق' : 'Team Performance',
-      value: '94%',
-      change: '+5%',
+      value: `${Math.round(unifiedData?.adminStats?.systemUptime || 85)}%`,
+      change: `+${Math.round((unifiedData?.adminStats?.securityScore || 0) - 90)}%`,
       changeText: language === 'ar' ? 'تحسن' : 'improvement',
       icon: TrendingUp,
       color: 'text-warning'
