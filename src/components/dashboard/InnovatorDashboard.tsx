@@ -95,54 +95,8 @@ export const InnovatorDashboard = () => {
       setChallenges(transformedChallenges);
     } catch (error) {
       logger.error('Error in fetchChallenges', { component: 'InnovatorDashboard', action: 'fetchChallenges' }, error as Error);
-      // Show some sample challenges for demo purposes
-      setChallenges([
-        {
-          id: '1',
-          title: 'Digital Government Services Enhancement',
-          title_ar: 'تطوير الخدمات الحكومية الرقمية',
-          description: 'Develop innovative solutions to improve citizen digital services experience and accessibility.',
-          description_ar: 'تطوير حلول مبتكرة لتحسين تجربة المواطنين مع الخدمات الرقمية وإمكانية الوصول إليها.',
-          status: 'published',
-          priority_level: 'high',
-          sensitivity_level: 'normal',
-          challenge_type: 'technology',
-          start_date: '2025-01-01',
-          end_date: '2025-03-31',
-          estimated_budget: 500000,
-          created_at: '2025-01-20T00:00:00.000Z'
-        },
-        {
-          id: '2',
-          title: 'Sustainable Smart Cities Initiative',
-          title_ar: 'مبادرة المدن الذكية المستدامة',
-          description: 'Create solutions for sustainable urban development using IoT and smart technologies.',
-          description_ar: 'إنشاء حلول للتنمية الحضرية المستدامة باستخدام إنترنت الأشياء والتقنيات الذكية.',
-          status: 'published',
-          priority_level: 'medium',
-          sensitivity_level: 'normal',
-          challenge_type: 'sustainability',
-          start_date: '2025-02-01',
-          end_date: '2025-05-31',
-          estimated_budget: 750000,
-          created_at: '2025-01-15T00:00:00.000Z'
-        },
-        {
-          id: '3',
-          title: 'Healthcare Innovation Platform',
-          title_ar: 'منصة الابتكار في الرعاية الصحية',
-          description: 'Develop innovative healthcare solutions to improve patient care and medical efficiency.',
-          description_ar: 'تطوير حلول مبتكرة في الرعاية الصحية لتحسين رعاية المرضى والكفاءة الطبية.',
-          status: 'published',
-          priority_level: 'high',
-          sensitivity_level: 'sensitive',
-          challenge_type: 'healthcare',
-          start_date: '2025-01-15',
-          end_date: '2025-04-15',
-          estimated_budget: 1000000,
-          created_at: '2025-01-10T00:00:00.000Z'
-        }
-      ]);
+      // No challenges available - show empty state
+      setChallenges([]);
     } finally {
       setLoading(false);
     }

@@ -318,24 +318,24 @@ export default function UserDashboard() {
             totalPoints: stats.totalRewards,
             innovationScore: stats.innovationScore,
             expertStats: {
-              assignedChallenges: Math.floor(stats.totalIdeas * 0.8),
-              pendingEvaluations: Math.floor(stats.activeIdeas * 1.2),
-              completedEvaluations: stats.evaluatedIdeas,
-              averageRating: Math.min(4.0 + (stats.innovationScore / 25), 5.0)
+              assignedChallenges: 0,
+              pendingEvaluations: 0,
+              completedEvaluations: 0,
+              averageRating: 0
             },
             partnerStats: {
-              activePartnerships: Math.floor(stats.challengesParticipated * 0.5),
-              supportedProjects: Math.floor(stats.totalIdeas * 0.6),
-              totalInvestment: stats.totalRewards * 100,
-              partnershipScore: Math.min(stats.innovationScore + 10, 95)
+              activePartnerships: 0,
+              supportedProjects: 0,
+              totalInvestment: 0,
+              partnershipScore: 0
             },
             adminStats: {
-              totalUsers: 2847,
-              activeUsers: 1234,
-              systemUptime: 99.9,
-              securityScore: 98,
-              totalChallenges: stats.challengesParticipated + 20,
-              totalSubmissions: stats.totalIdeas + 150
+              totalUsers: 0,
+              activeUsers: 0,
+              systemUptime: 0,
+              securityScore: 0,
+              totalChallenges: 0,
+              totalSubmissions: 0
             }
           }}
           onNavigate={navigate}
