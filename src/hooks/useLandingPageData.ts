@@ -50,7 +50,7 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
         };
 
         // Fetch FAQs with timeout and limit
-        const faqPromise = supabase
+        const faqQuery = supabase
           .from('landing_page_faqs')
           .select('*')
           .eq('is_active', true)
@@ -58,7 +58,7 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
           .limit(10); // Limit to prevent memory issues
 
         // Fetch public statistics with timeout and limit
-        const statsPromise = supabase
+        const statsQuery = supabase
           .from('public_statistics')
           .select('*')
           .eq('is_visible', true)
@@ -66,7 +66,7 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
           .limit(10); // Limit to prevent memory issues
 
         // Fetch content sections with timeout and limit
-        const contentPromise = supabase
+        const contentQuery = supabase
           .from('landing_page_content')
           .select('*')
           .eq('is_active', true)
@@ -75,9 +75,9 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
 
         // Execute all promises with 10-second timeout
         const [faqResult, statsResult, contentResult] = await Promise.all([
-          fetchTimeout(faqPromise, 10000),
-          fetchTimeout(statsPromise, 10000),
-          fetchTimeout(contentPromise, 10000)
+          fetchTimeout(Promise.resolve(faqQuery), 10000),
+          fetchTimeout(Promise.resolve(statsQuery), 10000),
+          fetchTimeout(Promise.resolve(contentQuery), 10000)
         ]);
 
         setFaqs(faqResult.data || []);

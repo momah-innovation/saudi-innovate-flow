@@ -39,6 +39,20 @@ export default function LandingPage() {
     userEmail: user?.email,
     timestamp: Date.now()
   });
+
+  // Check if authenticated user should be redirected to dashboard
+  useEffect(() => {
+    if (user && !loading) {
+      console.log('🔀 LANDING PAGE DEBUG: Authenticated user detected, considering redirect', {
+        userEmail: user.email,
+        timestamp: Date.now()
+      });
+      
+      // Optional: Redirect authenticated users to dashboard
+      // Commenting this out to allow authenticated users to view landing page
+      // navigate('/dashboard', { replace: true });
+    }
+  }, [user, loading, navigate]);
   
   // Note: Allow both authenticated and unauthenticated users to view landing page
   // Show different content based on auth status
