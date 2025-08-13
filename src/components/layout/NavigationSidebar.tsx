@@ -225,8 +225,27 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
   // Define group order
   const groupOrder = ['main', 'workspace', 'admin', 'settings'];
 
+  // Add console log to track rendering
+  console.log('NavigationSidebar render', { open });
+  
   return (
     <>
+      {/* Visibility Test - Simple red box that should always be visible when open */}
+      {open && (
+        <div style={{
+          position: 'fixed',
+          top: '10px',
+          left: '10px',
+          width: '100px',
+          height: '100px',
+          backgroundColor: 'red',
+          zIndex: 10000,
+          border: '3px solid black'
+        }}>
+          TEST
+        </div>
+      )}
+      
       {/* Overlay */}
       {open && (
         <div 
