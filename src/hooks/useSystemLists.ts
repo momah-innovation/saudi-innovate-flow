@@ -4,8 +4,7 @@ import { logger } from '@/utils/logger';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { VALUE_KEY_MAPPINGS, getCategoryKeys, useTranslatedValue } from '@/utils/valueKeys';
 
-// Debug logging for useSystemLists hook
-console.log('🔍 useSystemLists: Module loaded');
+// Debug logging for useSystemLists hook (removed to prevent re-renders)
 
 interface SystemListsHook {
   challengePriorityLevels: string[];
@@ -163,7 +162,7 @@ export const useSystemLists = (): SystemListsHook => {
   useEffect(() => {
     const loadSystemLists = async () => {
       try {
-        console.log('🔍 useSystemLists: Loading lists using translation keys');
+        // Loading lists using translation keys (debug removed to prevent re-renders)
         
         // Use key-based translation system for core lists that have mappings
         const keyBasedSettings = {
@@ -433,10 +432,7 @@ export const useSystemLists = (): SystemListsHook => {
           });
         }
           
-        console.log('🔍 useSystemLists: Lists loaded successfully', {
-          keyBasedLists: Object.keys(keyBasedSettings),
-          totalLists: Object.keys(newSettings).filter(key => Array.isArray((newSettings as any)[key])).length
-        });
+        // Lists loaded successfully (debug removed to prevent re-renders)
         
         setSettings({ ...newSettings, loading: false });
       } catch (error) {

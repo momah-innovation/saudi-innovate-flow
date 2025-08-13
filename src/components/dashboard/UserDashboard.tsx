@@ -349,15 +349,6 @@ export default function UserDashboard() {
         
         <div className="container mx-auto px-6 py-8 space-y-6">
         {/* Role-specific Dashboard Content */}
-        {(() => {
-          console.log('🎯 Dashboard role check:', { 
-            primaryRole, 
-            userRoles: userProfile?.user_roles?.map(r => r.role),
-            shouldShowAdmin: (primaryRole === 'admin' || primaryRole === 'super_admin'),
-            permissions: { canManageUsers: permissions.canManageUsers, canManageSystem: permissions.canManageSystem }
-          });
-          return null;
-        })()}
         {(primaryRole === 'admin' || primaryRole === 'super_admin') && (
           <AdminDashboard 
             userProfile={userProfile ? {

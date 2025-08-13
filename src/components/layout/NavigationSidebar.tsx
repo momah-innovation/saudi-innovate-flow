@@ -25,28 +25,14 @@ interface NavigationSidebarProps {
 }
 
 export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
-  console.log('🎯 SIDEBAR DEBUG: NavigationSidebar render', {
-    timestamp: Date.now(),
-    open,
-    rerenderReason: 'Component re-rendered'
-  });
+  // Debug logging removed to prevent re-renders
   
   React.useEffect(() => {
-    console.log('📱 SIDEBAR DEBUG: Open state changed', {
-      timestamp: Date.now(),
-      open,
-      visibility: open ? 'OPENING' : 'CLOSING'
-    });
-    performance.mark(`sidebar-${open ? 'open' : 'close'}-effect`);
+    // Open state changed (debug removed to prevent re-renders)
   }, [open]);
   
   useLayoutEffect(() => {
-    console.log('🎯 SIDEBAR DEBUG: Layout effect - DOM measurements', {
-      timestamp: Date.now(),
-      open,
-      windowWidth: window.innerWidth,
-      scrollPosition: window.scrollY
-    });
+    // Layout effect - DOM measurements (debug removed to prevent re-renders)
   }, [open]);
   
   const location = useLocation();
@@ -171,12 +157,7 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
           <NavLink 
             to={item.path}
             onClick={() => {
-              console.log('🔗 SIDEBAR DEBUG: Navigation item clicked', {
-                timestamp: Date.now(),
-                item: item.id,
-                path: item.path,
-                action: 'Closing sidebar'
-              });
+              // Navigation item clicked (debug removed to prevent re-renders)
               onOpenChange(false);
             }}
             className={({ isActive }) => cn(
@@ -252,11 +233,7 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
     <Sheet 
       open={open} 
       onOpenChange={(newOpen) => {
-        console.log('📋 SIDEBAR DEBUG: Sheet onOpenChange triggered', {
-          timestamp: Date.now(),
-          newOpen,
-          trigger: 'Sheet component'
-        });
+        // Sheet onOpenChange triggered (debug removed to prevent re-renders)
         onOpenChange(newOpen);
       }}
     >
@@ -265,28 +242,10 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
         className={cn("w-80 p-0 border-0", isRTL && "text-right")}
         style={{ transition: 'transform 0.15s ease-out' }} // Faster transition
         onAnimationStart={() => {
-          console.log('🎬 SIDEBAR DEBUG: Animation started', {
-            timestamp: Date.now(),
-            phase: 'opening'
-          });
-          performance.mark('sidebar-animation-start');
+          // Animation started (debug removed to prevent re-renders)
         }}
         onAnimationEnd={() => {
-          console.log('🎬 SIDEBAR DEBUG: Animation ended', {
-            timestamp: Date.now(),
-            phase: 'opened'
-          });
-          performance.mark('sidebar-animation-end');
-          try {
-            performance.measure('sidebar-animation-duration', 'sidebar-animation-start', 'sidebar-animation-end');
-            const measure = performance.getEntriesByName('sidebar-animation-duration')[0];
-            console.log('⏱️ SIDEBAR DEBUG: Animation performance', {
-              duration: measure.duration,
-              startTime: measure.startTime
-            });
-          } catch (e) {
-            console.log('⚠️ SIDEBAR DEBUG: Animation measurement failed', e);
-          }
+          // Animation ended (debug removed to prevent re-renders)
         }}
       >
         <SheetHeader className="p-4 sm:p-6 border-b">
