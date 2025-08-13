@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -12,92 +13,6 @@ import {
   Target,
   Activity
 } from 'lucide-react';
-
-// Mock data - will be replaced with real data
-const mockStakeholders = [
-  {
-    id: '1',
-    name: 'د. أحمد محمد العبدالله',
-    organization: 'وزارة التقنية والابتكار',
-    position: 'مدير عام الابتكار',
-    email: 'ahmed.abdullah@tech.gov.sa',
-    phone: '+966501234567',
-    stakeholder_type: 'حكومي',
-    influence_level: 'عالي',
-    interest_level: 'عالي',
-    engagement_status: 'active',
-    notes: 'صاحب قرار رئيسي في مبادرات الابتكار الحكومي',
-    projects_count: 12,
-    last_interaction: '2024-03-01'
-  },
-  {
-    id: '2',
-    name: 'فاطمة علي الزهراني',
-    organization: 'شركة أرامكو السعودية',
-    position: 'رئيس قسم التطوير التقني',
-    email: 'fatima.alzahrani@aramco.com',
-    phone: '+966502345678',
-    stakeholder_type: 'خاص',
-    influence_level: 'عالي',
-    interest_level: 'متوسط',
-    engagement_status: 'active',
-    notes: 'مهتمة بمشاريع الطاقة المتجددة والتكنولوجيا النظيفة',
-    projects_count: 8,
-    last_interaction: '2024-02-25'
-  },
-  {
-    id: '3',
-    name: 'أ.د. محمد إبراهيم الأحمد',
-    organization: 'جامعة الملك سعود',
-    position: 'أستاذ الذكاء الاصطناعي',
-    email: 'm.alahmad@ksu.edu.sa',
-    phone: '+966503456789',
-    stakeholder_type: 'أكاديمي',
-    influence_level: 'متوسط',
-    interest_level: 'عالي',
-    engagement_status: 'active',
-    notes: 'خبير في الذكاء الاصطناعي وتطبيقاته في القطاع الحكومي',
-    projects_count: 15,
-    last_interaction: '2024-03-05'
-  },
-  {
-    id: '4',
-    name: 'نورا سعد المطيري',
-    organization: 'مؤسسة محمد بن راشد للابتكار',
-    position: 'مديرة البرامج',
-    email: 'nora.almutairi@mbrf.ae',
-    phone: '+971504567890',
-    stakeholder_type: 'غير ربحي',
-    influence_level: 'متوسط',
-    interest_level: 'عالي',
-    engagement_status: 'pending',
-    notes: 'تنسق برامج الابتكار الإقليمية',
-    projects_count: 6,
-    last_interaction: '2024-01-15'
-  }
-];
-
-const typeConfig = {
-  'حكومي': { label: 'حكومي', variant: 'default' as const },
-  'خاص': { label: 'خاص', variant: 'secondary' as const },
-  'أكاديمي': { label: 'أكاديمي', variant: 'outline' as const },
-  'غير ربحي': { label: 'غير ربحي', variant: 'secondary' as const },
-  'مجتمعي': { label: 'مجتمعي', variant: 'outline' as const },
-  'دولي': { label: 'دولي', variant: 'default' as const }
-};
-
-const influenceConfig = {
-  'عالي': { label: 'عالي', variant: 'destructive' as const },
-  'متوسط': { label: 'متوسط', variant: 'default' as const },
-  'منخفض': { label: 'منخفض', variant: 'secondary' as const }
-};
-
-const engagementConfig = {
-  'active': { label: 'نشط', variant: 'default' as const },
-  'inactive': { label: 'غير نشط', variant: 'secondary' as const },
-  'pending': { label: 'معلق', variant: 'outline' as const },
-  'blocked': { label: 'محظور', variant: 'destructive' as const }
-};
 
 interface StakeholdersManagementProps {
   viewMode: 'cards' | 'list' | 'grid';
@@ -129,6 +44,54 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
   const [showViewDialog, setShowViewDialog] = useState(false);
   const [stakeholderToDelete, setStakeholderToDelete] = useState<StakeholderData | null>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [stakeholders, setStakeholders] = useState<StakeholderData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStakeholders();
+  }, []);
+
+  const fetchStakeholders = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch from stakeholders table when available
+      const { data, error } = await supabase
+        .from('stakeholders')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching stakeholders:', error);
+        setStakeholders([]);
+        return;
+      }
+
+      // Transform data to match interface
+      const transformedStakeholders = (data || []).map(item => ({
+        id: item.id,
+        name: item.name || 'غير محدد',
+        organization: item.organization || 'غير محدد',
+        position: item.position || 'غير محدد',
+        email: item.email || '',
+        phone: item.phone || '',
+        stakeholder_type: item.stakeholder_type || 'غير محدد',
+        influence_level: item.influence_level || 'متوسط',
+        interest_level: item.interest_level || 'متوسط',
+        engagement_status: item.engagement_status || 'pending',
+        notes: item.notes || '',
+        projects_count: 0,
+        last_interaction: item.updated_at || new Date().toISOString()
+      }));
+
+      setStakeholders(transformedStakeholders);
+    } catch (error) {
+      console.error('Error in fetchStakeholders:', error);
+      setStakeholders([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEdit = (stakeholder: StakeholderData) => {
     setSelectedStakeholder(stakeholder);
@@ -136,21 +99,34 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
   };
 
   const handleView = (stakeholder: StakeholderData) => {
-    // Implement stakeholder view functionality
     setSelectedStakeholder(stakeholder);
     setShowViewDialog(true);
   };
 
   const handleDelete = (stakeholder: StakeholderData) => {
-    // Implement stakeholder deletion with confirmation
     setStakeholderToDelete(stakeholder);
     setShowDeleteConfirmation(true);
   };
 
+  const filteredStakeholders = stakeholders.filter(stakeholder =>
+    !searchTerm || 
+    stakeholder.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    stakeholder.organization.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    stakeholder.position.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <ViewLayouts viewMode={viewMode}>
-        {mockStakeholders.map((stakeholder) => (
+        {filteredStakeholders.map((stakeholder) => (
           <ManagementCard
             key={stakeholder.id}
             id={stakeholder.id}
@@ -160,16 +136,18 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
             viewMode={viewMode}
             badges={[
               {
-                label: typeConfig[stakeholder.stakeholder_type as keyof typeof typeConfig]?.label,
-                variant: typeConfig[stakeholder.stakeholder_type as keyof typeof typeConfig]?.variant
+                label: stakeholder.stakeholder_type,
+                variant: 'default' as const
               },
               {
                 label: `تأثير ${stakeholder.influence_level}`,
-                variant: influenceConfig[stakeholder.influence_level as keyof typeof influenceConfig]?.variant
+                variant: stakeholder.influence_level === 'عالي' ? 'destructive' as const : 'default' as const
               },
               {
-                label: engagementConfig[stakeholder.engagement_status as keyof typeof engagementConfig]?.label,
-                variant: engagementConfig[stakeholder.engagement_status as keyof typeof engagementConfig]?.variant
+                label: stakeholder.engagement_status === 'active' ? 'نشط' : 
+                       stakeholder.engagement_status === 'pending' ? 'معلق' : 'غير نشط',
+                variant: stakeholder.engagement_status === 'active' ? 'default' as const :
+                         stakeholder.engagement_status === 'pending' ? 'outline' as const : 'secondary' as const
               }
             ]}
             metadata={[
