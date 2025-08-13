@@ -8,7 +8,10 @@ import { createPortal } from 'react-dom';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Search, X, ChevronDown, ChevronRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAppContext } from '@/hooks/useAppContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useTheme } from '@/components/ui/theme-provider';
 import { 
   NAVIGATION_ITEMS, 
   GROUP_LABELS, 
@@ -30,14 +33,15 @@ interface EnhancedNavigationSidebarProps {
 }
 
 export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNavigationSidebarProps) {
-  const {
-    userRoles,
-    isRTL,
-    t,
-    theme,
-    user,
-    userProfile
-  } = useAppContext();
+  // Use individual hooks instead of useAppContext to avoid state conflicts
+  const { userProfile } = useAuth();
+  const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
+  const { theme } = useTheme();
+  const { user } = useAuth();
+  
+  // Get user roles from auth context
+  const userRoles = userProfile?.user_roles?.map(ur => ur.role) || [];
   
   const location = useLocation();
   
