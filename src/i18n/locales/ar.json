@@ -482,6 +482,12 @@
       "description": "تكوين معايير تقييم التقديمات"
     }
   },
+  "header": {
+    "toggle_theme": "تبديل المظهر",
+    "open_navigation": "فتح قائمة التنقل",
+    "toggle_direction": "تبديل اتجاه النص", 
+    "switch_language": "تبديل اللغة"
+  },
   "toggle_theme": "تبديل المظهر",
   "open_navigation": "فتح قائمة التنقل",
   "toggle_direction": "تبديل اتجاه النص",

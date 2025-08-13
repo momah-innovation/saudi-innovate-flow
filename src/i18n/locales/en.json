@@ -482,6 +482,12 @@
       "description": "Configure criteria for evaluating submissions"
     }
   },
+  "header": {
+    "toggle_theme": "Toggle theme",
+    "open_navigation": "Open navigation menu", 
+    "toggle_direction": "Toggle text direction",
+    "switch_language": "Switch language"
+  },
   "toggle_theme": "Toggle theme",
   "open_navigation": "Open navigation menu",
   "toggle_direction": "Toggle text direction",

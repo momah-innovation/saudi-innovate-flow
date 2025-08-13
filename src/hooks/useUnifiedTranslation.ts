@@ -259,8 +259,10 @@ export function useUnifiedTranslation() {
   /**
    * Get all translations for a category
    */
-  const getCategoryTranslations = (category: string): SystemTranslation[] => {
-    return dbTranslations.filter(translation => translation.category === category);
+  const getCategoryTranslations = (category: string) => {
+    return dbTranslations.filter(translation => 
+      translation.translation_key.startsWith(category + '.')
+    );
   };
 
   /**
