@@ -97,7 +97,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
           user_info: {
             display_name: user.user_metadata?.display_name || user.email || 'مستخدم',
             avatar_url: user.user_metadata?.avatar_url,
-            role: 'user' // This should come from user roles
+            role: user.app_metadata?.role || 'user' // Get actual role from metadata
           }
         };
 

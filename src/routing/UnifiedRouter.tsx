@@ -196,6 +196,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     component: UserWorkspace,
     requireAuth: true,
     requireProfile: true,
+    requiredRole: ['innovator', 'team_member', 'admin', 'super_admin'],
     withAppShell: true,
   },
   {
@@ -203,7 +204,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     component: ExpertWorkspace,
     requireAuth: true,
     requireProfile: true,
-    requiredRole: ['expert', 'admin', 'super_admin'],
+    requiredRole: ['domain_expert', 'evaluator', 'expert', 'admin', 'super_admin'],
     withAppShell: true,
   },
   {
@@ -235,6 +236,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     component: TeamWorkspace,
     requireAuth: true,
     requireProfile: true,
+    requiredRole: ['team_member', 'team_lead', 'project_manager', 'admin', 'super_admin'],
     withAppShell: true,
   },
   {

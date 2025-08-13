@@ -34,7 +34,7 @@ export interface WorkspaceAccessConfig {
  */
 export const WORKSPACE_ACCESS_CONTROL: Record<string, WorkspaceAccessConfig> = {
   user: {
-    allowedRoles: ['innovator', 'user', 'team_member'],
+    allowedRoles: ['innovator', 'team_member', 'admin', 'super_admin'],
     permissions: {
       canView: true,
       canEdit: true,
@@ -82,7 +82,7 @@ export const WORKSPACE_ACCESS_CONTROL: Record<string, WorkspaceAccessConfig> = {
   },
 
   team: {
-    allowedRoles: ['team_member', 'team_leader', 'project_manager'],
+    allowedRoles: ['team_member', 'team_lead', 'project_manager', 'admin', 'super_admin'],
     permissions: {
       canView: true,
       canEdit: true,
