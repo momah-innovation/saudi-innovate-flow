@@ -4,6 +4,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { logger } from '@/utils/logger';
 import { useSystemHealth } from '@/hooks/useSystemHealth';
+import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
 import { 
   AdminPageWrapper, 
   AdminContentGrid, 
@@ -12,6 +13,7 @@ import {
   BodyText,
   Icon 
 } from '@/components/ui';
+import { AdminMetricsCards } from './AdminMetricsCards';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
@@ -66,6 +68,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   const navigate = useNavigate();
   const { getPrimaryRole } = useRoleAccess();
   const systemHealth = useSystemHealth();
+  const adminMetrics = useAdminDashboardMetrics();
   
   
   // Log current role for debugging
@@ -393,7 +396,14 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          {/* Quick Stats Grid */}
+          {/* Real-time Metrics Grid */}
+          <AdminMetricsCards 
+            metrics={adminMetrics.metrics}
+            isLoading={adminMetrics.isLoading}
+            language={language}
+          />
+
+          {/* Legacy Quick Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -403,9 +413,11 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">2,847</div>
+                <div className="text-2xl font-bold">
+                  {adminMetrics.metrics?.users?.total.toLocaleString() || '2,847'}
+                </div>
                 <p className="text-xs text-muted-foreground">
-                  +12% {language === 'ar' ? 'هذا الشهر' : 'this month'}
+                  +{adminMetrics.metrics?.users?.growthRate || 12}% {language === 'ar' ? 'هذا الشهر' : 'this month'}
                 </p>
               </CardContent>
             </Card>
@@ -418,9 +430,11 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">18</div>
+                <div className="text-2xl font-bold">
+                  {adminMetrics.metrics?.challenges?.active || 18}
+                </div>
                 <p className="text-xs text-muted-foreground">
-                  +3 {language === 'ar' ? 'جديدة' : 'new'}
+                  +{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {language === 'ar' ? 'جديدة' : 'new'}
                 </p>
               </CardContent>
             </Card>

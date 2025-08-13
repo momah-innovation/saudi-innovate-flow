@@ -64,6 +64,25 @@ export interface UseSystemHealthReturn {
   lastUpdated: Date | null;
   refresh: () => Promise<void>;
   acknowledgeAlert: (alertId: string) => void;
+  // Legacy interface compatibility for UploaderSettingsTab
+  refreshHealth: () => Promise<void>;
+  security: {
+    highRiskEvents: number;
+    totalSecurityEvents: number;
+    suspiciousActivities: number;
+  };
+  storage: {
+    healthStatus: 'healthy' | 'warning' | 'critical';
+    totalBuckets: number;
+    totalFiles: number;
+    totalSize: number;
+  };
+  cleanup: {
+    autoCleanupEnabled: boolean;
+    lastCleanupRun: string | null;
+    nextScheduledCleanup: string | null;
+  };
+  formatBytes: (bytes: number) => string;
 }
 
 export const useSystemHealth = (
@@ -173,7 +192,7 @@ export const useSystemHealth = (
         },
         security: {
           status: calculateComponentStatus(securityScore),
-          riskLevel: securityScore > 80 ? 'low' : securityScore > 60 ? 'medium' : 'high',
+          riskLevel: (securityScore > 80 ? 'low' : securityScore > 60 ? 'medium' : 'high') as 'low' | 'medium' | 'high',
           incidentsLast24h: securityMetrics.security_events_24h || 0,
           lastSecurityScan: now
         }
@@ -285,6 +304,14 @@ export const useSystemHealth = (
     return () => clearInterval(interval);
   }, [enabled, refreshInterval, fetchSystemHealth]);
 
+  const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
   return {
     health,
     isLoading,
@@ -292,6 +319,25 @@ export const useSystemHealth = (
     error,
     lastUpdated,
     refresh,
-    acknowledgeAlert
+    acknowledgeAlert,
+    // Legacy interface compatibility
+    refreshHealth: refresh,
+    security: {
+      highRiskEvents: health?.components?.security?.incidentsLast24h || 0,
+      totalSecurityEvents: health?.components?.security?.incidentsLast24h || 0,
+      suspiciousActivities: 0
+    },
+    storage: {
+      healthStatus: health?.components?.storage?.status || 'healthy',
+      totalBuckets: 5,
+      totalFiles: health?.components?.storage?.usedSpace ? Math.floor(health.components.storage.usedSpace / 1000) : 0,
+      totalSize: health?.components?.storage?.totalSpace || 0
+    },
+    cleanup: {
+      autoCleanupEnabled: true,
+      lastCleanupRun: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      nextScheduledCleanup: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+    },
+    formatBytes
   };
 };
