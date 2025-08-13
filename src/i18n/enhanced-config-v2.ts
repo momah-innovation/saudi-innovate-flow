@@ -36,9 +36,10 @@ const EnhancedDatabaseBackend = {
   },
 
   async preloadTranslations() {
+    // Only preload current language to reduce initial load time
+    const currentLang = navigator.language.startsWith('ar') ? 'ar' : 'en';
     try {
-      await this.loadFromDatabase('en');
-      await this.loadFromDatabase('ar');
+      await this.loadFromDatabase(currentLang);
     } catch (error) {
       logger.warn('Failed to preload translations', { component: 'EnhancedDatabaseBackend', action: 'preloadTranslations' }, error as Error);
     }
@@ -68,7 +69,7 @@ const EnhancedDatabaseBackend = {
       let allTranslations: any[] = [];
       let hasMore = true;
       let start = 0;
-      const batchSize = 1000;
+      const batchSize = 500; // Reduce batch size for faster loading
       
       while (hasMore) {
         const { data, error } = await supabase
