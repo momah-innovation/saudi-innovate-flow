@@ -8,6 +8,7 @@ import { useTheme } from '@/components/ui/theme-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { TranslationProvider } from '@/contexts/TranslationContext';
+import { AnalyticsProvider } from '@/contexts/AnalyticsContext';
 import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -220,32 +221,34 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   const content = (
     <AppShellErrorBoundary onError={handleError}>
       <TranslationProvider>
-        <AppContext.Provider value={appContextValue}>
-          <div className={cn(
-            "min-h-screen flex w-full bg-background transition-all duration-300",
-            direction.isRTL && "flex-row-reverse"
-          )}>
-            {/* Navigation Sidebar Overlay */}
-            <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
-            
-            {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-              {/* Global Header */}
-              <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
+        <AnalyticsProvider options={{ includeRoleSpecific: true, autoRefresh: true }}>
+          <AppContext.Provider value={appContextValue}>
+            <div className={cn(
+              "min-h-screen flex w-full bg-background transition-all duration-300",
+              direction.isRTL && "flex-row-reverse"
+            )}>
+              {/* Navigation Sidebar Overlay */}
+              <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
               
-              {/* Page Content with Loading */}
-              <main className="flex-1 overflow-auto overscroll-behavior-contain">
-                <Suspense fallback={
-                  <div className="flex items-center justify-center min-h-[50vh] px-4">
-                    <LoadingSpinner />
-                  </div>
-                }>
-                  {children}
-                </Suspense>
-              </main>
+              {/* Main Content Area */}
+              <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+                {/* Global Header */}
+                <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
+                
+                {/* Page Content with Loading */}
+                <main className="flex-1 overflow-auto overscroll-behavior-contain">
+                  <Suspense fallback={
+                    <div className="flex items-center justify-center min-h-[50vh] px-4">
+                      <LoadingSpinner />
+                    </div>
+                  }>
+                    {children}
+                  </Suspense>
+                </main>
+              </div>
             </div>
-          </div>
-        </AppContext.Provider>
+          </AppContext.Provider>
+        </AnalyticsProvider>
       </TranslationProvider>
     </AppShellErrorBoundary>
   );

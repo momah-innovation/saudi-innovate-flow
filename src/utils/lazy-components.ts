@@ -1,9 +1,11 @@
 /**
  * Phase 8: Performance Optimization - Code Splitting Implementation
  * Lazy-loaded route components for better initial bundle size
+ * Updated with analytics-aware lazy loading
  */
 
 import { lazy } from 'react';
+import { withAnalytics } from '@/contexts/AnalyticsContext';
 
 // Since most components use named exports, we need to handle them properly
 // Admin Panel Components that exist and can be lazy loaded
