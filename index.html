@@ -7,10 +7,53 @@
     <meta name="description" content="Lovable Generated Project" />
     <meta name="author" content="Lovable" />
     
+    <!-- Critical CSS for preventing FOUC -->
+    <style>
+      /* Critical CSS - Prevent FOUC */
+      :root {
+        --primary: 272 65% 22%;
+        --primary-foreground: 0 0% 100%;
+        --primary-light: 272 65% 95%;
+        --background: 0 0% 100%;
+        --foreground: 222 84% 4.9%;
+        --accent: 270 95% 97%;
+        --gradient-primary: linear-gradient(99deg, rgba(59, 20, 93, 1) 51%, rgba(23, 8, 38, 1) 99%);
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        background: hsl(var(--background));
+        color: hsl(var(--foreground));
+        font-family: 'Inter', system-ui, sans-serif;
+        opacity: 1;
+      }
+      
+      /* Hero section critical styles */
+      .hero-section {
+        background: var(--gradient-primary);
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: hsl(var(--primary-foreground));
+        position: relative;
+        overflow: hidden;
+      }
+      
+      /* Prevent invisible text during font load */
+      .font-display-swap {
+        font-display: swap;
+      }
+    </style>
+    
     <!-- Arabic and English Font Support -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    </noscript>
     
     <!-- Prevent Facebook tracking pixel preload warnings -->
     <link rel="dns-prefetch" href="//www.facebook.com">
