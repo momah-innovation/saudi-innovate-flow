@@ -152,7 +152,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
   {
     name: "Phase 3: Database Functions Migration",
     description: "Update database functions to work with centralized service",
-    status: 'in-progress',
+    status: 'completed',
     tasks: [
       {
         id: "DB-001",
@@ -166,7 +166,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
         priority: 'high',
         estimatedHours: 6,
         dependencies: ["INFRA-001"],
-        status: 'pending'
+        status: 'completed'
       },
       {
         id: "DB-002",
@@ -180,7 +180,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
         priority: 'high',
         estimatedHours: 4,
         dependencies: ["DB-001"],
-        status: 'pending'
+        status: 'completed'
       }
     ]
   },
@@ -188,7 +188,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
   {
     name: "Phase 4: Component Migration - Critical Path",
     description: "Migrate high-priority dashboard components",
-    status: 'not-started',
+    status: 'in-progress',
     tasks: [
       {
         id: "COMP-001",
@@ -202,7 +202,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
         priority: 'critical',
         estimatedHours: 4,
         dependencies: ["INFRA-004", "DB-001"],
-        status: 'pending'
+        status: 'completed'
       },
       {
         id: "COMP-002",
@@ -216,7 +216,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
         priority: 'critical',
         estimatedHours: 5,
         dependencies: ["INFRA-004"],
-        status: 'pending'
+        status: 'completed'
       },
       {
         id: "COMP-003",
@@ -478,7 +478,7 @@ export function getNextActionableTasks(): MigrationTask[] {
  */
 export const MIGRATION_STATUS = {
   startDate: new Date('2024-01-15'),
-  currentPhase: 'Phase 3: Database Functions Migration',
+  currentPhase: 'Phase 4: Component Migration - Critical Path',
   blockers: [
     'Need to create new database functions with RBAC',
     'Some components have complex data dependencies'

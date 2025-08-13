@@ -9442,6 +9442,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_admin_metrics_data: {
+        Args: { timeframe_param?: string }
+        Returns: Json
+      }
       get_all_storage_quotas: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -9453,6 +9457,14 @@ export type Database = {
           created_at: string
           updated_at: string
         }[]
+      }
+      get_analytics_data: {
+        Args: {
+          p_user_id: string
+          p_user_role: Database["public"]["Enums"]["app_role"]
+          p_filters?: Json
+        }
+        Returns: Json
       }
       get_basic_storage_info: {
         Args: Record<PropertyKey, never>
@@ -9495,6 +9507,14 @@ export type Database = {
           conversion_rate: number
         }[]
       }
+      get_role_specific_analytics: {
+        Args: {
+          p_user_id: string
+          p_user_role: Database["public"]["Enums"]["app_role"]
+          p_filters?: Json
+        }
+        Returns: Json
+      }
       get_search_suggestions: {
         Args: { partial_query: string; search_type?: string }
         Returns: {
@@ -9502,6 +9522,10 @@ export type Database = {
           suggestion_type: string
           result_count: number
         }[]
+      }
+      get_security_analytics: {
+        Args: { p_user_id: string }
+        Returns: Json
       }
       get_storage_analytics_with_trends: {
         Args: Record<PropertyKey, never>
