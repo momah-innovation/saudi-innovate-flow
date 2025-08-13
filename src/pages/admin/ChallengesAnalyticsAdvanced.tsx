@@ -104,7 +104,7 @@ export default function ChallengesAnalyticsAdvanced() {
           </TabsContent>
 
           <TabsContent value="participation-trends" className="space-y-4">
-            <ParticipationTrendAnalyzer timeRange={timeRange} />
+            <ParticipationTrendAnalyzer />
           </TabsContent>
 
           <TabsContent value="viewing-sessions" className="space-y-4">

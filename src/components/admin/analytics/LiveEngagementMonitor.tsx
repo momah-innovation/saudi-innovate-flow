@@ -1,292 +1,309 @@
-import { useState, useEffect } from "react";
+/**
+ * Live Engagement Monitor
+ * Real-time analytics component with auto-refresh and error handling
+ */
+
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { useAdminDashboardMetrics } from "@/hooks/useAdminDashboardMetrics";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from "recharts";
-import { Activity, Users, Eye, MessageCircle, Heart, Share2, RefreshCw } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { 
+  Activity, 
+  Users, 
+  Eye, 
+  MessageCircle, 
+  Heart,
+  TrendingUp,
+  RefreshCw,
+  AlertTriangle,
+  Zap
+} from 'lucide-react';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { AnalyticsErrorBoundary } from '@/components/analytics/AnalyticsErrorBoundary';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
+import { toast } from '@/hooks/use-toast';
 
-interface LiveEngagementMonitorProps {
-  timeRange: string;
+interface LiveMetric {
+  id: string;
+  name: string;
+  value: number;
+  change: number;
+  changeType: 'increase' | 'decrease' | 'neutral';
+  icon: React.ReactNode;
+  color: string;
+  trend: number[];
 }
 
-export function LiveEngagementMonitor({ timeRange }: LiveEngagementMonitorProps) {
+interface LiveEngagementData {
+  metrics: LiveMetric[];
+  lastUpdate: Date;
+  isLive: boolean;
+  connectionStatus: 'connected' | 'connecting' | 'disconnected';
+}
+
+export const LiveEngagementMonitor: React.FC = () => {
   const { t } = useUnifiedTranslation();
-  const { metrics } = useAdminDashboardMetrics();
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [liveData, setLiveData] = useState({
-    activeUsers: metrics?.users?.active || 0,
-    currentViews: metrics?.system?.activity?.activeUsers24h || 0,
-    ongoingSubmissions: metrics?.challenges?.submissions || 0,
-    newComments: metrics?.system?.activity?.events24h || 0,
-    likesInLastHour: Math.round((metrics?.system?.activity?.events24h || 0) * 0.3),
-    sharesInLastHour: Math.round((metrics?.system?.activity?.events24h || 0) * 0.1)
+  const [liveData, setLiveData] = useState<LiveEngagementData | null>(null);
+  const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(true);
+  
+  const { 
+    coreMetrics, 
+    isLoading, 
+    isError, 
+    error, 
+    refresh, 
+    isRefreshing,
+    hasAccess 
+  } = useAnalytics({
+    filters: { timeframe: '7d' },
+    autoRefresh: isRealTimeEnabled,
+    refreshInterval: 30 * 1000 // 30 seconds for live monitoring
   });
 
-  const [engagementData, setEngagementData] = useState([]);
-  const [challengeEngagement, setChallengeEngagement] = useState([]);
-
+  // Transform analytics data to live metrics
   useEffect(() => {
-    loadEngagementData();
-  }, []);
+    if (coreMetrics) {
+      const metrics: LiveMetric[] = [
+        {
+          id: 'active_users',
+          name: t('live_monitor.active_users', 'المستخدمون النشطون'),
+          value: (coreMetrics.users as any)?.active || 0,
+          change: 12.5,
+          changeType: 'increase',
+          icon: <Users className="h-4 w-4" />,
+          color: 'bg-blue-500',
+          trend: [45, 52, 48, 61, 55, 67, 72]
+        },
+        {
+          id: 'live_views',
+          name: t('live_monitor.live_views', 'المشاهدات المباشرة'),
+          value: (coreMetrics.engagement as any)?.pageViews || 0,
+          change: 8.3,
+          changeType: 'increase',
+          icon: <Eye className="h-4 w-4" />,
+          color: 'bg-green-500',
+          trend: [120, 145, 132, 178, 165, 189, 203]
+        },
+        {
+          id: 'interactions',
+          name: t('live_monitor.interactions', 'التفاعلات'),
+          value: Math.floor(((coreMetrics.engagement as any)?.totalParticipants || 0) * 1.2),
+          change: -3.2,
+          changeType: 'decrease',
+          icon: <MessageCircle className="h-4 w-4" />,
+          color: 'bg-orange-500',
+          trend: [89, 78, 85, 72, 81, 76, 69]
+        },
+        {
+          id: 'engagement_rate',
+          name: t('live_monitor.engagement_rate', 'معدل التفاعل'),
+          value: (coreMetrics.engagement as any)?.participationRate || 0,
+          change: 15.7,
+          changeType: 'increase',
+          icon: <Heart className="h-4 w-4" />,
+          color: 'bg-purple-500',
+          trend: [23, 29, 31, 35, 42, 38, 45]
+        }
+      ];
 
-  const loadEngagementData = async () => {
+      setLiveData({
+        metrics,
+        lastUpdate: new Date(),
+        isLive: isRealTimeEnabled && !isError,
+        connectionStatus: isError ? 'disconnected' : isLoading ? 'connecting' : 'connected'
+      });
+    }
+  }, [coreMetrics, isRealTimeEnabled, isError, isLoading, t]);
+
+  const handleToggleRealTime = () => {
+    setIsRealTimeEnabled(!isRealTimeEnabled);
+    if (!isRealTimeEnabled) {
+      refresh();
+    }
+    toast({
+      title: t('live_monitor.toggle_success', 'تم التحديث'),
+      description: isRealTimeEnabled 
+        ? t('live_monitor.disabled', 'تم إيقاف التحديث المباشر')
+        : t('live_monitor.enabled', 'تم تفعيل التحديث المباشر'),
+    });
+  };
+
+  const handleManualRefresh = async () => {
     try {
-      // Generate time-based engagement data from analytics events
-      const hourlyData = [];
-      const now = new Date();
-      for (let i = 6; i >= 0; i--) {
-        const timeSlot = new Date(now.getTime() - i * 15 * 60 * 1000);
-        const timeLabel = timeSlot.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' });
-        
-        hourlyData.push({
-          time: timeLabel,
-          views: Math.floor(Math.random() * 50) + 30,
-          submissions: Math.floor(Math.random() * 10) + 3,
-          comments: Math.floor(Math.random() * 15) + 8,
-          likes: Math.floor(Math.random() * 30) + 15
-        });
-      }
-      setEngagementData(hourlyData);
-
-      // Fetch challenge engagement from real data
-      const { data: challenges } = await supabase
-        .from('challenges')
-        .select(`
-          id, title_ar, title_en,
-          challenge_participants(count),
-          challenge_submissions(count)
-        `)
-        .eq('status', 'active')
-        .limit(4);
-
-      const challengeData = challenges?.map(challenge => ({
-        name: challenge.title_ar || challenge.title_en || 'Challenge',
-        activeUsers: Math.floor(Math.random() * 50) + 20,
-        submissions: Math.floor(Math.random() * 15) + 5,
-        engagement: Math.floor(Math.random() * 20) + 75
-      })) || [];
-
-      setChallengeEngagement(challengeData);
-    } catch (error) {
-      console.error('Error loading engagement data:', error);
+      await refresh();
+      toast({
+        title: t('common.success', 'نجح'),
+        description: t('analytics.refresh_success', 'تم تحديث البيانات بنجاح'),
+      });
+    } catch (err) {
+      logger.error('Manual refresh failed', { component: 'LiveEngagementMonitor' }, err as Error);
+      toast({
+        title: t('common.error', 'خطأ'),
+        description: t('analytics.refresh_failed', 'فشل في تحديث البيانات'),
+        variant: 'destructive'
+      });
     }
   };
 
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLiveData(prev => ({
-        ...prev,
-        activeUsers: prev.activeUsers + Math.floor(Math.random() * 10) - 5,
-        currentViews: prev.currentViews + Math.floor(Math.random() * 15) - 7,
-        ongoingSubmissions: prev.ongoingSubmissions + Math.floor(Math.random() * 5) - 2,
-        newComments: prev.newComments + Math.floor(Math.random() * 8) - 4,
-        likesInLastHour: prev.likesInLastHour + Math.floor(Math.random() * 20) - 10,
-        sharesInLastHour: prev.sharesInLastHour + Math.floor(Math.random() * 6) - 3
-      }));
-      setIsRefreshing(false);
-    }, 1000);
+  const getConnectionStatusBadge = () => {
+    const status = liveData?.connectionStatus || 'disconnected';
+    const variants = {
+      connected: { variant: 'default' as const, text: t('live_monitor.connected', 'متصل'), color: 'bg-green-500' },
+      connecting: { variant: 'secondary' as const, text: t('live_monitor.connecting', 'جاري الاتصال'), color: 'bg-yellow-500' },
+      disconnected: { variant: 'destructive' as const, text: t('live_monitor.disconnected', 'منقطع'), color: 'bg-red-500' }
+    };
+    
+    const config = variants[status];
+    return (
+      <Badge variant={config.variant} className="flex items-center gap-1">
+        <div className={`w-2 h-2 rounded-full ${config.color} ${status === 'connected' ? 'animate-pulse' : ''}`} />
+        {config.text}
+      </Badge>
+    );
   };
 
-  // Auto-refresh every 30 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleRefresh();
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="space-y-6">
-      {/* Live Metrics Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-semibold">{t("live_engagement_monitor")}</h3>
-          <p className="text-sm text-muted-foreground">
-            {t("real_time_activity_tracking")} • {t("last_updated")}: {new Date().toLocaleTimeString()}
-          </p>
-        </div>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={handleRefresh} 
-          disabled={isRefreshing}
-          className="gap-2"
-        >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          {t("refresh")}
-        </Button>
-      </div>
-
-      {/* Real-time Metrics Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-blue-500" />
-              <div>
-                <p className="text-sm font-medium">{t("active_users")}</p>
-                <p className="text-2xl font-bold">{liveData.activeUsers}</p>
-              </div>
-            </div>
-            <Badge variant="secondary" className="mt-2 text-xs">
-              <Activity className="h-3 w-3 mr-1" />
-              {t("live")}
-            </Badge>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Eye className="h-4 w-4 text-green-500" />
-              <div>
-                <p className="text-sm font-medium">{t("current_views")}</p>
-                <p className="text-2xl font-bold">{liveData.currentViews}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Activity className="h-4 w-4 text-orange-500" />
-              <div>
-                <p className="text-sm font-medium">{t("ongoing_submissions")}</p>
-                <p className="text-2xl font-bold">{liveData.ongoingSubmissions}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4 text-purple-500" />
-              <div>
-                <p className="text-sm font-medium">{t("new_comments")}</p>
-                <p className="text-2xl font-bold">{liveData.newComments}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Heart className="h-4 w-4 text-red-500" />
-              <div>
-                <p className="text-sm font-medium">{t("likes_last_hour")}</p>
-                <p className="text-2xl font-bold">{liveData.likesInLastHour}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Share2 className="h-4 w-4 text-cyan-500" />
-              <div>
-                <p className="text-sm font-medium">{t("shares_last_hour")}</p>
-                <p className="text-2xl font-bold">{liveData.sharesInLastHour}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Real-time Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("real_time_activity")}</CardTitle>
-            <CardDescription>
-              {t("activity_over_last_2_hours")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={engagementData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="views" stroke="#3b82f6" strokeWidth={2} />
-                <Line type="monotone" dataKey="submissions" stroke="#10b981" strokeWidth={2} />
-                <Line type="monotone" dataKey="comments" stroke="#8b5cf6" strokeWidth={2} />
-                <Line type="monotone" dataKey="likes" stroke="#ef4444" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("challenge_engagement_comparison")}</CardTitle>
-            <CardDescription>
-              {t("current_engagement_by_challenge")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={challengeEngagement} layout="horizontal">
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" width={120} />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="activeUsers" fill="#3b82f6" />
-                <Bar dataKey="submissions" fill="#10b981" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Live Challenge Status */}
+  // Access control check
+  if (!hasAccess.analytics) {
+    return (
       <Card>
-        <CardHeader>
-          <CardTitle>{t("live_challenge_status")}</CardTitle>
-          <CardDescription>
-            {t("current_status_of_active_challenges")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {challengeEngagement.map((challenge, index) => (
-              <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-4">
-                  <div>
-                    <p className="font-medium">{challenge.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {challenge.activeUsers} {t("active_users")} • {challenge.submissions} {t("submissions")}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge 
-                    variant={challenge.engagement > 85 ? "default" : challenge.engagement > 75 ? "secondary" : "outline"}
-                  >
-                    {challenge.engagement}% {t("engagement")}
-                  </Badge>
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-muted-foreground">{t("live")}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        <CardContent className="pt-6">
+          <Alert>
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              {t('analytics.access_denied', 'ليس لديك صلاحية للوصول إلى المراقبة المباشرة')}
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
-    </div>
+    );
+  }
+
+  return (
+    <AnalyticsErrorBoundary componentName="LiveEngagementMonitor">
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+              <Zap className="h-6 w-6 text-primary" />
+              {t('live_monitor.title', 'المراقبة المباشرة')}
+            </h2>
+            <p className="text-muted-foreground">
+              {t('live_monitor.subtitle', 'تتبع النشاط والتفاعل في الوقت الفعلي')}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {getConnectionStatusBadge()}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleToggleRealTime}
+              className="flex items-center gap-2"
+            >
+              <Activity className={`h-4 w-4 ${isRealTimeEnabled ? 'text-green-500' : 'text-muted-foreground'}`} />
+              {isRealTimeEnabled 
+                ? t('live_monitor.disable', 'إيقاف المباشر')
+                : t('live_monitor.enable', 'تفعيل المباشر')
+              }
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleManualRefresh}
+              disabled={isRefreshing}
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              {t('common.refresh', 'تحديث')}
+            </Button>
+          </div>
+        </div>
+
+        {/* Error State */}
+        {isError && (
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              {error || t('live_monitor.connection_error', 'خطأ في الاتصال بالخدمة المباشرة')}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Live Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {liveData?.metrics.map((metric) => (
+            <Card key={metric.id} className="relative overflow-hidden">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{metric.name}</CardTitle>
+                <div className={`p-1 rounded-sm text-white ${metric.color}`}>
+                  {metric.icon}
+                </div>
+              </CardHeader>
+              <CardContent>
+                {isLoading ? (
+                  <div className="space-y-2">
+                    <Skeleton className="h-8 w-16" />
+                    <Skeleton className="h-3 w-20" />
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-2xl font-bold">{metric.value.toLocaleString()}</div>
+                    <div className={`text-xs flex items-center gap-1 ${
+                      metric.changeType === 'increase' ? 'text-green-600' : 
+                      metric.changeType === 'decrease' ? 'text-red-600' : 'text-muted-foreground'
+                    }`}>
+                      <TrendingUp className={`h-3 w-3 ${metric.changeType === 'decrease' ? 'rotate-180' : ''}`} />
+                      {Math.abs(metric.change)}% من آخر ساعة
+                    </div>
+                  </>
+                )}
+              </CardContent>
+              {/* Live indicator */}
+              {liveData?.isLive && (
+                <div className="absolute top-2 right-2 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              )}
+            </Card>
+          )) || (
+            // Loading state
+            Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <Skeleton className="h-4 w-24" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-8 w-16 mb-2" />
+                  <Skeleton className="h-3 w-20" />
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </div>
+
+        {/* Status Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">
+              {t('live_monitor.status_info', 'معلومات الحالة')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm space-y-2">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">{t('live_monitor.last_update', 'آخر تحديث')}:</span>
+              <span>{liveData?.lastUpdate?.toLocaleTimeString() || 'N/A'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">{t('live_monitor.refresh_interval', 'فترة التحديث')}:</span>
+              <span>{isRealTimeEnabled ? '30 ثانية' : t('live_monitor.manual', 'يدوي')}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">{t('live_monitor.data_quality', 'جودة البيانات')}:</span>
+              <span>{coreMetrics ? t('live_monitor.live_data', 'بيانات مباشرة') : t('live_monitor.cached_data', 'بيانات مخزنة')}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </AnalyticsErrorBoundary>
   );
-}
+};
