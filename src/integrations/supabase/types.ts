@@ -9101,30 +9101,6 @@ export type Database = {
         }
         Relationships: []
       }
-      challenges_metrics_view: {
-        Row: {
-          active_challenges: number | null
-          average_submission_score: number | null
-          completed_challenges: number | null
-          completion_rate_percentage: number | null
-          critical_priority_count: number | null
-          draft_challenges: number | null
-          evaluation_challenges: number | null
-          high_priority_count: number | null
-          last_updated: string | null
-          low_priority_count: number | null
-          medium_priority_count: number | null
-          new_challenges_30d: number | null
-          new_participants_30d: number | null
-          new_submissions_30d: number | null
-          published_challenges: number | null
-          total_challenges: number | null
-          total_participants: number | null
-          total_submissions: number | null
-          unique_participants: number | null
-        }
-        Relationships: []
-      }
       partnership_opportunities: {
         Row: {
           benefits: Json | null
