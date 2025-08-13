@@ -27,6 +27,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
 // Optimized menu items - static definition to prevent recreation
+// Only includes routes that exist in UnifiedRouter
 const MENU_ITEMS = [
   // Main
   { 
@@ -55,75 +56,34 @@ const MENU_ITEMS = [
     path: '/opportunities',
     group: 'discover' 
   },
-  { 
-    id: 'campaigns', 
-    label: 'Campaigns', 
-    arabicLabel: 'الحملات',
-    icon: Target, 
-    path: '/campaigns',
-    group: 'discover' 
-  },
   
-  // Personal
+  // Personal  
   { 
     id: 'ideas', 
-    label: 'My Ideas', 
-    arabicLabel: 'أفكاري',
+    label: 'nav.ideas', 
+    arabicLabel: 'nav.ideas',
     icon: Lightbulb, 
     path: '/ideas',
     group: 'personal' 
   },
-  { 
-    id: 'bookmarks', 
-    label: 'Bookmarks', 
-    arabicLabel: 'المرجعيات',
-    icon: Star, 
-    path: '/bookmarks',
-    group: 'personal' 
-  },
-  { 
-    id: 'profile', 
-    label: 'Profile', 
-    arabicLabel: 'الملف الشخصي',
-    icon: User, 
-    path: '/profile',
-    group: 'personal' 
-  },
   
-  // Workspace
+  // Team Workspace
   { 
     id: 'teams', 
-    label: 'Teams', 
-    arabicLabel: 'الفرق',
+    label: 'nav.teams', 
+    arabicLabel: 'nav.teams',
     icon: Users, 
-    path: '/teams',
-    group: 'workspace' 
-  },
-  { 
-    id: 'projects', 
-    label: 'Projects', 
-    arabicLabel: 'المشاريع',
-    icon: Briefcase, 
-    path: '/projects',
+    path: '/dashboard/teams',
     group: 'workspace' 
   },
   
   // Analytics (Admin only)
   { 
-    id: 'analytics', 
-    label: 'Analytics', 
-    arabicLabel: 'التحليلات',
-    icon: BarChart3, 
-    path: '/analytics',
-    group: 'analytics',
-    adminOnly: true 
-  },
-  { 
     id: 'admin', 
-    label: 'Admin Dashboard', 
-    arabicLabel: 'لوحة الإدارة',
+    label: 'nav.admin', 
+    arabicLabel: 'nav.admin',
     icon: Shield, 
-    path: '/admin',
+    path: '/admin/dashboard',
     group: 'admin',
     adminOnly: true 
   },
@@ -131,16 +91,16 @@ const MENU_ITEMS = [
   // Settings
   { 
     id: 'settings', 
-    label: 'Settings', 
-    arabicLabel: 'الإعدادات',
+    label: 'nav.settings', 
+    arabicLabel: 'nav.settings',
     icon: Settings, 
     path: '/settings',
     group: 'settings' 
   },
   { 
     id: 'help', 
-    label: 'Help', 
-    arabicLabel: 'المساعدة',
+    label: 'nav.help', 
+    arabicLabel: 'nav.help',
     icon: HelpCircle, 
     path: '/help',
     group: 'settings' 
