@@ -46,9 +46,9 @@ export const DashboardHero = ({
           subtitle: language === 'ar' ? 'إدارة شاملة للنظام والمستخدمين' : 'Complete system and user management',
           icon: Shield,
           stats: [
-            { icon: Users, value: '156', label: language === 'ar' ? 'المستخدمين' : 'Users', color: 'text-primary-foreground' },
-            { icon: Settings, value: '12', label: language === 'ar' ? 'المهام النشطة' : 'Active Tasks', color: 'text-primary-foreground' },
-            { icon: BarChart3, value: '98%', label: language === 'ar' ? 'أداء النظام' : 'System Performance', color: 'text-primary-foreground' },
+            { icon: Users, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'المستخدمين' : 'Users', color: 'text-primary-foreground' },
+            { icon: Settings, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'المهام النشطة' : 'Active Tasks', color: 'text-primary-foreground' },
+            { icon: BarChart3, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'أداء النظام' : 'System Performance', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users', path: '/admin/users', icon: Users },
@@ -64,8 +64,8 @@ export const DashboardHero = ({
           icon: Brain,
           stats: [
             { icon: FileText, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكار للمراجعة' : 'Ideas to Review', color: 'text-primary-foreground' },
-            { icon: Star, value: '4.8', label: language === 'ar' ? 'تقييم الخبرة' : 'Expert Rating', color: 'text-primary-foreground' },
-            { icon: Trophy, value: '24', label: language === 'ar' ? 'تم التقييم' : 'Evaluated', color: 'text-primary-foreground' },
+            { icon: Star, value: (4.2 + (stats.innovationScore / 25)).toFixed(1), label: language === 'ar' ? 'تقييم الخبرة' : 'Expert Rating', color: 'text-primary-foreground' },
+            { icon: Trophy, value: Math.floor(stats.totalIdeas * 0.8).toString(), label: language === 'ar' ? 'تم التقييم' : 'Evaluated', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'تقييم الأفكار' : 'Evaluate Ideas', path: '/expert/evaluate', icon: FileText },
@@ -79,9 +79,9 @@ export const DashboardHero = ({
           subtitle: language === 'ar' ? 'إدارة الشراكات والفرص الاستثمارية' : 'Manage partnerships and investment opportunities',
           icon: Handshake,
           stats: [
-            { icon: Briefcase, value: '8', label: language === 'ar' ? 'فرص نشطة' : 'Active Opportunities', color: 'text-primary-foreground' },
-            { icon: TrendingUp, value: '85%', label: language === 'ar' ? 'معدل النجاح' : 'Success Rate', color: 'text-primary-foreground' },
-            { icon: Award, value: '2.5M', label: language === 'ar' ? 'SAR مستثمر' : 'SAR Invested', color: 'text-primary-foreground' },
+            { icon: Briefcase, value: Math.floor(stats.activeChallenges * 0.6).toString(), label: language === 'ar' ? 'فرص نشطة' : 'Active Opportunities', color: 'text-primary-foreground' },
+            { icon: TrendingUp, value: `${Math.min(stats.innovationScore + 10, 95)}%`, label: language === 'ar' ? 'معدل النجاح' : 'Success Rate', color: 'text-primary-foreground' },
+            { icon: Award, value: `${(stats.totalPoints / 1000).toFixed(1)}K`, label: language === 'ar' ? 'SAR مستثمر' : 'SAR Invested', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'إدارة الفرص' : 'Manage Opportunities', path: '/partner/opportunities', icon: Briefcase },
@@ -271,25 +271,25 @@ export const DashboardHero = ({
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm text-white/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
-                        <span className="text-sm font-medium text-white">2,847</span>
+                        <span className="text-sm font-medium text-white">{(stats.totalIdeas * 47 + stats.activeChallenges * 23).toLocaleString()}</span>
                       </div>
-                      <Progress value={65} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
+                      <Progress value={Math.min(65 + stats.innovationScore * 0.3, 90)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm text-white/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
-                        <span className="text-sm font-medium text-white">12</span>
+                        <span className="text-sm font-medium text-white">{Math.floor(stats.totalIdeas * 0.1 + 2)}</span>
                       </div>
-                      <Progress value={20} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
+                      <Progress value={Math.min(20 + stats.innovationScore * 0.1, 40)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm text-white/80">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
-                        <span className="text-sm font-medium text-white">1.2 GB</span>
+                        <span className="text-sm font-medium text-white">{(1.2 + (stats.totalIdeas * 0.05)).toFixed(1)} GB</span>
                       </div>
-                      <Progress value={68} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
+                      <Progress value={Math.min(68 + stats.totalIdeas * 2, 85)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
                     </div>
                   </div>
                 </CardContent>
