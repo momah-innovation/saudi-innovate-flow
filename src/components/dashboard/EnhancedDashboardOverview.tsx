@@ -150,63 +150,95 @@ export const EnhancedDashboardOverview = () => {
   const loadAchievements = async () => {
     if (!userProfile?.id) return;
     
-    // For now, use placeholder data since the migration table structure doesn't match
-    setAchievements([
-      {
-        id: '1',
-        achievement_name_ar: 'أول فكرة',
-        achievement_name_en: 'First Idea',
-        description_ar: 'تم تقديم أول فكرة ابتكارية',
-        description_en: 'Submitted your first innovative idea',
-        points_earned: 100,
-        badge_icon: 'lightbulb',
-        badge_color: '#10B981',
-        earned_at: new Date().toISOString(),
-        achievement_type: 'first_idea'
-      }
-    ]);
+    try {
+      // For now, just return empty achievements since we don't have the exact table structure
+      setAchievements([]);
+    } catch (error) {
+      logger.warn('Could not load achievements, using empty state', { component: 'EnhancedDashboardOverview', action: 'loadAchievements' });
+      setAchievements([]);
+    }
   };
 
   const loadNotifications = async () => {
     if (!userProfile?.id) return;
     
-    // For now, use placeholder data
-    setNotifications([
-      {
-        id: '1',
-        title_ar: 'مرحباً بك في لوحة القيادة',
-        title_en: 'Welcome to Dashboard',
-        message_ar: 'نرحب بك في لوحة القيادة الجديدة والمحسنة للابتكار',
-        message_en: 'Welcome to the new and improved innovation dashboard',
-        type: 'info',
-        is_read: false,
-        created_at: new Date().toISOString()
+    try {
+      const { data: notificationsData } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', userProfile.id)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (notificationsData && notificationsData.length > 0) {
+        setNotifications(notificationsData.map(notif => ({
+          id: notif.id,
+          title_ar: notif.title,
+          title_en: notif.title,
+          message_ar: notif.message,
+          message_en: notif.message,
+          type: notif.type || 'info',
+          is_read: notif.is_read || false,
+          created_at: notif.created_at,
+          action_url: typeof notif.metadata === 'object' && notif.metadata ? (notif.metadata as any).action_url : undefined
+        })));
+      } else {
+        setNotifications([]);
       }
-    ]);
+    } catch (error) {
+      logger.warn('Could not load notifications, using empty state', { component: 'EnhancedDashboardOverview', action: 'loadNotifications' });
+      setNotifications([]);
+    }
   };
 
   const loadTrends = async () => {
-    // For now, use placeholder data
-    setTrends([
-      {
-        id: '1',
-        trend_name_ar: 'الذكاء الاصطناعي',
-        trend_name_en: 'Artificial Intelligence',
-        trend_category: 'technology',
-        growth_percentage: 45.2,
-        current_value: 245,
-        trend_direction: 'up'
-      },
-      {
-        id: '2',
-        trend_name_ar: 'إنترنت الأشياء',
-        trend_name_en: 'Internet of Things',
-        trend_category: 'technology',
-        growth_percentage: 32.8,
-        current_value: 189,
-        trend_direction: 'up'
+    try {
+      // Get trend data from challenges and tag data
+      const { data: challengesData } = await supabase
+        .from('challenges')
+        .select('title, created_at')
+        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+
+      if (challengesData && challengesData.length > 0) {
+        // Create mock trend data based on challenges
+        const trendData = [
+          {
+            id: '1',
+            trend_name_ar: 'التكنولوجيا',
+            trend_name_en: 'Technology',
+            trend_category: 'technology',
+            growth_percentage: 35.2,
+            current_value: Math.floor(challengesData.length * 0.4),
+            trend_direction: 'up' as const
+          },
+          {
+            id: '2',
+            trend_name_ar: 'الابتكار',
+            trend_name_en: 'Innovation',
+            trend_category: 'innovation',
+            growth_percentage: 28.8,
+            current_value: Math.floor(challengesData.length * 0.3),
+            trend_direction: 'up' as const
+          },
+          {
+            id: '3',
+            trend_name_ar: 'التطوير',
+            trend_name_en: 'Development',
+            trend_category: 'development',
+            growth_percentage: 15.4,
+            current_value: Math.floor(challengesData.length * 0.2),
+            trend_direction: 'stable' as const
+          }
+        ];
+
+        setTrends(trendData);
+      } else {
+        setTrends([]);
       }
-    ]);
+    } catch (error) {
+      logger.warn('Could not load trends, using empty state', { component: 'EnhancedDashboardOverview', action: 'loadTrends' });
+      setTrends([]);
+    }
   };
 
   const markNotificationAsRead = async (notificationId: string) => {
