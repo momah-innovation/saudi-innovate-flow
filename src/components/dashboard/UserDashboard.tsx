@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -79,11 +79,14 @@ interface Goal {
 
 export default function UserDashboard() {
   const { userProfile } = useAuth();
-  const { permissions, getPrimaryRole, canAccess } = useRoleAccess();
+  const { permissions, getPrimaryRole: getRoleFromHook, canAccess } = useRoleAccess();
   const { t, language } = useUnifiedTranslation();
   const currentLanguage = language;
   const { isRTL } = useDirection();
   const navigate = useNavigate();
+  
+  // Memoize the role function to prevent unnecessary re-renders
+  const getPrimaryRole = useCallback(() => getRoleFromHook(), [getRoleFromHook]);
   
   const [primaryRole, setPrimaryRole] = useState<string>('innovator');
   
@@ -105,6 +108,24 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(true);
   const [selectedIdea, setSelectedIdea] = useState<any>(null);
 
+  // Memoize dashboard data loading to prevent unnecessary calls
+  const loadDashboardData = useCallback(async () => {
+    try {
+      setLoading(true);
+      await Promise.all([
+        loadUserStats(),
+        loadUserActivities(),
+        loadUserAchievements(),
+        loadUserGoals()
+      ]);
+    } catch (error) {
+      logger.error('Error loading dashboard data', { component: 'UserDashboard', action: 'loadDashboardData' }, error as Error);
+      toast.error('خطأ في تحميل بيانات لوحة القيادة');
+    } finally {
+      setLoading(false);
+    }
+  }, [userProfile?.id]);
+
   useEffect(() => {
     // Update primary role when user profile changes
     const role = getPrimaryRole();
@@ -123,7 +144,7 @@ export default function UserDashboard() {
           schema: 'public',
           table: 'ideas'
         }, () => {
-          loadDashboardData();
+        loadDashboardData();
         })
         .subscribe();
 
@@ -131,24 +152,7 @@ export default function UserDashboard() {
         supabase.removeChannel(channel);
       };
     }
-  }, [userProfile]);
-
-  const loadDashboardData = async () => {
-    try {
-      setLoading(true);
-      await Promise.all([
-        loadUserStats(),
-        loadUserActivities(),
-        loadUserAchievements(),
-        loadUserGoals()
-      ]);
-    } catch (error) {
-      logger.error('Error loading dashboard data', { component: 'UserDashboard', action: 'loadDashboardData' }, error as Error);
-      toast.error('خطأ في تحميل بيانات لوحة القيادة');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [userProfile?.id, loadDashboardData]);
 
   const loadUserStats = async () => {
     if (!userProfile?.id) return;

@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, useMemo, ReactNode } from 'react';
 import { Search, Menu, Languages, Moon, Sun, Plus, Ticket, AlignLeft, AlignRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -111,14 +111,15 @@ export function UnifiedHeader({
     return userProfile?.roles?.some(role => requiredRoles.includes(role as UserRole)) || false;
   };
 
-  // Dynamic content based on variant
-  const getSystemTitle = () => {
-    return t('system_title');
-  };
+  // Dynamic content based on variant - memoized to prevent rerenders
+  const getSystemTitle = useMemo(() => {
+    // Use fallback to prevent missing key errors
+    return t('system_title', 'Innovation System');
+  }, [t]);
 
-  const getSearchPlaceholder = () => {
-    return searchPlaceholder || t('search_placeholder');
-  };
+  const getSearchPlaceholder = useMemo(() => {
+    return searchPlaceholder || t('search_placeholder', 'Search...');
+  }, [searchPlaceholder, t]);
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
@@ -180,7 +181,7 @@ export function UnifiedHeader({
                 "font-semibold text-sm truncate transition-colors",
                 language === 'ar' ? 'font-arabic' : 'font-english'
               )}>
-                {title || getSystemTitle()}
+                {title || getSystemTitle}
               </h1>
             </div>
           </div>
@@ -196,7 +197,7 @@ export function UnifiedHeader({
               )} />
               <Input
                 type="search"
-                placeholder={getSearchPlaceholder()}
+                placeholder={getSearchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className={cn(
