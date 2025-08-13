@@ -110,21 +110,29 @@ export default React.memo(function UserDashboard() {
 
   // Memoize dashboard data loading to prevent unnecessary calls
   const loadDashboardData = useCallback(async () => {
+    if (!userProfile?.id || loading) {
+      console.log('Skipping loadDashboardData', { userId: userProfile?.id, loading });
+      return;
+    }
+    
+    console.log('Starting loadDashboardData...');
     try {
       setLoading(true);
       await Promise.all([
         loadUserStats(),
-        loadUserActivities(),
+        loadUserActivities(), 
         loadUserAchievements(),
         loadUserGoals()
       ]);
+      console.log('Dashboard data loaded successfully');
     } catch (error) {
+      console.error('Error loading dashboard data:', error);
       logger.error('Error loading dashboard data', { component: 'UserDashboard', action: 'loadDashboardData' }, error as Error);
       toast.error('خطأ في تحميل بيانات لوحة القيادة');
     } finally {
       setLoading(false);
     }
-  }, [userProfile?.id]);
+  }, []); // Remove userProfile dependency to prevent infinite loop
 
   useEffect(() => {
     // Update primary role when user profile changes
@@ -133,12 +141,16 @@ export default React.memo(function UserDashboard() {
   }, [userProfile, getPrimaryRole]);
 
   useEffect(() => {
-    if (userProfile?.id && !loading) {
+    console.log('UserDashboard useEffect triggered', { 
+      userId: userProfile?.id, 
+      loading, 
+      primaryRole 
+    });
+    
+    if (userProfile?.id) {
       loadDashboardData();
-      
-      // Set up real-time updates (removed to prevent multiple renders)
     }
-  }, [userProfile?.id]);
+  }, [userProfile?.id]); // Remove loading and loadDashboardData dependencies
 
   const loadUserStats = async () => {
     if (!userProfile?.id) return;
