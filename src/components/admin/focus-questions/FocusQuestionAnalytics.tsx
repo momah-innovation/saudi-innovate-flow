@@ -129,15 +129,22 @@ export function FocusQuestionAnalytics() {
       return acc;
     }, {});
 
-    // Mock monthly trends data
-    const monthlyTrends = [
-      { month: 'يناير', questions: 8, ideas: 32, events: 4 },
-      { month: 'فبراير', questions: 12, ideas: 48, events: 6 },
-      { month: 'مارس', questions: 15, ideas: 60, events: 8 },
-      { month: 'أبريل', questions: 10, ideas: 40, events: 5 },
-      { month: 'مايو', questions: 18, ideas: 72, events: 9 },
-      { month: 'يونيو', questions: 14, ideas: 56, events: 7 }
-    ];
+    // Generate monthly trends data based on actual question data
+    const monthlyTrends = Array.from({ length: 6 }, (_, i) => {
+      const date = new Date();
+      date.setMonth(date.getMonth() - (5 - i));
+      const monthQuestions = questions.filter(q => {
+        const qDate = new Date(q.created_at || new Date());
+        return qDate.getMonth() === date.getMonth() && qDate.getFullYear() === date.getFullYear();
+      });
+      
+      return {
+        month: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'][date.getMonth()],
+        questions: monthQuestions.length,
+        ideas: monthQuestions.reduce((sum, q) => sum + (q.ideas?.length || 0), 0),
+        events: monthQuestions.reduce((sum, q) => sum + (q.event_focus_question_links?.length || 0), 0)
+      };
+    });
 
     const topPerformers = questions
       .map(q => ({
