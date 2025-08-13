@@ -54,11 +54,11 @@ export const EnhancedExpertDashboardHero = ({
   const { isRTL } = useDirection();
   const [currentStat, setCurrentStat] = useState(0);
 
-  // Calculate dynamic stats based on user profile and real data
-  const dynamicAssigned = userProfile?.profile_completion_percentage ? Math.floor(userProfile.profile_completion_percentage * 0.15) : assignedChallenges;
-  const dynamicPending = userProfile?.id ? Math.floor(Math.random() * 8 + 2) : pendingEvaluations;
-  const dynamicCompleted = userProfile?.profile_completion_percentage ? Math.floor(userProfile.profile_completion_percentage * 0.25) : completedEvaluations;
-  const dynamicRating = userProfile?.profile_completion_percentage ? (4.0 + (userProfile.profile_completion_percentage / 100) * 1.5) : averageRating;
+  // Use real stats data instead of calculations
+  const dynamicAssigned = assignedChallenges;
+  const dynamicPending = pendingEvaluations;
+  const dynamicCompleted = completedEvaluations;
+  const dynamicRating = averageRating;
 
   const stats = [
     { icon: Target, value: dynamicAssigned, label: isRTL ? 'تحدي مُكلف' : 'assigned', color: 'text-info' },

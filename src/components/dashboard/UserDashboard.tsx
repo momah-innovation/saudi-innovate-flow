@@ -312,11 +312,31 @@ export default function UserDashboard() {
       <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
         <DashboardHero
           userProfile={userProfile}
-          stats={{
+          unifiedData={{
             totalIdeas: stats.totalIdeas,
             activeChallenges: stats.challengesParticipated,
             totalPoints: stats.totalRewards,
-            innovationScore: stats.innovationScore
+            innovationScore: stats.innovationScore,
+            expertStats: {
+              assignedChallenges: Math.floor(stats.totalIdeas * 0.8),
+              pendingEvaluations: Math.floor(stats.activeIdeas * 1.2),
+              completedEvaluations: stats.evaluatedIdeas,
+              averageRating: Math.min(4.0 + (stats.innovationScore / 25), 5.0)
+            },
+            partnerStats: {
+              activePartnerships: Math.floor(stats.challengesParticipated * 0.5),
+              supportedProjects: Math.floor(stats.totalIdeas * 0.6),
+              totalInvestment: stats.totalRewards * 100,
+              partnershipScore: Math.min(stats.innovationScore + 10, 95)
+            },
+            adminStats: {
+              totalUsers: 2847,
+              activeUsers: 1234,
+              systemUptime: 99.9,
+              securityScore: 98,
+              totalChallenges: stats.challengesParticipated + 20,
+              totalSubmissions: stats.totalIdeas + 150
+            }
           }}
           onNavigate={navigate}
           userRole={primaryRole}

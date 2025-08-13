@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Handshake, Briefcase, TrendingUp, Target, ArrowRight } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useNavigate } from 'react-router-dom';
+import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
 
 interface PartnerDashboardProps {
   userProfile: any;
@@ -14,24 +15,25 @@ interface PartnerDashboardProps {
 export function PartnerDashboard({ userProfile, canManageOpportunities, canViewPartnerDashboard }: PartnerDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  const { data: unifiedData } = useUnifiedDashboardData('partner');
 
-  // Create dynamic partner stats based on user activity
+  // Use real partner stats from unified data
   const partnerStats = [
     {
       title: language === 'ar' ? 'الفرص النشطة' : 'Active Opportunities',
-      value: userProfile?.profile_completion_percentage ? Math.floor(userProfile.profile_completion_percentage * 0.12).toString() : '8',
+      value: unifiedData.partnerStats.activePartnerships.toString(),
       icon: Target,
       color: 'text-success'
     },
     {
       title: language === 'ar' ? 'الشراكات' : 'Partnerships',
-      value: userProfile?.id ? Math.floor(Math.random() * 5 + 2).toString() : '3',
+      value: unifiedData.partnerStats.supportedProjects.toString(),
       icon: Handshake,
       color: 'text-info'
     },
     {
       title: language === 'ar' ? 'معدل النجاح' : 'Success Rate',
-      value: userProfile?.profile_completion_percentage ? `${Math.min(75 + userProfile.profile_completion_percentage * 0.2, 95).toFixed(0)}%` : '85%',
+      value: `${unifiedData.partnerStats.partnershipScore}%`,
       icon: TrendingUp,
       color: 'text-primary'
     }

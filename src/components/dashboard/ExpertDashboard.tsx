@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, Brain, FileText, Clock, Award, ArrowRight } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useNavigate } from 'react-router-dom';
+import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
 
 interface ExpertDashboardProps {
   userProfile: any;
@@ -15,24 +16,25 @@ interface ExpertDashboardProps {
 export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpertTools }: ExpertDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  const { data: unifiedData } = useUnifiedDashboardData('expert');
 
-  // Create dynamic expert stats based on user activity
+  // Use real expert stats from unified data
   const expertStats = [
     {
       title: language === 'ar' ? 'الأفكار المراجعة' : 'Ideas Reviewed',
-      value: userProfile?.profile_completion_percentage ? Math.floor(userProfile.profile_completion_percentage * 0.3).toString() : '24',
+      value: unifiedData.expertStats.completedEvaluations.toString(),
       icon: FileText,
       color: 'text-info'
     },
     {
       title: language === 'ar' ? 'قيد المراجعة' : 'Pending Review',
-      value: userProfile?.id ? Math.floor(Math.random() * 8 + 2).toString() : '5',
+      value: unifiedData.expertStats.pendingEvaluations.toString(),
       icon: Clock,
       color: 'text-warning'
     },
     {
       title: language === 'ar' ? 'التقييم المتوسط' : 'Average Rating',
-      value: userProfile?.profile_completion_percentage ? (4.0 + (userProfile.profile_completion_percentage / 100) * 1.0).toFixed(1) : '4.6',
+      value: unifiedData.expertStats.averageRating.toFixed(1),
       icon: Star,
       color: 'text-success'
     }

@@ -13,11 +13,31 @@ import { cn } from '@/lib/utils';
 
 interface DashboardHeroProps {
   userProfile?: any;
-  stats: {
+  unifiedData: {
     totalIdeas: number;
     activeChallenges: number;
     totalPoints: number;
     innovationScore: number;
+    expertStats: {
+      assignedChallenges: number;
+      pendingEvaluations: number;
+      completedEvaluations: number;
+      averageRating: number;
+    };
+    partnerStats: {
+      activePartnerships: number;
+      supportedProjects: number;
+      totalInvestment: number;
+      partnershipScore: number;
+    };
+    adminStats: {
+      totalUsers: number;
+      activeUsers: number;
+      systemUptime: number;
+      securityScore: number;
+      totalChallenges: number;
+      totalSubmissions: number;
+    };
   };
   onNavigate: (path: string) => void;
   userRole?: string;
@@ -26,7 +46,7 @@ interface DashboardHeroProps {
 
 export const DashboardHero = ({ 
   userProfile,
-  stats,
+  unifiedData,
   onNavigate,
   userRole = 'innovator',
   rolePermissions 
@@ -46,9 +66,9 @@ export const DashboardHero = ({
           subtitle: language === 'ar' ? 'إدارة شاملة للنظام والمستخدمين' : 'Complete system and user management',
           icon: Shield,
           stats: [
-            { icon: Users, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'المستخدمين' : 'Users', color: 'text-primary-foreground' },
-            { icon: Settings, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'المهام النشطة' : 'Active Tasks', color: 'text-primary-foreground' },
-            { icon: BarChart3, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'أداء النظام' : 'System Performance', color: 'text-primary-foreground' },
+            { icon: Users, value: unifiedData.adminStats.totalUsers.toString(), label: language === 'ar' ? 'المستخدمين' : 'Users', color: 'text-primary-foreground' },
+            { icon: Settings, value: unifiedData.adminStats.totalChallenges.toString(), label: language === 'ar' ? 'المهام النشطة' : 'Active Tasks', color: 'text-primary-foreground' },
+            { icon: BarChart3, value: `${unifiedData.adminStats.systemUptime}%`, label: language === 'ar' ? 'أداء النظام' : 'System Performance', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users', path: '/admin/users', icon: Users },
@@ -63,9 +83,9 @@ export const DashboardHero = ({
           subtitle: language === 'ar' ? 'تقييم ومراجعة الأفكار الابتكارية' : 'Evaluate and review innovative ideas',
           icon: Brain,
           stats: [
-            { icon: FileText, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكار للمراجعة' : 'Ideas to Review', color: 'text-primary-foreground' },
-            { icon: Star, value: (4.2 + (stats.innovationScore / 25)).toFixed(1), label: language === 'ar' ? 'تقييم الخبرة' : 'Expert Rating', color: 'text-primary-foreground' },
-            { icon: Trophy, value: Math.floor(stats.totalIdeas * 0.8).toString(), label: language === 'ar' ? 'تم التقييم' : 'Evaluated', color: 'text-primary-foreground' },
+            { icon: FileText, value: unifiedData.expertStats.pendingEvaluations.toString(), label: language === 'ar' ? 'أفكار للمراجعة' : 'Ideas to Review', color: 'text-primary-foreground' },
+            { icon: Star, value: unifiedData.expertStats.averageRating.toFixed(1), label: language === 'ar' ? 'تقييم الخبرة' : 'Expert Rating', color: 'text-primary-foreground' },
+            { icon: Trophy, value: unifiedData.expertStats.completedEvaluations.toString(), label: language === 'ar' ? 'تم التقييم' : 'Evaluated', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'تقييم الأفكار' : 'Evaluate Ideas', path: '/expert/evaluate', icon: FileText },
@@ -79,9 +99,9 @@ export const DashboardHero = ({
           subtitle: language === 'ar' ? 'إدارة الشراكات والفرص الاستثمارية' : 'Manage partnerships and investment opportunities',
           icon: Handshake,
           stats: [
-            { icon: Briefcase, value: Math.floor(stats.activeChallenges * 0.6).toString(), label: language === 'ar' ? 'فرص نشطة' : 'Active Opportunities', color: 'text-primary-foreground' },
-            { icon: TrendingUp, value: `${Math.min(stats.innovationScore + 10, 95)}%`, label: language === 'ar' ? 'معدل النجاح' : 'Success Rate', color: 'text-primary-foreground' },
-            { icon: Award, value: `${(stats.totalPoints / 1000).toFixed(1)}K`, label: language === 'ar' ? 'SAR مستثمر' : 'SAR Invested', color: 'text-primary-foreground' },
+            { icon: Briefcase, value: unifiedData.partnerStats.activePartnerships.toString(), label: language === 'ar' ? 'فرص نشطة' : 'Active Opportunities', color: 'text-primary-foreground' },
+            { icon: TrendingUp, value: `${unifiedData.partnerStats.partnershipScore}%`, label: language === 'ar' ? 'معدل النجاح' : 'Success Rate', color: 'text-primary-foreground' },
+            { icon: Award, value: `${(unifiedData.partnerStats.totalInvestment / 1000).toFixed(1)}K`, label: language === 'ar' ? 'SAR مستثمر' : 'SAR Invested', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'إدارة الفرص' : 'Manage Opportunities', path: '/partner/opportunities', icon: Briefcase },
@@ -95,10 +115,10 @@ export const DashboardHero = ({
           subtitle: language === 'ar' ? 'اكتشف، ابتكر، وشارك أفكارك مع العالم' : 'Discover, innovate, and share your ideas with the world',
           icon: Lightbulb,
           stats: [
-            { icon: Lightbulb, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكاري' : 'My Ideas', color: 'text-primary-foreground' },
-            { icon: Target, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-primary-foreground' },
-            { icon: Award, value: stats.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-primary-foreground' },
-            { icon: Trophy, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-primary-foreground' },
+            { icon: Lightbulb, value: unifiedData.totalIdeas.toString(), label: language === 'ar' ? 'أفكاري' : 'My Ideas', color: 'text-primary-foreground' },
+            { icon: Target, value: unifiedData.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-primary-foreground' },
+            { icon: Award, value: unifiedData.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-primary-foreground' },
+            { icon: Trophy, value: `${unifiedData.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'تصفح التحديات' : 'Browse Challenges', path: '/challenges', icon: Target },
@@ -271,25 +291,25 @@ export const DashboardHero = ({
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm text-white/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
-                        <span className="text-sm font-medium text-white">{(stats.totalIdeas * 47 + stats.activeChallenges * 23).toLocaleString()}</span>
+                        <span className="text-sm font-medium text-white">{(unifiedData.adminStats.totalSubmissions * 47).toLocaleString()}</span>
                       </div>
-                      <Progress value={Math.min(65 + stats.innovationScore * 0.3, 90)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
+                      <Progress value={Math.min(65 + unifiedData.adminStats.systemUptime * 0.3, 90)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm text-white/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
-                        <span className="text-sm font-medium text-white">{Math.floor(stats.totalIdeas * 0.1 + 2)}</span>
+                        <span className="text-sm font-medium text-white">{Math.floor((100 - unifiedData.adminStats.securityScore) * 0.5)}</span>
                       </div>
-                      <Progress value={Math.min(20 + stats.innovationScore * 0.1, 40)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
+                      <Progress value={Math.min(20 + unifiedData.adminStats.securityScore * 0.2, 40)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm text-white/80">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
-                        <span className="text-sm font-medium text-white">{(1.2 + (stats.totalIdeas * 0.05)).toFixed(1)} GB</span>
+                        <span className="text-sm font-medium text-white">{(1.2 + (unifiedData.adminStats.totalSubmissions * 0.01)).toFixed(1)} GB</span>
                       </div>
-                      <Progress value={Math.min(68 + stats.totalIdeas * 2, 85)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
+                      <Progress value={Math.min(68 + unifiedData.adminStats.totalSubmissions * 0.5, 85)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
                     </div>
                   </div>
                 </CardContent>
@@ -307,10 +327,10 @@ export const DashboardHero = ({
                       {language === 'ar' ? 'مستوى الابتكار' : 'Innovation Level'}
                     </h3>
                     <div className="text-3xl font-bold text-warning mb-4">
-                      {stats.innovationScore}%
+                      {unifiedData.innovationScore}%
                     </div>
                     <Progress 
-                      value={stats.innovationScore} 
+                      value={unifiedData.innovationScore} 
                       className="h-3 bg-white/20"
                     />
                   </div>
@@ -318,15 +338,15 @@ export const DashboardHero = ({
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-white/80">{language === 'ar' ? 'أفكار مقدمة' : 'Ideas Submitted'}</span>
-                      <span className="text-white font-semibold">{stats.totalIdeas}</span>
+                      <span className="text-white font-semibold">{unifiedData.totalIdeas}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-white/80">{language === 'ar' ? 'نقاط مكتسبة' : 'Points Earned'}</span>
-                      <span className="text-white font-semibold">{stats.totalPoints}</span>
+                      <span className="text-white font-semibold">{unifiedData.totalPoints}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-white/80">{language === 'ar' ? 'تحديات نشطة' : 'Active Challenges'}</span>
-                      <span className="text-white font-semibold">{stats.activeChallenges}</span>
+                      <span className="text-white font-semibold">{unifiedData.activeChallenges}</span>
                     </div>
                   </div>
                 </CardContent>

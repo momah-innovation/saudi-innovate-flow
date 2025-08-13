@@ -47,11 +47,11 @@ export const EnhancedPartnerDashboardHero = ({
   const { t } = useUnifiedTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
-  // Calculate dynamic stats based on user profile and real data
-  const dynamicPartnerships = userProfile?.profile_completion_percentage ? Math.floor(userProfile.profile_completion_percentage * 0.08) : stats.activePartnerships;
-  const dynamicProjects = userProfile?.profile_completion_percentage ? Math.floor(userProfile.profile_completion_percentage * 0.12) : stats.supportedProjects;
-  const dynamicInvestment = userProfile?.profile_completion_percentage ? Math.floor(userProfile.profile_completion_percentage * 15 + 250) : stats.totalInvestment;
-  const dynamicScore = userProfile?.profile_completion_percentage ? Math.min(userProfile.profile_completion_percentage + 15, 95) : stats.partnershipScore;
+  // Use real stats data instead of calculations
+  const dynamicPartnerships = stats.activePartnerships;
+  const dynamicProjects = stats.supportedProjects;
+  const dynamicInvestment = stats.totalInvestment;
+  const dynamicScore = stats.partnershipScore;
 
   const partnerStats = [
     { icon: Handshake, value: dynamicPartnerships, label: t('activePartnerships'), color: 'text-info' },
