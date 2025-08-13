@@ -1,6 +1,4 @@
 import React, { ReactNode, Suspense, useState, createContext, useContext } from 'react';
-import { SystemHeader } from './UnifiedHeader';
-import { NavigationSidebar } from './NavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -10,6 +8,9 @@ import { useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { TranslationProvider } from '@/contexts/TranslationContext';
 import { AnalyticsProvider } from '@/contexts/AnalyticsContext';
 import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
+import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { OptimizedSidebar } from './OptimizedSidebar';
+import { UnifiedHeader } from './UnifiedHeader';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
@@ -103,23 +104,17 @@ interface AppContextType {
   
   // System
   systemSettings: any;
-  
-  // Navigation
-  sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 /**
- * AppShell - Root layout component providing unified app context
+ * AppShell - Optimized root layout with fast sidebar
  * Features:
+ * - Ultra-fast Shadcn sidebar with instant open/close
+ * - Optimized performance with minimal re-renders
  * - Centralized hook injection for all components
  * - Global RTL/LTR and i18n setup
- * - Auto direction detection (Arabic = RTL, English = LTR)
- * - Overlay navigation sidebar
- * - Global header with search and user controls
- * - Loading states and performance optimization
  */
 export function AppShell({ children, enableCollaboration, collaborationContext }: AppShellProps) {
   // Initialize all hooks at app level
@@ -129,9 +124,6 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   const translation = useUnifiedTranslation();
   const systemSettings = useSystemSettings();
   const location = useLocation();
-  
-  // Local state
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Determine if collaboration should be enabled based on route
   const shouldEnableCollaboration = enableCollaboration !== false && (
@@ -208,10 +200,6 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
     
     // System
     systemSettings,
-    
-    // Navigation
-    sidebarOpen,
-    setSidebarOpen,
   };
   
   const handleError = (error: Error) => {
@@ -223,29 +211,31 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
       <TranslationProvider>
         <AnalyticsProvider options={{ includeRoleSpecific: true, autoRefresh: true }}>
           <AppContext.Provider value={appContextValue}>
-            <div className={cn(
-              "min-h-screen flex w-full bg-background transition-all duration-300",
-              direction.isRTL && "flex-row-reverse"
-            )}>
-              {/* Navigation Sidebar Overlay */}
-              <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
-              
-              {/* Main Content Area */}
-              <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                {/* Global Header */}
-                <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
-                
-                {/* Page Content with Loading */}
-                <main className="flex-1 overflow-auto overscroll-behavior-contain">
-                  <Suspense fallback={
-                    <div className="flex items-center justify-center min-h-[50vh] px-4">
-                      <LoadingSpinner />
-                    </div>
-                  }>
-                    {children}
-                  </Suspense>
-                </main>
-              </div>
+            <div className="min-h-screen flex w-full">
+              <SidebarProvider>
+                <OptimizedSidebar />
+                <SidebarInset>
+                  {/* Optimized Header with Sidebar Trigger */}
+                  <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                    <SidebarTrigger className="-ml-1 h-8 w-8" />
+                    <UnifiedHeader 
+                      variant="system" 
+                      className="flex-1 border-none px-0 h-auto py-0"
+                    />
+                  </header>
+                  
+                  {/* Optimized Page Content */}
+                  <main className="flex-1 overflow-auto">
+                    <Suspense fallback={
+                      <div className="flex items-center justify-center min-h-[50vh] px-4">
+                        <LoadingSpinner />
+                      </div>
+                    }>
+                      {children}
+                    </Suspense>
+                  </main>
+                </SidebarInset>
+              </SidebarProvider>
             </div>
           </AppContext.Provider>
         </AnalyticsProvider>
