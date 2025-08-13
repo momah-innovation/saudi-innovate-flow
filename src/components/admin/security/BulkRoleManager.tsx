@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -28,28 +28,65 @@ import {
   UserCheck
 } from 'lucide-react';
 import { useUserRoles, useRoleManagement } from '@/hooks/admin/useRoleManagement';
+import { supabase } from '@/integrations/supabase/client';
 
 interface BulkRoleManagerProps {
   className?: string;
 }
 
+interface UserData {
+  id: string;
+  name: string;
+  email: string;
+  currentRole: string;
+}
+
+
 const BulkRoleManager: React.FC<BulkRoleManagerProps> = ({ className }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { data: userRoles, isLoading } = useUserRoles({});
   const { assignRole, revokeRole, isAssigning, isRevoking } = useRoleManagement();
 
-  // Mock users data for bulk operations
-  const mockUsers = [
-    { id: 'user-1', name: 'أحمد محمد', email: 'ahmed@example.com', currentRole: 'user' },
-    { id: 'user-2', name: 'فاطمة علي', email: 'fatima@example.com', currentRole: 'moderator' },
-    { id: 'user-3', name: 'محمد حسن', email: 'mohamed@example.com', currentRole: 'user' },
-    { id: 'user-4', name: 'زينب أحمد', email: 'zeinab@example.com', currentRole: 'user' }
-  ];
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
-  const filteredUsers = mockUsers.filter(user =>
+  const loadUsers = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch users with their current roles
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, name, email, name_ar')
+        .limit(50);
+
+      const { data: roleData } = await supabase
+        .from('user_roles')
+        .select('user_id, role')
+        .eq('is_active', true);
+
+      const usersData = profiles?.map(profile => ({
+        id: profile.id,
+        name: profile.name || profile.name_ar || 'Unknown User',
+        email: profile.email || 'No email',
+        currentRole: roleData?.find(r => r.user_id === profile.id)?.role || 'user'
+      })) || [];
+
+      setUsers(usersData);
+    } catch (error) {
+      console.error('Error loading users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -99,7 +136,7 @@ const BulkRoleManager: React.FC<BulkRoleManagerProps> = ({ className }) => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return (
       <Card className={className}>
         <CardHeader>
