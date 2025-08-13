@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo, useCallback } from 'react';
 import { 
   Home, Search, Calendar, BarChart3, Users, Lightbulb, Bookmark, UserCheck, 
   Edit, Award, FileText, Building, Database, HardDrive, Briefcase, Target, 
@@ -11,8 +11,6 @@ import {
   Sheet, SheetContent, SheetHeader, SheetTitle
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-// import { useAuth } from '@/hooks/useAuth';
-// import { useProfile } from '@/hooks/useProfile';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,8 +20,8 @@ import { useSidebarPersistence } from '@/contexts/SidebarContext';
 import { MenuItem, UserProfile, GroupLabels, GroupedMenuItems } from '@/types/navigation';
 
 /**
- * NavigationSidebar - Overlay navigation with role-based menu items
- * Now includes new tag management and file system pages with organized grouping
+ * NavigationSidebar - Optimized overlay navigation with role-based menu items
+ * Memoized for performance with minimal re-renders
  */
 
 interface NavigationSidebarProps {
@@ -31,14 +29,55 @@ interface NavigationSidebarProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
+// Memoized navigation item component
+const NavigationItem = memo(({ 
+  item, 
+  isActive, 
+  onClick 
+}: { 
+  item: MenuItem; 
+  isActive: boolean; 
+  onClick: () => void;
+}) => {
+  const { isRTL } = useUnifiedTranslation();
+  
+  return (
+    <NavLink
+      to={item.path}
+      onClick={onClick}
+      className={({ isActive: linkActive }) => cn(
+        "flex items-center justify-between w-full px-3 py-2 text-sm rounded-md transition-colors",
+        "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        (linkActive || isActive) ? "bg-sidebar-accent text-sidebar-accent-foreground" : "text-sidebar-foreground"
+      )}
+    >
+      <div className="flex items-center gap-3">
+        <item.icon className="h-4 w-4" />
+        <span className={cn(
+          "font-medium truncate",
+          isRTL ? 'font-arabic' : 'font-english'
+        )}>
+          {isRTL ? item.arabicLabel : item.label}
+        </span>
+      </div>
+      {item.badge && (
+        <Badge variant="secondary" className="text-xs">
+          {item.badge}
+        </Badge>
+      )}
+    </NavLink>
+  );
+});
+
+NavigationItem.displayName = 'NavigationItem';
+
+export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
   const location = useLocation();
   const { isRTL, t } = useUnifiedTranslation();
-  // const { user } = useAuth();
-  // const { profile: userProfile } = useProfile();
   const userProfile = null; // Simplified for now
   const [isOldLinksOpen, setIsOldLinksOpen] = React.useState(false);
 
+  // Memoized menu items to prevent recreation on every render
   const menuItems = useMemo(() => {
     const baseItems = [
       { 
@@ -697,4 +736,6 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
       </SheetContent>
     </Sheet>
   );
-}
+});
+
+NavigationSidebar.displayName = 'NavigationSidebar';

@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { queryKeys } from '@/lib/query/query-keys';
 import { useMemo, useEffect } from 'react';
 import { logger } from '@/utils/logger';
+import { useSystemTranslations } from './useSystemTranslations';
 
 interface SystemTranslation {
   id: string;
@@ -25,73 +26,31 @@ export function useUnifiedTranslation() {
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
   
-  // Remove excessive logging
-  // console.log('🌐 Translation Hook - Current Language:', { 
-  //   rawLanguage: i18n.language, 
-  //   normalizedLanguage: language, 
-  //   isRTL 
-  // });
+  // Use the dedicated system translations hook
+  const {
+    translationMap,
+    getTranslation: getSystemTranslation,
+    hasTranslation: hasSystemTranslation,
+    refreshTranslations,
+    isLoading,
+    error,
+    count: translationCount,
+    isReady
+  } = useSystemTranslations(language);
 
-  // Fetch database translations with React Query - shared across all languages
-  const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
-    queryKey: ['system-translations'], // Remove dynamic timestamp to prevent infinite refetching
-    queryFn: async () => {
-      try {
-        // Simplified single query  
-        const { data, error } = await supabase
-          .from('system_translations')
-          .select('translation_key, text_en, text_ar')
-          .order('translation_key')
-          .limit(5000);
-
-        if (error) throw error;
-        return data || [];
-      } catch (error) {
-        console.error('❌ Translation fetch failed:', error);
-        return [];
-      }
-    },
-    staleTime: 15 * 60 * 1000, // 15 minutes - further increased
-    gcTime: 60 * 60 * 1000, // 1 hour cache
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchInterval: false, // Disable automatic refetching
-    retry: 1
-  });
-
-  // Only log once when data changes, not on every render
+  // Optimized logging - only when data changes
   useEffect(() => {
-    if (!isLoading && dbTranslations.length > 0) {
-      console.log('🎯 Translation data loaded:', { 
-        count: dbTranslations.length, 
-        sample: dbTranslations.slice(0, 2).map(t => t.translation_key)
+    if (isReady) {
+      console.log('🎯 System translations loaded:', { 
+        count: translationCount, 
+        language,
+        sampleKeys: Array.from(translationMap.keys()).slice(0, 3)
       });
     }
-  }, [dbTranslations.length, isLoading]);
-
-  // Create optimized translation map
-  const translationMap = useMemo(() => {
-    const map = new Map<string, { en: string; ar: string }>();
-    
-    dbTranslations.forEach(translation => {
-      if (!translation.translation_key || !translation.text_en || !translation.text_ar) {
-        return; // Skip invalid records
-      }
-      
-      map.set(translation.translation_key, {
-        en: translation.text_en,
-        ar: translation.text_ar
-      });
-    });
-    
-    logger.info('Translation map built successfully', { mapSize: map.size, language });
-    return map;
-  }, [dbTranslations, language]);
+  }, [isReady, translationCount, language, translationMap]);
 
   /**
-   * Primary translation function - SUPPORTS BOTH OLD AND NEW PATTERNS TEMPORARILY
-   * New: t(key, fallback, options)
-   * Old: t(key, options) - for backward compatibility during migration
+   * Primary translation function - Enhanced with better fallback logic
    */
   const t = (key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
     try {
@@ -100,54 +59,40 @@ export function useUnifiedTranslation() {
       
       // Handle parameter variations
       if (typeof fallbackOrOptions === 'string') {
-        // New pattern: t(key, fallback, options)
         fallback = fallbackOrOptions;
         interpolationOptions = options;
       } else if (typeof fallbackOrOptions === 'object' && fallbackOrOptions !== null) {
-        // Old pattern: t(key, options) - backward compatibility
         interpolationOptions = fallbackOrOptions;
         fallback = undefined;
       }
 
-      // If still loading and we have a fallback, use it without warnings
-      if (isLoading && translationMap.size === 0 && fallback) {
-        return interpolateText(fallback, interpolationOptions);
-      }
-
       // Strategy 1: Database translation (highest priority)
-      const dbTranslation = translationMap.get(key);
-      if (dbTranslation) {
-        const text = dbTranslation[language];
-        if (text && text.trim() !== '') {
-          const result = interpolateText(text, interpolationOptions);
+      if (hasSystemTranslation(key)) {
+        const dbText = getSystemTranslation(key, fallback);
+        if (dbText && dbText !== key) {
+          const result = interpolateText(dbText, interpolationOptions);
           return result;
         }
-      } else if (!isLoading && translationMap.size > 0) {
-        // Debug logging for missing keys when we have data loaded
-        if (key.startsWith('settings.') && (key.includes('test_component') || key.includes('ui_initials'))) {
-          console.log('🔍 Debug: Missing settings key in translation map', { 
-            key, 
-            language, 
-            mapSize: translationMap.size,
-            hasKey: translationMap.has(key),
-            settingsKeys: Array.from(translationMap.keys()).filter(k => k.startsWith('settings.')).slice(0, 10),
-            testKeys: Array.from(translationMap.keys()).filter(k => k.includes('test_component') || k.includes('ui_initials'))
-          });
-        }
       }
 
-      // Strategy 2: Provided fallback (only warn if not loading)
+      // Strategy 2: i18next translation
+      const i18nextResult = i18nextT(key, fallback);
+      if (i18nextResult && i18nextResult !== key) {
+        return interpolateText(i18nextResult, interpolationOptions);
+      }
+
+      // Strategy 3: Provided fallback
       if (fallback && fallback.trim() !== '') {
         const result = interpolateText(fallback, interpolationOptions);
-        if (!isLoading) {
+        if (!isLoading && translationCount > 0) {
           console.warn('⚠️ MISSING KEY - USING FALLBACK:', { key, fallback: result.slice(0, 50) });
         }
         return result;
       }
 
-      // Strategy 3: Return key as last resort - LOG MISSING TRANSLATION (only if not loading)
-      if (!isLoading) {
-        console.error('❌ MISSING TRANSLATION KEY:', { key, language, mapSize: translationMap.size });
+      // Strategy 4: Return key as last resort
+      if (!isLoading && translationCount > 0) {
+        console.error('❌ MISSING TRANSLATION KEY:', { key, language, availableCount: translationCount });
       }
       return key;
     } catch (error) {
@@ -181,12 +126,8 @@ export function useUnifiedTranslation() {
     const targetLang = targetLanguage || language;
     
     try {
-      const dbTranslation = translationMap.get(key);
-      if (dbTranslation) {
-        const text = dbTranslation[targetLang];
-        if (text && text.trim() !== '') {
-          return text;
-        }
+      if (hasSystemTranslation(key)) {
+        return getSystemTranslation(key, fallback);
       }
 
       // Fallback to i18next for the target language
@@ -250,22 +191,6 @@ export function useUnifiedTranslation() {
   };
 
   /**
-   * Check if translation exists in database
-   */
-  const hasTranslation = (key: string): boolean => {
-    return translationMap.has(key);
-  };
-
-  /**
-   * Get all translations for a category
-   */
-  const getCategoryTranslations = (category: string) => {
-    return dbTranslations.filter(translation => 
-      translation.translation_key.startsWith(category + '.')
-    );
-  };
-
-  /**
    * Get translation with loading state for UI components
    */
   const getTranslationWithLoading = (key: string, fallback?: string): { text: string; isLoading: boolean } => {
@@ -273,25 +198,6 @@ export function useUnifiedTranslation() {
       text: t(key, fallback),
       isLoading
     };
-  };
-
-  // Function to refresh translations - invalidate all translation queries
-  const refreshTranslations = async () => {
-    console.log('🔄 Refreshing translations cache...');
-    
-    // Invalidate all translation-related queries
-    await queryClient.invalidateQueries({
-      predicate: (query) => {
-        const key = Array.isArray(query.queryKey) ? query.queryKey : [];
-        return key.includes('system-translations') || key.includes('translations') || 
-               (key[0] === 'system' && key[1] === 'translations');
-      }
-    });
-    
-    // Force refetch
-    await refetch();
-    
-    console.log('✅ Translation cache refreshed');
   };
 
   return {
@@ -303,8 +209,7 @@ export function useUnifiedTranslation() {
     getDynamicText,
     formatNumber,
     formatRelativeTime,
-    hasTranslation,
-    getCategoryTranslations,
+    hasTranslation: hasSystemTranslation,
     getTranslationWithLoading,
     refreshTranslations,
     
@@ -315,11 +220,10 @@ export function useUnifiedTranslation() {
     error,
     
     // Statistics
-    translationCount: dbTranslations.length,
-    isReady: !isLoading && dbTranslations.length > 0,
+    translationCount,
+    isReady,
     
     // Raw data access (for advanced use cases)
-    dbTranslations,
     translationMap,
     
     // i18next integration
