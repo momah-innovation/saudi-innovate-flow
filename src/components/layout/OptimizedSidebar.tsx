@@ -31,8 +31,8 @@ const MENU_ITEMS = [
   // Main
   { 
     id: 'dashboard', 
-    label: 'Dashboard', 
-    arabicLabel: 'لوحة التحكم',
+    label: 'nav.dashboard', 
+    arabicLabel: 'nav.dashboard',
     icon: Home, 
     path: '/dashboard',
     group: 'main' 
@@ -41,16 +41,16 @@ const MENU_ITEMS = [
   // Discover
   { 
     id: 'challenges', 
-    label: 'Challenges', 
-    arabicLabel: 'التحديات',
+    label: 'nav.challenges', 
+    arabicLabel: 'nav.challenges',
     icon: Target, 
     path: '/challenges',
     group: 'discover' 
   },
   { 
     id: 'opportunities', 
-    label: 'Opportunities', 
-    arabicLabel: 'الفرص',
+    label: 'nav.opportunities', 
+    arabicLabel: 'nav.opportunities',
     icon: Star, 
     path: '/opportunities',
     group: 'discover' 
@@ -163,7 +163,7 @@ interface OptimizedSidebarProps {
 
 export function OptimizedSidebar({ className }: OptimizedSidebarProps) {
   const location = useLocation();
-  const { isRTL, language } = useUnifiedTranslation();
+  const { isRTL, language, t } = useUnifiedTranslation();
   const { open, setOpen } = useSidebar();
   
   // Simple check for admin - this would normally come from auth context
@@ -202,7 +202,7 @@ export function OptimizedSidebar({ className }: OptimizedSidebarProps) {
         {Object.entries(groupedItems).map(([groupKey, items]) => (
           <SidebarGroup key={groupKey} className="px-0">
             <SidebarGroupLabel className="px-4 py-2 text-xs font-medium">
-              {GROUP_LABELS[groupKey as keyof typeof GROUP_LABELS]?.[language as 'en' | 'ar'] || groupKey}
+              {t(`nav.group.${groupKey}`, GROUP_LABELS[groupKey as keyof typeof GROUP_LABELS]?.[language as 'en' | 'ar'] || groupKey)}
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
@@ -223,7 +223,7 @@ export function OptimizedSidebar({ className }: OptimizedSidebarProps) {
                         >
                           <item.icon className="h-4 w-4 shrink-0" />
                           <span className="truncate">
-                            {isRTL ? item.arabicLabel : item.label}
+                            {t(isRTL ? item.arabicLabel : item.label, isRTL ? item.arabicLabel : item.label)}
                           </span>
                         </NavLink>
                       </SidebarMenuButton>
