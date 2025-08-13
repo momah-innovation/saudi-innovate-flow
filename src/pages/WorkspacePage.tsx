@@ -7,6 +7,7 @@ import { OrganizationWorkspace } from '@/components/workspace/OrganizationWorksp
 import { PartnerWorkspace } from '@/components/workspace/PartnerWorkspace';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
+import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 
 export default function WorkspacePage() {
   const { type, id } = useParams<{ type: string; id: string }>();
@@ -49,6 +50,17 @@ export default function WorkspacePage() {
     <CollaborationProvider>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {renderWorkspace()}
+        
+        {/* Workspace Collaboration */}
+        <div className="mt-8">
+          <WorkspaceCollaboration
+            workspaceType={type as any}
+            entityId={id}
+            showWidget={true}
+            showPresence={true}
+            showActivity={true}
+          />
+        </div>
       </div>
     </CollaborationProvider>
   );

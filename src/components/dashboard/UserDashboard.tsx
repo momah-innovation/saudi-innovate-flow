@@ -767,16 +767,7 @@ export default function UserDashboard() {
           </TabsContent>
         </Tabs>
         
-        {/* Collaboration Widget Integration */}
-        <div className="mt-8">
-          <WorkspaceCollaboration
-            workspaceType="user"
-            entityId={userProfile?.id}
-            showWidget={true}
-            showPresence={true}
-            showActivity={true}
-          />
-        </div>
+        {/* Collaboration moved to workspace pages */}
         </div>
         )}
       </div>

@@ -81,6 +81,7 @@ const OrganizationWorkspace = lazy(() => import('@/pages/workspace/OrganizationW
 const PartnerWorkspace = lazy(() => import('@/pages/workspace/PartnerWorkspace'));
 const AdminWorkspace = lazy(() => import('@/pages/workspace/AdminWorkspace'));
 const TeamWorkspace = lazy(() => import('@/pages/workspace/TeamWorkspace'));
+const MigratedAdminDashboard = lazy(() => import('@/components/admin/MigratedAdminDashboard').then(m => ({ default: m.MigratedAdminDashboard })));
 
 // Route configuration interface
 export interface UnifiedRouteConfig {
@@ -512,6 +513,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   {
     path: ALL_ROUTES.ADMIN_SECURITY,
     component: SecurityMonitor,
+    requireAuth: true,
+    requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
+    withAppShell: true,
+  },
+  {
+    path: '/admin/migrated-dashboard',
+    component: MigratedAdminDashboard,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],

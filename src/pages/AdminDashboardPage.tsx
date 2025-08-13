@@ -902,21 +902,7 @@ export default function AdminDashboard() {
           </TabsContent>
         </Tabs>
 
-        {/* Admin Collaboration Space */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Admin Collaboration</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <WorkspaceCollaboration
-              workspaceType="admin"
-              entityId="admin-dashboard"
-              showWidget={true}
-              showPresence={true}
-              showActivity={true}
-            />
-          </CardContent>
-        </Card>
+        {/* Admin Collaboration moved to workspace pages */}
       </div>
 
       {/* System Dialogs */}
