@@ -9083,6 +9083,48 @@ export type Database = {
       }
     }
     Views: {
+      admin_dashboard_metrics_view: {
+        Row: {
+          active_users_30d: number | null
+          admin_count: number | null
+          domain_expert_count: number | null
+          evaluator_count: number | null
+          expert_count: number | null
+          innovator_count: number | null
+          last_updated: string | null
+          new_users_30d: number | null
+          new_users_7d: number | null
+          partner_count: number | null
+          team_members_count: number | null
+          total_users: number | null
+          user_growth_rate_percentage: number | null
+        }
+        Relationships: []
+      }
+      challenges_metrics_view: {
+        Row: {
+          active_challenges: number | null
+          average_submission_score: number | null
+          completed_challenges: number | null
+          completion_rate_percentage: number | null
+          critical_priority_count: number | null
+          draft_challenges: number | null
+          evaluation_challenges: number | null
+          high_priority_count: number | null
+          last_updated: string | null
+          low_priority_count: number | null
+          medium_priority_count: number | null
+          new_challenges_30d: number | null
+          new_participants_30d: number | null
+          new_submissions_30d: number | null
+          published_challenges: number | null
+          total_challenges: number | null
+          total_participants: number | null
+          total_submissions: number | null
+          unique_participants: number | null
+        }
+        Relationships: []
+      }
       partnership_opportunities: {
         Row: {
           benefits: Json | null
@@ -9170,6 +9212,50 @@ export type Database = {
           title_en?: string | null
           updated_at?: string | null
           visibility?: string | null
+        }
+        Relationships: []
+      }
+      security_metrics_view: {
+        Row: {
+          access_denied_24h: number | null
+          active_role_assignments: number | null
+          critical_risk_events_7d: number | null
+          failed_operations_24h: number | null
+          high_risk_events_7d: number | null
+          high_severity_suspicious_7d: number | null
+          last_updated: string | null
+          logins_24h: number | null
+          logins_7d: number | null
+          new_registrations_24h: number | null
+          pending_role_requests: number | null
+          rate_limit_hits_24h: number | null
+          role_changes_7d: number | null
+          security_events_24h: number | null
+          security_events_7d: number | null
+          security_score: number | null
+          suspicious_activities_7d: number | null
+        }
+        Relationships: []
+      }
+      system_metrics_view: {
+        Row: {
+          active_users_24h: number | null
+          avatar_files_count: number | null
+          challenge_files_count: number | null
+          challenges_table_size: number | null
+          current_timestamp: number | null
+          events_24h: number | null
+          events_7d: number | null
+          events_table_size: number | null
+          idea_files_count: number | null
+          last_updated: string | null
+          new_files_24h: number | null
+          new_files_7d: number | null
+          profiles_table_size: number | null
+          submissions_table_size: number | null
+          total_buckets: number | null
+          total_files: number | null
+          total_storage_bytes: number | null
         }
         Relationships: []
       }
