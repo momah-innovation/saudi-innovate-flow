@@ -38,14 +38,19 @@ export function useUnifiedTranslation() {
     isReady
   } = useSystemTranslations(language);
 
-  // Optimized logging - only when data changes
+  // Optimized logging - only when data significantly changes and with debouncing
   useEffect(() => {
-    if (isReady) {
-      console.log('🎯 System translations loaded:', { 
-        count: translationCount, 
-        language,
-        sampleKeys: Array.from(translationMap.keys()).slice(0, 3)
-      });
+    if (isReady && translationCount > 0) {
+      // Only log once per session or when count changes significantly  
+      const sessionKey = `translations_logged_${language}_${translationCount}`;
+      if (!sessionStorage.getItem(sessionKey)) {
+        console.log('🎯 System translations loaded:', { 
+          count: translationCount, 
+          language,
+          sampleKeys: Array.from(translationMap.keys()).slice(0, 3)
+        });
+        sessionStorage.setItem(sessionKey, 'true');
+      }
     }
   }, [isReady, translationCount, language]);
 
