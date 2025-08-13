@@ -228,12 +228,22 @@ i18n
 // Export cache invalidation function for admin use
 export const invalidateTranslationCache = () => {
   (EnhancedDatabaseBackend as any).invalidateCache();
-  // Force a reload by changing the language back and forth  
+  // Force a reload by reloading the current language
   const currentLang = i18n.language;
-  i18n.changeLanguage(currentLang === 'en' ? 'ar' : 'en').then(() => {
-    i18n.changeLanguage(currentLang);
+  i18n.reloadResources(currentLang).then(() => {
+    console.log('🔄 Translation cache invalidated and reloaded');
   });
 };
+
+// Auto-invalidate cache every 5 minutes to pick up new translations
+setInterval(() => {
+  invalidateTranslationCache();
+}, 5 * 60 * 1000);
+
+// Invalidate cache immediately to force refresh of new translations
+setTimeout(() => {
+  invalidateTranslationCache();
+}, 1000);
 
 // Invalidate cache immediately after migration to force refresh
 invalidateTranslationCache();
