@@ -229,88 +229,10 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
   console.log('NavigationSidebar render', { open });
   
   return (
-    <>
-      {/* Visibility Test - Simple red box that should always be visible when open */}
-      {open && (
-        <div style={{
-          position: 'fixed',
-          top: '10px',
-          left: '10px',
-          width: '100px',
-          height: '100px',
-          backgroundColor: 'red',
-          zIndex: 10000,
-          border: '3px solid black'
-        }}>
-          TEST
-        </div>
-      )}
-      
-      {/* Overlay */}
-      {open && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40 transition-opacity"
-          onClick={() => {
-            console.log('Overlay clicked, closing sidebar');
-            onOpenChange(false);
-          }}
-          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
-        />
-      )}
-      
-      {/* Sidebar */}
-      <div 
-        className={cn(
-          "fixed top-0 h-screen w-80 shadow-2xl transition-transform duration-300 ease-out",
-          isRTL ? "right-0" : "left-0",
-          isRTL && "text-right"
-        )}
-        style={{
-          zIndex: 9999,
-          position: 'fixed',
-          top: 0,
-          left: isRTL ? 'auto' : 0,
-          right: isRTL ? 0 : 'auto',
-          width: '320px',
-          height: '100vh',
-          backgroundColor: '#ffffff',
-          border: '2px solid #000000',
-          boxShadow: '0 0 20px rgba(0,0,0,0.5)',
-          transform: open 
-            ? 'translateX(0px)' 
-            : isRTL 
-              ? 'translateX(100%)' 
-              : 'translateX(-100%)',
-          transition: 'transform 0.3s ease-out'
-        }}
-        onTransitionEnd={() => {
-          console.log('Sidebar transition ended, open:', open);
-        }}
-      >
-        {/* Header */}
-        <div className="p-4 sm:p-6 border-b">
-          <h2 className={cn("text-left text-sm sm:text-base font-semibold", isRTL && "text-right")}>
-            {t('nav.navigation_menu', 'Navigation Menu')}
-          </h2>
-        </div>
-        
-        {/* Content */}
-        <div className="p-4 sm:p-6 overflow-y-auto h-full pb-safe-area-inset-bottom">
-          {/* Render groups in priority order */}
-          {groupOrder.map(groupKey => {
-            const items = groupedItems[groupKey];
-            if (!items || items.length === 0) return null;
-            return renderGroup(groupKey, items);
-          })}
-
-          {/* Render remaining groups not in priority order */}
-          {Object.entries(groupedItems).map(([groupKey, items]) => {
-            if (groupOrder.includes(groupKey) || !items || items.length === 0) return null;
-            return renderGroup(groupKey, items);
-          })}
-        </div>
-      </div>
-    </>
+    <div>
+      <p>SIDEBAR TEST - OPEN: {open ? 'TRUE' : 'FALSE'}</p>
+      {open && <div style={{position: 'fixed', top: 0, left: 0, width: '200px', height: '200px', backgroundColor: 'red', zIndex: 99999}}>RED BOX TEST</div>}
+    </div>
   );
 });
 
