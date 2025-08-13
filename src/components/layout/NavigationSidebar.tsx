@@ -29,33 +29,26 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
   const { isRTL, t } = useUnifiedTranslation();
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['main']));
 
-  // Simplified core menu items that match actual routes for performance
+  // Core menu items matching actual UnifiedRouter routes
   const menuItems = useMemo(() => [
-    // Main navigation
+    // Main navigation - authenticated routes
     { 
       id: 'dashboard', 
       label: t('nav.dashboard', 'Dashboard'), 
       arabicLabel: 'لوحة التحكم',
       icon: Home, 
-      path: '/dashboard',
+      path: '/dashboard', // ✓ Matches AUTHENTICATED_ROUTES.DASHBOARD
       group: 'main',
       roles: ['all'] 
     },
+    
+    // Public routes accessible to all
     { 
       id: 'challenges', 
       label: t('nav.challenges', 'Challenges'), 
       arabicLabel: 'التحديات',
       icon: Target, 
-      path: '/challenges',
-      group: 'main',
-      roles: ['all'] 
-    },
-    { 
-      id: 'ideas', 
-      label: t('nav.ideas', 'Ideas'), 
-      arabicLabel: 'الأفكار',
-      icon: Lightbulb, 
-      path: '/ideas',
+      path: '/challenges', // ✓ Matches PUBLIC_ROUTES.CHALLENGES
       group: 'main',
       roles: ['all'] 
     },
@@ -64,7 +57,18 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
       label: t('nav.events', 'Events'), 
       arabicLabel: 'الفعاليات',
       icon: Calendar, 
-      path: '/events',
+      path: '/events', // ✓ Matches PUBLIC_ROUTES.EVENTS  
+      group: 'main',
+      roles: ['all'] 
+    },
+    
+    // Authenticated routes
+    { 
+      id: 'ideas', 
+      label: t('nav.ideas', 'Ideas'), 
+      arabicLabel: 'الأفكار',
+      icon: Lightbulb, 
+      path: '/ideas', // ✓ Matches AUTHENTICATED_ROUTES.IDEAS
       group: 'main',
       roles: ['all'] 
     },
@@ -73,7 +77,7 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
       label: t('nav.opportunities', 'Opportunities'), 
       arabicLabel: 'الفرص',
       icon: Briefcase, 
-      path: '/opportunities',
+      path: '/opportunities', // ✓ Matches AUTHENTICATED_ROUTES.OPPORTUNITIES
       group: 'main',
       roles: ['all'] 
     },
@@ -84,18 +88,18 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
       label: t('nav.collaboration', 'Collaboration'), 
       arabicLabel: 'التعاون',
       icon: Users, 
-      path: '/collaboration',
+      path: '/collaboration', // ✓ Matches PUBLIC_ROUTES.COLLABORATION
       group: 'workspace',
       roles: ['all'] 
     },
 
-    // Admin (only show to admins)
+    // Admin routes
     { 
       id: 'admin-dashboard', 
       label: t('nav.admin_dashboard', 'Admin Dashboard'), 
       arabicLabel: 'لوحة التحكم الإدارية',
       icon: Shield, 
-      path: '/admin/dashboard',
+      path: '/admin/dashboard', // ✓ Matches ADMIN_ROUTES.ADMIN_DASHBOARD
       group: 'admin',
       roles: ['admin'] 
     },
@@ -106,7 +110,7 @@ export const NavigationSidebar = memo(function NavigationSidebar({ open, onOpenC
       label: t('nav.settings', 'Settings'), 
       arabicLabel: 'الإعدادات',
       icon: Settings, 
-      path: '/settings',
+      path: '/settings', // ✓ Matches AUTHENTICATED_ROUTES.SETTINGS
       group: 'settings',
       roles: ['all'] 
     }
