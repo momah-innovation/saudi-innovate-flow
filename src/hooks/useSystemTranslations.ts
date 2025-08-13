@@ -32,11 +32,12 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
         return [];
       }
     },
-    staleTime: 30 * 60 * 1000, // 30 minutes
-    gcTime: 2 * 60 * 60 * 1000, // 2 hours
-    refetchOnWindowFocus: false,
-    refetchOnMount: 'always', // Always check for fresh data on mount
-    retry: 2
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 30 * 60 * 1000, // 30 minutes
+    refetchOnWindowFocus: true,
+    refetchOnMount: true, // Always check for fresh data on mount
+    retry: 2,
+    refetchInterval: 5 * 60 * 1000 // Refresh every 5 minutes in background
   });
 
   // Create optimized translation map

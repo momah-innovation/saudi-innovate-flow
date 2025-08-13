@@ -47,7 +47,7 @@ export function useUnifiedTranslation() {
         sampleKeys: Array.from(translationMap.keys()).slice(0, 3)
       });
     }
-  }, [isReady, translationCount, language, translationMap]);
+  }, [isReady, translationCount, language]);
 
   /**
    * Primary translation function - Enhanced with better fallback logic
