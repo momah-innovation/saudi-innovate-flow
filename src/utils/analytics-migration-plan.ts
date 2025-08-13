@@ -188,7 +188,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
   {
     name: "Phase 4: Component Migration - Critical Path",
     description: "Migrate high-priority dashboard components",
-    status: 'in-progress',
+    status: 'completed',
     tasks: [
       {
         id: "COMP-001",
@@ -230,7 +230,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
         priority: 'high',
         estimatedHours: 6,
         dependencies: ["COMP-001"],
-        status: 'pending'
+        status: 'completed'
       }
     ]
   },
@@ -238,7 +238,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
   {
     name: "Phase 5: Component Migration - Secondary",
     description: "Migrate remaining analytics components",
-    status: 'not-started',
+    status: 'in-progress',
     tasks: [
       {
         id: "COMP-004",
@@ -266,7 +266,7 @@ export const ANALYTICS_MIGRATION_PLAN: MigrationPhase[] = [
         priority: 'medium',
         estimatedHours: 5,
         dependencies: ["COMP-004"],
-        status: 'pending'
+        status: 'in-progress'
       },
       {
         id: "COMP-006",
