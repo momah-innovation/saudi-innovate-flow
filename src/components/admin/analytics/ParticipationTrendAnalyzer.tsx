@@ -5,7 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
 import { TrendingUp, TrendingDown, Users, Calendar, Target, Award } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { challengeAnalyticsService } from '@/services/analytics/ChallengeAnalyticsService';
+import { useAuth } from '@/contexts/AuthContext';
+import { AnalyticsErrorBoundary } from '@/components/analytics/AnalyticsErrorBoundary';
 
 interface ParticipationTrendAnalyzerProps {
   timeRange: string;
@@ -14,71 +16,37 @@ interface ParticipationTrendAnalyzerProps {
 export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnalyzerProps) {
   const { t } = useUnifiedTranslation();
   const [selectedMetric, setSelectedMetric] = useState("participants");
-
-  const [participationTrends, setParticipationTrends] = useState([]);
-  const [departmentParticipation, setDepartmentParticipation] = useState([]);
-  const [challengeCategories, setChallengeCategories] = useState([]);
+  const [trendData, setTrendData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  const { user } = useAuth();
 
   useEffect(() => {
     loadParticipationData();
-  }, []);
+  }, [timeRange, user?.id]);
 
   const loadParticipationData = async () => {
+    if (!user?.id) return;
+    
+    setIsLoading(true);
+    setError(null);
+    
     try {
-      // Fetch historical participation trends
-      const { data: trends } = await supabase
-        .from('challenge_participants')
-        .select('created_at, status')
-        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
-        .order('created_at');
-
-      // Group by date and calculate metrics
-      const trendData = [];
-      const last7Days = Array.from({ length: 7 }, (_, i) => {
-        const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
-        const dayTrends = trends?.filter(t => 
-          new Date(t.created_at).toDateString() === date.toDateString()
-        ) || [];
-        
-        return {
-          date: date.toISOString().split('T')[0],
-          participants: dayTrends.length,
-          submissions: Math.floor(dayTrends.length * 0.6),
-          completionRate: dayTrends.length > 0 ? Math.floor(Math.random() * 20) + 60 : 0
-        };
-      });
-      setParticipationTrends(trendData);
-
-      // Mock department data with realistic variations
-      const departments = [
-        { department: "التكنولوجيا", participants: 156, growth: 12, color: "#3b82f6" },
-        { department: "الهندسة", participants: 134, growth: 8, color: "#10b981" },
-        { department: "التصميم", participants: 98, growth: -3, color: "#f59e0b" },
-        { department: "التسويق", participants: 87, growth: 15, color: "#ef4444" },
-        { department: "الموارد البشرية", participants: 76, growth: 5, color: "#8b5cf6" },
-        { department: "المالية", participants: 65, growth: -1, color: "#06b6d4" }
-      ];
-      setDepartmentParticipation(departments);
-
-      // Fetch challenge types and calculate participation
-      const { data: challenges } = await supabase
-        .from('challenges')
-        .select('challenge_type, challenge_participants(count)')
-        .eq('status', 'active');
-
-      const categoryData = [
-        { name: "تقني", participants: 234, percentage: 35 },
-        { name: "إبداعي", participants: 187, percentage: 28 },
-        { name: "مستدام", participants: 145, percentage: 22 },
-        { name: "اجتماعي", participants: 98, percentage: 15 }
-      ];
-      setChallengeCategories(categoryData);
-    } catch (error) {
-      console.error('Error loading participation data:', error);
+      const data = await challengeAnalyticsService.getParticipationTrends(user.id, timeRange);
+      setTrendData(data);
+    } catch (err) {
+      setError('Failed to load participation trends');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+
+  const participationTrends = trendData?.participationTrends || [];
+  const departmentParticipation = trendData?.departmentParticipation || [];
+  const challengeCategories = trendData?.challengeCategories || [];
 
   const trendAnalysis = {
     participantsGrowth: 12.5,
@@ -87,8 +55,17 @@ export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnal
     retentionRate: 78.4
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
+    <AnalyticsErrorBoundary>
+      <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold">{t("participation_trend_analyzer")}</h3>
@@ -345,6 +322,7 @@ export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnal
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </AnalyticsErrorBoundary>
   );
 }

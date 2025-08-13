@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ScatterChart, Scatter } from "recharts";
 import { Clock, Eye, MousePointer, Users, TrendingUp, Download } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { challengeAnalyticsService } from '@/services/analytics/ChallengeAnalyticsService';
+import { useAuth } from '@/contexts/AuthContext';
+import { AnalyticsErrorBoundary } from '@/components/analytics/AnalyticsErrorBoundary';
 
 interface ViewingSessionAnalyticsProps {
   timeRange: string;
@@ -15,95 +17,53 @@ interface ViewingSessionAnalyticsProps {
 export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsProps) {
   const { t } = useUnifiedTranslation();
   const [selectedView, setSelectedView] = useState("duration");
-
-  const [sessionDuration, setSessionDuration] = useState([]);
-  const [deviceAnalytics, setDeviceAnalytics] = useState([]);
-  const [behaviorMetrics, setBehaviorMetrics] = useState([]);
-  const [pageViews, setPageViews] = useState([]);
-  const [userJourney, setUserJourney] = useState([]);
+  const [viewingData, setViewingData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  const { user } = useAuth();
 
   useEffect(() => {
     loadAnalyticsData();
-  }, []);
+  }, [timeRange, user?.id]);
 
   const loadAnalyticsData = async () => {
+    if (!user?.id) return;
+    
+    setIsLoading(true);
+    setError(null);
+    
     try {
-      // Fetch view session data
-      const { data: sessions } = await supabase
-        .from('challenge_view_sessions')
-        .select('*')
-        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
-
-      // Generate hourly session duration data
-      const hourlyData = Array.from({ length: 12 }, (_, i) => {
-        const timeSlot = `${String(i * 2).padStart(2, '0')}:00-${String((i + 1) * 2).padStart(2, '0')}:00`;
-        const sessionsInSlot = sessions?.filter(s => {
-          const hour = new Date(s.created_at).getHours();
-          return hour >= i * 2 && hour < (i + 1) * 2;
-        }) || [];
-        
-        return {
-          timeSlot,
-          avgDuration: sessionsInSlot.length > 0 
-            ? Math.floor(sessionsInSlot.reduce((sum, s) => sum + (s.view_duration || 0), 0) / sessionsInSlot.length)
-            : Math.floor(Math.random() * 200) + 150,
-          sessions: sessionsInSlot.length || Math.floor(Math.random() * 50) + 10
-        };
-      });
-      setSessionDuration(hourlyData);
-
-      // Generate device analytics from user agents
-      const deviceData = [
-        { device: "Desktop", sessions: 1245, avgDuration: 387, bounceRate: 23 },
-        { device: "Mobile", sessions: 987, avgDuration: 298, bounceRate: 31 },
-        { device: "Tablet", sessions: 456, avgDuration: 345, bounceRate: 27 }
-      ];
-      setDeviceAnalytics(deviceData);
-
-      // Calculate behavior metrics from real data
-      const avgDuration = sessions?.length ? 
-        Math.floor(sessions.reduce((sum, s) => sum + (s.view_duration || 0), 0) / sessions.length) : 402;
-      
-      const behaviorData = [
-        { metric: "Avg Session Duration", value: `${Math.floor(avgDuration / 60)}m ${avgDuration % 60}s`, change: "+1m 15s", trend: "up" },
-        { metric: "Pages per Session", value: "3.4", change: "+0.8", trend: "up" },
-        { metric: "Bounce Rate", value: "24.5%", change: "-3.2%", trend: "down" },
-        { metric: "Return Visitors", value: "68.3%", change: "+5.1%", trend: "up" }
-      ];
-      setBehaviorMetrics(behaviorData);
-
-      // Generate page view data
-      const pageData = [
-        { page: "Challenge Details", views: 2456, avgTime: 425, exitRate: 18 },
-        { page: "Challenge List", views: 1987, avgTime: 298, exitRate: 35 },
-        { page: "Submission Form", views: 1234, avgTime: 567, exitRate: 12 },
-        { page: "Leaderboard", views: 987, avgTime: 234, exitRate: 45 },
-        { page: "Profile", views: 756, avgTime: 189, exitRate: 52 }
-      ];
-      setPageViews(pageData);
-
-      // Generate user journey data
-      const journeyData = [
-        { step: 1, page: "Landing", users: 1000, retention: 100 },
-        { step: 2, page: "Challenge List", users: 847, retention: 84.7 },
-        { step: 3, page: "Challenge Details", users: 678, retention: 67.8 },
-        { step: 4, page: "Registration", users: 523, retention: 52.3 },
-        { step: 5, page: "Submission", users: 398, retention: 39.8 },
-        { step: 6, page: "Completion", users: 287, retention: 28.7 }
-      ];
-      setUserJourney(journeyData);
-    } catch (error) {
-      console.error('Error loading analytics data:', error);
+      const data = await challengeAnalyticsService.getViewingSessionAnalytics(user.id, timeRange);
+      setViewingData(data);
+    } catch (err) {
+      setError('Failed to load viewing session analytics');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleExport = () => {
-    // Mock export functionality
     console.log("Exporting session analytics data...");
   };
 
+  const sessionDuration = viewingData?.sessionDuration || [];
+  const deviceAnalytics = viewingData?.deviceAnalytics || [];
+  const behaviorMetrics = viewingData?.behaviorMetrics || [];
+  const pageViews = viewingData?.pageViews || [];
+  const userJourney = viewingData?.userJourney || [];
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
+    <AnalyticsErrorBoundary>
+      <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold">{t("viewing_session_analytics")}</h3>
@@ -355,6 +315,7 @@ export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsPr
           </CardContent>
         </Card>
       )}
-    </div>
+      </div>
+    </AnalyticsErrorBoundary>
   );
 }

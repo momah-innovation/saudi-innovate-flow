@@ -4,12 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useStatusTranslations } from "@/utils/statusMappings";
 import { logger } from "@/utils/logger";
+import { challengeAnalyticsService } from '@/services/analytics/ChallengeAnalyticsService';
+import { useAuth } from '@/contexts/AuthContext';
+import { AnalyticsErrorBoundary } from '@/components/analytics/AnalyticsErrorBoundary';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -74,29 +76,19 @@ export function ChallengeAnalytics() {
   const [timeRange, setTimeRange] = useState("all");
   const { toast } = useToast();
   const { timeRangeOptions } = useSystemLists();
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeRange]);
+  }, [timeRange, user?.id]);
 
   const fetchAnalytics = async () => {
+    if (!user?.id) return;
+    
     setLoading(true);
     try {
-      // Fetch challenges data
-      const { data: challenges, error: challengesError } = await supabase
-        .from('challenges')
-        .select(`
-          *,
-          ideas(id),
-          implementation_tracker(completion_percentage)
-        `);
-
-      if (challengesError) throw challengesError;
-
-      // Process analytics data
-      const processedAnalytics = processAnalyticsData(challenges || []);
-      setAnalytics(processedAnalytics);
-
+      const analyticsData = await challengeAnalyticsService.getChallengeAnalytics(user.id, { timeframe: timeRange });
+      setAnalytics(analyticsData);
     } catch (error) {
       logger.error('Error fetching analytics', { component: 'ChallengeAnalytics', action: 'fetchAnalytics' }, error as Error);
       toast({
@@ -204,7 +196,8 @@ export function ChallengeAnalytics() {
   if (!analytics) return null;
 
   return (
-    <div className="space-y-6">
+    <AnalyticsErrorBoundary>
+      <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -533,6 +526,7 @@ export function ChallengeAnalytics() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </AnalyticsErrorBoundary>
   );
 }

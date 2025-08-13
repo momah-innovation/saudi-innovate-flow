@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -28,7 +28,9 @@ import {
   Filter
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
+import { challengeAnalyticsService } from '@/services/analytics/ChallengeAnalyticsService';
+import { useAuth } from '@/contexts/AuthContext';
+import { AnalyticsErrorBoundary } from '@/components/analytics/AnalyticsErrorBoundary';
 
 interface UserBehaviorAnalyticsProps {
   className?: string;
@@ -37,94 +39,40 @@ interface UserBehaviorAnalyticsProps {
 const UserBehaviorAnalytics: React.FC<UserBehaviorAnalyticsProps> = ({ className }) => {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d');
   const [searchTerm, setSearchTerm] = useState('');
-
-  // Get real analytics data from admin metrics
-  const { metrics: adminMetrics, isLoading: metricsLoading } = useAdminDashboardMetrics();
+  const [behaviorData, setBehaviorData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
-  // Calculate user journey from real data
-  const userJourneys = adminMetrics ? [
-    { step: 'زيارة الصفحة الرئيسية', users: adminMetrics.users?.total || 0, dropRate: 0 },
-    { step: 'تسجيل الدخول', users: adminMetrics.users?.active || 0, dropRate: ((adminMetrics.users?.total || 1) - (adminMetrics.users?.active || 0)) / (adminMetrics.users?.total || 1) * 100 },
-    { step: 'استعراض التحديات', users: Math.floor((adminMetrics.users?.active || 0) * 0.85), dropRate: 15 },
-    { step: 'قراءة تفاصيل التحدي', users: Math.floor((adminMetrics.users?.active || 0) * 0.64), dropRate: 24.7 },
-    { step: 'بدء المشاركة', users: Math.floor((adminMetrics.users?.active || 0) * 0.36), dropRate: 43.3 },
-    { step: 'إرسال الفكرة', users: Math.floor((adminMetrics.users?.active || 0) * 0.24), dropRate: 32.5 }
-  ] : [];
+  const { user } = useAuth();
+  useEffect(() => {
+    loadUserBehaviorData();
+  }, [timeRange, user?.id]);
 
-  // Calculate page analytics from real data
-  const pageAnalytics = adminMetrics ? [
-    { 
-      page: '/challenges', 
-      views: Math.floor((adminMetrics.users?.total || 0) * 12), 
-      uniqueVisitors: Math.floor((adminMetrics.users?.active || 0) * 7.2), 
-      avgTime: '4:32', 
-      bounceRate: 23.5,
-      conversions: Math.floor((adminMetrics.users?.active || 0) * 0.12)
-    },
-    { 
-      page: '/dashboard', 
-      views: Math.floor((adminMetrics.users?.total || 0) * 10), 
-      uniqueVisitors: Math.floor((adminMetrics.users?.active || 0) * 5.9), 
-      avgTime: '6:15', 
-      bounceRate: 18.2,
-      conversions: Math.floor((adminMetrics.users?.active || 0) * 0.07)
-    },
-    { 
-      page: '/profile', 
-      views: Math.floor((adminMetrics.users?.total || 0) * 7), 
-      uniqueVisitors: Math.floor((adminMetrics.users?.active || 0) * 5.0), 
-      avgTime: '3:18', 
-      bounceRate: 31.8,
-      conversions: Math.floor((adminMetrics.users?.active || 0) * 0.04)
-    },
-    { 
-      page: '/campaigns', 
-      views: Math.floor((adminMetrics.users?.total || 0) * 5.6), 
-      uniqueVisitors: Math.floor((adminMetrics.users?.active || 0) * 3.7), 
-      avgTime: '5:42', 
-      bounceRate: 28.4,
-      conversions: Math.floor((adminMetrics.users?.active || 0) * 0.05)
+  const loadUserBehaviorData = async () => {
+    if (!user?.id) return;
+    
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const data = await challengeAnalyticsService.getUserBehaviorAnalytics(user.id, timeRange);
+      setBehaviorData(data);
+    } catch (err) {
+      setError('Failed to load user behavior analytics');
+    } finally {
+      setIsLoading(false);
     }
-  ] : [];
-  
-  const engagementData = adminMetrics ? [
-    { 
-      date: '1/1', 
-      activeUsers: adminMetrics.users?.active || 0, 
-      sessions: Math.floor((adminMetrics.users?.active || 0) * 1.9), 
-      pageViews: Math.floor((adminMetrics.users?.active || 0) * 5.2)
-    },
-    { 
-      date: '1/8', 
-      activeUsers: Math.floor((adminMetrics.users?.active || 0) * 1.14), 
-      sessions: Math.floor((adminMetrics.users?.active || 0) * 2.2),
-      pageViews: Math.floor((adminMetrics?.users?.active || 234) * 6.2)
-    },
-    { 
-      date: '1/15', 
-      activeUsers: Math.floor((adminMetrics?.users?.active || 234) * 1.27), 
-      sessions: Math.floor((adminMetrics?.users?.active || 234) * 2.6), 
-      pageViews: Math.floor((adminMetrics?.users?.active || 234) * 7.2)
-    },
-    { 
-      date: '1/22', 
-      activeUsers: Math.floor((adminMetrics?.users?.active || 234) * 1.33), 
-      sessions: Math.floor((adminMetrics?.users?.active || 234) * 2.7), 
-      pageViews: Math.floor((adminMetrics?.users?.active || 234) * 7.6)
-    },
-    { 
-      date: '1/29', 
-      activeUsers: Math.floor((adminMetrics?.users?.active || 234) * 1.47), 
-      sessions: Math.floor((adminMetrics?.users?.active || 234) * 2.9), 
-      pageViews: Math.floor((adminMetrics?.users?.active || 234) * 8.2)
-    }
-  ] : [];
+  };
+
+  const userJourneys = behaviorData?.userJourneys || [];
+  const pageAnalytics = behaviorData?.pageAnalytics || [];
+  const engagementData = behaviorData?.engagementData || [];
 
   const filteredPages = pageAnalytics.filter(page =>
     page.page.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (metricsLoading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -133,7 +81,8 @@ const UserBehaviorAnalytics: React.FC<UserBehaviorAnalyticsProps> = ({ className
   }
 
   return (
-    <Card className={className}>
+    <AnalyticsErrorBoundary>
+      <Card className={className}>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -318,7 +267,8 @@ const UserBehaviorAnalytics: React.FC<UserBehaviorAnalyticsProps> = ({ className
           </div>
         </div>
       </CardContent>
-    </Card>
+      </Card>
+    </AnalyticsErrorBoundary>
   );
 };
 
