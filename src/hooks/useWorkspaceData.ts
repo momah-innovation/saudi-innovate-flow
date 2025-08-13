@@ -11,7 +11,7 @@ export function useUserWorkspaceData() {
   return useQuery({
     queryKey: ['userWorkspace', user?.id],
     queryFn: async () => {
-      if (!user || !permissions.canViewOwnIdeas) return null;
+      if (!user) return null;
 
       const [ideasResult, challengesResult, bookmarksResult] = await Promise.all([
         // User's ideas

@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation as useI18nextTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys } from '@/lib/query/query-keys';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { logger } from '@/utils/logger';
 
 interface SystemTranslation {
@@ -25,56 +25,30 @@ export function useUnifiedTranslation() {
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
   
-  console.log('🌐 Translation Hook - Current Language:', { 
-    rawLanguage: i18n.language, 
-    normalizedLanguage: language, 
-    isRTL 
-  });
+  // Remove excessive logging
+  // console.log('🌐 Translation Hook - Current Language:', { 
+  //   rawLanguage: i18n.language, 
+  //   normalizedLanguage: language, 
+  //   isRTL 
+  // });
 
   // Fetch database translations with React Query - shared across all languages
   const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
     queryKey: ['system-translations'], // Remove dynamic timestamp to prevent infinite refetching
     queryFn: async () => {
-      console.log('🔄 Fetching translations from database...');
-      
       try {
-        let allTranslations: SystemTranslation[] = [];
-        let from = 0;
-        const batchSize = 1000;
-        let hasMore = true;
+        // Simplified single query  
+        const { data, error } = await supabase
+          .from('system_translations')
+          .select('translation_key, text_en, text_ar')
+          .order('translation_key')
+          .limit(5000);
 
-        while (hasMore) {
-          console.log(`📥 Fetching batch starting from ${from}...`);
-          
-          const { data, error } = await supabase
-            .from('system_translations')
-            .select('*')
-            .order('translation_key')
-            .range(from, from + batchSize - 1);
-
-          if (error) {
-            console.error('❌ Database translation fetch failed:', error);
-            throw error;
-          }
-
-          console.log(`📦 Received ${data?.length || 0} translations in this batch`, data?.slice(0, 3));
-
-          if (data && data.length > 0) {
-            allTranslations = [...allTranslations, ...data];
-            from += batchSize;
-            hasMore = data.length === batchSize;
-          } else {
-            hasMore = false;
-          }
-        }
-        
-        console.log(`✅ Pagination complete: Fetched ${allTranslations.length} total translations`);
-        console.log('🔍 First few translations:', allTranslations.slice(0, 5));
-        
-        return allTranslations;
+        if (error) throw error;
+        return data || [];
       } catch (error) {
-        console.error('❌ Failed to fetch translations:', error);
-        throw error;
+        console.error('❌ Translation fetch failed:', error);
+        return [];
       }
     },
     staleTime: 15 * 60 * 1000, // 15 minutes - further increased
@@ -85,65 +59,29 @@ export function useUnifiedTranslation() {
     retry: 1
   });
 
-  // Log what we actually received
-  console.log('🎯 React Query result:', { 
-    dbTranslationsLength: dbTranslations.length, 
-    isLoading, 
-    error: error?.message,
-    firstFewItems: dbTranslations.slice(0, 3)
-  });
+  // Only log once when data changes, not on every render
+  useEffect(() => {
+    if (!isLoading && dbTranslations.length > 0) {
+      console.log('🎯 Translation data loaded:', { 
+        count: dbTranslations.length, 
+        sample: dbTranslations.slice(0, 2).map(t => t.translation_key)
+      });
+    }
+  }, [dbTranslations.length, isLoading]);
 
   // Create optimized translation map
   const translationMap = useMemo(() => {
     const map = new Map<string, { en: string; ar: string }>();
     
-    console.log('🔍 DEBUGGING Translation Map Creation:', {
-      totalDbTranslations: dbTranslations.length,
-      firstFew: dbTranslations.slice(0, 5).map(t => ({ 
-        key: t.translation_key, 
-        en: t.text_en?.substring(0, 30), 
-        ar: t.text_ar?.substring(0, 30) 
-      })),
-      language
-    });
-    
-    // Check for specific missing keys in the raw data
-    const missingTestKeys = [
-      'settings.test_component_list.description',
-      'settings.test_component_names.label',
-      'settings.ui_initials_max_length.label',
-      'settings.category.UI & Form'
-    ];
-    
-    console.log('🔍 Checking specific keys in raw data:');
-    missingTestKeys.forEach(key => {
-      const found = dbTranslations.find(t => t.translation_key === key);
-      console.log(`Key: ${key}`, found ? 'FOUND' : 'NOT FOUND', found ? { en: found.text_en, ar: found.text_ar } : null);
-    });
-    
     dbTranslations.forEach(translation => {
       if (!translation.translation_key || !translation.text_en || !translation.text_ar) {
-        console.warn('⚠️ Invalid translation record:', translation);
-        return;
+        return; // Skip invalid records
       }
       
       map.set(translation.translation_key, {
         en: translation.text_en,
         ar: translation.text_ar
       });
-    });
-    
-    console.log('🔍 Final map check:');
-    missingTestKeys.forEach(key => {
-      const found = map.has(key);
-      console.log(`Map contains ${key}:`, found, found ? map.get(key) : null);
-    });
-    
-    console.log('🔍 Translation Map Final Stats:', {
-      totalDbTranslations: dbTranslations.length,
-      mapSize: map.size,
-      language,
-      discrepancy: dbTranslations.length - map.size
     });
     
     logger.info('Translation map built successfully', { mapSize: map.size, language });

@@ -11,10 +11,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
 
 export default function WorkspacePage() {
-  const { type, id } = useParams<{ type: string; id: string }>();
+  const { type } = useParams<{ type: string }>();
+
+  // Add debugging
+  console.log('🏢 WorkspacePage - Current route type:', type);
 
   const renderWorkspace = () => {
-    switch (type) {
+    // Default to user workspace if no type specified
+    const workspaceType = type || 'user';
+    
+    switch (workspaceType) {
       case 'user':
         return <UserWorkspace />;
       case 'expert':
@@ -33,7 +39,7 @@ export default function WorkspacePage() {
             <CardContent className="pt-6 text-center">
               <AlertTriangle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">نوع مساحة العمل غير صحيح</h3>
-              <p className="text-muted-foreground">نوع مساحة العمل المطلوبة غير متاح</p>
+              <p className="text-muted-foreground">نوع مساحة العمل المطلوبة غير متاح: {workspaceType}</p>
             </CardContent>
           </Card>
         );
