@@ -11,7 +11,6 @@ import { Loader2 } from 'lucide-react';
 
 // Loading component
 const LoadingFallback = () => {
-  console.log('⏳ ROUTER DEBUG: Loading fallback rendered', { timestamp: Date.now() });
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Loader2 className="h-8 w-8 animate-spin" />

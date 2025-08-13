@@ -16,7 +16,7 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
     queryKey: queryKeys.system.translations(),
     queryFn: async (): Promise<SystemTranslation[]> => {
       try {
-        console.log('🌐 SYSTEM TRANSLATIONS: Starting fetch with limit to prevent crash');
+        
         
         // Only fetch first 200 most essential translations to prevent crash
         const { data, error } = await supabase
@@ -29,11 +29,6 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
           console.error('🚨 SYSTEM TRANSLATIONS: Failed to fetch', error);
           throw error;
         }
-
-        console.log('✅ SYSTEM TRANSLATIONS: Loaded successfully', { 
-          count: data?.length || 0,
-          timestamp: Date.now() 
-        });
 
         return data || [];
       } catch (error) {
@@ -49,13 +44,8 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
     refetchInterval: false // Disable background refresh to prevent crashes
   });
 
-  // Create optimized translation map with debug logging
+  // Create optimized translation map
   const translationMap = useMemo(() => {
-    console.log('🌐 SYSTEM TRANSLATIONS: Creating translation map', { 
-      translationCount: translations.length,
-      timestamp: Date.now() 
-    });
-    
     const map = new Map<string, { en: string; ar: string; category: string }>();
     
     translations.forEach(translation => {
@@ -66,11 +56,6 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
         ar: translation.text_ar || translation.text_en || translation.translation_key,
         category: translation.category || 'general'
       });
-    });
-    
-    console.log('✅ SYSTEM TRANSLATIONS: Map created', { 
-      mapSize: map.size,
-      timestamp: Date.now() 
     });
     
     return map;
