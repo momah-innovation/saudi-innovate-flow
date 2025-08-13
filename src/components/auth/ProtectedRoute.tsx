@@ -30,20 +30,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { user, userProfile, hasRole, loading } = useAuth();
   const location = useLocation();
 
-  // Enhanced auth debugging
-  console.log('🔒 ProtectedRoute auth check:', {
-    path: location.pathname,
-    requireAuth,
-    requireProfile,
-    requiredRole,
-    hasUser: !!user,
-    userId: user?.id,
-    userEmail: user?.email,
-    hasProfile: !!userProfile,
-    profileCompletion: userProfile?.profile_completion_percentage,
-    userRoles: userProfile?.user_roles?.map(r => r.role),
-    hasRoleFunction: typeof hasRole
-  });
+  // Auth debugging removed for performance
 
   logger.debug('ProtectedRoute auth check', {
     component: 'ProtectedRoute',
@@ -110,12 +97,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       ? requiredRole.some(role => hasRole(role))
       : hasRole(requiredRole);
       
-    console.log('🔐 Role check for admin dashboard:', {
-      requiredRole,
-      hasRequiredRole,
-      userRoles: userProfile?.user_roles?.map(r => r.role),
-      path: location.pathname
-    });
+    // Role check logging removed for performance
       
     if (!hasRequiredRole) {
       logger.info('ProtectedRoute: Redirecting to dashboard - insufficient role', {
