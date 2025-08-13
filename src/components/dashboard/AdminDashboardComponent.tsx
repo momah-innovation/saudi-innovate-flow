@@ -281,7 +281,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       href: '/admin/security-advanced',
       count: '3',
       label: language === 'ar' ? 'تهديدات نشطة' : 'Active Threats',
-      color: 'text-red-600'
+      color: 'text-destructive'
     },
     {
       title: language === 'ar' ? 'التحكم بالوصول' : 'Access Control',
@@ -290,7 +290,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       href: '/admin/access-control-advanced',
       count: '156',
       label: language === 'ar' ? 'تعيينات الأدوار' : 'Role Assignments',
-      color: 'text-blue-600'
+      color: 'text-info'
     },
     {
       title: language === 'ar' ? 'مراقب الصلاحيات' : 'Elevation Monitor',
@@ -299,7 +299,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       href: '/admin/elevation-monitor',
       count: '24',
       label: language === 'ar' ? 'أحداث الرفع' : 'Elevation Events',
-      color: 'text-orange-600'
+      color: 'text-warning'
     },
     {
       title: language === 'ar' ? 'التحليلات المتقدمة' : 'Analytics Advanced',
@@ -308,7 +308,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       href: '/admin/analytics-advanced',
       count: '1.2M',
       label: language === 'ar' ? 'نقاط البيانات' : 'Data Points',
-      color: 'text-purple-600'
+      color: 'text-primary'
     },
     {
       title: language === 'ar' ? 'إدارة الذكاء الاصطناعي' : 'AI Management',
@@ -317,7 +317,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       href: '/admin/ai-management',
       count: '8',
       label: language === 'ar' ? 'ميزات الذكاء الاصطناعي' : 'AI Features',
-      color: 'text-green-600'
+      color: 'text-success'
     },
     {
       title: language === 'ar' ? 'إدارة الملفات المتقدمة' : 'File Management',
@@ -326,7 +326,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       href: '/admin/file-management-advanced',
       count: '2.4 GB',
       label: language === 'ar' ? 'إجمالي التخزين' : 'Total Storage',
-      color: 'text-indigo-600'
+      color: 'text-secondary-foreground'
     },
     {
       title: language === 'ar' ? 'تحليلات التحديات' : 'Challenge Analytics',
@@ -335,7 +335,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       href: '/admin/challenges-analytics-advanced',
       count: '45',
       label: language === 'ar' ? 'تحديات نشطة' : 'Active Challenges',
-      color: 'text-cyan-600'
+      color: 'text-info'
     }
   ];
 
@@ -543,7 +543,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   {adminMetrics.metrics?.users?.breakdown?.admins || '47'}
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
                   <span>+8% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
                 </div>
@@ -561,7 +561,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   23
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
                   <span>+12% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
                 </div>
@@ -579,7 +579,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   156
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
                   <span>+5% {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
                 </div>
@@ -648,7 +648,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   1,834
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
                   <span>+24% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
                 </div>
@@ -666,7 +666,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   {adminMetrics.metrics?.challenges?.active || '45'}
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
                   <span>+18% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
                 </div>
@@ -684,7 +684,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   12
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-info mt-2">
                   <TrendingUp className="w-4 h-4" />
                   <span>+3 {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
                 </div>
@@ -702,7 +702,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   87%
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
                   <span>+5% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
                 </div>
@@ -753,7 +753,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   {adminMetrics.metrics?.system?.uptime || '99.9'}%
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <CheckCircle className="w-4 h-4" />
                   <span>{language === 'ar' ? 'مستقر' : 'Stable'}</span>
                 </div>
@@ -789,7 +789,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold">
                   {adminMetrics.metrics?.system?.performance || '94'}%
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
                   <span>+2% {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
                 </div>
@@ -804,10 +804,10 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <Shield className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-trend-up">
+                <div className="text-2xl font-bold text-success">
                   {language === 'ar' ? 'آمن' : 'Secure'}
                 </div>
-                <div className="flex items-center gap-1 text-xs text-trend-up mt-2">
+                <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <CheckCircle className="w-4 h-4" />
                   <span>{adminMetrics.metrics?.security?.securityScore || '98'}% {language === 'ar' ? 'نقاط الأمان' : 'security score'}</span>
                 </div>
@@ -890,19 +890,19 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-background/50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">100%</div>
+                  <div className="text-2xl font-bold text-info">100%</div>
                   <div className="text-sm text-muted-foreground">
                     {language === 'ar' ? 'التنفيذ مكتمل' : 'Implementation Complete'}
                   </div>
                 </div>
                 <div className="text-center p-4 bg-background/50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">7</div>
+                  <div className="text-2xl font-bold text-success">7</div>
                   <div className="text-sm text-muted-foreground">
                     {language === 'ar' ? 'صفحات متقدمة' : 'Advanced Pages'}
                   </div>
                 </div>
                 <div className="text-center p-4 bg-background/50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">25+</div>
+                  <div className="text-2xl font-bold text-primary">25+</div>
                   <div className="text-sm text-muted-foreground">
                     {language === 'ar' ? 'مكونات جديدة' : 'New Components'}
                   </div>
