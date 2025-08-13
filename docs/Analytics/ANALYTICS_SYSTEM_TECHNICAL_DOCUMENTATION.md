@@ -4,6 +4,10 @@
 
 This document provides comprehensive technical documentation for the analytics system implementation. The system is built on a centralized, RBAC-enabled architecture that provides real-time analytics, metrics tracking, and comprehensive error handling across the entire platform.
 
+The analytics system consists of two main components:
+1. **Core Analytics System**: Built on the unified analytics architecture for platform metrics, user behavior, and business intelligence
+2. **Logflare Analytics System**: External log management and analytics platform for comprehensive log analysis and monitoring
+
 ## Architecture
 
 ### Core Infrastructure
@@ -936,8 +940,233 @@ class AnalyticsLogger {
 - Scheduled report generation
 - Email report delivery
 
+## Logflare Analytics System
+
+The Logflare Analytics System provides comprehensive log management and analytics for the platform. It enables centralized logging, real-time analytics queries, and advanced log visualization through Logflare's platform.
+
+### Technical Implementation
+
+#### Edge Function: `logflare-analytics`
+- **Location**: `supabase/functions/logflare-analytics/index.ts`
+- **Purpose**: Secure bridge between frontend and Logflare API
+- **Authentication**: Required (JWT verification enabled)
+- **Actions**:
+  - `send_logs`: Send application logs to Logflare
+  - `get_analytics`: Query log data with SQL
+  - `create_source`: Create new log sources
+
+```typescript
+interface LogflareActions {
+  send_logs: {
+    source_name: string;
+    logs: LogEntry[];
+  };
+  get_analytics: {
+    source_name?: string;
+    query?: string;
+  };
+  create_source: {
+    source_name: string;
+    description?: string;
+  };
+}
+```
+
+#### React Hook: `useLogflareAnalytics`
+- **Location**: `src/hooks/useLogflareAnalytics.ts`
+- **Purpose**: Centralized log management and analytics interface
+- **Features**:
+  - Send structured logs to Logflare
+  - Execute SQL queries on log data
+  - Create and manage log sources
+  - Automatic event logging with metadata
+
+```typescript
+interface LogEntry {
+  timestamp: string;
+  level: 'info' | 'warn' | 'error' | 'debug';
+  message: string;
+  metadata?: Record<string, any>;
+}
+
+interface UseLogflareAnalyticsResult {
+  sendLogs: (logs: LogEntry[], sourceName?: string) => Promise<any>;
+  getAnalytics: (query: AnalyticsQuery) => Promise<any>;
+  createSource: (sourceName: string, description?: string) => Promise<any>;
+  logEvent: (level: LogEntry['level'], message: string, metadata?: Record<string, any>) => Promise<void>;
+  isLoading: boolean;
+}
+```
+
+#### Dashboard Component: `LogflareAnalyticsDashboard`
+- **Location**: `src/components/analytics/LogflareAnalyticsDashboard.tsx`
+- **Route**: `/admin/logflare-analytics` (Admin access only)
+- **Features**:
+  - **Analytics Tab**: Custom SQL queries and data visualization
+  - **Sources Tab**: Log source creation and management
+  - **Testing Tab**: Log level testing and validation
+
+### Log Management
+
+#### Log Levels
+| Level | Purpose | Icon | Color |
+|-------|---------|------|-------|
+| **INFO** | General information | ℹ️ | Blue |
+| **WARN** | Warning conditions | ⚠️ | Yellow |
+| **ERROR** | Error conditions | ❌ | Red |
+| **DEBUG** | Debug information | 🐛 | Gray |
+
+#### Log Structure
+```typescript
+interface LogEntry {
+  timestamp: string;           // ISO 8601 timestamp
+  level: 'info' | 'warn' | 'error' | 'debug';
+  message: string;            // Human-readable message
+  metadata?: {
+    component?: string;       // Component generating the log
+    user_id?: string;         // Associated user ID
+    session_id?: string;      // Session identifier
+    url?: string;             // Current page URL
+    user_agent?: string;      // Browser user agent
+    [key: string]: any;       // Additional metadata
+  };
+}
+```
+
+#### Default Log Sources
+- **`innovation-platform`**: Main application logs
+- **`user-actions`**: User interaction tracking
+- **`system-events`**: System-level events
+- **`error-tracking`**: Application error logs
+
+### Analytics Capabilities
+
+#### SQL Query Interface
+Execute custom SQL queries on log data:
+
+```sql
+-- Example: Get error logs from last 24 hours
+SELECT timestamp, message, metadata
+FROM logs 
+WHERE level = 'error' 
+  AND timestamp > NOW() - INTERVAL '24 hours'
+ORDER BY timestamp DESC;
+
+-- Example: User activity analysis
+SELECT 
+  metadata->>'user_id' as user_id,
+  COUNT(*) as action_count,
+  MAX(timestamp) as last_activity
+FROM logs 
+WHERE level = 'info' 
+  AND metadata->>'user_id' IS NOT NULL
+GROUP BY metadata->>'user_id'
+ORDER BY action_count DESC;
+```
+
+#### Pre-built Analytics
+- **Error Rate Monitoring**: Track application error trends
+- **User Activity Analysis**: Monitor user engagement patterns
+- **Performance Metrics**: Analyze system performance logs
+- **Feature Usage**: Track feature adoption and usage
+
+### Security & Configuration
+
+#### Environment Variables
+Required secrets in Supabase Edge Functions:
+- `LOGFLARE_API_KEY`: Logflare API key for secure communication
+
+#### Access Control
+- **Admin Only**: Analytics dashboard restricted to admin users
+- **JWT Authentication**: All API calls require valid authentication
+- **Source Isolation**: Log sources can be isolated by organization/team
+
+#### Data Privacy
+- **PII Filtering**: Automatic removal of sensitive information
+- **Data Retention**: Configurable log retention policies
+- **Access Logging**: Track who accesses log data
+
+### Usage Examples
+
+#### Basic Event Logging
+```typescript
+import { useLogflareAnalytics } from '@/hooks/useLogflareAnalytics';
+
+function MyComponent() {
+  const { logEvent } = useLogflareAnalytics();
+  
+  const handleUserAction = async (action: string) => {
+    await logEvent('info', `User performed action: ${action}`, {
+      component: 'MyComponent',
+      action_type: action,
+      timestamp: Date.now()
+    });
+  };
+  
+  return (
+    <Button onClick={() => handleUserAction('button_click')}>
+      Click Me
+    </Button>
+  );
+}
+```
+
+#### Error Logging
+```typescript
+import { useLogflareAnalytics } from '@/hooks/useLogflareAnalytics';
+
+function ApiCall() {
+  const { logEvent } = useLogflareAnalytics();
+  
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/data');
+      if (!response.ok) throw new Error('API request failed');
+      
+      await logEvent('info', 'API call successful', {
+        endpoint: '/api/data',
+        status: response.status
+      });
+    } catch (error) {
+      await logEvent('error', 'API call failed', {
+        endpoint: '/api/data',
+        error: error.message,
+        stack: error.stack
+      });
+    }
+  };
+}
+```
+
+#### Custom Analytics Query
+```typescript
+import { useLogflareAnalytics } from '@/hooks/useLogflareAnalytics';
+
+function AnalyticsReport() {
+  const { getAnalytics } = useLogflareAnalytics();
+  
+  const getErrorRate = async () => {
+    const result = await getAnalytics({
+      query: `
+        SELECT 
+          DATE(timestamp) as date,
+          COUNT(CASE WHEN level = 'error' THEN 1 END) as error_count,
+          COUNT(*) as total_logs,
+          (COUNT(CASE WHEN level = 'error' THEN 1 END) * 100.0 / COUNT(*)) as error_rate
+        FROM logs 
+        WHERE timestamp > NOW() - INTERVAL '7 days'
+        GROUP BY DATE(timestamp)
+        ORDER BY date DESC
+      `
+    });
+    
+    return result.data;
+  };
+}
+```
+
 ## Conclusion
 
 The analytics system provides a robust, scalable, and secure foundation for data-driven insights across the platform. With comprehensive RBAC, error handling, performance optimization, and real-time capabilities, it serves as a production-ready analytics solution that can scale with platform growth while maintaining security and performance standards.
 
-The system successfully consolidates all analytics functionality into a centralized architecture while maintaining backward compatibility and providing a smooth migration path for existing components.
+The system successfully consolidates all analytics functionality into a centralized architecture while maintaining backward compatibility and providing a smooth migration path for existing components. The integration of both core analytics and Logflare log analytics provides complete visibility into platform operations and user behavior.
