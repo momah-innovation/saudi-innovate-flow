@@ -41,12 +41,12 @@ const AnalyticsAdvanced: React.FC = () => {
   // Transform analytics data for charts
   const userBehaviorData = coreMetrics ? [
     { day: 'الأحد', views: coreMetrics.engagement?.pageViews || 1200, interactions: coreMetrics.engagement?.interactions || 850, users: coreMetrics.users?.active || 320 },
-    { day: 'الاثنين', views: (coreMetrics.engagement?.pageViews || 1200) * 1.2, interactions: (coreMetrics.engagement?.totalParticipants || 850) * 1.1, users: (coreMetrics.users?.active || 320) * 1.2 },
-    { day: 'الثلاثاء', views: (coreMetrics.engagement?.pageViews || 1200) * 1.4, interactions: (coreMetrics.engagement?.totalParticipants || 850) * 1.3, users: (coreMetrics.users?.active || 320) * 1.3 },
-    { day: 'الأربعاء', views: (coreMetrics.engagement?.pageViews || 1200) * 1.1, interactions: (coreMetrics.engagement?.totalParticipants || 850) * 1.05, users: (coreMetrics.users?.active || 320) * 1.1 },
-    { day: 'الخميس', views: (coreMetrics.engagement?.pageViews || 1200) * 1.5, interactions: (coreMetrics.engagement?.totalParticipants || 850) * 1.4, users: (coreMetrics.users?.active || 320) * 1.5 },
-    { day: 'الجمعة', views: (coreMetrics.engagement?.pageViews || 1200) * 0.8, interactions: (coreMetrics.engagement?.totalParticipants || 850) * 0.8, users: (coreMetrics.users?.active || 320) * 0.9 },
-    { day: 'السبت', views: (coreMetrics.engagement?.pageViews || 1200) * 0.9, interactions: (coreMetrics.engagement?.totalParticipants || 850) * 0.9, users: (coreMetrics.users?.active || 320) * 0.9 }
+    { day: 'الاثنين', views: (coreMetrics.engagement?.pageViews || 1200) * 1.2, interactions: (coreMetrics.engagement?.interactions || 850) * 1.1, users: (coreMetrics.users?.active || 320) * 1.2 },
+    { day: 'الثلاثاء', views: (coreMetrics.engagement?.pageViews || 1200) * 1.4, interactions: (coreMetrics.engagement?.interactions || 850) * 1.3, users: (coreMetrics.users?.active || 320) * 1.3 },
+    { day: 'الأربعاء', views: (coreMetrics.engagement?.pageViews || 1200) * 1.1, interactions: (coreMetrics.engagement?.interactions || 850) * 1.05, users: (coreMetrics.users?.active || 320) * 1.1 },
+    { day: 'الخميس', views: (coreMetrics.engagement?.pageViews || 1200) * 1.5, interactions: (coreMetrics.engagement?.interactions || 850) * 1.4, users: (coreMetrics.users?.active || 320) * 1.5 },
+    { day: 'الجمعة', views: (coreMetrics.engagement?.pageViews || 1200) * 0.8, interactions: (coreMetrics.engagement?.interactions || 850) * 0.8, users: (coreMetrics.users?.active || 320) * 0.9 },
+    { day: 'السبت', views: (coreMetrics.engagement?.pageViews || 1200) * 0.9, interactions: (coreMetrics.engagement?.interactions || 850) * 0.9, users: (coreMetrics.users?.active || 320) * 0.9 }
   ] : [];
 
   const topPages = [
