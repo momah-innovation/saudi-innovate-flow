@@ -17,10 +17,10 @@ import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import { UploaderSettingsProvider } from "./contexts/UploaderSettingsContext";
 import { UnifiedRouter } from '@/routing/UnifiedRouter';
 
-// Use the optimized query client configuration
-import { createOptimizedQueryClient } from '@/lib/query/query-client';
+// Use the isolated query client to prevent React Error #321
+import { createIsolatedQueryClient } from '@/lib/query/isolated-query-client';
 
-const queryClient = createOptimizedQueryClient();
+const queryClient = createIsolatedQueryClient();
 
 const App = () => {
   return (
