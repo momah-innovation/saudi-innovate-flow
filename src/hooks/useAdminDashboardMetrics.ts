@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { debugLog } from '@/utils/debugLogger';
 
 // Types for the admin dashboard metrics
 export interface AdminDashboardMetrics {
@@ -232,7 +233,7 @@ export const useAdminDashboardMetrics = (
       setMetrics(metrics);
       setLastUpdated(new Date());
       
-      console.log('Admin metrics fetched successfully:', {
+      debugLog.log('Admin metrics fetched successfully', {
         totalUsers: metrics.users?.total,
         totalChallenges: metrics.challenges?.total,
         systemUptime: metrics.system?.uptime,
@@ -240,7 +241,7 @@ export const useAdminDashboardMetrics = (
       });
 
     } catch (err) {
-      console.error('Error fetching admin metrics:', err);
+      debugLog.error('Error fetching admin metrics', { error: err });
       setIsError(true);
       setError(err instanceof Error ? err.message : 'Failed to fetch metrics');
     } finally {

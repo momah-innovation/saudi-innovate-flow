@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 // Simple types to match database returns
 interface UserPermission {
@@ -81,7 +82,7 @@ export const useUserPermissions = (options: UseUserPermissionsOptions = {}) => {
 
         return (data || []) as unknown as UserPermission[];
       } catch (error) {
-        console.error('Error fetching user permissions:', error);
+        debugLog.error('Error fetching user permissions', { error });
         throw error;
       }
     },
@@ -129,7 +130,7 @@ export const useRoleHierarchy = (options: UseRoleHierarchyOptions = {}) => {
 
         return mockHierarchy;
       } catch (error) {
-        console.error('Error fetching role hierarchy:', error);
+        debugLog.error('Error fetching role hierarchy', { error });
         toast({
           title: "خطأ في تحميل هيكل الأدوار",
           description: "فشل في تحميل بيانات هيكل الأدوار. يرجى المحاولة مرة أخرى.",

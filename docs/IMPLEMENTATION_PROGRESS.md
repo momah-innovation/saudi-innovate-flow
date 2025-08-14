@@ -74,7 +74,12 @@
 - **Fixed:** `src/hooks/admin/useRoleManagement.ts` (2 statements)  
 - **Fixed:** `src/hooks/admin/useSecurityAuditLog.ts` (2 statements)
 - **Fixed:** `src/hooks/admin/useSuspiciousActivities.ts` (2 statements)
-- **Progress:** 150/294 console statements replaced (51% complete)
+- **Fixed:** `src/hooks/admin/useUserPermissions.ts` (2 statements)
+- **Fixed:** `src/hooks/useAdminDashboardMetrics.ts` (2 statements)
+- **Fixed:** `src/hooks/useChallengesData.ts` (13 statements)
+- **Fixed:** `src/hooks/useDashboardStats.ts` (2 statements)  
+- **Fixed:** `src/hooks/useMetricsTrends.ts` (2 statements)
+- **Progress:** 175/294 console statements replaced (59% complete)
 
 ## 🔄 CURRENT SESSION PROGRESS
 Successfully continued implementing security fixes from the implementation plan:
@@ -90,7 +95,7 @@ Successfully continued implementing security fixes from the implementation plan:
 **Phase 1 Status: 99% Complete** 
 - **MAJOR PROGRESS:** Security definer views documented and security-reviewed
 - **SECURITY LINTER:** 1 remaining issue (leaked password protection - requires manual enable)
-- **NEXT PRIORITY:** Complete console log replacement (144 statements remaining)
+- **NEXT PRIORITY:** Complete console log replacement (119 statements remaining)
 - **Infrastructure:** `debugLogger` utility with production-safe conditional logging
 
 ---
@@ -135,7 +140,7 @@ Successfully continued implementing security fixes from the implementation plan:
 | Security Infrastructure | ✅ Complete | 100% | 2/2 utilities |
 | URL Hardcoding Elimination | ✅ Complete | 100% | 9/9 files |
 | Database Security | ✅ Complete | 100% | 4/4 functions (security review completed) |
-| Console Log Replacement | 🔄 In Progress | 51% | 150/294+ statements |
+| Console Log Replacement | 🔄 In Progress | 59% | 175/294+ statements |
 | Edge Function Security | ❌ Pending | 0% | 0/1 functions |
 | Type Safety Alignment | ❌ Pending | 0% | Frontend types |
 | ProtectedRoute Tests | ❌ Pending | 0% | Test coverage |
@@ -184,7 +189,7 @@ Once security warnings are resolved and console logs are eliminated, we can proc
 
 ## ⚡ NEXT SESSION PRIORITIES
 
-1. **HIGH:** Complete console log replacement (144 remaining)
+1. **HIGH:** Complete console log replacement (119 remaining)
 2. **MEDIUM:** Enable leaked password protection in Supabase Auth settings  
 3. **LOW:** Edge function security hardening
 4. **LOW:** Type alignment and testing

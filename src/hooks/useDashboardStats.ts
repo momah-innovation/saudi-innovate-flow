@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface DashboardStats {
   totalIdeas: number;
@@ -141,10 +142,10 @@ export const useDashboardStats = (): UseDashboardStatsReturn => {
       setStats(userStats);
       setLastUpdated(new Date());
 
-      console.log('Dashboard stats fetched successfully:', userStats);
+      debugLog.log('Dashboard stats fetched successfully', { userStats });
 
     } catch (err) {
-      console.error('Error fetching dashboard stats:', err);
+      debugLog.error('Error fetching dashboard stats', { error: err });
       setIsError(true);
       setError(err instanceof Error ? err.message : 'Failed to fetch stats');
     } finally {

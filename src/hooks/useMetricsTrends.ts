@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 
 // Types for metrics trends
 export interface MetricTrend {
@@ -185,14 +186,14 @@ export const useMetricsTrends = (
 
       setTrends(trendsData);
       
-      console.log('Metrics trends calculated:', {
+      debugLog.log('Metrics trends calculated', {
         usersTrend: trendsData.users.total.trend,
         challengesTrend: trendsData.challenges.total.trend,
         securityTrend: trendsData.security.score.trend
       });
 
     } catch (err) {
-      console.error('Error calculating trends:', err);
+      debugLog.error('Error calculating trends', { error: err });
       setIsError(true);
       setError(err instanceof Error ? err.message : 'Failed to calculate trends');
     } finally {

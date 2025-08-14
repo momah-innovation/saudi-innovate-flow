@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface Challenge {
   id: string;
@@ -44,25 +45,25 @@ export const useChallengesData = () => {
 
   const fetchChallenges = async () => {
     try {
-      console.log('🚨 STARTING fetchChallenges...');
+      debugLog.log('🚨 STARTING fetchChallenges...');
       setLoading(true);
       
       // Get user authentication
-      console.log('🔐 Getting user auth...');
+      debugLog.log('🔐 Getting user auth...');
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('🔐 User auth result:', user?.id ? 'authenticated' : 'not authenticated');
+      debugLog.log('🔐 User auth result', { authenticated: user?.id ? true : false });
 
       // Fetch challenges data
-      console.log('📊 About to fetch challenges from DB...');
+      debugLog.log('📊 About to fetch challenges from DB...');
       
       // First try a simple query without joins to test RLS
-      console.log('🔍 Testing simple query first...');
+      debugLog.log('🔍 Testing simple query first...');
       const { data: simpleTest, error: simpleError } = await supabase
         .from('challenges')
         .select('id, title_ar, status, sensitivity_level')
         .limit(5);
       
-      console.log('🔍 Simple query result:', { simpleTest, simpleError });
+      debugLog.log('🔍 Simple query result', { simpleTest, simpleError });
       
       // Now try the full query
       const { data: challengesData, error: challengesError } = await supabase
@@ -73,10 +74,10 @@ export const useChallengesData = () => {
         `)
         .order('created_at', { ascending: false });
 
-      console.log('📊 Challenges DB response:', { challengesData, challengesError });
+      debugLog.log('📊 Challenges DB response', { challengesData, challengesError });
 
       if (challengesError) {
-        console.error('❌ Error fetching challenges:', challengesError);
+        debugLog.error('❌ Error fetching challenges', { error: challengesError });
         logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, challengesError);
         
         // Show error to user
