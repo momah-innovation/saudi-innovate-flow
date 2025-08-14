@@ -23,7 +23,7 @@ export function useNavigationGuard() {
       requireAuth = false,
       requireProfile = false,
       requiredRole,
-      minProfileCompletion = 80
+      minProfileCompletion = 40 // Reduced from 80% for better UX
     } = options;
 
     // Authentication check
@@ -44,7 +44,7 @@ export function useNavigationGuard() {
       return;
     }
 
-    // Profile completion check
+    // Progressive profile completion check - reduced from 80% to 40%
     if (
       requireProfile &&
       userProfile &&
@@ -56,7 +56,8 @@ export function useNavigationGuard() {
         path,
         reason: 'profile_incomplete',
         currentCompletion: userProfile.profile_completion_percentage,
-        requiredCompletion: minProfileCompletion
+        requiredCompletion: minProfileCompletion,
+        newDefault: 40 // Updated from 80%
       });
 
       toast({
@@ -109,7 +110,7 @@ export function useNavigationGuard() {
       requireAuth = false,
       requireProfile = false,
       requiredRole,
-      minProfileCompletion = 80
+      minProfileCompletion = 40 // Progressive profile completion
     } = options;
 
     if (requireAuth && !user) return false;
