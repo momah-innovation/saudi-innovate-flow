@@ -61,7 +61,7 @@ export default function LandingPage() {
     };
   }
   const { language, setLanguage, isRTL } = direction;
-  const { faqs, statistics, loading: dataLoading, getText, getProcessSteps } = useLandingPageData(); // Remove language dependency
+  const { faqs, statistics, loading: dataLoading, getText, getProcessSteps } = useLandingPageData(language);
 
   const features = [
     {

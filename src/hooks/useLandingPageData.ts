@@ -29,7 +29,7 @@ interface ContentSection {
   display_order: number;
 }
 
-export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
+export const useLandingPageData = (language: 'en' | 'ar' = 'ar') => {
   const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [statistics, setStatistics] = useState<PublicStatistic[]>([]);
   const [content, setContent] = useState<ContentSection[]>([]);
@@ -39,7 +39,7 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
     let isCancelled = false;
     
     const fetchData = async () => {
-      // Prevent redundant fetches if data is already loaded
+      // Only fetch data once on mount, not on language changes
       if (statistics.length > 0 && faqs.length > 0 && content.length > 0) {
         return;
       }
