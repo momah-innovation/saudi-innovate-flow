@@ -148,7 +148,9 @@ const EnhancedDatabaseBackend = {
           const cached = this.cache.get(`translations_${language}`);
           resolve(cached || {});
         } else {
-          setTimeout(checkLoading, 100);
+          import('@/utils/timerManager').then(({ default: timerManager }) => {
+            timerManager.setTimeout('i18n-check-loading', checkLoading, 100);
+          });
         }
       };
       checkLoading();
@@ -236,14 +238,16 @@ export const invalidateTranslationCache = () => {
 };
 
 // Auto-invalidate cache every 5 minutes to pick up new translations
-setInterval(() => {
-  invalidateTranslationCache();
-}, 5 * 60 * 1000);
+import('@/utils/timerManager').then(({ default: timerManager }) => {
+  timerManager.setInterval('i18n-cache-invalidate', () => {
+    invalidateTranslationCache();
+  }, 5 * 60 * 1000);
 
-// Invalidate cache immediately to force refresh of new translations
-setTimeout(() => {
-  invalidateTranslationCache();
-}, 1000);
+  // Invalidate cache immediately to force refresh of new translations
+  timerManager.setTimeout('i18n-immediate-invalidate', () => {
+    invalidateTranslationCache();
+  }, 1000);
+});
 
 // Invalidate cache immediately after migration to force refresh
 invalidateTranslationCache();

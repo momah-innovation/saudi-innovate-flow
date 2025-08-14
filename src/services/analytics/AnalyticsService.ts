@@ -323,7 +323,9 @@ export class AnalyticsService {
 
       // Add to cache and cleanup old entries
       this.trackingCache.add(trackingKey);
-      setTimeout(() => this.trackingCache.delete(trackingKey), 60000); // Cleanup after 1 minute
+      import('@/utils/timerManager').then(({ default: timerManager }) => {
+        timerManager.setTimeout(`analytics-cache-${trackingKey}`, () => this.trackingCache.delete(trackingKey), 60000);
+      });
     } catch (error) {
       // Don't throw on tracking errors
       logger.warn('Failed to track metrics access', { component: 'AnalyticsService', userId, type: metricsType });

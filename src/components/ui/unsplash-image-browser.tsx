@@ -422,7 +422,8 @@ export function UnsplashImageBrowser({
                   }}
                   onFocus={() => setShowSuggestions(true)}
                   onBlur={() => {
-                    setTimeout(() => setShowSuggestions(false), 200);
+                    const { setTimeout: scheduleTimeout } = useTimerManager();
+                    scheduleTimeout(() => setShowSuggestions(false), 200);
                   }}
                   className="pl-10"
                 />

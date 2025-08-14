@@ -57,20 +57,22 @@ export const backgroundSync = {
   // Enable background refetching for critical data
   enableRealtimeUpdates: (queryClient: QueryClient) => {
     // Refetch active challenges every 2 minutes in the background
-    setInterval(() => {
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.challenges.list({ status: 'active' }),
-        refetchType: 'active' 
-      });
-    }, 2 * 60 * 1000);
-    
-    // Refetch user notifications every minute
-    setInterval(() => {
-      queryClient.invalidateQueries({ 
-        queryKey: ['notifications'],
-        refetchType: 'active'
-      });
-    }, 60 * 1000);
+    import('@/utils/timerManager').then(({ default: timerManager }) => {
+      timerManager.setInterval('cache-challenges-refetch', () => {
+        queryClient.invalidateQueries({ 
+          queryKey: queryKeys.challenges.list({ status: 'active' }),
+          refetchType: 'active' 
+        });
+      }, 2 * 60 * 1000);
+      
+      // Refetch user notifications every minute
+      timerManager.setInterval('cache-notifications-refetch', () => {
+        queryClient.invalidateQueries({ 
+          queryKey: ['notifications'],
+          refetchType: 'active'
+        });
+      }, 60 * 1000);
+    });
   },
   
   // Sync data when app becomes visible

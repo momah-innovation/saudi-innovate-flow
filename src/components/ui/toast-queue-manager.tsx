@@ -138,10 +138,12 @@ class ToastQueueManager {
 
       // Remove from active when dismissed
       if (config.duration > 0) {
-        // Note: Class methods can't use hooks directly, keeping basic timer for this use case
-        setTimeout(() => {
-          this.activeToasts.delete(item.id);
-        }, config.duration);
+        // Note: Class methods can't use hooks directly, using timerManager singleton for memory safety
+        import('@/utils/timerManager').then(({ default: timerManager }) => {
+          timerManager.setTimeout(`toast-${item.id}`, () => {
+            this.activeToasts.delete(item.id);
+          }, config.duration);
+        });
       }
     }
 
