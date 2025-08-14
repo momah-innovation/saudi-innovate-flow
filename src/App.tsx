@@ -17,14 +17,10 @@ import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import { UploaderSettingsProvider } from "./contexts/UploaderSettingsContext";
 import { UnifiedRouter } from '@/routing/UnifiedRouter';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes
-    },
-  },
-});
+// Use the optimized query client configuration
+import { createOptimizedQueryClient } from '@/lib/query/query-client';
+
+const queryClient = createOptimizedQueryClient();
 
 const App = () => {
   return (

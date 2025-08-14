@@ -12,14 +12,8 @@ const queryConfig: DefaultOptions = {
     staleTime: 5 * 60 * 1000,
     // Keep in cache for 10 minutes
     gcTime: 10 * 60 * 1000,
-    // Retry failed requests 3 times with exponential backoff
-    retry: (failureCount, error: any) => {
-      // Don't retry 4xx errors
-      if (error?.status >= 400 && error?.status < 500) {
-        return false;
-      }
-      return failureCount < 3;
-    },
+    // Disable retries to prevent hook ordering issues
+    retry: false,
     // Retry delay with exponential backoff
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
     // Refetch on window focus for critical data

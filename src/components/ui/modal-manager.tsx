@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from '@/components/ui/button';
 import { X, AlertTriangle, CheckCircle, Info, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useTimerManager } from '@/utils/timerManager';
+// Removed useTimerManager to prevent hook ordering issues
 
 type ModalType = 'default' | 'confirm' | 'alert' | 'success' | 'error' | 'loading';
 type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
@@ -99,13 +99,12 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 
     // Set up auto-close if specified
     if (modalConfig.autoClose && modalConfig.autoClose > 0) {
-      const { setTimeout: scheduleTimeout } = useTimerManager();
-      const clearTimer = scheduleTimeout(() => {
+      const timeoutId = setTimeout(() => {
         closeModal(id);
       }, modalConfig.autoClose);
       
-      // Store cleanup function instead of raw timeout
-      autoCloseTimeouts.current.set(id, clearTimer);
+      // Store cleanup function
+      autoCloseTimeouts.current.set(id, () => clearTimeout(timeoutId));
     }
 
     return id;
