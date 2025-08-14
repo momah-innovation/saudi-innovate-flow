@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
 import { debugLog } from '@/utils/debugLogger';
-import { useTimerManager } from '@/utils/timerManager';
+// Remove useTimerManager to prevent hook ordering violations
 
 interface AuthContextType {
   user: User | null;
@@ -105,8 +105,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // This was causing delays in auth initialization
       
       // Trigger profile completion calculation in background (non-blocking)
-      const { setTimeout: scheduleTimeout } = useTimerManager();
-      scheduleTimeout(async () => {
+      // Use regular setTimeout to prevent hook ordering issues
+      setTimeout(async () => {
         try {
           await supabase.functions.invoke('calculate-profile-completion', {
             body: { user_id: userId }
@@ -114,7 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (error) {
           debugLog.warn('Background profile completion calculation failed', { userId, error });
         }
-      }, 1000); // Delay to not block auth flow
+      }, 1000);
 
       // Use Promise.all to fetch profile and roles simultaneously
       const [profileResponse, rolesResponse] = await Promise.all([
@@ -256,9 +256,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Only fetch profile if not already fetched and user exists
         if (session?.user && !profileFetched) {
           profileFetched = true;
-          // Use a small delay to ensure auth state is fully set
-          const { setTimeout: scheduleTimeout } = useTimerManager();
-          scheduleTimeout(() => {
+          // Use regular setTimeout to prevent hook ordering issues
+          setTimeout(() => {
             if (isSubscribed) {
               fetchUserProfile(session.user.id);
             }
@@ -283,8 +282,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Only fetch profile if not already fetched and user exists
       if (session?.user && !profileFetched) {
         profileFetched = true;
-        const { setTimeout: scheduleTimeout } = useTimerManager();
-        scheduleTimeout(() => {
+        setTimeout(() => {
           if (isSubscribed) {
             fetchUserProfile(session.user.id);
           }
