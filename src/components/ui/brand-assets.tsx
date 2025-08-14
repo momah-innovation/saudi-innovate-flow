@@ -15,6 +15,7 @@ import {
   Eye
 } from "lucide-react";
 import { useState } from "react";
+import { useTimerManager } from '@/utils/timerManager';
 import { cn } from "@/lib/utils";
 
 interface BrandAssetProps {
@@ -39,6 +40,7 @@ export function BrandAsset({
   className 
 }: BrandAssetProps) {
   const [copied, setCopied] = useState(false);
+  const { setTimeout: scheduleTimeout } = useTimerManager();
 
   const getCategoryIcon = () => {
     switch (category) {
@@ -66,7 +68,7 @@ export function BrandAsset({
     if (downloadUrl) {
       navigator.clipboard.writeText(downloadUrl);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      scheduleTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -124,11 +126,12 @@ interface ColorPaletteProps {
 
 export function ColorPalette({ name, colors, className }: ColorPaletteProps) {
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
+  const { setTimeout: scheduleTimeout } = useTimerManager();
 
   const handleColorCopy = (colorValue: string) => {
     navigator.clipboard.writeText(colorValue);
     setCopiedColor(colorValue);
-    setTimeout(() => setCopiedColor(null), 2000);
+    scheduleTimeout(() => setCopiedColor(null), 2000);
   };
 
   return (

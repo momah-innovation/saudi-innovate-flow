@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { debugLog } from '@/utils/debugLogger';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -89,7 +90,7 @@ export const CollaborativeOpportunityCard = ({
 
   useEffect(() => {
     // Simulate real-time updates for applications and views
-    const interval = setInterval(() => {
+    const cleanup = scheduleInterval(() => {
       if (Math.random() > 0.85) { // 15% chance of update
         const variation = Math.floor(Math.random() * 2); // 0 or 1
         setLiveApplications(prev => prev + variation);
@@ -97,7 +98,7 @@ export const CollaborativeOpportunityCard = ({
       }
     }, 60000); // Update every minute
 
-    return () => clearInterval(interval);
+    return cleanup;
   }, []);
 
   const getStatusColor = (status: string) => {

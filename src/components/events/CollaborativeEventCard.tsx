@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { debugLog } from '@/utils/debugLogger';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -98,14 +99,14 @@ export const CollaborativeEventCard = ({
 
   useEffect(() => {
     // Simulate real-time updates for demo
-    const interval = setInterval(() => {
+    const cleanup = scheduleInterval(() => {
       if (Math.random() > 0.8) { // 20% chance of update
         const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
         setLiveParticipants(prev => Math.max(0, prev + variation));
       }
     }, 45000); // Update every 45 seconds
 
-    return () => clearInterval(interval);
+    return cleanup;
   }, []);
 
   const getStatusClass = (status: string) => {

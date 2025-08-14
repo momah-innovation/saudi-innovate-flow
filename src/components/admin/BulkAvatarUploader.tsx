@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Upload, CheckCircle, AlertCircle, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -38,6 +39,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
     failed: string[];
     total: number;
   }>({ success: [], failed: [], total: 0 });
+  const { setTimeout: scheduleTimeout } = useTimerManager();
 
   const uploadAvatarsFromPublic = async () => {
     try {
@@ -79,7 +81,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           setProgress((completed / AVATAR_MAPPING.length) * 100);
           
           // Small delay to show progress
-          await new Promise(resolve => setTimeout(resolve, 500));
+          await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 500));
           
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
