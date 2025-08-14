@@ -62,6 +62,7 @@ export const CollaborativeOpportunityCard = ({
   viewMode = 'cards',
   showCollaboration = true
 }: CollaborativeOpportunityCardProps) => {
+  const { setInterval: scheduleInterval } = useTimerManager();
   const { isRTL } = useDirection();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [liveApplications, setLiveApplications] = useState(opportunity.applications_count || 0);

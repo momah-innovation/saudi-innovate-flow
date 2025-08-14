@@ -55,6 +55,7 @@ export const CollaborativeEventCard = ({
   isBookmarked = false,
   showCollaboration = true
 }: CollaborativeEventCardProps) => {
+  const { setInterval: scheduleInterval } = useTimerManager();
   const { isRTL } = useDirection();
   const { user } = useAuth();
   const [liked, setLiked] = useState(false);
