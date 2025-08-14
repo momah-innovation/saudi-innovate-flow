@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { getBucketUrlTemplate } from '@/utils/storageUtils';
 
 interface BucketViewDialogProps {
   bucket: any | null;
@@ -146,7 +147,7 @@ export function BucketViewDialog({
                       {t('files_publicly_accessible')}
                     </p>
                     <code className="text-xs bg-background px-2 py-1 rounded break-all">
-                      https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public/{bucket.id}/[filename]
+                      {getBucketUrlTemplate(bucket.id)}
                     </code>
                   </div>
                 </div>

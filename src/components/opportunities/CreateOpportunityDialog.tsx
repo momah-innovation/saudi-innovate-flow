@@ -19,6 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { OpportunityImageSelector } from '@/components/opportunities/OpportunityImageSelector';
 import { UploadedFile } from '@/hooks/useFileUploader';
+import { getOpportunityImageUrl } from '@/utils/storageUtils';
 import {
   Plus,
   X
@@ -591,7 +592,7 @@ export const CreateOpportunityDialog = ({
                 {imageUrl ? (
                   <div className="relative">
                     <img 
-                      src={imageUrl.startsWith('http') ? imageUrl : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${imageUrl}`}
+                      src={getOpportunityImageUrl(imageUrl)}
                       alt="Opportunity preview"
                       className="w-full h-48 object-cover rounded-lg border"
                     />

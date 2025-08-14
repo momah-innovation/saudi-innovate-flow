@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -94,7 +95,7 @@ export function TeamManagementContent({
         .eq('status', 'active');
 
       if (teamMembersError) {
-        console.error('Error fetching team members:', teamMembersError);
+        debugLog.error('Error fetching team members', { component: 'TeamManagementContent' }, teamMembersError);
       }
 
       // Calculate metrics from real data

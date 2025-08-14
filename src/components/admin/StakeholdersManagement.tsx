@@ -13,6 +13,7 @@ import {
   Target,
   Activity
 } from 'lucide-react';
+import { debugLog } from '@/utils/debugLogger';
 
 interface StakeholdersManagementProps {
   viewMode: 'cards' | 'list' | 'grid';
@@ -62,7 +63,7 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching stakeholders:', error);
+        debugLog.error('Error fetching stakeholders', { component: 'StakeholdersManagement' }, error);
         setStakeholders([]);
         return;
       }
@@ -86,7 +87,7 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
 
       setStakeholders(transformedStakeholders);
     } catch (error) {
-      console.error('Error in fetchStakeholders:', error);
+      debugLog.error('Error in fetchStakeholders', { component: 'StakeholdersManagement' }, error);
       setStakeholders([]);
     } finally {
       setLoading(false);

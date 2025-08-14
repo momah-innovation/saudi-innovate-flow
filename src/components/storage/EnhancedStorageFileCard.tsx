@@ -13,6 +13,7 @@ import {
   Calendar,
   HardDrive
 } from 'lucide-react';
+import { getPublicStorageUrl } from '@/utils/storageUtils';
 
 interface EnhancedStorageFileCardProps {
   file: any;
@@ -85,7 +86,7 @@ export function EnhancedStorageFileCard({
   const getImageUrl = () => {
     if (file.is_public && isImage()) {
       // Construct the public URL for images
-      return `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public/${file.bucket_id}/${file.name}`;
+      return getPublicStorageUrl(file.bucket_id, file.name);
     }
     return null;
   };

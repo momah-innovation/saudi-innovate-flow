@@ -23,6 +23,7 @@ import {
   X,
   Image
 } from 'lucide-react';
+import { getOpportunityImageUrl } from '@/utils/storageUtils';
 
 interface EditOpportunityDialogProps {
   opportunity: any;
@@ -484,7 +485,7 @@ export const EditOpportunityDialog = ({
               {imageUrl ? (
                 <div className="relative">
                   <img 
-                    src={imageUrl.startsWith('http') ? imageUrl : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${imageUrl}`}
+                    src={getOpportunityImageUrl(imageUrl)}
                     alt="Opportunity preview"
                     className="w-full h-48 object-cover rounded-lg border"
                   />

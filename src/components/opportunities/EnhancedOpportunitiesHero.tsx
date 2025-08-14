@@ -22,6 +22,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { getOpportunityImageUrl } from '@/utils/storageUtils';
 import { cn } from '@/lib/utils';
 
 interface EnhancedOpportunitiesHeroProps {
@@ -186,10 +187,7 @@ export const EnhancedOpportunitiesHero = ({
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
                     {featuredOpportunity.image ? (
                       <img 
-                        src={featuredOpportunity.image.startsWith('http') 
-                          ? featuredOpportunity.image 
-                          : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${featuredOpportunity.image}`
-                        } 
+                        src={getOpportunityImageUrl(featuredOpportunity.image)}
                         alt={featuredOpportunity.title_ar}
                         className="w-full h-full object-cover"
                       />
