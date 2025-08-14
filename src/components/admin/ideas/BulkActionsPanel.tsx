@@ -10,6 +10,7 @@ import { logger } from "@/utils/logger";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Trash2, FileEdit, Tag, Users, Archive, AlertTriangle } from "lucide-react";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface IdeaTag {
   id: string;
@@ -34,6 +35,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
   const { generalStatusOptions } = useSystemLists();
+  const { user } = useCurrentUser();
   
   const [showStatusDialog, setShowStatusDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -133,7 +135,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
     setLoading(true);
     try {
       // Get current user
-      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
       
       // Create tag links for all selected ideas
       const tagLinks = [];
@@ -179,7 +181,7 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
     
     setLoading(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
       
       const assignments = selectedItems.map(ideaId => ({
         idea_id: ideaId,

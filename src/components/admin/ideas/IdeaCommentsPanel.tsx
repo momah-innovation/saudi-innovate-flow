@@ -10,6 +10,7 @@ import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/logger";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare, Send, Reply, Edit, Trash, Flag } from "lucide-react";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { format } from "date-fns";
 
 interface Comment {
@@ -43,6 +44,7 @@ interface IdeaCommentsPanelProps {
 export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanelProps) {
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
+  const { user } = useCurrentUser();
   
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
@@ -134,7 +136,6 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
 
     setSubmitting(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('غير مصرح للمستخدم');
 
       const { error } = await supabase
@@ -174,7 +175,6 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
 
     setSubmitting(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('غير مصرح للمستخدم');
 
       const { error } = await supabase
