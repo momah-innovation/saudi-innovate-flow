@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -69,11 +70,13 @@ export const ChallengesHero = ({
     { icon: Trophy, value: `${Math.floor(totalPrizes / 1000000)}M+`, label: isRTL ? 'ر.س' : 'SAR', color: challengesPageConfig.ui.colors.stats.yellow }
   ];
 
+  const { setInterval: scheduleInterval } = useTimerManager();
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    const cleanup = scheduleInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
     }, 3000);
-    return () => clearInterval(interval);
+    return cleanup;
   }, [stats.length]);
 
   return (

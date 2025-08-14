@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { 
   Dialog, 
   DialogContent, 
@@ -44,6 +45,7 @@ export const EventSocialShare = ({
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const { setTimeout: scheduleTimeout } = useTimerManager();
 
   const eventUrl = `${window.location.origin}/events/${event.id}`;
   const shareText = isRTL 
@@ -54,7 +56,7 @@ export const EventSocialShare = ({
     try {
       await navigator.clipboard.writeText(eventUrl);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      scheduleTimeout(() => setCopied(false), 2000);
       
       toast({
         title: isRTL ? 'تم النسخ!' : 'Copied!',

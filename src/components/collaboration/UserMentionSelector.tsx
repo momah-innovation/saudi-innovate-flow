@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,6 +31,7 @@ export const UserMentionSelector: React.FC<UserMentionSelectorProps> = ({
   showSuggestions = true
 }) => {
   const { t } = useUnifiedTranslation();
+  const { setTimeout: scheduleTimeout } = useTimerManager();
   const {
     searchResults,
     loading,
@@ -71,8 +73,8 @@ export const UserMentionSelector: React.FC<UserMentionSelectorProps> = ({
       }
     };
 
-    const debounceTimer = setTimeout(handleSearch, 300);
-    return () => clearTimeout(debounceTimer);
+    const cleanup = scheduleTimeout(handleSearch, 300);
+    return cleanup;
   }, [searchQuery]);
 
   const handleUserSelect = (user: any) => {
@@ -106,7 +108,7 @@ export const UserMentionSelector: React.FC<UserMentionSelectorProps> = ({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsOpen(true)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+          onBlur={() => scheduleTimeout(() => setIsOpen(false), 200)}
           className="pl-10"
         />
       </div>

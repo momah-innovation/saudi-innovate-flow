@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +28,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
     sessionStorage.getItem('opportunity-session') || crypto.randomUUID()
   );
   const { user } = useCurrentUser();
+  const { setInterval: scheduleInterval } = useTimerManager();
 
   useEffect(() => {
     if (!opportunityId) return;
@@ -35,11 +37,11 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
     setupRealtimePresence();
     
     // Update presence every 30 seconds
-    const presenceInterval = setInterval(updatePresence, 30000);
+    const cleanup = scheduleInterval(updatePresence, 30000);
     
     // Cleanup on unmount
     return () => {
-      clearInterval(presenceInterval);
+      cleanup();
       markUserInactive();
     };
   }, [opportunityId]);
