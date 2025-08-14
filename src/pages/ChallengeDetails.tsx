@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { debugLog } from '@/utils/debugLogger';
 import { useAuth } from "@/contexts/AuthContext";
 import { GlobalBreadcrumb } from "@/components/layout/GlobalBreadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -389,12 +390,12 @@ const ChallengeDetails = () => {
 
       // Fetch organizational hierarchy
       if (challengeData) {
-        console.log('🏢 Fetching organizational hierarchy');
+        debugLog.debug('Fetching organizational hierarchy');
         await fetchOrganizationalHierarchy(challengeData);
-        console.log('✅ Organizational hierarchy fetched');
+        debugLog.debug('Organizational hierarchy fetched');
       }
       
-      console.log('🎉 fetchChallengeDetails completed successfully');
+      debugLog.debug('fetchChallengeDetails completed successfully');
 
     } catch (error) {
       console.error('💥 MAJOR ERROR in fetchChallengeDetails:', error);
@@ -411,9 +412,9 @@ const ChallengeDetails = () => {
         variant: "destructive",
       });
     } finally {
-      console.log('🏁 fetchChallengeDetails FINALLY block - setting loading to false');
+      debugLog.debug('fetchChallengeDetails FINALLY block - setting loading to false');
       setLoading(false);
-      console.log('✅ Loading state set to false');
+      debugLog.debug('Loading state set to false');
     }
   };
 
@@ -641,7 +642,7 @@ Status: ${challenge?.status}
 
 
   if (loading) {
-    console.log('⏳ RENDER: Showing loading state');
+    debugLog.debug('RENDER: Showing loading state');
     return (
       <div className="p-6 space-y-6">
         <div className="h-8 bg-muted rounded animate-pulse" />
@@ -660,7 +661,7 @@ Status: ${challenge?.status}
   }
 
   if (!challenge) {
-    console.log('❌ RENDER: No challenge data, showing not found');
+    debugLog.debug('RENDER: No challenge data, showing not found');
     return (
       <div className="p-6">
         <div className="text-center py-12">
@@ -672,8 +673,7 @@ Status: ${challenge?.status}
     );
   }
 
-  console.log('✅ RENDER: Showing challenge details');
-  console.log('📋 Challenge data:', challenge);
+  debugLog.debug('RENDER: Showing challenge details', { challenge });
 
   const breadcrumbs = [
     { label: "التحديات", href: "/challenges" },

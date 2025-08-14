@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { ChallengeDetailView } from '@/components/admin/challenges/ChallengeDetailView';
@@ -26,32 +27,32 @@ export default function ChallengeDetailPage() {
   const [showEditWizard, setShowEditWizard] = useState(false);
 
   // Debug logging
-  console.log('🔍 ChallengeDetail Debug:', {
+  debugLog.debug('ChallengeDetail Debug', {
     challengeId,
     pathname: location.pathname,
     params: { challengeId }
   });
 
   useEffect(() => {
-    console.log('🔍 ChallengeDetail useEffect triggered:', { challengeId });
+    debugLog.debug('ChallengeDetail useEffect triggered', { challengeId });
     if (challengeId) {
       fetchChallenge();
     } else {
-      console.error('❌ No challengeId provided');
+      debugLog.error('No challengeId provided');
     }
   }, [challengeId]);
 
   const fetchChallenge = async () => {
     if (!challengeId) {
-      console.error('🔴 ChallengeDetail: No challengeId provided');
+      debugLog.error('ChallengeDetail: No challengeId provided');
       return;
     }
     
-    console.log('🔍 ChallengeDetail: Starting fetchChallenge for ID:', challengeId);
+    debugLog.debug('ChallengeDetail: Starting fetchChallenge', { challengeId });
     
     try {
       setLoading(true);
-      console.log('🔍 ChallengeDetail: Building complex query...');
+      debugLog.debug('ChallengeDetail: Building complex query');
       
       // Fetch challenge with all related data
       const { data, error } = await supabase
@@ -60,7 +61,7 @@ export default function ChallengeDetailPage() {
         .eq('id', challengeId)
         .maybeSingle();
 
-      console.log('🔍 ChallengeDetail: Query executed. Result:', { 
+      debugLog.debug('ChallengeDetail: Query executed', { 
         hasData: !!data, 
         hasError: !!error,
         errorDetails: error,
@@ -68,7 +69,7 @@ export default function ChallengeDetailPage() {
       });
 
       if (error) {
-        console.error('🔴 ChallengeDetail: Database error:', {
+        debugLog.error('ChallengeDetail: Database error', {
           error,
           code: error.code,
           message: error.message,
@@ -86,7 +87,7 @@ export default function ChallengeDetailPage() {
       }
 
       if (!data) {
-        console.warn('🟡 ChallengeDetail: No data returned for challengeId:', challengeId);
+        debugLog.warn('ChallengeDetail: No data returned', { challengeId });
         toast({
           title: language === 'ar' ? 'غير موجود' : 'Not Found',
           description: language === 'ar' ? 'التحدي غير موجود' : 'Challenge not found',
@@ -95,7 +96,7 @@ export default function ChallengeDetailPage() {
         return;
       }
 
-      console.log('✅ ChallengeDetail: Successfully fetched challenge:', {
+      debugLog.debug('ChallengeDetail: Successfully fetched challenge', {
         id: (data as any).id,
         title: (data as any).title_ar,
         hasRelations: {
@@ -110,7 +111,7 @@ export default function ChallengeDetailPage() {
       
       setChallenge(data as any);
     } catch (error) {
-      console.error('🔴 ChallengeDetail: Unexpected error:', {
+      debugLog.error('ChallengeDetail: Unexpected error', {
         error,
         errorMessage: error instanceof Error ? error.message : 'Unknown error',
         challengeId
@@ -123,7 +124,7 @@ export default function ChallengeDetailPage() {
       });
     } finally {
       setLoading(false);
-      console.log('🔍 ChallengeDetail: fetchChallenge completed');
+      debugLog.debug('ChallengeDetail: fetchChallenge completed');
     }
   };
 
@@ -146,7 +147,7 @@ export default function ChallengeDetailPage() {
           .eq('id', challengeId);
 
         if (error) {
-          console.error('Error deleting challenge:', error);
+          debugLog.error('Error deleting challenge', { error });
           toast({
             title: language === 'ar' ? 'خطأ' : 'Error',
             description: language === 'ar' ? 'فشل في حذف التحدي' : 'Failed to delete challenge',
@@ -162,7 +163,7 @@ export default function ChallengeDetailPage() {
         
         navigate('/admin/challenges');
       } catch (error) {
-        console.error('Error:', error);
+        debugLog.error('Error in delete operation', { error });
         toast({
           title: language === 'ar' ? 'خطأ' : 'Error',
           description: language === 'ar' ? 'حدث خطأ غير متوقع' : 'An unexpected error occurred',

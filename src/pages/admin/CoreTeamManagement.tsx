@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from '@/components/layout/PageLayout';
 import { InnovationTeamsContent } from '@/components/admin/InnovationTeamsContent';
@@ -10,7 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDirection } from "@/components/ui/direction-provider";
 
 export default function CoreTeamManagement() {
-  console.log('🎯 Core Team Management page loaded');
+  debugLog.debug('Core Team Management page loaded');
   const { t } = useUnifiedTranslation();
   const { hasRole } = useAuth();
   const { isRTL } = useDirection();
