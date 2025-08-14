@@ -80,11 +80,17 @@ interface Goal {
 
 export default React.memo(function UserDashboard() {
   // CRITICAL: ALL hooks must be called at the top level and in the same order every time
+  console.log('UserDashboard: Starting component render');
   const { userProfile } = useAuth();
+  console.log('UserDashboard: useAuth completed');
   const { permissions, getPrimaryRole: getRoleFromHook, canAccess } = useRoleAccess();
+  console.log('UserDashboard: useRoleAccess completed');
   const { t, language } = useUnifiedTranslation();
+  console.log('UserDashboard: useUnifiedTranslation completed');
   const { isRTL } = useDirection();
+  console.log('UserDashboard: useDirection completed');
   const navigate = useNavigate();
+  console.log('UserDashboard: useNavigate completed');
   
   // State hooks - always called in the same order
   const [primaryRole, setPrimaryRole] = useState<string>('innovator');
