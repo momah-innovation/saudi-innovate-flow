@@ -94,7 +94,7 @@ const ElevationMonitor: React.FC = () => {
 
         return data || [];
       } catch (error) {
-        console.error('Error fetching elevation logs:', error);
+        debugLog.error('Error fetching elevation logs', { error });
         return [];
       }
     },

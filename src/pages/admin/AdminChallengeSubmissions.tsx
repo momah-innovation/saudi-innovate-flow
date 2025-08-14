@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { debugLog } from '@/utils/debugLogger';
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -92,7 +93,7 @@ export default function AdminChallengeSubmissions() {
         navigate('/admin/challenges');
       }
     } catch (error) {
-      console.error('Error fetching challenge:', error);
+      debugLog.error('Error fetching challenge', { error });
       toast({
         title: "خطأ",
         description: "فشل في تحميل التحدي",
@@ -141,7 +142,7 @@ export default function AdminChallengeSubmissions() {
 
       setSubmissions(formattedSubmissions);
     } catch (error) {
-      console.error('Error fetching submissions:', error);
+      debugLog.error('Error fetching submissions', { error });
       toast({
         title: "خطأ",
         description: "فشل في تحميل المشاريع المقدمة",
@@ -170,7 +171,7 @@ export default function AdminChallengeSubmissions() {
 
       fetchSubmissions();
     } catch (error) {
-      console.error('Error updating submission status:', error);
+      debugLog.error('Error updating submission status', { error });
       toast({
         title: "خطأ",
         description: "فشل في تحديث حالة المشروع",

@@ -17,7 +17,7 @@ export default function SystemSettings() {
       toast.success('Translations refreshed successfully');
     } catch (error) {
       toast.error('Failed to refresh translations');
-      console.error('Translation refresh error:', error);
+      debugLog.error('Translation refresh error', { error });
     }
   };
   

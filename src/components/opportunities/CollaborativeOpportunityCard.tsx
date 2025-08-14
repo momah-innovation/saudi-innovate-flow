@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -174,7 +175,7 @@ export const CollaborativeOpportunityCard = ({
       await startCollaboration('opportunity', opportunity.id);
       onStartCollaboration?.(opportunity);
     } catch (error) {
-      console.error('Failed to start collaboration:', error);
+      debugLog.error('Failed to start collaboration', { error });
     }
   };
 

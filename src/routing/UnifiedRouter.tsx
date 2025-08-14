@@ -2,6 +2,7 @@
 // Consolidates all routing logic and RBAC into one cohesive system
 
 import React, { lazy, Suspense } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AppShell } from '@/components/layout/AppShell';
@@ -564,7 +565,7 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
     try {
       return <Component />;
     } catch (error) {
-      console.error('🚨 ROUTER DEBUG: Public route render failed', error);
+      debugLog.error('ROUTER DEBUG: Public route render failed', { error });
       throw error;
     }
   }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -84,7 +85,7 @@ export default function EntitiesManagement() {
         loadManagers()
       ]);
     } catch (error) {
-      console.error('Error loading data:', error);
+      debugLog.error('Error loading data', { error });
       toast.error('خطأ في تحميل البيانات');
     } finally {
       setLoading(false);
@@ -152,7 +153,7 @@ export default function EntitiesManagement() {
       resetForm();
       loadEntities();
     } catch (error: any) {
-      console.error('Error saving entity:', error);
+      debugLog.error('Error saving entity', { error });
       toast.error(error.message || 'خطأ في حفظ البيانات');
     }
   };
@@ -189,7 +190,7 @@ export default function EntitiesManagement() {
       toast.success('تم حذف الكيان بنجاح');
       loadEntities();
     } catch (error: any) {
-      console.error('Error deleting entity:', error);
+      debugLog.error('Error deleting entity', { error });
       toast.error(error.message || 'خطأ في حذف الكيان');
     }
   };

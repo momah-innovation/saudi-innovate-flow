@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { debugLog } from '@/utils/debugLogger';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -52,7 +53,7 @@ export default function LandingPage() {
     direction = useDirection();
   } catch (error) {
     // Fallback for when DirectionProvider is not available
-    console.warn('DirectionProvider not available, using fallback values');
+    debugLog.warn('DirectionProvider not available, using fallback values');
     direction = { 
       language: 'ar' as const, 
       setLanguage: () => {}, 

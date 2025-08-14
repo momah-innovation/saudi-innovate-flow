@@ -4,6 +4,7 @@
  */
 
 import React, { createContext, useContext, ReactNode } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { useAnalytics, UseAnalyticsOptions, UseAnalyticsReturn } from '@/hooks/useAnalytics';
 import { analyticsService } from '@/services/analytics/AnalyticsService';
 import { useAuth } from '@/contexts/AuthContext';
@@ -73,7 +74,7 @@ export function AnalyticsProvider({
       
     } catch (error) {
       // Silent fail for analytics to not impact user experience
-      console.warn('Failed to track event:', error);
+      debugLog.warn('Failed to track event', { error });
     }
   };
   

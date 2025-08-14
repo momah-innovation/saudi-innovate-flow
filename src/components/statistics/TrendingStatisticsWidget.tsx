@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -141,7 +142,7 @@ export const TrendingStatisticsWidget = ({ className = "" }: TrendingStatisticsW
 
       setStats(trendingStats);
     } catch (error) {
-      console.error('Error loading trending statistics:', error);
+      debugLog.error('Error loading trending statistics', { error });
       toast.error(isRTL ? 'خطأ في تحميل الإحصائيات' : 'Error loading statistics');
     } finally {
       setLoading(false);

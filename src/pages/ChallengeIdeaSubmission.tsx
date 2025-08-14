@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { debugLog } from '@/utils/debugLogger';
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -109,7 +110,7 @@ export default function ChallengeIdeaSubmission() {
         navigate('/challenges');
       }
     } catch (error) {
-      console.error('Error fetching challenge:', error);
+      debugLog.error('Error fetching challenge', { error });
       toast({
         title: "خطأ",
         description: "حدث خطأ أثناء تحميل التحدي",
@@ -190,7 +191,7 @@ export default function ChallengeIdeaSubmission() {
 
       navigate(`/challenges/${challengeId}`);
     } catch (error) {
-      console.error('Error submitting idea:', error);
+      debugLog.error('Error submitting idea', { error });
       toast({
         title: "خطأ",
         description: "فشل في تقديم الفكرة، حاول مرة أخرى",
