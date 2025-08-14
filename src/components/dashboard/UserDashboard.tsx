@@ -80,17 +80,11 @@ interface Goal {
 
 export default React.memo(function UserDashboard() {
   // CRITICAL: ALL hooks must be called at the top level and in the same order every time
-  console.log('UserDashboard: Starting component render');
   const { userProfile } = useAuth();
-  console.log('UserDashboard: useAuth completed');
   const { permissions, getPrimaryRole: getRoleFromHook, canAccess } = useRoleAccess();
-  console.log('UserDashboard: useRoleAccess completed');
   const { t, language } = useUnifiedTranslation();
-  console.log('UserDashboard: useUnifiedTranslation completed');
   const { isRTL } = useDirection();
-  console.log('UserDashboard: useDirection completed');
   const navigate = useNavigate();
-  console.log('UserDashboard: useNavigate completed');
   
   // State hooks - always called in the same order
   const [primaryRole, setPrimaryRole] = useState<string>('innovator');
@@ -357,8 +351,10 @@ export default React.memo(function UserDashboard() {
         />
         
         <div className="container mx-auto px-6 py-8 space-y-6">
-        {/* Role-specific Dashboard Content */}
-        {(primaryRole === 'admin' || primaryRole === 'super_admin') && (
+        {/* Role-specific Dashboard Content - FIXED: Always render all components but conditionally display */}
+        
+        {/* Admin Dashboard */}
+        <div style={{ display: (primaryRole === 'admin' || primaryRole === 'super_admin') ? 'block' : 'none' }}>
           <AdminDashboard 
             userProfile={userProfile ? {
               id: userProfile.id,
@@ -376,76 +372,78 @@ export default React.memo(function UserDashboard() {
             canManageSystem={permissions.canManageSystem}
             canViewAnalytics={permissions.canViewAnalytics}
           />
-        )}
+        </div>
         
-        {primaryRole === 'expert' && (
+        {/* Expert Dashboard */}
+        <div style={{ display: primaryRole === 'expert' ? 'block' : 'none' }}>
           <ExpertDashboard 
             userProfile={userProfile}
             canEvaluateIdeas={permissions.canEvaluateIdeas}
             canAccessExpertTools={permissions.canAccessExpertTools}
           />
-        )}
+        </div>
         
-        {primaryRole === 'partner' && (
+        {/* Partner Dashboard */}
+        <div style={{ display: primaryRole === 'partner' ? 'block' : 'none' }}>
           <PartnerDashboard 
             userProfile={userProfile}
             canManageOpportunities={permissions.canManageOpportunities}
             canViewPartnerDashboard={permissions.canViewPartnerDashboard}
           />
-        )}
+        </div>
         
         {/* Manager Dashboard - for leadership roles */}
-        {['team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager'].includes(primaryRole) && (
+        <div style={{ display: ['team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager'].includes(primaryRole) ? 'block' : 'none' }}>
           <ManagerDashboard 
             userProfile={userProfile}
             canManageTeams={permissions.canManageTeams}
             canViewAnalytics={permissions.canViewAnalytics}
             canManageProjects={permissions.canManageTeams} // Using existing permission
           />
-        )}
+        </div>
         
         {/* Coordinator Dashboard - for coordination roles */}
-        {['expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager'].includes(primaryRole) && (
+        <div style={{ display: ['expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager'].includes(primaryRole) ? 'block' : 'none' }}>
           <CoordinatorDashboard 
             userProfile={userProfile}
             canCoordinateExperts={permissions.canManageUsers}
             canManageEvents={permissions.canViewAnalytics}
             canViewAnalytics={permissions.canViewAnalytics}
           />
-        )}
+        </div>
         
         {/* Analyst Dashboard - for data and analysis roles */}
-        {['data_analyst', 'system_auditor'].includes(primaryRole) && (
+        <div style={{ display: ['data_analyst', 'system_auditor'].includes(primaryRole) ? 'block' : 'none' }}>
           <AnalystDashboard 
             userProfile={userProfile}
             canAccessAnalytics={permissions.canAccessAnalytics}
             canViewSystemData={permissions.canViewSystemData}
             canGenerateReports={permissions.canGenerateReports}
           />
-        )}
+        </div>
         
         {/* Content Dashboard - for content and research roles */}
-        {['content_manager', 'challenge_manager', 'research_lead'].includes(primaryRole) && (
+        <div style={{ display: ['content_manager', 'challenge_manager', 'research_lead'].includes(primaryRole) ? 'block' : 'none' }}>
           <ContentDashboard 
             userProfile={userProfile}
             canManageContent={permissions.canManageContent}
             canManageChallenges={permissions.canManageChallenges}
             canResearch={permissions.canResearch}
           />
-        )}
+        </div>
         
         {/* Organization Dashboard - for organizational roles */}
-        {['organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'].includes(primaryRole) && (
+        <div style={{ display: ['organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'].includes(primaryRole) ? 'block' : 'none' }}>
           <OrganizationDashboard 
             userProfile={userProfile}
             canManageOrganization={permissions.canManageOrganization}
             canManageEntities={permissions.canManageEntities}
             canViewOrgAnalytics={permissions.canViewOrgAnalytics}
           />
-        )}
+        </div>
         
         {/* Default Innovator Dashboard for other roles */}
-        {!['admin', 'super_admin', 'expert', 'partner', 'team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager', 'expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'data_analyst', 'system_auditor', 'content_manager', 'challenge_manager', 'research_lead', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'].includes(primaryRole) && (
+        <div style={{ display: !['admin', 'super_admin', 'expert', 'partner', 'team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager', 'expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'data_analyst', 'system_auditor', 'content_manager', 'challenge_manager', 'research_lead', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'].includes(primaryRole) ? 'block' : 'none' }}>
           <div>
         {/* Hero Banner */}
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-innovation to-innovation-foreground text-white">
@@ -773,7 +771,7 @@ export default React.memo(function UserDashboard() {
         
         {/* Collaboration moved to workspace pages */}
           </div>
-        )}
+        </div>
         
         </div>
         

@@ -26,8 +26,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requiredRole,
   subscriptionRequired = false,
   redirectTo,
-  
 }) => {
+  // CRITICAL: ALL hooks must be called at the top level and in the same order every time
   const { user, userProfile, hasRole, loading, session } = useAuth();
   const location = useLocation();
 
@@ -76,6 +76,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     }
   });
 
+  // NEVER return early before all hooks are complete - use conditional rendering instead
   // Wait for auth to finish loading before checking permissions
   if (loading) {
     return (
