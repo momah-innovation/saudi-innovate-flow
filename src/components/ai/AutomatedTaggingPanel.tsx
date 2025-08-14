@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useTimerManager } from '@/utils/timerManager';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -235,8 +236,9 @@ export const AutomatedTaggingPanel: React.FC = () => {
         description: t('automated_tagging.bulk_tagging_started'),
       });
 
-      // Simulate processing delay
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Simulate processing delay with managed timer
+      const { setTimeout: scheduleTimeout } = useTimerManager();
+      await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 3000));
 
       toast({
         title: t('automated_tagging.process_completed'),

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTimerManager } from '@/utils/timerManager';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -44,12 +45,14 @@ export const EnhancedProfileHero = ({
     { icon: Trophy, label: isRTL ? 'فائز بجوائز' : 'Award Winner', color: 'text-purple-400' }
   ];
 
+  const { setInterval: scheduleInterval } = useTimerManager();
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    const clearTimer = scheduleInterval(() => {
       setCurrentBadge((prev) => (prev + 1) % profileBadges.length);
     }, 3000);
-    return () => clearInterval(interval);
-  }, [profileBadges.length]);
+    return clearTimer;
+  }, [profileBadges.length, scheduleInterval]);
 
   return (
     <div className="relative overflow-hidden">

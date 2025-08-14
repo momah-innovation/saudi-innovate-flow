@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTimerManager } from '@/utils/timerManager';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -42,12 +43,14 @@ export const EnhancedPartnerProfileHero = ({
     { icon: Star, value: '4.8', label: isRTL ? 'تقييم الشراكة' : 'partnership rating', color: 'text-yellow-400' }
   ];
 
+  const { setInterval: scheduleInterval } = useTimerManager();
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    const clearTimer = scheduleInterval(() => {
       setCurrentMetric((prev) => (prev + 1) % partnerMetrics.length);
     }, 3000);
-    return () => clearInterval(interval);
-  }, [partnerMetrics.length]);
+    return clearTimer;
+  }, [partnerMetrics.length, scheduleInterval]);
 
   return (
     <div className="relative overflow-hidden">

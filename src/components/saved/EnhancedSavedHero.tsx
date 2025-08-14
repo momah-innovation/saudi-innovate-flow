@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTimerManager } from '@/utils/timerManager';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -47,12 +48,14 @@ export const EnhancedSavedHero = ({
     { icon: Star, value: recentActivity, label: isRTL ? 'نشاط حديث' : 'recent activity', color: 'text-yellow-400' }
   ];
 
+  const { setInterval: scheduleInterval } = useTimerManager();
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    const clearTimer = scheduleInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
     }, 3000);
-    return () => clearInterval(interval);
-  }, [stats.length]);
+    return clearTimer;
+  }, [stats.length, scheduleInterval]);
 
   return (
     <div className="relative overflow-hidden">
