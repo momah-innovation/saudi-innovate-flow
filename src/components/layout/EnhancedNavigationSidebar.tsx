@@ -188,7 +188,7 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
               )}
             >
               <span className="truncate">
-                {t(groupLabel?.en || groupId)}
+                {t(`nav.group.${groupLabel?.en?.toLowerCase()?.replace(/\s+/g, '_')?.replace(/&/g, '')}`, groupLabel?.en || groupId)}
               </span>
               {isOpen ? (
                 <ChevronDown className="h-4 w-4 shrink-0" />
@@ -229,22 +229,13 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
       {/* Sidebar panel */}
       <div
         className={cn(
-          'fixed top-0 h-full bg-background border-r shadow-lg transition-transform duration-300 ease-in-out',
-          'flex flex-col overflow-hidden',
-          // Positioning and visibility - ensure proper stacking
-          'z-[9999]', // Much higher z-index
+          'fixed top-0 h-full bg-background border-r shadow-lg',
+          'flex flex-col overflow-hidden z-50',
           isRTL ? 'right-0' : 'left-0',
           'w-80 max-w-[80vw] lg:w-72',
-          // Transform based on state and direction - add debug border when open
-          open 
-            ? 'translate-x-0 border-4 border-red-500' 
-            : isRTL 
-              ? 'translate-x-full' 
-              : '-translate-x-full'
+          // Simple visibility toggle without transforms
+          open ? 'block' : 'hidden'
         )}
-        style={{
-          display: open ? 'flex' : 'none' // Force display when open for debugging
-        }}
       >
         {/* Header */}
         <div className={cn(
@@ -279,7 +270,7 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
               isRTL ? 'right-3' : 'left-3'
             )} />
             <Input
-              placeholder={t('search_placeholder', 'Search...')}
+              placeholder={t('common.search_placeholder', 'Search...')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
@@ -324,7 +315,7 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
               <div className="text-center py-8 text-muted-foreground">
                 <Search className="h-8 w-8 mx-auto mb-2" />
                 <p className="text-sm">
-                  {t('no_results_found', 'No results found')}
+                  {t('common.no_results_found', 'No results found')}
                 </p>
               </div>
             )}
@@ -334,7 +325,7 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
         {/* Footer */}
         <div className="p-4 border-t text-center">
           <p className="text-xs text-muted-foreground">
-            {t('system_title', 'Innovation System')} v1.0
+            {t('system.title', 'Innovation System')} v1.0
           </p>
         </div>
       </div>
