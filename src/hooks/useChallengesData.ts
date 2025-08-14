@@ -201,7 +201,7 @@ export const useChallengesData = () => {
 
   useEffect(() => {
     fetchChallenges();
-  }, []);
+  }, []); // Remove user dependency to prevent re-renders
 
   return {
     challenges,

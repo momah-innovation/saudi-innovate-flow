@@ -42,10 +42,9 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
         const fetchTimeout = (promise: Promise<any>, timeout: number) => {
           return Promise.race([
             promise,
-            new Promise((_, reject) => {
-              const { setTimeout: scheduleTimeout } = useTimerManager();
-              scheduleTimeout(() => reject(new Error('Request timeout')), timeout);
-            }
+            new Promise((_, reject) => 
+              // Use regular setTimeout for Promise timeout pattern
+              setTimeout(() => reject(new Error('Request timeout')), timeout)
             )
           ]);
         };

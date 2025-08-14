@@ -38,8 +38,8 @@ export function useThrottle<T extends (...args: unknown[]) => unknown>(
       if (!inThrottle.current) {
         func.apply(null, args);
         inThrottle.current = true;
-        const { setTimeout: scheduleTimeout } = useTimerManager();
-        scheduleTimeout(() => (inThrottle.current = false), limit);
+        // Use regular setTimeout for internal throttling to prevent hook violations
+        setTimeout(() => (inThrottle.current = false), limit);
       }
     }) as T,
     [func, limit]

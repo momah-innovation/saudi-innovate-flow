@@ -422,8 +422,8 @@ export function UnsplashImageBrowser({
                   }}
                   onFocus={() => setShowSuggestions(true)}
                   onBlur={() => {
-                    const { setTimeout: scheduleTimeout } = useTimerManager();
-                    scheduleTimeout(() => setShowSuggestions(false), 200);
+                    // Use regular setTimeout for React event handlers to prevent hook violations
+                    setTimeout(() => setShowSuggestions(false), 200);
                   }}
                   className="pl-10"
                 />
