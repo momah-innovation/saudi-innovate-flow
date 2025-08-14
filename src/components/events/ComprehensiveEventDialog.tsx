@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -504,7 +505,7 @@ export const ComprehensiveEventDialog = ({
                           fetchParticipants(); // Refresh participants data
                         }
                       } catch (error) {
-                        console.error('Failed to cancel registration:', error);
+                        debugLog.error('Failed to cancel registration:', error);
                       }
                     } else {
                       // Register for event
