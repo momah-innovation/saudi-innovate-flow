@@ -1,0 +1,33 @@
+-- Add missing navigation translation keys
+INSERT INTO public.system_translations (translation_key, text_en, text_ar) VALUES
+  ('nav.help', 'Help', 'مساعدة'),
+  ('nav.notifications', 'Notifications', 'إشعارات'),
+  ('nav.dashboard', 'Dashboard', 'لوحة التحكم'),
+  ('nav.challenges', 'Challenges', 'التحديات'),
+  ('nav.opportunities', 'Opportunities', 'الفرص'),
+  ('nav.ideas', 'Ideas', 'الأفكار'),
+  ('nav.events', 'Events', 'الأحداث'),
+  ('nav.collaboration', 'Collaboration', 'التعاون'),
+  ('nav.analytics', 'Analytics', 'التحليلات'),
+  ('nav.profile', 'Profile', 'الملف الشخصي'),
+  ('nav.settings', 'Settings', 'الإعدادات'),
+  ('nav.admin', 'Admin', 'إدارة'),
+  ('nav.group.help__support', 'Help & Support', 'المساعدة والدعم'),
+  ('nav.navigation_menu', 'Navigation Menu', 'قائمة التنقل'),
+  ('nav.group.main_navigation', 'Main Navigation', 'التنقل الرئيسي'),
+  ('common.search_placeholder', 'Search...', 'بحث...'),
+  ('system.title', 'Innovation System', 'نظام الابتكار'),
+  ('system.name', 'Saudi Innovate', 'المبتكرون السعوديون'),
+  ('ui.loading', 'Loading...', 'جاري التحميل...'),
+  ('ui.retry', 'Retry', 'إعادة المحاولة'),
+  ('ui.close', 'Close', 'إغلاق'),
+  ('ui.cancel', 'Cancel', 'إلغاء'),
+  ('ui.confirm', 'Confirm', 'تأكيد'),
+  ('ui.success', 'Success', 'نجح'),
+  ('ui.error', 'Error', 'خطأ'),
+  ('ui.warning', 'Warning', 'تحذير'),
+  ('ui.info', 'Information', 'معلومات')
+ON CONFLICT (translation_key) DO UPDATE SET
+  text_en = EXCLUDED.text_en,
+  text_ar = EXCLUDED.text_ar,
+  updated_at = now();
