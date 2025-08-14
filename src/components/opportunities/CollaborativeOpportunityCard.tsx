@@ -11,6 +11,7 @@ import {
   Building2, Target, MessageSquare, Activity, Wifi, WifiOff
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { getOpportunityImageUrl } from '@/utils/storageUtils';
 
 interface OpportunityData {
   id: string;
@@ -187,10 +188,7 @@ export const CollaborativeOpportunityCard = ({
       <div className="relative h-48 overflow-hidden">
         {opportunity.image_url ? (
           <img 
-            src={opportunity.image_url.startsWith('http') 
-              ? opportunity.image_url 
-              : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${opportunity.image_url}`
-            } 
+            src={getOpportunityImageUrl(opportunity.image_url)}
             alt={opportunity.title_ar} 
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
           />

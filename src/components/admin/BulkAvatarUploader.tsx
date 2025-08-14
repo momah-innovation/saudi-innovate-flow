@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { getAvatarUrl } from '@/utils/storageUtils';
 
 // Avatar mapping for the existing users
 const AVATAR_MAPPING = [
@@ -52,7 +53,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
         try {
           // For demo purposes, we'll create placeholder URLs
           // In a real scenario, you would fetch the actual image files
-          const storageUrl = `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public/avatars/${mapping.fileName}`;
+          const storageUrl = getAvatarUrl(mapping.fileName);
           
           // Update all users associated with this avatar
           for (const userName of mapping.userNames) {
