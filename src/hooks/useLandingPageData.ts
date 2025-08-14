@@ -29,7 +29,7 @@ interface ContentSection {
   display_order: number;
 }
 
-export const useLandingPageData = (language: 'en' | 'ar' = 'ar') => {
+export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
   const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [statistics, setStatistics] = useState<PublicStatistic[]>([]);
   const [content, setContent] = useState<ContentSection[]>([]);

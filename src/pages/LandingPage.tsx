@@ -55,9 +55,9 @@ export default function LandingPage() {
     // Fallback for when DirectionProvider is not available
     debugLog.warn('DirectionProvider not available, using fallback values');
     direction = { 
-      language: 'ar' as const, 
+      language: 'en' as const, 
       setLanguage: () => {}, 
-      isRTL: true 
+      isRTL: false 
     };
   }
   const { language, setLanguage, isRTL } = direction;
