@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
+import { debugLog } from '@/utils/debugLogger';
 import { 
   AlertTriangle, 
   Bell, 
@@ -46,7 +47,7 @@ const SecurityAlertsPanel: React.FC<SecurityAlertsPanelProps> = ({ className }) 
         .limit(10);
 
       if (error) {
-        console.error('Error fetching security alerts:', error);
+        debugLog.error('Error fetching security alerts:', { component: 'SecurityAlertsPanel' }, error);
         setAlerts([]);
         return;
       }
@@ -63,7 +64,7 @@ const SecurityAlertsPanel: React.FC<SecurityAlertsPanelProps> = ({ className }) 
 
       setAlerts(transformedAlerts);
     } catch (error) {
-      console.error('Error in fetchSecurityAlerts:', error);
+      debugLog.error('Error in fetchSecurityAlerts:', { component: 'SecurityAlertsPanel' }, error);
       setAlerts([]);
     } finally {
       setLoading(false);

@@ -42,6 +42,7 @@ import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { useUserRoles, useRoleManagement } from '@/hooks/admin/useRoleManagement';
+import { debugLog } from '@/utils/debugLogger';
 
 interface UserRoleManagerProps {
   className?: string;
@@ -93,7 +94,7 @@ const UserRoleManager: React.FC<UserRoleManagerProps> = ({ className }) => {
       setEditReason('');
       setSelectedRole(null);
     } catch (error) {
-      console.error('Error revoking role:', error);
+      debugLog.error('Error revoking role:', { component: 'UserRoleManager' }, error);
     }
   };
 

@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { ManagementListProps } from "@/types";
+import { debugLog } from '@/utils/debugLogger';
 
 // Local opportunity interface for this management component
 interface OpportunityListItem {
@@ -106,7 +107,7 @@ export function OpportunityManagementList({
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching opportunities:', error);
+        debugLog.error('Error fetching opportunities:', { component: 'OpportunityManagementList' }, error);
         setOpportunities([]);
         return;
       }
@@ -140,7 +141,7 @@ export function OpportunityManagementList({
 
       setOpportunities(transformedOpportunities);
     } catch (error) {
-      console.error('Error in fetchOpportunities:', error);
+      debugLog.error('Error in fetchOpportunities:', { component: 'OpportunityManagementList' }, error);
       setOpportunities([]);
     } finally {
       setLoading(false);

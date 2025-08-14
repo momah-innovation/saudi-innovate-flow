@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { isThisMonth, format, subMonths, isSameMonth } from "date-fns";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { debugLog } from '@/utils/debugLogger';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
 
@@ -36,7 +37,7 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
           `);
         
         if (error) {
-          console.warn('Ideas table query failed, using mock data:', error.message);
+          debugLog.warn('Ideas table query failed, using mock data:', { component: 'IdeaAnalytics', error: error.message });
           throw error;
         }
         

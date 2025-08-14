@@ -23,6 +23,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
+import { debugLog } from '@/utils/debugLogger';
 
 interface AIFeature {
   id: string;
@@ -103,7 +104,7 @@ const AIFeatureTogglePanel: React.FC<AIFeatureTogglePanelProps> = ({ className }
 
       setFeatures(aiFeatures);
     } catch (error) {
-      console.error('Error loading AI features:', error);
+      debugLog.error('Error loading AI features:', { component: 'AIFeatureTogglePanel' }, error);
     } finally {
       setLoading(false);
     }

@@ -32,10 +32,15 @@
 - **Added:** `has_role_enhanced()` function with expiration support
 - **Preserved:** Existing `has_role()` for RLS policy compatibility
 
-#### 5. Console Log Security Fix Started 🔄
+#### 5. Console Log Security Fix In Progress 🔄
 - **Fixed:** `src/components/admin/StakeholdersManagement.tsx` (2 statements)
 - **Fixed:** `src/components/admin/TeamManagementContent.tsx` (1 statement)
-- **Infrastructure:** Ready for systematic batch replacement of remaining 275+ statements
+- **Fixed:** `src/components/admin/analytics/AIFeatureTogglePanel.tsx` (1 statement)
+- **Fixed:** `src/components/admin/ideas/IdeaAnalytics.tsx` (1 statement)
+- **Fixed:** `src/components/admin/opportunities/OpportunityManagementList.tsx` (2 statements)
+- **Fixed:** `src/components/admin/security/BulkRoleManager.tsx` (2 statements)
+- **Progress:** 9/294 console statements replaced (3% complete)
+- **Infrastructure:** `debugLogger` utility with production-safe conditional logging
 
 ---
 

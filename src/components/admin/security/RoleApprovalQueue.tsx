@@ -26,6 +26,7 @@ import {
   Filter
 } from 'lucide-react';
 import { useRoleApprovalRequests, useRoleManagement } from '@/hooks/admin/useRoleManagement';
+import { debugLog } from '@/utils/debugLogger';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
@@ -50,7 +51,7 @@ const RoleApprovalQueue: React.FC<RoleApprovalQueueProps> = ({ className }) => {
         reviewerNotes: approved ? 'تمت الموافقة' : 'تم الرفض'
       });
     } catch (error) {
-      console.error('Error handling approval:', error);
+      debugLog.error('Error handling approval:', { component: 'RoleApprovalQueue' }, error);
     }
   };
 

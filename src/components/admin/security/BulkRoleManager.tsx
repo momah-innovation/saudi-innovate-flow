@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { useUserRoles, useRoleManagement } from '@/hooks/admin/useRoleManagement';
 import { supabase } from '@/integrations/supabase/client';
+import { debugLog } from '@/utils/debugLogger';
 
 interface BulkRoleManagerProps {
   className?: string;
@@ -80,7 +81,7 @@ const BulkRoleManager: React.FC<BulkRoleManagerProps> = ({ className }) => {
 
       setUsers(usersData);
     } catch (error) {
-      console.error('Error loading users:', error);
+      debugLog.error('Error loading users:', { component: 'BulkRoleManager' }, error);
     } finally {
       setLoading(false);
     }
@@ -113,7 +114,7 @@ const BulkRoleManager: React.FC<BulkRoleManagerProps> = ({ className }) => {
       setSelectedUsers([]);
       setSelectedRole('');
     } catch (error) {
-      console.error('Error in bulk role assignment:', error);
+      debugLog.error('Error in bulk role assignment:', { component: 'BulkRoleManager' }, error);
     }
   };
 
