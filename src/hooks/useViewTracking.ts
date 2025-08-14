@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { logger } from '@/utils/logger';
+import { useTimerManager } from '@/utils/timerManager';
 
 interface UseViewTrackingProps {
   opportunityId: string;
@@ -55,10 +56,11 @@ export const useViewTracking = ({ opportunityId, enabled = true }: UseViewTracki
     };
 
     // Track view after a short delay to ensure it's a meaningful view
-    const timer = setTimeout(trackView, 1000);
+    const { setTimeout: scheduleTimeout } = useTimerManager();
+    const clearTimer = scheduleTimeout(trackView, 1000);
 
     return () => {
-      clearTimeout(timer);
+      clearTimer();
       
       // Track time spent when component unmounts
       if (tracked.current) {

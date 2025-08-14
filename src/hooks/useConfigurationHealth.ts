@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useUploaderSettings } from '@/hooks/useUploaderSettings'
 import { validateConfigurationHealth } from '@/utils/configurationValidator'
+import { useTimerManager } from '@/utils/timerManager';
 
 interface HealthStatus {
   overall: 'healthy' | 'warning' | 'error'
@@ -62,8 +63,9 @@ export function useConfigurationHealth() {
 
   // Auto-refresh every 5 minutes
   useEffect(() => {
-    const interval = setInterval(checkHealth, 5 * 60 * 1000)
-    return () => clearInterval(interval)
+    const { setInterval: scheduleInterval } = useTimerManager();
+    const clearTimer = scheduleInterval(checkHealth, 5 * 60 * 1000);
+    return clearTimer;
   }, [checkHealth])
 
   return {

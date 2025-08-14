@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { debugLog } from '@/utils/debugLogger';
+import { useTimerManager } from '@/utils/timerManager';
 
 // Types for real-time metrics
 export interface RealTimeMetrics {
@@ -120,11 +121,12 @@ export const useRealTimeMetrics = (
   useEffect(() => {
     if (!enabled) return;
 
-    const interval = setInterval(() => {
+    const { setInterval: scheduleInterval } = useTimerManager();
+    const clearTimer = scheduleInterval(() => {
       fetchRealTimeStats();
     }, refreshInterval);
 
-    return () => clearInterval(interval);
+    return clearTimer;
   }, [enabled, refreshInterval, fetchRealTimeStats]);
 
   // Handle visibility change to pause/resume updates

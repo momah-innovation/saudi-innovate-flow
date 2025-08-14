@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { useTimerManager } from '@/utils/timerManager';
 import { useTheme } from '@/components/ui/theme-provider';
 import { EnhancedBreadcrumb } from '@/components/ui/enhanced-breadcrumb';
 import { StatusIndicator } from '@/components/ui/status-indicator';
@@ -136,7 +137,8 @@ const DesignSystem = () => {
       description: `${label} copied to clipboard`,
       duration: 2000,
     });
-    setTimeout(() => setCopiedToken(null), 2000);
+    const { setTimeout: scheduleTimeout } = useTimerManager();
+    scheduleTimeout(() => setCopiedToken(null), 2000);
   };
 
   const ColorToken = ({ name, className, description }: { name: string, className: string, description: string }) => (

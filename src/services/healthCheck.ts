@@ -44,6 +44,7 @@ export class HealthCheckService {
       while (attempts < maxAttempts) {
         try {
           const timeoutPromise = new Promise<never>((_, reject) => {
+            // Note: Using basic timer for promise timeout as it's internal to the promise
             setTimeout(() => reject(new Error('Health check timeout')), finalConfig.timeout);
           });
 
@@ -73,6 +74,7 @@ export class HealthCheckService {
             };
           }
           // Wait before retry
+          // Wait before retry - using basic timer for internal delay
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
       }
@@ -90,6 +92,7 @@ export class HealthCheckService {
 
     // Set up periodic checking if interval is specified
     if (finalConfig.interval && finalConfig.interval > 0) {
+      // Note: Service-level intervals kept as basic for now as this is internal infrastructure
       const intervalId = setInterval(() => {
         this.runCheck(name);
       }, finalConfig.interval);

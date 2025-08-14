@@ -219,6 +219,7 @@ if (typeof window !== 'undefined') {
   PerformanceMonitor.initializeMonitoring()
   
   // Monitor memory usage every 30 seconds
+  // Note: Global monitoring interval kept as basic timer for system-level monitoring
   setInterval(() => {
     PerformanceMonitor.monitorMemoryUsage()
   }, 30000)

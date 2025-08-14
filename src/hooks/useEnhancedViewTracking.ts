@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+import { useTimerManager } from '@/utils/timerManager';
 
 interface UseEnhancedViewTrackingProps {
   opportunityId: string;
@@ -133,8 +134,9 @@ export const useEnhancedViewTracking = ({
       }
     };
 
-    const timer = setTimeout(initializeTracking, 1000);
-    return () => clearTimeout(timer);
+    const { setTimeout: scheduleTimeout } = useTimerManager();
+    const clearTimer = scheduleTimeout(initializeTracking, 1000);
+    return clearTimer;
   }, [opportunityId, enabled, trackJourneyStep]);
 
   // Track time spent on unmount
@@ -205,10 +207,11 @@ export const useEnhancedViewTracking = ({
       }
     };
 
-    let scrollTimeout: NodeJS.Timeout;
+    let scrollTimer: (() => void) | undefined;
+    const { setTimeout: scheduleTimeout } = useTimerManager();
     const debouncedScroll = () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(handleScroll, 250);
+      if (scrollTimer) scrollTimer();
+      scrollTimer = scheduleTimeout(handleScroll, 250);
     };
 
     document.addEventListener('click', handleClick);
