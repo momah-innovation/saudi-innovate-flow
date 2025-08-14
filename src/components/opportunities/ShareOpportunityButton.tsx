@@ -7,6 +7,7 @@ import { Share2, Copy, Mail, MessageCircle, Linkedin, Twitter } from 'lucide-rea
 import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface ShareOpportunityButtonProps {
   opportunityId: string;
@@ -26,6 +27,7 @@ export const ShareOpportunityButton = ({
   const { toast } = useToast();
   const { isRTL } = useDirection();
   const [isSharing, setIsSharing] = useState(false);
+  const { user } = useCurrentUser();
 
   const shareUrl = `${window.location.origin}/opportunities/${opportunityId}`;
   const shareText = `${opportunityTitle} - ${opportunityDescription?.substring(0, 100)}...`;
@@ -36,7 +38,7 @@ export const ShareOpportunityButton = ({
         body: {
           opportunityId,
           action: 'share',
-          userId: (await supabase.auth.getUser()).data.user?.id,
+          userId: user?.id,
           metadata: { platform }
         }
       });

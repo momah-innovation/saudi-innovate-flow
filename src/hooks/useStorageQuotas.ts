@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { logger } from '@/utils/logger'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 export interface StorageQuota {
   bucket_name: string
@@ -25,6 +26,7 @@ export const useStorageQuotas = () => {
   const [quotas, setQuotas] = useState<StorageQuota[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { user } = useCurrentUser()
 
   const fetchQuotas = async () => {
     try {
@@ -32,7 +34,6 @@ export const useStorageQuotas = () => {
       setError(null)
       
       // Check authentication first
-      const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         throw new Error('Authentication required. Please log in.')
       }

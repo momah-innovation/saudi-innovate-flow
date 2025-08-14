@@ -4,6 +4,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Users, Eye } from 'lucide-react';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface LivePresenceProps {
   opportunityId: string;
@@ -22,10 +23,10 @@ interface PresenceUser {
 export const OpportunityLivePresence = ({ opportunityId, className }: LivePresenceProps) => {
   const { isRTL } = useDirection();
   const [presenceUsers, setPresenceUsers] = useState<PresenceUser[]>([]);
-  const [currentUser, setCurrentUser] = useState<any>(null);
   const [sessionId] = useState(() => 
     sessionStorage.getItem('opportunity-session') || crypto.randomUUID()
   );
+  const { user } = useCurrentUser();
 
   useEffect(() => {
     if (!opportunityId) return;
@@ -45,19 +46,16 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
 
   const initializePresence = async () => {
     try {
-      const { data: user } = await supabase.auth.getUser();
-      setCurrentUser(user.user);
-      
-      if (user.user) {
+      if (user) {
         // Upsert current user's presence
         await supabase
           .from('opportunity_live_presence')
           .upsert({
             opportunity_id: opportunityId,
-            user_id: user.user.id,
+            user_id: user.id,
             session_id: sessionId,
-            user_name: user.user.user_metadata?.full_name || user.user.email?.split('@')[0] || 'Anonymous',
-            user_avatar: user.user.user_metadata?.avatar_url,
+            user_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Anonymous',
+            user_avatar: user.user_metadata?.avatar_url,
             last_seen: new Date().toISOString(),
             is_active: true,
             current_section: 'overview'
@@ -114,7 +112,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
   };
 
   const updatePresence = async () => {
-    if (!currentUser) return;
+    if (!user) return;
     
     try {
       await supabase
@@ -131,7 +129,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
   };
 
   const markUserInactive = async () => {
-    if (!currentUser) return;
+    if (!user) return;
     
     try {
       await supabase
@@ -145,7 +143,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
   };
 
   const updateCurrentSection = async (section: string) => {
-    if (!currentUser) return;
+    if (!user) return;
     
     try {
       await supabase

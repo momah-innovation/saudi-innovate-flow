@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface BookmarkOpportunityButtonProps {
   opportunityId: string;
@@ -22,6 +23,7 @@ export const BookmarkOpportunityButton = ({
   const { isRTL } = useDirection();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useCurrentUser();
 
   useEffect(() => {
     checkBookmarkStatus();
@@ -29,14 +31,13 @@ export const BookmarkOpportunityButton = ({
 
   const checkBookmarkStatus = async () => {
     try {
-      const { data: user } = await supabase.auth.getUser();
-      if (!user.user) return;
+      if (!user) return;
 
       const { data, error } = await supabase
         .from('opportunity_bookmarks')
         .select('id')
         .eq('opportunity_id', opportunityId)
-        .eq('user_id', user.user.id)
+        .eq('user_id', user.id)
         .maybeSingle();
 
       if (error && error.code !== 'PGRST116') {
@@ -53,9 +54,8 @@ export const BookmarkOpportunityButton = ({
   const toggleBookmark = async () => {
     try {
       setIsLoading(true);
-      const { data: user } = await supabase.auth.getUser();
       
-      if (!user.user) {
+      if (!user) {
         toast({
           title: isRTL ? 'خطأ' : 'Error',
           description: isRTL ? 'يجب تسجيل الدخول أولاً' : 'Please log in to bookmark opportunities',
@@ -70,7 +70,7 @@ export const BookmarkOpportunityButton = ({
           .from('opportunity_bookmarks')
           .delete()
           .eq('opportunity_id', opportunityId)
-          .eq('user_id', user.user.id);
+          .eq('user_id', user.id);
 
         if (error) {
           throw error;
@@ -83,7 +83,7 @@ export const BookmarkOpportunityButton = ({
           body: {
             opportunityId,
             action: 'unbookmark',
-            userId: user.user.id,
+            userId: user.id,
             sessionId: sessionStorage.getItem('opportunity-session'),
             metadata: { timestamp: new Date().toISOString() }
           }
@@ -99,7 +99,7 @@ export const BookmarkOpportunityButton = ({
           .from('opportunity_bookmarks')
           .insert({
             opportunity_id: opportunityId,
-            user_id: user.user.id
+            user_id: user.id
           });
 
         if (error) {
@@ -113,7 +113,7 @@ export const BookmarkOpportunityButton = ({
           body: {
             opportunityId,
             action: 'bookmark',
-            userId: user.user.id,
+            userId: user.id,
             sessionId: sessionStorage.getItem('opportunity-session'),
             metadata: { timestamp: new Date().toISOString() }
           }

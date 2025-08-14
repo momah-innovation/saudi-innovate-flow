@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useOrganizationalHierarchy } from '@/hooks/useOrganizationalHierarchy';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 const challengeSchema = z.object({
   title_ar: z.string().min(1, 'Arabic title is required'),
@@ -42,6 +43,7 @@ export function ChallengeForm({ challenge, onSuccess, onCancel }: ChallengeFormP
   const { t } = useUnifiedTranslation();
   const { sectors, deputies, departments, domains, subDomains, services } = useOrganizationalHierarchy();
   const [loading, setLoading] = useState(false);
+  const { user } = useCurrentUser();
 
   const form = useForm<ChallengeFormData>({
     resolver: zodResolver(challengeSchema),
@@ -78,7 +80,6 @@ export function ChallengeForm({ challenge, onSuccess, onCancel }: ChallengeFormP
           description: t('challenges.update_success')
         });
       } else {
-        const currentUser = await supabase.auth.getUser();
         const { error } = await supabase
           .from('challenges')
           .insert({ 
@@ -95,7 +96,7 @@ export function ChallengeForm({ challenge, onSuccess, onCancel }: ChallengeFormP
             priority_level: data.priority_level,
             sensitivity_level: data.sensitivity_level,
             challenge_type: data.challenge_type || null,
-            created_by: currentUser.data.user?.id
+            created_by: user?.id
           });
         
         if (error) throw error;

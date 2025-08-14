@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from './useUnifiedTranslation';
 import { debugLog } from '@/utils/debugLogger';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface Tag {
   id: string;
@@ -16,6 +17,7 @@ export const useTagIntegration = () => {
   const { t } = useUnifiedTranslation();
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(false);
+  const { user } = useCurrentUser();
 
   // Fetch available tags
   const fetchTags = async () => {
@@ -99,7 +101,7 @@ export const useTagIntegration = () => {
         .insert({
           [`${entityType}_id`]: entityId,
           tag_id: tagId,
-          added_by: (await supabase.auth.getUser()).data.user?.id
+          added_by: user?.id
         });
 
       if (error) throw error;

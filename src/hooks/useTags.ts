@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 type Tag = Database['public']['Tables']['tags']['Row'];
 type TagInsert = Database['public']['Tables']['tags']['Insert'];
@@ -35,6 +36,7 @@ export const useTags = (): UseTagsResult => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { language } = useUnifiedTranslation();
+  const { user } = useCurrentUser();
 
   const fetchTags = async () => {
     try {
@@ -82,7 +84,7 @@ export const useTags = (): UseTagsResult => {
         .from('tags')
         .insert([{
           ...tagData,
-          created_by: (await supabase.auth.getUser()).data.user?.id
+          created_by: user?.id
         }])
         .select()
         .single();

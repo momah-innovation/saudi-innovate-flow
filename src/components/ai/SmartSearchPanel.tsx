@@ -24,6 +24,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { aiService } from '@/services/AIService';
 import { logger } from '@/utils/logger';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface SearchResult {
   id: string;
@@ -65,6 +66,7 @@ export const SmartSearchPanel: React.FC = () => {
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
   const { toast } = useToast();
+  const { user } = useCurrentUser();
 
   useEffect(() => {
     loadSearchHistory();
@@ -73,7 +75,6 @@ export const SmartSearchPanel: React.FC = () => {
 
   const loadSearchHistory = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
       // In a real implementation, you'd load this from a user_search_history table
@@ -103,7 +104,6 @@ export const SmartSearchPanel: React.FC = () => {
 
   const saveSearchToHistory = async (searchQuery: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user || !searchQuery.trim()) return;
 
       const updatedHistory = [

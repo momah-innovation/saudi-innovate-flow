@@ -18,6 +18,7 @@ import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface RoleRequest {
   id: string;
@@ -50,6 +51,7 @@ interface RoleRequest {
 export default function RoleRequestManagement() {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const { user } = useCurrentUser();
   const { uiInitialsMaxLength } = useSystemSettings();
   const { getSettingValue } = useSettingsManager();
   const roleRequestStatusOptions = getSettingValue('role_request_status_options', []) as string[];
@@ -171,7 +173,6 @@ export default function RoleRequestManagement() {
     if (!selectedRequest) return;
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
       // Update the role request status

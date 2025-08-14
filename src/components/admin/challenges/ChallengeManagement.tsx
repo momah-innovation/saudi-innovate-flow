@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useOrganizationalHierarchy } from '@/hooks/useOrganizationalHierarchy';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
 
 interface Challenge {
@@ -34,6 +35,7 @@ interface Challenge {
 export function ChallengeManagement() {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const { user } = useCurrentUser();
   const { sectors, deputies, departments, domains, subDomains, services } = useOrganizationalHierarchy();
   
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -89,12 +91,11 @@ export function ChallengeManagement() {
         });
       } else {
         // Create new challenge
-        const currentUser = await supabase.auth.getUser();
         const { error } = await supabase
           .from('challenges')
           .insert({
             ...challengeData,
-            created_by: currentUser.data.user?.id
+            created_by: user?.id
           });
         
         if (error) throw error;

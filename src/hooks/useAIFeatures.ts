@@ -3,6 +3,7 @@ import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import type { Json } from '@/integrations/supabase/types';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 export interface AIFeature {
   id: string;
@@ -39,6 +40,7 @@ export const useAIFeatures = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const { user } = useCurrentUser();
 
   const fetchFeatures = async () => {
     try {
@@ -63,7 +65,6 @@ export const useAIFeatures = () => {
 
   const fetchUserPreferences = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
       const { data, error } = await supabase
@@ -109,7 +110,6 @@ export const useAIFeatures = () => {
 
   const updatePreferences = async (updates: Partial<AIPreferences>) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user || !preferences) return;
 
       const { data, error } = await supabase

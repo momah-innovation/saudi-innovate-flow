@@ -12,6 +12,7 @@ import { LikeOpportunityButton } from './LikeOpportunityButton';
 import { supabase } from '@/integrations/supabase/client';
 import { useRealTimeAnalytics } from '@/hooks/useRealTimeAnalytics';
 import { useViewTracking } from '@/hooks/useViewTracking';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { 
   Building2, 
   DollarSign, 
@@ -80,6 +81,7 @@ export const OpportunityDetailsDialog = ({
       return id;
     })()
   );
+  const { user } = useCurrentUser();
 
   // View tracking and analytics hooks
   const { trackCustomEvent } = useViewTracking({
@@ -122,12 +124,11 @@ export const OpportunityDetailsDialog = ({
 
   const trackView = async () => {
     try {
-      const { data: user } = await supabase.auth.getUser();
       await supabase.functions.invoke('track-opportunity-analytics', {
         body: {
           opportunityId,
           action: 'view',
-          userId: user.user?.id,
+          userId: user?.id,
           sessionId,
           metadata: { source: 'details_dialog' }
         }
@@ -139,12 +140,11 @@ export const OpportunityDetailsDialog = ({
 
   const trackViewTimeSpent = async (timeSpent: number) => {
     try {
-      const { data: user } = await supabase.auth.getUser();
       await supabase.functions.invoke('track-opportunity-analytics', {
         body: {
           opportunityId,
           action: 'view',
-          userId: user.user?.id,
+          userId: user?.id,
           sessionId,
           timeSpent,
           metadata: { source: 'details_dialog', action: 'time_spent' }

@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { logger } from '@/utils/logger';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface UserJourneyTrackerProps {
   opportunityId: string;
@@ -17,19 +18,18 @@ interface JourneyStep {
 export const useUserJourneyTracker = ({ opportunityId, sessionId }: UserJourneyTrackerProps) => {
   const [previousStep, setPreviousStep] = useState<string | null>(null);
   const [stepStartTime, setStepStartTime] = useState<number>(Date.now());
+  const { user } = useCurrentUser();
 
   const trackJourneyStep = async (step: string, data: Record<string, any> = {}) => {
     try {
       const now = Date.now();
       const timeFromPrevious = previousStep ? now - stepStartTime : 0;
       
-      const { data: user } = await supabase.auth.getUser();
-      
       await supabase
         .from('opportunity_user_journeys')
         .insert({
           opportunity_id: opportunityId,
-          user_id: user.user?.id,
+          user_id: user?.id,
           session_id: sessionId,
           journey_step: step,
           step_data: data,

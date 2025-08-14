@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
 import { debugLog } from '@/utils/debugLogger';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 export interface Challenge {
   id: string;
@@ -41,6 +42,7 @@ export const useChallengesData = () => {
     totalPrizes: 0,
   });
   const { toast } = useToast();
+  const { user } = useCurrentUser();
   // Remove useUnifiedTranslation to prevent infinite loops
 
   const fetchChallenges = async () => {
@@ -50,7 +52,6 @@ export const useChallengesData = () => {
       
       // Get user authentication
       debugLog.log('🔐 Getting user auth...');
-      const { data: { user } } = await supabase.auth.getUser();
       debugLog.log('🔐 User auth result', { authenticated: user?.id ? true : false });
 
       // Fetch challenges data

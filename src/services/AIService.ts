@@ -91,6 +91,8 @@ export class AIService {
     metadata: Json = {}
   ) {
     try {
+      // Note: This method needs to be called from components that have access to user context
+      // We'll get the user from the calling component instead of here
       const { data: { user } } = await supabase.auth.getUser();
       
       await supabase.from('ai_usage_tracking').insert({
@@ -440,6 +442,7 @@ export class AIService {
   // Check if feature is enabled for user
   async isFeatureEnabled(featureName: string): Promise<boolean> {
     try {
+      // Note: This method needs to be called from components that have access to user context
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return false;
 
