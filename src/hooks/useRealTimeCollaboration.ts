@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 import type { 
   UserPresence, 
   ActivityEvent, 
@@ -39,7 +40,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
         await setupNotificationChannel();
         setIsConnected(true);
       } catch (error) {
-        console.error('Failed to initialize collaboration:', error);
+        debugLog.error('Failed to initialize collaboration', { error });
         setConnectionQuality('poor');
         toast({
           title: "اتصال ضعيف",
@@ -78,10 +79,10 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
         setOnlineUsers(users);
       })
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
-        console.log('User joined:', key, newPresences);
+        debugLog.log('User joined', { key, newPresences });
       })
       .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-        console.log('User left:', key, leftPresences);
+        debugLog.log('User left', { key, leftPresences });
       });
 
     await presenceChannel.subscribe(async (status) => {
@@ -276,7 +277,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
       
       setMessages(prev => [newMessage, ...prev]);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      debugLog.error('Failed to send message', { error });
       toast({
         title: "خطأ في الإرسال",
         description: "فشل في إرسال الرسالة. يرجى المحاولة مرة أخرى.",
@@ -294,9 +295,9 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
       );
       
       // TODO: Implement actual database update when notification table structure is confirmed
-      console.log('Marked notification as read:', notificationId);
+      debugLog.log('Marked notification as read', { notificationId });
     } catch (error) {
-      console.error('Failed to mark notification as read:', error);
+      debugLog.error('Failed to mark notification as read', { error });
     }
   }, []);
 

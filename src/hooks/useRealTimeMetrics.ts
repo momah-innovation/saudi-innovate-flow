@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { debugLog } from '@/utils/debugLogger';
 
 // Types for real-time metrics
 export interface RealTimeMetrics {
@@ -87,14 +88,14 @@ export const useRealTimeMetrics = (
       setLastUpdated(new Date());
       setIsConnected(true);
       
-      console.log('Real-time metrics updated:', {
+      debugLog.log('Real-time metrics updated', {
         activeUsers: data.activeUsers?.current,
         systemHealth: data.systemHealth?.score,
         recentEvents: data.recentEvents?.length
       });
 
     } catch (err) {
-      console.error('Error fetching real-time stats:', err);
+      debugLog.error('Error fetching real-time stats', { error: err });
       setIsError(true);
       setError(err instanceof Error ? err.message : 'Failed to fetch real-time stats');
       setIsConnected(false);

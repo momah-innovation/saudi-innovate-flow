@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { debugLog } from '@/utils/debugLogger';
 
 interface EventUpdate {
   id: string;
@@ -45,7 +46,7 @@ export const useRealTimeEvents = ({
         },
         async (payload) => {
           const eventId = (payload.new as any)?.event_id || (payload.old as any)?.event_id;
-          console.log('🔥 REAL-TIME: Participants list change detected:', {
+          debugLog.log('🔥 REAL-TIME: Participants list change detected', {
             eventType: payload.eventType,
             eventId,
             userId: (payload.new as any)?.user_id || (payload.old as any)?.user_id,
@@ -59,7 +60,7 @@ export const useRealTimeEvents = ({
               .select('*', { count: 'exact' })
               .eq('event_id', eventId);
 
-            console.log('🔄 Updated participant count for event:', eventId, 'count:', count);
+            debugLog.log('🔄 Updated participant count for event', { eventId, count });
             onParticipantUpdate?.(eventId, count || 0);
 
             // Show notification based on event type

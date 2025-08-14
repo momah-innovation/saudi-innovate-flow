@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { debugLog } from '@/utils/debugLogger';
 
 // Types for system health
 export interface SystemHealthStatus {
@@ -253,14 +254,14 @@ export const useSystemHealth = (
       setHealth(healthStatus);
       setLastUpdated(new Date());
 
-      console.log('System health updated:', {
+      debugLog.log('System health updated', {
         overall: healthStatus.overall,
         score: healthStatus.score,
         alertsCount: healthStatus.alerts.length
       });
 
     } catch (err) {
-      console.error('Error fetching system health:', err);
+      debugLog.error('Error fetching system health', { error: err });
       setIsError(true);
       setError(err instanceof Error ? err.message : 'Failed to fetch system health');
     } finally {
