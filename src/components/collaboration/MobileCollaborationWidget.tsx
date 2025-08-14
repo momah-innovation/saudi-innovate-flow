@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { debugLog } from '@/utils/debugLogger';
 import { 
   MessageSquare, 
   Users, 
@@ -45,21 +46,21 @@ export const MobileCollaborationWidget: React.FC<MobileCollaborationWidgetProps>
       id: 'share',
       icon: Share,
       label: 'Share',
-      action: () => console.log('Share'),
+      action: () => debugLog.log('Share'),
       color: 'text-blue-500'
     },
     {
       id: 'call',
       icon: Phone,
       label: 'Call',
-      action: () => console.log('Start voice call'),
+      action: () => debugLog.log('Start voice call'),
       color: 'text-green-500'
     },
     {
       id: 'video',
       icon: Video,
       label: 'Video',
-      action: () => console.log('Start video call'),
+      action: () => debugLog.log('Start video call'),
       color: 'text-purple-500'
     }
   ];

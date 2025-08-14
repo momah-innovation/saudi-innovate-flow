@@ -14,6 +14,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { getStatusMapping, getPriorityMapping, getDifficultyMapping, challengesPageConfig } from '@/config/challengesPageConfig';
+import { debugLog } from '@/utils/debugLogger';
 
 interface Challenge {
   id: string;
@@ -156,7 +157,7 @@ export const CollaborativeChallengeCard = ({
       await startCollaboration('challenge', challenge.id);
       onStartCollaboration?.(challenge);
     } catch (error) {
-      console.error('Failed to start collaboration:', error);
+      debugLog.error('Failed to start collaboration:', error);
     }
   };
 

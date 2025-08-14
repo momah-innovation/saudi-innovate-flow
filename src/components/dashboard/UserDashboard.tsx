@@ -30,6 +30,7 @@ import { AnalystDashboard } from './AnalystDashboard';
 import { ContentDashboard } from './ContentDashboard';
 import { OrganizationDashboard } from './OrganizationDashboard';
 import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 // Collaboration imports
 import { CollaborationProvider } from '@/components/collaboration';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
@@ -111,11 +112,11 @@ export default React.memo(function UserDashboard() {
   // Memoize dashboard data loading to prevent unnecessary calls
   const loadDashboardData = useCallback(async () => {
     if (!userProfile?.id) {
-      console.log('Skipping loadDashboardData - no user ID');
+      debugLog.log('Skipping loadDashboardData - no user ID');
       return;
     }
     
-    console.log('Starting loadDashboardData...');
+    debugLog.log('Starting loadDashboardData...');
     try {
       setLoading(true);
       await Promise.all([
@@ -124,9 +125,9 @@ export default React.memo(function UserDashboard() {
         loadUserAchievements(),
         loadUserGoals()
       ]);
-      console.log('Dashboard data loaded successfully');
+      debugLog.log('Dashboard data loaded successfully');
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+      debugLog.error('Error loading dashboard data:', error);
       logger.error('Error loading dashboard data', { component: 'UserDashboard', action: 'loadDashboardData' }, error as Error);
       toast.error('خطأ في تحميل بيانات لوحة القيادة');
     } finally {
@@ -141,7 +142,7 @@ export default React.memo(function UserDashboard() {
   }, [userProfile, getPrimaryRole]);
 
   useEffect(() => {
-    console.log('UserDashboard useEffect triggered', { 
+    debugLog.log('UserDashboard useEffect triggered', { 
       userId: userProfile?.id, 
       loading, 
       primaryRole 

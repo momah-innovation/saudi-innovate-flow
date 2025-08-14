@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { debugLog } from '@/utils/debugLogger';
 import { 
   MessageSquare, 
   Pin, 
@@ -96,7 +97,7 @@ export const SharedAnnotationSystem: React.FC<SharedAnnotationSystemProps> = ({
     setIsAddingAnnotation(false);
     setSelectedAnnotation(newAnnotation.id);
 
-    console.log('Created annotation:', newAnnotation);
+    debugLog.log('Created annotation:', newAnnotation);
   };
 
   const addReply = (annotationId: string, content: string) => {

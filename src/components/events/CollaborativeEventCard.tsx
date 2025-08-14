@@ -172,7 +172,7 @@ export const CollaborativeEventCard = ({
         await registerForEvent();
       }
     } catch (error) {
-      console.error('Failed to toggle registration:', error);
+      debugLog.error('Failed to toggle registration:', error);
     }
   };
 
@@ -180,7 +180,7 @@ export const CollaborativeEventCard = ({
     try {
       setBookmarked(!bookmarked);
     } catch (error) {
-      console.error('Failed to toggle bookmark:', error);
+      debugLog.error('Failed to toggle bookmark:', error);
     }
   };
 
@@ -189,7 +189,7 @@ export const CollaborativeEventCard = ({
       await startCollaboration('event', event.id);
       onStartCollaboration?.(event);
     } catch (error) {
-      console.error('Failed to start collaboration:', error);
+      debugLog.error('Failed to start collaboration:', error);
     }
   };
 

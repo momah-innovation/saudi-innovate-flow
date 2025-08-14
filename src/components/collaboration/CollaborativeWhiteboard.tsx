@@ -17,6 +17,7 @@ import {
   Undo,
   Redo
 } from 'lucide-react';
+import { debugLog } from '@/utils/debugLogger';
 
 interface WhiteboardElement {
   id: string;
@@ -151,7 +152,7 @@ export const CollaborativeWhiteboard: React.FC<CollaborativeWhiteboardProps> = (
     setHistoryStep(newHistory.length - 1);
 
     // Add activity - simplified for now
-    console.log('Whiteboard activity:', {
+    debugLog.log('Whiteboard activity:', {
       user: currentUserPresence?.user_info.display_name,
       action: `added ${currentElement.type}`,
       boardId

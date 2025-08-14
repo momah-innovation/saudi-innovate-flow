@@ -16,6 +16,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { debugLog } from '@/utils/debugLogger';
 import { UserPresence } from './UserPresence';
 import type { LiveDocument } from '@/types/collaboration';
 
@@ -70,7 +71,7 @@ export const LiveDocumentEditor: React.FC<LiveDocumentEditorProps> = ({
       setLastSaved(new Date());
       setIsEditing(false);
     } catch (error) {
-      console.error('Invalid JSON content:', error);
+      debugLog.error('Invalid JSON content:', error);
     }
   };
 
