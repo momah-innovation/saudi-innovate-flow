@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -9271,40 +9271,40 @@ export type Database = {
         Returns: undefined
       }
       approve_role_request: {
-        Args: { request_id: string; approve: boolean; reviewer_notes?: string }
+        Args: { approve: boolean; request_id: string; reviewer_notes?: string }
         Returns: Json
       }
       archive_old_files: {
         Args: {
-          source_bucket: string
-          days_old?: number
           archive_bucket?: string
+          days_old?: number
+          source_bucket: string
         }
         Returns: Json
       }
       assign_entity_manager: {
         Args: {
+          p_assignment_notes?: string
           p_entity_id: string
           p_manager_id: string
-          p_assignment_notes?: string
         }
         Returns: string
       }
       assign_role_with_justification: {
         Args: {
-          target_user_id: string
-          target_role: Database["public"]["Enums"]["app_role"]
-          justification?: string
           expires_at?: string
+          justification?: string
+          target_role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
         }
         Returns: string
       }
       assign_role_with_validation: {
         Args: {
-          target_user_id: string
-          target_role: Database["public"]["Enums"]["app_role"]
-          justification?: string
           expires_at?: string
+          justification?: string
+          target_role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
         }
         Returns: Json
       }
@@ -9323,9 +9323,9 @@ export type Database = {
       bulk_cleanup_files: {
         Args: {
           bucket_name: string
+          dry_run?: boolean
           file_pattern?: string
           older_than_days?: number
-          dry_run?: boolean
         }
         Returns: Json
       }
@@ -9336,25 +9336,25 @@ export type Database = {
       can_view_event: {
         Args: {
           event_id: string
-          event_visibility: string
           event_status: string
+          event_visibility: string
         }
         Returns: boolean
       }
       check_rate_limit: {
         Args: {
-          p_user_id: string
           p_action: string
-          p_window_minutes?: number
           p_max_requests?: number
+          p_user_id: string
+          p_window_minutes?: number
         }
         Returns: number
       }
       check_role_access: {
         Args: {
-          user_role: Database["public"]["Enums"]["app_role"]
-          resource_type: string
           resource_name: string
+          resource_type: string
+          user_role: Database["public"]["Enums"]["app_role"]
         }
         Returns: string
       }
@@ -9376,16 +9376,16 @@ export type Database = {
       }
       create_bucket_backup: {
         Args: {
-          source_bucket: string
           backup_name?: string
           include_metadata?: boolean
+          source_bucket: string
         }
         Returns: Json
       }
       create_file_version: {
         Args: {
-          p_file_record_id: string
           p_file_path: string
+          p_file_record_id: string
           p_file_size: number
           p_mime_type: string
           p_version_notes?: string
@@ -9394,11 +9394,11 @@ export type Database = {
       }
       detect_suspicious_activity: {
         Args: {
-          p_user_id: string
           p_activity_type: string
           p_description: string
-          p_severity?: string
           p_request_details?: Json
+          p_severity?: string
+          p_user_id: string
         }
         Returns: string
       }
@@ -9426,19 +9426,19 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: {
           bucket_name: string
-          quota_bytes: number
-          current_usage_bytes: number
-          usage_percentage: number
-          file_count: number
           created_at: string
+          current_usage_bytes: number
+          file_count: number
+          quota_bytes: number
           updated_at: string
+          usage_percentage: number
         }[]
       }
       get_analytics_data: {
         Args: {
+          p_filters?: Json
           p_user_id: string
           p_user_role: Database["public"]["Enums"]["app_role"]
-          p_filters?: Json
         }
         Returns: Json
       }
@@ -9447,25 +9447,25 @@ export type Database = {
         Returns: {
           bucket_id: string
           bucket_name: string
-          public: boolean
           created_at: string
+          public: boolean
         }[]
       }
       get_bucket_stats: {
         Args: { bucket_name: string }
         Returns: {
+          avg_file_size: number
+          newest_file: string
+          oldest_file: string
           total_files: number
           total_size: number
-          avg_file_size: number
-          oldest_file: string
-          newest_file: string
         }[]
       }
       get_bucket_usage: {
         Args: { bucket_name: string }
         Returns: {
-          total_size: number
           file_count: number
+          total_size: number
         }[]
       }
       get_event_stats: {
@@ -9475,28 +9475,28 @@ export type Database = {
       get_opportunity_analytics_summary: {
         Args: { p_opportunity_id: string }
         Returns: {
-          total_views: number
-          total_likes: number
-          total_applications: number
-          total_shares: number
-          engagement_rate: number
           conversion_rate: number
+          engagement_rate: number
+          total_applications: number
+          total_likes: number
+          total_shares: number
+          total_views: number
         }[]
       }
       get_role_specific_analytics: {
         Args: {
+          p_filters?: Json
           p_user_id: string
           p_user_role: Database["public"]["Enums"]["app_role"]
-          p_filters?: Json
         }
         Returns: Json
       }
       get_search_suggestions: {
         Args: { partial_query: string; search_type?: string }
         Returns: {
+          result_count: number
           suggestion: string
           suggestion_type: string
-          result_count: number
         }[]
       }
       get_security_analytics: {
@@ -9512,23 +9512,23 @@ export type Database = {
         Returns: {
           bucket_id: string
           bucket_name: string
-          public: boolean
           created_at: string
           file_count: number
+          public: boolean
           total_size: number
         }[]
       }
       get_storage_policies_info: {
         Args: Record<PropertyKey, never>
         Returns: {
-          name: string
+          check_expression: string
           command: string
           condition: string
-          check_expression: string
+          name: string
         }[]
       }
       get_user_access_level: {
-        Args: { user_id: string; resource_type: string; resource_name: string }
+        Args: { resource_name: string; resource_type: string; user_id: string }
         Returns: string
       }
       get_user_permissions: {
@@ -9538,37 +9538,37 @@ export type Database = {
       get_user_subscription_status: {
         Args: { p_user_id: string }
         Returns: {
+          current_period_end: string
+          features: Json
           has_subscription: boolean
           plan_name_ar: string
           plan_name_en: string
           status: string
           trial_end: string
-          current_period_end: string
-          features: Json
         }[]
       }
       has_any_role: {
         Args: {
-          _user_id: string
           _roles: Database["public"]["Enums"]["app_role"][]
+          _user_id: string
         }
         Returns: boolean
       }
       has_collaboration_permission: {
-        Args: { user_id: string; permission: string }
+        Args: { permission: string; user_id: string }
         Returns: boolean
       }
       has_role: {
         Args: {
-          _user_id: string
           _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
         }
         Returns: boolean
       }
       has_role_or_higher: {
         Args: {
-          _user_id: string
           _minimum_role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
         }
         Returns: boolean
       }
@@ -9587,26 +9587,26 @@ export type Database = {
       log_security_event: {
         Args: {
           action_type: string
-          resource_type?: string
-          resource_id?: string
           details?: Json
+          resource_id?: string
+          resource_type?: string
           risk_level?: string
         }
         Returns: string
       }
       manage_storage_quotas: {
         Args:
-          | { bucket_name: string; quota_bytes?: number; action?: string }
+          | { action?: string; bucket_name: string; quota_bytes?: number }
           | { p_bucket_name: string; p_quota_bytes?: number }
         Returns: Json
       }
       migrate_files_between_buckets: {
         Args: {
-          source_bucket: string
-          target_bucket: string
+          dry_run?: boolean
           file_pattern?: string
           preserve_paths?: boolean
-          dry_run?: boolean
+          source_bucket: string
+          target_bucket: string
         }
         Returns: Json
       }
@@ -9625,77 +9625,77 @@ export type Database = {
       restore_from_archive: {
         Args: {
           archive_bucket: string
-          target_bucket?: string
+          dry_run?: boolean
           file_pattern?: string
           restore_original_paths?: boolean
-          dry_run?: boolean
+          target_bucket?: string
         }
         Returns: Json
       }
       revoke_role_with_validation: {
         Args: {
-          target_user_id: string
-          target_role: Database["public"]["Enums"]["app_role"]
           reason?: string
+          target_role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
         }
         Returns: Json
       }
       send_challenge_notification: {
         Args: {
-          p_challenge_id: string
-          p_recipient_id: string
-          p_notification_type: string
-          p_title: string
-          p_message: string
           p_action_url?: string
+          p_challenge_id: string
+          p_message: string
           p_metadata?: Json
+          p_notification_type: string
+          p_recipient_id: string
+          p_title: string
         }
         Returns: string
       }
       send_event_notification: {
         Args: {
-          p_event_id: string
-          p_recipient_id: string
-          p_notification_type: string
-          p_title: string
-          p_message: string
           p_action_url?: string
+          p_event_id: string
+          p_message: string
           p_metadata?: Json
+          p_notification_type: string
+          p_recipient_id: string
+          p_title: string
         }
         Returns: string
       }
       send_idea_workflow_notifications: {
-        Args: { p_idea_id: string; p_from_status: string; p_to_status: string }
+        Args: { p_from_status: string; p_idea_id: string; p_to_status: string }
         Returns: undefined
       }
       send_notification: {
         Args: {
-          target_user_id: string
-          notification_title: string
           notification_message: string
-          notification_type?: string
           notification_metadata?: Json
+          notification_title: string
+          notification_type?: string
+          target_user_id: string
         }
         Returns: string
       }
       should_send_notification: {
         Args: {
-          p_user_id: string
-          p_notification_type: string
           p_channel?: string
+          p_notification_type: string
+          p_user_id: string
         }
         Returns: boolean
       }
       test_realtime_config: {
         Args: Record<PropertyKey, never>
         Returns: {
-          table_name: string
-          replica_identity: string
           in_publication: boolean
+          replica_identity: string
+          table_name: string
         }[]
       }
       trigger_idea_workflow_change: {
-        Args: { p_idea_id: string; p_to_status: string; p_reason?: string }
+        Args: { p_idea_id: string; p_reason?: string; p_to_status: string }
         Returns: boolean
       }
       trigger_manual_cleanup: {
@@ -9711,7 +9711,7 @@ export type Database = {
         Returns: undefined
       }
       user_can_perform_action: {
-        Args: { _user_id: string; _action: string }
+        Args: { _action: string; _user_id: string }
         Returns: boolean
       }
       user_has_access_to_challenge: {
