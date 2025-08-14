@@ -1,7 +1,9 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
+import type { Database } from '@/integrations/supabase/types';
 
-export type UserRole = 'super_admin' | 'admin' | 'team_member' | 'expert' | 'innovator' | 'partner' | 'stakeholder' | 'mentor' | 'department_head' | 'sector_lead' | 'domain_expert' | 'evaluator' | 'viewer' | 'user_manager' | 'role_manager' | 'challenge_manager' | 'expert_coordinator' | 'content_manager' | 'system_auditor' | 'data_analyst' | 'campaign_manager' | 'event_manager' | 'stakeholder_manager' | 'partnership_manager' | 'team_lead' | 'project_manager' | 'research_lead' | 'innovation_manager' | 'external_expert' | 'judge' | 'facilitator' | 'organization_admin' | 'entity_manager' | 'deputy_manager' | 'domain_manager' | 'sub_domain_manager' | 'service_manager';
+// Use database enum for stronger type safety
+export type UserRole = Database['public']['Enums']['app_role'];
 
 export interface RolePermissions {
   // Admin permissions

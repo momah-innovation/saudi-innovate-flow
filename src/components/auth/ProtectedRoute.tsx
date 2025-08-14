@@ -1,13 +1,14 @@
 // Enhanced Protected Route Component with RBAC
 // Centralized route protection with role-based access control
 
-import React from 'react';
+import React, { useEffect } from 'react';
 // ProtectedRoute component loaded
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { ALL_ROUTES } from '@/routing/routes';
-import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 import { UserRole } from '@/hooks/useRoleAccess';
+import { validateServerAuth, validateRole } from '@/utils/serverAuth';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -27,12 +28,40 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   redirectTo,
   
 }) => {
-  const { user, userProfile, hasRole, loading } = useAuth();
+  const { user, userProfile, hasRole, loading, session } = useAuth();
   const location = useLocation();
 
-  // Auth debugging removed for performance
+  // Server-side validation for enhanced security
+  useEffect(() => {
+    const validateAccess = async () => {
+      if (requireAuth && user && session?.access_token) {
+        try {
+          await validateServerAuth(session.access_token);
 
-  logger.debug('ProtectedRoute auth check', {
+          if (requiredRole) {
+            const hasAccess = await validateRole(user.id, requiredRole);
+            if (!hasAccess) {
+              debugLog.warn('Server-side role validation failed', {
+                component: 'ProtectedRoute',
+                action: 'serverValidation',
+                userId: user.id,
+                requiredRole,
+              });
+            }
+          }
+        } catch (error) {
+          debugLog.error('Server validation error', {
+            component: 'ProtectedRoute',
+            action: 'serverValidation'
+          }, error);
+        }
+      }
+    };
+
+    validateAccess();
+  }, [user, session, requiredRole, requireAuth]);
+
+  debugLog.debug('ProtectedRoute auth check', {
     component: 'ProtectedRoute',
     action: 'authCheck',
     data: {
@@ -61,13 +90,16 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Check authentication
   if (requireAuth && !user) {
-    logger.info('ProtectedRoute: Redirecting to auth - no user', { component: 'ProtectedRoute', action: 'redirectToAuth' });
+    debugLog.debug('ProtectedRoute: Redirecting to auth - no user', { 
+      component: 'ProtectedRoute', 
+      action: 'redirectToAuth' 
+    });
     return <Navigate to={redirectTo || ALL_ROUTES.AUTH} state={{ from: location }} replace />;
   }
 
   // Check profile completion - redirect if profile is less than 80% complete
   if (requireProfile && user && (!userProfile || userProfile.profile_completion_percentage < 80)) {
-    logger.info('ProtectedRoute: Redirecting to profile setup - incomplete profile', {
+    debugLog.debug('ProtectedRoute: Redirecting to profile setup - incomplete profile', {
       component: 'ProtectedRoute',
       action: 'redirectToProfileSetup',
       data: {
@@ -100,7 +132,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     // Role check logging removed for performance
       
     if (!hasRequiredRole) {
-      logger.info('ProtectedRoute: Redirecting to dashboard - insufficient role', {
+      debugLog.debug('ProtectedRoute: Redirecting to dashboard - insufficient role', {
         component: 'ProtectedRoute',
         action: 'redirectToDashboard',
         data: {
@@ -115,7 +147,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Check subscription requirements (placeholder for Phase 4)
   if (subscriptionRequired) {
-    logger.debug('Subscription check - implement in Phase 4', { component: 'ProtectedRoute', action: 'subscriptionCheck' });
+    debugLog.debug('Subscription check - implement in Phase 4', { 
+      component: 'ProtectedRoute', 
+      action: 'subscriptionCheck' 
+    });
   }
 
   return <div>{children}</div>;
