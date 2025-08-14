@@ -10,7 +10,55 @@ This plan provides step-by-step fixes that maintain existing pages, styles, and 
 
 **Goal:** Fix security vulnerabilities without changing UI/UX
 
-### Day 1-2: Remove Console Logs Safely
+### Day 1: Environment Variables & Secret Management
+
+#### Step 1: Remove Hardcoded Supabase URLs/Keys
+
+```typescript
+// src/integrations/supabase/client.ts - REPLACE hardcoded values
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from './types';
+
+// Use Vite env in browser; fall back to process for SSR/tools
+const nodeEnv = (globalThis as any)?.process?.env || {};
+const SUPABASE_URL = (import.meta as any)?.env?.VITE_SUPABASE_URL ?? nodeEnv.SUPABASE_URL ?? '';
+const SUPABASE_PUBLISHABLE_KEY = (import.meta as any)?.env?.VITE_SUPABASE_ANON_KEY ?? nodeEnv.SUPABASE_ANON_KEY ?? '';
+
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  console.warn('[supabase] Missing SUPABASE_URL or anon key. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+}
+
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    storage: typeof localStorage !== 'undefined' ? localStorage : undefined,
+    persistSession: true,
+    autoRefreshToken: true,
+  }
+});
+```
+
+#### Step 2: Create .env.example File
+
+```dotenv
+# .env.example
+VITE_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+VITE_SUPABASE_ANON_KEY=YOUR_ANON_KEY
+
+SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+SUPABASE_ANON_KEY=YOUR_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+```
+
+#### Step 3: Secrets Scan and Cleanup
+
+```bash
+# Run security scan
+grep -R --line-number --color -E "supabase\\.co|SUPABASE_.*KEY|eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" .
+
+# Clean up any hardcoded secrets found
+```
+
+### Day 2: Remove Console Logs Safely
 
 #### Step 1: Create Debug Logger Wrapper
 
@@ -186,7 +234,326 @@ const fetchUserProfile = async (userId: string, signal?: AbortSignal) => {
 };
 ```
 
-### Day 5: Add Server-Side Authorization
+### Day 3: Lock Down Public Migration Tools
+
+#### Step 1: Secure or Remove Migration Tools
+
+```typescript
+// public/run-migration.html - Option A: DELETE this file (recommended)
+// Option B: If you must keep it, add these security measures:
+
+// 1. Block non-localhost usage
+if (!['localhost', '127.0.0.1', '0.0.0.0'].includes(location.hostname)) {
+  alert('Migration tool only available on localhost for security');
+  document.body.innerHTML = '<h1>Access Denied</h1>';
+}
+
+// 2. Remove hardcoded credentials
+// 3. Require manual input of credentials
+// 4. Add HMAC signature verification
+```
+
+### Day 4: Secure Edge Functions
+
+#### Step 1: Lock Down Privilege Elevation Function
+
+```typescript
+// supabase/functions/elevate-user-privileges/index.ts
+// Option A: DELETE this function (recommended)
+// Option B: Add strict security controls:
+
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-internal-signature',
+};
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    // 1. Require valid JWT
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 2. Verify HMAC signature to prevent abuse
+    const signature = req.headers.get('x-internal-signature');
+    const timestamp = req.headers.get('x-timestamp');
+    if (!signature || !timestamp) {
+      return new Response(JSON.stringify({ error: 'Missing security headers' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 3. Verify timestamp freshness (prevent replay attacks)
+    const now = Date.now();
+    const requestTime = parseInt(timestamp);
+    if (now - requestTime > 60000) { // 1 minute
+      return new Response(JSON.stringify({ error: 'Request expired' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 4. Initialize Supabase with service role
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+
+    // 5. Verify caller is super_admin
+    const jwt = authHeader.replace('Bearer ', '');
+    const { data: { user } } = await supabase.auth.getUser(jwt);
+    if (!user) {
+      return new Response(JSON.stringify({ error: 'Invalid token' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const { data: roles } = await supabase
+      .from('user_roles')
+      .select('role,is_active,expires_at')
+      .eq('user_id', user.id)
+      .eq('is_active', true);
+
+    const isSuperAdmin = roles?.some(r => 
+      r.role === 'super_admin' && 
+      (!r.expires_at || new Date(r.expires_at) > new Date())
+    );
+
+    if (!isSuperAdmin) {
+      return new Response(JSON.stringify({ error: 'Forbidden: super_admin required' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 6. Process elevation request (remove hardcoded userId)
+    const { targetUserId, reason } = await req.json();
+    if (!targetUserId) {
+      return new Response(JSON.stringify({ error: 'targetUserId required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 7. Log the elevation
+    await supabase.from('admin_elevation_logs').insert({
+      user_id: targetUserId,
+      elevated_by: user.email,
+      email: targetUserId,
+      elevated_at: new Date().toISOString()
+    });
+
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+
+  } catch (error) {
+    console.error('Elevation error:', error);
+    return new Response(JSON.stringify({ error: 'Internal error' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+});
+```
+
+### Day 5: Database Security Hardening
+
+#### Step 1: Ensure app_role Enum and Helper Functions
+
+```sql
+-- Create idempotent migration for role system
+DO $$
+BEGIN
+  -- Create app_role enum if not exists
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'app_role') THEN
+    CREATE TYPE app_role AS ENUM (
+      'super_admin','admin','innovator','expert','partner','team_member',
+      'domain_expert','evaluator','stakeholder','mentor','department_head',
+      'sector_lead','team_lead','project_manager','organization_admin',
+      'entity_manager','deputy_manager','domain_manager','sub_domain_manager',
+      'service_manager','user_manager','role_manager','challenge_manager',
+      'expert_coordinator','content_manager','system_auditor','data_analyst',
+      'campaign_manager','event_manager','stakeholder_manager',
+      'partnership_manager','research_lead','external_expert','judge',
+      'facilitator','viewer','innovation_manager'
+    );
+  END IF;
+END$$;
+
+-- Add missing enum values idempotently
+DO $do$
+DECLARE v text;
+BEGIN
+  FOREACH v IN ARRAY ARRAY[
+    'super_admin','admin','innovator','expert','partner','team_member',
+    'domain_expert','evaluator','stakeholder','mentor','department_head',
+    'sector_lead','team_lead','project_manager','organization_admin',
+    'entity_manager','deputy_manager','domain_manager','sub_domain_manager',
+    'service_manager','user_manager','role_manager','challenge_manager',
+    'expert_coordinator','content_manager','system_auditor','data_analyst',
+    'campaign_manager','event_manager','stakeholder_manager',
+    'partnership_manager','research_lead','external_expert','judge',
+    'facilitator','viewer','innovation_manager'
+  ] LOOP
+    BEGIN
+      EXECUTE format('ALTER TYPE app_role ADD VALUE IF NOT EXISTS %L', v);
+    EXCEPTION WHEN others THEN
+      NULL; -- ignore concurrent enum alter errors
+    END;
+  END LOOP;
+END
+$do$;
+
+-- Enhanced has_role helper with expiration support
+CREATE OR REPLACE FUNCTION public.has_role(p_user_id uuid, p_role app_role)
+RETURNS boolean
+LANGUAGE sql
+STABLE SECURITY DEFINER
+SET search_path = 'public'
+AS $$
+  SELECT EXISTS (
+    SELECT 1
+    FROM public.user_roles ur
+    WHERE ur.user_id = p_user_id
+      AND ur.role = p_role
+      AND ur.is_active = true
+      AND (ur.expires_at IS NULL OR ur.expires_at > now())
+  );
+$$;
+```
+
+### Day 6: Frontend Type Safety
+
+#### Step 1: Align Frontend Types with Database
+
+```typescript
+// src/hooks/useRoleAccess.ts - UPDATE to use DB enum
+import type { Database } from '@/integrations/supabase/types';
+
+// Replace manual union with DB enum for stronger type safety
+export type UserRole = Database['public']['Enums']['app_role'];
+
+// Remove the old manual type definition and use the database enum
+export const useRoleAccess = () => {
+  // Implementation using the new type
+};
+```
+
+#### Step 2: Add Minimal ProtectedRoute Tests
+
+```typescript
+// src/components/auth/__tests__/ProtectedRoute.test.tsx
+import { render, screen } from '@testing-library/react';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { BrowserRouter } from 'react-router-dom';
+import { ProtectedRoute } from '../ProtectedRoute';
+import { useAuth } from '@/contexts/AuthContext';
+
+// Mock the auth hook
+vi.mock('@/contexts/AuthContext');
+
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
+const TestComponent = () => <div>Protected Content</div>;
+
+const renderProtectedRoute = (props = {}) => {
+  return render(
+    <BrowserRouter>
+      <ProtectedRoute {...props}>
+        <TestComponent />
+      </ProtectedRoute>
+    </BrowserRouter>
+  );
+};
+
+describe('ProtectedRoute', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('redirects to /auth when requireAuth and no user', () => {
+    (useAuth as any).mockReturnValue({
+      user: null,
+      userProfile: null,
+      loading: false,
+    });
+
+    renderProtectedRoute({ requireAuth: true });
+    
+    expect(mockNavigate).toHaveBeenCalledWith('/auth', { 
+      state: { from: expect.any(String) } 
+    });
+  });
+
+  it('redirects to /profile/setup when profile completion < 80%', () => {
+    (useAuth as any).mockReturnValue({
+      user: { id: '123' },
+      userProfile: { profile_completion_percentage: 50 },
+      loading: false,
+    });
+
+    renderProtectedRoute({ requireAuth: true, requireProfile: true });
+    
+    expect(mockNavigate).toHaveBeenCalledWith('/profile/setup');
+  });
+
+  it('redirects to /dashboard when required role not satisfied', () => {
+    (useAuth as any).mockReturnValue({
+      user: { id: '123' },
+      userProfile: { profile_completion_percentage: 90 },
+      userRoles: ['user'],
+      loading: false,
+    });
+
+    renderProtectedRoute({ 
+      requireAuth: true, 
+      requiredRole: 'admin' 
+    });
+    
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+  });
+
+  it('renders content when all requirements met', () => {
+    (useAuth as any).mockReturnValue({
+      user: { id: '123' },
+      userProfile: { profile_completion_percentage: 90 },
+      userRoles: ['admin'],
+      loading: false,
+    });
+
+    renderProtectedRoute({ 
+      requireAuth: true, 
+      requireProfile: true,
+      requiredRole: 'admin' 
+    });
+    
+    expect(screen.getByText('Protected Content')).toBeInTheDocument();
+  });
+});
+```
+
+### Day 7: Server Authentication Utilities
 
 #### Step 1: Create Server Validation Middleware
 
@@ -996,6 +1363,69 @@ The application will remain functional throughout the process, with improvements
 - No console logs in production builds
 - Proper error handling without information leakage
 - Session management with proper cleanup
+- **NEW:** No hardcoded Supabase URLs or keys in codebase
+- **NEW:** All secrets managed through environment variables
+- **NEW:** Public admin tools secured or removed
+- **NEW:** Edge functions with proper authentication and authorization
+- **NEW:** Database roles and permissions properly configured
+
+### Security Validation Checklist
+
+Before deployment, run these security validation steps:
+
+#### 1. Secrets Scan
+```bash
+# Run comprehensive secrets scan
+grep -R --line-number --color -E "supabase\\.co|SUPABASE_.*KEY|eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" .
+# Should return no results in src/ directory
+```
+
+#### 2. Environment Configuration
+```bash
+# Verify environment variables are set
+echo "VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:0:20}..."
+echo "VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY:0:20}..."
+echo "SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:0:20}..."
+```
+
+#### 3. Database Role Verification
+```sql
+-- Verify app_role enum exists
+SELECT enumlabel FROM pg_enum WHERE enumtypid = 'app_role'::regtype;
+
+-- Verify has_role function exists
+SELECT proname, proargnames FROM pg_proc WHERE proname = 'has_role';
+
+-- Check RLS policies are using proper role checks
+SELECT schemaname, tablename, policyname, cmd 
+FROM pg_policies 
+WHERE qual LIKE '%has_role%' OR qual LIKE '%app_role%';
+```
+
+#### 4. Edge Function Security
+```bash
+# Verify no hardcoded credentials in edge functions
+grep -r "jxpbiljkoibvqxzdkgod\|eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" supabase/functions/
+# Should return no results
+
+# Check privilege elevation function is secured or removed
+ls -la supabase/functions/elevate-user-privileges/
+```
+
+#### 5. Build and Test Validation
+```bash
+# Ensure everything builds without errors
+npm run build
+
+# Run linting
+npm run lint
+
+# Run security-focused tests
+npm run test -- --grep "security|auth|role"
+
+# Verify TypeScript compilation
+npx tsc --noEmit
+```
 
 ### Monitoring Requirements
 
@@ -1004,3 +1434,6 @@ The application will remain functional throughout the process, with improvements
 - Error tracking with proper context
 - User analytics for feature usage
 - Database performance monitoring
+- **NEW:** Security audit logging for privilege escalations
+- **NEW:** Failed authentication attempt monitoring
+- **NEW:** Environment variable usage tracking
