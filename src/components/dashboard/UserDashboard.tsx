@@ -133,7 +133,7 @@ export default React.memo(function UserDashboard() {
     } finally {
       setLoading(false);
     }
-  }, []); // Remove userProfile dependency to prevent infinite loop
+  }, [userProfile?.id]); // Properly depend on userProfile.id
 
   useEffect(() => {
     // Update primary role when user profile changes
@@ -148,10 +148,10 @@ export default React.memo(function UserDashboard() {
       primaryRole 
     });
     
-    if (userProfile?.id) {
+    if (userProfile?.id && !loading) {
       loadDashboardData();
     }
-  }, [userProfile?.id]); // Remove loading and loadDashboardData dependencies
+  }, [userProfile?.id, loadDashboardData]); // Fixed dependencies
 
   const loadUserStats = async () => {
     if (!userProfile?.id) return;

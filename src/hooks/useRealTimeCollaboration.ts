@@ -30,38 +30,69 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
 
   // Initialize real-time connections
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      // Cleanup when user is not available
+      Object.values(channelsRef.current).forEach(channel => {
+        supabase.removeChannel(channel);
+      });
+      channelsRef.current = {};
+      setIsConnected(false);
+      return;
+    }
+
+    let isMounted = true;
 
     const initializeCollaboration = async () => {
       try {
+        // Prevent multiple initializations
+        if (Object.keys(channelsRef.current).length > 0) {
+          return;
+        }
+
         await setupPresenceChannel();
         await setupActivityChannel();
         await setupMessagingChannel();
         await setupNotificationChannel();
-        setIsConnected(true);
+        
+        if (isMounted) {
+          setIsConnected(true);
+        }
       } catch (error) {
         debugLog.error('Failed to initialize collaboration', { error });
-        setConnectionQuality('poor');
-        toast({
-          title: "اتصال ضعيف",
-          description: "يواجه النظام صعوبة في الاتصال. يرجى المحاولة مرة أخرى.",
-          variant: "destructive",
-        });
+        if (isMounted) {
+          setConnectionQuality('poor');
+          toast({
+            title: "اتصال ضعيف",
+            description: "يواجه النظام صعوبة في الاتصال. يرجى المحاولة مرة أخرى.",
+            variant: "destructive",
+          });
+        }
       }
     };
 
     initializeCollaboration();
 
     return () => {
+      isMounted = false;
       // Cleanup all channels
       Object.values(channelsRef.current).forEach(channel => {
+        if (channel && typeof channel.unsubscribe === 'function') {
+          channel.unsubscribe();
+        }
         supabase.removeChannel(channel);
       });
+      channelsRef.current = {};
+      
       if (presenceTimerRef.current) {
         clearInterval(presenceTimerRef.current);
+        presenceTimerRef.current = undefined;
       }
+      
+      setIsConnected(false);
+      setOnlineUsers([]);
+      setCurrentUserPresence(null);
     };
-  }, [user]);
+  }, [user?.id]); // Only depend on user ID, not the entire user object
 
   // Setup presence tracking
   const setupPresenceChannel = async () => {
@@ -109,17 +140,22 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
 
     channelsRef.current.presence = presenceChannel;
 
-    // Update presence every 30 seconds
+    // Update presence every 30 seconds - only if we have a presence
+    if (presenceTimerRef.current) {
+      clearInterval(presenceTimerRef.current);
+    }
+    
     presenceTimerRef.current = setInterval(async () => {
-      if (currentUserPresence) {
+      const currentPresence = channelsRef.current.presence?.presenceState()?.[user.id]?.[0];
+      if (currentPresence && channelsRef.current.presence) {
         const updatedPresence = {
-          ...currentUserPresence,
+          ...currentPresence,
           last_seen: new Date().toISOString(),
           current_location: {
             page: window.location.pathname,
           }
         };
-        await presenceChannel.track(updatedPresence);
+        await channelsRef.current.presence.track(updatedPresence);
         setCurrentUserPresence(updatedPresence);
       }
     }, 30000);
