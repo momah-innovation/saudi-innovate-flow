@@ -5,6 +5,7 @@ import { Button } from './button';
 import { Progress } from './progress';
 import { Badge } from './badge';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useTimerManager } from '@/utils/timerManager';
 
 export interface FileItem {
   id: string;
@@ -88,15 +89,17 @@ export function FileUploader({
     });
   };
 
+  const { setInterval: scheduleInterval } = useTimerManager();
+
   const simulateUpload = (fileId: string) => {
-    const interval = setInterval(() => {
+    const clearTimer = scheduleInterval(() => {
       setFiles(prev => prev.map(file => {
         if (file.id === fileId) {
           const newProgress = Math.min(file.progress + Math.random() * 20, 100);
           onUploadProgress?.(fileId, newProgress);
           
           if (newProgress >= 100) {
-            clearInterval(interval);
+            clearTimer();
             return { ...file, progress: 100, status: 'success' as const };
           }
           return { ...file, progress: newProgress };

@@ -230,6 +230,7 @@ class GlobalErrorHandler extends Component<GlobalErrorHandlerProps, GlobalErrorS
     }));
 
     // Reset error state with delay
+    // Note: Class components can't use hooks directly, but this is acceptable for error handlers
     this.retryTimeout = setTimeout(() => {
       this.setState({
         hasError: false,

@@ -5,6 +5,7 @@ import { Card, CardContent } from './card';
 import { Badge } from './badge';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
+import { useTimerManager } from '@/utils/timerManager';
 
 export interface TourStep {
   id: string;
@@ -316,14 +317,16 @@ export function WelcomeTour({ onComplete }: { onComplete: () => void }) {
 
   const { isOpen, startTour, closeTour, completeTour } = useProductTour(tourSteps);
 
+  const { setTimeout: scheduleTimeout } = useTimerManager();
+
   useEffect(() => {
     // Auto-start tour for new users
-    const timer = setTimeout(() => {
+    const clearTimer = scheduleTimeout(() => {
       startTour();
     }, 1000);
 
-    return () => clearTimeout(timer);
-  }, []);
+    return clearTimer;
+  }, [scheduleTimeout, startTour]);
 
   return (
     <ProductTour

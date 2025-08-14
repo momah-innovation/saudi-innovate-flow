@@ -22,6 +22,7 @@ import { supabase } from '@/integrations/supabase/client'
 import { toast } from 'sonner'
 import { logger } from '@/utils/logger'
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
+import { useTimerManager } from '@/utils/timerManager';
 
 interface UnsplashImage {
   id: string
@@ -420,7 +421,9 @@ export function UnsplashImageBrowser({
                     setShowSuggestions(true)
                   }}
                   onFocus={() => setShowSuggestions(true)}
-                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  onBlur={() => {
+                    setTimeout(() => setShowSuggestions(false), 200);
+                  }}
                   className="pl-10"
                 />
                 

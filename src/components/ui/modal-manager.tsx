@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from '@/components/ui/button';
 import { X, AlertTriangle, CheckCircle, Info, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTimerManager } from '@/utils/timerManager';
 
 type ModalType = 'default' | 'confirm' | 'alert' | 'success' | 'error' | 'loading';
 type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
@@ -75,7 +76,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [modals, setModals] = useState<ModalConfig[]>([]);
   const resolveRefs = useRef<Map<string, { resolve: (value: any) => void; reject: (error: any) => void }>>(new Map());
-  const autoCloseTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  const autoCloseTimeouts = useRef<Map<string, (() => void)>>(new Map());
 
   const generateId = useCallback(() => {
     return `modal-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -98,11 +99,13 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 
     // Set up auto-close if specified
     if (modalConfig.autoClose && modalConfig.autoClose > 0) {
-      const timeout = setTimeout(() => {
+      const { setTimeout: scheduleTimeout } = useTimerManager();
+      const clearTimer = scheduleTimeout(() => {
         closeModal(id);
       }, modalConfig.autoClose);
       
-      autoCloseTimeouts.current.set(id, timeout);
+      // Store cleanup function instead of raw timeout
+      autoCloseTimeouts.current.set(id, clearTimer);
     }
 
     return id;
@@ -112,9 +115,9 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     setModals(prev => prev.filter(modal => modal.id !== id));
     
     // Clear auto-close timeout
-    const timeout = autoCloseTimeouts.current.get(id);
-    if (timeout) {
-      clearTimeout(timeout);
+    const clearTimer = autoCloseTimeouts.current.get(id);
+    if (clearTimer) {
+      clearTimer();
       autoCloseTimeouts.current.delete(id);
     }
 
@@ -128,7 +131,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 
   const closeAllModals = useCallback(() => {
     // Clear all auto-close timeouts
-    autoCloseTimeouts.current.forEach(timeout => clearTimeout(timeout));
+    autoCloseTimeouts.current.forEach(clearTimer => clearTimer());
     autoCloseTimeouts.current.clear();
 
     // Resolve all pending promises

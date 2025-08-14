@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { useTimerManager } from '@/utils/timerManager';
 
 interface LoadingSkeletonProps {
   className?: string;
@@ -178,17 +179,19 @@ export function ProgressiveLoading({
 }: ProgressiveLoadingProps) {
   const [showSkeleton, setShowSkeleton] = React.useState(isLoading);
   
+  const { setTimeout: scheduleTimeout } = useTimerManager();
+  
   React.useEffect(() => {
     if (isLoading) {
       setShowSkeleton(true);
     } else {
-      const timer = setTimeout(() => {
+      const clearTimer = scheduleTimeout(() => {
         setShowSkeleton(false);
       }, delay);
       
-      return () => clearTimeout(timer);
+      return clearTimer;
     }
-  }, [isLoading, delay]);
+  }, [isLoading, delay, scheduleTimeout]);
   
   if (showSkeleton) {
     return <>{skeleton}</>;

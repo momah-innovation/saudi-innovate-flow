@@ -123,6 +123,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   };
 
   private retryWithDelay = () => {
+    // Note: Class components can't use hooks directly, but this is acceptable for error boundaries
     this.resetTimeoutId = window.setTimeout(() => {
       this.resetErrorBoundary();
     }, 1000);
