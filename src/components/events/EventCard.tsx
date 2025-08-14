@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { debugLog } from '@/utils/debugLogger';
 import { Badge } from '@/components/ui/badge';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { TypeBadge } from '@/components/ui/TypeBadge';
@@ -80,14 +81,14 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
   const handleRegistrationToggle = async () => {
     try {
       if (isRegistered) {
-        console.log('🔄 Cancelling registration for event:', event.id);
+        debugLog.debug('Cancelling registration for event', { eventId: event.id });
         await cancelRegistration();
       } else {
-        console.log('🔄 Registering for event:', event.id);
+        debugLog.debug('Registering for event', { eventId: event.id });
         await registerForEvent();
       }
     } catch (error) {
-      console.error('Failed to toggle registration:', error);
+      debugLog.error('Failed to toggle registration:', error);
     }
   };
 

@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTheme } from '@/components/ui/theme-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { debugLog } from '@/utils/debugLogger';
 import { useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { TranslationProvider } from '@/contexts/TranslationContext';
 import { AnalyticsProvider } from '@/contexts/AnalyticsContext';
@@ -40,7 +41,7 @@ class AppShellErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('AppShell Error Boundary caught error', error, errorInfo);
+    debugLog.error('AppShell Error Boundary caught error', { error: error.message, errorInfo });
     this.props.onError?.(error);
   }
 
@@ -135,12 +136,11 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   
   const setSidebarOpen = (open: boolean | ((prev: boolean) => boolean)) => {
     const newValue = typeof open === 'function' ? open(sidebarOpen) : open;
-    console.log('🔄 SIDEBAR DEBUG: State change requested', {
+    debugLog.debug('Sidebar state change requested', {
       timestamp: Date.now(),
       from: sidebarOpen,
       to: newValue,
-      isFunction: typeof open === 'function',
-      stackTrace: new Error().stack?.split('\n').slice(1, 4)
+      isFunction: typeof open === 'function'
     });
     setSidebarOpenInternal(newValue);
   };
@@ -227,7 +227,7 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   };
   
   const handleError = (error: Error) => {
-    console.error('AppShell runtime error:', error, 'Route:', location.pathname);
+    debugLog.error('AppShell runtime error', { error: error.message, route: location.pathname });
   };
   
   const content = (
@@ -246,13 +246,13 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
               <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 {/* Global Header */}
                 <SystemHeader onSidebarToggle={() => {
-                  console.log('🔀 SIDEBAR DEBUG: Toggle function called from header', {
+                  debugLog.debug('Sidebar toggle function called from header', {
                     timestamp: Date.now(),
                     currentSidebarState: sidebarOpen
                   });
                   setSidebarOpen(prev => {
                     const newState = !prev;
-                    console.log('🔄 SIDEBAR DEBUG: Toggle executed', {
+                    debugLog.debug('Sidebar toggle executed', {
                       timestamp: Date.now(),
                       prev,
                       newState
@@ -261,12 +261,11 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
                     try {
                       performance.measure('sidebar-toggle-duration', 'sidebar-toggle-start', 'sidebar-toggle-end');
                       const measure = performance.getEntriesByName('sidebar-toggle-duration')[0];
-                      console.log('⏱️ SIDEBAR DEBUG: Toggle performance', {
-                        duration: measure.duration,
+                      debugLog.performance('sidebar-toggle', measure.duration, {
                         startTime: measure.startTime
                       });
                     } catch (e) {
-                      console.log('⚠️ SIDEBAR DEBUG: Performance measurement failed', e);
+                      debugLog.warn('Performance measurement failed', { error: e });
                     }
                     return newState;
                   });

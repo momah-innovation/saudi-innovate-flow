@@ -166,10 +166,10 @@ export const CollaborativeEventCard = ({
   const handleRegistrationToggle = async () => {
     try {
       if (isRegistered) {
-        console.log('🔄 Cancelling registration for event:', event.id);
+        debugLog.debug('Cancelling registration for event', { eventId: event.id });
         await cancelRegistration();
       } else {
-        console.log('🔄 Registering for event:', event.id);
+        debugLog.debug('Registering for event', { eventId: event.id });
         await registerForEvent();
       }
     } catch (error) {

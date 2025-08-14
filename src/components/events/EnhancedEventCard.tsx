@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { debugLog } from '@/utils/debugLogger';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -121,14 +122,14 @@ export const EnhancedEventCard = ({
   const handleRegistrationToggle = async () => {
     try {
       if (isRegistered) {
-        console.log('🔄 Cancelling registration for event:', event.id);
+        debugLog.debug('Cancelling registration for event', { eventId: event.id });
         await cancelRegistration();
       } else {
-        console.log('🔄 Registering for event:', event.id);
+        debugLog.debug('Registering for event', { eventId: event.id });
         await registerForEvent();
       }
     } catch (error) {
-      console.error('Failed to toggle registration:', error);
+      debugLog.error('Failed to toggle registration:', error);
     }
   };
 
@@ -137,7 +138,7 @@ export const EnhancedEventCard = ({
       // For now just toggle local state - can integrate with bookmark system later
       setBookmarked(!bookmarked);
     } catch (error) {
-      console.error('Failed to toggle bookmark:', error);
+      debugLog.error('Failed to toggle bookmark:', error);
     }
   };
 

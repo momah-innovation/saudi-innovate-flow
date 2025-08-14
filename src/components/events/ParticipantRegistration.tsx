@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { debugLog } from '@/utils/debugLogger';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -105,7 +106,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
         return;
       }
 
-      console.log('🔄 Registering for event in dialog:', event.id);
+      debugLog.debug('Registering for event in dialog', { eventId: event.id });
       const { error } = await supabase
         .from('event_participants')
         .insert({
@@ -158,7 +159,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
     try {
       setRegistering(true);
 
-      console.log('🔄 Cancelling registration in dialog:', event.id);
+      debugLog.debug('Cancelling registration in dialog', { eventId: event.id });
       const { error } = await supabase
         .from('event_participants')
         .delete()

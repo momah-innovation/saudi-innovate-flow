@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useRealTimeCollaboration } from '@/hooks/useRealTimeCollaboration';
 import type { CollaborationContextType, ActivityEvent } from '@/types/collaboration';
+import { debugLog } from '@/utils/debugLogger';
 
 const CollaborationContext = createContext<CollaborationContextType | undefined>(undefined);
 
@@ -79,7 +80,7 @@ export const CollaborationProvider: React.FC<CollaborationProviderProps> = ({ ch
 
   const inviteToCollaboration = async (entityType: string, entityId: string, userIds: string[]) => {
     // TODO: Implement invitation system
-    console.log('Inviting users to collaboration:', { entityType, entityId, userIds });
+    debugLog.debug('Inviting users to collaboration', { entityType, entityId, userIds });
   };
 
   const contextValue: CollaborationContextType = {
