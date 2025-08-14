@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { debugLog } from '@/utils/debugLogger';
 
 interface UserProfile {
   id: string;
@@ -32,7 +33,7 @@ export const useUserDiscovery = () => {
         .limit(20);
 
       if (error) {
-        console.error('Profile search error:', error);
+        debugLog.error('Profile search error', { component: 'useUserDiscovery', action: 'searchUsers' }, error as Error);
         setSearchResults([]);
         return [];
       }
@@ -48,7 +49,7 @@ export const useUserDiscovery = () => {
       setSearchResults(users);
       return users;
     } catch (error) {
-      console.error('User search failed:', error);
+      debugLog.error('User search failed', { component: 'useUserDiscovery', action: 'searchUsers' }, error as Error);
       setSearchResults([]);
       return [];
     } finally {
@@ -74,7 +75,7 @@ export const useUserDiscovery = () => {
         expertise: []
       }));
     } catch (error) {
-      console.error('Failed to get online users:', error);
+      debugLog.error('Failed to get online users', { component: 'useUserDiscovery', action: 'getOnlineUsers' }, error as Error);
       return [];
     }
   }, []);

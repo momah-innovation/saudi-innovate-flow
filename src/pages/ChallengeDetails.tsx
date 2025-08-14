@@ -332,27 +332,25 @@ const ChallengeDetails = () => {
       }
 
       // Fetch focus questions
-      console.log('🔍 Fetching focus questions...');
+      debugLog.debug('Fetching focus questions', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', challengeId });
       const { data: questionsData, error: questionsError } = await supabase
         .from('focus_questions')
         .select('*')
         .eq('challenge_id', challengeId)
         .order('order_sequence');
 
-      console.log('📊 Focus questions query completed');
-      console.log('📋 Questions data:', questionsData);
-      console.log('❌ Questions error:', questionsError);
+      debugLog.debug('Focus questions query completed', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', questionsData, questionsError });
 
       if (questionsError) {
-        console.warn('⚠️ Failed to fetch focus questions:', questionsError);
+        debugLog.warn('Failed to fetch focus questions', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', challengeId });
         logger.error('Failed to fetch focus questions', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', challengeId }, questionsError as Error);
       } else {
-        console.log('✅ Setting focus questions state');
+        debugLog.debug('Setting focus questions state', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', questionCount: questionsData?.length });
         setFocusQuestions((questionsData as any) || []);
       }
 
       // Fetch assigned experts
-      console.log('🔍 Fetching assigned experts...');
+      debugLog.debug('Fetching assigned experts', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', challengeId });
       const { data: expertsData, error: expertsError } = await supabase
         .from('challenge_experts')
         .select(`
@@ -367,15 +365,13 @@ const ChallengeDetails = () => {
         .eq('challenge_id', challengeId)
         .eq('status', 'active');
 
-      console.log('📊 Experts query completed');
-      console.log('📋 Experts data:', expertsData);
-      console.log('❌ Experts error:', expertsError);
+      debugLog.debug('Experts query completed', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', expertsData, expertsError });
 
       if (expertsError) {
-        console.warn('⚠️ Failed to fetch experts:', expertsError);
+        debugLog.warn('Failed to fetch experts', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', challengeId });
         logger.error('Failed to fetch challenge experts', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', challengeId }, expertsError as Error);
       } else if (expertsData) {
-        console.log('✅ Processing and setting experts data');
+        debugLog.debug('Processing and setting experts data', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', expertCount: expertsData?.length });
         // Transform the data to match our interface  
         const transformedData = expertsData.map(item => ({
           ...item,
@@ -385,7 +381,7 @@ const ChallengeDetails = () => {
           } : undefined
         }));
         setAssignedExperts(transformedData as ChallengeExpert[]);
-        console.log('✅ Experts state updated');
+        debugLog.debug('Experts state updated', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', expertCount: transformedData.length });
       }
 
       // Fetch organizational hierarchy
@@ -398,13 +394,14 @@ const ChallengeDetails = () => {
       debugLog.debug('fetchChallengeDetails completed successfully');
 
     } catch (error) {
-      console.error('💥 MAJOR ERROR in fetchChallengeDetails:', error);
-      console.error('🔍 Error details:', {
+      debugLog.error('MAJOR ERROR in fetchChallengeDetails', { 
+        component: 'ChallengeDetails', 
+        action: 'fetchChallengeDetails', 
+        challengeId,
         message: error?.message,
         stack: error?.stack,
-        challengeId,
         timestamp: new Date().toISOString()
-      });
+      }, error as Error);
       logger.error('Error in fetchChallengeDetails', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, error as Error);
       toast({
         title: "Error",
@@ -632,8 +629,9 @@ Status: ${challenge?.status}
     });
   };
 
-  console.log('🎨 RENDER: ChallengeDetails component');
-  console.log('📊 Current state:', { 
+  debugLog.debug('RENDER: ChallengeDetails component', { 
+    component: 'ChallengeDetails', 
+    action: 'render',
     loading, 
     challengeExists: !!challenge, 
     challengeId,

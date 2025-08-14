@@ -231,7 +231,7 @@ export const invalidateTranslationCache = () => {
   // Force a reload by reloading the current language
   const currentLang = i18n.language;
   i18n.reloadResources(currentLang).then(() => {
-    console.log('🔄 Translation cache invalidated and reloaded');
+    logger.info('Translation cache invalidated and reloaded', { component: 'EnhancedDatabaseBackend', action: 'invalidateTranslationCache' });
   });
 };
 

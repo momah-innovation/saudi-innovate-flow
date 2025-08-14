@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { ANALYTICS_MIGRATION_PLAN, MigrationTask } from '@/utils/analytics-migration-plan';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * Database Migration: Enhanced Analytics Functions
@@ -409,7 +410,7 @@ export class MigrationProgressTracker {
         task.completedAt = new Date();
       }
       
-      console.log(`Task ${taskId} status updated to ${status}`, { notes });
+      debugLog.debug(`Task ${taskId} status updated to ${status}`, { component: 'analytics-migration-execution', action: 'updateTaskStatus', taskId, status, notes });
     }
   }
 

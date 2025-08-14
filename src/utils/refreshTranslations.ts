@@ -1,11 +1,12 @@
 import { supabase } from '@/integrations/supabase/client';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * Force refresh all translations from database
  * This function can be called to manually refresh translations
  */
 export const forceRefreshTranslations = async () => {
-  console.log('🔄 Force refreshing all translations...');
+  debugLog.debug('Force refreshing all translations', { component: 'refreshTranslations', action: 'forceRefreshTranslations' });
   
   try {
     // Clear any potential browser cache for Supabase requests
@@ -18,17 +19,17 @@ export const forceRefreshTranslations = async () => {
       .limit(1); // Just test the connection
       
     if (error) {
-      console.error('❌ Error testing translation connection:', error);
+      debugLog.error('Error testing translation connection', { component: 'refreshTranslations', action: 'forceRefreshTranslations' }, error as Error);
       throw error;
     }
     
-    console.log('✅ Translation connection verified, cache cleared');
+    debugLog.debug('Translation connection verified, cache cleared', { component: 'refreshTranslations', action: 'forceRefreshTranslations' });
     
     // Force page reload to refresh all React Query caches
     window.location.reload();
     
   } catch (error) {
-    console.error('❌ Failed to refresh translations:', error);
+    debugLog.error('Failed to refresh translations', { component: 'refreshTranslations', action: 'forceRefreshTranslations' }, error as Error);
     throw error;
   }
 };
