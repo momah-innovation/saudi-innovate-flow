@@ -39,21 +39,26 @@ export function useUnifiedTranslation() {
     isReady
   } = useSystemTranslations(language);
 
-  // Optimized logging - only when data significantly changes and with debouncing
+  // Optimized logging - prevent errors from breaking hooks
   useEffect(() => {
-    if (isReady && translationCount > 0) {
-      // Only log once per session or when count changes significantly  
-      const sessionKey = `translations_logged_${language}_${translationCount}`;
-      if (!sessionStorage.getItem(sessionKey)) {
-        debugLog.log('🎯 System translations loaded', { 
-          count: translationCount, 
-          language,
-          sampleKeys: Array.from(translationMap.keys()).slice(0, 3)
-        });
-        sessionStorage.setItem(sessionKey, 'true');
+    try {
+      if (isReady && translationCount > 0) {
+        // Only log once per session or when count changes significantly  
+        const sessionKey = `translations_logged_${language}_${translationCount}`;
+        if (!sessionStorage.getItem(sessionKey)) {
+          debugLog.log('🎯 System translations loaded', { 
+            count: translationCount, 
+            language,
+            sampleKeys: Array.from(translationMap.keys()).slice(0, 3)
+          });
+          sessionStorage.setItem(sessionKey, 'true');
+        }
       }
+    } catch (error) {
+      // Silently handle errors to prevent hook violations
+      debugLog.warn('Translation logging error', { error });
     }
-  }, [isReady, translationCount, language]);
+  }, [isReady, translationCount, language, translationMap]);
 
   /**
    * Primary translation function - Enhanced with better fallback logic

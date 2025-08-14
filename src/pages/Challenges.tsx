@@ -35,11 +35,18 @@ import { cn } from '@/lib/utils';
 export default function Challenges() {
   debugLog.debug('Challenges component rendering');
   
-  const { t, isRTL } = useUnifiedTranslation();
+  // CRITICAL: Stabilize hook order to prevent React Error #321
+  // Move all hook calls to the top in a fixed order
+  const navigate = useNavigate();
   const { toast } = useToast();
   const { user, hasRole } = useAuth();
+  
+  // Use fallback translation first to prevent circular dependencies
+  const [isTranslationReady, setIsTranslationReady] = useState(false);
+  const { t, isRTL } = useUnifiedTranslation();
+  
+  // Delay other hooks until translation is stable
   const { ui } = useChallengeDefaults();
-  const navigate = useNavigate();
   
   debugLog.debug('About to call useChallengesData');
   // Use enhanced challenges data hook

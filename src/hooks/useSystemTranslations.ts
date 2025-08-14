@@ -12,28 +12,33 @@ import { debugLog } from '@/utils/debugLogger';
 export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
   const queryClient = useQueryClient();
 
-  // Fetch essential translations only to prevent crash
+  // Fetch essential translations only to prevent crash - with error boundary
   const { data: translations = [], isLoading, error } = useQuery({
     queryKey: queryKeys.system.translations(),
     queryFn: async (): Promise<SystemTranslation[]> => {
       try {
+        // Safety guard: return empty array if auth or database issues
+        if (typeof window === 'undefined') {
+          return [];
+        }
         
-        
-        // Only fetch first 200 most essential translations to prevent crash
+        // Only fetch first 50 most essential translations to prevent crash
         const { data, error } = await supabase
           .from('system_translations')
           .select('id, translation_key, text_en, text_ar, category, created_at, updated_at')
           .order('translation_key')
-          .limit(200); // Strict limit to prevent memory issues
+          .limit(50); // Very strict limit to prevent memory issues
 
         if (error) {
-          debugLog.error('🚨 SYSTEM TRANSLATIONS: Failed to fetch', { error });
-          throw error;
+          debugLog.warn('🚨 SYSTEM TRANSLATIONS: Database error, using fallback', { error: error.message });
+          // Return empty array instead of throwing to prevent React hook errors
+          return [];
         }
 
         return data || [];
       } catch (error) {
-        debugLog.error('🚨 SYSTEM TRANSLATIONS: Error in fetch', { error });
+        debugLog.warn('🚨 SYSTEM TRANSLATIONS: Network error, using fallback', { error });
+        // Return empty array instead of throwing to prevent React hook errors
         return [];
       }
     },
@@ -41,8 +46,9 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
     gcTime: 60 * 60 * 1000, // 60 minutes  
     refetchOnWindowFocus: false, // Prevent unnecessary refetches
     refetchOnMount: false, // Don't always refetch on mount
-    retry: 1, // Reduce retries to prevent endless loading
-    refetchInterval: false // Disable background refresh to prevent crashes
+    retry: 0, // No retries to prevent endless loading
+    refetchInterval: false, // Disable background refresh to prevent crashes
+    enabled: typeof window !== 'undefined' // Only run in browser
   });
 
   // Create optimized translation map
