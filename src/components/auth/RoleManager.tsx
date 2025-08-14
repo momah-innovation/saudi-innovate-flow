@@ -37,8 +37,8 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
   const [expirationDays, setExpirationDays] = useState('30');
 
   const availableRoles: AppRole[] = [
-    'innovator', 'mentor', 'admin', 'super_admin', 'department_head',
-    'sector_lead', 'domain_expert', 'evaluator', 'viewer', 'user_manager',
+    'innovator', 'expert', 'partner', 'stakeholder', 'mentor', 'admin', 'super_admin', 
+    'department_head', 'sector_lead', 'domain_expert', 'evaluator', 'viewer', 'user_manager',
     'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager',
     'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager',
     'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager',
@@ -49,6 +49,9 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
 
   const roleDescriptions: Record<AppRole, string> = {
     innovator: 'مبتكر - يمكنه إرسال الأفكار والمشاركة في التحديات',
+    expert: 'خبير - متخصص يقدم الاستشارات والتوجيه',
+    partner: 'شريك - جهة شريكة في المشاريع والفعاليات',
+    stakeholder: 'صاحب مصلحة - له مصلحة في نتائج المشاريع',
     mentor: 'موجه - يرشد المبتكرين والخبراء',
     admin: 'مدير - صلاحيات إدارية شاملة',
     super_admin: 'مدير عام - أعلى مستوى إداري',

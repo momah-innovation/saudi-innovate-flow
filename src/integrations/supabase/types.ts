@@ -9565,6 +9565,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_role_enhanced: {
+        Args: {
+          target_role: Database["public"]["Enums"]["app_role"]
+          user_uuid: string
+        }
+        Returns: boolean
+      }
       has_role_or_higher: {
         Args: {
           _minimum_role: Database["public"]["Enums"]["app_role"]
@@ -9585,13 +9592,21 @@ export type Database = {
         Returns: boolean
       }
       log_security_event: {
-        Args: {
-          action_type: string
-          details?: Json
-          resource_id?: string
-          resource_type?: string
-          risk_level?: string
-        }
+        Args:
+          | {
+              action_type: string
+              details?: Json
+              resource_id?: string
+              resource_type?: string
+              risk_level?: string
+            }
+          | {
+              p_details?: Json
+              p_event_type: string
+              p_resource_id?: string
+              p_resource_type: string
+              p_risk_level?: string
+            }
         Returns: string
       }
       manage_storage_quotas: {
@@ -9721,7 +9736,7 @@ export type Database = {
       validate_role_assignment: {
         Args: {
           assigner_user_id: string
-          target_role: Database["public"]["Enums"]["app_role"]
+          target_role_value: Database["public"]["Enums"]["app_role"]
         }
         Returns: boolean
       }
@@ -9767,6 +9782,9 @@ export type Database = {
         | "domain_manager"
         | "sub_domain_manager"
         | "service_manager"
+        | "expert"
+        | "partner"
+        | "stakeholder"
       role_hierarchy_level: "1" | "2" | "3" | "4" | "5"
     }
     CompositeTypes: {
@@ -9931,6 +9949,9 @@ export const Constants = {
         "domain_manager",
         "sub_domain_manager",
         "service_manager",
+        "expert",
+        "partner",
+        "stakeholder",
       ],
       role_hierarchy_level: ["1", "2", "3", "4", "5"],
     },
