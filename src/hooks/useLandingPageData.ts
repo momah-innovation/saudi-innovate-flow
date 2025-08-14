@@ -36,8 +36,17 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isCancelled = false;
+    
     const fetchData = async () => {
+      // Prevent redundant fetches if data is already loaded
+      if (statistics.length > 0 && faqs.length > 0 && content.length > 0) {
+        return;
+      }
+      
       try {
+        setLoading(true);
+        
         // Add timeout to prevent hanging requests
         const fetchTimeout = (promise: Promise<any>, timeout: number) => {
           return Promise.race([
@@ -80,18 +89,30 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
           fetchTimeout(Promise.resolve(contentQuery), 10000)
         ]);
 
-        setFaqs(faqResult.data || []);
-        setStatistics(statsResult.data || []);
-        setContent(contentResult.data || []);
+        // Only update state if component is still mounted
+        if (!isCancelled) {
+          setFaqs(faqResult.data || []);
+          setStatistics(statsResult.data || []);
+          setContent(contentResult.data || []);
+        }
       } catch (error) {
-        logger.error('Failed to fetch landing page data', { component: 'useLandingPageData', action: 'fetchLandingPageData' }, error as Error);
+        if (!isCancelled) {
+          logger.error('Failed to fetch landing page data', { component: 'useLandingPageData', action: 'fetchLandingPageData' }, error as Error);
+        }
       } finally {
-        setLoading(false);
+        if (!isCancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
-  }, []);
+    
+    // Cleanup function to prevent state updates on unmounted component
+    return () => {
+      isCancelled = true;
+    };
+  }, []); // Empty dependency array to prevent re-fetching on language changes
 
   const getText = (enText: string, arText: string | null): string => {
     return language === 'ar' && arText ? arText : enText;
