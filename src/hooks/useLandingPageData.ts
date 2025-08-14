@@ -39,8 +39,8 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'ar') => {
     let isCancelled = false;
     
     const fetchData = async () => {
-      // Only fetch data once on mount, not on language changes
-      if (statistics.length > 0 && faqs.length > 0 && content.length > 0) {
+      // Only fetch data if not already loaded (to prevent unnecessary re-fetches)
+      if (statistics.length > 0 && faqs.length > 0 && content.length > 0 && !loading) {
         return;
       }
       
