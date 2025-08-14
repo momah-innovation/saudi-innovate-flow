@@ -9,6 +9,9 @@ import { AppShell } from '@/components/layout/AppShell';
 import { ALL_ROUTES } from './routes';
 import { UserRole } from '@/hooks/useRoleAccess';
 import { Loader2 } from 'lucide-react';
+import { lazyWithRetry } from '@/utils/lazyWithRetry';
+import { withErrorBoundary } from '@/utils/withErrorBoundary';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Loading component
 const LoadingFallback = () => {
@@ -19,35 +22,39 @@ const LoadingFallback = () => {
   );
 };
 
-// Lazy load all components
-const LandingPage = lazy(() => import('@/pages/LandingPage'));
-const AuthPage = lazy(() => import('@/pages/Auth'));
-const AdminDashboardPage = lazy(() => import('@/pages/AdminDashboardPage'));
-const HelpPage = lazy(() => import('@/pages/HelpPage'));
-const NotFound = lazy(() => import('@/pages/NotFound'));
-const DesignSystem = lazy(() => import('@/pages/DesignSystem'));
-const WorkspaceDocumentation = lazy(() => import('@/pages/WorkspaceDocumentation'));
-const PartnersManagement = lazy(() => import('@/pages/admin/PartnersManagement'));
-const SectorsManagement = lazy(() => import('@/pages/admin/SectorsManagement'));
-const ExpertAssignmentManagement = lazy(() => import('@/pages/admin/ExpertAssignmentManagement'));
-const AdminEvaluations = lazy(() => import('@/pages/admin/AdminEvaluations'));
-const AdminRelationships = lazy(() => import('@/pages/admin/AdminRelationships'));
-const Challenges = lazy(() => import('@/pages/Challenges'));
-const ChallengeDetails = lazy(() => import('@/pages/ChallengeDetails'));
-const ChallengeIdeaSubmission = lazy(() => import('@/pages/ChallengeIdeaSubmission'));
-const OpportunitiesPage = lazy(() => import('@/pages/Opportunities'));
-const UserDashboard = lazy(() => import('@/components/dashboard/UserDashboard'));
-const ProfileSetupPage = lazy(() => import('@/pages/ProfileSetup'));
-const SettingsPage = lazy(() => import('@/pages/Settings'));
-const EventsBrowse = lazy(() => import('@/pages/EventsBrowse'));
-const ChallengesBrowse = lazy(() => import('@/pages/ChallengesBrowse'));
-const AccessControlManagement = lazy(() => import('@/pages/dashboard/AccessControlManagement'));
-const UserManagement = lazy(() => import('@/pages/admin/UserManagement'));
-const ChallengesManagement = lazy(() => import('@/pages/admin/ChallengesManagement'));
-const CampaignsManagement = lazy(() => import('@/pages/admin/CampaignsManagement'));
-const EventsManagement = lazy(() => import('@/pages/admin/EventsManagement'));
-const IdeasManagement = lazy(() => import('@/pages/admin/IdeasManagement'));
-const OrganizationalStructureManagement = lazy(() => import('@/pages/admin/OrganizationalStructure'));
+// Enhanced lazy loading with error boundaries and retry logic
+const createLazyComponent = (importFn: () => Promise<any>) => {
+  return withErrorBoundary(lazyWithRetry(importFn));
+};
+// Enhanced lazy loaded components with retry and error boundaries
+const LandingPage = createLazyComponent(() => import('@/pages/LandingPage'));
+const AuthPage = createLazyComponent(() => import('@/pages/Auth'));
+const AdminDashboardPage = createLazyComponent(() => import('@/pages/AdminDashboardPage'));
+const HelpPage = createLazyComponent(() => import('@/pages/HelpPage'));
+const NotFound = createLazyComponent(() => import('@/pages/NotFound'));
+const DesignSystem = createLazyComponent(() => import('@/pages/DesignSystem'));
+const WorkspaceDocumentation = createLazyComponent(() => import('@/pages/WorkspaceDocumentation'));
+const PartnersManagement = createLazyComponent(() => import('@/pages/admin/PartnersManagement'));
+const SectorsManagement = createLazyComponent(() => import('@/pages/admin/SectorsManagement'));
+const ExpertAssignmentManagement = createLazyComponent(() => import('@/pages/admin/ExpertAssignmentManagement'));
+const AdminEvaluations = createLazyComponent(() => import('@/pages/admin/AdminEvaluations'));
+const AdminRelationships = createLazyComponent(() => import('@/pages/admin/AdminRelationships'));
+const Challenges = createLazyComponent(() => import('@/pages/Challenges'));
+const ChallengeDetails = createLazyComponent(() => import('@/pages/ChallengeDetails'));
+const ChallengeIdeaSubmission = createLazyComponent(() => import('@/pages/ChallengeIdeaSubmission'));
+const OpportunitiesPage = createLazyComponent(() => import('@/pages/Opportunities'));
+const UserDashboard = createLazyComponent(() => import('@/components/dashboard/UserDashboard'));
+const ProfileSetupPage = createLazyComponent(() => import('@/pages/ProfileSetup'));
+const SettingsPage = createLazyComponent(() => import('@/pages/Settings'));
+const EventsBrowse = createLazyComponent(() => import('@/pages/EventsBrowse'));
+const ChallengesBrowse = createLazyComponent(() => import('@/pages/ChallengesBrowse'));
+const AccessControlManagement = createLazyComponent(() => import('@/pages/dashboard/AccessControlManagement'));
+const UserManagement = createLazyComponent(() => import('@/pages/admin/UserManagement'));
+const ChallengesManagement = createLazyComponent(() => import('@/pages/admin/ChallengesManagement'));
+const CampaignsManagement = createLazyComponent(() => import('@/pages/admin/CampaignsManagement'));
+const EventsManagement = createLazyComponent(() => import('@/pages/admin/EventsManagement'));
+const IdeasManagement = createLazyComponent(() => import('@/pages/admin/IdeasManagement'));
+const OrganizationalStructureManagement = createLazyComponent(() => import('@/pages/admin/OrganizationalStructure'));
 const StakeholdersManagement = lazy(() => import('@/pages/admin/StakeholdersManagement'));
 const EntitiesManagement = lazy(() => import('@/pages/admin/EntitiesManagement'));
 const CoreTeamManagement = lazy(() => import('@/pages/admin/CoreTeamManagement'));
@@ -596,21 +603,23 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
 // Main unified router component
 export const UnifiedRouter: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          {UNIFIED_ROUTES.map((routeConfig) => (
-            <Route
-              key={routeConfig.path}
-              path={routeConfig.path}
-              element={<RouteRenderer config={routeConfig} />}
-            />
-          ))}
-          {/* Catch-all route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <ErrorBoundary fallback={<LoadingFallback />}>
+      <BrowserRouter>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            {UNIFIED_ROUTES.map((routeConfig) => (
+              <Route
+                key={routeConfig.path}
+                path={routeConfig.path}
+                element={<RouteRenderer config={routeConfig} />}
+              />
+            ))}
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 };
 

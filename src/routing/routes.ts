@@ -133,6 +133,18 @@ export const ROUTE_CATEGORIES = {
   SETTINGS: 'settings',
 } as const;
 
+// Define missing routes that are referenced but not defined
+export const MISSING_ROUTES = {
+  // Add any routes that are referenced but not defined
+  PROFILE_EDIT: "/profile/edit",
+  TEAM_DETAILS: "/teams/:teamId",
+  IDEA_DETAILS: "/ideas/:ideaId",
+  EVENT_REGISTER: "/events/:eventId/register",
+  OPPORTUNITY_DETAILS: "/opportunities/:opportunityId",
+  CHALLENGE_DISCUSSION: "/challenges/:challengeId/discussion",
+  USER_PROFILE: "/users/:userId",
+} as const;
+
 // Export all routes combined
 export const ALL_ROUTES = {
   ...PUBLIC_ROUTES,
@@ -140,4 +152,5 @@ export const ALL_ROUTES = {
   ...SUBSCRIPTION_ROUTES,
   ...ADMIN_ROUTES,
   ...DASHBOARD_ROUTES,
+  ...MISSING_ROUTES,
 } as const;
