@@ -3,6 +3,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 
 interface AuthContextType {
   user: User | null;
@@ -99,23 +100,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      // First, trigger profile completion calculation
-      logger.info('Triggering profile completion calculation', { 
-        component: 'AuthContext', 
-        action: 'fetchUserProfile',
-        userId 
-      });
-      const { error: calcError } = await supabase.functions.invoke('calculate-profile-completion', {
-        body: { user_id: userId }
-      });
-
-      if (calcError) {
-        logger.warn('Failed to calculate profile completion', { 
-          component: 'AuthContext', 
-          action: 'fetchUserProfile' 
-        }, calcError);
-        // Continue with profile fetch even if calculation fails
-      }
+      // Remove the edge function call from critical auth path - move to background
+      // This was causing delays in auth initialization
+      
+      // Trigger profile completion calculation in background (non-blocking)
+      setTimeout(async () => {
+        try {
+          await supabase.functions.invoke('calculate-profile-completion', {
+            body: { user_id: userId }
+          });
+        } catch (error) {
+          debugLog.warn('Background profile completion calculation failed', { userId, error });
+        }
+      }, 1000); // Delay to not block auth flow
 
       // Use Promise.all to fetch profile and roles simultaneously
       const [profileResponse, rolesResponse] = await Promise.all([

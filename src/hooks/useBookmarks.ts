@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { logger } from '@/utils/logger';
 
 export type BookmarkType = 'challenge' | 'event' | 'idea' | 'focus_question' | 'campaign' | 'sector' | 'stakeholder' | 'expert' | 'partner' | 'opportunity';
@@ -29,6 +30,7 @@ interface BookmarkItem {
 }
 
 export function useBookmarks() {
+  const { user } = useCurrentUser(); // Use cached user data
   const [challengeBookmarks, setChallengeBookmarks] = useState<BookmarkItem[]>([]);
   const [eventBookmarks, setEventBookmarks] = useState<BookmarkItem[]>([]);
   const [ideaBookmarks, setIdeaBookmarks] = useState<BookmarkItem[]>([]);
@@ -45,9 +47,8 @@ export function useBookmarks() {
   const { toast } = useToast();
 
   const fetchChallengeBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('challenge_bookmarks')
@@ -68,9 +69,8 @@ export function useBookmarks() {
   };
 
   const fetchEventBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('event_bookmarks')
@@ -91,9 +91,8 @@ export function useBookmarks() {
   };
 
   const fetchIdeaBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('idea_bookmarks')
@@ -116,9 +115,8 @@ export function useBookmarks() {
   };
 
   const fetchFocusQuestionBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('focus_question_bookmarks')
@@ -141,9 +139,8 @@ export function useBookmarks() {
   };
 
   const fetchCampaignBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('campaign_bookmarks')
@@ -166,9 +163,8 @@ export function useBookmarks() {
   };
 
   const fetchSectorBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('sector_bookmarks')
@@ -191,9 +187,8 @@ export function useBookmarks() {
   };
 
   const fetchStakeholderBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('stakeholder_bookmarks')
@@ -216,9 +211,8 @@ export function useBookmarks() {
   };
 
   const fetchExpertBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('expert_bookmarks')
@@ -240,9 +234,8 @@ export function useBookmarks() {
   };
 
   const fetchPartnerBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('partner_bookmarks')
@@ -265,9 +258,8 @@ export function useBookmarks() {
   };
 
   const fetchOpportunityBookmarks = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('opportunity_bookmarks')
@@ -329,9 +321,8 @@ export function useBookmarks() {
   };
 
   const fetchCollections = async () => {
+    if (!user) return;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
 
       const { data, error } = await supabase
         .from('bookmark_collections')
@@ -365,9 +356,8 @@ export function useBookmarks() {
   };
 
   const addBookmark = async (type: BookmarkType, itemId: string, notes?: string, priority?: string) => {
+    if (!user) return false;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return false;
 
       let tableName: string;
       let fieldName: string;
@@ -600,7 +590,7 @@ export function useBookmarks() {
       eventChannel.unsubscribe();
       ideaChannel.unsubscribe();
     };
-  }, []);
+  }, [user]); // Add user dependency to re-fetch when user changes
 
   return {
     challengeBookmarks,
