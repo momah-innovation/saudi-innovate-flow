@@ -300,8 +300,16 @@ export class AnalyticsService {
     });
   }
 
+  private trackingCache = new Set<string>();
+
   private async trackMetricsAccess(userId: string, metricsType: string, filters?: any): Promise<void> {
     try {
+      // Prevent duplicate tracking within same minute
+      const trackingKey = `${userId}-${metricsType}-${Math.floor(Date.now() / 60000)}`;
+      if (this.trackingCache.has(trackingKey)) {
+        return; // Already tracked this metric for this user in this minute
+      }
+
       await supabase.from('analytics_events').insert({
         user_id: userId,
         event_type: 'metrics_access',
@@ -312,6 +320,10 @@ export class AnalyticsService {
           timestamp: new Date().toISOString()
         }
       });
+
+      // Add to cache and cleanup old entries
+      this.trackingCache.add(trackingKey);
+      setTimeout(() => this.trackingCache.delete(trackingKey), 60000); // Cleanup after 1 minute
     } catch (error) {
       // Don't throw on tracking errors
       logger.warn('Failed to track metrics access', { component: 'AnalyticsService', userId, type: metricsType });
