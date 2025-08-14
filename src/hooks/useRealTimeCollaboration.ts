@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { debugLog } from '@/utils/debugLogger';
+import { useTimerManager } from '@/utils/timerManager';
 import type { 
   UserPresence, 
   ActivityEvent, 
@@ -26,7 +27,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
   
   // Refs for cleanup
   const channelsRef = useRef<Record<string, any>>({});
-  const presenceTimerRef = useRef<NodeJS.Timeout>();
+  const presenceTimerRef = useRef<(() => void) | undefined>();
 
   // Initialize real-time connections
   useEffect(() => {
@@ -84,7 +85,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
       channelsRef.current = {};
       
       if (presenceTimerRef.current) {
-        clearInterval(presenceTimerRef.current);
+        presenceTimerRef.current();
         presenceTimerRef.current = undefined;
       }
       
@@ -142,10 +143,11 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
 
     // Update presence every 30 seconds - only if we have a presence
     if (presenceTimerRef.current) {
-      clearInterval(presenceTimerRef.current);
+      presenceTimerRef.current();
     }
     
-    presenceTimerRef.current = setInterval(async () => {
+    const { setInterval: scheduleInterval } = useTimerManager();
+    presenceTimerRef.current = scheduleInterval(async () => {
       const currentPresence = channelsRef.current.presence?.presenceState()?.[user.id]?.[0];
       if (currentPresence && channelsRef.current.presence) {
         const updatedPresence = {

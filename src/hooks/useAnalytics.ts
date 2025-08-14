@@ -8,6 +8,7 @@ import { analyticsService, CoreMetrics, SecurityMetrics, RoleBasedMetrics, Analy
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { logger } from '@/utils/logger';
+import { useTimerManager } from '@/utils/timerManager';
 
 export interface UseAnalyticsOptions {
   filters?: AnalyticsFilters;
@@ -130,13 +131,14 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
   useEffect(() => {
     if (!autoRefresh || !user?.id) return;
 
-    const interval = setInterval(() => {
+    const { setInterval: scheduleInterval } = useTimerManager();
+    const clearTimer = scheduleInterval(() => {
       if (!isLoading && !isRefreshing) {
         refresh();
       }
     }, refreshInterval);
 
-    return () => clearInterval(interval);
+    return clearTimer;
   }, [autoRefresh, refreshInterval, user?.id, isLoading, isRefreshing, refresh]);
 
   return {

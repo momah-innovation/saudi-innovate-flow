@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
 import { debugLog } from '@/utils/debugLogger';
+import { useTimerManager } from '@/utils/timerManager';
 
 interface AuthContextType {
   user: User | null;
@@ -104,7 +105,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // This was causing delays in auth initialization
       
       // Trigger profile completion calculation in background (non-blocking)
-      setTimeout(async () => {
+      const { setTimeout: scheduleTimeout } = useTimerManager();
+      scheduleTimeout(async () => {
         try {
           await supabase.functions.invoke('calculate-profile-completion', {
             body: { user_id: userId }
@@ -255,7 +257,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (session?.user && !profileFetched) {
           profileFetched = true;
           // Use a small delay to ensure auth state is fully set
-          setTimeout(() => {
+          const { setTimeout: scheduleTimeout } = useTimerManager();
+          scheduleTimeout(() => {
             if (isSubscribed) {
               fetchUserProfile(session.user.id);
             }
@@ -280,7 +283,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Only fetch profile if not already fetched and user exists
       if (session?.user && !profileFetched) {
         profileFetched = true;
-        setTimeout(() => {
+        const { setTimeout: scheduleTimeout } = useTimerManager();
+        scheduleTimeout(() => {
           if (isSubscribed) {
             fetchUserProfile(session.user.id);
           }

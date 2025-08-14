@@ -26,6 +26,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useDirection } from '@/components/ui/direction-provider';
 import { logger } from '@/utils/logger';
+import { useTimerManager } from '@/utils/timerManager';
 
 interface IdeaFormData {
   title_ar: string;
@@ -120,13 +121,14 @@ export default function IdeaSubmissionWizard() {
     loadPredefinedTags();
     
     // Auto-save functionality
-    const autoSaveInterval = setInterval(() => {
+    const { setInterval: scheduleInterval } = useTimerManager();
+    const clearAutoSave = scheduleInterval(() => {
       if (formData.title_ar.trim() || formData.description_ar.trim()) {
         autoSave();
       }
     }, 30000); // Auto-save every 30 seconds
 
-    return () => clearInterval(autoSaveInterval);
+    return clearAutoSave;
   }, []);
 
   const loadPredefinedTags = async () => {
@@ -282,15 +284,16 @@ export default function IdeaSubmissionWizard() {
     }
   };
 
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const debounceRef = useRef<(() => void) | undefined>();
 
   const handleInputChange = async (field: keyof IdeaFormData, value: string | boolean | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
     // Debounced auto-save on significant content changes
     if (field === 'title_ar' || field === 'description_ar' || field === 'solution_approach' || field === 'implementation_plan') {
-      clearTimeout(debounceRef.current);
-      debounceRef.current = setTimeout(() => {
+      if (debounceRef.current) debounceRef.current();
+      const { setTimeout: scheduleTimeout } = useTimerManager();
+      debounceRef.current = scheduleTimeout(() => {
         if (value && typeof value === 'string' && value.trim()) {
           autoSave();
         }

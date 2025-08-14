@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { debugLog } from '@/utils/debugLogger';
+import { useTimerManager } from '@/utils/timerManager';
 
 // Types for system health
 export interface SystemHealthStatus {
@@ -298,11 +299,12 @@ export const useSystemHealth = (
   useEffect(() => {
     if (!enabled) return;
 
-    const interval = setInterval(() => {
+    const { setInterval: scheduleInterval } = useTimerManager();
+    const clearTimer = scheduleInterval(() => {
       fetchSystemHealth();
     }, refreshInterval);
 
-    return () => clearInterval(interval);
+    return clearTimer;
   }, [enabled, refreshInterval, fetchSystemHealth]);
 
   const formatBytes = (bytes: number): string => {
