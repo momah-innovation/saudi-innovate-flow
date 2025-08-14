@@ -79,18 +79,15 @@ interface Goal {
 }
 
 export default React.memo(function UserDashboard() {
+  // CRITICAL: ALL hooks must be called at the top level and in the same order every time
   const { userProfile } = useAuth();
   const { permissions, getPrimaryRole: getRoleFromHook, canAccess } = useRoleAccess();
   const { t, language } = useUnifiedTranslation();
-  const currentLanguage = language;
   const { isRTL } = useDirection();
   const navigate = useNavigate();
   
-  // Memoize the role function to prevent unnecessary re-renders
-  const getPrimaryRole = useCallback(() => getRoleFromHook(), [getRoleFromHook]);
-  
+  // State hooks - always called in the same order
   const [primaryRole, setPrimaryRole] = useState<string>('innovator');
-  
   const [stats, setStats] = useState<DashboardStats>({
     totalIdeas: 0,
     activeIdeas: 0,
@@ -102,12 +99,17 @@ export default React.memo(function UserDashboard() {
     weeklyGoal: 2,
     monthlyGoal: 10
   });
-  
   const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIdea, setSelectedIdea] = useState<any>(null);
+  
+  // Derived values - safe to calculate after hooks
+  const currentLanguage = language;
+  
+  // Memoized functions - must be after state hooks
+  const getPrimaryRole = useCallback(() => getRoleFromHook(), [getRoleFromHook]);
 
   // Memoize dashboard data loading to prevent unnecessary calls
   const loadDashboardData = useCallback(async () => {
@@ -148,10 +150,11 @@ export default React.memo(function UserDashboard() {
       primaryRole 
     });
     
-    if (userProfile?.id && !loading) {
+    // Only load data if we have a user ID
+    if (userProfile?.id) {
       loadDashboardData();
     }
-  }, [userProfile?.id, loadDashboardData]); // Fixed dependencies
+  }, [userProfile?.id, loadDashboardData]);
 
   const loadUserStats = async () => {
     if (!userProfile?.id) return;
@@ -302,17 +305,18 @@ export default React.memo(function UserDashboard() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  // NEVER return early before all hooks are complete - causes hook order violations
+  // Instead, render loading state in the main return
 
   return (
     <CollaborationProvider>
       <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
+        {loading ? (
+          <div className="flex justify-center items-center p-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          <>
         <DashboardHero
           userProfile={userProfile}
           unifiedData={{
@@ -762,9 +766,14 @@ export default React.memo(function UserDashboard() {
         </Tabs>
         
         {/* Collaboration moved to workspace pages */}
-        </div>
+          </div>
         )}
-      </div>
+        
+        </div>
+        
+        <WorkspaceCollaboration workspaceType="user" />
+        </>
+        )}
       </div>
     </CollaborationProvider>
   );
