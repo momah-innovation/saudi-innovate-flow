@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -44,6 +45,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   isOpen = false,
   onClose
 }) => {
+  const navigate = useNavigate();
   const { notifications, markAsRead } = useCollaboration();
   const { t } = useUnifiedTranslation();
   const [selectedTab, setSelectedTab] = useState('all');
@@ -94,7 +96,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
 
     // Navigate to action URL if available
     if (notification.data.action_url) {
-      window.location.href = notification.data.action_url;
+      navigate(notification.data.action_url);
     }
   };
 

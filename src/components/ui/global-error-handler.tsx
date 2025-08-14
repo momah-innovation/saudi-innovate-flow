@@ -241,7 +241,12 @@ class GlobalErrorHandler extends Component<GlobalErrorHandlerProps, GlobalErrorS
   };
 
   private handleGoHome = () => {
-    window.location.href = '/';
+    // Use navigate if available, otherwise fallback to window.location
+    if (typeof window !== 'undefined' && (window as any).APP_NAVIGATE) {
+      (window as any).APP_NAVIGATE('/');
+    } else {
+      window.location.href = '/';
+    }
   };
 
   private handleReportIssue = () => {

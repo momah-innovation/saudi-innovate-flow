@@ -254,7 +254,13 @@ function ErrorFallbackUI({
             {level === 'page' && (
               <Button 
                 variant="outline" 
-                onClick={() => window.location.href = '/'}
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).APP_NAVIGATE) {
+                    (window as any).APP_NAVIGATE('/');
+                  } else {
+                    window.location.href = '/';
+                  }
+                }}
                 className="w-full"
               >
                 <Home className="w-4 h-4 mr-2" />

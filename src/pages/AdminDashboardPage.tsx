@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { debugLog } from '@/utils/debugLogger';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -36,6 +37,7 @@ import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceColl
 
 export default function AdminDashboard() {
   debugLog.debug('AdminDashboard page loaded - Management tab should be visible');
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [activityDialogOpen, setActivityDialogOpen] = useState(false);
@@ -336,7 +338,7 @@ export default function AdminDashboard() {
                           } else if (card.title === "System Settings") {
                             setHealthDialogOpen(true);
                           } else {
-                            window.location.href = card.href;
+                            navigate(card.href);
                           }
                         }}
                       >
@@ -403,7 +405,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/expert-assignments'}
+                      onClick={() => navigate('/admin/expert-assignments')}
                     >
                       <Users className="w-4 h-4 mr-2" />
                       Manage Expert Assignments
@@ -418,7 +420,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Core Team Management</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/core-team'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/core-team')}>
                   <Plus className="w-4 h-4" />
                   Add Core Team Member
                 </Button>
@@ -443,7 +445,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/core-team'}
+                      onClick={() => navigate('/admin/core-team')}
                     >
                       <Users className="w-4 h-4 mr-2" />
                       Manage Core Team
@@ -456,7 +458,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Stakeholders Management</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/stakeholders'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/stakeholders')}>
                   <Plus className="w-4 h-4" />
                   Add Stakeholder
                 </Button>
@@ -481,7 +483,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/stakeholders'}
+                      onClick={() => navigate('/admin/stakeholders')}
                     >
                       <Users className="w-4 h-4 mr-2" />
                       Manage Stakeholders
@@ -494,7 +496,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Organizational Structure</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/organizational-structure'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/organizational-structure')}>
                   <Plus className="w-4 h-4" />
                   Add Department
                 </Button>
@@ -519,7 +521,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/organizational-structure'}
+                      onClick={() => navigate('/admin/organizational-structure')}
                     >
                       <Users className="w-4 h-4 mr-2" />
                       Manage Organization
@@ -532,7 +534,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Focus Questions Management</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/focus-questions'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/focus-questions')}>
                   <Plus className="w-4 h-4" />
                   Add Focus Question
                 </Button>
@@ -557,7 +559,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/focus-questions'}
+                      onClick={() => navigate('/admin/focus-questions')}
                     >
                       <HelpCircle className="w-4 h-4 mr-2" />
                       Manage Focus Questions
@@ -570,7 +572,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Partners Management</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/partners'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/partners')}>
                   <Plus className="w-4 h-4" />
                   Add Partner
                 </Button>
@@ -595,7 +597,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/partners'}
+                      onClick={() => navigate('/admin/partners')}
                     >
                       <Users className="w-4 h-4 mr-2" />
                       Manage Partners
@@ -608,7 +610,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Sectors Management</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/sectors'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/sectors')}>
                   <Plus className="w-4 h-4" />
                   Add Sector
                 </Button>
@@ -633,7 +635,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/sectors'}
+                      onClick={() => navigate('/admin/sectors')}
                     >
                       <Database className="w-4 h-4 mr-2" />
                       Manage Sectors
@@ -646,7 +648,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Ideas Management</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/ideas'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/ideas')}>
                   <Plus className="w-4 h-4" />
                   Review Ideas
                 </Button>
@@ -671,7 +673,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/ideas'}
+                      onClick={() => navigate('/admin/ideas')}
                     >
                       <TrendingUp className="w-4 h-4 mr-2" />
                       Manage Ideas
@@ -684,7 +686,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Challenges Management</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/challenges'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/challenges')}>
                   <Plus className="w-4 h-4" />
                   Add Challenge
                 </Button>
@@ -709,7 +711,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/challenges'}
+                      onClick={() => navigate('/admin/challenges')}
                     >
                       <Activity className="w-4 h-4 mr-2" />
                       Manage Challenges
@@ -722,7 +724,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Evaluation Management</CardTitle>
-                <Button size="sm" className="gap-2" onClick={() => window.location.href = '/admin/evaluation-management'}>
+                <Button size="sm" className="gap-2" onClick={() => navigate('/admin/evaluation-management')}>
                   <Plus className="w-4 h-4" />
                   Manage Evaluations
                 </Button>
@@ -747,7 +749,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/evaluation-management'}
+                      onClick={() => navigate('/admin/evaluation-management')}
                     >
                       <Target className="w-4 h-4 mr-2" />
                       Manage Evaluations
@@ -784,7 +786,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/storage'}
+                      onClick={() => navigate('/admin/storage')}
                     >
                       <Database className="w-4 h-4 mr-2" />
                       Manage Storage
@@ -820,7 +822,7 @@ export default function AdminDashboard() {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => window.location.href = '/admin/security'}
+                      onClick={() => navigate('/admin/security')}
                     >
                       <Shield className="w-4 h-4 mr-2" />
                       Security Monitor
@@ -858,7 +860,7 @@ export default function AdminDashboard() {
                         variant="outline" 
                         size="sm" 
                         className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                        onClick={() => window.location.href = card.href}
+                        onClick={() => navigate(card.href)}
                       >
                         <Eye className="w-3 h-3 mr-2" />
                         Access Interface

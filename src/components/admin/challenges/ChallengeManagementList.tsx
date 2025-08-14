@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ManagementCard } from "@/components/ui/management-card";
 import { ChallengeWizardV2 } from "./ChallengeWizardV2";
@@ -68,6 +69,7 @@ interface Challenge {
 }
 
 export function ChallengeManagementList() {
+  const navigate = useNavigate();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -153,7 +155,7 @@ export function ChallengeManagementList() {
   const handleView = (challenge: Challenge) => {
     // Navigate to full page view instead of dialog
     // Navigate to challenge detail page
-    window.location.href = `/admin/challenges/${challenge.id}`;
+    navigate(`/admin/challenges/${challenge.id}`);
   };
 
   const getStatusColor = (status: string) => {
