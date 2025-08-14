@@ -88,15 +88,18 @@ export class AIService {
     executionTime: number = 0,
     success: boolean = true,
     errorMessage?: string,
-    metadata: Json = {}
+    metadata: Json = {},
+    userId?: string
   ) {
     try {
-      // Note: This method needs to be called from components that have access to user context
-      // We'll get the user from the calling component instead of here
-      const { data: { user } } = await supabase.auth.getUser();
+      // Use passed user ID if available, otherwise skip tracking
+      if (!userId) {
+        console.warn('AIService.trackUsage: No user ID provided, skipping tracking');
+        return;
+      }
       
       await supabase.from('ai_usage_tracking').insert({
-        user_id: user?.id,
+        user_id: userId,
         feature_name: featureName,
         usage_type: usageType,
         input_tokens: inputTokens,
@@ -440,17 +443,19 @@ export class AIService {
   }
 
   // Check if feature is enabled for user
-  async isFeatureEnabled(featureName: string): Promise<boolean> {
+  async isFeatureEnabled(featureName: string, userId?: string): Promise<boolean> {
     try {
-      // Note: This method needs to be called from components that have access to user context
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return false;
+      // Use passed user ID instead of making auth call
+      if (!userId) {
+        console.warn('AIService.isFeatureEnabled: No user ID provided');
+        return false;
+      }
 
       // Check user preferences
       const { data: preferences } = await supabase
         .from('ai_preferences')
         .select('ai_enabled, *')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .single();
 
       if (!preferences?.ai_enabled) return false;
