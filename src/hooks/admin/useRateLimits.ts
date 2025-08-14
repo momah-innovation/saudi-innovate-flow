@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 interface RateLimit {
   id: string;
@@ -80,7 +81,7 @@ export const useRateLimits = (options: UseRateLimitsOptions = {}) => {
 
         return data || [];
       } catch (error) {
-        console.error('Error fetching rate limits:', error);
+        debugLog.error('Error fetching rate limits', { error });
         throw error;
       }
     },
@@ -165,7 +166,7 @@ export const useRateLimitAnalytics = (timeRange: '1h' | '24h' | '7d' = '24h') =>
           averageRequestsPerViolation: totalViolations > 0 ? Math.round(totalRequests / totalViolations) : 0
         };
       } catch (error) {
-        console.error('Error fetching rate limit analytics:', error);
+        debugLog.error('Error fetching rate limit analytics', { error });
         throw error;
       }
     },

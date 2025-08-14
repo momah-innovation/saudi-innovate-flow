@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Settings, RefreshCw } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { toast } from 'sonner';
+import { debugLog } from '@/utils/debugLogger';
 
 export default function SystemSettings() {
   const { t, refreshTranslations } = useUnifiedTranslation();

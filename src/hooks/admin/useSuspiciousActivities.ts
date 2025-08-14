@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 interface SuspiciousActivity {
   id: string;
@@ -87,7 +88,7 @@ export const useSuspiciousActivities = (options: UseSuspiciousActivitiesOptions 
 
         return data || [];
       } catch (error) {
-        console.error('Error fetching suspicious activities:', error);
+        debugLog.error('Error fetching suspicious activities', { error });
         throw error;
       }
     },
@@ -149,7 +150,7 @@ export const useSuspiciousActivityTrends = (timeRange: '7d' | '30d' = '7d') => {
           new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
         );
       } catch (error) {
-        console.error('Error fetching suspicious activity trends:', error);
+        debugLog.error('Error fetching suspicious activity trends', { error });
         throw error;
       }
     },

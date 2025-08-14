@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 // Simple types to match database returns
 interface RoleApprovalRequest {
@@ -91,7 +92,7 @@ export const useRoleApprovalRequests = (options: UseRoleApprovalRequestsOptions 
 
         return data || [];
       } catch (error) {
-        console.error('Error fetching role approval requests:', error);
+        debugLog.error('Error fetching role approval requests', { error });
         throw error;
       }
     },
@@ -151,7 +152,7 @@ export const useUserRoles = (options: UseUserRolesOptions = {}) => {
 
         return data || [];
       } catch (error) {
-        console.error('Error fetching user roles:', error);
+        debugLog.error('Error fetching user roles', { error });
         throw error;
       }
     },

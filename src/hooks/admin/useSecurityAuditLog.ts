@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 interface SecurityAuditLogEntry {
   id: string;
@@ -88,7 +89,7 @@ export const useSecurityAuditLog = (options: UseSecurityAuditLogOptions = {}) =>
 
         return data || [];
       } catch (error) {
-        console.error('Error fetching security audit log:', error);
+        debugLog.error('Error fetching security audit log', { error });
         throw error;
       }
     },
@@ -153,7 +154,7 @@ export const useSecurityMetrics = (timeRange: '1h' | '24h' | '7d' | '30d' = '24h
           securityScore: Math.max(0, 100 - (criticalEvents * 10 + highRiskEvents * 5 + suspiciousActivities * 3))
         };
       } catch (error) {
-        console.error('Error fetching security metrics:', error);
+        debugLog.error('Error fetching security metrics', { error });
         throw error;
       }
     },
