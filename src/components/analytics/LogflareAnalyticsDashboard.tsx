@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useTimerManager } from '@/utils/timerManager';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useLogflareAnalytics } from '@/hooks/useLogflareAnalytics';
 import { Activity, Database, TrendingUp, AlertCircle, Info, AlertTriangle, Bug } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 
 interface AnalyticsData {
   data: {
@@ -24,6 +25,7 @@ interface AnalyticsData {
 }
 
 export const LogflareAnalyticsDashboard = () => {
+  const { setTimeout: scheduleTimeout } = useTimerManager();
   const { getAnalytics, createSource, logEvent, isLoading } = useLogflareAnalytics();
   const { t } = useUnifiedTranslation();
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
@@ -38,11 +40,11 @@ export const LogflareAnalyticsDashboard = () => {
 
   const loadAnalytics = async () => {
     try {
-      logger.info('Loading analytics data', { component: 'LogflareAnalyticsDashboard', action: 'loadAnalytics', data: { sourceName } });
+      debugLog.debug('Loading analytics data', { component: 'LogflareAnalyticsDashboard', action: 'loadAnalytics', data: { sourceName } });
       const data = await getAnalytics({ source_name: sourceName, query: customQuery });
       setAnalyticsData(data);
     } catch (error) {
-      logger.error('Failed to load analytics', { component: 'LogflareAnalyticsDashboard', action: 'loadAnalytics' }, error as Error);
+      debugLog.error('Failed to load analytics', { component: 'LogflareAnalyticsDashboard', action: 'loadAnalytics' }, error as Error);
     }
   };
 
@@ -54,7 +56,7 @@ export const LogflareAnalyticsDashboard = () => {
       setNewSourceName('');
       setNewSourceDescription('');
     } catch (error) {
-      logger.error('Failed to create source', { component: 'LogflareAnalyticsDashboard', action: 'handleCreateSource' }, error as Error);
+      debugLog.error('Failed to create source', { component: 'LogflareAnalyticsDashboard', action: 'handleCreateSource' }, error as Error);
     }
   };
 
@@ -73,7 +75,7 @@ export const LogflareAnalyticsDashboard = () => {
     });
     
     // Refresh analytics after logging
-    setTimeout(() => loadAnalytics(), 2000);
+    scheduleTimeout(() => loadAnalytics(), 2000);
   };
 
   const getLevelIcon = (level: string) => {

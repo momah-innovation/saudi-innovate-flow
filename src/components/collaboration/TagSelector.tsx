@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,6 +47,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [suggestedTags, setSuggestedTags] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const { setTimeout: scheduleTimeout } = useTimerManager();
 
   // Load existing tags for the entity
   useEffect(() => {
@@ -85,8 +87,8 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
       }
     };
 
-    const debounceTimer = setTimeout(handleSearch, 300);
-    return () => clearTimeout(debounceTimer);
+    const cleanup = scheduleTimeout(handleSearch, 300);
+    return cleanup;
   }, [searchQuery, selectedTags]);
 
   const handleAddTag = async (tag: any) => {

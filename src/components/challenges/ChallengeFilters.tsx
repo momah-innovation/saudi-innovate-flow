@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -62,12 +63,13 @@ export const ChallengeFilters = ({
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [animateFilters, setAnimateFilters] = useState(false);
+  const { setTimeout: scheduleTimeout } = useTimerManager();
 
   useEffect(() => {
     if (activeFiltersCount > 0) {
       setAnimateFilters(true);
-      const timer = setTimeout(() => setAnimateFilters(false), 300);
-      return () => clearTimeout(timer);
+      const cleanup = scheduleTimeout(() => setAnimateFilters(false), 300);
+      return cleanup;
     }
   }, [activeFiltersCount]);
 

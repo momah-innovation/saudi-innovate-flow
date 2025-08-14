@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { debugLog } from './debugLogger';
 
 type TimerCallback = () => void;
 type AsyncTimerCallback = () => Promise<void>;
@@ -36,7 +37,7 @@ class TimerManager {
       try {
         await callback();
       } catch (error) {
-        console.error(`Timer ${id} callback failed:`, error);
+        debugLog.error(`Timer ${id} callback failed`, { timerId: id, error: error.message });
         if (options.maxRetries && options.maxRetries > 0) {
           // Retry with exponential backoff
           const retryDelay = options.retryDelay || delay;
@@ -70,7 +71,7 @@ class TimerManager {
       try {
         await callback();
       } catch (error) {
-        console.error(`Interval ${id} callback failed:`, error);
+        debugLog.error(`Interval ${id} callback failed`, { intervalId: id, error: error.message });
       }
     };
 

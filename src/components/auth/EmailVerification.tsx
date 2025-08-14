@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -9,6 +10,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const EmailVerification = () => {
+  const { setTimeout: scheduleTimeout } = useTimerManager();
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [canResend, setCanResend] = useState(false);
@@ -31,10 +33,10 @@ export const EmailVerification = () => {
   useEffect(() => {
     // Start resend timer
     if (resendTimer > 0) {
-      const timer = setTimeout(() => {
+      const cleanup = scheduleTimeout(() => {
         setResendTimer(resendTimer - 1);
       }, 1000);
-      return () => clearTimeout(timer);
+      return cleanup;
     } else {
       setCanResend(true);
     }
@@ -64,7 +66,7 @@ export const EmailVerification = () => {
       });
 
       // Redirect to dashboard after successful verification
-      setTimeout(() => {
+      scheduleTimeout(() => {
         navigate('/dashboard');
       }, 2000);
     } catch (error: unknown) {
