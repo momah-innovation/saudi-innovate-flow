@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTimerManager } from '@/utils/timerManager';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
@@ -132,12 +133,14 @@ export const DashboardHero = ({
   const roleConfig = getRoleConfig();
   const dashboardStats = roleConfig.stats;
 
+  const { setInterval: scheduleInterval } = useTimerManager();
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    const clearTimer = scheduleInterval(() => {
       setCurrentStat((prev) => (prev + 1) % dashboardStats.length);
     }, 3000);
-    return () => clearInterval(interval);
-  }, [dashboardStats.length]);
+    return clearTimer;
+  }, [dashboardStats.length, scheduleInterval]);
 
   return (
     <div className="relative overflow-hidden">
