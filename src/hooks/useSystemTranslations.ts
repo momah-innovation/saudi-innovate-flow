@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import type { SystemTranslation } from '@/types/translation';
 import { queryKeys } from '@/lib/query/query-keys';
 import { useMemo } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * Enhanced System Translations Hook
@@ -26,13 +27,13 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
           .limit(200); // Strict limit to prevent memory issues
 
         if (error) {
-          console.error('🚨 SYSTEM TRANSLATIONS: Failed to fetch', error);
+          debugLog.error('🚨 SYSTEM TRANSLATIONS: Failed to fetch', { error });
           throw error;
         }
 
         return data || [];
       } catch (error) {
-        console.error('🚨 SYSTEM TRANSLATIONS: Error in fetch', error);
+        debugLog.error('🚨 SYSTEM TRANSLATIONS: Error in fetch', { error });
         return [];
       }
     },

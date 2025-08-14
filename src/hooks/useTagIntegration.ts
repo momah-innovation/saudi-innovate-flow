@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from './useUnifiedTranslation';
+import { debugLog } from '@/utils/debugLogger';
 
 interface Tag {
   id: string;
@@ -28,7 +29,7 @@ export const useTagIntegration = () => {
       if (error) throw error;
       setTags(data || []);
     } catch (error) {
-      console.error('Failed to fetch tags:', error);
+      debugLog.error('Failed to fetch tags', { error });
     } finally {
       setLoading(false);
     }
@@ -49,7 +50,7 @@ export const useTagIntegration = () => {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Failed to search tags:', error);
+      debugLog.error('Failed to search tags', { error });
       return [];
     }
   };
@@ -82,7 +83,7 @@ export const useTagIntegration = () => {
       if (tagError) throw tagError;
       return tagData || [];
     } catch (error) {
-      console.error('Failed to get suggested tags:', error);
+      debugLog.error('Failed to get suggested tags', { error });
       return [];
     }
   };
@@ -104,7 +105,7 @@ export const useTagIntegration = () => {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Failed to add tag:', error);
+      debugLog.error('Failed to add tag', { error });
       return false;
     }
   };
@@ -124,7 +125,7 @@ export const useTagIntegration = () => {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Failed to remove tag:', error);
+      debugLog.error('Failed to remove tag', { error });
       return false;
     }
   };
@@ -146,7 +147,7 @@ export const useTagIntegration = () => {
       if (error) throw error;
       return data?.map((item: any) => item.tags).filter(Boolean) || [];
     } catch (error) {
-      console.error('Failed to get entity tags:', error);
+      debugLog.error('Failed to get entity tags', { error });
       return [];
     }
   };

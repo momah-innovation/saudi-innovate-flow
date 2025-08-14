@@ -5,6 +5,7 @@ import { queryKeys } from '@/lib/query/query-keys';
 import { useMemo, useEffect } from 'react';
 import { logger } from '@/utils/logger';
 import { useSystemTranslations } from './useSystemTranslations';
+import { debugLog } from '@/utils/debugLogger';
 
 interface SystemTranslation {
   id: string;
@@ -44,7 +45,7 @@ export function useUnifiedTranslation() {
       // Only log once per session or when count changes significantly  
       const sessionKey = `translations_logged_${language}_${translationCount}`;
       if (!sessionStorage.getItem(sessionKey)) {
-        console.log('🎯 System translations loaded:', { 
+        debugLog.log('🎯 System translations loaded', { 
           count: translationCount, 
           language,
           sampleKeys: Array.from(translationMap.keys()).slice(0, 3)
@@ -90,14 +91,14 @@ export function useUnifiedTranslation() {
       if (fallback && fallback.trim() !== '') {
         const result = interpolateText(fallback, interpolationOptions);
         if (!isLoading && translationCount > 0) {
-          console.warn('⚠️ MISSING KEY - USING FALLBACK:', { key, fallback: result.slice(0, 50) });
+          debugLog.warn('⚠️ MISSING KEY - USING FALLBACK', { key, fallback: result.slice(0, 50) });
         }
         return result;
       }
 
       // Strategy 4: Return key as last resort
       if (!isLoading && translationCount > 0) {
-        console.error('❌ MISSING TRANSLATION KEY:', { key, language, availableCount: translationCount });
+        debugLog.error('❌ MISSING TRANSLATION KEY', { key, language, availableCount: translationCount });
       }
       return key;
     } catch (error) {

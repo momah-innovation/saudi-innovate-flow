@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useDashboardStats } from './useDashboardStats';
 import { useAdminDashboardMetrics } from './useAdminDashboardMetrics';
 import { supabase } from '@/integrations/supabase/client';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface UnifiedDashboardData {
   // Core user stats
@@ -188,7 +189,7 @@ export const useUnifiedDashboardData = (
 
       setUnifiedData(newData);
       
-      console.log('✅ Unified dashboard data updated:', {
+      debugLog.log('✅ Unified dashboard data updated', {
         userRole,
         coreStats: {
           totalIdeas: newData.totalIdeas,
@@ -201,7 +202,7 @@ export const useUnifiedDashboardData = (
       });
 
     } catch (error) {
-      console.error('❌ Error updating unified dashboard data:', error);
+      debugLog.error('❌ Error updating unified dashboard data', { error });
       setUnifiedData(prev => ({
         ...prev,
         isError: true,
