@@ -22,12 +22,12 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
           return [];
         }
         
-        // Only fetch first 50 most essential translations to prevent crash
+        // Fetch essential translations first, then load more in background
         const { data, error } = await supabase
           .from('system_translations')
           .select('id, translation_key, text_en, text_ar, category, created_at, updated_at')
           .order('translation_key')
-          .limit(50); // Very strict limit to prevent memory issues
+          .limit(200); // Increase to cover more essential UI elements
 
         if (error) {
           debugLog.warn('🚨 SYSTEM TRANSLATIONS: Database error, using fallback', { error: error.message });

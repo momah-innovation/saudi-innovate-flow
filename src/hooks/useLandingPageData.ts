@@ -39,6 +39,9 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
     let isCancelled = false;
     
     const fetchData = async () => {
+      // Add small delay to allow translation system to initialize
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       // Only fetch data if not already loaded (to prevent unnecessary re-fetches)
       if (statistics.length > 0 && faqs.length > 0 && content.length > 0 && !loading) {
         return;

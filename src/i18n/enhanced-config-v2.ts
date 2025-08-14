@@ -69,7 +69,7 @@ const EnhancedDatabaseBackend = {
       let allTranslations: any[] = [];
       let hasMore = true;
       let start = 0;
-      const batchSize = 500; // Reduce batch size for faster loading
+      const batchSize = 300; // Reduce batch size for better performance
       
       while (hasMore) {
         const { data, error } = await supabase
