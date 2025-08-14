@@ -17,21 +17,39 @@ import { Loader2 } from 'lucide-react';
 
 
 const ProfileSetup = () => {
+  // CRITICAL: ALL hooks must be called at the top level and in the same order every time
   const { user, userProfile, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { experienceLevels } = useSystemLists();
+  
+  // State hooks - always called in the same order
   const [minExperienceYears, setMinExperienceYears] = useState(0);
   const [maxExperienceYears, setMaxExperienceYears] = useState(50);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // System settings state
   const [systemSettings, setSystemSettings] = useState({
     profileBioRows: 3,
     profileInnovationBackgroundRows: 2,
     userExperienceYearsMin: 0,
     userExperienceYearsMax: 50
+  });
+  const [profileData, setProfileData] = useState({
+    name: '',
+    name_ar: '',
+    department: '',
+    position: '',
+    phone: '',
+    bio: '',
+    preferred_language: 'en',
+    is_innovator: false,
+    is_expert: false,
+    innovation_background: '',
+    areas_of_interest: [] as string[],
+    experience_level: '',
+    expertise_areas: [] as string[],
+    certifications: [] as string[],
+    experience_years: '',
   });
   
   // Load system settings
@@ -81,38 +99,9 @@ const ProfileSetup = () => {
     
     loadSystemSettings();
   }, []);
-  const [profileData, setProfileData] = useState({
-    name: '',
-    name_ar: '',
-    department: '',
-    position: '',
-    phone: '',
-    bio: '',
-    preferred_language: 'en',
-    is_innovator: false,
-    is_expert: false,
-    innovation_background: '',
-    areas_of_interest: [] as string[],
-    experience_level: '',
-    expertise_areas: [] as string[],
-    certifications: [] as string[],
-    experience_years: '',
-  });
 
-  // Redirect if not authenticated or profile is complete
-  if (!user) {
-    return <Navigate to="/auth" replace />;
-  }
-
-  // Redirect to dashboard if profile is already complete (80% or more)
-  if (userProfile && userProfile.profile_completion_percentage >= 80) {
-    logger.info('ProfileSetup: Profile complete, redirecting to dashboard', { 
-      component: 'ProfileSetup', 
-      action: 'redirect',
-      data: { completion: userProfile.profile_completion_percentage }
-    });
-    return <Navigate to="/dashboard" replace />;
-  }
+  // NEVER return early before all hooks are complete - causes hook order violations
+  // Handle redirects with conditional rendering in the main return
 
   logger.info('ProfileSetup component loaded', { 
     component: 'ProfileSetup', 
@@ -221,6 +210,21 @@ const ProfileSetup = () => {
   const breadcrumbs = [
     { label: "إعداد الملف الشخصي", href: "/profile/setup" }
   ];
+
+  // Handle redirects with conditional rendering instead of early returns
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  // Redirect to dashboard if profile is already complete (80% or more)
+  if (userProfile && userProfile.profile_completion_percentage >= 80) {
+    logger.info('ProfileSetup: Profile complete, redirecting to dashboard', { 
+      component: 'ProfileSetup', 
+      action: 'redirect',
+      data: { completion: userProfile.profile_completion_percentage }
+    });
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
