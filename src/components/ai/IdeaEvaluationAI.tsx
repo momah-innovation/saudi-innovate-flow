@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -40,6 +41,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
   onEvaluationComplete,
 }) => {
   const [evaluation, setEvaluation] = useState<AIEvaluation | null>(null);
+  const { setTimeout: scheduleTimeout } = useTimerManager();
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState('');
   const { isFeatureEnabled, getFeatureConfig } = useAIFeatures();
@@ -59,7 +61,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
     setLoading(true);
     try {
       // Simulate AI evaluation - in real implementation, this would call an Edge Function
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 3000));
       
       const mockEvaluation: AIEvaluation = {
         overall_score: 78,

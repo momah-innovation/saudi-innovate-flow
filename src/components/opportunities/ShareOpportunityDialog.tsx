@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,6 +48,7 @@ export const ShareOpportunityDialog = ({
   const { isRTL } = useDirection();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const { setTimeout: scheduleTimeout } = useTimerManager();
 
   const opportunityUrl = `${window.location.origin}/opportunities/${opportunityId}`;
 
@@ -147,7 +149,7 @@ export const ShareOpportunityDialog = ({
     try {
       await navigator.clipboard.writeText(opportunityUrl);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      scheduleTimeout(() => setCopied(false), 2000);
       
       await trackShare('copy_link');
       

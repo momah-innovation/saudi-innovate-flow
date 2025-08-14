@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +31,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   context = 'dashboard',
   limit = 5,
 }) => {
+  const { setTimeout: scheduleTimeout } = useTimerManager();
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const { isFeatureEnabled } = useAIFeatures();
@@ -49,7 +51,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
       
       // In real implementation, this would call an AI service
       // For now, we'll generate mock recommendations based on user context
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 1500));
       
       const mockRecommendations: Recommendation[] = [
         {
