@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { debugLog } from '@/utils/debugLogger';
 import { AppShell } from '@/components/layout/AppShell';
 import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallengeCard';
 import { EnhancedChallengesHero } from '@/components/challenges/EnhancedChallengesHero';
@@ -32,7 +33,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 
 export default function Challenges() {
-  console.log('🚀 Challenges component rendering...');
+  debugLog.debug('Challenges component rendering');
   
   const { t, isRTL } = useUnifiedTranslation();
   const { toast } = useToast();
@@ -40,16 +41,17 @@ export default function Challenges() {
   const { ui } = useChallengeDefaults();
   const navigate = useNavigate();
   
-  console.log('🔍 About to call useChallengesData...');
+  debugLog.debug('About to call useChallengesData');
   // Use enhanced challenges data hook
   const { challenges, loading, stats, refetch } = useChallengesData();
   
-  console.log('🚀 Challenges Page Debug:');
-  console.log('🚀 Loading:', loading);
-  console.log('🚀 Challenges length:', challenges?.length || 0);
-  console.log('🚀 Challenges data:', challenges);
-  console.log('🚀 Stats:', stats);
-  console.log('✅ useChallengesData called, got:', { challengesCount: challenges.length, loading, stats });
+  debugLog.debug('Challenges Page Debug', {
+    loading,
+    challengesLength: challenges?.length || 0,
+    challengesData: challenges,
+    stats
+  });
+  debugLog.debug('useChallengesData called', { challengesCount: challenges.length, loading, stats });
   
   // State management
   const [selectedChallenge, setSelectedChallenge] = useState<any>(null);
@@ -220,10 +222,10 @@ export default function Challenges() {
   };
 
   const handleViewDetailsById = (challengeId: string) => {
-    console.log('🔍 handleViewDetailsById called with challengeId:', challengeId);
+    debugLog.debug('handleViewDetailsById called', { challengeId });
     
     if (!challengeId) {
-      console.error('❌ Challenge ID is missing:', challengeId);
+      debugLog.error('Challenge ID is missing', { challengeId });
       toast({
         title: 'خطأ',
         description: 'معرف التحدي غير موجود',
@@ -232,15 +234,15 @@ export default function Challenges() {
       return;
     }
     
-    console.log('✅ Navigating to challenge details:', challengeId);
+    debugLog.debug('Navigating to challenge details', { challengeId });
     navigate(`/challenges/${challengeId}`);
   };
 
   const handleViewDetails = (challenge: any) => {
-    console.log('🔍 handleViewDetails called with challenge:', challenge);
+    debugLog.debug('handleViewDetails called', { challenge });
     
     if (!challenge?.id) {
-      console.error('❌ Challenge object or ID is missing:', challenge);
+      debugLog.error('Challenge object or ID is missing', { challenge });
       toast({
         title: 'خطأ',
         description: 'معرف التحدي غير موجود',
@@ -312,7 +314,7 @@ export default function Challenges() {
         setLikedChallenges(prev => new Set([...prev, challenge.id]));
       }
     } catch (error) {
-      console.error('Like error:', error);
+      debugLog.error('Like error', { error });
     }
   };
 
@@ -338,13 +340,13 @@ export default function Challenges() {
     }
   };
 
-  // Debug console logs
-  console.log('🎯 Challenges Page Debug:', {
+  // Debug logging
+  debugLog.debug('Challenges Page Debug', {
     challengesCount: challenges.length,
     filteredCount: sortedChallenges.length,
     loading,
     stats,
-    user: user?.id
+    userId: user?.id
   });
 
   // Show empty state only if loading is complete and no challenges found

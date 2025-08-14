@@ -102,9 +102,9 @@ interface OrganizationalHierarchy {
 }
 
 const ChallengeDetails = () => {
-  console.log('🚀 ChallengeDetails component loading...');
+  debugLog.debug('ChallengeDetails component loading');
   const { challengeId } = useParams();
-  console.log('📋 Challenge ID from params:', challengeId);
+  debugLog.debug('Challenge ID from params', { challengeId });
   const navigate = useNavigate();
   const { toast } = useToast();
   const { hasRole } = useAuth();

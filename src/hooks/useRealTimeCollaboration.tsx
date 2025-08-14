@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { supabase } from '@/integrations/supabase/client';
 import type { 
   UserPresence, 
@@ -97,7 +98,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
         setCurrentUserPresence(mockUsers[0]);
 
       } catch (error) {
-        console.error('Failed to initialize collaboration:', error);
+        debugLog.error('Failed to initialize collaboration:', { error: error.message });
         setIsConnected(false);
       }
     };
@@ -133,12 +134,12 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
 
   const joinDocument = useCallback((documentId: string) => {
     // Implementation for joining live document collaboration
-    console.log('Joining document:', documentId);
+    debugLog.debug('Joining document', { documentId });
   }, []);
 
   const leaveDocument = useCallback((documentId: string) => {
     // Implementation for leaving live document collaboration
-    console.log('Leaving document:', documentId);
+    debugLog.debug('Leaving document', { documentId });
   }, []);
 
   const markAsRead = useCallback((notificationId: string) => {

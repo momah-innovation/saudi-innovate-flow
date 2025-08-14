@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageLayout } from '@/components/layout/PageLayout';
-// Removed PageHeader import - AppShell provides unified header
 import { AdminDashboardHero } from '@/components/admin/AdminDashboardHero';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -35,7 +35,7 @@ import { CollaborationProvider } from '@/contexts/CollaborationContext';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 
 export default function AdminDashboard() {
-  console.log('🚀 AdminDashboard page loaded - Management tab should be visible');
+  debugLog.debug('AdminDashboard page loaded - Management tab should be visible');
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [activityDialogOpen, setActivityDialogOpen] = useState(false);

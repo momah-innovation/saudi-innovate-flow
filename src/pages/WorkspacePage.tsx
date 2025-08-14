@@ -1,4 +1,5 @@
 import React from 'react';
+import { debugLog } from '@/utils/debugLogger';
 import { useParams } from 'react-router-dom';
 import { CollaborationProvider } from '@/contexts/CollaborationContext';
 import UserWorkspace from '@/pages/workspace/UserWorkspace';
@@ -14,7 +15,7 @@ export default function WorkspacePage() {
   const { type } = useParams<{ type: string }>();
 
   // Add debugging
-  console.log('🏢 WorkspacePage - Current route type:', type);
+  debugLog.debug('WorkspacePage - Current route type', { type });
 
   const renderWorkspace = () => {
     // Default to user workspace if no type specified
