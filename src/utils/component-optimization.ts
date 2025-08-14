@@ -4,7 +4,7 @@
  */
 
 import React, { memo, forwardRef, ComponentType, PropsWithChildren } from 'react';
-import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { logger } from './logger';
 
 /**
@@ -100,7 +100,6 @@ export function withOptimizations<P extends object>(
   if (errorBoundary) {
     const FinalComponent = (props: P) => (
       React.createElement(ErrorBoundary, { 
-        level: "component",
         children: React.createElement(OptimizedComponent, props)
       })
     );
