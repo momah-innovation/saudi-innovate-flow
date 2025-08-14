@@ -421,7 +421,7 @@ export const useRealtimePresence = (
 /**
  * React hook for real-time collaboration
  */
-export const useRealtimeCollaboration = (
+export const useRealTimeCollaboration = (
   roomId: string,
   onCollaborationEvent?: (event: CollaborationEvent) => void
 ) => {
