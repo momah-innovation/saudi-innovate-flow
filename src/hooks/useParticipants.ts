@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface EventParticipant {
   id: string;
@@ -28,7 +29,7 @@ export function useParticipants(eventId: string | null) {
 
   useEffect(() => {
     if (eventId) {
-      console.log('🚀 Setting up participants real-time subscription for event:', eventId);
+      debugLog.log('🚀 Setting up participants real-time subscription for event', { eventId });
       fetchParticipants();
       
       // Set up direct real-time subscription for participants
@@ -43,7 +44,7 @@ export function useParticipants(eventId: string | null) {
             filter: `event_id=eq.${eventId}`
           },
           (payload) => {
-            console.log('🔥 REAL-TIME: Participants list change detected:', {
+            debugLog.log('🔥 REAL-TIME: Participants list change detected', {
               eventType: payload.eventType,
               eventId: eventId,
               userId: (payload.new as any)?.user_id || (payload.old as any)?.user_id,
@@ -54,25 +55,25 @@ export function useParticipants(eventId: string | null) {
           }
         )
         .subscribe((status, err) => {
-          console.log('📡 Participants real-time subscription status:', status, err);
+          debugLog.log('📡 Participants real-time subscription status', { status, error: err });
           if (status === 'SUBSCRIBED') {
-            console.log('✅ Successfully subscribed to participants updates for event:', eventId);
+            debugLog.log('✅ Successfully subscribed to participants updates for event', { eventId });
           } else if (status === 'CHANNEL_ERROR') {
-            console.error('❌ Participants subscription error for event:', eventId, err);
-            console.log('🔄 Falling back to manual refresh for participants');
+            debugLog.error('❌ Participants subscription error for event', { eventId, error: err });
+            debugLog.log('🔄 Falling back to manual refresh for participants');
           } else if (status === 'TIMED_OUT') {
-            console.warn('⏰ Participants subscription timed out for event:', eventId);
+            debugLog.warn('⏰ Participants subscription timed out for event', { eventId });
           } else if (status === 'CLOSED') {
-            console.warn('🔒 Participants subscription closed for event:', eventId);
+            debugLog.warn('🔒 Participants subscription closed for event', { eventId });
           }
         });
 
       return () => {
-        console.log('🔌 Unsubscribing from participants real-time for event:', eventId);
+        debugLog.log('🔌 Unsubscribing from participants real-time for event', { eventId });
         supabase.removeChannel(participantsChannel);
       };
     } else {
-      console.log('⏸️ No participants real-time setup - missing eventId:', eventId);
+      debugLog.log('⏸️ No participants real-time setup - missing eventId', { eventId });
     }
   }, [eventId]);
 

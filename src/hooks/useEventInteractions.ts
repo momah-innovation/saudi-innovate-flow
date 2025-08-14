@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface EventInteractions {
   isBookmarked: boolean;
@@ -23,7 +24,7 @@ export function useEventInteractions(eventId: string | null) {
 
   useEffect(() => {
     if (eventId && user) {
-      console.log('🚀 Setting up real-time subscriptions for event:', eventId);
+      debugLog.log('🚀 Setting up real-time subscriptions for event', { eventId });
       loadEventInteractions();
       loadEventStats();
       
@@ -39,7 +40,7 @@ export function useEventInteractions(eventId: string | null) {
             filter: `event_id=eq.${eventId}`
           },
           async (payload) => {
-            console.log('🔥 REAL-TIME: Participant change detected in useEventInteractions:', {
+            debugLog.log('🔥 REAL-TIME: Participant change detected in useEventInteractions', {
               eventType: payload.eventType,
               eventId: eventId,
               payload: payload
@@ -61,7 +62,7 @@ export function useEventInteractions(eventId: string | null) {
             filter: `event_id=eq.${eventId}`
           },
           (payload) => {
-            console.log('Real-time likes change:', payload);
+            debugLog.log('Real-time likes change', { payload });
             loadEventInteractions();
             loadEventStats();
           }
@@ -75,31 +76,31 @@ export function useEventInteractions(eventId: string | null) {
             filter: `event_id=eq.${eventId}`
           },
           (payload) => {
-            console.log('Real-time bookmarks change:', payload);
+            debugLog.log('Real-time bookmarks change', { payload });
             loadEventInteractions();
           }
         )
         .subscribe((status, err) => {
-          console.log('📡 Real-time subscription status for event interactions:', status, err);
+          debugLog.log('📡 Real-time subscription status for event interactions', { status, error: err });
           if (status === 'SUBSCRIBED') {
-            console.log('✅ Successfully subscribed to real-time updates for event:', eventId);
+            debugLog.log('✅ Successfully subscribed to real-time updates for event', { eventId });
           } else if (status === 'CHANNEL_ERROR') {
-            console.error('❌ Real-time subscription error for event:', eventId, err);
+            debugLog.error('❌ Real-time subscription error for event', { eventId, error: err });
             // Try to fallback to polling or show user notification
-            console.log('🔄 Falling back to manual refresh for real-time updates');
+            debugLog.log('🔄 Falling back to manual refresh for real-time updates');
           } else if (status === 'TIMED_OUT') {
-            console.warn('⏰ Real-time subscription timed out for event:', eventId);
+            debugLog.warn('⏰ Real-time subscription timed out for event', { eventId });
           } else if (status === 'CLOSED') {
-            console.warn('🔒 Real-time subscription closed for event:', eventId);
+            debugLog.warn('🔒 Real-time subscription closed for event', { eventId });
           }
         });
 
       return () => {
-        console.log('🔌 Unsubscribing from real-time for event:', eventId);
+        debugLog.log('🔌 Unsubscribing from real-time for event', { eventId });
         supabase.removeChannel(eventChannel);
       };
     } else {
-      console.log('⏸️ No real-time setup - missing eventId or user:', { eventId, userId: user?.id });
+      debugLog.log('⏸️ No real-time setup - missing eventId or user', { eventId, userId: user?.id });
     }
   }, [eventId, user]);
 

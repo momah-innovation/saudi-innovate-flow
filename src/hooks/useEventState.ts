@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 interface EventState {
   isRegistered: boolean;
@@ -26,7 +27,7 @@ export const useEventState = (eventId: string | null) => {
   const refreshEventState = useCallback(async () => {
     if (!eventId || !user) return;
     
-    console.log('🔄 Refreshing event state for:', eventId);
+    debugLog.log('🔄 Refreshing event state for', { eventId });
     setState(prev => ({ ...prev, loading: true }));
 
     try {
@@ -60,7 +61,7 @@ export const useEventState = (eventId: string | null) => {
         });
         interactions = interactionsData;
       } catch (interactionError) {
-        console.warn('⚠️ Could not load event interactions:', interactionError);
+        debugLog.warn('⚠️ Could not load event interactions', { interactionError });
       }
 
       setState({
@@ -71,14 +72,14 @@ export const useEventState = (eventId: string | null) => {
         interactions
       });
 
-      console.log('✅ Event state refreshed:', {
+      debugLog.log('✅ Event state refreshed', {
         isRegistered: !!userParticipation,
         participantCount: participantCount || 0,
         eventId
       });
 
     } catch (error) {
-      console.error('❌ Failed to refresh event state:', error);
+      debugLog.error('❌ Failed to refresh event state', { error });
       setState(prev => ({ ...prev, loading: false }));
     }
   }, [eventId, user]);
@@ -87,7 +88,7 @@ export const useEventState = (eventId: string | null) => {
   useEffect(() => {
     if (!eventId) return;
 
-    console.log('🚀 Setting up unified real-time for event:', eventId);
+    debugLog.log('🚀 Setting up unified real-time for event', { eventId });
     
     // Initial load
     refreshEventState();
@@ -104,7 +105,7 @@ export const useEventState = (eventId: string | null) => {
           filter: `event_id=eq.${eventId}`
         },
         async (payload) => {
-          console.log('🔥 UNIFIED REAL-TIME: Event state change detected:', {
+          debugLog.log('🔥 UNIFIED REAL-TIME: Event state change detected', {
             eventType: payload.eventType,
             eventId,
             userId: (payload.new as any)?.user_id || (payload.old as any)?.user_id
@@ -115,16 +116,16 @@ export const useEventState = (eventId: string | null) => {
         }
       )
       .subscribe((status) => {
-        console.log('📡 Unified real-time subscription status:', status);
+        debugLog.log('📡 Unified real-time subscription status', { status });
         if (status === 'SUBSCRIBED') {
-          console.log('✅ Unified real-time connected for event:', eventId);
+          debugLog.log('✅ Unified real-time connected for event', { eventId });
         } else if (status === 'CHANNEL_ERROR') {
-          console.error('❌ Unified real-time connection failed for event:', eventId);
+          debugLog.error('❌ Unified real-time connection failed for event', { eventId });
         }
       });
 
     return () => {
-      console.log('🔌 Cleaning up unified real-time for event:', eventId);
+      debugLog.log('🔌 Cleaning up unified real-time for event', { eventId });
       supabase.removeChannel(channel);
     };
   }, [eventId, refreshEventState]);
@@ -133,7 +134,7 @@ export const useEventState = (eventId: string | null) => {
   const registerForEvent = useCallback(async () => {
     if (!user || !eventId) return;
 
-    console.log('🔄 Registering for event via unified state:', eventId);
+    debugLog.log('🔄 Registering for event via unified state', { eventId });
     setState(prev => ({ ...prev, loading: true }));
 
     try {
@@ -155,7 +156,7 @@ export const useEventState = (eventId: string | null) => {
 
       // Real-time will trigger refresh automatically
     } catch (error) {
-      console.error('❌ Registration failed:', error);
+      debugLog.error('❌ Registration failed', { error });
       toast({
         title: "Error",
         description: "Failed to register for event",
@@ -168,7 +169,7 @@ export const useEventState = (eventId: string | null) => {
   const cancelRegistration = useCallback(async () => {
     if (!user || !eventId || !state.userParticipation) return;
 
-    console.log('🔄 Cancelling registration via unified state:', eventId);
+    debugLog.log('🔄 Cancelling registration via unified state', { eventId });
     setState(prev => ({ ...prev, loading: true }));
 
     try {
@@ -186,7 +187,7 @@ export const useEventState = (eventId: string | null) => {
 
       // Real-time will trigger refresh automatically
     } catch (error) {
-      console.error('❌ Cancellation failed:', error);
+      debugLog.error('❌ Cancellation failed', { error });
       toast({
         title: "Error",
         description: "Failed to cancel registration",
