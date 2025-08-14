@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, X, FileText, Users, Calendar, Target, Building, Lightbulb } from 'lucide-react';
+import { useTimerManager } from '@/utils/timerManager';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -43,7 +44,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const searchTimeout = useRef<NodeJS.Timeout>();
+  const searchTimeout = useRef<number>();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -69,9 +70,11 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
       return;
     }
 
-    searchTimeout.current = setTimeout(() => {
+    const { setTimeout: scheduleTimeout } = useTimerManager();
+    const clearTimer = scheduleTimeout(() => {
       performSearch(query.trim());
     }, 300);
+    searchTimeout.current = Date.now(); // Simple reference for cleanup
 
     return () => {
       if (searchTimeout.current) {

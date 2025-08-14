@@ -1,5 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useState, useId, useCallback } from 'react'
 import { useSettingsManager } from '@/hooks/useSettingsManager';
+import { useTimerManager } from '@/utils/timerManager';
 import { FileUploadConfig } from '@/hooks/useFileUploader'
 import { UploadedFile, useFileUploader } from '@/hooks/useFileUploader'
 import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -139,8 +140,9 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
     setUploadProgress(0)
 
     try {
-      // Simulate progress updates
-      const progressInterval = setInterval(() => {
+      // Simulate progress updates with managed timer
+      const { setInterval: scheduleInterval } = useTimerManager();
+      const clearProgressTimer = scheduleInterval(() => {
         setUploadProgress(prev => {
           const next = prev + Math.random() * 20
           return next > 90 ? 90 : next
@@ -149,7 +151,7 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
 
       const result = await uploadFilesHook(files, tempConfig)
       
-      clearInterval(progressInterval)
+      clearProgressTimer();
       setUploadProgress(100)
 
       if (result.success && result.files) {

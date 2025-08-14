@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { cn } from '@/lib/utils';
+import { useTimerManager } from '@/utils/timerManager';
 
 // Advanced animation hook
 export function useSpringAnimation(trigger: boolean, config = {}) {
@@ -9,8 +10,9 @@ export function useSpringAnimation(trigger: boolean, config = {}) {
   React.useEffect(() => {
     if (trigger) {
       setIsAnimating(true);
-      const timer = setTimeout(() => setIsAnimating(false), 800);
-      return () => clearTimeout(timer);
+      const { setTimeout: scheduleTimeout } = useTimerManager();
+      const clearTimer = scheduleTimeout(() => setIsAnimating(false), 800);
+      return clearTimer;
     }
   }, [trigger]);
   
@@ -161,12 +163,13 @@ export function MorphingShape({ shape, size = 40, color = 'hsl(var(--primary))',
   React.useEffect(() => {
     const { getSettingValue } = useSettingsManager();
     const shapesData = getSettingValue('animation_shapes', ['circle', 'square', 'triangle']) as string[];
-    const interval = setInterval(() => {
+    const { setInterval: scheduleInterval } = useTimerManager();
+    const clearTimer = scheduleInterval(() => {
       const randomShape = shapesData[Math.floor(Math.random() * shapesData.length)] as 'circle' | 'square' | 'triangle';
       setCurrentShape(randomShape);
     }, 2000);
     
-    return () => clearInterval(interval);
+    return clearTimer;
   }, []);
   
   const getShapeClass = () => {
@@ -205,17 +208,19 @@ export function TextReveal({ text, delay = 50, className }: TextRevealProps) {
   const [visibleChars, setVisibleChars] = React.useState(0);
   
   React.useEffect(() => {
-    const timer = setInterval(() => {
+    const { setInterval: scheduleInterval } = useTimerManager();
+    let clearTimer: (() => void) | undefined;
+    clearTimer = scheduleInterval(() => {
       setVisibleChars(prev => {
         if (prev >= text.length) {
-          clearInterval(timer);
+          clearTimer?.();
           return prev;
         }
         return prev + 1;
       });
     }, delay);
     
-    return () => clearInterval(timer);
+    return clearTimer;
   }, [text, delay]);
   
   return (
@@ -257,7 +262,8 @@ export function Ripple({ children, color = 'hsl(var(--primary) / 0.3)', duration
     
     setRipples(prev => [...prev, newRipple]);
     
-    setTimeout(() => {
+    const { setTimeout: scheduleTimeout } = useTimerManager();
+    scheduleTimeout(() => {
       setRipples(prev => prev.filter(ripple => ripple.id !== newRipple.id));
     }, duration);
   }, [duration]);

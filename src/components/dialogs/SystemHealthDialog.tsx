@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DetailModal } from '@/components/ui/detail-modal';
+import { useTimerManager } from '@/utils/timerManager';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -36,12 +37,14 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
     }
   }, [isOpen]);
 
+  const { setTimeout: scheduleTimeout } = useTimerManager();
+
   const fetchSystemHealth = async () => {
     setLoading(true);
     try {
       // In a real system, this would call a health check endpoint
-      // For now, we'll simulate the data
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // For now, we'll simulate the data with managed timer
+      await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 1000));
       
       const mockHealth: SystemHealth = {
         overall_status: 'healthy',

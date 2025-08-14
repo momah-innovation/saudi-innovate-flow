@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTimerManager } from '@/utils/timerManager';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -90,15 +91,17 @@ export const CollaborativeChallengeCard = ({
     )
     .slice(0, 3);
 
+  const { setInterval: scheduleInterval } = useTimerManager();
+
   useEffect(() => {
     // Simulate real-time participant updates
-    const interval = setInterval(() => {
+    const clearTimer = scheduleInterval(() => {
       const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
       setLiveParticipants(prev => Math.max(0, prev + variation));
     }, 30000); // Update every 30 seconds
 
-    return () => clearInterval(interval);
-  }, []);
+    return clearTimer;
+  }, [scheduleInterval]);
 
   // Get mappings from config
   const statusMapping = getStatusMapping(challenge.status);

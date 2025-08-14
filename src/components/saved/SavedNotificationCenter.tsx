@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTimerManager } from '@/utils/timerManager';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -45,12 +46,13 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
 
   useEffect(() => {
     loadNotifications();
-    // Set up real-time updates
-    const interval = setInterval(() => {
+    // Set up real-time updates with managed timer
+    const { setInterval: scheduleInterval } = useTimerManager();
+    const clearTimer = scheduleInterval(() => {
       checkForNewNotifications();
     }, 30000); // Check every 30 seconds
 
-    return () => clearInterval(interval);
+    return clearTimer;
   }, []);
 
   const loadNotifications = async () => {

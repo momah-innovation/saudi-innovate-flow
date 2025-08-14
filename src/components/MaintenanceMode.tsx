@@ -4,6 +4,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle, Wrench, Clock } from 'lucide-react';
+import { useTimerManager } from '@/utils/timerManager';
 
 interface MaintenanceModeProps {
   enabled?: boolean;
@@ -87,6 +88,7 @@ export function MaintenanceMode({
 
 // Hook to check maintenance status
 export function useMaintenanceMode() {
+  const { setInterval: scheduleInterval } = useTimerManager();
   const [isMaintenanceMode, setIsMaintenanceMode] = React.useState(false);
   
   React.useEffect(() => {
@@ -100,11 +102,11 @@ export function useMaintenanceMode() {
     
     checkMaintenanceMode();
     
-    // Check periodically for changes
-    const interval = setInterval(checkMaintenanceMode, 30000); // Every 30 seconds
+    // Check periodically for changes using managed timer
+    const clearTimer = scheduleInterval(checkMaintenanceMode, 30000); // Every 30 seconds
     
-    return () => clearInterval(interval);
-  }, []);
+    return clearTimer;
+  }, [scheduleInterval]);
   
   return {
     isMaintenanceMode,

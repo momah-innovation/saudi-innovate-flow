@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { useTimerManager } from '@/utils/timerManager';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -228,11 +229,14 @@ export const ChallengeTemplatesDialog = ({
 
   const loadTemplates = async () => {
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    // Simulate API call with managed timer
+    const { setTimeout: scheduleTimeout } = useTimerManager();
+    const clearTimer = scheduleTimeout(() => {
       setTemplates(mockTemplates);
       setLoading(false);
     }, 1000);
+    
+    return clearTimer;
   };
 
   const filteredTemplates = templates.filter(template => {
