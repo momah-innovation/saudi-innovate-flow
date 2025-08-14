@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface AIServiceConfig {
   model: string;
@@ -94,7 +95,7 @@ export class AIService {
     try {
       // Use passed user ID if available, otherwise skip tracking
       if (!userId) {
-        console.warn('AIService.trackUsage: No user ID provided, skipping tracking');
+        debugLog.warn('AIService.trackUsage: No user ID provided, skipping tracking');
         return;
       }
       
@@ -447,7 +448,7 @@ export class AIService {
     try {
       // Use passed user ID instead of making auth call
       if (!userId) {
-        console.warn('AIService.isFeatureEnabled: No user ID provided');
+        debugLog.warn('AIService.isFeatureEnabled: No user ID provided');
         return false;
       }
 
