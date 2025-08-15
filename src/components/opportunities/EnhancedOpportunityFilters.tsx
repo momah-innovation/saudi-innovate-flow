@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { Category, Sector, Department } from '@/types/opportunities';
 import { 
@@ -55,6 +56,7 @@ export const EnhancedOpportunityFilters = ({
   className = ""
 }: EnhancedOpportunityFiltersProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
   const [categories, setCategories] = useState<Category[]>([]);
   const [sectors, setSectors] = useState<Sector[]>([]);
@@ -188,7 +190,7 @@ export const EnhancedOpportunityFilters = ({
         <div className="relative">
           <Search className={`absolute top-3 w-4 h-4 text-muted-foreground ${isRTL ? 'right-3' : 'left-3'}`} />
           <Input
-            placeholder={isRTL ? 'البحث في الفرص...' : 'Search opportunities...'}
+            placeholder={t('opportunities.placeholders.search_opportunities')}
             value={filters.search}
             onChange={(e) => updateFilter('search', e.target.value)}
             className={isRTL ? 'pr-10 text-right' : 'pl-10 text-left'}

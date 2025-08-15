@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useForm } from 'react-hook-form';
@@ -90,6 +91,7 @@ export const CreateOpportunityDialog = ({
 }: CreateOpportunityDialogProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -233,7 +235,7 @@ export const CreateOpportunityDialog = ({
                         <Input
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'أدخل العنوان بالإنجليزية' : 'Enter title in English'}
+                          placeholder={t('opportunities.placeholders.enter_title_english')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -253,7 +255,7 @@ export const CreateOpportunityDialog = ({
                         <Input
                           {...field}
                           className="text-right"
-                          placeholder="أدخل العنوان بالعربية"
+                          placeholder={t('opportunities.placeholders.enter_title_arabic')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -275,7 +277,7 @@ export const CreateOpportunityDialog = ({
                         <Textarea
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'أدخل الوصف بالإنجليزية' : 'Enter description in English'}
+                          placeholder={t('opportunities.placeholders.enter_description_english')}
                           rows={4}
                         />
                       </FormControl>
@@ -296,7 +298,7 @@ export const CreateOpportunityDialog = ({
                         <Textarea
                           {...field}
                           className="text-right"
-                          placeholder="أدخل الوصف بالعربية"
+                          placeholder={t('opportunities.placeholders.enter_description_arabic')}
                           rows={4}
                         />
                       </FormControl>
@@ -410,7 +412,7 @@ export const CreateOpportunityDialog = ({
                           {...field}
                           type="number"
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'الحد الأدنى' : 'Minimum amount'}
+                          placeholder={t('opportunities.placeholders.minimum_amount')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -431,7 +433,7 @@ export const CreateOpportunityDialog = ({
                           {...field}
                           type="number"
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'الحد الأقصى' : 'Maximum amount'}
+                          placeholder={t('opportunities.placeholders.maximum_amount')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -480,7 +482,7 @@ export const CreateOpportunityDialog = ({
                         <Input
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'اسم الشخص المسؤول' : 'Contact person name'}
+                          placeholder={t('opportunities.placeholders.contact_person_name')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -501,7 +503,7 @@ export const CreateOpportunityDialog = ({
                           {...field}
                           type="email"
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'البريد الإلكتروني' : 'Email address'}
+                          placeholder={t('opportunities.placeholders.email_address')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -521,7 +523,7 @@ export const CreateOpportunityDialog = ({
                         <Input
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}
+                          placeholder={t('opportunities.placeholders.riyadh_saudi')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -550,7 +552,7 @@ export const CreateOpportunityDialog = ({
                         <Textarea
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'اذكر المتطلبات والشروط...' : 'List requirements and conditions...'}
+                          placeholder={t('opportunities.placeholders.enter_requirements')}
                           rows={3}
                         />
                       </FormControl>
@@ -571,7 +573,7 @@ export const CreateOpportunityDialog = ({
                         <Textarea
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={isRTL ? 'اذكر الفوائد والمميزات...' : 'List benefits and advantages...'}
+                          placeholder={t('opportunities.placeholders.enter_benefits')}
                           rows={3}
                         />
                       </FormControl>

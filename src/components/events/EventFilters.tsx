@@ -22,6 +22,7 @@ import {
   Clock
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface EventFilterState {
   search: string;
@@ -50,6 +51,7 @@ export const EventFilters = ({
   activeFiltersCount 
 }: EventFiltersProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
@@ -110,7 +112,7 @@ export const EventFilters = ({
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
-            placeholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
+            placeholder={t('events.search.placeholder')}
             value={filters.search}
             onChange={(e) => updateFilter('search', e.target.value)}
             className="pl-10"

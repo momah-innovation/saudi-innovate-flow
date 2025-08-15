@@ -390,7 +390,7 @@ export const ComprehensiveEventWizard = ({
                     id="title"
                     value={formData.title_ar}
                     onChange={(e) => handleInputChange('title_ar', e.target.value)}
-                    placeholder={isRTL ? 'أدخل عنوان الفعالية' : 'Enter event title'}
+                    placeholder={t('events.placeholders.enter_event_title')}
                     required
                   />
                 </div>
@@ -401,7 +401,7 @@ export const ComprehensiveEventWizard = ({
                     id="description"
                     value={formData.description_ar}
                     onChange={(e) => handleInputChange('description_ar', e.target.value)}
-                    placeholder={isRTL ? 'أدخل وصف الفعالية' : 'Enter event description'}
+                    placeholder={t('events.placeholders.enter_event_description')}
                     rows={4}
                     required
                   />
@@ -584,7 +584,7 @@ export const ComprehensiveEventWizard = ({
                     id="location"
                     value={formData.location || ''}
                     onChange={(e) => handleInputChange('location', e.target.value)}
-                    placeholder={isRTL ? 'أدخل مكان الفعالية' : 'Enter event location'}
+                    placeholder={t('events.placeholders.enter_event_location')}
                   />
                 </div>
 
@@ -596,7 +596,7 @@ export const ComprehensiveEventWizard = ({
                       type="url"
                       value={formData.virtual_link || ''}
                       onChange={(e) => handleInputChange('virtual_link', e.target.value)}
-                      placeholder={isRTL ? 'أدخل رابط الاجتماع' : 'Enter meeting link'}
+                      placeholder={t('events.placeholders.enter_meeting_link')}
                     />
                   </div>
                 )}
@@ -609,7 +609,7 @@ export const ComprehensiveEventWizard = ({
                       type="number"
                       value={formData.max_participants || ''}
                       onChange={(e) => handleInputChange('max_participants', parseInt(e.target.value) || undefined)}
-                      placeholder={isRTL ? 'غير محدود' : 'Unlimited'}
+                      placeholder={t('events.placeholders.unlimited')}
                     />
                   </div>
 
@@ -620,7 +620,7 @@ export const ComprehensiveEventWizard = ({
                       type="number"
                       value={formData.budget || ''}
                       onChange={(e) => handleInputChange('budget', parseInt(e.target.value) || undefined)}
-                      placeholder={isRTL ? 'مجاني' : 'Free'}
+                      placeholder={t('events.placeholders.free')}
                     />
                   </div>
                 </div>

@@ -139,5 +139,22 @@
     "ongoing_now": "{{count}} ongoing now",
     "registration_rate": "{{rate}}% registration rate",
     "avg_budget": "{{amount}} avg budget"
+  },
+  "placeholders": {
+    "enter_event_title": "Enter event title",
+    "enter_event_description": "Enter event description",
+    "enter_event_location": "Enter event location",
+    "enter_meeting_link": "Enter meeting link",
+    "unlimited": "Unlimited",
+    "free": "Free",
+    "search_events": "Search events...",
+    "special_requirements": "Any special requirements for participation...",
+    "participant_criteria": "Criteria for selecting participants...",
+    "live_stream_link": "Live stream link",
+    "recording_link": "Recording link",
+    "additional_links": "Additional links"
+  },
+  "search": {
+    "placeholder": "Search events..."
   }
 }

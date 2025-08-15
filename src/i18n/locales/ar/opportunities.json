@@ -46,5 +46,20 @@
     "closed": "مغلقة",
     "draft": "مسودة",
     "published": "منشورة"
+  },
+  "placeholders": {
+    "enter_title_english": "أدخل العنوان بالإنجليزية",
+    "enter_title_arabic": "أدخل العنوان بالعربية",
+    "enter_description_english": "أدخل الوصف بالإنجليزية", 
+    "enter_description_arabic": "أدخل الوصف بالعربية",
+    "minimum_amount": "الحد الأدنى",
+    "maximum_amount": "الحد الأقصى",
+    "contact_person_name": "اسم الشخص المسؤول", 
+    "email_address": "البريد الإلكتروني",
+    "enter_location": "أدخل الموقع",
+    "enter_requirements": "اذكر المتطلبات والشروط...",
+    "enter_benefits": "اذكر الفوائد والمميزات...",
+    "riyadh_saudi": "الرياض، المملكة العربية السعودية",
+    "search_opportunities": "البحث في الفرص..."
   }
 }

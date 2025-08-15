@@ -46,5 +46,20 @@
     "closed": "Closed",
     "draft": "Draft",
     "published": "Published"
+  },
+  "placeholders": {
+    "enter_title_english": "Enter title in English",
+    "enter_title_arabic": "Enter title in Arabic", 
+    "enter_description_english": "Enter description in English",
+    "enter_description_arabic": "Enter description in Arabic",
+    "minimum_amount": "Minimum amount",
+    "maximum_amount": "Maximum amount", 
+    "contact_person_name": "Contact person name",
+    "email_address": "Email address",
+    "enter_location": "Enter location",
+    "enter_requirements": "List requirements and conditions...",
+    "enter_benefits": "List benefits and advantages...",
+    "riyadh_saudi": "Riyadh, Saudi Arabia",
+    "search_opportunities": "Search opportunities..."
   }
 }

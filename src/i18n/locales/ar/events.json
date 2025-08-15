@@ -139,5 +139,22 @@
     "ongoing_now": "{{count}} جارية الآن",
     "registration_rate": "{{rate}}% معدل التسجيل",
     "avg_budget": "{{amount}} متوسط الميزانية"
+  },
+  "placeholders": {
+    "enter_event_title": "أدخل عنوان الفعالية",
+    "enter_event_description": "أدخل وصف الفعالية", 
+    "enter_event_location": "أدخل مكان الفعالية",
+    "enter_meeting_link": "أدخل رابط الاجتماع",
+    "unlimited": "غير محدود",
+    "free": "مجاني",
+    "search_events": "البحث في الفعاليات...",
+    "special_requirements": "أي متطلبات خاصة للمشاركة...",
+    "participant_criteria": "معايير اختيار المشاركين...",
+    "live_stream_link": "رابط البث المباشر",
+    "recording_link": "رابط التسجيل",
+    "additional_links": "روابط إضافية"
+  },
+  "search": {
+    "placeholder": "البحث في الفعاليات..."
   }
 }
