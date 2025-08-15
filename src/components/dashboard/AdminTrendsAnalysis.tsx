@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -24,6 +25,7 @@ interface AdminTrendsAnalysisProps {
 }
 
 export function AdminTrendsAnalysis({ metrics, language }: AdminTrendsAnalysisProps) {
+  const { t } = useUnifiedTranslation();
   const { trends, isLoading, refresh } = useMetricsTrends(metrics);
 
   const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
@@ -80,10 +82,10 @@ export function AdminTrendsAnalysis({ metrics, language }: AdminTrendsAnalysisPr
       <CardContent>
         <Tabs defaultValue="users" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="users">{language === 'ar' ? 'المستخدمون' : 'Users'}</TabsTrigger>
-            <TabsTrigger value="challenges">{language === 'ar' ? 'التحديات' : 'Challenges'}</TabsTrigger>
-            <TabsTrigger value="system">{language === 'ar' ? 'النظام' : 'System'}</TabsTrigger>
-            <TabsTrigger value="security">{language === 'ar' ? 'الأمان' : 'Security'}</TabsTrigger>
+            <TabsTrigger value="users">{t('dashboard:trends.users')}</TabsTrigger>
+            <TabsTrigger value="challenges">{t('dashboard:trends.challenges')}</TabsTrigger>
+            <TabsTrigger value="system">{t('dashboard:trends.system')}</TabsTrigger>
+            <TabsTrigger value="security">{t('dashboard:trends.security')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="users" className="space-y-4">

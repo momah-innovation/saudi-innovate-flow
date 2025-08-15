@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MetricCard } from '@/components/ui/metric-card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Users, 
   Target, 
@@ -23,6 +24,7 @@ interface AdminMetricsCardsProps {
 }
 
 export function AdminMetricsCards({ metrics, isLoading, language }: AdminMetricsCardsProps) {
+  const { t } = useUnifiedTranslation();
   const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
     switch (trend) {
       case 'up': return TrendingUp;

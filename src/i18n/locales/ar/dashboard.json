@@ -86,5 +86,40 @@
     "content": "المحتوى",
     "system": "النظام",
     "advanced": "متقدم"
+  },
+  "system_health": {
+    "title": "صحة النظام",
+    "database_status": "حالة قاعدة البيانات",
+    "storage_status": "حالة التخزين",
+    "security_score": "نقاط الأمان",
+    "active_sessions": "الجلسات النشطة",
+    "files": "ملفات",
+    "buckets": "حاويات",
+    "events_24h": "أحداث (24 ساعة)",
+    "active_users_24h": "مستخدمون نشطون (24 ساعة)",
+    "last_update": "آخر تحديث"
+  },
+  "trends": {
+    "title": "تحليل الاتجاهات",
+    "users": "المستخدمون",
+    "challenges": "التحديات",
+    "system": "النظام",
+    "security": "الأمان",
+    "total_users": "إجمالي المستخدمين",
+    "active_users": "المستخدمون النشطون",
+    "new_registrations": "التسجيلات الجديدة",
+    "user_retention": "الاحتفاظ بالمستخدمين",
+    "total_challenges": "إجمالي التحديات",
+    "active_challenges": "التحديات النشطة",
+    "challenge_completion": "إكمال التحديات",
+    "submissions": "المشاريع",
+    "system_uptime": "وقت تشغيل النظام",
+    "response_time": "وقت الاستجابة",
+    "error_rate": "معدل الأخطاء",
+    "resource_usage": "استخدام الموارد",
+    "security_incidents": "حوادث الأمان",
+    "failed_logins": "محاولات دخول فاشلة",
+    "suspicious_activity": "نشاط مشبوه",
+    "security_score": "نقاط الأمان"
   }
 }

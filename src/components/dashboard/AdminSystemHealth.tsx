@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Shield, 
   Server, 
@@ -24,6 +25,7 @@ interface AdminSystemHealthProps {
 }
 
 export function AdminSystemHealth({ metrics, systemHealth, language, isLoading }: AdminSystemHealthProps) {
+  const { t } = useUnifiedTranslation();
   const getHealthColor = (status: 'healthy' | 'warning' | 'critical') => {
     switch (status) {
       case 'healthy': return 'text-green-600 bg-green-100';

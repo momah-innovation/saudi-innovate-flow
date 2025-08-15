@@ -86,5 +86,40 @@
     "content": "Content",
     "system": "System",
     "advanced": "Advanced"
+  },
+  "system_health": {
+    "title": "System Health",
+    "database_status": "Database Status",
+    "storage_status": "Storage Status",
+    "security_score": "Security Score",
+    "active_sessions": "Active Sessions",
+    "files": "Files",
+    "buckets": "Buckets",
+    "events_24h": "Events (24h)",
+    "active_users_24h": "Active Users (24h)",
+    "last_update": "Last Update"
+  },
+  "trends": {
+    "title": "Trends Analysis",
+    "users": "Users",
+    "challenges": "Challenges",
+    "system": "System",
+    "security": "Security",
+    "total_users": "Total Users",
+    "active_users": "Active Users",
+    "new_registrations": "New Registrations",
+    "user_retention": "User Retention",
+    "total_challenges": "Total Challenges",
+    "active_challenges": "Active Challenges",
+    "challenge_completion": "Challenge Completion",
+    "submissions": "Submissions",
+    "system_uptime": "System Uptime",
+    "response_time": "Response Time",
+    "error_rate": "Error Rate",
+    "resource_usage": "Resource Usage",
+    "security_incidents": "Security Incidents",
+    "failed_logins": "Failed Logins",
+    "suspicious_activity": "Suspicious Activity",
+    "security_score": "Security Score"
   }
 }
