@@ -28,6 +28,7 @@ import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceColl
 import { ActivityFeed } from '@/components/collaboration/ActivityFeed';
 import { UserPresence } from '@/components/collaboration/UserPresence';
 import { supabase } from '@/integrations/supabase/client';
+import { useCounts } from '@/hooks/useCounts';
 import { logger } from '@/utils/logger';
 
 interface UserWorkspaceProps {
@@ -66,11 +67,22 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
   const targetUserId = userId || user?.id;
   const isOwnWorkspace = !userId || userId === user?.id;
 
+  // Use cached counts for user-specific metrics
+  const { data: userCounts } = useCounts({
+    queries: [
+      { table: 'ideas', filters: { innovator_id: targetUserId }, key: 'ideas' },
+      { table: 'challenge_participants', filters: { user_id: targetUserId }, key: 'challenges' },
+      { table: 'event_participants', filters: { user_id: targetUserId }, key: 'events' },
+      { table: 'user_achievements', filters: { user_id: targetUserId }, key: 'achievements' },
+    ],
+    enabled: !!targetUserId,
+  });
+
   useEffect(() => {
-    if (targetUserId) {
+    if (targetUserId && userCounts) {
       loadWorkspaceData();
     }
-  }, [targetUserId]);
+  }, [targetUserId, userCounts]);
 
   const loadWorkspaceData = async () => {
     try {
@@ -87,36 +99,13 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
 
   const loadWorkspaceStats = async () => {
     try {
-      // Get ideas count
-      const { count: ideasCount } = await supabase
-        .from('ideas')
-        .select('*', { count: 'exact', head: true })
-        .eq('innovator_id', targetUserId);
-
-      // Get challenges participation count
-      const { count: challengesCount } = await supabase
-        .from('challenge_participants')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', targetUserId);
-
-      // Get events participation count
-      const { count: eventsCount } = await supabase
-        .from('event_participants')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', targetUserId);
-
-      // Get achievements count
-      const { count: achievementsCount } = await supabase
-        .from('user_achievements')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', targetUserId);
-
+      // Use cached counts instead of direct queries
       setStats({
-        ideas_count: ideasCount || 0,
-        challenges_count: challengesCount || 0,
-        events_count: eventsCount || 0,
+        ideas_count: userCounts?.ideas || 0,
+        challenges_count: userCounts?.challenges || 0,
+        events_count: userCounts?.events || 0,
         collaborations_count: 0, // TODO: Calculate from collaboration data
-        achievements_count: achievementsCount || 0
+        achievements_count: userCounts?.achievements || 0
       });
     } catch (error) {
       logger.error('Error loading workspace stats', { userId: targetUserId }, error as Error);

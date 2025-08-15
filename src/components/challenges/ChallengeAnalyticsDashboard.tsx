@@ -24,6 +24,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { getStatusMapping, getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { useCommonCounts } from '@/hooks/useCounts';
 
 interface AnalyticsData {
   totalChallenges: number;
@@ -48,13 +49,16 @@ export const ChallengeAnalyticsDashboard = ({
   const { isRTL } = useDirection();
   const { t } = useUnifiedTranslation();
   const { flexRow } = useRTLAwareClasses();
+  const { data: commonCounts, isLoading: countsLoading } = useCommonCounts();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    loadAnalytics();
-  }, []);
+    if (commonCounts && !countsLoading) {
+      loadAnalytics();
+    }
+  }, [commonCounts, countsLoading]);
 
   const loadAnalytics = async () => {
     try {
@@ -71,10 +75,8 @@ export const ChallengeAnalyticsDashboard = ({
       const activeChallenges = challenges?.filter(c => getStatusMapping(c.status).value === 'active' || getStatusMapping(c.status).value === 'published').length || 0;
       const completedChallenges = challenges?.filter(c => getStatusMapping(c.status).value === 'completed').length || 0;
 
-      // Get total participants across all challenges
-      const { count: totalParticipants } = await supabase
-        .from('challenge_participants')
-        .select('*', { count: 'exact' });
+      // Use cached counts instead of direct queries
+      const totalParticipants = commonCounts?.totalParticipants || 0;
 
       // Calculate total prizes
       const totalPrizes = challenges?.reduce((sum, c) => sum + (c.estimated_budget || 0), 0) || 0;
@@ -136,9 +138,9 @@ export const ChallengeAnalyticsDashboard = ({
         totalChallenges,
         activeChallenges,
         completedChallenges,
-        totalParticipants: totalParticipants || 0,
+        totalParticipants: totalParticipants,
         totalPrizes,
-        averageParticipation: totalChallenges > 0 ? Math.round((totalParticipants || 0) / totalChallenges) : 0,
+        averageParticipation: totalChallenges > 0 ? Math.round(totalParticipants / totalChallenges) : 0,
         trendingChallenges: challenges?.filter(c => getPriorityMapping(c.priority_level || 'متوسط').value === 'عالي' || getPriorityMapping(c.priority_level || 'متوسط').value === 'High').length || 0,
         categoryBreakdown,
         participationTrend,
@@ -155,7 +157,7 @@ export const ChallengeAnalyticsDashboard = ({
     }
   };
 
-  if (loading || !analytics) {
+  if (loading || !analytics || countsLoading) {
     return (
       <div className={className}>
         <Card>
