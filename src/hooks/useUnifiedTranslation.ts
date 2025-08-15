@@ -1,10 +1,10 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { useTranslation as useI18nextTranslation } from 'react-i18next';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys } from '@/lib/query/query-keys';
-import { useMemo, useEffect } from 'react';
+
+
+import { useMemo, useEffect, useCallback } from 'react';
 import { logger } from '@/utils/logger';
-import { useSystemTranslations } from './useSystemTranslations';
+
 import { debugLog } from '@/utils/debugLogger';
 
 interface SystemTranslation {
@@ -21,7 +21,7 @@ interface SystemTranslation {
  */
 export function useUnifiedTranslation() {
   const { t: i18nextT, i18n } = useI18nextTranslation();
-  const queryClient = useQueryClient();
+  
   
   // Normalize language code (en-US -> en, ar-SA -> ar)
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
@@ -55,7 +55,7 @@ export function useUnifiedTranslation() {
   /**
    * Primary translation function - Enhanced with better fallback logic
    */
-  const t = (key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
+  const t = useCallback((key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
     // Debug logging for troubleshooting
     if (key.startsWith('landing.')) {
       console.log('🔍 Translation debug:', { key, language, i18nLanguage: i18n.language, hasResources: i18n.hasResourceBundle(language, 'landing') });
@@ -135,8 +135,7 @@ export function useUnifiedTranslation() {
       logger.warn('Translation error occurred', { key, language }, error as Error);
       return (typeof fallbackOrOptions === 'string' ? fallbackOrOptions : undefined) || key;
     }
-  };
-
+  }, [i18nextT, language, i18n]);
   /**
    * Simple interpolation function for database translations
    */
@@ -158,56 +157,41 @@ export function useUnifiedTranslation() {
   /**
    * Get translation with explicit language override
    */
-  const getTranslation = (key: string, targetLanguage?: 'en' | 'ar', fallback?: string): string => {
+  const getTranslation = useCallback((key: string, targetLanguage?: 'en' | 'ar', fallback?: string): string => {
     const targetLang = targetLanguage || language;
-    
     try {
-      // Use i18next for language-specific translations
-
-      // Fallback to i18next for the target language
-      const currentLang = i18n.language;
-      if (targetLang !== language) {
-        i18n.changeLanguage(targetLang);
-        const result = i18nextT(key);
-        i18n.changeLanguage(currentLang); // Restore original language
-        if (result && result !== key) {
-          return result;
-        }
-      } else {
-        const result = i18nextT(key);
-        if (result && result !== key) {
-          return result;
-        }
+      const result = i18nextT(key, { lng: targetLang }) as string;
+      if (result && result !== key) {
+        return result;
       }
-
       return fallback || key;
     } catch (error) {
       logger.warn('Translation error with language override', { key, targetLanguage, language }, error as Error);
       return fallback || key;
     }
-  };
+  }, [i18nextT, language]);
 
   /**
    * Get bilingual text for dynamic content
    */
-  const getDynamicText = (textAr: string, textEn?: string | null): string => {
+  const getDynamicText = useCallback((textAr: string, textEn?: string | null): string => {
     if (language === 'en' && textEn) {
       return textEn;
     }
     return textAr;
-  };
+  }, [language]);
 
   /**
    * Format numbers according to current locale
    */
-  const formatNumber = (num: number): string => {
+  const formatNumber = useCallback((num: number): string => {
     return new Intl.NumberFormat(language === 'ar' ? 'ar-SA' : 'en-US').format(num);
-  };
+  }, [language]);
 
   /**
    * Format relative time with proper translations
    */
-  const formatRelativeTime = (date: Date): string => {
+  const formatRelativeTime = useCallback((date: Date): string => {
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
@@ -222,19 +206,19 @@ export function useUnifiedTranslation() {
       const days = Math.floor(diffInMinutes / 1440);
       return t(days === 1 ? 'days_ago' : 'days_ago_plural', `${days} days ago`);
     }
-  };
+  }, [t]);
 
   /**
    * Get translation with loading state for UI components
    */
-  const getTranslationWithLoading = (key: string, fallback?: string): { text: string; isLoading: boolean } => {
+  const getTranslationWithLoading = useCallback((key: string, fallback?: string): { text: string; isLoading: boolean } => {
     return {
       text: t(key, fallback),
       isLoading: systemTranslations.isLoading
     };
-  };
+  }, [t, systemTranslations.isLoading]);
 
-  return {
+  const value = useMemo(() => ({
     // Core translation functions
     t,
     getTranslation,
@@ -263,5 +247,22 @@ export function useUnifiedTranslation() {
     // i18next integration
     i18n,
     changeLanguage: i18n.changeLanguage,
-  };
-}
+  }), [
+    t,
+    getTranslation,
+    getDynamicText,
+    formatNumber,
+    formatRelativeTime,
+    systemTranslations.hasTranslation,
+    systemTranslations.refreshTranslations,
+    systemTranslations.isLoading,
+    systemTranslations.error,
+    systemTranslations.count,
+    systemTranslations.isReady,
+    systemTranslations.translationMap,
+    language,
+    isRTL,
+    i18n
+  ]);
+
+  return value;
