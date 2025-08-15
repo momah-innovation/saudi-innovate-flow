@@ -130,7 +130,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
             }}
             rows={4}
             className={`font-mono text-sm ${isRTL ? 'text-right' : 'text-left'}`}
-            placeholder={getTranslation('settings.object.nested_placeholder', 'Enter nested object...')}
+            placeholder={getTranslation('admin.settings.object.nested_placeholder', 'Enter nested object...')}
           />
         ) : Array.isArray(value) ? (
           <Textarea
@@ -145,7 +145,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
             }}
             rows={3}
             className={`font-mono text-sm ${isRTL ? 'text-right' : 'text-left'}`}
-            placeholder={getTranslation('settings.object.array_placeholder', 'Enter array...')}
+            placeholder={getTranslation('admin.settings.object.array_placeholder', 'Enter array...')}
           />
         ) : (
           <Input
@@ -178,7 +178,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
                   className="gap-1"
                 >
                   <Undo className="w-4 h-4" />
-                  {getTranslation('settings.revert', 'Revert')}
+                  {getTranslation('admin.settings.revert', 'Revert')}
                 </Button>
                 <Button
                   size="sm"
