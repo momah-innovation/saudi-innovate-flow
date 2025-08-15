@@ -21,8 +21,8 @@ import enDashboard from './locales/en/dashboard.json';
 import arDashboard from './locales/ar/dashboard.json';
 
 // Admin translations
-import enAdmin from './locales/en/admin/index.json';
-import arAdmin from './locales/ar/admin/index.json';
+import enAdmin from './locales/en/admin.json';
+import arAdmin from './locales/ar/admin.json';
 
 // Auth translations
 import enAuth from './locales/en/auth.json';
@@ -92,8 +92,8 @@ const loadNamespace = async (language: string, namespace: string) => {
         
       case 'admin':
         translations = language === 'en'
-          ? await import('./locales/en/admin/index.json')
-          : await import('./locales/ar/admin/index.json');
+          ? await import('./locales/en/admin.json')
+          : await import('./locales/ar/admin.json');
         break;
         
       case 'admin-users':
