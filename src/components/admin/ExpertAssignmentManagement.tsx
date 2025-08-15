@@ -673,7 +673,7 @@ export function ExpertAssignmentManagement() {
             {filteredAssignments.length === 0 && (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-muted-foreground">No expert assignments found matching your filters.</p>
+                  <p className="text-muted-foreground">{t('admin:expert_assignment.no_assignments_found', 'No expert assignments found matching your filters.')}</p>
                 </CardContent>
               </Card>
             )}
@@ -787,14 +787,14 @@ export function ExpertAssignmentManagement() {
       <Dialog open={isAssignDialogOpen} onOpenChange={setIsAssignDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Assign Expert to Challenge</DialogTitle>
+            <DialogTitle>{t('admin:expert_assignment.assign_dialog_title', 'Assign Expert to Challenge')}</DialogTitle>
             <DialogDescription>
-              Select a challenge and expert to create a new assignment.
+              {t('admin:expert_assignment.assign_dialog_description', 'Select a challenge and expert to create a new assignment.')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Challenge</Label>
+              <Label>{t('admin:expert_assignment.challenge_label', 'Challenge')}</Label>
               <Select value={selectedChallenge} onValueChange={setSelectedChallenge}>
                 <SelectTrigger>
                   <SelectValue placeholder={t('expert_assignment_management.select_challenge')} />
@@ -872,15 +872,15 @@ export function ExpertAssignmentManagement() {
       <Dialog open={isBulkAssignDialogOpen} onOpenChange={setIsBulkAssignDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Bulk Expert Assignment</DialogTitle>
+            <DialogTitle>{t('admin:expert_assignment.bulk_dialog_title', 'Bulk Expert Assignment')}</DialogTitle>
             <DialogDescription>
-              Assign multiple experts to multiple challenges at once.
+              {t('admin:expert_assignment.bulk_dialog_description', 'Assign multiple experts to multiple challenges at once.')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Select Challenges</Label>
+                <Label>{t('admin:expert_assignment.select_challenges', 'Select Challenges')}</Label>
                 <div className="border rounded-md p-2 max-h-32 overflow-y-auto">
                   {challenges.map((challenge) => (
                     <div key={challenge.id} className="flex items-center space-x-2 p-1">

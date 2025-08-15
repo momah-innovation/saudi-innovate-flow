@@ -282,7 +282,8 @@
     "add_notes": "إضافة ملاحظات حول قرارك (اختياري)...",
     "approve": "الموافقة",
     "reject": "الرفض",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "review_notes": "ملاحظات المراجعة"
   },
   "expert_assignment": {
     "title": "إدارة تعيين الخبراء",
@@ -297,7 +298,14 @@
     "assignment_updated": "تم تحديث التعيين",
     "assignment_updated_desc": "تم تحديث التعيين بنجاح",
     "assignment_removed": "تم إزالة التعيين",
-    "assignment_removed_desc": "تم إزالة التعيين بنجاح"
+    "assignment_removed_desc": "تم إزالة التعيين بنجاح",
+    "no_assignments_found": "لم يتم العثور على تعيينات خبراء تطابق المرشحات.",
+    "assign_dialog_title": "تعيين خبير للتحدي",
+    "assign_dialog_description": "اختر تحدياً وخبيراً لإنشاء تعيين جديد.",
+    "challenge_label": "التحدي",
+    "bulk_dialog_title": "التعيين الجماعي للخبراء",
+    "bulk_dialog_description": "تعيين عدة خبراء لعدة تحديات في وقت واحد.",
+    "select_challenges": "اختر التحديات"
   },
   "partners": {
     "management_title": "إدارة الشركاء",

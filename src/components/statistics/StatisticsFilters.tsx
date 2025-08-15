@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, Filter, X, Download } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface StatisticsFiltersProps {
   timeRange: string;
@@ -38,6 +39,7 @@ export function StatisticsFilters({
   onExport,
   onReset
 }: StatisticsFiltersProps) {
+  const { t } = useUnifiedTranslation();
   const hasActiveFilters = timeRange !== 'all' || selectedDepartments.length > 0 || selectedSectors.length > 0 || dateRange.from || dateRange.to;
 
   return (
@@ -122,7 +124,7 @@ export function StatisticsFilters({
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select departments" />
+                <SelectValue placeholder={t('statistics.filters.select_departments', 'Select departments')} />
               </SelectTrigger>
               <SelectContent>
                 {departments.map((dept) => (
@@ -146,7 +148,7 @@ export function StatisticsFilters({
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select sectors" />
+                <SelectValue placeholder={t('statistics.filters.select_sectors', 'Select sectors')} />
               </SelectTrigger>
               <SelectContent>
                 {sectors.map((sector) => (

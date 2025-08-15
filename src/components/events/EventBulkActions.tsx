@@ -411,10 +411,10 @@ export function EventBulkActions({
 
           {bulkAction === "update_status" && (
             <div>
-              <label className="text-sm font-medium">New Status</label>
+              <label className="text-sm font-medium">{t('events.bulk_actions.new_status', 'New Status')}</label>
               <Select value={newStatus} onValueChange={setNewStatus}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
+                  <SelectValue placeholder={t('events.bulk_actions.select_status', 'Select status')} />
                 </SelectTrigger>
                 <SelectContent>
                   {statusOptions.map((status) => (

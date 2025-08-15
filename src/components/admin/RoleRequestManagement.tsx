@@ -307,13 +307,13 @@ export default function RoleRequestManagement() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Requested Role</Label>
+              <Label>{t('admin:role_requests.requested_role')}</Label>
               <Select value={roleFilter} onValueChange={setRoleFilter}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Roles</SelectItem>
+                  <SelectItem value="all">{t('admin:role_requests.all_roles')}</SelectItem>
                   {uniqueRoles.map(role => (
                     <SelectItem key={role} value={role}>
                       {role.replace('_', ' ')}
@@ -381,13 +381,13 @@ export default function RoleRequestManagement() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Requester</TableHead>
-                <TableHead>Current Roles</TableHead>
-                <TableHead>Requested Role</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Requested Date</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('admin:role_requests.requester')}</TableHead>
+                <TableHead>{t('admin:role_requests.current_roles')}</TableHead>
+                <TableHead>{t('admin:role_requests.requested_role')}</TableHead>
+                <TableHead>{t('admin:role_requests.reason')}</TableHead>
+                <TableHead>{t('admin:role_requests.status')}</TableHead>
+                <TableHead>{t('admin:role_requests.requested_date')}</TableHead>
+                <TableHead>{t('admin:common.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -514,7 +514,7 @@ export default function RoleRequestManagement() {
               </div>
 
               <div className="space-y-2">
-                <Label>Review Notes</Label>
+                <Label>{t('admin:role_requests.review_notes', 'Review Notes')}</Label>
                 <Textarea
                   value={reviewNotes}
                   onChange={(e) => setReviewNotes(e.target.value)}

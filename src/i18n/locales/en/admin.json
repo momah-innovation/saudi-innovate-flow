@@ -282,7 +282,8 @@
     "add_notes": "Add notes about your decision (optional)...",
     "approve": "Approve",
     "reject": "Reject",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "review_notes": "Review Notes"
   },
   "expert_assignment": {
     "title": "Expert Assignment Management",
@@ -297,7 +298,14 @@
     "assignment_updated": "Assignment Updated",
     "assignment_updated_desc": "The assignment has been updated successfully",
     "assignment_removed": "Assignment Removed",
-    "assignment_removed_desc": "The assignment has been removed successfully"
+    "assignment_removed_desc": "The assignment has been removed successfully",
+    "no_assignments_found": "No expert assignments found matching your filters.",
+    "assign_dialog_title": "Assign Expert to Challenge",
+    "assign_dialog_description": "Select a challenge and expert to create a new assignment.",
+    "challenge_label": "Challenge",
+    "bulk_dialog_title": "Bulk Expert Assignment",
+    "bulk_dialog_description": "Assign multiple experts to multiple challenges at once.",
+    "select_challenges": "Select Challenges"
   },
   "partners": {
     "management_title": "Partners Management",

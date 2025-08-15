@@ -1,0 +1,6 @@
+{
+  "filters": {
+    "select_departments": "Select departments",
+    "select_sectors": "Select sectors"
+  }
+}
