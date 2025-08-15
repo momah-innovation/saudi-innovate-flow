@@ -90,9 +90,9 @@ export function AdminMetricsCards({ metrics, isLoading, language }: AdminMetrics
 
       {/* Submissions Card */}
       <MetricCard
-        title={t('dashboard:metrics.submissions')}
+        title={t('dashboard.metrics.submissions')}
         value={metrics?.challenges?.submissions || 0}
-        subtitle={`${Math.round(metrics?.challenges?.completionRate || 0)}% ${t('dashboard:metrics.completion_rate')}`}
+        subtitle={`${Math.round(metrics?.challenges?.completionRate || 0)}% ${t('dashboard.metrics.completion_rate')}`}
         icon={<Database className="h-4 w-4" />}
       />
 
@@ -100,7 +100,7 @@ export function AdminMetricsCards({ metrics, isLoading, language }: AdminMetrics
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
-            {t('dashboard:metrics.system_health')}
+            {t('dashboard.metrics.system_health')}
           </CardTitle>
           <Server className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
@@ -109,7 +109,7 @@ export function AdminMetricsCards({ metrics, isLoading, language }: AdminMetrics
             {Math.round(metrics?.system?.uptime || 99)}%
           </div>
           <p className="text-xs text-muted-foreground">
-            {t('dashboard:metrics.uptime')}
+            {t('dashboard.metrics.uptime')}
           </p>
           <Progress 
             value={metrics?.system?.uptime || 99} 

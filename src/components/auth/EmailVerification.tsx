@@ -54,7 +54,7 @@ export const EmailVerification = () => {
 
       if (error) {
         toast({
-          title: t('auth:verification_error'),
+          title: t('auth.verification_error'),
           description: error.message,
           variant: "destructive",
         });
@@ -63,8 +63,8 @@ export const EmailVerification = () => {
 
       setIsVerified(true);
       toast({
-        title: t('auth:verification_success'),
-        description: t('auth:email_verified_success'),
+        title: t('auth.verification_success'),
+        description: t('auth.email_verified_success'),
       });
 
       // Redirect to dashboard after successful verification
@@ -73,8 +73,8 @@ export const EmailVerification = () => {
       }, 2000);
     } catch (error: unknown) {
       toast({
-        title: t('auth:verification_error'),
-        description: (error as Error).message || t('auth:unexpected_error'),
+        title: t('auth.verification_error'),
+        description: (error as Error).message || t('auth.unexpected_error'),
         variant: "destructive",
       });
     } finally {
@@ -96,7 +96,7 @@ export const EmailVerification = () => {
 
       if (error) {
         toast({
-          title: t('auth:sending_error'),
+          title: t('auth.sending_error'),
           description: error.message,
           variant: "destructive",
         });
@@ -104,16 +104,16 @@ export const EmailVerification = () => {
       }
 
       toast({
-        title: t('auth:email_sent'),
-        description: t('auth:verification_resent'),
+        title: t('auth.email_sent'),
+        description: t('auth.verification_resent'),
       });
 
       setCanResend(false);
       setResendTimer(60);
     } catch (error: unknown) {
       toast({
-        title: t('auth:sending_error'),
-        description: (error as Error).message || t('auth:unexpected_error'),
+        title: t('auth.sending_error'),
+        description: (error as Error).message || t('auth.unexpected_error'),
         variant: "destructive",
       });
     }
@@ -127,9 +127,9 @@ export const EmailVerification = () => {
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
               <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
-            <CardTitle className="text-2xl">{t('auth:verification_success')}</CardTitle>
+            <CardTitle className="text-2xl">{t('auth.verification_success')}</CardTitle>
             <CardDescription>
-              {t('auth:redirecting_dashboard')}
+              {t('auth.redirecting_dashboard')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -137,7 +137,7 @@ export const EmailVerification = () => {
               onClick={() => navigate('/dashboard')}
               className="w-full gradient-primary hover:opacity-90 text-primary-foreground"
             >
-              {t('auth:go_to_dashboard')}
+              {t('auth.go_to_dashboard')}
             </Button>
           </CardContent>
         </Card>
@@ -157,12 +157,12 @@ export const EmailVerification = () => {
             )}
           </div>
           <CardTitle className="text-2xl">
-            {isVerifying ? t('auth:verifying') : t('auth:verify_email_title')}
+            {isVerifying ? t('auth.verifying') : t('auth.verify_email_title')}
           </CardTitle>
           <CardDescription>
             {isVerifying 
-              ? t('auth:verifying_email')
-              : t('auth:verification_sent')
+              ? t('auth.verifying_email')
+              : t('auth.verification_sent')
             }
           </CardDescription>
         </CardHeader>
@@ -173,7 +173,7 @@ export const EmailVerification = () => {
               <Alert>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  {t('auth:check_email_instruction')}
+                  {t('auth.check_email_instruction')}
                 </AlertDescription>
               </Alert>
 
@@ -185,9 +185,9 @@ export const EmailVerification = () => {
                   className="w-full"
                 >
                   {canResend ? (
-                    t('auth:resend_verification')
+                    t('auth.resend_verification')
                   ) : (
-                    t('auth:resend_in_seconds', { seconds: resendTimer })
+                    t('auth.resend_in_seconds', { seconds: resendTimer })
                   )}
                 </Button>
 
@@ -196,7 +196,7 @@ export const EmailVerification = () => {
                   variant="ghost"
                   className="w-full"
                 >
-                  {t('auth:back_to_login')}
+                  {t('auth.back_to_login')}
                 </Button>
               </div>
             </>

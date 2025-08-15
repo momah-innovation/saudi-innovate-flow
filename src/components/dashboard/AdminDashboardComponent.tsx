@@ -231,40 +231,40 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       category: 'management'
     },
     {
-      title: t('dashboard:storage.management'), 
-      description: t('dashboard:storage.description'),
+      title: t('dashboard.storage.management'), 
+      description: t('dashboard.storage.description'),
       icon: Database,
       action: () => navigate('/admin/storage'),
       show: canManageSystem,
       category: 'system'
     },
     {
-      title: t('dashboard:storage.policies'),
-      description: t('dashboard:storage.policies_description'),
+      title: t('dashboard.storage.policies'),
+      description: t('dashboard.storage.policies_description'),
       icon: HardDrive, 
       action: () => navigate('/admin/storage/policies'),
       show: canManageSystem,
       category: 'system'
     },
     {
-      title: t('dashboard:security.monitor'),
-      description: t('dashboard:security.description'),
+      title: t('dashboard.security.monitor'),
+      description: t('dashboard.security.description'),
       icon: Shield,
       action: () => navigate('/admin/security'),
       show: canManageSystem,
       category: 'security'
     },
     {
-      title: t('dashboard:focus_questions.management'),
-      description: t('dashboard:focus_questions.description'),
+      title: t('dashboard.focus_questions.management'),
+      description: t('dashboard.focus_questions.description'),
       icon: HelpCircle,
       action: () => navigate('/admin/focus-questions'),
       show: canManageSystem,
       category: 'content'
     },
     {
-      title: t('dashboard:system_analytics.title'),
-      description: t('dashboard:system_analytics.description'), 
+      title: t('dashboard.system_analytics.title'),
+      description: t('dashboard.system_analytics.description'),
       icon: BarChart3,
       action: () => navigate('/admin/system-analytics'),
       show: canViewAnalytics,
@@ -366,35 +366,35 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <BarChart3 className="w-4 h-4" />
-            {t('dashboard:tabs.overview')}
+            {t('dashboard.tabs.overview')}
           </TabsTrigger>
           <TabsTrigger 
             value="management" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Users className="w-4 h-4" />
-            {t('dashboard:tabs.management')}
+            {t('dashboard.tabs.management')}
           </TabsTrigger>
           <TabsTrigger 
             value="content" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Database className="w-4 h-4" />
-            {t('dashboard:tabs.content')}
+            {t('dashboard.tabs.content')}
           </TabsTrigger>
           <TabsTrigger 
             value="system" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Settings className="w-4 h-4" />
-            {t('dashboard:tabs.system')}
+            {t('dashboard.tabs.system')}
           </TabsTrigger>
           <TabsTrigger 
             value="advanced" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Shield className="w-4 h-4" />
-            {t('dashboard:tabs.advanced')}
+            {t('dashboard.tabs.advanced')}
           </TabsTrigger>
         </TabsList>
 

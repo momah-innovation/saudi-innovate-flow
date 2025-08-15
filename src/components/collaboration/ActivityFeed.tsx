@@ -124,9 +124,9 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
         {showFilters && (
           <Tabs defaultValue="all" className="mb-4">
             <TabsList className="grid grid-cols-3 w-full">
-              <TabsTrigger value="all">{t('collaboration:all_activities')}</TabsTrigger>
-              <TabsTrigger value="entity">{t('collaboration:content_type')}</TabsTrigger>
-              <TabsTrigger value="event">{t('collaboration:activity_type')}</TabsTrigger>
+              <TabsTrigger value="all">{t('collaboration.all_activities')}</TabsTrigger>
+              <TabsTrigger value="entity">{t('collaboration.content_type')}</TabsTrigger>
+              <TabsTrigger value="event">{t('collaboration.activity_type')}</TabsTrigger>
             </TabsList>
             <TabsContent value="entity" className="mt-2">
               <div className="flex flex-wrap gap-2">
@@ -191,7 +191,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
                       <Avatar className="w-6 h-6">
                         <AvatarFallback className="text-xs">م</AvatarFallback>
                       </Avatar>
-                      <span className="text-sm font-medium">{t('collaboration:user')}</span>
+                      <span className="text-sm font-medium">{t('collaboration.user')}</span>
                       <Badge variant="outline" className="text-xs">
                         {getEntityTypeLabel(t, activity.entity_type)}
                       </Badge>
