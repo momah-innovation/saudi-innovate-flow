@@ -177,6 +177,28 @@
     "no_implementation_data": "لا تتوفر بيانات تتبع التنفيذ",
     "completed": "مكتمل",
     "milestones": "المعالم",
-    "health_status": "حالة الصحة"
-  }
+    "health_status": "حالة الصحة",
+    "points": "نقاط",
+    "more_ideas": "وأكثر من {{count}} فكرة أخرى...",
+    "completion_percentage": "نسبة الإنجاز",
+    "completed_milestones": "المعالم المكتملة",
+    "total_milestones": "إجمالي المعالم", 
+    "project_status": "حالة المشروع",
+    "analytics_statistics": "تحليلات وإحصائيات",
+    "suggested_ideas": "أفكار مقترحة",
+    "assigned_experts_count": "خبراء معينون",
+    "events": "فعاليات",
+    "partners_count": "شركاء",
+    "internal_notes": "ملاحظات الفريق الداخلي",
+    "last_updated": "آخر تحديث",
+    "edit_challenge": "تعديل التحدي"
+  },
+  "achievements": "الإنجازات", 
+  "my_achievements": "إنجازاتي",
+  "explore_challenges": "استكشف التحديات",
+  "create_challenge": "إنشاء تحدي",
+  "advanced_filters": "فلاتر متقدمة",
+  "saved_challenges": "التحديات المحفوظة",
+  "view_saved": "عرض المحفوظات",
+  "currency": "ريال"
 }

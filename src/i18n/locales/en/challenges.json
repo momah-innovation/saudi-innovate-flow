@@ -177,6 +177,28 @@
     "no_implementation_data": "No implementation tracking data available",
     "completed": "Completed",
     "milestones": "Milestones",
-    "health_status": "Health Status"
-  }
+    "health_status": "Health Status",
+    "points": "Points",
+    "more_ideas": "and {{count}} more ideas...",
+    "completion_percentage": "Completion Percentage",
+    "completed_milestones": "Completed Milestones", 
+    "total_milestones": "Total Milestones",
+    "project_status": "Project Status",
+    "analytics_statistics": "Analytics & Statistics",
+    "suggested_ideas": "Suggested Ideas",
+    "assigned_experts_count": "Assigned Experts",
+    "events": "Events",
+    "partners_count": "Partners",
+    "internal_notes": "Internal Team Notes",
+    "last_updated": "Last Updated",
+    "edit_challenge": "Edit Challenge"
+  },
+  "achievements": "Achievements",
+  "my_achievements": "My Achievements",
+  "explore_challenges": "Explore Challenges",
+  "create_challenge": "Create Challenge",
+  "advanced_filters": "Advanced Filters",
+  "saved_challenges": "Saved Challenges",
+  "view_saved": "View Saved",
+  "currency": "SAR"
 }

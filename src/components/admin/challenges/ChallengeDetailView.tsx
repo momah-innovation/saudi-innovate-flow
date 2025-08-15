@@ -373,8 +373,8 @@ export function ChallengeDetailView({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-base">الخبراء المعينون</CardTitle>
-                        <CardDescription>{relatedData.experts.length} خبير</CardDescription>
+                        <CardTitle className="text-base">{t('challenges:detail.assigned_experts', 'الخبراء المعينون')}</CardTitle>
+                        <CardDescription>{relatedData.experts.length} {t('challenges:detail.expert', 'خبير')}</CardDescription>
                       </CardHeader>
                       <CardContent>
                         {relatedData.experts.length > 0 ? (
@@ -382,7 +382,7 @@ export function ChallengeDetailView({
                             {relatedData.experts.map((expert: RelatedExpert) => (
                               <div key={expert.id} className="flex items-center justify-between p-2 border rounded">
                                 <div>
-                                  <p className="font-medium">{expert.experts?.expertise_areas?.join(', ') || 'خبير'}</p>
+                                  <p className="font-medium">{expert.experts?.expertise_areas?.join(', ') || t('challenges:detail.expert', 'خبير')}</p>
                                   <p className="text-sm text-muted-foreground">{expert.role_type}</p>
                                 </div>
                                 <Badge variant={expert.status === 'active' ? 'default' : 'secondary'}>
@@ -392,15 +392,15 @@ export function ChallengeDetailView({
                             ))}
                           </div>
                         ) : (
-                          <p className="text-sm text-muted-foreground">لا يوجد خبراء معينون</p>
+                          <p className="text-sm text-muted-foreground">{t('challenges:detail.no_assigned_experts', 'لا يوجد خبراء معينون')}</p>
                         )}
                       </CardContent>
                     </Card>
 
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-base">الشركاء</CardTitle>
-                        <CardDescription>{relatedData.partners.length} شريك</CardDescription>
+                        <CardTitle className="text-base">{t('challenges:detail.partners', 'الشركاء')}</CardTitle>
+                        <CardDescription>{relatedData.partners.length} {t('challenges:detail.partner', 'شريك')}</CardDescription>
                       </CardHeader>
                       <CardContent>
                         {relatedData.partners.length > 0 ? (
@@ -418,7 +418,7 @@ export function ChallengeDetailView({
                             ))}
                           </div>
                         ) : (
-                          <p className="text-sm text-muted-foreground">لا يوجد شركاء</p>
+                          <p className="text-sm text-muted-foreground">{t('challenges:detail.no_partners', 'لا يوجد شركاء')}</p>
                         )}
                       </CardContent>
                     </Card>
@@ -427,7 +427,7 @@ export function ChallengeDetailView({
                   {challenge.collaboration_details && (
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-base">تفاصيل التعاون</CardTitle>
+                        <CardTitle className="text-base">{t('challenges:detail.collaboration_details', 'تفاصيل التعاون')}</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <p className="text-sm">{challenge.collaboration_details}</p>
@@ -443,7 +443,7 @@ export function ChallengeDetailView({
               <AccordionTrigger className="text-lg font-semibold">
                 <div className="flex items-center gap-2">
                   <HelpCircle className="w-5 h-5" />
-                  الأسئلة المحورية ({relatedData.focusQuestions.length})
+                  {t('challenges:detail.focus_questions', 'الأسئلة المحورية')} ({relatedData.focusQuestions.length})
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -462,7 +462,7 @@ export function ChallengeDetailView({
                                 <div className="flex items-center gap-2 mt-2">
                                   <Badge variant="outline">{question.question_type}</Badge>
                                   {question.is_sensitive && (
-                                    <Badge variant="destructive">حساس</Badge>
+                                    <Badge variant="destructive">{t('challenges:detail.sensitive', 'حساس')}</Badge>
                                   )}
                                 </div>
                               </div>
@@ -471,7 +471,7 @@ export function ChallengeDetailView({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-muted-foreground">{t('challenge.no_focus_questions', 'لا توجد أسئلة محورية مرتبطة')}</p>
+                      <p className="text-sm text-muted-foreground">{t('challenges:detail.no_focus_questions', 'لم يتم إنشاء أسئلة محورية لهذا التحدي بعد')}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -483,7 +483,7 @@ export function ChallengeDetailView({
               <AccordionTrigger className="text-lg font-semibold">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
-                  الفعاليات ({relatedData.events.length})
+                  {t('challenges:detail.related_events', 'الفعاليات ذات الصلة')} ({relatedData.events.length})
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -504,8 +504,8 @@ export function ChallengeDetailView({
                           </div>
                         ))}
                       </div>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">{t('challenge.no_related_events', 'لا توجد فعاليات مرتبطة')}</p>
+                     ) : (
+                      <p className="text-sm text-muted-foreground">{t('challenges:detail.no_related_events', 'لا توجد فعاليات ذات صلة')}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -517,7 +517,7 @@ export function ChallengeDetailView({
               <AccordionTrigger className="text-lg font-semibold">
                 <div className="flex items-center gap-2">
                   <Lightbulb className="w-5 h-5" />
-                  الأفكار المقترحة ({relatedData.ideas.length})
+                  {t('challenges:detail.submitted_ideas', 'الأفكار المقدمة')} ({relatedData.ideas.length})
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -536,20 +536,20 @@ export function ChallengeDetailView({
                             </div>
                             <div className="text-right">
                               <Badge variant="outline">{idea.status}</Badge>
-                              <p className="text-xs text-muted-foreground mt-1">
-                                نقاط: {idea.overall_score || 0}
+                               <p className="text-xs text-muted-foreground mt-1">
+                                {t('challenges:detail.points', 'نقاط')}: {idea.overall_score || 0}
                               </p>
                             </div>
                           </div>
                         ))}
                         {relatedData.ideas.length > 5 && (
                           <p className="text-sm text-muted-foreground text-center pt-2">
-                            وأكثر من {relatedData.ideas.length - 5} فكرة أخرى...
+                            {t('challenges:detail.more_ideas', 'وأكثر من {{count}} فكرة أخرى...', { count: relatedData.ideas.length - 5 })}
                           </p>
                         )}
                       </div>
                     ) : (
-                      <p className="text-sm text-muted-foreground">{t('challenge.no_suggested_ideas', 'لا توجد أفكار مقترحة')}</p>
+                      <p className="text-sm text-muted-foreground">{t('challenges:detail.no_submitted_ideas', 'لا توجد أفكار مقدمة بعد')}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -561,7 +561,7 @@ export function ChallengeDetailView({
               <AccordionTrigger className="text-lg font-semibold">
                 <div className="flex items-center gap-2">
                   <Workflow className="w-5 h-5" />
-                  متابعة التنفيذ
+                  {t('challenges:detail.implementation_progress', 'متابعة التنفيذ')}
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -574,19 +574,19 @@ export function ChallengeDetailView({
                             <p className="text-2xl font-bold text-primary">
                               {relatedData.implementation.completion_percentage || 0}%
                             </p>
-                            <p className="text-sm text-muted-foreground">نسبة الإنجاز</p>
+                            <p className="text-sm text-muted-foreground">{t('challenges:detail.completion_percentage', 'نسبة الإنجاز')}</p>
                           </div>
                           <div className="text-center">
                             <p className="text-2xl font-bold">
                               {relatedData.implementation.milestones_completed || 0}
                             </p>
-                            <p className="text-sm text-muted-foreground">المعالم المكتملة</p>
+                            <p className="text-sm text-muted-foreground">{t('challenges:detail.completed_milestones', 'المعالم المكتملة')}</p>
                           </div>
                           <div className="text-center">
                             <p className="text-2xl font-bold">
                               {relatedData.implementation.total_milestones || 0}
                             </p>
-                            <p className="text-sm text-muted-foreground">إجمالي المعالم</p>
+                            <p className="text-sm text-muted-foreground">{t('challenges:detail.total_milestones', 'إجمالي المعالم')}</p>
                           </div>
                           <div className="text-center">
                             <Badge 
@@ -597,12 +597,12 @@ export function ChallengeDetailView({
                             >
                               {relatedData.implementation.health_status}
                             </Badge>
-                            <p className="text-sm text-muted-foreground mt-1">حالة المشروع</p>
+                            <p className="text-sm text-muted-foreground mt-1">{t('challenges:detail.project_status', 'حالة المشروع')}</p>
                           </div>
                         </div>
                       </div>
                     ) : (
-                      <p className="text-sm text-muted-foreground">{t('challenge.no_implementation_data', 'لا توجد بيانات تنفيذ متاحة')}</p>
+                      <p className="text-sm text-muted-foreground">{t('challenges:detail.no_implementation_data', 'لا توجد بيانات تتبع التنفيذ')}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -614,7 +614,7 @@ export function ChallengeDetailView({
               <AccordionTrigger className="text-lg font-semibold">
                 <div className="flex items-center gap-2">
                   <BarChart3 className="w-5 h-5" />
-                  تحليلات وإحصائيات
+                  {t('challenges:detail.analytics_statistics', 'تحليلات وإحصائيات')}
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -623,28 +623,28 @@ export function ChallengeDetailView({
                     <CardContent className="pt-6 text-center">
                       <Lightbulb className="w-8 h-8 mx-auto mb-2 text-primary" />
                       <p className="text-2xl font-bold">{relatedData.ideas.length}</p>
-                      <p className="text-sm text-muted-foreground">أفكار مقترحة</p>
+                      <p className="text-sm text-muted-foreground">{t('challenges:detail.suggested_ideas', 'أفكار مقترحة')}</p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="pt-6 text-center">
                       <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
                       <p className="text-2xl font-bold">{relatedData.experts.length}</p>
-                      <p className="text-sm text-muted-foreground">خبراء معينون</p>
+                      <p className="text-sm text-muted-foreground">{t('challenges:detail.assigned_experts_count', 'خبراء معينون')}</p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="pt-6 text-center">
                       <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
                       <p className="text-2xl font-bold">{relatedData.events.length}</p>
-                      <p className="text-sm text-muted-foreground">فعاليات</p>
+                      <p className="text-sm text-muted-foreground">{t('challenges:detail.events', 'فعاليات')}</p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="pt-6 text-center">
                       <Building className="w-8 h-8 mx-auto mb-2 text-primary" />
                       <p className="text-2xl font-bold">{relatedData.partners.length}</p>
-                      <p className="text-sm text-muted-foreground">شركاء</p>
+                      <p className="text-sm text-muted-foreground">{t('challenges:detail.partners_count', 'شركاء')}</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -657,7 +657,7 @@ export function ChallengeDetailView({
                 <AccordionTrigger className="text-lg font-semibold">
                   <div className="flex items-center gap-2">
                     <FileText className="w-5 h-5" />
-                    ملاحظات الفريق الداخلي
+                    {t('challenges:detail.internal_notes', 'ملاحظات الفريق الداخلي')}
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -676,15 +676,15 @@ export function ChallengeDetailView({
         <div className="p-6 pt-4 border-t">
           <div className="flex justify-between items-center">
             <div className="text-sm text-muted-foreground">
-              آخر تحديث: {format(new Date(challenge.updated_at), 'PPp')}
+              {t('challenges:detail.last_updated', 'آخر تحديث')}: {format(new Date(challenge.updated_at), 'PPp')}
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={onClose}>
-                إغلاق
+                {t('common:actions.close', 'إغلاق')}
               </Button>
               <Button onClick={() => onEdit(challenge)}>
                 <Edit className="w-4 h-4 mr-2" />
-                تعديل التحدي
+                {t('challenges:detail.edit_challenge', 'تعديل التحدي')}
               </Button>
             </div>
           </div>
