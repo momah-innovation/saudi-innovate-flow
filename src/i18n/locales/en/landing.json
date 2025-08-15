@@ -34,8 +34,10 @@
     }
   },
   "statistics": {
+    "title": "Platform Impact",
+    "subtitle": "Measurable results driving government innovation",
     "active_challenges": "Active Challenges",
-    "registered_experts": "Registered Experts",
+    "registered_experts": "Registered Experts", 
     "government_entities": "Government Entities",
     "success_rate": "Success Rate"
   },

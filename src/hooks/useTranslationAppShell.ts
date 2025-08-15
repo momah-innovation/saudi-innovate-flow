@@ -86,9 +86,14 @@ export const useTranslationAppShell = () => {
       namespacesToLoad.push('profile', 'validation');
     }
 
+    // Landing page specific namespaces
+    if (path === '/') {
+      namespacesToLoad.push('landing');
+    }
+
     // Dashboard gets comprehensive preloading for optimal UX
-    if (path === '/dashboard' || path === '/') {
-      namespacesToLoad.push('challenges', 'campaigns', 'opportunities', 'events');
+    if (path === '/dashboard') {
+      namespacesToLoad.push('dashboard', 'challenges', 'campaigns', 'opportunities', 'events');
     }
 
     // Always load system-lists for any form or interactive page
@@ -133,28 +138,90 @@ export const useTranslationPerformance = () => {
  * Critical Translation Preloader - PRODUCTION OPTIMIZED
  * Preloads essential namespaces with performance tracking
  */
+/**
+ * Route-based Translation Priority System
+ * Optimizes loading order based on current route and user journey
+ */
+const getRouteBasedNamespaces = (pathname: string): { critical: string[], prefetch: string[] } => {
+  const critical: string[] = ['common', 'navigation', 'errors'];
+  const prefetch: string[] = [];
+
+  // Landing page specific
+  if (pathname === '/') {
+    critical.push('landing');
+    prefetch.push('auth', 'challenges');
+  }
+  // Auth pages
+  else if (pathname.startsWith('/auth') || pathname === '/signup' || pathname === '/login') {
+    critical.push('auth', 'validation');
+    prefetch.push('dashboard', 'landing');
+  }
+  // Admin routes
+  else if (pathname.startsWith('/admin')) {
+    critical.push('admin', 'system-lists', 'validation');
+    prefetch.push('challenges', 'campaigns', 'opportunities');
+  }
+  // Dashboard
+  else if (pathname === '/dashboard') {
+    critical.push('dashboard');
+    prefetch.push('challenges', 'campaigns', 'opportunities', 'events');
+  }
+  // Challenge routes
+  else if (pathname.startsWith('/challenges')) {
+    critical.push('challenges', 'validation');
+    prefetch.push('system-lists', 'campaigns');
+  }
+  // Campaign routes
+  else if (pathname.startsWith('/campaigns')) {
+    critical.push('campaigns', 'validation');
+    prefetch.push('system-lists', 'challenges');
+  }
+  // Events routes
+  else if (pathname.startsWith('/events')) {
+    critical.push('events', 'validation');
+    prefetch.push('opportunities');
+  }
+  // Opportunities routes
+  else if (pathname.startsWith('/opportunities')) {
+    critical.push('opportunities', 'validation');
+    prefetch.push('events', 'challenges');
+  }
+  // Profile and settings
+  else if (pathname.startsWith('/profile') || pathname.startsWith('/settings')) {
+    critical.push('profile', 'validation');
+    prefetch.push('system-lists');
+  }
+
+  return { critical, prefetch };
+};
+
 export const preloadCriticalTranslations = async () => {
   const startTime = performance.now();
   
-  const criticalNamespaces = [
-    'common',
-    'navigation', 
-    'dashboard',
-    'auth',
-    'errors',
-    'validation',
-    'system-lists'
-  ];
+  // Get current route from browser URL (works even without router context)
+  const pathname = window.location.pathname;
+  const { critical, prefetch } = getRouteBasedNamespaces(pathname);
+  
+  const criticalNamespaces = Array.from(new Set(critical));
 
   try {
+    // Load critical namespaces first (blocking)
     await preloadNamespaces(criticalNamespaces);
     
     const loadTime = performance.now() - startTime;
     console.log(`✅ Critical translations loaded in ${loadTime.toFixed(1)}ms`);
     
+    // Prefetch non-critical namespaces in background (non-blocking)
+    const prefetchNamespaces = Array.from(new Set(prefetch));
+    if (prefetchNamespaces.length > 0) {
+      setTimeout(() => {
+        preloadNamespaces(prefetchNamespaces).catch(console.warn);
+      }, 100); // Small delay to not block critical loading
+    }
+    
     // Performance monitoring
-    if (loadTime > 500) {
-      console.warn(`⚠️ Slow translation loading detected: ${loadTime.toFixed(1)}ms`);
+    if (loadTime > 300) {
+      console.warn(`⚠️ Slow critical translation loading: ${loadTime.toFixed(1)}ms`);
     }
   } catch (error) {
     console.error('❌ Failed to preload critical translations:', error);

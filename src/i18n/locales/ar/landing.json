@@ -34,9 +34,11 @@
     }
   },
   "statistics": {
+    "title": "تأثير المنصة",
+    "subtitle": "نتائج قابلة للقياس تقود الابتكار الحكومي",
     "active_challenges": "التحديات النشطة",
     "registered_experts": "الخبراء المسجلون",
-    "government_entities": "الجهات الحكومية",
+    "government_entities": "الجهات الحكومية", 
     "success_rate": "معدل النجاح"
   },
   "process": {
