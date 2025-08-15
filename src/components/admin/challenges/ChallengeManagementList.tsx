@@ -16,6 +16,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useStatusTranslations } from "@/utils/statusMappings";
 import { logger } from "@/utils/logger";
+import { useOptimizedAdminChallenges } from '@/hooks/admin/useOptimizedAdminChallenges';
+
 
 import { 
   Target, 
@@ -70,8 +72,9 @@ interface Challenge {
 
 export function ChallengeManagementList() {
   const navigate = useNavigate();
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Data is provided by optimized hook below
+  // const [challenges, setChallenges] = useState<Challenge[]>([]);
+  // const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
@@ -85,43 +88,13 @@ export function ChallengeManagementList() {
   const { getStatusLabel, getPriorityLabel } = useStatusTranslations();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
   
-
-  useEffect(() => {
-    fetchChallenges();
-  }, []);
-
-  const fetchChallenges = async () => {
-    try {
-      setLoading(true);
-      // Starting challenge fetch
-      
-      const { data, error } = await supabase
-        .from('challenges')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      // Query completed
-      
-      if (error) {
-        // Database error logged
-        throw error;
-      }
-      
-      // Successfully fetched challenges
-      setChallenges(data || []);
-    } catch (error) {
-      // Error occurred during fetch
-      logger.error('Error fetching challenges', { component: 'ChallengeManagementList', action: 'fetchChallenges' }, error as Error);
-      toast({
-        title: t('challenge_management.load_error_title'),
-        description: t('challenge_management.load_error_description'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-      // fetchChallenges completed
-    }
-  };
+  // Optimized, batched fetch with React Query
+  const { data: challenges = [], isLoading, refetch } = useOptimizedAdminChallenges({
+    status: statusFilter,
+    priority: priorityFilter,
+    sensitivity: sensitivityFilter,
+    search: searchTerm
+  });
 
   const handleDelete = async (challengeId: string) => {
     try {
@@ -132,7 +105,7 @@ export function ChallengeManagementList() {
       
       if (error) throw error;
       
-      setChallenges(prev => prev.filter(c => c.id !== challengeId));
+      await refetch();
       toast({
         title: t('challenge_management.delete_success_title'),
         description: t('challenge_management.delete_success_description')
@@ -147,14 +120,13 @@ export function ChallengeManagementList() {
     }
   };
 
-  const handleEdit = (challenge: Challenge) => {
-    setSelectedChallenge(challenge);
+  const handleEdit = (challenge: any) => {
+    setSelectedChallenge(challenge as unknown as Challenge);
     setShowWizard(true);
   };
 
-  const handleView = (challenge: Challenge) => {
+  const handleView = (challenge: any) => {
     // Navigate to full page view instead of dialog
-    // Navigate to challenge detail page
     navigate(`/admin/challenges/${challenge.id}`);
   };
 
@@ -304,7 +276,7 @@ export function ChallengeManagementList() {
         </div>
 
         {/* Content */}
-        {loading ? (
+        {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="animate-pulse bg-card rounded-lg h-64" />
@@ -403,7 +375,7 @@ export function ChallengeManagementList() {
           setSelectedChallenge(null);
         }}
         onSuccess={() => {
-          fetchChallenges();
+          refetch();
           setShowWizard(false);
           setSelectedChallenge(null);
         }}
@@ -443,7 +415,7 @@ export function ChallengeManagementList() {
         }}
         challenge={selectedChallenge}
         onEdit={handleEdit}
-        onRefresh={fetchChallenges}
+        onRefresh={refetch}
       />
     </>
   );
