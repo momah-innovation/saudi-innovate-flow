@@ -193,11 +193,11 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
               </div>
               <div className="space-y-2">
                 <Label>{t('user_invitation_wizard.department')}</Label>
-                <Input
-                  value={formData.department}
-                  onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
-                  placeholder="Engineering"
-                />
+                 <Input
+                   value={formData.department}
+                   onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
+                   placeholder={t('common.placeholders.department', 'Engineering')}
+                 />
               </div>
             </div>
             <div className="space-y-2">
