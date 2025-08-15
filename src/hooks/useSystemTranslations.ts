@@ -29,10 +29,9 @@ export function useSystemTranslations(language?: 'en' | 'ar') {
   const { data: dbTranslations = [], isLoading, error } = useQuery({
     queryKey: [...queryKeys.system.translations(), currentLanguage],
     queryFn: async () => {
-      debugLog.info('Fetching dynamic system translations', { 
+      debugLog.debug('Fetching dynamic system translations', { 
         component: 'useSystemTranslations', 
-        language: currentLanguage,
-        timestamp: new Date().toISOString()
+        language: currentLanguage
       });
       
       const { data, error } = await supabase
@@ -47,7 +46,7 @@ export function useSystemTranslations(language?: 'en' | 'ar') {
         throw error;
       }
       
-      debugLog.info(`Successfully fetched ${data?.length || 0} dynamic translations`, { 
+      debugLog.debug(`Successfully fetched ${data?.length || 0} dynamic translations`, { 
         component: 'useSystemTranslations',
         language: currentLanguage
       });

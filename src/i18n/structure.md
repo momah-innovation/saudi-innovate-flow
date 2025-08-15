@@ -63,20 +63,21 @@ The translation system is fully integrated into the application shell:
 - Real-time multilingual content management
 - Dynamic system configurations via admin UI
 
-### 3. File Size Guidelines
-- Each file should be < 100 translation keys
-- Group related functionality together
-- Use nested objects for sub-features
+### 3. File Organization Guidelines - **✅ OPTIMIZED**
+- Each file < 200 translation keys for optimal loading
+- Features grouped by user workflows and admin sections
+- Nested objects for complex UI structures
+- Consistent naming across all 24 files
 
-### 4. Key Naming Convention
+### 4. Key Naming Convention - **✅ STANDARDIZED**
 ```javascript
-// Static files use dot notation
+// Static files use dot notation for i18next
 "challenges.form.title_label": "Challenge Title"
-"challenges.form.description_placeholder": "Enter description..."
+"navigation.sidebar.dashboard": "Dashboard"
 
-// Database uses underscore notation matching table structure
-"challenge_status_active": "Active"
-"sector_health_description": "Health Ministry"
+// Database uses underscore notation for SQL compatibility  
+"dynamic_partner_org_123": "Custom Partner Organization"
+"user_field_label_specialty": "Area of Specialty"
 ```
 
 ### 5. ✅ **PRODUCTION-READY Loading Strategy**

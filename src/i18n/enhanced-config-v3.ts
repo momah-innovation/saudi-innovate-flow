@@ -260,11 +260,18 @@ i18n
       loadPath: '/translations/{{lng}}/{{ns}}.json', // Not used but required
     },
 
-    // Additional configuration for reliability
+    // Additional configuration for production reliability
     saveMissing: false,
     missingKeyHandler: (lng: string[], ns: string, key: string) => {
-      logger.warn(`Missing translation key: ${key} in namespace: ${ns} for language: ${lng[0]}`, { component: 'FeatureBasedBackend' });
-    }
+      logger.warn(`Missing translation key: ${key} in namespace: ${ns} for language: ${lng[0]}`, { 
+        component: 'FeatureBasedBackend'
+      });
+    },
+    
+    // Production performance settings
+    returnEmptyString: false,
+    returnNull: false,
+    returnObjects: false
   });
 
 // Helper function to preload namespaces for better UX
