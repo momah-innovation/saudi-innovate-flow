@@ -205,10 +205,10 @@ export function MigratedAdminDashboard() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight">
-              {t('admin.dashboard.title', 'Admin Dashboard')}
+              {t('admin:dashboard.title', 'Admin Dashboard')}
             </h2>
             <p className="text-muted-foreground">
-              {t('admin.dashboard.subtitle', 'System administration and security monitoring')}
+              {t('admin:dashboard.subtitle', 'System administration and security monitoring')}
             </p>
           </div>
           <div className="flex items-center gap-2">

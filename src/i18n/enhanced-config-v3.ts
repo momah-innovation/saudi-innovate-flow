@@ -282,7 +282,6 @@ i18n
         logger.warn(`Missing translation key`, {
           component: 'i18n',
           language: lang,
-          namespace: ns,
           key,
           fallback: String(fallbackValue ?? '')
         });
