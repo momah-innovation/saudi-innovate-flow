@@ -186,8 +186,8 @@ const TranslationManagement = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Translation added successfully"
+        title: t('translations.success_title'),
+        description: t('translations.added_successfully')
       });
 
       setNewTranslation({ key: '', category: '', ar: '', en: '' });
@@ -374,10 +374,10 @@ const TranslationManagement = () => {
               </div>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Filter by category" />
+                  <SelectValue placeholder={t('translations.filter_by_category')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="all">{t('translations.all_categories')}</SelectItem>
                   {categories.map(category => (
                     <SelectItem key={category} value={category}>
                       {category}

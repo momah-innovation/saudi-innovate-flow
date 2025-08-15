@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { User, Mail, Phone, Building, MapPin, Calendar, Award, Star, Clock, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/error-handler";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface Expert {
   id: string;
@@ -36,6 +37,7 @@ interface ExpertProfileDialogProps {
 
 export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProfileDialogProps) {
   const navigate = useNavigate();
+  const { t } = useUnifiedTranslation();
   const [expert, setExpert] = useState<Expert | null>(null);
   interface AssignmentData {
     id: string;
@@ -144,7 +146,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Expert Profile</DialogTitle>
+            <DialogTitle>{t('expert_profile.title')}</DialogTitle>
           </DialogHeader>
           {loading ? (
             <div className="flex items-center justify-center py-8">
@@ -175,13 +177,13 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>Basic Information</span>
+                <span>{t('expert_profile.basic_information')}</span>
                 <div className="flex gap-2">
                   <Badge variant={getStatusColor(expert.availability_status)}>
                     {expert.availability_status}
                   </Badge>
                   <Badge variant={getLevelColor(expert.expert_level)}>
-                    {expert.expert_level} level
+                    {expert.expert_level} {t('expert_profile.level')}
                   </Badge>
                 </div>
               </CardTitle>
@@ -241,7 +243,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
           {/* Expertise Areas */}
           <Card>
             <CardHeader>
-              <CardTitle>Expertise Areas</CardTitle>
+              <CardTitle>{t('expert_profile.expertise_areas')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
@@ -258,12 +260,12 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
           {(expert.education_background || expert.certifications) && (
             <Card>
               <CardHeader>
-                <CardTitle>Education & Certifications</CardTitle>
+                <CardTitle>{t('expert_profile.education_certifications')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {expert.education_background && (
                   <div>
-                    <h4 className="font-medium mb-2">Education Background</h4>
+                    <h4 className="font-medium mb-2">{t('expert_profile.education_background')}</h4>
                     <p className="text-sm text-muted-foreground">{expert.education_background}</p>
                   </div>
                 )}
@@ -287,11 +289,11 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
           {/* Active Assignments */}
           <Card>
             <CardHeader>
-              <CardTitle>Active Assignments ({activeAssignments.length})</CardTitle>
+              <CardTitle>{t('expert_profile.active_assignments')} ({activeAssignments.length})</CardTitle>
             </CardHeader>
             <CardContent>
               {activeAssignments.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No active assignments</p>
+                <p className="text-sm text-muted-foreground">{t('expert_profile.no_active_assignments')}</p>
               ) : (
                 <div className="space-y-3">
                   {activeAssignments.map((assignment) => (

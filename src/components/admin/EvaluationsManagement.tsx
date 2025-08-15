@@ -300,47 +300,47 @@ export function EvaluationsManagement({
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="text-center p-3 border rounded">
                     <div className="text-2xl font-bold">{selectedEvaluation.technical_feasibility || "N/A"}</div>
-                    <div className="text-xs text-muted-foreground">Technical Feasibility</div>
+                    <div className="text-xs text-muted-foreground">{t('evaluations.technical_feasibility')}</div>
                   </div>
                   <div className="text-center p-3 border rounded">
                     <div className="text-2xl font-bold">{selectedEvaluation.financial_viability || "N/A"}</div>
-                    <div className="text-xs text-muted-foreground">Financial Viability</div>
+                    <div className="text-xs text-muted-foreground">{t('evaluations.financial_viability')}</div>
                   </div>
                   <div className="text-center p-3 border rounded">
                     <div className="text-2xl font-bold">{selectedEvaluation.market_potential || "N/A"}</div>
-                    <div className="text-xs text-muted-foreground">Market Potential</div>
+                    <div className="text-xs text-muted-foreground">{t('evaluations.market_potential')}</div>
                   </div>
                   <div className="text-center p-3 border rounded">
                     <div className="text-2xl font-bold">{selectedEvaluation.strategic_alignment || "N/A"}</div>
-                    <div className="text-xs text-muted-foreground">Strategic Alignment</div>
+                    <div className="text-xs text-muted-foreground">{t('evaluations.strategic_alignment')}</div>
                   </div>
                   <div className="text-center p-3 border rounded">
                     <div className="text-2xl font-bold">{selectedEvaluation.innovation_level || "N/A"}</div>
-                    <div className="text-xs text-muted-foreground">Innovation Level</div>
+                    <div className="text-xs text-muted-foreground">{t('evaluations.innovation_level')}</div>
                   </div>
                   <div className="text-center p-3 border rounded">
                     <div className="text-2xl font-bold">{selectedEvaluation.implementation_complexity || "N/A"}</div>
-                    <div className="text-xs text-muted-foreground">Implementation Complexity</div>
+                    <div className="text-xs text-muted-foreground">{t('evaluations.implementation_complexity')}</div>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-semibold mb-2">Strengths</h3>
-                  <p className="text-sm status-success p-3 rounded border">{selectedEvaluation.strengths || "No strengths provided"}</p>
+                  <h3 className="font-semibold mb-2">{t('evaluations.strengths')}</h3>
+                  <p className="text-sm status-success p-3 rounded border">{selectedEvaluation.strengths || t('evaluations.no_strengths_provided')}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Weaknesses</h3>
-                  <p className="text-sm status-error p-3 rounded border">{selectedEvaluation.weaknesses || "No weaknesses provided"}</p>
+                  <h3 className="font-semibold mb-2">{t('evaluations.weaknesses')}</h3>
+                  <p className="text-sm status-error p-3 rounded border">{selectedEvaluation.weaknesses || t('evaluations.no_weaknesses_provided')}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Recommendations</h3>
-                  <p className="text-sm status-info p-3 rounded border">{selectedEvaluation.recommendations || "No recommendations provided"}</p>
+                  <h3 className="font-semibold mb-2">{t('evaluations.recommendations')}</h3>
+                  <p className="text-sm status-info p-3 rounded border">{selectedEvaluation.recommendations || t('evaluations.no_recommendations_provided')}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Next Steps</h3>
-                  <p className="text-sm status-warning p-3 rounded border">{selectedEvaluation.next_steps || "No next steps provided"}</p>
+                  <h3 className="font-semibold mb-2">{t('evaluations.next_steps')}</h3>
+                  <p className="text-sm status-warning p-3 rounded border">{selectedEvaluation.next_steps || t('evaluations.no_next_steps_provided')}</p>
                 </div>
               </div>
             </div>

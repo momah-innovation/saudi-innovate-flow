@@ -348,5 +348,49 @@
     "filter": "مرشح",
     "all_types": "جميع الأنواع",
     "all_status": "جميع الحالات"
+  },
+  "evaluations": {
+    "technical_feasibility": "الجدوى التقنية",
+    "financial_viability": "الجدوى المالية",
+    "market_potential": "إمكانات السوق",
+    "strategic_alignment": "التوافق الاستراتيجي",
+    "innovation_level": "مستوى الابتكار",
+    "implementation_complexity": "تعقيد التنفيذ",
+    "strengths": "نقاط القوة",
+    "weaknesses": "نقاط الضعف",
+    "recommendations": "التوصيات",
+    "next_steps": "الخطوات التالية",
+    "no_strengths_provided": "لم يتم تقديم نقاط قوة",
+    "no_weaknesses_provided": "لم يتم تقديم نقاط ضعف",
+    "no_recommendations_provided": "لم يتم تقديم توصيات",
+    "no_next_steps_provided": "لم يتم تقديم خطوات تالية"
+  },
+  "expert_profile": {
+    "title": "ملف الخبير",
+    "basic_information": "المعلومات الأساسية",
+    "level": "مستوى",
+    "expertise_areas": "مجالات الخبرة",
+    "education_certifications": "التعليم والشهادات",
+    "education_background": "الخلفية التعليمية",
+    "active_assignments": "التكليفات النشطة",
+    "no_active_assignments": "لا توجد تكليفات نشطة"
+  },
+  "sectors": {
+    "success_title": "نجح",
+    "error_title": "خطأ",
+    "deleted_successfully": "تم حذف القطاع بنجاح",
+    "failed_to_delete": "فشل في حذف القطاع",
+    "loading": "جاري التحميل...",
+    "add_sector": "إضافة قطاع",
+    "edit_sector": "تعديل قطاع",
+    "add_new_sector": "إضافة قطاع جديد",
+    "update_information": "تحديث معلومات القطاع",
+    "create_new": "إنشاء قطاع جديد"
+  },
+  "translations": {
+    "success_title": "نجح",
+    "added_successfully": "تم إضافة الترجمة بنجاح",
+    "filter_by_category": "تصفية حسب الفئة",
+    "all_categories": "جميع الفئات"
   }
 }

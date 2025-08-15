@@ -151,16 +151,16 @@ export function SectorsManagement() {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Sector deleted successfully"
+        title: t('sectors.success_title'),
+        description: t('sectors.deleted_successfully')
       });
 
       fetchSectors();
     } catch (error) {
       logger.error("Error deleting sector", error);
       toast({
-        title: "Error",
-        description: "Failed to delete sector",
+        title: t('sectors.error_title'),
+        description: t('sectors.failed_to_delete'),
         variant: "destructive",
       });
     }
@@ -177,7 +177,7 @@ export function SectorsManagement() {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center p-8">Loading...</div>;
+    return <div className="flex justify-center p-8">{t('sectors.loading')}</div>;
   }
 
   return (

@@ -348,5 +348,49 @@
     "filter": "Filter",
     "all_types": "All Types",
     "all_status": "All Status"
+  },
+  "evaluations": {
+    "technical_feasibility": "Technical Feasibility",
+    "financial_viability": "Financial Viability", 
+    "market_potential": "Market Potential",
+    "strategic_alignment": "Strategic Alignment",
+    "innovation_level": "Innovation Level",
+    "implementation_complexity": "Implementation Complexity",
+    "strengths": "Strengths",
+    "weaknesses": "Weaknesses", 
+    "recommendations": "Recommendations",
+    "next_steps": "Next Steps",
+    "no_strengths_provided": "No strengths provided",
+    "no_weaknesses_provided": "No weaknesses provided",
+    "no_recommendations_provided": "No recommendations provided",
+    "no_next_steps_provided": "No next steps provided"
+  },
+  "expert_profile": {
+    "title": "Expert Profile",
+    "basic_information": "Basic Information",
+    "level": "level",
+    "expertise_areas": "Expertise Areas",
+    "education_certifications": "Education & Certifications",
+    "education_background": "Education Background",
+    "active_assignments": "Active Assignments",
+    "no_active_assignments": "No active assignments"
+  },
+  "sectors": {
+    "success_title": "Success",
+    "error_title": "Error",
+    "deleted_successfully": "Sector deleted successfully",
+    "failed_to_delete": "Failed to delete sector",
+    "loading": "Loading...",
+    "add_sector": "Add Sector",
+    "edit_sector": "Edit Sector",
+    "add_new_sector": "Add New Sector",
+    "update_information": "Update sector information",
+    "create_new": "Create a new sector"
+  },
+  "translations": {
+    "success_title": "Success",
+    "added_successfully": "Translation added successfully",
+    "filter_by_category": "Filter by category",
+    "all_categories": "All Categories"
   }
 }
