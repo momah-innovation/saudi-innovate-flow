@@ -244,19 +244,19 @@ export function AdminFocusQuestionWizard({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="question_text_en">Question Text (English)</Label>
+            <Label htmlFor="question_text_en">{t('form.question_text_english_label', 'Question Text (English)')}</Label>
             <Textarea
               id="question_text_en"
               value={formData.question_text_en}
               onChange={(e) => {
                 setFormData({ ...formData, question_text_en: e.target.value });
               }}
-              placeholder="Enter the focus question in English"
+              placeholder={t('placeholder.enter_question_english', 'Enter the focus question in English')}
               rows={4}
               dir="ltr"
             />
             <p className="text-sm text-muted-foreground">
-              Optional English translation of the question
+              {t('admin:focus_question_wizard.optional_english', 'Optional English translation of the question')}
             </p>
           </div>
         </div>
@@ -346,7 +346,7 @@ export function AdminFocusQuestionWizard({
               </SelectContent>
             </Select>
             <p className="text-sm text-muted-foreground">
-              {t('admin.focus_questions.link_help')}
+              {t('admin:focus_questions.link_help')}
             </p>
           </div>
         </div>

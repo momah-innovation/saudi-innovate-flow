@@ -10,11 +10,13 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { useOrganizationalHierarchy } from '@/hooks/useOrganizationalHierarchy';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Building, Users, MapPin, Briefcase, Globe, Settings, Plus, Edit, Search } from 'lucide-react';
 
 export function OrganizationalStructureManagement() {
   const { isRTL } = useDirection();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState('overview');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
@@ -103,13 +105,13 @@ export function OrganizationalStructureManagement() {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">
-            {isRTL ? 'نظرة عامة' : 'Overview'}
+            {t('admin:organizational_structure.overview')}
           </TabsTrigger>
           <TabsTrigger value="list">
-            {isRTL ? 'قائمة العناصر' : 'Entity List'}
+            {t('admin:organizational_structure.entity_list')}
           </TabsTrigger>
           <TabsTrigger value="hierarchy">
-            {isRTL ? 'الهيكل الهرمي' : 'Hierarchy'}
+            {t('admin:organizational_structure.hierarchy')}
           </TabsTrigger>
         </TabsList>
 
@@ -118,13 +120,13 @@ export function OrganizationalStructureManagement() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">
-                  {isRTL ? 'إجمالي العناصر' : 'Total Entities'}
+                  {t('admin:organizational_structure.total_entities')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-primary">{totalEntities}</div>
                 <p className="text-sm text-muted-foreground">
-                  {isRTL ? 'عبر جميع المستويات' : 'Across all levels'}
+                  {t('admin:organizational_structure.across_all_levels')}
                 </p>
               </CardContent>
             </Card>
@@ -190,16 +192,16 @@ export function OrganizationalStructureManagement() {
               <DialogTrigger asChild>
                 <Button className="gap-2">
                   <Plus className="h-4 w-4" />
-                  {isRTL ? 'إضافة عنصر' : 'Add Entity'}
+                  {t('admin:organizational_structure.add_entity')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>
-                    {isRTL ? 'إضافة عنصر تنظيمي جديد' : 'Add New Organizational Entity'}
+                    {t('admin:organizational_structure.add_new_entity')}
                   </DialogTitle>
                   <DialogDescription>
-                    {isRTL ? 'هذه الميزة قيد التطوير' : 'This feature is under development'}
+                    {t('admin:organizational_structure.feature_under_development')}
                   </DialogDescription>
                 </DialogHeader>
               </DialogContent>

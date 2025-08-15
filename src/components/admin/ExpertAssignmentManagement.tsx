@@ -471,7 +471,7 @@ export function ExpertAssignmentManagement() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">{t('expert_assignment_management.loading_assignments')}</p>
+          <p className="mt-2 text-muted-foreground">{t('admin:expert_assignment.loading_assignments')}</p>
         </div>
       </div>
     );
@@ -482,19 +482,19 @@ export function ExpertAssignmentManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">{t('expert_assignment_management.title')}</h1>
+          <h1 className="text-3xl font-bold">{t('admin:expert_assignment.title')}</h1>
           <p className="text-muted-foreground">
-            {t('expert_assignment_management.description')}
+            {t('admin:expert_assignment.description')}
           </p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => setIsAssignDialogOpen(true)}>
             <Plus className="h-4 w-4 me-2" />
-            {t('expert_assignment_management.assign_expert')}
+            {t('admin:expert_assignment.assign_expert')}
           </Button>
           <Button variant="outline" onClick={() => setIsBulkAssignDialogOpen(true)}>
             <Users className="h-4 w-4 me-2" />
-            {t('expert_assignment_management.bulk_assign')}
+            {t('admin:expert_assignment.bulk_assign')}
           </Button>
         </div>
       </div>
