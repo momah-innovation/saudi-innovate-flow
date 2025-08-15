@@ -60,6 +60,7 @@ export const ChallengeActivityHub = ({
 }: ChallengeActivityHubProps) => {
   const { isRTL } = useDirection();
   const { user } = useAuth();
+  const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState('activity');
   const [activities, setActivities] = useState<ChallengeActivity[]>([]);
   const [participants, setParticipants] = useState<unknown[]>([]);
@@ -115,7 +116,7 @@ export const ChallengeActivityHub = ({
           type: 'participation',
           user_name: 'أحمد محمد',
           user_avatar: '/api/placeholder/32/32',
-          action_text: isRTL ? 'انضم إلى التحدي' : 'joined the challenge',
+          action_text: isRTL ? t('challenges:joined_challenge') : t('challenges:joined_challenge'),
           created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
           challenge_title: challenge.title_ar
         },
@@ -125,7 +126,7 @@ export const ChallengeActivityHub = ({
           type: 'comment',
           user_name: 'فاطمة علي',
           user_avatar: '/api/placeholder/32/32',
-          action_text: isRTL ? 'علقت على التحدي' : 'commented on the challenge',
+          action_text: isRTL ? t('challenges:commented_on_challenge') : t('challenges:commented_on_challenge'),
           created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
           challenge_title: challenge.title_ar
         },
@@ -135,7 +136,7 @@ export const ChallengeActivityHub = ({
           type: 'submission',
           user_name: 'محمد عبدالله',
           user_avatar: '/api/placeholder/32/32',
-          action_text: isRTL ? 'قدم مشروعاً جديداً' : 'submitted a new project',
+          action_text: isRTL ? t('challenges:submitted_new_project') : t('challenges:submitted_new_project'),
           created_at: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
           challenge_title: challenge.title_ar
         }
@@ -165,7 +166,7 @@ export const ChallengeActivityHub = ({
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
-    if (diffInMinutes < 1) return isRTL ? 'الآن' : 'Now';
+    if (diffInMinutes < 1) return isRTL ? t('challenges:now') : t('challenges:now');
     if (diffInMinutes < 60) return `${diffInMinutes}${isRTL ? ' د' : 'm'}`;
     
     const diffInHours = Math.floor(diffInMinutes / 60);
@@ -222,17 +223,17 @@ export const ChallengeActivityHub = ({
         
         <div className="flex-1">
           <h4 className="text-sm font-medium">
-            {profiles?.display_name as string || 'مشارك'}
+            {profiles?.display_name as string || t('challenges:participant')}
           </h4>
           <p className="text-xs text-muted-foreground">
-            {isRTL ? 'انضم في' : 'Joined'} {new Date(p.registration_date as string).toLocaleDateString()}
+            {isRTL ? t('challenges:joined') : t('challenges:joined')} {new Date(p.registration_date as string).toLocaleDateString()}
           </p>
         </div>
         
         <Badge variant="outline" className="text-xs">
           {p.participation_type === 'individual' ? 
-            (isRTL ? 'فردي' : 'Individual') : 
-            (isRTL ? 'فريق' : 'Team')
+            (isRTL ? t('challenges:individual') : t('challenges:individual')) : 
+            (isRTL ? t('challenges:team') : t('challenges:team'))
           }
         </Badge>
       </div>
@@ -259,7 +260,7 @@ export const ChallengeActivityHub = ({
                 {s.title_ar as string}
               </h4>
               <p className="text-xs text-muted-foreground mb-2">
-                {isRTL ? 'بواسطة' : 'by'} {profiles?.display_name as string || 'مجهول'}
+                {isRTL ? t('challenges:by') : t('challenges:by')} {profiles?.display_name as string || t('challenges:unknown')}
               </p>
               <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
                 {s.description_ar as string}
@@ -308,14 +309,14 @@ export const ChallengeActivityHub = ({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Users className="w-5 h-5 text-primary" />
-          {isRTL ? 'مركز التعاون' : 'Collaboration Hub'}
+          {isRTL ? t('challenges:collaboration_hub') : t('challenges:collaboration_hub')}
         </CardTitle>
         
         {/* Progress Overview */}
         <div className="bg-muted/30 rounded-lg p-4 mt-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">
-              {isRTL ? 'تقدم التحدي' : 'Challenge Progress'}
+              {isRTL ? t('challenges:challenge_progress') : t('challenges:challenge_progress')}
             </span>
             <span className="text-sm text-muted-foreground">
               {Math.round(calculateProgress())}%
@@ -327,19 +328,19 @@ export const ChallengeActivityHub = ({
             <div className="text-center">
               <div className="text-lg font-bold text-primary">{participants.length}</div>
               <div className="text-xs text-muted-foreground">
-                {isRTL ? 'مشارك' : 'Participants'}
+                {isRTL ? t('challenges:participants') : t('challenges:participants')}
               </div>
             </div>
             <div className="text-center">
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.purple}`}>{submissions.length}</div>
               <div className="text-xs text-muted-foreground">
-                {isRTL ? 'مشروع' : 'Submissions'}
+                {isRTL ? t('challenges:submissions') : t('challenges:submissions')}
               </div>
             </div>
             <div className="text-center">
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.orange}`}>{activities.length}</div>
               <div className="text-xs text-muted-foreground">
-                {isRTL ? 'نشاط' : 'Activities'}
+                {isRTL ? t('challenges:activities') : t('challenges:activities')}
               </div>
             </div>
           </div>
@@ -350,13 +351,13 @@ export const ChallengeActivityHub = ({
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="activity">
-              {isRTL ? 'النشاطات' : 'Activity'}
+              {isRTL ? t('challenges:activity') : t('challenges:activity')}
             </TabsTrigger>
             <TabsTrigger value="participants">
-              {isRTL ? 'المشاركون' : 'Participants'}
+              {isRTL ? t('challenges:participants') : t('challenges:participants')}
             </TabsTrigger>
             <TabsTrigger value="submissions">
-              {isRTL ? 'المشاريع' : 'Submissions'}
+              {isRTL ? t('challenges:projects') : t('challenges:projects')}
             </TabsTrigger>
           </TabsList>
           
@@ -365,7 +366,7 @@ export const ChallengeActivityHub = ({
               <div className="text-center py-8">
                 <Activity className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <p className="text-muted-foreground">
-                  {isRTL ? 'لا توجد أنشطة حتى الآن' : 'No activities yet'}
+                  {isRTL ? t('challenges:no_activities_yet') : t('challenges:no_activities_yet')}
                 </p>
               </div>
             ) : (
@@ -380,7 +381,7 @@ export const ChallengeActivityHub = ({
               <div className="text-center py-8">
                 <Users className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <p className="text-muted-foreground">
-                  {isRTL ? 'لا يوجد مشاركون حتى الآن' : 'No participants yet'}
+                  {isRTL ? t('challenges:no_participants_yet') : t('challenges:no_participants_yet')}
                 </p>
               </div>
             ) : (
@@ -395,7 +396,7 @@ export const ChallengeActivityHub = ({
               <div className="text-center py-8">
                 <FileText className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <p className="text-muted-foreground">
-                  {isRTL ? 'لا توجد مشاريع مقدمة حتى الآن' : 'No submissions yet'}
+                  {isRTL ? t('challenges:no_submissions_yet') : t('challenges:no_submissions_yet')}
                 </p>
               </div>
             ) : (

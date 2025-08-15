@@ -7,7 +7,12 @@
     "total_participants": "Total Participants",
     "new_submissions": "New Submissions",
     "completion_rate": "Completion Rate",
-    "user_engagement": "User Engagement"
+    "user_engagement": "User Engagement",
+    "total_users": "Total Users",
+    "active_users": "Active Users",
+    "storage_used": "Storage Used",
+    "system_uptime": "System Uptime",
+    "this_month": "this month"
   },
   "cards": {
     "recent_challenges": {
@@ -34,7 +39,11 @@
       "new_campaign": "Start Campaign",
       "invite_users": "Invite Users",
       "view_analytics": "View Analytics"
-    }
+    },
+    "new_user_registered": "New user registered",
+    "new_idea_submitted": "New idea submitted",
+    "minutes_ago_5": "5 minutes ago",
+    "minutes_ago_15": "15 minutes ago"
   },
   "activity": {
     "title": "Recent Activity",
@@ -52,5 +61,30 @@
     "new_submission": "New submission received",
     "challenge_ending": "Challenge ending soon",
     "evaluation_complete": "Evaluation completed"
+  },
+  "storage": {
+    "management": "Storage Management",
+    "description": "Monitor and manage file storage",
+    "policies": "Storage Policies",
+    "policies_description": "Configure storage access policies"
+  },
+  "security": {
+    "monitor": "Security Monitor",
+    "description": "Monitor security events and alerts"
+  },
+  "focus_questions": {
+    "management": "Focus Questions Management",
+    "description": "Manage questions that guide challenges"
+  },
+  "system_analytics": {
+    "title": "System Analytics",
+    "description": "View system analytics and reports"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "management": "Management", 
+    "content": "Content",
+    "system": "System",
+    "advanced": "Advanced"
   }
 }

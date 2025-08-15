@@ -1,26 +1,31 @@
 {
-  "title": "لوحة القيادة",
-  "welcome": "مرحباً بعودتك، {{name}}!",
+  "title": "لوحة التحكم",
+  "welcome": "أهلاً بعودتك، {{name}}!",
   "metrics": {
     "total_challenges": "إجمالي التحديات",
     "active_challenges": "التحديات النشطة",
     "total_participants": "إجمالي المشاركين",
-    "new_submissions": "التقديمات الجديدة",
+    "new_submissions": "المشاريع الجديدة",
     "completion_rate": "معدل الإكمال",
-    "user_engagement": "مشاركة المستخدمين"
+    "user_engagement": "تفاعل المستخدمين",
+    "total_users": "إجمالي المستخدمين",
+    "active_users": "المستخدمون النشطون",
+    "storage_used": "التخزين المستخدم",
+    "system_uptime": "وقت تشغيل النظام",
+    "this_month": "هذا الشهر"
   },
   "cards": {
     "recent_challenges": {
-      "title": "التحديات الحديثة",
+      "title": "أحدث التحديات",
       "view_all": "عرض جميع التحديات",
       "no_challenges": "لا توجد تحديات بعد",
-      "create_first": "إنشاء تحديك الأول"
+      "create_first": "أنشئ تحديك الأول"
     },
     "my_submissions": {
-      "title": "تقديماتي",
-      "view_all": "عرض جميع التقديمات",
-      "no_submissions": "لا توجد تقديمات بعد",
-      "start_participating": "ابدأ المشاركة في التحديات"
+      "title": "مشاريعي",
+      "view_all": "عرض جميع المشاريع",
+      "no_submissions": "لا توجد مشاريع بعد",
+      "start_participating": "ابدأ بالمشاركة في التحديات"
     },
     "upcoming_events": {
       "title": "الفعاليات القادمة",
@@ -29,28 +34,57 @@
       "schedule_event": "جدولة فعالية جديدة"
     },
     "quick_actions": {
-      "title": "الإجراءات السريعة",
-      "new_challenge": "إنشاء تحدي",
+      "title": "إجراءات سريعة",
+      "new_challenge": "إنشاء تحدٍ",
       "new_campaign": "بدء حملة",
       "invite_users": "دعوة مستخدمين",
       "view_analytics": "عرض التحليلات"
-    }
+    },
+    "new_user_registered": "تسجيل مستخدم جديد",
+    "new_idea_submitted": "تقديم فكرة جديدة",
+    "minutes_ago_5": "منذ 5 دقائق",
+    "minutes_ago_15": "منذ 15 دقيقة"
   },
   "activity": {
-    "title": "النشاط الحديث",
+    "title": "النشاط الأخير",
     "view_all": "عرض جميع الأنشطة",
     "no_activity": "لا يوجد نشاط حديث",
     "challenge_created": "تم إنشاء التحدي \"{{title}}\"",
-    "submission_received": "تقديم جديد للتحدي \"{{challenge}}\"",
-    "user_joined": "انضم {{user}} للمنصة",
+    "submission_received": "مشروع جديد للتحدي \"{{challenge}}\"",
+    "user_joined": "انضم {{user}} إلى المنصة",
     "campaign_launched": "تم إطلاق الحملة \"{{title}}\""
   },
   "notifications": {
     "title": "الإشعارات",
-    "mark_all_read": "تحديد الكل كمقروء",
+    "mark_all_read": "تمييز الكل كمقروء",
     "no_notifications": "لا توجد إشعارات جديدة",
-    "new_submission": "تم استلام تقديم جديد",
-    "challenge_ending": "التحدي سينتهي قريباً",
-    "evaluation_complete": "تم إكمال التقييم"
+    "new_submission": "تم استلام مشروع جديد",
+    "challenge_ending": "التحدي ينتهي قريباً",
+    "evaluation_complete": "اكتمل التقييم"
+  },
+  "storage": {
+    "management": "إدارة التخزين",
+    "description": "مراقبة وإدارة تخزين الملفات",
+    "policies": "سياسات التخزين",
+    "policies_description": "تكوين سياسات الوصول للتخزين"
+  },
+  "security": {
+    "monitor": "مراقب الأمان",
+    "description": "مراقبة أحداث الأمان والتنبيهات"
+  },
+  "focus_questions": {
+    "management": "إدارة الأسئلة المحورية",
+    "description": "إدارة الأسئلة التي توجه التحديات"
+  },
+  "system_analytics": {
+    "title": "تحليلات النظام",
+    "description": "عرض تحليلات النظام والتقارير"
+  },
+  "tabs": {
+    "overview": "نظرة عامة",
+    "management": "الإدارة",
+    "content": "المحتوى",
+    "system": "النظام",
+    "advanced": "متقدم"
   }
 }

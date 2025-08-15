@@ -231,40 +231,40 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       category: 'management'
     },
     {
-      title: "Storage Management", 
-      description: "Monitor and manage file storage",
+      title: t('dashboard:storage.management'), 
+      description: t('dashboard:storage.description'),
       icon: Database,
       action: () => navigate('/admin/storage'),
       show: canManageSystem,
       category: 'system'
     },
     {
-      title: "Storage Policies",
-      description: "Configure storage access policies",
+      title: t('dashboard:storage.policies'),
+      description: t('dashboard:storage.policies_description'),
       icon: HardDrive, 
       action: () => navigate('/admin/storage/policies'),
       show: canManageSystem,
       category: 'system'
     },
     {
-      title: "Security Monitor",
-      description: "Monitor security events and alerts",
+      title: t('dashboard:security.monitor'),
+      description: t('dashboard:security.description'),
       icon: Shield,
       action: () => navigate('/admin/security'),
       show: canManageSystem,
       category: 'security'
     },
     {
-      title: "Focus Questions Management",
-      description: "Manage questions that guide challenges",
+      title: t('dashboard:focus_questions.management'),
+      description: t('dashboard:focus_questions.description'),
       icon: HelpCircle,
       action: () => navigate('/admin/focus-questions'),
       show: canManageSystem,
       category: 'content'
     },
     {
-      title: "System Analytics",
-      description: "View system analytics and reports", 
+      title: t('dashboard:system_analytics.title'),
+      description: t('dashboard:system_analytics.description'), 
       icon: BarChart3,
       action: () => navigate('/admin/system-analytics'),
       show: canViewAnalytics,
@@ -366,35 +366,35 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <BarChart3 className="w-4 h-4" />
-            {t('admin.tabs.overview')}
+            {t('dashboard:tabs.overview')}
           </TabsTrigger>
           <TabsTrigger 
             value="management" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Users className="w-4 h-4" />
-            {t('admin.tabs.management')}
+            {t('dashboard:tabs.management')}
           </TabsTrigger>
           <TabsTrigger 
             value="content" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Database className="w-4 h-4" />
-            {t('admin.tabs.content')}
+            {t('dashboard:tabs.content')}
           </TabsTrigger>
           <TabsTrigger 
             value="system" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Settings className="w-4 h-4" />
-            {t('admin.tabs.system')}
+            {t('dashboard:tabs.system')}
           </TabsTrigger>
           <TabsTrigger 
             value="advanced" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Shield className="w-4 h-4" />
-            {t('admin.tabs.advanced')}
+            {t('dashboard:tabs.advanced')}
           </TabsTrigger>
         </TabsList>
 
@@ -411,7 +411,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {t('admin.metrics.total_users')}
+                  {t('dashboard:metrics.total_users')}
                 </CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -421,7 +421,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.users?.growthRate || 12}% {t('admin.metrics.this_month')}</span>
+                  <span>+{adminMetrics.metrics?.users?.growthRate || 12}% {t('dashboard:metrics.this_month')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -429,7 +429,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {t('admin.metrics.active_challenges')}
+                  {t('dashboard:metrics.active_challenges')}
                 </CardTitle>
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>

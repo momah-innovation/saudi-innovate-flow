@@ -1,165 +1,37 @@
 {
-  "collaboration": {
-    "title": "مركز التعاون",
-    "description": "تعزيز الابتكار من خلال مساحات العمل التعاونية ومشاريع الفريق",
-    "workspace_overview": "نظرة عامة على مساحة العمل",
-    "team_collaboration": "تعاون الفريق",
-    "project_management": "إدارة المشاريع",
-    "communication_tools": "أدوات التواصل",
-    "file_sharing": "مشاركة الملفات",
-    "real_time_editing": "التحرير في الوقت الفعلي"
+  "title": "التعاون",
+  "all_activities": "جميع الأنشطة",
+  "content_type": "نوع المحتوى",
+  "activity_type": "نوع النشاط",
+  "no_activities": "لا توجد أنشطة بعد",
+  "user": "مستخدم",
+  "notifications": {
+    "title": "الإشعارات",
+    "preferences": "التفضيلات",
+    "new": "جديد",
+    "mark_read": "تمييز كمقروء",
+    "no_notifications": "لا توجد إشعارات جديدة",
+    "filter": {
+      "all": "الكل",
+      "mentions": "الإشارات",
+      "assignments": "المهام المعينة",
+      "updates": "التحديثات"
+    }
   },
-  "workspace": {
-    "create_workspace": "إنشاء مساحة عمل",
-    "workspace_name": "اسم مساحة العمل",
-    "workspace_description": "وصف مساحة العمل",
-    "workspace_type": "نوع مساحة العمل",
-    "public_workspace": "مساحة عمل عامة",
-    "private_workspace": "مساحة عمل خاصة",
-    "restricted_workspace": "مساحة عمل مقيدة",
-    "team_workspace": "مساحة عمل الفريق",
-    "project_workspace": "مساحة عمل المشروع",
-    "research_workspace": "مساحة عمل البحث",
-    "invite_members": "دعوة الأعضاء",
-    "member_permissions": "صلاحيات الأعضاء",
-    "workspace_settings": "إعدادات مساحة العمل"
-  },
-  "teams": {
-    "create_team": "إنشاء فريق",
-    "team_name": "اسم الفريق",
-    "team_description": "وصف الفريق",
-    "team_lead": "قائد الفريق",
-    "team_members": "أعضاء الفريق",
-    "add_member": "إضافة عضو",
-    "remove_member": "إزالة عضو",
-    "member_role": "دور العضو",
-    "team_roles": "أدوار الفريق",
-    "team_permissions": "صلاحيات الفريق",
-    "team_activities": "أنشطة الفريق",
-    "team_progress": "تقدم الفريق"
-  },
-  "projects": {
-    "create_project": "إنشاء مشروع",
-    "project_name": "اسم المشروع",
-    "project_description": "وصف المشروع",
-    "project_goals": "أهداف المشروع",
-    "project_timeline": "الجدول الزمني للمشروع",
-    "project_milestones": "معالم المشروع",
-    "project_deliverables": "مخرجات المشروع",
-    "project_resources": "موارد المشروع",
-    "project_budget": "ميزانية المشروع",
-    "project_status": "حالة المشروع",
-    "project_progress": "تقدم المشروع",
-    "assign_tasks": "تعيين المهام",
-    "task_management": "إدارة المهام"
-  },
-  "communication": {
-    "discussions": "المناقشات",
-    "chat_rooms": "غرف الدردشة",
-    "video_calls": "مكالمات الفيديو",
-    "announcements": "الإعلانات",
-    "notifications": "الإشعارات",
-    "message_history": "تاريخ الرسائل",
-    "online_status": "الحالة الإلكترونية",
-    "presence_indicators": "مؤشرات التواجد",
-    "mention_users": "ذكر المستخدمين",
-    "private_messages": "الرسائل الخاصة",
-    "group_messages": "رسائل المجموعة"
-  },
-  "file_management": {
-    "upload_files": "رفع الملفات",
-    "file_library": "مكتبة الملفات",
-    "shared_documents": "المستندات المشتركة",
-    "version_control": "التحكم في الإصدارات",
-    "file_permissions": "صلاحيات الملفات",
-    "download_files": "تحميل الملفات",
-    "file_preview": "معاينة الملف",
-    "file_comments": "تعليقات الملف",
-    "file_history": "تاريخ الملف",
-    "folder_organization": "تنظيم المجلدات",
-    "search_files": "البحث في الملفات"
-  },
-  "tools": {
-    "whiteboard": "السبورة الرقمية",
-    "mind_mapping": "خرائط الذهن",
-    "brainstorming": "أدوات العصف الذهني",
-    "polling": "الاستطلاعات والدراسات",
-    "voting": "أنظمة التصويت",
-    "feedback_collection": "جمع التعليقات",
-    "idea_boards": "لوحات الأفكار",
-    "kanban_boards": "لوحات كانبان",
-    "timeline_view": "عرض الجدول الزمني",
-    "calendar_integration": "تكامل التقويم"
-  },
-  "permissions": {
-    "admin": "مدير",
-    "moderator": "مشرف",
-    "editor": "محرر",
-    "contributor": "مساهم",
-    "viewer": "مشاهد",
-    "guest": "زائر",
-    "read_only": "قراءة فقط",
-    "read_write": "قراءة وكتابة",
-    "full_access": "وصول كامل",
-    "restricted_access": "وصول مقيد"
-  },
-  "activities": {
-    "recent_activities": "الأنشطة الحديثة",
-    "activity_feed": "تغذية النشاط",
-    "user_actions": "إجراءات المستخدم",
-    "system_events": "أحداث النظام",
-    "collaboration_metrics": "مقاييس التعاون",
-    "engagement_stats": "إحصائيات المشاركة",
-    "productivity_indicators": "مؤشرات الإنتاجية",
-    "participation_rates": "معدلات المشاركة"
-  },
-  "settings": {
-    "workspace_settings": "إعدادات مساحة العمل",
-    "privacy_settings": "إعدادات الخصوصية",
-    "notification_preferences": "تفضيلات الإشعارات",
-    "integration_settings": "إعدادات التكامل",
-    "backup_settings": "إعدادات النسخ الاحتياطي",
-    "security_settings": "إعدادات الأمان",
-    "access_controls": "ضوابط الوصول",
-    "audit_logs": "سجلات التدقيق"
-  },
-  "status": {
-    "active": "نشط",
-    "inactive": "غير نشط",
-    "pending": "معلق",
-    "archived": "مؤرشف",
-    "deleted": "محذوف",
-    "suspended": "موقوف",
-    "in_progress": "قيد التقدم",
-    "completed": "مكتمل",
-    "on_hold": "معلق"
-  },
-  "actions": {
-    "create": "إنشاء",
-    "edit": "تعديل",
-    "delete": "حذف",
-    "archive": "أرشفة",
-    "restore": "استرداد",
-    "duplicate": "تكرار",
-    "share": "مشاركة",
-    "export": "تصدير",
-    "import": "استيراد",
-    "sync": "مزامنة",
-    "backup": "نسخ احتياطي",
-    "invite": "دعوة",
-    "join": "انضمام",
-    "leave": "مغادرة"
-  },
-  "messages": {
-    "workspace_created": "تم إنشاء مساحة العمل بنجاح",
-    "team_created": "تم إنشاء الفريق بنجاح",
-    "project_created": "تم إنشاء المشروع بنجاح",
-    "member_invited": "تم دعوة العضو بنجاح",
-    "permission_updated": "تم تحديث الصلاحيات",
-    "file_uploaded": "تم رفع الملف بنجاح",
-    "collaboration_started": "بدأت جلسة التعاون",
-    "task_assigned": "تم تعيين المهمة بنجاح",
-    "milestone_completed": "تم إنجاز المعلم",
-    "project_completed": "تم إنجاز المشروع بنجاح"
+  "whiteboard": {
+    "title": "لوحة التعاون التفاعلية",
+    "tools": {
+      "pen": "قلم",
+      "eraser": "ممحاة",
+      "text": "نص",
+      "shapes": "أشكال"
+    },
+    "actions": {
+      "clear": "مسح",
+      "save": "حفظ",
+      "share": "مشاركة",
+      "export": "تصدير"
+    },
+    "active_users": "المستخدمون النشطون"
   }
 }

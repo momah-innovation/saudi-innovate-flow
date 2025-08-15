@@ -1,165 +1,37 @@
 {
-  "collaboration": {
-    "title": "Collaboration Hub",
-    "description": "Foster innovation through collaborative workspaces and team projects",
-    "workspace_overview": "Workspace Overview",
-    "team_collaboration": "Team Collaboration",
-    "project_management": "Project Management",
-    "communication_tools": "Communication Tools",
-    "file_sharing": "File Sharing",
-    "real_time_editing": "Real-time Editing"
+  "title": "Collaboration",
+  "all_activities": "All Activities",
+  "content_type": "Content Type",
+  "activity_type": "Activity Type",
+  "no_activities": "No activities yet",
+  "user": "User",
+  "notifications": {
+    "title": "Notifications",
+    "preferences": "Preferences",
+    "new": "New",
+    "mark_read": "Mark as read",
+    "no_notifications": "No new notifications",
+    "filter": {
+      "all": "All",
+      "mentions": "Mentions",
+      "assignments": "Assignments",
+      "updates": "Updates"
+    }
   },
-  "workspace": {
-    "create_workspace": "Create Workspace",
-    "workspace_name": "Workspace Name",
-    "workspace_description": "Workspace Description",
-    "workspace_type": "Workspace Type",
-    "public_workspace": "Public Workspace",
-    "private_workspace": "Private Workspace",
-    "restricted_workspace": "Restricted Workspace",
-    "team_workspace": "Team Workspace",
-    "project_workspace": "Project Workspace",
-    "research_workspace": "Research Workspace",
-    "invite_members": "Invite Members",
-    "member_permissions": "Member Permissions",
-    "workspace_settings": "Workspace Settings"
-  },
-  "teams": {
-    "create_team": "Create Team",
-    "team_name": "Team Name",
-    "team_description": "Team Description",
-    "team_lead": "Team Lead",
-    "team_members": "Team Members",
-    "add_member": "Add Member",
-    "remove_member": "Remove Member",
-    "member_role": "Member Role",
-    "team_roles": "Team Roles",
-    "team_permissions": "Team Permissions",
-    "team_activities": "Team Activities",
-    "team_progress": "Team Progress"
-  },
-  "projects": {
-    "create_project": "Create Project",
-    "project_name": "Project Name",
-    "project_description": "Project Description",
-    "project_goals": "Project Goals",
-    "project_timeline": "Project Timeline",
-    "project_milestones": "Project Milestones",
-    "project_deliverables": "Project Deliverables",
-    "project_resources": "Project Resources",
-    "project_budget": "Project Budget",
-    "project_status": "Project Status",
-    "project_progress": "Project Progress",
-    "assign_tasks": "Assign Tasks",
-    "task_management": "Task Management"
-  },
-  "communication": {
-    "discussions": "Discussions",
-    "chat_rooms": "Chat Rooms",
-    "video_calls": "Video Calls",
-    "announcements": "Announcements",
-    "notifications": "Notifications",
-    "message_history": "Message History",
-    "online_status": "Online Status",
-    "presence_indicators": "Presence Indicators",
-    "mention_users": "Mention Users",
-    "private_messages": "Private Messages",
-    "group_messages": "Group Messages"
-  },
-  "file_management": {
-    "upload_files": "Upload Files",
-    "file_library": "File Library",
-    "shared_documents": "Shared Documents",
-    "version_control": "Version Control",
-    "file_permissions": "File Permissions",
-    "download_files": "Download Files",
-    "file_preview": "File Preview",
-    "file_comments": "File Comments",
-    "file_history": "File History",
-    "folder_organization": "Folder Organization",
-    "search_files": "Search Files"
-  },
-  "tools": {
-    "whiteboard": "Digital Whiteboard",
-    "mind_mapping": "Mind Mapping",
-    "brainstorming": "Brainstorming Tools",
-    "polling": "Polls & Surveys",
-    "voting": "Voting Systems",
-    "feedback_collection": "Feedback Collection",
-    "idea_boards": "Idea Boards",
-    "kanban_boards": "Kanban Boards",
-    "timeline_view": "Timeline View",
-    "calendar_integration": "Calendar Integration"
-  },
-  "permissions": {
-    "admin": "Administrator",
-    "moderator": "Moderator",
-    "editor": "Editor",
-    "contributor": "Contributor",
-    "viewer": "Viewer",
-    "guest": "Guest",
-    "read_only": "Read Only",
-    "read_write": "Read & Write",
-    "full_access": "Full Access",
-    "restricted_access": "Restricted Access"
-  },
-  "activities": {
-    "recent_activities": "Recent Activities",
-    "activity_feed": "Activity Feed",
-    "user_actions": "User Actions",
-    "system_events": "System Events",
-    "collaboration_metrics": "Collaboration Metrics",
-    "engagement_stats": "Engagement Statistics",
-    "productivity_indicators": "Productivity Indicators",
-    "participation_rates": "Participation Rates"
-  },
-  "settings": {
-    "workspace_settings": "Workspace Settings",
-    "privacy_settings": "Privacy Settings",
-    "notification_preferences": "Notification Preferences",
-    "integration_settings": "Integration Settings",
-    "backup_settings": "Backup Settings",
-    "security_settings": "Security Settings",
-    "access_controls": "Access Controls",
-    "audit_logs": "Audit Logs"
-  },
-  "status": {
-    "active": "Active",
-    "inactive": "Inactive",
-    "pending": "Pending",
-    "archived": "Archived",
-    "deleted": "Deleted",
-    "suspended": "Suspended",
-    "in_progress": "In Progress",
-    "completed": "Completed",
-    "on_hold": "On Hold"
-  },
-  "actions": {
-    "create": "Create",
-    "edit": "Edit",
-    "delete": "Delete",
-    "archive": "Archive",
-    "restore": "Restore",
-    "duplicate": "Duplicate",
-    "share": "Share",
-    "export": "Export",
-    "import": "Import",
-    "sync": "Sync",
-    "backup": "Backup",
-    "invite": "Invite",
-    "join": "Join",
-    "leave": "Leave"
-  },
-  "messages": {
-    "workspace_created": "Workspace created successfully",
-    "team_created": "Team created successfully",
-    "project_created": "Project created successfully",
-    "member_invited": "Member invited successfully",
-    "permission_updated": "Permissions updated",
-    "file_uploaded": "File uploaded successfully",
-    "collaboration_started": "Collaboration session started",
-    "task_assigned": "Task assigned successfully",
-    "milestone_completed": "Milestone completed",
-    "project_completed": "Project completed successfully"
+  "whiteboard": {
+    "title": "Collaborative Whiteboard",
+    "tools": {
+      "pen": "Pen",
+      "eraser": "Eraser",
+      "text": "Text",
+      "shapes": "Shapes"
+    },
+    "actions": {
+      "clear": "Clear",
+      "save": "Save",
+      "share": "Share",
+      "export": "Export"
+    },
+    "active_users": "Active Users"
   }
 }
