@@ -61,7 +61,9 @@ export function DataCard<T>({
         <div className="aspect-video w-full overflow-hidden rounded-t-lg">
           <img 
             src={image} 
-            alt="" 
+            alt={typeof title === 'string' ? `${title}` : 'media image'} 
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover"
           />
         </div>
@@ -81,7 +83,13 @@ export function DataCard<T>({
             
             {layout === 'default' && image && (
               <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                <img src={image} alt="" className="w-full h-full object-cover" />
+                <img 
+                  src={image} 
+                  alt={typeof title === 'string' ? `${title}` : 'card image'} 
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover" 
+                />
               </div>
             )}
             

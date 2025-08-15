@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";
+import { useOptimizedDashboardCounts, useOptimizedTeamCounts } from '@/hooks/useOptimizedDashboardCounts';
 
 interface DashboardStats {
   activeChallenges: number;
@@ -81,8 +82,12 @@ export const EnhancedDashboardOverview = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [trends, setTrends] = useState<Trend[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedTrend, setSelectedTrend] = useState<Trend | null>(null);
+const [loading, setLoading] = useState(true);
+const [selectedTrend, setSelectedTrend] = useState<Trend | null>(null);
+
+// Optimized cached counts
+const { data: countsData } = useOptimizedDashboardCounts();
+const { data: teamCount } = useOptimizedTeamCounts();
 
   useEffect(() => {
     loadDashboardData();
@@ -107,12 +112,11 @@ export const EnhancedDashboardOverview = () => {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      await Promise.all([
-        loadStats(),
-        loadAchievements(),
-        loadNotifications(),
-        loadTrends()
-      ]);
+await Promise.all([
+  loadAchievements(),
+  loadNotifications(),
+  loadTrends()
+]);
     } catch (error) {
       logger.error('Error loading dashboard data', { component: 'EnhancedDashboardOverview', action: 'loadDashboardData' }, error as Error);
       toast.error('خطأ في تحميل بيانات لوحة القيادة');
@@ -121,30 +125,29 @@ export const EnhancedDashboardOverview = () => {
     }
   };
 
-  const loadStats = async () => {
-    const [challengesRes, ideasRes, stakeholdersRes, eventsRes, partnersRes] = await Promise.all([
-      supabase.from('challenges').select('id', { count: 'exact' }).eq('status', 'published'),
-      supabase.from('ideas').select('id', { count: 'exact' }),
-      supabase.from('innovation_team_members').select('id', { count: 'exact' }).eq('status', 'active'),
-      supabase.from('events').select('id', { count: 'exact' }),
-      supabase.from('partners').select('id', { count: 'exact' })
-    ]);
+  // Sync stats from cached optimized counts
+  useEffect(() => {
+    if (countsData) {
+      const totalChallenges = countsData.activeChallenges ?? countsData.publishedChallenges ?? 0;
+      const totalIdeas = countsData.totalIdeas ?? 0;
+      const innovationMaturity = Math.min(
+        Math.round(((totalIdeas / Math.max(totalChallenges, 1)) * 100) * 0.7),
+        100
+      );
 
-    // Calculate derived metrics
-    const totalChallenges = challengesRes.count || 0;
-    const totalIdeas = ideasRes.count || 0;
-    const innovationMaturity = Math.min(Math.round(((totalIdeas / Math.max(totalChallenges, 1)) * 100) * 0.7), 100);
-    
-    setStats({
-      activeChallenges: totalChallenges,
-      submittedIdeas: totalIdeas,
-      activeStakeholders: stakeholdersRes.count || 0,
-      innovationMaturity,
-      totalEvents: eventsRes.count || 0,
-      totalPartners: partnersRes.count || 0,
-      avgRating: 0,
-      successRate: 0
-    });
+      setStats(prev => ({
+        ...prev,
+        activeChallenges: totalChallenges,
+        submittedIdeas: totalIdeas,
+        activeStakeholders: typeof teamCount === 'number' ? teamCount : prev.activeStakeholders,
+        innovationMaturity,
+        totalEvents: countsData.totalEvents ?? prev.totalEvents,
+      }));
+    }
+  }, [countsData, teamCount]);
+  const loadStats = async () => {
+    // This function is now superseded by cached counts from React Query hooks
+    // Kept for backward compatibility if needed elsewhere
   };
 
   const loadAchievements = async () => {
