@@ -6,9 +6,11 @@ import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export default function SectorsManagementPage() {
   const { isRTL, language } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -26,7 +28,7 @@ export default function SectorsManagementPage() {
     <>
       <Select>
         <SelectTrigger className="w-32">
-          <SelectValue placeholder="Export" />
+          <SelectValue placeholder={t('common.actions.export')} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="pdf">PDF</SelectItem>

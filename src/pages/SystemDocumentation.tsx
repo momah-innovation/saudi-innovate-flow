@@ -76,7 +76,7 @@ const SystemDocumentation = () => {
     <>
       <Select>
         <SelectTrigger className="w-32">
-          <SelectValue placeholder="Export" />
+          <SelectValue placeholder={t('common.actions.export')} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="pdf">PDF</SelectItem>

@@ -51,8 +51,8 @@ const LoginPage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Input name="email" type="email" placeholder="Email" required />
-      <Input name="password" type="password" placeholder="Password" required />
+       <Input name="email" type="email" placeholder="Email" required />
+       <Input name="password" type="password" placeholder="Password" required />
       <Button type="submit">Sign In</Button>
     </form>
   )

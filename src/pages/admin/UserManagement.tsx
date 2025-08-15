@@ -164,7 +164,7 @@ export default function UserManagement() {
     )}>
       <Select>
         <SelectTrigger className="w-20 sm:w-32 h-8 sm:h-9">
-          <SelectValue placeholder="Export" />
+          <SelectValue placeholder={t('common.actions.export')} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="pdf">PDF</SelectItem>
