@@ -1,0 +1,22 @@
+{
+  "collaboration_hub": "Collaboration Hub",
+  "challenge_progress": "Challenge Progress",
+  "participants": "Participants",
+  "submissions": "Submissions", 
+  "activities": "Activities",
+  "activity": "Activity",
+  "projects": "Projects",
+  "no_activities_yet": "No activities yet",
+  "no_participants_yet": "No participants yet",
+  "no_submissions_yet": "No submissions yet",
+  "joined_challenge": "joined the challenge",
+  "commented_on_challenge": "commented on the challenge",
+  "submitted_new_project": "submitted a new project",
+  "now": "Now",
+  "participant": "Participant",
+  "team": "Team",
+  "individual": "Individual",
+  "joined": "Joined",
+  "by": "by",
+  "unknown": "Unknown"
+}

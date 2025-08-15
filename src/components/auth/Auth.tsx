@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Eye, EyeOff, Mail, Lock, User, Shield, Building2, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,6 +36,7 @@ export const Auth = () => {
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useUnifiedTranslation();
 
   const handleInputChange = (field: keyof AuthFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -43,8 +45,8 @@ export const Auth = () => {
   const validateForm = (): boolean => {
     if (!formData.email || !formData.password) {
       toast({
-        title: "خطأ في التحقق",
-        description: "يرجى ملء جميع الحقول المطلوبة",
+        title: t('auth:validation_error'),
+        description: t('auth:all_fields_required'),
         variant: "destructive",
       });
       return false;
@@ -53,8 +55,8 @@ export const Auth = () => {
     if (activeTab === 'signup') {
       if (!formData.fullName) {
         toast({
-          title: "خطأ في التحقق",
-          description: "يرجى إدخال الاسم الكامل",
+          title: t('auth:validation_error'),
+          description: t('auth:full_name_required'),
           variant: "destructive",
         });
         return false;
@@ -62,8 +64,8 @@ export const Auth = () => {
 
       if (formData.password !== formData.confirmPassword) {
         toast({
-          title: "خطأ في التحقق", 
-          description: "كلمات المرور غير متطابقة",
+          title: t('auth:validation_error'), 
+          description: t('auth:passwords_dont_match'),
           variant: "destructive",
         });
         return false;
@@ -71,8 +73,8 @@ export const Auth = () => {
 
       if (formData.password.length < 8) {
         toast({
-          title: "خطأ في التحقق",
-          description: "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+          title: t('auth:validation_error'),
+          description: t('auth:password_min_length'),
           variant: "destructive",
         });
         return false;
@@ -103,8 +105,8 @@ export const Auth = () => {
       }
     } catch (error: unknown) {
       toast({
-        title: "خطأ في العملية",
-        description: (error as Error).message || "حدث خطأ غير متوقع",
+        title: t('auth:operation_error'),
+        description: (error as Error).message || t('auth:unexpected_error'),
         variant: "destructive",
       });
     } finally {
@@ -116,15 +118,15 @@ export const Auth = () => {
     <div className="flex flex-wrap gap-2 mt-4">
       <Badge variant="secondary" className="flex items-center gap-1 badge-success">
         <Shield className="h-3 w-3" />
-        حماية متقدمة
+        {t('auth:advanced_protection')}
       </Badge>
       <Badge variant="secondary" className="flex items-center gap-1 badge-info">
         <CheckCircle2 className="h-3 w-3" />
-        تشفير شامل
+        {t('auth:comprehensive_encryption')}
       </Badge>
       <Badge variant="secondary" className="flex items-center gap-1 badge-partner">
         <Building2 className="h-3 w-3" />
-        معتمد حكومياً
+        {t('auth:government_certified')}
       </Badge>
     </div>
   );
@@ -140,7 +142,7 @@ export const Auth = () => {
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="w-4 h-4" />
-          العودة للرئيسية
+          {t('auth:back_to_home')}
         </Button>
       </div>
 
@@ -148,14 +150,14 @@ export const Auth = () => {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <div className="h-16 w-16 rounded-xl gradient-primary flex items-center justify-center text-primary-foreground text-2xl font-bold">
-              رواد
+              {t('layout:platformName')}
             </div>
           </div>
           <h1 className="text-3xl font-bold text-foreground">
-            منصة رواد للابتكار
+            {t('auth:platform_name')}
           </h1>
           <p className="text-muted-foreground mt-2">
-            بوابة الابتكار الحكومي في المملكة العربية السعودية
+            {t('auth:platform_subtitle')}
           </p>
         </div>
 
@@ -163,21 +165,21 @@ export const Auth = () => {
           <CardHeader className="space-y-1">
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'login' | 'signup')}>
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login">تسجيل الدخول</TabsTrigger>
-                <TabsTrigger value="signup">إنشاء حساب</TabsTrigger>
+                <TabsTrigger value="login">{t('auth:login')}</TabsTrigger>
+                <TabsTrigger value="signup">{t('auth:signup')}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="login" className="space-y-4 mt-6">
                 <div className="text-center">
-                  <CardTitle className="text-2xl">أهلاً بعودتك</CardTitle>
-                  <CardDescription>ادخل إلى حسابك للمتابعة</CardDescription>
+                  <CardTitle className="text-2xl">{t('auth:welcome_back')}</CardTitle>
+                  <CardDescription>{t('auth:enter_credentials')}</CardDescription>
                 </div>
               </TabsContent>
               
               <TabsContent value="signup" className="space-y-4 mt-6">
                 <div className="text-center">
-                  <CardTitle className="text-2xl">انضم إلى رواد</CardTitle>
-                  <CardDescription>ابدأ رحلتك في الابتكار الحكومي</CardDescription>
+                  <CardTitle className="text-2xl">{t('auth:join_platform')}</CardTitle>
+                  <CardDescription>{t('auth:start_innovation_journey')}</CardDescription>
                 </div>
               </TabsContent>
             </Tabs>
@@ -187,13 +189,13 @@ export const Auth = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               {activeTab === 'signup' && (
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">الاسم الكامل *</Label>
+                  <Label htmlFor="fullName">{t('auth:full_name')} *</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="fullName"
                       type="text"
-                      placeholder="أدخل اسمك الكامل"
+                      placeholder={t('auth:enter_full_name')}
                       className="pl-10"
                       value={formData.fullName}
                       onChange={(e) => handleInputChange('fullName', e.target.value)}
@@ -204,13 +206,13 @@ export const Auth = () => {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">البريد الإلكتروني *</Label>
+                <Label htmlFor="email">{t('auth:email')} *</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="أدخل بريدك الإلكتروني"
+                    placeholder={t('auth:enter_email')}
                     className="pl-10"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
@@ -220,13 +222,13 @@ export const Auth = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">كلمة المرور *</Label>
+                <Label htmlFor="password">{t('auth:password')} *</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder={activeTab === 'signup' ? "8 أحرف على الأقل" : "أدخل كلمة المرور"}
+                    placeholder={activeTab === 'signup' ? t('auth:at_least_8_chars') : t('auth:enter_password')}
                     className="pl-10 pr-10"
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
@@ -247,13 +249,13 @@ export const Auth = () => {
               {activeTab === 'signup' && (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">تأكيد كلمة المرور *</Label>
+                    <Label htmlFor="confirmPassword">{t('auth:confirm_password')} *</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="confirmPassword"
                         type={showConfirmPassword ? "text" : "password"}
-                        placeholder="أعد إدخال كلمة المرور"
+                        placeholder={t('auth:confirm_password_again')}
                         className="pl-10 pr-10"
                         value={formData.confirmPassword}
                         onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
@@ -272,13 +274,13 @@ export const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="organization">الجهة (اختياري)</Label>
+                    <Label htmlFor="organization">{t('auth:organization')}</Label>
                     <div className="relative">
                       <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="organization"
                         type="text"
-                        placeholder="اسم الوزارة أو الجهة الحكومية"
+                        placeholder={t('auth:ministry_or_agency')}
                         className="pl-10"
                         value={formData.organization}
                         onChange={(e) => handleInputChange('organization', e.target.value)}
@@ -293,7 +295,7 @@ export const Auth = () => {
                 className="w-full h-11 gradient-primary hover:opacity-90 text-primary-foreground"
                 disabled={isLoading}
               >
-                {isLoading ? "جارٍ التحميل..." : activeTab === 'login' ? "تسجيل الدخول" : "إنشاء الحساب"}
+                {isLoading ? t('auth:loading') : activeTab === 'login' ? t('auth:login') : t('auth:create_account_button')}
               </Button>
 
               {activeTab === 'login' && (
@@ -303,7 +305,7 @@ export const Auth = () => {
                     className="text-sm text-muted-foreground hover-primary"
                     onClick={() => navigate('/auth/forgot-password')}
                   >
-                    نسيت كلمة المرور؟
+                    {t('auth:forgot_password')}
                   </Button>
                 </div>
               )}
@@ -315,19 +317,19 @@ export const Auth = () => {
           <div className="px-6 pb-6">
             <div className="flex flex-col space-y-2 text-center text-sm text-muted-foreground">
               <p>
-                بالمتابعة، أنت توافق على{" "}
+                {t('auth:by_continuing')}{" "}
                 <Button variant="link" className="p-0 h-auto font-normal text-primary hover-primary">
-                  شروط الاستخدام
+                  {t('auth:terms_of_service')}
                 </Button>{" "}
-                و{" "}
+                {t('auth:and')}{" "}
                 <Button variant="link" className="p-0 h-auto font-normal text-primary hover-primary">
-                  سياسة الخصوصية
+                  {t('auth:privacy_policy')}
                 </Button>
               </p>
               
               <div className="flex items-center justify-center gap-1 text-xs">
                 <AlertCircle className="h-3 w-3" />
-                <span>هذه المنصة محمية ومخصصة للاستخدام الحكومي</span>
+                <span>{t('auth:protected_platform')}</span>
               </div>
             </div>
           </div>

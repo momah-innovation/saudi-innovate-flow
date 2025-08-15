@@ -1,0 +1,22 @@
+{
+  "collaboration_hub": "مركز التعاون",
+  "challenge_progress": "تقدم التحدي",
+  "participants": "مشارك",
+  "submissions": "مشروع",
+  "activities": "نشاط",
+  "activity": "النشاطات",
+  "projects": "المشاريع",
+  "no_activities_yet": "لا توجد أنشطة حتى الآن",
+  "no_participants_yet": "لا يوجد مشاركون حتى الآن",
+  "no_submissions_yet": "لا توجد مشاريع مقدمة حتى الآن",
+  "joined_challenge": "انضم إلى التحدي",
+  "commented_on_challenge": "علقت على التحدي",
+  "submitted_new_project": "قدم مشروعاً جديداً",
+  "now": "الآن",
+  "participant": "مشارك",
+  "team": "فريق",
+  "individual": "فردي",
+  "joined": "انضم في",
+  "by": "بواسطة",
+  "unknown": "مجهول"
+}

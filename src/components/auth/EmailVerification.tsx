@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -16,6 +17,7 @@ export const EmailVerification = () => {
   const [canResend, setCanResend] = useState(false);
   const [resendTimer, setResendTimer] = useState(60);
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
@@ -52,7 +54,7 @@ export const EmailVerification = () => {
 
       if (error) {
         toast({
-          title: "خطأ في التحقق",
+          title: t('auth:verification_error'),
           description: error.message,
           variant: "destructive",
         });
@@ -61,8 +63,8 @@ export const EmailVerification = () => {
 
       setIsVerified(true);
       toast({
-        title: "تم التحقق بنجاح",
-        description: "تم تأكيد بريدك الإلكتروني بنجاح",
+        title: t('auth:verification_success'),
+        description: t('auth:email_verified_success'),
       });
 
       // Redirect to dashboard after successful verification
@@ -71,8 +73,8 @@ export const EmailVerification = () => {
       }, 2000);
     } catch (error: unknown) {
       toast({
-        title: "خطأ في التحقق",
-        description: (error as Error).message || "حدث خطأ غير متوقع",
+        title: t('auth:verification_error'),
+        description: (error as Error).message || t('auth:unexpected_error'),
         variant: "destructive",
       });
     } finally {
@@ -94,7 +96,7 @@ export const EmailVerification = () => {
 
       if (error) {
         toast({
-          title: "خطأ في الإرسال",
+          title: t('auth:sending_error'),
           description: error.message,
           variant: "destructive",
         });
@@ -102,16 +104,16 @@ export const EmailVerification = () => {
       }
 
       toast({
-        title: "تم الإرسال",
-        description: "تم إرسال رسالة التحقق مرة أخرى",
+        title: t('auth:email_sent'),
+        description: t('auth:verification_resent'),
       });
 
       setCanResend(false);
       setResendTimer(60);
     } catch (error: unknown) {
       toast({
-        title: "خطأ في الإرسال",
-        description: (error as Error).message || "حدث خطأ غير متوقع",
+        title: t('auth:sending_error'),
+        description: (error as Error).message || t('auth:unexpected_error'),
         variant: "destructive",
       });
     }
@@ -125,9 +127,9 @@ export const EmailVerification = () => {
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
               <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
-            <CardTitle className="text-2xl">تم التحقق بنجاح</CardTitle>
+            <CardTitle className="text-2xl">{t('auth:verification_success')}</CardTitle>
             <CardDescription>
-              تم تأكيد بريدك الإلكتروني بنجاح. جاري تحويلك إلى لوحة التحكم...
+              {t('auth:redirecting_dashboard')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -135,7 +137,7 @@ export const EmailVerification = () => {
               onClick={() => navigate('/dashboard')}
               className="w-full gradient-primary hover:opacity-90 text-primary-foreground"
             >
-              الانتقال إلى لوحة التحكم
+              {t('auth:go_to_dashboard')}
             </Button>
           </CardContent>
         </Card>
@@ -155,12 +157,12 @@ export const EmailVerification = () => {
             )}
           </div>
           <CardTitle className="text-2xl">
-            {isVerifying ? "جاري التحقق..." : "تحقق من بريدك الإلكتروني"}
+            {isVerifying ? t('auth:verifying') : t('auth:verify_email_title')}
           </CardTitle>
           <CardDescription>
             {isVerifying 
-              ? "جاري التحقق من بريدك الإلكتروني..."
-              : "لقد أرسلنا رسالة تحقق إلى بريدك الإلكتروني"
+              ? t('auth:verifying_email')
+              : t('auth:verification_sent')
             }
           </CardDescription>
         </CardHeader>
@@ -171,7 +173,7 @@ export const EmailVerification = () => {
               <Alert>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  يرجى فحص بريدك الإلكتروني والضغط على رابط التحقق لتأكيد حسابك. قد تحتاج لفحص مجلد الرسائل غير المرغوب فيها.
+                  {t('auth:check_email_instruction')}
                 </AlertDescription>
               </Alert>
 
@@ -183,9 +185,9 @@ export const EmailVerification = () => {
                   className="w-full"
                 >
                   {canResend ? (
-                    "إرسال رسالة التحقق مرة أخرى"
+                    t('auth:resend_verification')
                   ) : (
-                    `إعادة الإرسال خلال ${resendTimer} ثانية`
+                    t('auth:resend_in_seconds', { seconds: resendTimer })
                   )}
                 </Button>
 
@@ -194,7 +196,7 @@ export const EmailVerification = () => {
                   variant="ghost"
                   className="w-full"
                 >
-                  العودة لتسجيل الدخول
+                  {t('auth:back_to_login')}
                 </Button>
               </div>
             </>
