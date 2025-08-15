@@ -439,7 +439,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {t('admin:metrics.new')}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {t('admin.metrics.new')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -447,7 +447,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {t('admin:metrics.ideas_submitted')}
+                  {t('admin.metrics.ideas_submitted')}
                 </CardTitle>
                 <Database className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -455,7 +455,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold text-warning">{adminMetrics.metrics?.challenges?.submissions || 0}</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {t('admin:metrics.this_week')}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {t('admin.metrics.this_week')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -463,7 +463,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {t('admin:metrics.system_performance')}
+                  {t('admin.metrics.system_performance')}
                 </CardTitle>
                 <Zap className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -471,7 +471,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold text-success">{adminMetrics.metrics?.system?.uptime || 99}%</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <CheckCircle className="w-4 h-4" />
-                  <span>{t('admin:metrics.uptime')}</span>
+                  <span>{t('admin.metrics.uptime')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -481,32 +481,32 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>{t('admin:cards.quick_actions')}</CardTitle>
+                <CardTitle>{t('admin.cards.quick_actions')}</CardTitle>
                 <CardDescription>
-                   {t('admin:cards.quick_actions_desc')}
+                   {t('admin.cards.quick_actions_desc')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button onClick={() => navigate('/admin/users')} className="w-full justify-start">
                   <Users className="w-4 h-4 mr-2" />
-                   {t('admin:cards.manage_users')}
+                   {t('admin.cards.manage_users')}
                  </Button>
                  <Button onClick={() => navigate('/admin/challenges')} variant="outline" className="w-full justify-start">
                    <Target className="w-4 h-4 mr-2" />
-                   {t('admin:cards.manage_challenges')}
+                   {t('admin.cards.manage_challenges')}
                  </Button>
                  <Button onClick={() => navigate('/admin/evaluations')} variant="outline" className="w-full justify-start">
                    <BarChart3 className="w-4 h-4 mr-2" />
-                   {t('admin:cards.system_reports')}
-                </Button>
-              </CardContent>
-            </Card>
+                   {t('admin.cards.system_reports')}
+                 </Button>
+               </CardContent>
+             </Card>
 
-            <Card>
-              <CardHeader>
-                 <CardTitle>{t('admin:cards.system_activity')}</CardTitle>
+             <Card>
+               <CardHeader>
+                 <CardTitle>{t('admin.cards.system_activity')}</CardTitle>
                  <CardDescription>
-                   {t('admin:cards.system_activity_desc')}
+                   {t('admin.cards.system_activity_desc')}
                  </CardDescription>
                </CardHeader>
                <CardContent className="space-y-3">
@@ -515,8 +515,8 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                      <Users className="w-4 h-4" />
                    </div>
                    <div className="flex-1">
-                     <p className="font-medium text-sm">{t('admin:cards.new_user_registered')}</p>
-                     <p className="text-xs text-muted-foreground">{t('admin:cards.minutes_ago_5')}</p>
+                     <p className="font-medium text-sm">{t('admin.cards.new_user_registered')}</p>
+                     <p className="text-xs text-muted-foreground">{t('admin.cards.minutes_ago_5')}</p>
                    </div>
                  </div>
                  <div className="flex items-center space-x-3 p-3 border rounded-lg">
@@ -524,8 +524,8 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                      <Database className="w-4 h-4" />
                    </div>
                    <div className="flex-1">
-                     <p className="font-medium text-sm">{t('admin:cards.new_idea_submitted')}</p>
-                     <p className="text-xs text-muted-foreground">{t('admin:cards.minutes_ago_15')}</p>
+                     <p className="font-medium text-sm">{t('admin.cards.new_idea_submitted')}</p>
+                     <p className="text-xs text-muted-foreground">{t('admin.cards.minutes_ago_15')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -539,7 +539,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                   {t('admin:metrics.total_managers')}
+                   {t('admin.metrics.total_managers')}
                  </CardTitle>
                  <Users className="h-4 w-4 text-muted-foreground" />
                </CardHeader>
@@ -549,7 +549,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                  </div>
                  <div className="flex items-center gap-1 text-xs text-success mt-2">
                    <TrendingUp className="w-4 h-4" />
-                   <span>+8% {t('admin:metrics.this_month')}</span>
+                   <span>+8% {t('admin.metrics.this_month')}</span>
                  </div>
                </CardContent>
              </Card>
@@ -557,7 +557,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
              <Card>
                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                   {t('admin:metrics.active_teams')}
+                   {t('admin.metrics.active_teams')}
                  </CardTitle>
                  <Briefcase className="h-4 w-4 text-muted-foreground" />
                </CardHeader>
@@ -567,7 +567,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                  </div>
                  <div className="flex items-center gap-1 text-xs text-success mt-2">
                    <TrendingUp className="w-4 h-4" />
-                   <span>+12% {t('admin:metrics.this_month')}</span>
+                   <span>+12% {t('admin.metrics.this_month')}</span>
                  </div>
                </CardContent>
              </Card>
@@ -575,7 +575,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
              <Card>
                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                   {t('admin:metrics.expert_assignments')}
+                   {t('admin.metrics.expert_assignments')}
                  </CardTitle>
                  <Target className="h-4 w-4 text-muted-foreground" />
                </CardHeader>
@@ -585,7 +585,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                  </div>
                  <div className="flex items-center gap-1 text-xs text-success mt-2">
                    <TrendingUp className="w-4 h-4" />
-                   <span>+5% {t('admin:metrics.this_week')}</span>
+                   <span>+5% {t('admin.metrics.this_week')}</span>
                  </div>
                </CardContent>
              </Card>
@@ -593,7 +593,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
              <Card>
                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                   {t('admin:metrics.active_permissions')}
+                   {t('admin.metrics.active_permissions')}
                  </CardTitle>
                  <Shield className="h-4 w-4 text-muted-foreground" />
                </CardHeader>
@@ -603,7 +603,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                  </div>
                  <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
                    <CheckCircle className="w-4 h-4" />
-                   <span>{t('admin:metrics.stable')}</span>
+                   <span>{t('admin.metrics.stable')}</span>
                 </div>
               </CardContent>
             </Card>
