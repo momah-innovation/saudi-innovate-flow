@@ -75,13 +75,12 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     setDirection(direction === 'ltr' ? 'rtl' : 'ltr');
   };
 
+  // Initialize on mount only - prevents infinite loops
   useEffect(() => {
-    // Initialize from localStorage, prioritizing i18next key
     const i18nextLng = localStorage.getItem('i18nextLng') as Language;
     const savedLanguage = localStorage.getItem('ui-language') as Language;
     const savedDirection = localStorage.getItem('ui-direction') as Direction;
     
-    // Determine initial language - only support Arabic and English
     const initialLanguage = i18nextLng || savedLanguage;
     
     if (savedDirection) {
@@ -91,31 +90,30 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     if (initialLanguage && (initialLanguage === 'ar' || initialLanguage === 'en')) {
       setLanguageState(initialLanguage);
       document.documentElement.lang = initialLanguage;
-      // Auto-detect direction based on language
       const autoDirection = initialLanguage === 'ar' ? 'rtl' : 'ltr';
       setDirection(autoDirection);
-      // Ensure both localStorage keys are in sync
       localStorage.setItem('ui-language', initialLanguage);
       localStorage.setItem('i18nextLng', initialLanguage);
     } else if (defaultConfig.autoDetect) {
-      // Auto-detect from browser, but only support Arabic/English
       const browserLang = navigator.language.split('-')[0] as Language;
-      const supportedLang = browserLang === 'en' ? 'en' : 'ar'; // Default to Arabic for unsupported languages
+      const supportedLang = browserLang === 'en' ? 'en' : 'ar';
       setLanguage(supportedLang);
     }
-    
-    // Apply global direction classes
+  }, []); // Only run on mount!
+
+  // Apply DOM changes when direction/language changes
+  useEffect(() => {
     document.documentElement.dir = direction;
     document.documentElement.classList.remove('ltr', 'rtl');
     document.documentElement.classList.add(direction);
-    
-    // Apply language classes for font handling
+    localStorage.setItem('ui-direction', direction);
+  }, [direction]);
+
+  useEffect(() => {
     document.documentElement.classList.remove('lang-ar', 'lang-en');
     document.documentElement.classList.add(`lang-${language}`);
-    
-    // Save direction to localStorage for persistence
-    localStorage.setItem('ui-direction', direction);
-  }, [direction, language]); // Added dependencies!
+    document.documentElement.lang = language;
+  }, [language]);
 
   return (
     <DirectionContext.Provider 
