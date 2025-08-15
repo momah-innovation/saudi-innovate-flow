@@ -105,126 +105,126 @@ export default function AdminDashboard() {
       label: t('admin.cards.storage_policies.label')
     },
     {
-      title: "System Settings",
-      description: "Configure system-wide settings",
+      title: t('admin.system_settings.title'),
+      description: t('admin.system_settings.description'),
       icon: Settings,
       href: "/admin/system-settings", 
       count: "5",
-      label: "Pending Updates"
+      label: t('admin.system_settings.label')
     },
     {
-      title: "Security Monitor",
-      description: "Monitor security events and alerts",
+      title: t('admin.security_monitor.title'),
+      description: t('admin.security_monitor.description'),
       icon: Shield,
       href: "/admin/security",
       count: "3",
-      label: "Recent Alerts"
+      label: t('admin.security_monitor.label')
     },
     {
-      title: "Focus Questions Management",
-      description: "Manage questions that guide challenges",
+      title: t('admin.focus_questions.title'),
+      description: t('admin.focus_questions.description'),
       icon: HelpCircle,
       href: "/admin/focus-questions",
       count: "18",
-      label: "Active Questions"
+      label: t('admin.focus_questions.label')
     },
     {
-      title: "Ideas Management",
-      description: "Review and manage submitted ideas",
+      title: t('admin.ideas_management.title'),
+      description: t('admin.ideas_management.description'),
       icon: TrendingUp,
       href: "/admin/ideas",
       count: "245",
-      label: "Total Ideas"
+      label: t('admin.ideas_management.label')
     },
     {
-      title: "Challenges Management", 
-      description: "Create and manage innovation challenges",
+      title: t('admin.challenges_management.title'), 
+      description: t('admin.challenges_management.description'),
       icon: Activity,
       href: "/admin/challenges",
       count: "12",
-      label: "Active Challenges"
+      label: t('admin.challenges_management.label')
     },
     {
-      title: "Partners Management",
-      description: "Manage partner organizations",
+      title: t('admin.partners_management.title'),
+      description: t('admin.partners_management.description'),
       icon: Users,
       href: "/admin/partners", 
       count: "28",
-      label: "Active Partners"
+      label: t('admin.partners_management.label')
     },
     {
-      title: "Sectors Management",
-      description: "Manage innovation sectors",
+      title: t('admin.sectors_management.title'),
+      description: t('admin.sectors_management.description'),
       icon: Database,
       href: "/admin/sectors",
       count: "8",
-      label: "Sectors"
+      label: t('admin.sectors_management.label')
     }
   ];
 
   // New Advanced Admin Interface Cards
   const advancedAdminCards = [
     {
-      title: "Security Advanced",
-      description: "Advanced security monitoring and threat detection",
+      title: t('admin.advanced.security_advanced.title'),
+      description: t('admin.advanced.security_advanced.description'),
       icon: Shield,
       href: "/admin/security-advanced",
       count: "3",
-      label: "Active Threats",
+      label: t('admin.advanced.security_advanced.label'),
       color: "text-red-600"
     },
     {
-      title: "Access Control",
-      description: "User roles and permission management",
+      title: t('admin.advanced.access_control.title'),
+      description: t('admin.advanced.access_control.description'),
       icon: Lock,
       href: "/admin/access-control-advanced",
       count: "156",
-      label: "Role Assignments",
+      label: t('admin.advanced.access_control.label'),
       color: "text-blue-600"
     },
     {
-      title: "Elevation Monitor",
-      description: "Admin privilege escalation tracking",
+      title: t('admin.advanced.elevation_monitor.title'),
+      description: t('admin.advanced.elevation_monitor.description'),
       icon: TrendingUp,
       href: "/admin/elevation-monitor",
       count: "24",
-      label: "Elevation Events",
+      label: t('admin.advanced.elevation_monitor.label'),
       color: "text-orange-600"
     },
     {
-      title: "Analytics Advanced",
-      description: "Real-time analytics and user insights",
+      title: t('admin.advanced.analytics_advanced.title'),
+      description: t('admin.advanced.analytics_advanced.description'),
       icon: BarChart3,
       href: "/admin/analytics-advanced",
       count: "1.2M",
-      label: "Data Points",
+      label: t('admin.advanced.analytics_advanced.label'),
       color: "text-purple-600"
     },
     {
-      title: "AI Management",
-      description: "AI services and model configuration",
+      title: t('admin.advanced.ai_management.title'),
+      description: t('admin.advanced.ai_management.description'),
       icon: Brain,
       href: "/admin/ai-management",
       count: "8",
-      label: "AI Features",
+      label: t('admin.advanced.ai_management.label'),
       color: "text-green-600"
     },
     {
-      title: "File Management",
-      description: "Advanced file operations and lifecycle",
+      title: t('admin.advanced.file_management.title'),
+      description: t('admin.advanced.file_management.description'),
       icon: Archive,
       href: "/admin/file-management-advanced",
       count: "2.4 GB",
-      label: "Total Storage",
+      label: t('admin.advanced.file_management.label'),
       color: "text-indigo-600"
     },
     {
-      title: "Challenge Analytics",
-      description: "Challenge engagement and performance metrics",
+      title: t('admin.advanced.challenge_analytics.title'),
+      description: t('admin.advanced.challenge_analytics.description'),
       icon: Target,
       href: "/admin/challenges-analytics-advanced",
       count: "45",
-      label: "Active Challenges",
+      label: t('admin.advanced.challenge_analytics.label'),
       color: "text-cyan-600"
     }
   ];
@@ -275,7 +275,7 @@ export default function AdminDashboard() {
         <div className="min-h-[400px] flex items-center justify-center">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-            <p className="text-sm text-muted-foreground">Loading dashboard...</p>
+            <p className="text-sm text-muted-foreground">{t('admin.text.loading_dashboard')}</p>
           </div>
         </div>
       </PageLayout>
@@ -357,22 +357,22 @@ export default function AdminDashboard() {
           <TabsContent value="users" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>User Statistics</CardTitle>
+                <CardTitle>{t('admin.text.user_statistics')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
                       <div className="text-2xl font-bold text-primary">{dashboardData.totalUsers}</div>
-                      <div className="text-sm text-muted-foreground">Total Users</div>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-success">{dashboardData.activeUsers}</div>
-                      <div className="text-sm text-muted-foreground">Active Users</div>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-inactive">{dashboardData.totalUsers - dashboardData.activeUsers}</div>
-                      <div className="text-sm text-muted-foreground">Inactive Users</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.total_users')}</div>
+                     </div>
+                     <div className="text-center p-4 bg-muted/30 rounded-lg">
+                       <div className="text-2xl font-bold text-success">{dashboardData.activeUsers}</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.active_users')}</div>
+                     </div>
+                     <div className="text-center p-4 bg-muted/30 rounded-lg">
+                       <div className="text-2xl font-bold text-inactive">{dashboardData.totalUsers - dashboardData.activeUsers}</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.inactive_users')}</div>
                     </div>
                   </div>
                 </div>
@@ -381,10 +381,10 @@ export default function AdminDashboard() {
             
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Expert Assignment Management</CardTitle>
+                <CardTitle>{t('admin.text.expert_assignment_management')}</CardTitle>
                 <Button size="sm" className="gap-2">
                   <Plus className="w-4 h-4" />
-                  Assign Expert
+                  {t('admin.text.assign_expert')}
                 </Button>
               </CardHeader>
               <CardContent>
@@ -392,15 +392,15 @@ export default function AdminDashboard() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
                       <div className="text-2xl font-bold text-primary">24</div>
-                      <div className="text-sm text-muted-foreground">Active Assignments</div>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-success">18</div>
-                      <div className="text-sm text-muted-foreground">Available Experts</div>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-warning">6</div>
-                      <div className="text-sm text-muted-foreground">Pending Reviews</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.active_assignments')}</div>
+                     </div>
+                     <div className="text-center p-4 bg-muted/30 rounded-lg">
+                       <div className="text-2xl font-bold text-success">18</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.available_experts')}</div>
+                     </div>
+                     <div className="text-center p-4 bg-muted/30 rounded-lg">
+                       <div className="text-2xl font-bold text-warning">6</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.pending_reviews')}</div>
                     </div>
                   </div>
                   <div className="pt-4">
@@ -410,7 +410,7 @@ export default function AdminDashboard() {
                       onClick={() => navigate('/admin/expert-assignments')}
                     >
                       <Users className="w-4 h-4 mr-2" />
-                      Manage Expert Assignments
+                      {t('admin.text.manage_expert_assignments')}
                     </Button>
                   </div>
                 </div>
@@ -421,10 +421,10 @@ export default function AdminDashboard() {
           <TabsContent value="management" className="space-y-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Core Team Management</CardTitle>
+                <CardTitle>{t('admin.text.core_team_management')}</CardTitle>
                 <Button size="sm" className="gap-2" onClick={() => navigate('/admin/core-team')}>
                   <Plus className="w-4 h-4" />
-                  Add Core Team Member
+                  {t('admin.text.add_core_team_member')}
                 </Button>
               </CardHeader>
               <CardContent>
@@ -432,15 +432,15 @@ export default function AdminDashboard() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
                       <div className="text-2xl font-bold text-primary">12</div>
-                      <div className="text-sm text-muted-foreground">Core Team Members</div>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-success">8</div>
-                      <div className="text-sm text-muted-foreground">Active Members</div>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-info">5</div>
-                      <div className="text-sm text-muted-foreground">Active Projects</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.core_team_members')}</div>
+                     </div>
+                     <div className="text-center p-4 bg-muted/30 rounded-lg">
+                       <div className="text-2xl font-bold text-success">8</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.active_members')}</div>
+                     </div>
+                     <div className="text-center p-4 bg-muted/30 rounded-lg">
+                       <div className="text-2xl font-bold text-info">5</div>
+                       <div className="text-sm text-muted-foreground">{t('admin.text.active_projects')}</div>
                     </div>
                   </div>
                   <div className="pt-4">
@@ -450,7 +450,7 @@ export default function AdminDashboard() {
                       onClick={() => navigate('/admin/core-team')}
                     >
                       <Users className="w-4 h-4 mr-2" />
-                      Manage Core Team
+                      {t('admin.text.manage_core_team')}
                     </Button>
                   </div>
                 </div>
@@ -459,10 +459,10 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Stakeholders Management</CardTitle>
+                <CardTitle>{t('admin.text.stakeholders_management')}</CardTitle>
                 <Button size="sm" className="gap-2" onClick={() => navigate('/admin/stakeholders')}>
                   <Plus className="w-4 h-4" />
-                  Add Stakeholder
+                  {t('admin.text.add_stakeholder')}
                 </Button>
               </CardHeader>
               <CardContent>

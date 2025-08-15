@@ -65,5 +65,142 @@
     "notifications": "الإشعارات",
     "integrations": "التكامل",
     "backup": "النسخ الاحتياطي والاستعادة"
+  },
+  "cards": {
+    "user_management": {
+      "title": "إدارة المستخدمين",
+      "description": "إدارة المستخدمين والأدوار والصلاحيات",
+      "label": "إجمالي المستخدمين"
+    },
+    "core_team_management": {
+      "title": "إدارة الفريق الأساسي",
+      "description": "إدارة أعضاء الفريق الأساسي والمشاريع",
+      "label": "أعضاء الفريق"
+    },
+    "expert_assignment_management": {
+      "title": "إدارة تعيين الخبراء",
+      "description": "تعيين الخبراء للتحديات وإدارة التقييمات",
+      "label": "التعيينات النشطة"
+    },
+    "storage_management": {
+      "title": "إدارة التخزين",
+      "description": "مراقبة وإدارة تخزين الملفات",
+      "label": "التخزين المستخدم"
+    },
+    "analytics": {
+      "title": "التحليلات",
+      "description": "تحليلات النظام والتقارير",
+      "label": "جاهزية النظام"
+    },
+    "storage_policies": {
+      "title": "سياسات التخزين",
+      "description": "تكوين سياسات الوصول للتخزين",
+      "label": "السياسات النشطة"
+    }
+  },
+  "actions": {
+    "view_details": "عرض التفاصيل"
+  },
+  "metrics": {
+    "activeUsers": "المستخدمون النشطون",
+    "totalRoles": "إجمالي الأدوار المعينة",
+    "pendingApprovals": "الموافقات المعلقة",
+    "systemHealth": "صحة النظام"
+  },
+  "security": {
+    "score": "نقاط الأمان"
+  },
+  "system_settings": {
+    "title": "إعدادات النظام",
+    "description": "تكوين إعدادات النظام العامة",
+    "label": "التحديثات المعلقة"
+  },
+  "security_monitor": {
+    "title": "مراقب الأمان",
+    "description": "مراقبة أحداث الأمان والتنبيهات",
+    "label": "التنبيهات الحديثة"
+  },
+  "focus_questions": {
+    "title": "إدارة الأسئلة المحورية",
+    "description": "إدارة الأسئلة التي توجه التحديات",
+    "label": "الأسئلة النشطة"
+  },
+  "ideas_management": {
+    "title": "إدارة الأفكار",
+    "description": "مراجعة وإدارة الأفكار المقدمة",
+    "label": "إجمالي الأفكار"
+  },
+  "challenges_management": {
+    "title": "إدارة التحديات",
+    "description": "إنشاء وإدارة تحديات الابتكار",
+    "label": "التحديات النشطة"
+  },
+  "partners_management": {
+    "title": "إدارة الشركاء",
+    "description": "إدارة المنظمات الشريكة",
+    "label": "الشركاء النشطون"
+  },
+  "sectors_management": {
+    "title": "إدارة القطاعات",
+    "description": "إدارة قطاعات الابتكار",
+    "label": "القطاعات"
+  },
+  "advanced": {
+    "security_advanced": {
+      "title": "الأمان المتقدم",
+      "description": "مراقبة الأمان المتقدمة وكشف التهديدات",
+      "label": "التهديدات النشطة"
+    },
+    "access_control": {
+      "title": "التحكم بالوصول",
+      "description": "إدارة أدوار المستخدمين والصلاحيات",
+      "label": "تعيينات الأدوار"
+    },
+    "elevation_monitor": {
+      "title": "مراقب الصلاحيات",
+      "description": "تتبع رفع صلاحيات المديرين",
+      "label": "أحداث الرفع"
+    },
+    "analytics_advanced": {
+      "title": "التحليلات المتقدمة",
+      "description": "تحليلات فورية ورؤى المستخدمين",
+      "label": "نقاط البيانات"
+    },
+    "ai_management": {
+      "title": "إدارة الذكاء الاصطناعي",
+      "description": "خدمات الذكاء الاصطناعي وتكوين النماذج",
+      "label": "ميزات الذكاء الاصطناعي"
+    },
+    "file_management": {
+      "title": "إدارة الملفات",
+      "description": "عمليات الملفات المتقدمة ودورة الحياة",
+      "label": "إجمالي التخزين"
+    },
+    "challenge_analytics": {
+      "title": "تحليلات التحديات",
+      "description": "مقاييس المشاركة والأداء في التحديات",
+      "label": "التحديات النشطة"
+    }
+  },
+  "text": {
+    "user_statistics": "إحصائيات المستخدمين",
+    "total_users": "إجمالي المستخدمين",
+    "active_users": "المستخدمون النشطون",
+    "inactive_users": "المستخدمون غير النشطين",
+    "expert_assignment_management": "إدارة تعيين الخبراء",
+    "assign_expert": "تعيين خبير",
+    "active_assignments": "التعيينات النشطة",
+    "available_experts": "الخبراء المتاحون",
+    "pending_reviews": "المراجعات المعلقة",
+    "manage_expert_assignments": "إدارة تعيينات الخبراء",
+    "core_team_management": "إدارة الفريق الأساسي",
+    "add_core_team_member": "إضافة عضو فريق أساسي",
+    "core_team_members": "أعضاء الفريق الأساسي",
+    "active_members": "الأعضاء النشطون",
+    "active_projects": "المشاريع النشطة",
+    "manage_core_team": "إدارة الفريق الأساسي",
+    "stakeholders_management": "إدارة أصحاب المصلحة",
+    "add_stakeholder": "إضافة صاحب مصلحة",
+    "loading_dashboard": "تحميل لوحة التحكم..."
   }
 }
