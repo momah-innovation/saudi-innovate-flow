@@ -464,7 +464,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
               {t('challenge_settings.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={loading}>
-              {loading ? t('savingText') : t('challenge_settings.save')}
+              {loading ? t('common.status.saving') : t('challenge_settings.save')}
             </Button>
           </div>
         </div>

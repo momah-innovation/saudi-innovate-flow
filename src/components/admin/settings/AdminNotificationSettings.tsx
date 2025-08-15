@@ -134,8 +134,8 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-notification-templates'] });
       toast({
-        title: t('settings.notification.template.updated'),
-        description: t('settings.notification.template.updated.description'),
+        title: t('admin.settings.notification_template_updated'),
+        description: t('admin.settings.notification_template_updated_description'),
       });
     },
     onError: (error) => {
@@ -158,8 +158,8 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
     },
     onSuccess: () => {
       toast({
-        title: t('settings.notification.test.sent'),
-        description: t('settings.notification.test.sent.description'),
+        title: t('admin.settings.notification_test_sent'),
+        description: t('admin.settings.notification_test_sent_description'),
       });
     },
     onError: (error) => {
@@ -430,7 +430,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                     onClick={() => testNotificationMutation.mutate({ type: 'test', channel: 'system' })}
                     disabled={testNotificationMutation.isPending}
                   >
-                    {t('settings.notification.test')}
+                    {t('admin.settings.test_notification')}
                   </Button>
                 </div>
               </CardContent>
@@ -441,9 +441,9 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
         <TabsContent value="templates" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>{t('settings.notification.templates')}</CardTitle>
+              <CardTitle>{t('admin.settings.notification_templates')}</CardTitle>
               <CardDescription>
-                {t('settings.notification.templates.description')}
+                {t('admin.settings.notification_templates_description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -462,7 +462,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                       </div>
                       <div className="space-y-2">
                         <Input
-                          placeholder={t('settings.notification.template.subject')}
+                          placeholder={t('admin.settings.notification_template_subject')}
                           value={template.subject_template}
                           onChange={(e) => 
                             updateTemplateMutation.mutate({
@@ -472,7 +472,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
                           }
                         />
                         <Textarea
-                          placeholder={t('settings.notification.template.body')}
+                          placeholder={t('admin.settings.notification_template_body')}
                           value={template.body_template}
                           onChange={(e) => 
                             updateTemplateMutation.mutate({
@@ -495,7 +495,7 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('settings.notification.analytics.total.users')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.settings.total_users')}</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -505,33 +505,33 @@ export const AdminNotificationSettings: React.FC<AdminNotificationSettingsProps>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('settings.notification.analytics.email.enabled')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.settings.email_enabled')}</CardTitle>
                 <Mail className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{stats?.emailEnabledPercentage || 0}%</div>
                 <p className="text-xs text-muted-foreground">
-                  {stats?.emailEnabled || 0} {t('settings.notification.analytics.users')}
+                  {stats?.emailEnabled || 0} {t('admin.settings.users')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('settings.notification.analytics.push.enabled')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.settings.push_enabled')}</CardTitle>
                 <Smartphone className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{stats?.pushEnabledPercentage || 0}%</div>
                 <p className="text-xs text-muted-foreground">
-                  {stats?.pushEnabled || 0} {t('settings.notification.analytics.users')}
+                  {stats?.pushEnabled || 0} {t('admin.settings.users')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('settings.notification.analytics.sent.week')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.settings.notifications_sent_week')}</CardTitle>
                 <Bell className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>

@@ -49,5 +49,6 @@
   "try_again": "Please try again",
   "contact_support": "Please contact support if the problem persists",
   "reload_page": "Try reloading the page",
-  "check_connection": "Please check your internet connection"
+  "check_connection": "Please check your internet connection",
+  "something_went_wrong": "Something went wrong"
 }

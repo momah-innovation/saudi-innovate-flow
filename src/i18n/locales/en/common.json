@@ -88,7 +88,8 @@
     "clear": "Clear",
     "apply": "Apply",
     "export": "Export",
-    "import": "Import"
+    "import": "Import",
+    "try_again": "Try Again"
   },
   "placeholders": {
     "search": "Search...",
