@@ -52,45 +52,15 @@ export const DashboardOverview = () => {
     loadDashboardStats();
   }, [user]);
 
+  // Use optimized hooks for dashboard data
+  const { data: dashboardCounts } = useOptimizedDashboardCounts();
+  const { data: userStats } = useOptimizedUserSpecificCounts(user?.id);
+
   const loadDashboardStats = async () => {
+    if (!dashboardCounts) return;
+    
     try {
-      // Get overall platform stats
-      const [usersRes, ideasRes, challengesRes, eventsRes] = await Promise.all([
-        supabase.from('profiles').select('id', { count: 'exact' }),
-        supabase.from('ideas').select('id', { count: 'exact' }),
-        supabase.from('challenges').select('id', { count: 'exact' }),
-        supabase.from('events').select('id', { count: 'exact' }),
-      ]);
 
-      // Get user-specific stats if authenticated
-      let userStats = { userIdeas: 0, userChallenges: 0, userEvents: 0 };
-      if (user) {
-        const [userIdeasRes, userChallengesRes, userEventsRes] = await Promise.all([
-          supabase.from('ideas').select('id', { count: 'exact' }).eq('innovator_id', user.id),
-          supabase.from('challenge_participants').select('id', { count: 'exact' }).eq('user_id', user.id),
-          supabase.from('event_participants').select('id', { count: 'exact' }).eq('user_id', user.id),
-        ]);
-
-        userStats = {
-          userIdeas: userIdeasRes.count || 0,
-          userChallenges: userChallengesRes.count || 0,
-          userEvents: userEventsRes.count || 0,
-        };
-      }
-
-      setStats({
-        totalIdeas: ideasRes.count || 0,
-        totalChallenges: challengesRes.count || 0,
-        totalEvents: eventsRes.count || 0,
-        totalUsers: usersRes?.count || 0,
-        ...userStats,
-      });
-    } catch (error) {
-      logger.error('Error loading dashboard stats', { component: 'DashboardOverview', action: 'loadDashboardStats' }, error as Error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const quickActions = [
     {

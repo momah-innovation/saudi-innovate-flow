@@ -83,19 +83,21 @@ export function AnalyticsDashboard() {
     loadAnalyticsData();
   }, []);
 
-  const loadAnalyticsData = async () => {
-    setIsLoading(true);
+  const { data: rawAnalyticsData, isLoading: analyticsLoading } = useOptimizedAnalyticsData();
+
+  useEffect(() => {
+    if (rawAnalyticsData) {
+      processAnalyticsData();
+    }
+  }, [rawAnalyticsData]);
+
+  const processAnalyticsData = async () => {
+    if (!rawAnalyticsData) return;
     
     try {
-      // Fetch real data from database
-      const { data: users } = await supabase.from('profiles').select('id').limit(1000);
-      const { data: challenges } = await supabase.from('challenges').select('id, status').limit(1000);
-      const { data: partners } = await supabase.from('partners').select('id').limit(1000);
-      const { data: campaigns } = await supabase.from('campaigns').select('id').limit(1000);
-      const { data: participants } = await supabase.from('challenge_participants').select('id').limit(1000);
-      const { data: submissions } = await supabase.from('challenge_submissions').select('id, status').limit(1000);
+      const { users, challenges, partners, campaigns, participants, submissions } = rawAnalyticsData;
 
-      const analyticsData: AnalyticsData = {
+      const processedData: AnalyticsData = {
         metric_category: 'platform_overview',
         total_users: users?.length || 0,
         total_challenges: challenges?.length || 0,
@@ -112,7 +114,7 @@ export function AnalyticsDashboard() {
         total_budget_utilized: 0 // Would need budget tracking
       };
 
-      setAnalyticsData(analyticsData);
+      setAnalyticsData(processedData);
 
       // Fetch real user engagement data
       const { data: profilesData } = await supabase
@@ -182,13 +184,11 @@ export function AnalyticsDashboard() {
       });
 
     } catch (error) {
-      logger.error('Error loading analytics data', { component: 'AnalyticsDashboard', action: 'loadAnalyticsData' }, error as Error);
-    } finally {
-      setIsLoading(false);
+      console.error('Error processing analytics data:', error);
     }
   };
 
-  if (isLoading) {
+  if (analyticsLoading || isLoading) {
     return (
       <div className="space-y-4 sm:space-y-6 p-3 sm:p-0">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
