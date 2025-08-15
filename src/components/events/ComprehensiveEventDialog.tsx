@@ -385,7 +385,8 @@ export const ComprehensiveEventDialog = ({
                       <div>
                         <h4 className="font-medium mb-2">{isRTL ? 'رابط الحضور الافتراضي' : 'Virtual Meeting Link'}</h4>
                         <Button variant="outline" size="sm" asChild>
-                          <a href={event.virtual_link} target="_blank" rel="noopener noreferrer">
+                          <a href={event.virtual_link} target="_blank" rel="noopener noreferrer"
+                             onClick={(e) => { e.preventDefault(); window.open(event.virtual_link, '_blank', 'noopener noreferrer'); }}>
                             <Video className="w-4 h-4 mr-2" />
                             {isRTL ? 'انضم للاجتماع' : 'Join Meeting'}
                           </a>

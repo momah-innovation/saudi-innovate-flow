@@ -468,7 +468,8 @@ export const OpportunityDetailsDialog = ({
                     <span className="font-medium">{isRTL ? 'البريد الإلكتروني:' : 'Email:'}</span>
                   </div>
                   <p className="text-muted-foreground ml-6">
-                    <a href={`mailto:${opportunity.contact_email}`} className="hover:underline">
+                    <a href={`mailto:${opportunity.contact_email}`} className="hover:underline"
+                       onClick={(e) => { e.preventDefault(); window.location.href = `mailto:${opportunity.contact_email}`; }}>
                       {opportunity.contact_email}
                     </a>
                   </p>

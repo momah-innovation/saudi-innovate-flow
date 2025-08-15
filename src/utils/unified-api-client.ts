@@ -33,15 +33,15 @@ class UnifiedAPIClient {
     });
   }
 
-  // Generic GET operation
-  async get<T>(
+  // Generic GET operation with simplified typing
+  async get<T = any>(
     table: string,
     options: APICallOptions,
     filters?: FilterOptions,
     pagination?: PaginationOptions
   ): Promise<{ data: T[] | null; error: any; count?: number }> {
     try {
-      let query = supabase.from(table).select('*', { count: 'exact' });
+      let query = supabase.from(table as any).select('*', { count: 'exact' });
 
       // Apply filters
       if (filters) {
@@ -88,14 +88,14 @@ class UnifiedAPIClient {
   }
 
   // Generic POST operation
-  async create<T>(
+  async create<T = any>(
     table: string,
     data: Partial<T>,
     options: APICallOptions
   ): Promise<{ data: T | null; error: any }> {
     try {
       const { data: result, error } = await supabase
-        .from(table)
+        .from(table as any)
         .insert(data)
         .select()
         .single();
@@ -111,8 +111,7 @@ class UnifiedAPIClient {
 
       logger.info(`Successfully created record in ${table}`, {
         component: options.component,
-        operation: options.operation,
-        recordId: result.id
+        operation: options.operation
       });
 
       return { data: result as T, error: null };
@@ -127,7 +126,7 @@ class UnifiedAPIClient {
   }
 
   // Generic PUT operation
-  async update<T>(
+  async update<T = any>(
     table: string,
     id: string,
     data: Partial<T>,
@@ -135,7 +134,7 @@ class UnifiedAPIClient {
   ): Promise<{ data: T | null; error: any }> {
     try {
       const { data: result, error } = await supabase
-        .from(table)
+        .from(table as any)
         .update(data)
         .eq('id', id)
         .select()
@@ -152,8 +151,7 @@ class UnifiedAPIClient {
 
       logger.info(`Successfully updated record in ${table}`, {
         component: options.component,
-        operation: options.operation,
-        recordId: id
+        operation: options.operation
       });
 
       return { data: result as T, error: null };
@@ -175,7 +173,7 @@ class UnifiedAPIClient {
   ): Promise<{ success: boolean; error: any }> {
     try {
       const { error } = await supabase
-        .from(table)
+        .from(table as any)
         .delete()
         .eq('id', id);
 
@@ -190,8 +188,7 @@ class UnifiedAPIClient {
 
       logger.info(`Successfully deleted record from ${table}`, {
         component: options.component,
-        operation: options.operation,
-        recordId: id
+        operation: options.operation
       });
 
       return { success: true, error: null };
@@ -206,14 +203,14 @@ class UnifiedAPIClient {
   }
 
   // Get single record by ID
-  async getById<T>(
+  async getById<T = any>(
     table: string,
     id: string,
     options: APICallOptions
   ): Promise<{ data: T | null; error: any }> {
     try {
       const { data, error } = await supabase
-        .from(table)
+        .from(table as any)
         .select('*')
         .eq('id', id)
         .single();
@@ -238,51 +235,14 @@ class UnifiedAPIClient {
     }
   }
 
-  // Bulk operations
-  async createMany<T>(
-    table: string,
-    records: Partial<T>[],
-    options: APICallOptions
-  ): Promise<{ data: T[] | null; error: any }> {
-    try {
-      const { data, error } = await supabase
-        .from(table)
-        .insert(records)
-        .select();
-
-      if (error) {
-        this.errorHandler.handleError(error, {
-          component: options.component,
-          operation: options.operation,
-          metadata: { table, count: records.length }
-        });
-        return { data: null, error };
-      }
-
-      logger.info(`Successfully created ${records.length} records in ${table}`, {
-        component: options.component,
-        operation: options.operation
-      });
-
-      return { data: data as T[], error: null };
-    } catch (error) {
-      this.errorHandler.handleError(error, {
-        component: options.component,
-        operation: options.operation,
-        metadata: { table, count: records.length }
-      });
-      return { data: null, error };
-    }
-  }
-
-  // Execute raw SQL function
-  async executeFunction<T>(
+  // Execute database function
+  async executeFunction<T = any>(
     functionName: string,
     params: Record<string, any>,
     options: APICallOptions
   ): Promise<{ data: T | null; error: any }> {
     try {
-      const { data, error } = await supabase.rpc(functionName, params);
+      const { data, error } = await supabase.rpc(functionName as any, params);
 
       if (error) {
         this.errorHandler.handleError(error, {

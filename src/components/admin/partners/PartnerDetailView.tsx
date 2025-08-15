@@ -172,7 +172,8 @@ export function PartnerDetailView({
                     <p className="text-sm text-muted-foreground flex items-center gap-1">
                       <Globe className="w-4 h-4" />
                       {partner.website ? (
-                        <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                        <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"
+                           onClick={(e) => { e.preventDefault(); window.open(partner.website, '_blank', 'noopener noreferrer'); }}>
                           زيارة الموقع
                         </a>
                       ) : (

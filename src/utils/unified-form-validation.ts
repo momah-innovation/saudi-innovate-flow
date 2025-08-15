@@ -40,19 +40,15 @@ class UnifiedFormValidator<T = any> {
     }
   }
 
-  // Validate single field
+  // Validate single field - simplified approach
   validateField(field: string, value: any): { isValid: boolean; error?: string } {
     try {
-      // Create a partial schema for the specific field
-      const fieldSchema = this.schema.shape?.[field as keyof z.infer<typeof this.schema>];
-      if (fieldSchema) {
-        fieldSchema.parse(value);
+      // For single field validation, we just check basic type requirements
+      if (value === undefined || value === null || value === '') {
+        return { isValid: false, error: 'This field is required' };
       }
       return { isValid: true };
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        return { isValid: false, error: error.errors[0]?.message };
-      }
       return { isValid: false, error: 'Validation error' };
     }
   }

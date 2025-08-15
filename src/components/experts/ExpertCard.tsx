@@ -169,21 +169,24 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
           <div className="flex justify-center gap-2 pt-2 border-t">
             {expert.social_links.linkedin && (
               <Button variant="ghost" size="sm" asChild>
-                <a href={expert.social_links.linkedin} target="_blank" rel="noopener noreferrer">
+                <a href={expert.social_links.linkedin} target="_blank" rel="noopener noreferrer"
+                   onClick={(e) => { e.preventDefault(); window.open(expert.social_links.linkedin, '_blank', 'noopener noreferrer'); }}>
                   <Linkedin className="w-4 h-4" />
                 </a>
               </Button>
             )}
             {expert.social_links.twitter && (
               <Button variant="ghost" size="sm" asChild>
-                <a href={expert.social_links.twitter} target="_blank" rel="noopener noreferrer">
+                <a href={expert.social_links.twitter} target="_blank" rel="noopener noreferrer"
+                   onClick={(e) => { e.preventDefault(); window.open(expert.social_links.twitter, '_blank', 'noopener noreferrer'); }}>
                   <Twitter className="w-4 h-4" />
                 </a>
               </Button>
             )}
             {expert.social_links.email && (
               <Button variant="ghost" size="sm" asChild>
-                <a href={`mailto:${expert.social_links.email}`}>
+                <a href={`mailto:${expert.social_links.email}`}
+                   onClick={(e) => { e.preventDefault(); window.location.href = `mailto:${expert.social_links.email}`; }}>
                   <Mail className="w-4 h-4" />
                 </a>
               </Button>
