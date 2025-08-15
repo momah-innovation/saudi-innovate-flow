@@ -82,10 +82,10 @@ export function AdminTrendsAnalysis({ metrics, language }: AdminTrendsAnalysisPr
       <CardContent>
         <Tabs defaultValue="users" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="users">{t('dashboard:trends.users')}</TabsTrigger>
-            <TabsTrigger value="challenges">{t('dashboard:trends.challenges')}</TabsTrigger>
-            <TabsTrigger value="system">{t('dashboard:trends.system')}</TabsTrigger>
-            <TabsTrigger value="security">{t('dashboard:trends.security')}</TabsTrigger>
+            <TabsTrigger value="users">{t('dashboard.trends.users')}</TabsTrigger>
+            <TabsTrigger value="challenges">{t('dashboard.trends.challenges')}</TabsTrigger>
+            <TabsTrigger value="system">{t('dashboard.trends.system')}</TabsTrigger>
+            <TabsTrigger value="security">{t('dashboard.trends.security')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="users" className="space-y-4">

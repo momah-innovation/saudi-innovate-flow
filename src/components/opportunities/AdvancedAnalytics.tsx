@@ -419,7 +419,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
               <Brain className="w-5 h-5 text-purple-500" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.predictiveMetrics.expectedApplications}</p>
-                <p className="text-sm text-muted-foreground">{t('opportunities:metrics.expected_applications')}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities.metrics.expected_applications')}</p>
                 <Badge variant="outline" className={getTrendColor(advancedData.predictiveMetrics.conversionTrend)}>
                   {advancedData.predictiveMetrics.conversionTrend}
                 </Badge>
@@ -434,7 +434,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
               <Gauge className="w-5 h-5 text-blue-500" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.predictiveMetrics.qualityScore}</p>
-                <p className="text-sm text-muted-foreground">{t('opportunities:metrics.quality_score')}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities.metrics.quality_score')}</p>
                 <Progress value={advancedData.predictiveMetrics.qualityScore} className="mt-1" />
               </div>
             </div>
@@ -447,7 +447,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
               <Zap className="w-5 h-5 text-green-500" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.performanceMetrics.loadTime.toFixed(1)}s</p>
-                <p className="text-sm text-muted-foreground">{t('opportunities:metrics.load_time')}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities.metrics.load_time')}</p>
                 <Badge variant="outline" className="mt-1">
                   {advancedData.performanceMetrics.loadTime < 2 ? 'Fast' : 'Average'}
                 </Badge>
@@ -462,7 +462,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
               <Target className="w-5 h-5 text-orange-500" />
               <div>
                 <p className="text-2xl font-bold">#{advancedData.competitiveAnalysis.position}</p>
-                <p className="text-sm text-muted-foreground">{t('opportunities:metrics.market_position')}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities.metrics.market_position')}</p>
                 <Badge variant="outline" className={getRiskColor(advancedData.predictiveMetrics.riskLevel)}>
                   {advancedData.predictiveMetrics.riskLevel} risk
                 </Badge>

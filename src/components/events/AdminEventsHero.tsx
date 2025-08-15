@@ -35,19 +35,19 @@ export const AdminEventsHero = ({
 
   const metrics = [
     {
-      title: t('events:metrics.total'),
+      title: t('events.metrics.total'),
       value: totalEvents,
       icon: Calendar,
-      trend: t('events:metrics.trend_month'),
+      trend: t('events.metrics.trend_month'),
       color: 'bg-blue-500',
       bgColor: 'bg-blue-50 dark:bg-blue-900/20',
       textColor: 'text-blue-600 dark:text-blue-400'
     },
     {
-      title: t('events:metrics.active'),
+      title: t('events.metrics.active'),
       value: activeEvents,
       icon: TrendingUp,
-      trend: t('events:metrics.ongoing_now', { count: activeEvents }),
+      trend: t('events.metrics.ongoing_now', { count: activeEvents }),
       color: 'bg-green-500',
       bgColor: 'bg-green-50 dark:bg-green-900/20',
       textColor: 'text-green-600 dark:text-green-400'

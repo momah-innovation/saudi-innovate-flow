@@ -302,12 +302,12 @@ export default function AdminDashboard() {
 
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="overview">{t('admin:dashboard.overview')}</TabsTrigger>
-            <TabsTrigger value="management">{t('admin:dashboard.management')}</TabsTrigger>
-            <TabsTrigger value="users">{t('admin:dashboard.users')}</TabsTrigger>
-            <TabsTrigger value="storage">{t('admin:dashboard.storage')}</TabsTrigger>
-            <TabsTrigger value="security">{t('admin:dashboard.security')}</TabsTrigger>
-            <TabsTrigger value="advanced">{t('admin:dashboard.advanced')}</TabsTrigger>
+            <TabsTrigger value="overview">{t('admin.dashboard.overview')}</TabsTrigger>
+            <TabsTrigger value="management">{t('admin.dashboard.management')}</TabsTrigger>
+            <TabsTrigger value="users">{t('admin.dashboard.users')}</TabsTrigger>
+            <TabsTrigger value="storage">{t('admin.dashboard.storage')}</TabsTrigger>
+            <TabsTrigger value="security">{t('admin.dashboard.security')}</TabsTrigger>
+            <TabsTrigger value="advanced">{t('admin.dashboard.advanced')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
