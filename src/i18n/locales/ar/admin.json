@@ -600,5 +600,36 @@
     "push_enabled": "إشعارات الدفع مفعّلة",
     "users": "مستخدمين",
     "notifications_sent_week": "الإشعارات المرسلة هذا الأسبوع"
+  },
+  "challenges": {
+    "title": "إدارة التحديات",
+    "description": "إنشاء وإدارة تحديات الابتكار",
+    "new_challenge": "تحدٍ جديد",
+    "no_challenges": "لا توجد تحديات",
+    "no_challenges_description": "ابدأ بإنشاء أول تحدٍ لك لإشراك المبتكرين",
+    "create_new": "إنشاء تحدٍ جديد",
+    "start_date": "تاريخ البداية",
+    "end_date": "تاريخ النهاية",
+    "estimated_budget": "الميزانية المقدرة",
+    "currency": "ريال",
+    "sensitivity_level": "مستوى الحساسية",
+    "delete_confirm": "هل أنت متأكد من حذف هذا التحدي؟ لا يمكن التراجع عن هذا الإجراء.",
+    "search_placeholder": "البحث في التحديات...",
+    "priority_placeholder": "الأولوية",
+    "validation_error": "خطأ في التحقق",
+    "enter_title": "يرجى إدخال عنوان التحدي",
+    "enter_description": "يرجى إدخال وصف التحدي",
+    "update_success": "تم تحديث التحدي",
+    "update_success_desc": "تم تحديث التحدي بنجاح",
+    "create_success": "تم إنشاء التحدي",
+    "create_success_desc": "تم إنشاء التحدي بنجاح",
+    "save_failed": "فشل الحفظ",
+    "try_again": "يرجى المحاولة مرة أخرى",
+    "edit_challenge": "تعديل التحدي",
+    "create_challenge": "إنشاء تحدي",
+    "settings": {
+      "archived_success_title": "تم أرشفة التحدي",
+      "archived_success_description": "تم أرشفة التحدي بنجاح"
+    }
   }
 }
