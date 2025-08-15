@@ -42,6 +42,7 @@ interface AdminMetricCardProps {
   error?: boolean;
   variant?: 'default' | 'security' | 'performance';
   fallbackValue?: string;
+  t: (key: string, fallback?: string) => string;
 }
 
 const AdminMetricCard: React.FC<AdminMetricCardProps> = ({ 
@@ -53,7 +54,8 @@ const AdminMetricCard: React.FC<AdminMetricCardProps> = ({
   loading = false, 
   error = false,
   variant = 'default',
-  fallbackValue = 'N/A'
+  fallbackValue = 'N/A',
+  t
 }) => {
   const displayValue = error ? fallbackValue : (loading ? '...' : value);
   const trendColor = trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-muted-foreground';
@@ -75,12 +77,12 @@ const AdminMetricCard: React.FC<AdminMetricCardProps> = ({
         <div className="text-2xl font-bold">{displayValue}</div>
         {change !== undefined && !error && (
           <p className={`text-xs ${trendColor}`}>
-            {change > 0 ? '+' : ''}{change}% from last period
+            {change > 0 ? '+' : ''}{change}% {t('admin.metrics.from_last_period', 'from last period')}
           </p>
         )}
         {error && (
           <p className="text-xs text-destructive">
-            Data temporarily unavailable
+            {t('admin.errors.data_temporarily_unavailable')}
           </p>
         )}
       </CardContent>
@@ -192,7 +194,7 @@ export function MigratedAdminDashboard() {
       <Alert variant="destructive">
         <Shield className="h-4 w-4" />
         <AlertDescription>
-          You don't have sufficient permissions to view the admin dashboard.
+          {t('admin.security.insufficient_permissions')}
         </AlertDescription>
       </Alert>
     );
@@ -214,7 +216,7 @@ export function MigratedAdminDashboard() {
           <div className="flex items-center gap-2">
             {lastUpdated && (
               <Badge variant="outline" className="text-xs">
-                Last updated: {new Date(lastUpdated).toLocaleTimeString()}
+                {t('admin.errors.last_updated')}: {new Date(lastUpdated).toLocaleTimeString()}
               </Badge>
             )}
             <Button 
@@ -224,7 +226,7 @@ export function MigratedAdminDashboard() {
               disabled={isLoading || isRefreshing}
             >
               <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? t('admin.actions.refreshing') : t('admin.actions.refresh')}
             </Button>
           </div>
         </div>
@@ -238,7 +240,7 @@ export function MigratedAdminDashboard() {
                 {adminMetrics.errorMessage || error || 'Unable to load admin data'}
               </span>
               <Button variant="outline" size="sm" onClick={handleRefresh}>
-                Try Again
+                {t('admin.actions.try_again')}
               </Button>
             </AlertDescription>
           </Alert>
@@ -248,15 +250,15 @@ export function MigratedAdminDashboard() {
           <TabsList>
             <TabsTrigger value="overview">
               <BarChart3 className="h-4 w-4 mr-2" />
-              Overview
+              {t('admin.tabs.overview')}
             </TabsTrigger>
             <TabsTrigger value="security">
               <Shield className="h-4 w-4 mr-2" />
-              Security
+              {t('admin.tabs.security')}
             </TabsTrigger>
             <TabsTrigger value="performance">
               <Activity className="h-4 w-4 mr-2" />
-              Performance
+              {t('admin.tabs.performance')}
             </TabsTrigger>
           </TabsList>
 
@@ -264,37 +266,41 @@ export function MigratedAdminDashboard() {
             {/* Key Admin Metrics */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <AdminMetricCard
-                title={t('admin.metrics.activeUsers', 'Active Users')}
+                title={t('admin.metrics.activeUsers')}
                 value={formatNumber(adminMetrics.activeUsers)}
                 icon={Users}
                 loading={isLoading}
                 error={adminMetrics.hasError}
+                t={t}
               />
               
               <AdminMetricCard
-                title={t('admin.metrics.totalRoles', 'Total Roles Assigned')}
+                title={t('admin.metrics.totalRoles')}
                 value={formatNumber(adminMetrics.totalRoles)}
                 icon={Settings}
                 loading={isLoading}
                 error={adminMetrics.hasError}
+                t={t}
               />
               
               <AdminMetricCard
-                title={t('admin.metrics.pendingApprovals', 'Pending Approvals')}
+                title={t('admin.metrics.pendingApprovals')}
                 value={formatNumber(adminMetrics.pendingApprovals)}
                 icon={Bell}
                 variant={adminMetrics.pendingApprovals > 0 ? 'security' : 'default'}
                 loading={isLoading}
                 error={adminMetrics.hasError}
+                t={t}
               />
               
               <AdminMetricCard
-                title={t('admin.metrics.systemHealth', 'System Health')}
+                title={t('admin.metrics.systemHealth')}
                 value={`${adminMetrics.systemHealth.toFixed(1)}%`}
                 icon={Activity}
                 variant="performance"
                 loading={isLoading}
                 error={adminMetrics.hasError}
+                t={t}
               />
             </div>
 
@@ -304,26 +310,26 @@ export function MigratedAdminDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendingUp className="h-5 w-5" />
-                    Platform Analytics
+                    {t('admin.cards.platform_analytics')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {coreMetrics && (
                     <>
                       <div className="flex justify-between">
-                        <span className="text-sm">Total Users</span>
+                        <span className="text-sm">{t('admin.cards.total_users')}</span>
                         <Badge variant="secondary">
                           {formatNumber(coreMetrics.users?.total || 0)}
                         </Badge>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Total Challenges</span>
+                        <span className="text-sm">{t('admin.cards.total_challenges')}</span>
                         <Badge variant="secondary">
                           {formatNumber(coreMetrics.challenges?.total || 0)}
                         </Badge>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Implementation Rate</span>
+                        <span className="text-sm">{t('admin.cards.implementation_rate')}</span>
                         <Badge variant="default">
                           {(coreMetrics.business?.roi || 0).toFixed(1)}%
                         </Badge>
@@ -335,7 +341,7 @@ export function MigratedAdminDashboard() {
                     <Alert>
                       <Database className="h-4 w-4" />
                       <AlertDescription>
-                        Some analytics data unavailable
+                        {t('admin.errors.some_analytics_unavailable')}
                       </AlertDescription>
                     </Alert>
                   )}
@@ -346,28 +352,28 @@ export function MigratedAdminDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Clock className="h-5 w-5" />
-                    Recent Activity
+                    {t('admin.cards.recent_activity')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Data Quality</span>
+                    <span className="text-sm text-muted-foreground">{t('admin.cards.data_quality')}</span>
                     <Badge variant={adminMetrics.hasError ? "destructive" : "default"}>
-                      {adminMetrics.hasError ? 'Fallback' : 'Live'}
+                      {adminMetrics.hasError ? t('admin.cards.fallback') : t('admin.cards.live')}
                     </Badge>
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">RBAC Status</span>
+                    <span className="text-sm text-muted-foreground">{t('admin.cards.rbac_status')}</span>
                     <div className="flex items-center gap-1">
                       <CheckCircle className="h-3 w-3 text-green-500" />
-                      <span className="text-xs">Active</span>
+                      <span className="text-xs">{t('admin.cards.active')}</span>
                     </div>
                   </div>
 
                   {(roleBasedMetrics as any)?.metadata && (
                     <div className="text-xs text-muted-foreground">
-                      Version: {(roleBasedMetrics as any).metadata.version}
+                      {t('admin.cards.version')}: {(roleBasedMetrics as any).metadata.version}
                     </div>
                   )}
                 </CardContent>
@@ -379,17 +385,18 @@ export function MigratedAdminDashboard() {
             {hasAccess.security ? (
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <AdminMetricCard
-                  title={t('admin.security.score', 'Security Score')}
+                  title={t('admin.security.score')}
                   value={adminMetrics.securityScore}
                   icon={Shield}
                   variant="security"
                   loading={isLoading}
                   error={adminMetrics.hasError}
+                  t={t}
                 />
                 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm">Risk Level</CardTitle>
+                    <CardTitle className="text-sm">{t('admin.security.risk_level')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <Badge variant={getRiskLevelBadge(adminMetrics.riskLevel) as any}>
@@ -403,21 +410,23 @@ export function MigratedAdminDashboard() {
                 {securityMetrics && (
                   <>
                     <AdminMetricCard
-                      title="Threat Count"
+                      title={t('admin.security.threat_count')}
                       value={(securityMetrics as any).threatCount || 0}
                       icon={AlertTriangle}
                       variant="security"
                       loading={isLoading}
                       error={!securityMetrics}
+                      t={t}
                     />
                     
                     <AdminMetricCard
-                      title="Suspicious Activities"
+                      title={t('admin.security.suspicious_activities')}
                       value={(securityMetrics as any).suspiciousActivities || 0}
                       icon={XCircle}
                       variant="security"
                       loading={isLoading}
                       error={!securityMetrics}
+                      t={t}
                     />
                   </>
                 )}
@@ -426,7 +435,7 @@ export function MigratedAdminDashboard() {
               <Alert>
                 <Shield className="h-4 w-4" />
                 <AlertDescription>
-                  Security analytics require additional permissions.
+                  {t('admin.security.security_analytics_permission')}
                 </AlertDescription>
               </Alert>
             )}
@@ -436,12 +445,12 @@ export function MigratedAdminDashboard() {
             <div className="grid gap-4 md:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>System Performance</CardTitle>
+                  <CardTitle>{t('admin.performance.system_performance')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Uptime</span>
+                      <span>{t('admin.performance.uptime')}</span>
                       <span>{adminMetrics.systemHealth.toFixed(1)}%</span>
                     </div>
                     <Progress value={adminMetrics.systemHealth} className="h-2" />
@@ -451,14 +460,14 @@ export function MigratedAdminDashboard() {
                     <>
                       <div>
                         <div className="flex justify-between text-sm mb-2">
-                          <span>Active Sessions</span>
+                          <span>{t('admin.performance.active_sessions')}</span>
                           <span>{(roleBasedMetrics as any).admin_metrics.system_health.active_sessions}</span>
                         </div>
                       </div>
                       
                       <div>
                         <div className="flex justify-between text-sm mb-2">
-                          <span>Error Rate</span>
+                          <span>{t('admin.performance.error_rate')}</span>
                           <span>{(roleBasedMetrics as any).admin_metrics.system_health.error_rate}%</span>
                         </div>
                         <Progress value={(roleBasedMetrics as any).admin_metrics.system_health.error_rate} className="h-2" />
@@ -470,13 +479,13 @@ export function MigratedAdminDashboard() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Data Quality Report</CardTitle>
+                  <CardTitle>{t('admin.cards.data_quality_report', 'Data Quality Report')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {(coreMetrics as any)?.metadata && (
                     <>
                       <div className="flex justify-between text-sm">
-                        <span>Core Metrics</span>
+                        <span>{t('admin.cards.core_metrics', 'Core Metrics')}</span>
                         <Badge variant={(coreMetrics as any).metadata.data_quality === 'complete' ? 'default' : 'secondary'}>
                           {(coreMetrics as any).metadata.data_quality}
                         </Badge>
@@ -484,7 +493,7 @@ export function MigratedAdminDashboard() {
                       
                       {(securityMetrics as any)?.metadata && (
                         <div className="flex justify-between text-sm">
-                          <span>Security Metrics</span>
+                          <span>{t('admin.cards.security_metrics', 'Security Metrics')}</span>
                           <Badge variant={(securityMetrics as any).metadata.data_quality === 'complete' ? 'default' : 'secondary'}>
                             {(securityMetrics as any).metadata.data_quality}
                           </Badge>
@@ -493,7 +502,7 @@ export function MigratedAdminDashboard() {
                       
                       {(roleBasedMetrics as any)?.admin_metrics && (
                         <div className="flex justify-between text-sm">
-                          <span>Admin Metrics</span>
+                          <span>{t('admin.cards.admin_metrics', 'Admin Metrics')}</span>
                           <Badge variant={(roleBasedMetrics as any).admin_metrics.data_quality === 'complete' ? 'default' : 'secondary'}>
                             {(roleBasedMetrics as any).admin_metrics.data_quality}
                           </Badge>

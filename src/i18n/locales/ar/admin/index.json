@@ -99,16 +99,84 @@
     }
   },
   "actions": {
-    "view_details": "عرض التفاصيل"
+    "view_details": "عرض التفاصيل",
+    "refresh": "تحديث",
+    "refreshing": "جاري التحديث...",
+    "try_again": "حاول مرة أخرى",
+    "access_interface": "الوصول للواجهة"
+  },
+  "tabs": {
+    "overview": "نظرة عامة",
+    "management": "الإدارة",
+    "content": "المحتوى", 
+    "system": "النظام",
+    "advanced": "متقدم",
+    "security": "الأمان",
+    "performance": "الأداء"
   },
   "metrics": {
     "activeUsers": "المستخدمون النشطون",
     "totalRoles": "إجمالي الأدوار المعينة",
     "pendingApprovals": "الموافقات المعلقة",
-    "systemHealth": "صحة النظام"
+    "systemHealth": "صحة النظام",
+    "total_users": "إجمالي المستخدمين",
+    "active_challenges": "التحديات النشطة",
+    "ideas_submitted": "الأفكار المقدمة",
+    "system_performance": "أداء النظام",
+    "total_managers": "إجمالي المديرين",
+    "active_teams": "الفرق النشطة",
+    "expert_assignments": "مهام الخبراء",
+    "active_permissions": "الصلاحيات المفعلة",
+    "this_month": "هذا الشهر",
+    "this_week": "هذا الأسبوع",
+    "new": "جديدة",
+    "uptime": "وقت التشغيل",
+    "from_last_period": "من الفترة الماضية",
+    "stable": "مستقرة"
+  },
+  "cards": {
+    "quick_actions": "إجراءات سريعة",
+    "quick_actions_desc": "الوظائف الأكثر استخداماً",
+    "system_activity": "نشاط النظام",
+    "system_activity_desc": "آخر التحديثات والأنشطة",
+    "manage_users": "إدارة المستخدمين",
+    "manage_challenges": "إدارة التحديات",
+    "system_reports": "تقارير النظام",
+    "new_user_registered": "مستخدم جديد مسجل",
+    "new_idea_submitted": "فكرة جديدة مقدمة",
+    "minutes_ago_5": "منذ 5 دقائق",
+    "minutes_ago_15": "منذ 15 دقيقة",
+    "platform_analytics": "تحليلات المنصة",
+    "recent_activity": "النشاط الحديث",
+    "total_challenges": "إجمالي التحديات",
+    "implementation_rate": "معدل التنفيذ",
+    "data_quality": "جودة البيانات",
+    "rbac_status": "حالة التحكم بالأدوار",
+    "active": "نشط",
+    "live": "مباشر",
+    "fallback": "احتياطي",
+    "version": "الإصدار"
   },
   "security": {
-    "score": "نقاط الأمان"
+    "score": "نقاط الأمان",
+    "risk_level": "مستوى المخاطر",
+    "threat_count": "عدد التهديدات",
+    "suspicious_activities": "الأنشطة المشبوهة",
+    "security_analytics_permission": "تحليلات الأمان تتطلب صلاحيات إضافية.",
+    "insufficient_permissions": "ليس لديك صلاحيات كافية لعرض لوحة التحكم الإدارية."
+  },
+  "performance": {
+    "system_performance": "أداء النظام",
+    "uptime": "وقت التشغيل",
+    "active_sessions": "الجلسات النشطة",
+    "error_rate": "معدل الأخطاء"
+  },
+  "errors": {
+    "unable_to_load": "غير قادر على تحميل بيانات الإدارة",
+    "data_temporarily_unavailable": "البيانات غير متوفرة مؤقتاً",
+    "some_analytics_unavailable": "بعض بيانات التحليلات غير متوفرة",
+    "admin_calculation_error": "حدث خطأ في حساب بيانات الإدارة",
+    "last_updated": "آخر تحديث"
   },
   "system_settings": {
     "title": "إعدادات النظام",

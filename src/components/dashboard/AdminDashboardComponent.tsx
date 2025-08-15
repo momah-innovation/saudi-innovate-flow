@@ -366,35 +366,35 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <BarChart3 className="w-4 h-4" />
-            {language === 'ar' ? 'نظرة عامة' : 'Overview'}
+            {t('admin.tabs.overview')}
           </TabsTrigger>
           <TabsTrigger 
             value="management" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Users className="w-4 h-4" />
-            {language === 'ar' ? 'الإدارة' : 'Management'}
+            {t('admin.tabs.management')}
           </TabsTrigger>
           <TabsTrigger 
             value="content" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Database className="w-4 h-4" />
-            {language === 'ar' ? 'المحتوى' : 'Content'}
+            {t('admin.tabs.content')}
           </TabsTrigger>
           <TabsTrigger 
             value="system" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Settings className="w-4 h-4" />
-            {language === 'ar' ? 'النظام' : 'System'}
+            {t('admin.tabs.system')}
           </TabsTrigger>
           <TabsTrigger 
             value="advanced" 
             className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Shield className="w-4 h-4" />
-            {language === 'ar' ? 'متقدم' : 'Advanced'}
+            {t('admin.tabs.advanced')}
           </TabsTrigger>
         </TabsList>
 
@@ -411,7 +411,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {language === 'ar' ? 'إجمالي المستخدمين' : 'Total Users'}
+                  {t('admin.metrics.total_users')}
                 </CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -421,7 +421,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.users?.growthRate || 12}% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                  <span>+{adminMetrics.metrics?.users?.growthRate || 12}% {t('admin.metrics.this_month')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -429,7 +429,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {language === 'ar' ? 'التحديات النشطة' : 'Active Challenges'}
+                  {t('admin.metrics.active_challenges')}
                 </CardTitle>
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -439,7 +439,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {language === 'ar' ? 'جديدة' : 'new'}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {t('admin.metrics.new')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -447,7 +447,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {language === 'ar' ? 'الأفكار المقدمة' : 'Ideas Submitted'}
+                  {t('admin.metrics.ideas_submitted')}
                 </CardTitle>
                 <Database className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -455,7 +455,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold text-warning">{adminMetrics.metrics?.challenges?.submissions || 0}</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {t('admin.metrics.this_week')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -463,7 +463,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {language === 'ar' ? 'أداء النظام' : 'System Performance'}
+                  {t('admin.metrics.system_performance')}
                 </CardTitle>
                 <Zap className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -471,7 +471,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold text-success">{adminMetrics.metrics?.system?.uptime || 99}%</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <CheckCircle className="w-4 h-4" />
-                  <span>{language === 'ar' ? 'وقت التشغيل' : 'uptime'}</span>
+                  <span>{t('admin.metrics.uptime')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -481,32 +481,32 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>{language === 'ar' ? 'إجراءات سريعة' : 'Quick Actions'}</CardTitle>
+                <CardTitle>{t('admin.cards.quick_actions')}</CardTitle>
                 <CardDescription>
-                  {language === 'ar' ? 'الوظائف الأكثر استخداماً' : 'Most frequently used functions'}
+                  {t('admin.cards.quick_actions_desc')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button onClick={() => navigate('/admin/users')} className="w-full justify-start">
                   <Users className="w-4 h-4 mr-2" />
-                  {language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users'}
+                  {t('admin.cards.manage_users')}
                 </Button>
                 <Button onClick={() => navigate('/admin/challenges')} variant="outline" className="w-full justify-start">
                   <Target className="w-4 h-4 mr-2" />
-                  {language === 'ar' ? 'إدارة التحديات' : 'Manage Challenges'}
+                  {t('admin.cards.manage_challenges')}
                 </Button>
                 <Button onClick={() => navigate('/admin/evaluations')} variant="outline" className="w-full justify-start">
                   <BarChart3 className="w-4 h-4 mr-2" />
-                  {language === 'ar' ? 'تقارير النظام' : 'System Reports'}
+                  {t('admin.cards.system_reports')}
                 </Button>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>{language === 'ar' ? 'نشاط النظام' : 'System Activity'}</CardTitle>
+                <CardTitle>{t('admin.cards.system_activity')}</CardTitle>
                 <CardDescription>
-                  {language === 'ar' ? 'آخر التحديثات والأنشطة' : 'Latest updates and activities'}
+                  {t('admin.cards.system_activity_desc')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -515,8 +515,8 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                     <Users className="w-4 h-4" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-sm">{language === 'ar' ? 'مستخدم جديد مسجل' : 'New user registered'}</p>
-                    <p className="text-xs text-muted-foreground">{language === 'ar' ? 'منذ 5 دقائق' : '5 minutes ago'}</p>
+                    <p className="font-medium text-sm">{t('admin.cards.new_user_registered')}</p>
+                    <p className="text-xs text-muted-foreground">{t('admin.cards.minutes_ago_5')}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3 p-3 border rounded-lg">
@@ -524,8 +524,8 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                     <Database className="w-4 h-4" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-sm">{language === 'ar' ? 'فكرة جديدة مقدمة' : 'New idea submitted'}</p>
-                    <p className="text-xs text-muted-foreground">{language === 'ar' ? 'منذ 15 دقيقة' : '15 minutes ago'}</p>
+                    <p className="font-medium text-sm">{t('admin.cards.new_idea_submitted')}</p>
+                    <p className="text-xs text-muted-foreground">{t('admin.cards.minutes_ago_15')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -539,7 +539,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {language === 'ar' ? 'إجمالي المديرين' : 'Total Managers'}
+                  {t('admin.metrics.total_managers')}
                 </CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -549,7 +549,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+8% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                  <span>+8% {t('admin.metrics.this_month')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -557,7 +557,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {language === 'ar' ? 'الفرق النشطة' : 'Active Teams'}
+                  {t('admin.metrics.active_teams')}
                 </CardTitle>
                 <Briefcase className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -567,7 +567,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+12% {language === 'ar' ? 'هذا الشهر' : 'this month'}</span>
+                  <span>+12% {t('admin.metrics.this_month')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -575,7 +575,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {language === 'ar' ? 'مهام الخبراء' : 'Expert Assignments'}
+                  {t('admin.metrics.expert_assignments')}
                 </CardTitle>
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -585,7 +585,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+5% {language === 'ar' ? 'هذا الأسبوع' : 'this week'}</span>
+                  <span>+5% {t('admin.metrics.this_week')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -593,7 +593,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {language === 'ar' ? 'الصلاحيات المفعلة' : 'Active Permissions'}
+                  {t('admin.metrics.active_permissions')}
                 </CardTitle>
                 <Shield className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -603,7 +603,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
                   <CheckCircle className="w-4 h-4" />
-                  <span>{language === 'ar' ? 'مستقرة' : 'Stable'}</span>
+                  <span>{t('admin.metrics.stable')}</span>
                 </div>
               </CardContent>
             </Card>

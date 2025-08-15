@@ -99,16 +99,84 @@
     }
   },
   "actions": {
-    "view_details": "View Details"
+    "view_details": "View Details",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "try_again": "Try Again",
+    "access_interface": "Access Interface"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "management": "Management", 
+    "content": "Content",
+    "system": "System",
+    "advanced": "Advanced",
+    "security": "Security",
+    "performance": "Performance"
   },
   "metrics": {
     "activeUsers": "Active Users",
     "totalRoles": "Total Roles Assigned",
     "pendingApprovals": "Pending Approvals",
-    "systemHealth": "System Health"
+    "systemHealth": "System Health",
+    "total_users": "Total Users",
+    "active_challenges": "Active Challenges",
+    "ideas_submitted": "Ideas Submitted",
+    "system_performance": "System Performance",
+    "total_managers": "Total Managers",
+    "active_teams": "Active Teams",
+    "expert_assignments": "Expert Assignments",
+    "active_permissions": "Active Permissions",
+    "this_month": "this month",
+    "this_week": "this week",
+    "new": "new",
+    "uptime": "uptime",
+    "from_last_period": "from last period",
+    "stable": "Stable"
+  },
+  "cards": {
+    "quick_actions": "Quick Actions",
+    "quick_actions_desc": "Most frequently used functions",
+    "system_activity": "System Activity", 
+    "system_activity_desc": "Latest updates and activities",
+    "manage_users": "Manage Users",
+    "manage_challenges": "Manage Challenges",
+    "system_reports": "System Reports",
+    "new_user_registered": "New user registered",
+    "new_idea_submitted": "New idea submitted",
+    "minutes_ago_5": "5 minutes ago",
+    "minutes_ago_15": "15 minutes ago",
+    "platform_analytics": "Platform Analytics",
+    "recent_activity": "Recent Activity",
+    "total_challenges": "Total Challenges",
+    "implementation_rate": "Implementation Rate",
+    "data_quality": "Data Quality",
+    "rbac_status": "RBAC Status",
+    "active": "Active",
+    "live": "Live",
+    "fallback": "Fallback",
+    "version": "Version"
   },
   "security": {
-    "score": "Security Score"
+    "score": "Security Score",
+    "risk_level": "Risk Level",
+    "threat_count": "Threat Count", 
+    "suspicious_activities": "Suspicious Activities",
+    "security_analytics_permission": "Security analytics require additional permissions.",
+    "insufficient_permissions": "You don't have sufficient permissions to view the admin dashboard."
+  },
+  "performance": {
+    "system_performance": "System Performance",
+    "uptime": "Uptime",
+    "active_sessions": "Active Sessions",
+    "error_rate": "Error Rate"
+  },
+  "errors": {
+    "unable_to_load": "Unable to load admin data",
+    "data_temporarily_unavailable": "Data temporarily unavailable",
+    "some_analytics_unavailable": "Some analytics data unavailable",
+    "admin_calculation_error": "Admin calculation error occurred",
+    "last_updated": "Last updated"
   },
   "system_settings": {
     "title": "System Settings",
