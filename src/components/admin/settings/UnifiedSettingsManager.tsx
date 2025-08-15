@@ -79,7 +79,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
   };
 
   const handleDeleteSetting = (key: string) => {
-    if (confirm(t('admin.settings.delete_confirm'))) {
+    if (confirm(t('common:confirmation.delete_message'))) {
       deleteSetting(key);
       // Also remove from pending changes
       setPendingChanges(prev => {
@@ -107,8 +107,8 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
     const pendingChange = pendingChanges[setting.setting_key];
     const currentValue = pendingChange?.value ?? originalValue;
     const hasChanges = pendingChange !== undefined;
-    const label = t(`settings.${setting.setting_key}.label`) || getSettingLabel(setting.setting_key);
-    const description = t(`settings.${setting.setting_key}.description`) || getSettingDescription(setting.setting_key);
+    const label = t(`admin-settings:settings.${setting.setting_key}.label`) || getSettingLabel(setting.setting_key);
+    const description = t(`admin-settings:settings.${setting.setting_key}.description`) || getSettingDescription(setting.setting_key);
     const isShared = isSharedSetting(setting.setting_key);
     const affectedSystems = getAffectedSystems(setting.setting_key);
     const isArrayExpanded = expandedArrays.has(setting.setting_key);
