@@ -4,21 +4,34 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { logger } from '@/utils/logger';
 
 // Import static translations organized by feature
-import enCommon from './locales/en/common.json';
-import enNavigation from './locales/en/navigation.json';
-import enDashboard from './locales/en/dashboard.json';
-import enAuth from './locales/en/auth.json';
-import enErrors from './locales/en/errors.json';
+// Landing page translations
+import enLanding from './locales/en/landing.json';
+import arLanding from './locales/ar/landing.json';
 
+// Common shared translations
+import enCommon from './locales/en/common.json';
 import arCommon from './locales/ar/common.json';
+
+// Navigation translations
+import enNavigation from './locales/en/navigation.json';
 import arNavigation from './locales/ar/navigation.json';
+
+// Dashboard translations
+import enDashboard from './locales/en/dashboard.json';
 import arDashboard from './locales/ar/dashboard.json';
+
+// Auth translations
+import enAuth from './locales/en/auth.json';
 import arAuth from './locales/ar/auth.json';
+
+// Error translations
+import enErrors from './locales/en/errors.json';
 import arErrors from './locales/ar/errors.json';
 
 // Base static resources - these are loaded immediately
 const staticResources = {
   en: { 
+    landing: enLanding,
     common: enCommon,
     navigation: enNavigation,
     dashboard: enDashboard,
@@ -26,6 +39,7 @@ const staticResources = {
     errors: enErrors
   },
   ar: { 
+    landing: arLanding,
     common: arCommon,
     navigation: arNavigation,
     dashboard: arDashboard,
@@ -233,7 +247,7 @@ i18n
     
     // Default namespaces that should be loaded immediately
     defaultNS: 'common',
-    ns: ['common', 'navigation', 'dashboard', 'auth', 'errors', 'validation', 'system-lists'],
+    ns: ['common', 'landing', 'navigation', 'dashboard', 'auth', 'errors', 'validation', 'system-lists'],
     
     interpolation: {
       escapeValue: false,
