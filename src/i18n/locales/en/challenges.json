@@ -191,7 +191,16 @@
     "partners_count": "Partners",
     "internal_notes": "Internal Team Notes",
     "last_updated": "Last Updated",
-    "edit_challenge": "Edit Challenge"
+    "edit_challenge": "Edit Challenge",
+    "expert_removed": "Expert removed from challenge",
+    "expert_remove_failed": "Failed to remove expert",
+    "not_found_title": "Challenge not found",
+    "not_found_desc": "The requested challenge could not be found",
+    "updated_successfully": "Challenge updated successfully",
+    "save_failed": "Failed to save changes",
+    "sensitivity_updated": "Challenge sensitivity level updated",
+    "sensitivity_update_failed": "Failed to update sensitivity level",
+    "not_specified": "Not specified"
   },
   "achievements": "Achievements",
   "my_achievements": "My Achievements",

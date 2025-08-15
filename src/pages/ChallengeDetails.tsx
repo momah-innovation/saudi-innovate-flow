@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { ChallengeExpertAssignmentWizard } from "@/components/challenges/ChallengeExpertAssignmentWizard";
 import { ChallengeFocusQuestionWizard } from "@/components/challenges/ChallengeFocusQuestionWizard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
@@ -110,6 +111,7 @@ const ChallengeDetails = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { hasRole } = useAuth();
+  const { t } = useUnifiedTranslation();
   const { challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
   
   // Use optimized hook for challenge details
@@ -245,8 +247,8 @@ const ChallengeDetails = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Expert removed from challenge",
+        title: t('common:success', 'نجح'),
+        description: t('challenges:detail.expert_removed', 'تم إزالة الخبير من التحدي'),
       });
 
       // Refetch data to ensure consistency
@@ -254,8 +256,8 @@ const ChallengeDetails = () => {
     } catch (error) {
       logger.error('Failed to remove expert from challenge', { component: 'ChallengeDetails', action: 'removeExpert' }, error as Error);
       toast({
-        title: "Error",
-        description: "Failed to remove expert",
+        title: t('common:error', 'خطأ'),
+        description: t('challenges:detail.expert_remove_failed', 'فشل في إزالة الخبير'),
         variant: "destructive",
       });
     }
@@ -266,14 +268,14 @@ const ChallengeDetails = () => {
     if (error) {
       if (error === 'Challenge not found') {
         toast({
-          title: "التحدي غير موجود",
-          description: "لم يتم العثور على التحدي المطلوب",
+          title: t('challenges:detail.not_found_title', 'التحدي غير موجود'),
+          description: t('challenges:detail.not_found_desc', 'لم يتم العثور على التحدي المطلوب'),
           variant: "destructive",
         });
         navigate('/challenges');
       } else {
         toast({
-          title: "Error",
+          title: t('common:error', 'خطأ'),
           description: error,
           variant: "destructive",
         });
@@ -356,14 +358,14 @@ Status: ${challenge?.status}
       setEditMode({ ...editMode, [field]: false });
       
       toast({
-        title: "Success",
-        description: "Challenge updated successfully",
+        title: t('common:success', 'نجح'),
+        description: t('challenges:detail.updated_successfully', 'تم تحديث التحدي بنجاح'),
       });
     } catch (error) {
       logger.error('Failed to save challenge field', { component: 'ChallengeDetails', action: 'saveField', challengeId }, error as Error);
       toast({
-        title: "Error", 
-        description: "Failed to save changes",
+        title: t('common:error', 'خطأ'), 
+        description: t('challenges:detail.save_failed', 'فشل في حفظ التغييرات'),
         variant: "destructive",
       });
     } finally {
@@ -386,14 +388,14 @@ Status: ${challenge?.status}
 
       refetch();
       toast({
-        title: "Success",
-        description: `Challenge marked as ${newSensitivity}`,
+        title: t('common:success', 'نجح'),
+        description: t('challenges:detail.sensitivity_updated', 'تم تحديث مستوى الحساسية للتحدي'),
       });
     } catch (error) {
       logger.error('Failed to update challenge sensitivity', { component: 'ChallengeDetails', action: 'updateSensitivity', challengeId }, error as Error);
       toast({
-        title: "Error",
-        description: "Failed to update sensitivity level",
+        title: t('common:error', 'خطأ'),
+        description: t('challenges:detail.sensitivity_update_failed', 'فشل في تحديث مستوى الحساسية'),
         variant: "destructive",
       });
     }
@@ -409,8 +411,8 @@ Status: ${challenge?.status}
   };
 
   const formatBudget = (budget?: number) => {
-    if (!budget) return 'Not specified';
-    return new Intl.NumberFormat('en-US', {
+    if (!budget) return t('challenges:detail.not_specified', 'غير محدد');
+    return new Intl.NumberFormat('ar-SA', {
       style: 'currency',
       currency: 'SAR',
       notation: 'compact'
@@ -418,8 +420,8 @@ Status: ${challenge?.status}
   };
 
   const formatDate = (dateString?: string) => {
-    if (!dateString) return 'Not specified';
-    return new Date(dateString).toLocaleDateString('en-US', {
+    if (!dateString) return t('challenges:detail.not_specified', 'غير محدد');
+    return new Date(dateString).toLocaleDateString('ar-SA', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
