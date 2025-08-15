@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { VALUE_KEY_MAPPINGS, getCategoryKeys, useTranslatedValue } from '@/utils/valueKeys';
+import { queryBatcher } from '@/utils/queryBatcher';
 
 // Debug logging for useSystemLists hook (removed to prevent re-renders)
 
@@ -183,61 +184,65 @@ export const useSystemLists = (): SystemListsHook => {
           teamRoleOptions: getCategoryKeys('role_type').map(key => key.split('.')[1]),
         };
 
-        // Load remaining lists from database for backward compatibility
+        // Load remaining lists from database with caching
         const [settingsData, listsData] = await Promise.all([
-          supabase
-            .from('system_settings')
-            .select('setting_key, setting_value')
-            .in('setting_key', [
-              'challenge_sensitivity_levels',
-              'partner_type_options',
-              'partnership_type_options',
-              'expert_status_options',
-              'assignment_status_options',
-              'role_request_status_options',
-              'available_user_roles',
-              'requestable_user_roles',
-              'team_specialization_options',
-              'focus_question_types',
-              'experience_levels',
-              'event_formats',
-              'event_categories',
-              'event_visibility_options',
-              'supported_languages',
-              'stakeholder_influence_levels',
-              'stakeholder_interest_levels',
-              'idea_maturity_levels',
-              'campaign_theme_options',
-              'attendance_status_options',
-              'evaluator_types',
-              'relationship_types',
-              'organization_types',
-              'sector_types',
-              'tag_categories',
-              'sensitivity_levels',
-              'frequency_options',
-              'backup_frequency_options',
-              'report_frequency_options',
-              'reminder_frequency_options',
-              'recurrence_pattern_options',
-              'question_type_options',
-              'time_range_options',
-              'role_request_justifications',
-              'ui_language_options',
-              'stakeholder_categories',
-              'engagement_levels',
-              'chart_color_palette',
-              'theme_variants',
-              'theme_color_schemes',
-              'theme_border_radius_options',
-              'navigation_menu_visibility_roles',
-              'data_export_formats',
-              'chart_visualization_colors'
-            ]),
-          supabase
-            .from('system_lists')
-            .select('list_key, list_values')
-            .eq('is_active', true)
+          queryBatcher.batch('cached-system-settings', async () =>
+            supabase
+              .from('system_settings')
+              .select('setting_key, setting_value')
+              .in('setting_key', [
+                'challenge_sensitivity_levels',
+                'partner_type_options',
+                'partnership_type_options',
+                'expert_status_options',
+                'assignment_status_options',
+                'role_request_status_options',
+                'available_user_roles',
+                'requestable_user_roles',
+                'team_specialization_options',
+                'focus_question_types',
+                'experience_levels',
+                'event_formats',
+                'event_categories',
+                'event_visibility_options',
+                'supported_languages',
+                'stakeholder_influence_levels',
+                'stakeholder_interest_levels',
+                'idea_maturity_levels',
+                'campaign_theme_options',
+                'attendance_status_options',
+                'evaluator_types',
+                'relationship_types',
+                'organization_types',
+                'sector_types',
+                'tag_categories',
+                'sensitivity_levels',
+                'frequency_options',
+                'backup_frequency_options',
+                'report_frequency_options',
+                'reminder_frequency_options',
+                'recurrence_pattern_options',
+                'question_type_options',
+                'time_range_options',
+                'role_request_justifications',
+                'ui_language_options',
+                'stakeholder_categories',
+                'engagement_levels',
+                'chart_color_palette',
+                'theme_variants',
+                'theme_color_schemes',
+                'theme_border_radius_options',
+                'navigation_menu_visibility_roles',
+                'data_export_formats',
+                'chart_visualization_colors'
+              ])
+          ),
+          queryBatcher.batch('cached-system-lists', async () =>
+            supabase
+              .from('system_lists')
+              .select('list_key, list_values')
+              .eq('is_active', true)
+          )
         ]);
         
         // Start with key-based settings
