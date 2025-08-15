@@ -87,144 +87,144 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   const adminActions = [
     // Dashboard Routes (New unified admin interface)
     {
-      title: t('admin:dashboard.user_management', 'User Management'),
-      description: t('admin:dashboard.user_management_desc', 'Manage users, roles and permissions'),
+      title: t('admin.dashboard.user_management', 'User Management'),
+      description: t('admin.dashboard.user_management_desc', 'Manage users, roles and permissions'),
       icon: Users,
       action: () => navigate('/admin/users'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.role_management', 'Role Management'),
-      description: t('admin:dashboard.role_management_desc', 'Configure roles and permissions'),
+      title: t('admin.dashboard.role_management', 'Role Management'),
+      description: t('admin.dashboard.role_management_desc', 'Configure roles and permissions'),
       icon: Shield,
       action: () => navigate('/admin/organizational-structure'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.access_control', 'Access Control'),
-      description: t('admin:dashboard.access_control_desc', 'Manage page and feature access control'),
+      title: t('admin.dashboard.access_control', 'Access Control'),
+      description: t('admin.dashboard.access_control_desc', 'Manage page and feature access control'),
       icon: Shield,
       action: () => navigate('/admin/expert-assignments'),
       show: canManageSystem,
       category: 'security'
     },
     {
-      title: t('admin:dashboard.challenge_management', 'Challenge Management'),
-      description: t('admin:dashboard.challenge_management_desc', 'Create and manage challenges and competitions'),
+      title: t('admin.dashboard.challenge_management', 'Challenge Management'),
+      description: t('admin.dashboard.challenge_management_desc', 'Create and manage challenges and competitions'),
       icon: BarChart3,
       action: () => navigate('/admin/challenges'),
       show: true,
       category: 'content'
     },
     {
-      title: t('admin:dashboard.ideas_management', 'Ideas Management'),
-      description: t('admin:dashboard.ideas_management_desc', 'Review and manage submitted ideas'),
+      title: t('admin.dashboard.ideas_management', 'Ideas Management'),
+      description: t('admin.dashboard.ideas_management_desc', 'Review and manage submitted ideas'),
       icon: Database,
       action: () => navigate('/ideas'),
       show: true,
       category: 'content'
     },
     {
-      title: t('admin:dashboard.analytics_reports', 'Analytics & Reports'),
-      description: t('admin:dashboard.analytics_reports_desc', 'View system reports and advanced analytics'),
+      title: t('admin.dashboard.analytics_reports', 'Analytics & Reports'),
+      description: t('admin.dashboard.analytics_reports_desc', 'View system reports and advanced analytics'),
       icon: BarChart3,
       action: () => navigate('/admin/evaluations'),
       show: canViewAnalytics,
       category: 'analytics'
     },
     {
-      title: t('admin:dashboard.system_settings', 'System Settings'),
-      description: t('admin:dashboard.system_settings_desc', 'Configure global system settings'),
+      title: t('admin.dashboard.system_settings', 'System Settings'),
+      description: t('admin.dashboard.system_settings_desc', 'Configure global system settings'),
       icon: Settings,
       action: () => navigate('/admin/system-settings'),
       show: canManageSystem,
       category: 'system'
     },
     {
-      title: t('admin:dashboard.events_management', 'Events Management'),
-      description: t('admin:dashboard.events_management_desc', 'Organize and manage events and conferences'),
+      title: t('admin.dashboard.events_management', 'Events Management'),
+      description: t('admin.dashboard.events_management_desc', 'Organize and manage events and conferences'),
       icon: Users,
       action: () => navigate('/admin/events'),
       show: true,
       category: 'content'
     },
     {
-      title: t('admin:dashboard.campaigns_management', 'Campaigns Management'),
-      description: t('admin:dashboard.campaigns_management_desc', 'Create and manage innovation campaigns'),
+      title: t('admin.dashboard.campaigns_management', 'Campaigns Management'),
+      description: t('admin.dashboard.campaigns_management_desc', 'Create and manage innovation campaigns'),
       icon: Database,
       action: () => navigate('/admin/campaigns'),
       show: true,
       category: 'content'
     },
     {
-      title: t('admin:dashboard.partners_management', 'Partners Management'),
-      description: t('admin:dashboard.partners_management_desc', 'Manage partnerships and external collaborations'),
+      title: t('admin.dashboard.partners_management', 'Partners Management'),
+      description: t('admin.dashboard.partners_management_desc', 'Manage partnerships and external collaborations'),
       icon: Briefcase,
       action: () => navigate('/admin/partners'),
       show: true,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.sectors_management', 'Sectors Management'),
-      description: t('admin:dashboard.sectors_management_desc', 'Manage innovation sectors and fields'),
+      title: t('admin.dashboard.sectors_management', 'Sectors Management'),
+      description: t('admin.dashboard.sectors_management_desc', 'Manage innovation sectors and fields'),
       icon: Building,
       action: () => navigate('/admin/sectors'),
       show: true,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.expert_assignment', 'Expert Assignment Management'),
-      description: t('admin:dashboard.expert_assignment_desc', 'Assign experts to challenges and manage evaluations'),
+      title: t('admin.dashboard.expert_assignment', 'Expert Assignment Management'),
+      description: t('admin.dashboard.expert_assignment_desc', 'Assign experts to challenges and manage evaluations'),
       icon: Users,
       action: () => navigate('/admin/expert-assignments'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.core_team_management', 'Core Team Management'),
-      description: t('admin:dashboard.core_team_management_desc', 'Manage core team members and projects'),
+      title: t('admin.dashboard.core_team_management', 'Core Team Management'),
+      description: t('admin.dashboard.core_team_management_desc', 'Manage core team members and projects'),
       icon: Users,
       action: () => navigate('/admin/core-team'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.organizational_structure', 'Organizational Structure'),
-      description: t('admin:dashboard.organizational_structure_desc', 'Manage organizational hierarchy and departments'),
+      title: t('admin.dashboard.organizational_structure', 'Organizational Structure'),
+      description: t('admin.dashboard.organizational_structure_desc', 'Manage organizational hierarchy and departments'),
       icon: Building,
       action: () => navigate('/admin/organizational-structure'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.stakeholders_management', 'Stakeholders Management'),
-      description: t('admin:dashboard.stakeholders_management_desc', 'Manage stakeholder relationships and engagement'),
+      title: t('admin.dashboard.stakeholders_management', 'Stakeholders Management'),
+      description: t('admin.dashboard.stakeholders_management_desc', 'Manage stakeholder relationships and engagement'),
       icon: Users,
       action: () => navigate('/admin/stakeholders'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.teams_management', 'Teams Management'),
-      description: t('admin:dashboard.teams_management_desc', 'Organize work teams and projects'),
+      title: t('admin.dashboard.teams_management', 'Teams Management'),
+      description: t('admin.dashboard.teams_management_desc', 'Organize work teams and projects'),
       icon: Users,
       action: () => navigate('/admin/teams'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.entities_management', 'Entities Management'),
-      description: t('admin:dashboard.entities_management_desc', 'Manage organizational entities and institutions'),
+      title: t('admin.dashboard.entities_management', 'Entities Management'),
+      description: t('admin.dashboard.entities_management_desc', 'Manage organizational entities and institutions'),
       icon: Building,
       action: () => navigate('/admin/entities'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: t('admin:dashboard.evaluation_management', 'Evaluation Management'),
-      description: t('admin:dashboard.evaluation_management_desc', 'Manage evaluation criteria, templates, and rules'),
+      title: t('admin.dashboard.evaluation_management', 'Evaluation Management'),
+      description: t('admin.dashboard.evaluation_management_desc', 'Manage evaluation criteria, templates, and rules'),
       icon: Target,
       action: () => navigate('/admin/evaluation-management'),
       show: canManageSystem,
