@@ -77,6 +77,11 @@ export function useUnifiedTranslation() {
       try {
         const i18nextResult = i18nextT(key, interpolationOptions);
         
+        // Debug what i18next is actually returning
+        if (key.startsWith('landing.')) {
+          console.log('🔍 i18next result:', { key, result: i18nextResult, resultType: typeof i18nextResult });
+        }
+        
         // Check if we got a valid translation (not the key itself)
         if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string') {
           return i18nextResult;
@@ -90,7 +95,7 @@ export function useUnifiedTranslation() {
           }
         }
       } catch (e) {
-        // Silently handle i18next errors to prevent console spam
+        console.log('🔍 i18next error:', e);
       }
 
       // Strategy 2: Provided fallback
