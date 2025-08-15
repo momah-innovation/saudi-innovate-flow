@@ -12,6 +12,7 @@ import {
   Target, 
   DollarSign
 } from 'lucide-react';
+import { formatDateArabic } from '@/utils/unified-date-handler';
 
 interface Campaign {
   id: string;
@@ -139,7 +140,7 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
               {
                 icon: <Calendar className="w-4 h-4" />,
                 label: t('campaign.start_date'),
-                value: new Date(campaign.start_date).toLocaleDateString('ar-SA')
+                value: formatDateArabic(campaign.start_date, 'dd/MM/yyyy')
               },
               ...(campaign.target_participants ? [{
                 icon: <Users className="w-4 h-4" />,

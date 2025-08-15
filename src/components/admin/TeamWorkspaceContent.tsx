@@ -25,6 +25,7 @@ import {
   PieChart, LineChart, MapPin, Mail, Phone, UserX, Award, AlertTriangle, 
   X, Edit, Trash2, MoreVertical, FolderOpen, Download, Share, Briefcase, PlusCircle
 } from 'lucide-react';
+import { formatDateArabic } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 import { CreateProjectDialog } from './team-workspace/CreateProjectDialog';
@@ -421,7 +422,7 @@ export function TeamWorkspaceContent({
             </Badge>
           </DialogTitle>
           <DialogDescription>
-            دور العضو: {project?.role} • انضم في {new Date(project?.joined_at).toLocaleDateString('ar-SA')}
+            دور العضو: {project?.role} • انضم في {formatDateArabic(project?.joined_at, 'dd/MM/yyyy')}
           </DialogDescription>
         </DialogHeader>
 
@@ -832,7 +833,7 @@ export function TeamWorkspaceContent({
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Calendar className="h-4 w-4" />
-                {new Date(project.joined_at).toLocaleDateString('ar-SA')}
+                {formatDateArabic(project.joined_at, 'dd/MM/yyyy')}
               </div>
               
               <div className="space-y-2">

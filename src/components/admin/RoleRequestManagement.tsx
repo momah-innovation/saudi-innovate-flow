@@ -19,6 +19,7 @@ import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { formatDate } from '@/utils/unified-date-handler';
 
 interface RoleRequest {
   id: string;
@@ -446,7 +447,7 @@ export default function RoleRequestManagement() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {new Date(request.requested_at).toLocaleDateString()}
+                    {formatDate(request.requested_at)}
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
@@ -603,7 +604,7 @@ export default function RoleRequestManagement() {
                         )}
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span>Member since {new Date(selectedRequest.requester?.created_at || '').toLocaleDateString()}</span>
+                          <span>Member since {formatDate(selectedRequest.requester?.created_at || '')}</span>
                         </div>
                       </div>
 
@@ -671,7 +672,7 @@ export default function RoleRequestManagement() {
                     <div>
                       <Label className="font-medium">Request Date</Label>
                       <p className="text-sm text-muted-foreground mt-1">
-                        {new Date(selectedRequest.requested_at).toLocaleString()}
+                        {formatDate(selectedRequest.requested_at, 'PPp')}
                       </p>
                     </div>
                     <div>
@@ -703,7 +704,7 @@ export default function RoleRequestManagement() {
                         </div>
                         {selectedRequest.reviewed_at && (
                           <p className="text-sm text-muted-foreground">
-                            Reviewed on {new Date(selectedRequest.reviewed_at).toLocaleString()}
+                            Reviewed on {formatDate(selectedRequest.reviewed_at, 'PPp')}
                             {selectedRequest.reviewer && ` by ${selectedRequest.reviewer.name}`}
                           </p>
                         )}

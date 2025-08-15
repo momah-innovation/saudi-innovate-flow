@@ -259,7 +259,8 @@ export function CoreTeamDetailDialog({
               {data.website && (
                 <div className="flex items-center gap-2 text-sm">
                   <Globe className="h-3 w-3 text-muted-foreground" />
-                  <a href={data.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                  <a href={data.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"
+                     onClick={(e) => { e.preventDefault(); window.open(data.website, '_blank', 'noopener noreferrer'); }}>
                     {data.website}
                   </a>
                 </div>

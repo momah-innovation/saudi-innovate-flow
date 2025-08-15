@@ -8,6 +8,7 @@ import { ExternalLink, Calendar, DollarSign, Users, Target, AlertTriangle, Clock
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/error-handler';
+import { formatDate } from '@/utils/unified-date-handler';
 
 interface Assignment {
   id: string;
@@ -149,9 +150,9 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
     }
   };
 
-  const formatDate = (dateString?: string) => {
+  const formatAssignmentDate = (dateString?: string) => {
     if (!dateString) return t('notSpecified');
-    return new Date(dateString).toLocaleDateString();
+    return formatDate(dateString, 'dd/MM/yyyy');
   };
 
   const formatBudget = (amount?: number) => {
@@ -238,19 +239,19 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
       items: [
         {
           label: t('assignmentStart'),
-          value: formatDate(assignment.start_date)
+          value: formatAssignmentDate(assignment.start_date)
         },
         {
           label: t('assignmentEnd'),
-          value: formatDate(assignment.end_date)
+          value: formatAssignmentDate(assignment.end_date)
         },
         ...(data?.start_date ? [{
           label: t('projectStart'),
-          value: formatDate(data.start_date)
+          value: formatAssignmentDate(data.start_date)
         }] : []),
         ...(data?.end_date ? [{
           label: t('projectEnd'),
-          value: formatDate(data.end_date)
+          value: formatAssignmentDate(data.end_date)
         }] : [])
       ]
     },

@@ -631,7 +631,7 @@ export function ExpertAssignmentManagement() {
                     <div className="grid gap-4 md:grid-cols-3">
                       <div className="flex items-center gap-2 text-sm">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span>Assigned: {new Date(assignment.assignment_date).toLocaleDateString()}</span>
+                        <span>Assigned: {formatDate(assignment.assignment_date)}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <Target className="h-4 w-4 text-muted-foreground" />

@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/error-handler";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
+import { formatDate } from '@/utils/unified-date-handler';
 import { AdminEvaluationsHero } from "@/components/admin/AdminEvaluationsHero";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { EnhancedEvaluationCard } from "@/components/evaluations/EnhancedEvaluationCard";
@@ -291,7 +292,7 @@ export function EvaluationsManagement({
                   <h3 className="font-semibold mb-2">{t('evaluations.evaluator_information')}</h3>
                   <p className="text-sm"><strong>{t('form.name_label')}:</strong> {profiles[selectedEvaluation.evaluator_id]?.name || t('common.unknown')}</p>
                   <p className="text-sm"><strong>{t('form.type_label')}:</strong> {selectedEvaluation.evaluator_type}</p>
-                  <p className="text-sm"><strong>{t('form.date_label')}:</strong> {new Date(selectedEvaluation.evaluation_date || selectedEvaluation.created_at).toLocaleDateString()}</p>
+                  <p className="text-sm"><strong>{t('form.date_label')}:</strong> {formatDate(selectedEvaluation.evaluation_date || selectedEvaluation.created_at)}</p>
                 </div>
               </div>
 
