@@ -487,6 +487,20 @@
         "archived_success_title": "Challenge Archived",
         "archived_success_description": "The challenge has been archived successfully"
       }
-    }
+    },
+    "notification_template_updated": "Template Updated",
+    "notification_template_updated_description": "Notification template has been updated successfully",
+    "notification_test_sent": "Test Sent",
+    "notification_test_sent_description": "Test notification has been sent successfully",
+    "test_notification": "Test Notification",
+    "notification_templates": "Notification Templates",
+    "notification_templates_description": "Manage notification templates",
+    "notification_template_subject": "Subject template...",
+    "notification_template_body": "Body template...",
+    "total_users": "Total Users",
+    "email_enabled": "Email Enabled",
+    "push_enabled": "Push Enabled",
+    "users": "users",
+    "notifications_sent_week": "Notifications Sent This Week"
   }
 }

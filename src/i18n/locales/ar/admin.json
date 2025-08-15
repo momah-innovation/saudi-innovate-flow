@@ -585,6 +585,20 @@
         "archived_success_title": "تم أرشفة التحدي",
         "archived_success_description": "تم أرشفة التحدي بنجاح"
       }
-    }
+    },
+    "notification_template_updated": "تم تحديث القالب",
+    "notification_template_updated_description": "تم تحديث قالب الإشعار بنجاح",
+    "notification_test_sent": "تم إرسال الاختبار",
+    "notification_test_sent_description": "تم إرسال إشعار الاختبار بنجاح",
+    "test_notification": "اختبار الإشعار",
+    "notification_templates": "قوالب الإشعارات",
+    "notification_templates_description": "إدارة قوالب الإشعارات",
+    "notification_template_subject": "قالب الموضوع...",
+    "notification_template_body": "قالب المحتوى...",
+    "total_users": "إجمالي المستخدمين",
+    "email_enabled": "البريد الإلكتروني مفعّل",
+    "push_enabled": "إشعارات الدفع مفعّلة",
+    "users": "مستخدمين",
+    "notifications_sent_week": "الإشعارات المرسلة هذا الأسبوع"
   }
 }
