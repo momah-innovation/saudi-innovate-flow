@@ -4,6 +4,7 @@
 import React, { lazy, Suspense } from 'react';
 import { debugLog } from '@/utils/debugLogger';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { TranslationAppShellProvider } from '@/components/TranslationAppShellProvider';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AppShell } from '@/components/layout/AppShell';
 import { ALL_ROUTES } from './routes';
@@ -600,24 +601,26 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
   );
 };
 
-// Main unified router component
+// Main unified router component with V3 translation system integration
 export const UnifiedRouter: React.FC = () => {
   return (
     <ErrorBoundary fallback={<LoadingFallback />}>
       <BrowserRouter>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            {UNIFIED_ROUTES.map((routeConfig) => (
-              <Route
-                key={routeConfig.path}
-                path={routeConfig.path}
-                element={<RouteRenderer config={routeConfig} />}
-              />
-            ))}
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+        <TranslationAppShellProvider>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              {UNIFIED_ROUTES.map((routeConfig) => (
+                <Route
+                  key={routeConfig.path}
+                  path={routeConfig.path}
+                  element={<RouteRenderer config={routeConfig} />}
+                />
+              ))}
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </TranslationAppShellProvider>
       </BrowserRouter>
     </ErrorBoundary>
   );

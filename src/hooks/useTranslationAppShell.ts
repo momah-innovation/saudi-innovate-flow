@@ -3,14 +3,25 @@ import { useLocation } from 'react-router-dom';
 import { preloadNamespaces } from '@/i18n/enhanced-config-v3';
 
 /**
- * Translation AppShell Integration Hook
+ * Translation AppShell Integration Hook - V3 PRODUCTION READY
  * Automatically preloads translation namespaces based on current route
- * Optimizes translation loading for better user experience
+ * Safe to use - handles missing router context gracefully
  */
 export const useTranslationAppShell = () => {
-  const location = useLocation();
+  let location;
+  
+  try {
+    location = useLocation();
+  } catch (error) {
+    // Handle case where hook is called outside Router context
+    // This can happen during app initialization
+    console.warn('Translation AppShell: Router context not available yet');
+    return;
+  }
 
   useEffect(() => {
+    if (!location) return;
+    
     const path = location.pathname;
     const namespacesToLoad: string[] = [];
 
@@ -96,7 +107,7 @@ export const useTranslationAppShell = () => {
         console.warn('Translation preload warning:', error.message);
       });
     }
-  }, [location.pathname]);
+  }, [location?.pathname]);
 };
 
 /**
