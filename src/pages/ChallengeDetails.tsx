@@ -40,6 +40,7 @@ import { AdminLayout } from "@/components/layout/AdminLayout";
 import { logger } from '@/utils/logger';
 import { CollaborationProvider } from '@/contexts/CollaborationContext';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { useChallengeDetails } from '@/hooks/useChallengeDetails';
 
 interface Challenge {
   id: string;
@@ -110,11 +111,10 @@ const ChallengeDetails = () => {
   const { toast } = useToast();
   const { hasRole } = useAuth();
   const { challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
-  const [challenge, setChallenge] = useState<Challenge | null>(null);
-  const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
-  const [assignedExperts, setAssignedExperts] = useState<ChallengeExpert[]>([]);
-  const [orgHierarchy, setOrgHierarchy] = useState<OrganizationalHierarchy>({});
-  const [loading, setLoading] = useState(true);
+  
+  // Use optimized hook for challenge details
+  const { challenge, focusQuestions, assignedExperts, orgHierarchy, loading, error, refetch } = useChallengeDetails(challengeId);
+  
   const [editMode, setEditMode] = useState<{[key: string]: boolean}>({});
   const [editValues, setEditValues] = useState<{[key: string]: any}>({});
   const [saving, setSaving] = useState(false);
@@ -135,10 +135,15 @@ const ChallengeDetails = () => {
 
   useEffect(() => {
     if (challengeId) {
-      fetchChallengeDetails();
       fetchSystemSettings();
     }
   }, [challengeId]);
+
+  useEffect(() => {
+    if (challenge) {
+      setEditValues(challenge);
+    }
+  }, [challenge]);
 
   const fetchSystemSettings = async () => {
     try {
@@ -185,8 +190,8 @@ const ChallengeDetails = () => {
           filter: `id=eq.${challengeId}`,
         },
         (payload) => {
-          setChallenge(payload.new as Challenge);
           setEditValues(payload.new);
+          refetch();
         }
       )
       .on(
@@ -199,7 +204,7 @@ const ChallengeDetails = () => {
         },
         () => {
           // Refetch focus questions when they change
-          fetchFocusQuestions();
+          refetch();
         }
       )
       .on(
@@ -212,7 +217,7 @@ const ChallengeDetails = () => {
         },
         () => {
           // Refetch assigned experts when they change
-          fetchAssignedExperts();
+          refetch();
         }
       )
       .subscribe();
@@ -222,48 +227,12 @@ const ChallengeDetails = () => {
     };
   }, [challengeId]);
 
-  const fetchFocusQuestions = async () => {
-    if (!challengeId) return;
-    
-    const { data, error } = await supabase
-      .from('focus_questions')
-      .select('*')
-      .eq('challenge_id', challengeId)
-      .order('order_sequence');
-
-    if (!error && data) {
-      setFocusQuestions(data);
-    }
+  const refreshExperts = () => {
+    refetch();
   };
 
-  const fetchAssignedExperts = async () => {
-    if (!challengeId) return;
-    
-    const { data, error } = await supabase
-      .from('challenge_experts')
-      .select(`
-        *,
-        expert:experts(
-          user_id,
-          expertise_areas,
-          expert_level,
-          availability_status
-        )
-      `)
-      .eq('challenge_id', challengeId)
-      .eq('status', 'active');
-
-    if (!error && data) {
-      // Transform the data to match our interface
-      const transformedData = data.map(item => ({
-        ...item,
-        expert: item.expert ? {
-          ...item.expert,
-          profiles: { name: 'Expert Name', email: 'expert@example.com' } // Placeholder - should fetch from profiles
-        } : undefined
-      }));
-      setAssignedExperts(transformedData as ChallengeExpert[]);
-    }
+  const refreshQuestions = () => {
+    refetch();
   };
 
   const removeExpert = async (expertAssignmentId: string) => {
@@ -275,18 +244,13 @@ const ChallengeDetails = () => {
 
       if (error) throw error;
 
-      // Immediately update the local state to reflect the change
-      setAssignedExperts(prevExperts => 
-        prevExperts.filter(expert => expert.id !== expertAssignmentId)
-      );
-
       toast({
         title: "Success",
         description: "Expert removed from challenge",
       });
 
-      // Also refetch to ensure data consistency
-      fetchAssignedExperts();
+      // Refetch data to ensure consistency
+      refetch();
     } catch (error) {
       logger.error('Failed to remove expert from challenge', { component: 'ChallengeDetails', action: 'removeExpert' }, error as Error);
       toast({
@@ -297,193 +261,26 @@ const ChallengeDetails = () => {
     }
   };
 
-  const fetchChallengeDetails = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch challenge data from Supabase  
-      const { data: challengeData, error: challengeError } = await supabase
-        .from('challenges')
-        .select('*')
-        .eq('id', challengeId)
-        .maybeSingle();
-
-      if (challengeError) {
-        logger.error('Failed to fetch challenge details', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, challengeError as Error);
-        toast({
-          title: "Error",
-          description: "Failed to load challenge details",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (challengeData) {
-        setChallenge(challengeData);
-        setEditValues(challengeData);
-      } else {
+  // Handle error state
+  useEffect(() => {
+    if (error) {
+      if (error === 'Challenge not found') {
         toast({
           title: "التحدي غير موجود",
           description: "لم يتم العثور على التحدي المطلوب",
           variant: "destructive",
         });
         navigate('/challenges');
-        return;
-      }
-
-      // Fetch focus questions
-      debugLog.debug('Fetching focus questions', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', challengeId });
-      const { data: questionsData, error: questionsError } = await supabase
-        .from('focus_questions')
-        .select('*')
-        .eq('challenge_id', challengeId)
-        .order('order_sequence');
-
-      debugLog.debug('Focus questions query completed', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', questionsData, questionsError });
-
-      if (questionsError) {
-        debugLog.warn('Failed to fetch focus questions', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', challengeId });
-        logger.error('Failed to fetch focus questions', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', challengeId }, questionsError as Error);
       } else {
-        debugLog.debug('Setting focus questions state', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', questionCount: questionsData?.length });
-        setFocusQuestions((questionsData as any) || []);
+        toast({
+          title: "Error",
+          description: error,
+          variant: "destructive",
+        });
       }
-
-      // Fetch assigned experts
-      debugLog.debug('Fetching assigned experts', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', challengeId });
-      const { data: expertsData, error: expertsError } = await supabase
-        .from('challenge_experts')
-        .select(`
-          *,
-          expert:experts(
-            user_id,
-            expertise_areas,
-            expert_level,
-            availability_status
-          )
-        `)
-        .eq('challenge_id', challengeId)
-        .eq('status', 'active');
-
-      debugLog.debug('Experts query completed', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', expertsData, expertsError });
-
-      if (expertsError) {
-        debugLog.warn('Failed to fetch experts', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', challengeId });
-        logger.error('Failed to fetch challenge experts', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', challengeId }, expertsError as Error);
-      } else if (expertsData) {
-        debugLog.debug('Processing and setting experts data', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', expertCount: expertsData?.length });
-        // Transform the data to match our interface  
-        const transformedData = expertsData.map(item => ({
-          ...item,
-          expert: item.expert ? {
-            ...item.expert,
-            profiles: { name: 'Expert Name', email: 'expert@example.com' } // Placeholder - should fetch from profiles
-          } : undefined
-        }));
-        setAssignedExperts(transformedData as ChallengeExpert[]);
-        debugLog.debug('Experts state updated', { component: 'ChallengeDetails', action: 'fetchChallengeExperts', expertCount: transformedData.length });
-      }
-
-      // Fetch organizational hierarchy
-      if (challengeData) {
-        debugLog.debug('Fetching organizational hierarchy');
-        await fetchOrganizationalHierarchy(challengeData);
-        debugLog.debug('Organizational hierarchy fetched');
-      }
-      
-      debugLog.debug('fetchChallengeDetails completed successfully');
-
-    } catch (error) {
-      debugLog.error('MAJOR ERROR in fetchChallengeDetails', { 
-        component: 'ChallengeDetails', 
-        action: 'fetchChallengeDetails', 
-        challengeId,
-        message: error?.message,
-        stack: error?.stack,
-        timestamp: new Date().toISOString()
-      }, error as Error);
-      logger.error('Error in fetchChallengeDetails', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, error as Error);
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        variant: "destructive",
-      });
-    } finally {
-      debugLog.debug('fetchChallengeDetails FINALLY block - setting loading to false');
-      setLoading(false);
-      debugLog.debug('Loading state set to false');
     }
-  };
+  }, [error, navigate, toast]);
 
-  const fetchOrganizationalHierarchy = async (challenge: Challenge) => {
-    const hierarchy: OrganizationalHierarchy = {};
-
-    try {
-      // Fetch sector
-      if (challenge.sector_id) {
-        const { data: sector } = await supabase
-          .from('sectors')
-          .select('id, name, name_ar')
-          .eq('id', challenge.sector_id)
-          .maybeSingle();
-        if (sector) hierarchy.sector = sector;
-      }
-
-      // Fetch deputy
-      if (challenge.deputy_id) {
-        const { data: deputy } = await supabase
-          .from('deputies')
-          .select('id, name, name_ar')
-          .eq('id', challenge.deputy_id)
-          .maybeSingle();
-        if (deputy) hierarchy.deputy = deputy;
-      }
-
-      // Fetch department
-      if (challenge.department_id) {
-        const { data: department } = await supabase
-          .from('departments')
-          .select('id, name, name_ar')
-          .eq('id', challenge.department_id)
-          .maybeSingle();
-        if (department) hierarchy.department = department;
-      }
-
-      // Fetch domain
-      if (challenge.domain_id) {
-        const { data: domain } = await supabase
-          .from('domains')
-          .select('id, name, name_ar')
-          .eq('id', challenge.domain_id)
-          .maybeSingle();
-        if (domain) hierarchy.domain = domain;
-      }
-
-      // Fetch sub_domain
-      if (challenge.sub_domain_id) {
-        const { data: subDomain, error: subDomainError } = await supabase
-          .from('sub_domains')
-          .select('id, name, name_ar')
-          .eq('id', challenge.sub_domain_id)
-          .maybeSingle();
-        if (!subDomainError && subDomain) hierarchy.sub_domain = subDomain;
-      }
-
-      // Fetch service
-      if (challenge.service_id) {
-        const { data: service, error: serviceError } = await supabase
-          .from('services')
-          .select('id, name, name_ar')
-          .eq('id', challenge.service_id)
-          .maybeSingle();
-        if (!serviceError && service) hierarchy.service = service;
-      }
-
-      setOrgHierarchy(hierarchy);
-    } catch (error) {
-      logger.error('Failed to fetch organizational hierarchy', { component: 'ChallengeDetails', action: 'fetchOrganizationalHierarchy' }, error as Error);
-    }
-  };
 
   const handleSubmitIdea = () => {
     navigate(`/challenges/${challengeId}/submit-idea`);
@@ -555,7 +352,7 @@ Status: ${challenge?.status}
         throw error;
       }
 
-      setChallenge({ ...challenge, [field]: editValues[field] });
+      refetch();
       setEditMode({ ...editMode, [field]: false });
       
       toast({
@@ -587,7 +384,7 @@ Status: ${challenge?.status}
 
       if (error) throw error;
 
-      setChallenge({ ...challenge, sensitivity_level: newSensitivity });
+      refetch();
       toast({
         title: "Success",
         description: `Challenge marked as ${newSensitivity}`,
@@ -1548,7 +1345,7 @@ Status: ${challenge?.status}
         onOpenChange={setExpertDialogOpen}
         challenge={{ id: challengeId, title_ar: challenge?.title_ar || '', description_ar: challenge?.description_ar || '' }}
         onAssignmentComplete={() => {
-          fetchAssignedExperts();
+          refreshExperts();
         }}
       />
 
@@ -1558,7 +1355,7 @@ Status: ${challenge?.status}
         challengeId={challengeId!}
         question={selectedQuestion}
         onQuestionSaved={() => {
-          fetchFocusQuestions();
+          refreshQuestions();
         }}
         />
         </div>
