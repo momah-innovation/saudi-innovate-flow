@@ -55,12 +55,17 @@ export const useDashboardStats = (): UseDashboardStatsReturn => {
       setIsError(false);
       setError(null);
 
-      // Get user's innovator profile
-      const { data: innovatorData } = await supabase
+      // Get user's innovator profile - handle multiple entries by taking the first one
+      const { data: innovatorData, error: innovatorError } = await supabase
         .from('innovators')
         .select('id')
         .eq('user_id', userProfile.id)
-        .single();
+        .limit(1)
+        .maybeSingle();
+
+      if (innovatorError) {
+        console.warn('Error fetching innovator profile:', innovatorError);
+      }
 
       let userStats: DashboardStats = {
         totalIdeas: 0,

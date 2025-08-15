@@ -161,14 +161,18 @@ export default React.memo(function UserDashboard() {
   const loadUserStats = async () => {
     if (!userProfile?.id) return;
 
-    // Get user's innovator profile
-    const { data: innovatorData } = await supabase
+    // Get user's innovator profile - handle multiple entries by taking the first one
+    const { data: innovatorData, error: innovatorError } = await supabase
       .from('innovators')
       .select('id')
       .eq('user_id', userProfile.id)
-      .single();
+      .limit(1)
+      .maybeSingle();
 
-    if (!innovatorData) return;
+    if (innovatorError || !innovatorData) {
+      console.warn('No innovator profile found or error occurred:', innovatorError);
+      return;
+    }
 
     // Load user ideas
     const { data: ideas } = await supabase
