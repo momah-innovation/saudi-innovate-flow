@@ -127,5 +127,17 @@
     "waitlist_added": "Added to waitlist",
     "event_full": "Event is full",
     "registration_closed": "Registration is closed"
+  },
+  "metrics": {
+    "total": "Total Events",
+    "active": "Active Events",
+    "participants": "Total Participants",
+    "revenue": "Total Revenue",
+    "upcoming": "Upcoming Events",
+    "completed": "Completed Events",
+    "trend_month": "+12% from last month",
+    "ongoing_now": "{{count}} ongoing now",
+    "registration_rate": "{{rate}}% registration rate",
+    "avg_budget": "{{amount}} avg budget"
   }
 }

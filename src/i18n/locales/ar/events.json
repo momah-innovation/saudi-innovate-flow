@@ -127,5 +127,17 @@
     "waitlist_added": "تم إضافتك لقائمة الانتظار",
     "event_full": "الفعالية ممتلئة",
     "registration_closed": "التسجيل مغلق"
+  },
+  "metrics": {
+    "total": "إجمالي الفعاليات",
+    "active": "الفعاليات النشطة",
+    "participants": "إجمالي المشاركين",
+    "revenue": "إجمالي الإيرادات",
+    "upcoming": "الفعاليات القادمة",
+    "completed": "الفعاليات المكتملة",
+    "trend_month": "+12% من الشهر الماضي",
+    "ongoing_now": "{{count}} جارية الآن",
+    "registration_rate": "{{rate}}% معدل التسجيل",
+    "avg_budget": "{{amount}} متوسط الميزانية"
   }
 }

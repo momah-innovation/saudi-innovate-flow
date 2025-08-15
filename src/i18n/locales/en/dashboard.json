@@ -121,5 +121,13 @@
     "failed_logins": "Failed Logins",
     "suspicious_activity": "Suspicious Activity",
     "security_score": "Security Score"
+  },
+  "metrics": {
+    "submissions": "Submissions",
+    "completion_rate": "completion rate",
+    "system_health": "System Health",
+    "uptime": "uptime",
+    "incidents": "Incidents",
+    "high_risk_events": "High Risk Events"
   }
 }

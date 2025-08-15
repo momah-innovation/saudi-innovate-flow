@@ -191,7 +191,7 @@ export function AdminSystemHealth({ metrics, systemHealth, language, isLoading }
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm">{language === 'ar' ? 'نقاط الأمان' : 'Security Score'}</span>
+              <span className="text-sm">{t('dashboard:trends.security_score')}</span>
               <div className="flex items-center gap-2">
                 <span className="font-bold">{metrics?.security?.securityScore || 98}</span>
                 <Badge variant={
@@ -205,15 +205,15 @@ export function AdminSystemHealth({ metrics, systemHealth, language, isLoading }
 
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span>{language === 'ar' ? 'الحوادث' : 'Incidents'}</span>
+                <span>{t('dashboard:metrics.incidents')}</span>
                 <span>{metrics?.security?.incidents || 0}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>{language === 'ar' ? 'فشل تسجيل الدخول' : 'Failed Logins'}</span>
+                <span>{t('dashboard:trends.failed_logins')}</span>
                 <span>{metrics?.security?.failedLogins || 0}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>{language === 'ar' ? 'أحداث عالية المخاطر' : 'High Risk Events'}</span>
+                <span>{t('dashboard:metrics.high_risk_events')}</span>
                 <span className="text-orange-600">{metrics?.security?.metrics?.highRiskEvents7d || 0}</span>
               </div>
             </div>
