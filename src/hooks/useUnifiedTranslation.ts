@@ -27,44 +27,36 @@ export function useUnifiedTranslation() {
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
   
-  // Use the dedicated system translations hook
-  const {
-    translationMap,
-    getTranslation: getSystemTranslation,
-    hasTranslation: hasSystemTranslation,
-    refreshTranslations,
-    isLoading,
-    error,
-    count: translationCount,
-    isReady
-  } = useSystemTranslations(language);
+  // Disable system translations hook for performance - use static files only
+  const systemTranslations = {
+    translationMap: new Map(),
+    getTranslation: () => '',
+    hasTranslation: () => false,
+    refreshTranslations: async () => {},
+    isLoading: false,
+    error: null,
+    count: 0,
+    isReady: true
+  };
 
-  // Optimized logging - prevent errors from breaking hooks
+  // Minimal logging for static translations
   useEffect(() => {
     try {
-      if (isReady && translationCount > 0) {
-        // Only log once per session or when count changes significantly  
-        const sessionKey = `translations_logged_${language}_${translationCount}`;
-        if (!sessionStorage.getItem(sessionKey)) {
-          debugLog.log('🎯 System translations loaded', { 
-            count: translationCount, 
-            language,
-            sampleKeys: Array.from(translationMap.keys()).slice(0, 3)
-          });
-          sessionStorage.setItem(sessionKey, 'true');
-        }
+      const sessionKey = `static_translations_logged_${language}`;
+      if (!sessionStorage.getItem(sessionKey)) {
+        debugLog.log('🎯 Static translations loaded', { language });
+        sessionStorage.setItem(sessionKey, 'true');
       }
     } catch (error) {
-      // Silently handle errors to prevent hook violations
-      debugLog.warn('Translation logging error', { error });
+      // Silently handle errors
     }
-  }, [isReady, translationCount, language, translationMap]);
+  }, [language]);
 
   /**
    * Primary translation function - Enhanced with better fallback logic
    */
   const t = (key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
-    console.log(`🔍 Translation requested: ${key}`);
+    // Removed console.log for performance
     try {
       let fallback: string | undefined;
       let interpolationOptions: Record<string, any> | undefined;
@@ -78,16 +70,7 @@ export function useUnifiedTranslation() {
         fallback = undefined;
       }
 
-      // Strategy 1: Database translation (highest priority)
-      if (hasSystemTranslation(key)) {
-        const dbText = getSystemTranslation(key, fallback);
-        if (dbText && dbText !== key) {
-          const result = interpolateText(dbText, interpolationOptions);
-          return result;
-        }
-      }
-
-      // Strategy 2: i18next translation - with safe object handling
+      // Strategy 1: i18next translation (static files) - Primary source
       try {
         const i18nextResult = i18nextT(key, { defaultValue: fallback, returnObjects: false });
         if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string') {
@@ -97,12 +80,12 @@ export function useUnifiedTranslation() {
         // Silently handle i18next errors to prevent console spam
       }
 
-      // Strategy 3: Provided fallback
+      // Strategy 2: Provided fallback
       if (fallback && fallback.trim() !== '') {
         return interpolateText(fallback, interpolationOptions);
       }
 
-      // Strategy 4: Return key as last resort
+      // Strategy 3: Return key as last resort
       return key;
     } catch (error) {
       logger.warn('Translation error occurred', { key, language }, error as Error);
@@ -135,9 +118,7 @@ export function useUnifiedTranslation() {
     const targetLang = targetLanguage || language;
     
     try {
-      if (hasSystemTranslation(key)) {
-        return getSystemTranslation(key, fallback);
-      }
+      // Use i18next for language-specific translations
 
       // Fallback to i18next for the target language
       const currentLang = i18n.language;
@@ -205,7 +186,7 @@ export function useUnifiedTranslation() {
   const getTranslationWithLoading = (key: string, fallback?: string): { text: string; isLoading: boolean } => {
     return {
       text: t(key, fallback),
-      isLoading
+      isLoading: systemTranslations.isLoading
     };
   };
 
@@ -218,22 +199,22 @@ export function useUnifiedTranslation() {
     getDynamicText,
     formatNumber,
     formatRelativeTime,
-    hasTranslation: hasSystemTranslation,
+    hasTranslation: systemTranslations.hasTranslation,
     getTranslationWithLoading,
-    refreshTranslations,
+    refreshTranslations: systemTranslations.refreshTranslations,
     
     // State information
     language,
     isRTL,
-    isLoading,
-    error,
+    isLoading: systemTranslations.isLoading,
+    error: systemTranslations.error,
     
     // Statistics
-    translationCount,
-    isReady,
+    translationCount: systemTranslations.count,
+    isReady: systemTranslations.isReady,
     
     // Raw data access (for advanced use cases)
-    translationMap,
+    translationMap: systemTranslations.translationMap,
     
     // i18next integration
     i18n,

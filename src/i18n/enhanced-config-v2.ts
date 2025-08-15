@@ -20,132 +20,141 @@ const fallbackResources = {
   }
 };
 
-// Enhanced database backend with better error handling and caching
-const EnhancedDatabaseBackend = {
+// Static-first backend with database fallback
+const StaticFirstBackend = {
   type: 'backend' as const,
   
-  // Cache for translations
-  cache: new Map<string, any>(),
+  // Minimal cache for database translations only
+  dbCache: new Map<string, any>(),
   cacheExpiry: new Map<string, number>(),
-  cacheDuration: 10 * 60 * 1000, // 10 minutes
+  cacheDuration: 30 * 60 * 1000, // 30 minutes for database fallback
   isLoading: new Set<string>(),
   
   init() {
-    logger.info('Enhanced database backend initialized', { component: 'EnhancedDatabaseBackend', action: 'init' });
-    this.preloadTranslations();
+    logger.info('Static-first backend initialized', { component: 'StaticFirstBackend', action: 'init' });
   },
 
-  async preloadTranslations() {
-    // Only preload current language to reduce initial load time
-    const currentLang = navigator.language.startsWith('ar') ? 'ar' : 'en';
-    try {
-      await this.loadFromDatabase(currentLang);
-    } catch (error) {
-      logger.warn('Failed to preload translations', { component: 'EnhancedDatabaseBackend', action: 'preloadTranslations' }, error as Error);
-    }
+  async loadStaticTranslations(language: string): Promise<any> {
+    // Return static translations immediately - no async needed
+    const staticTranslations = fallbackResources[language as keyof typeof fallbackResources]?.translation || {};
+    return staticTranslations;
   },
 
-  async loadFromDatabase(language: string): Promise<any> {
-    const cacheKey = `translations_${language}`;
+  async loadDatabaseFallback(language: string, missingKeys: string[]): Promise<any> {
+    if (missingKeys.length === 0) return {};
     
-    // Check cache validity
-    const cachedData = this.cache.get(cacheKey);
+    const cacheKey = `db_fallback_${language}`;
+    
+    // Check cache validity for database fallback
+    const cachedData = this.dbCache.get(cacheKey);
     const expiry = this.cacheExpiry.get(cacheKey);
     if (cachedData && expiry && Date.now() < expiry) {
-      return cachedData;
+      return this.filterDbTranslations(cachedData, missingKeys);
     }
 
     // Prevent duplicate requests
     if (this.isLoading.has(language)) {
-      return this.waitForLoading(language);
+      return {};
     }
     
     this.isLoading.add(language);
 
     try {
-      logger.info(`Loading ${language} translations from database`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language });
+      logger.info(`Loading database fallback for ${missingKeys.length} missing keys`, { 
+        component: 'StaticFirstBackend', 
+        action: 'loadDatabaseFallback', 
+        language,
+        missingKeys: missingKeys.slice(0, 5) // Log first 5 keys only
+      });
       
-      // Fetch ALL translations with pagination to handle large datasets
-      let allTranslations: any[] = [];
-      let hasMore = true;
-      let start = 0;
-      const batchSize = 300; // Reduce batch size for better performance
-      
-      while (hasMore) {
-        const { data, error } = await supabase
-          .from('system_translations')
-          .select('translation_key, text_en, text_ar')
-          .range(start, start + batchSize - 1);
+      // Query only for missing keys to minimize database load
+      const { data, error } = await supabase
+        .from('system_translations')
+        .select('translation_key, text_en, text_ar')
+        .in('translation_key', missingKeys)
+        .limit(100); // Limit to prevent excessive queries
 
-        if (error) {
-          logger.error(`Database error for ${language}`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language }, error as Error);
-          throw error;
-        }
-        
-        if (data) {
-          allTranslations.push(...data);
-          start += batchSize;
-          hasMore = data.length === batchSize;
-        } else {
-          hasMore = false;
-        }
+      if (error) {
+        logger.error(`Database fallback error for ${language}`, { component: 'StaticFirstBackend', action: 'loadDatabaseFallback', language }, error as Error);
+        return {};
       }
-      
-      const translations = allTranslations;
 
-      // Process translations into nested structure
-      const processedTranslations: any = {};
-      
-      translations?.forEach((translation: any) => {
+      // Process database translations
+      const dbTranslations: any = {};
+      data?.forEach((translation: any) => {
         const { translation_key, text_en, text_ar } = translation;
         const text = language === 'en' ? text_en : text_ar;
         
-        if (!text) return; // Skip empty translations
-        
-        // Handle nested keys (e.g., "settings.ui.theme")
-        const keyParts = translation_key.split('.');
-        let current = processedTranslations;
-        
-        for (let i = 0; i < keyParts.length - 1; i++) {
-          const part = keyParts[i];
-          if (!current[part] || typeof current[part] !== 'object') {
-            current[part] = {};
+        if (text) {
+          // Handle nested keys
+          const keyParts = translation_key.split('.');
+          let current = dbTranslations;
+          
+          for (let i = 0; i < keyParts.length - 1; i++) {
+            const part = keyParts[i];
+            if (!current[part] || typeof current[part] !== 'object') {
+              current[part] = {};
+            }
+            current = current[part];
           }
-          current = current[part];
+          
+          const finalKey = keyParts[keyParts.length - 1];
+          current[finalKey] = text;
         }
-        
-        const finalKey = keyParts[keyParts.length - 1];
-        current[finalKey] = text;
       });
 
-      // Merge with static translations (database takes precedence)
-      const staticTranslations = fallbackResources[language as keyof typeof fallbackResources]?.translation || {};
-      const mergedTranslations = { ...staticTranslations, ...processedTranslations };
-
-      // Cache the result
-      this.cache.set(cacheKey, mergedTranslations);
+      // Cache database translations
+      this.dbCache.set(cacheKey, dbTranslations);
       this.cacheExpiry.set(cacheKey, Date.now() + this.cacheDuration);
       
-      logger.info(`Loaded ${translations?.length || 0} ${language} translations from database`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language });
-      return mergedTranslations;
+      logger.info(`Loaded ${data?.length || 0} database fallback translations`, { 
+        component: 'StaticFirstBackend', 
+        action: 'loadDatabaseFallback', 
+        language 
+      });
+      
+      return dbTranslations;
 
     } catch (error) {
-      logger.error(`Failed to load ${language} translations from database`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language }, error as Error);
-      
-      // Return static fallback
-      const fallback = fallbackResources[language as keyof typeof fallbackResources];
-      return fallback?.translation || {};
+      logger.error(`Failed to load database fallback for ${language}`, { component: 'StaticFirstBackend', action: 'loadDatabaseFallback', language }, error as Error);
+      return {};
       
     } finally {
       this.isLoading.delete(language);
     }
   },
 
+  filterDbTranslations(dbTranslations: any, missingKeys: string[]): any {
+    const filtered: any = {};
+    missingKeys.forEach(key => {
+      const keyParts = key.split('.');
+      let source = dbTranslations;
+      let target = filtered;
+      
+      for (let i = 0; i < keyParts.length - 1; i++) {
+        const part = keyParts[i];
+        if (source[part] && typeof source[part] === 'object') {
+          if (!target[part]) target[part] = {};
+          source = source[part];
+          target = target[part];
+        } else {
+          return; // Key not found in database
+        }
+      }
+      
+      const finalKey = keyParts[keyParts.length - 1];
+      if (source[finalKey]) {
+        target[finalKey] = source[finalKey];
+      }
+    });
+    return filtered;
+  },
+
   async waitForLoading(language: string): Promise<any> {
     return new Promise((resolve) => {
       const checkLoading = () => {
         if (!this.isLoading.has(language)) {
-          const cached = this.cache.get(`translations_${language}`);
+          const cached = this.dbCache.get(`db_fallback_${language}`);
           resolve(cached || {});
         } else {
           import('@/utils/timerManager').then(({ default: timerManager }) => {
@@ -159,11 +168,16 @@ const EnhancedDatabaseBackend = {
 
   async read(language: string, namespace: string, callback: (error: any, data?: any) => void) {
     try {
-      const translations = await this.loadFromDatabase(language);
-      callback(null, translations);
+      // Step 1: Load static translations immediately
+      const staticTranslations = await this.loadStaticTranslations(language);
+      
+      // Step 2: For production optimization, skip database fallback for now
+      // Database will only be used for missing keys in admin interfaces
+      callback(null, staticTranslations);
+      
     } catch (error) {
-      logger.error(`Failed to read ${language} translations`, { component: 'EnhancedDatabaseBackend', action: 'read', language }, error as Error);
-      // Fallback to static translations
+      logger.error(`Failed to read ${language} translations`, { component: 'StaticFirstBackend', action: 'read', language }, error as Error);
+      // Final fallback to static translations
       const fallback = fallbackResources[language as keyof typeof fallbackResources];
       callback(null, fallback?.translation || {});
     }
@@ -177,17 +191,17 @@ const EnhancedDatabaseBackend = {
     // Not implemented - translations are managed through admin UI  
   },
 
-  // Method to invalidate cache
+  // Method to invalidate database cache
   invalidateCache() {
-    this.cache.clear();
+    this.dbCache.clear();
     this.cacheExpiry.clear();
-    logger.info('Translation cache invalidated', { component: 'EnhancedDatabaseBackend', action: 'invalidateCache' });
+    logger.info('Database translation cache invalidated', { component: 'StaticFirstBackend', action: 'invalidateCache' });
   }
 };
 
-// Initialize i18next with enhanced backend
+// Initialize i18next with static-first backend
 i18n
-  .use(EnhancedDatabaseBackend)
+  .use(StaticFirstBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -223,33 +237,20 @@ i18n
     // Additional configuration for reliability
     saveMissing: false,
     missingKeyHandler: (lng: string[], ns: string, key: string) => {
-      logger.warn(`Missing translation key: ${key} for language: ${lng[0]}`, { component: 'EnhancedDatabaseBackend', action: 'missingKeyHandler', key, language: lng[0] });
+      logger.warn(`Missing translation key: ${key} for language: ${lng[0]}`, { component: 'StaticFirstBackend', action: 'missingKeyHandler', key, language: lng[0] });
     }
   });
 
 // Export cache invalidation function for admin use
 export const invalidateTranslationCache = () => {
-  (EnhancedDatabaseBackend as any).invalidateCache();
-  // Force a reload by reloading the current language
-  const currentLang = i18n.language;
-  i18n.reloadResources(currentLang).then(() => {
-    logger.info('Translation cache invalidated and reloaded', { component: 'EnhancedDatabaseBackend', action: 'invalidateTranslationCache' });
-  });
+  (StaticFirstBackend as any).dbCache.clear();
+  (StaticFirstBackend as any).cacheExpiry.clear();
+  logger.info('Database translation cache invalidated', { component: 'StaticFirstBackend', action: 'invalidateTranslationCache' });
 };
 
-// Auto-invalidate cache every 5 minutes to pick up new translations
-import('@/utils/timerManager').then(({ default: timerManager }) => {
-  timerManager.setInterval('i18n-cache-invalidate', () => {
-    invalidateTranslationCache();
-  }, 5 * 60 * 1000);
-
-  // Invalidate cache immediately to force refresh of new translations
-  timerManager.setTimeout('i18n-immediate-invalidate', () => {
-    invalidateTranslationCache();
-  }, 1000);
-});
-
-// Invalidate cache immediately after migration to force refresh
-invalidateTranslationCache();
+// Function to load database translations for missing keys (for admin use)
+export const loadDatabaseTranslations = async (language: string, missingKeys: string[]) => {
+  return (StaticFirstBackend as any).loadDatabaseFallback(language, missingKeys);
+};
 
 export default i18n;
