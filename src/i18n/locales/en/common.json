@@ -125,5 +125,17 @@
   "total_challenges": "Total Challenges",
   "save": "Save",
   "all": "All",
-  "createNew": "Create New"
+  "createNew": "Create New",
+  "breadcrumbNavigation": "Breadcrumb Navigation",
+  "focusQuestionTypes": {
+    "general": "General",
+    "technical": "Technical",
+    "commercial": "Commercial",
+    "impact": "Impact",
+    "implementation": "Implementation",
+    "social": "Social",
+    "ethical": "Ethical",
+    "medical": "Medical",
+    "regulatory": "Regulatory"
+  }
 }

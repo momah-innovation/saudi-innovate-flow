@@ -268,7 +268,7 @@ export function ChallengeDetailView({
             </div>
             <Button onClick={() => onEdit(challenge)} size="sm">
               <Edit className="w-4 h-4 mr-2" />
-              تعديل
+              {t('challenges:detail.edit', 'تعديل')}
             </Button>
           </div>
         </DialogHeader>
@@ -281,18 +281,18 @@ export function ChallengeDetailView({
               <AccordionTrigger className="text-lg font-semibold">
                 <div className="flex items-center gap-2">
                   <Target className="w-5 h-5" />
-                  نظرة عامة
+                  {t('challenges:detail.overview', 'نظرة عامة')}
                 </div>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle>تفاصيل التحدي</CardTitle>
+                      <CardTitle>{t('challenges:detail.challenge_details', 'تفاصيل التحدي')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h4 className="font-semibold mb-2">الوصف</h4>
+                        <h4 className="font-semibold mb-2">{t('challenges:detail.description', 'الوصف')}</h4>
                         <p className="text-sm text-muted-foreground" dir="rtl">{challenge.description_ar}</p>
                         {challenge.description_en && (
                           <>
@@ -305,7 +305,7 @@ export function ChallengeDetailView({
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {challenge.start_date && (
                           <div>
-                            <h4 className="font-semibold mb-1 text-sm">تاريخ البداية</h4>
+                            <h4 className="font-semibold mb-1 text-sm">{t('challenges:detail.start_date', 'تاريخ البداية')}</h4>
                             <p className="text-sm flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
                               {format(new Date(challenge.start_date), 'PPP')}
@@ -314,7 +314,7 @@ export function ChallengeDetailView({
                         )}
                         {challenge.end_date && (
                           <div>
-                            <h4 className="font-semibold mb-1 text-sm">تاريخ النهاية</h4>
+                            <h4 className="font-semibold mb-1 text-sm">{t('challenges:detail.end_date', 'تاريخ النهاية')}</h4>
                             <p className="text-sm flex items-center gap-1">
                               <Clock className="w-4 h-4" />
                               {format(new Date(challenge.end_date), 'PPP')}
@@ -323,19 +323,19 @@ export function ChallengeDetailView({
                         )}
                         {challenge.estimated_budget && (
                           <div>
-                            <h4 className="font-semibold mb-1 text-sm">الميزانية المقدرة</h4>
+                            <h4 className="font-semibold mb-1 text-sm">{t('challenges:detail.estimated_budget', 'الميزانية المقدرة')}</h4>
                             <p className="text-sm flex items-center gap-1">
                               <DollarSign className="w-4 h-4" />
-                              {challenge.estimated_budget.toLocaleString()} ريال
+                              {challenge.estimated_budget.toLocaleString()} {t('currency', 'ريال')}
                             </p>
                           </div>
                         )}
                         {challenge.actual_budget && (
                           <div>
-                            <h4 className="font-semibold mb-1 text-sm">الميزانية الفعلية</h4>
+                            <h4 className="font-semibold mb-1 text-sm">{t('challenges:detail.actual_budget', 'الميزانية الفعلية')}</h4>
                             <p className="text-sm flex items-center gap-1">
                               <DollarSign className="w-4 h-4" />
-                              {challenge.actual_budget.toLocaleString()} ريال
+                              {challenge.actual_budget.toLocaleString()} {t('currency', 'ريال')}
                             </p>
                           </div>
                         )}
@@ -343,14 +343,14 @@ export function ChallengeDetailView({
 
                       {challenge.vision_2030_goal && (
                         <div>
-                          <h4 className="font-semibold mb-2">هدف رؤية 2030</h4>
+                          <h4 className="font-semibold mb-2">{t('challenges:detail.vision_2030_goal', 'هدف رؤية 2030')}</h4>
                           <p className="text-sm text-muted-foreground">{challenge.vision_2030_goal}</p>
                         </div>
                       )}
 
                       {challenge.kpi_alignment && (
                         <div>
-                          <h4 className="font-semibold mb-2">مؤشرات الأداء</h4>
+                          <h4 className="font-semibold mb-2">{t('challenges:detail.kpi_alignment', 'مؤشرات الأداء')}</h4>
                           <p className="text-sm text-muted-foreground">{challenge.kpi_alignment}</p>
                         </div>
                       )}
@@ -365,7 +365,7 @@ export function ChallengeDetailView({
               <AccordionTrigger className="text-lg font-semibold">
                 <div className="flex items-center gap-2">
                   <Users className="w-5 h-5" />
-                  الفريق والخبراء ({relatedData.experts.length + relatedData.partners.length})
+                  {t('challenges:detail.team_experts', 'الفريق والخبراء')} ({relatedData.experts.length + relatedData.partners.length})
                 </div>
               </AccordionTrigger>
               <AccordionContent>

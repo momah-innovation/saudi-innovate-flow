@@ -141,6 +141,18 @@
   "total_challenges": "إجمالي التحديات",
   "all": "الكل",
   "createNew": "إنشاء جديد",
+  "breadcrumbNavigation": "التنقل التفصيلي",
+  "focusQuestionTypes": {
+    "general": "عام",
+    "technical": "تقني",
+    "commercial": "تجاري",
+    "impact": "تأثير",
+    "implementation": "تنفيذ",
+    "social": "اجتماعي",
+    "ethical": "أخلاقي",
+    "medical": "طبي",
+    "regulatory": "تنظيمي"
+  },
   "form": {
     "title_ar": "العنوان (العربية)",
     "title_en": "العنوان (الإنجليزية)",
