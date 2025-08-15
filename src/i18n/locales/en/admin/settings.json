@@ -1,0 +1,100 @@
+{
+  "system_settings": {
+    "title": "System Settings",
+    "description": "Configure global system settings",
+    "general": "General",
+    "security": "Security", 
+    "notifications": "Notifications",
+    "integrations": "Integrations",
+    "performance": "Performance",
+    "backup": "Backup & Recovery",
+    "logs": "Logs & Monitoring"
+  },
+  "categories": {
+    "campaigns": "Campaigns",
+    "challenges": "Challenges",
+    "ideas": "Ideas",
+    "events": "Events",
+    "partners": "Partners",
+    "opportunities": "Opportunities",
+    "analytics": "Analytics",
+    "ai": "AI",
+    "ui": "UI"
+  },
+  "settings": {
+    "challenge_priority_levels": {
+      "label": "Challenge Priority Levels",
+      "description": "Configure priority levels for challenges"
+    },
+    "challenge_sensitivity_levels": {
+      "label": "Challenge Sensitivity Levels",
+      "description": "Configure sensitivity levels for challenges"
+    },
+    "challenge_status_options": {
+      "label": "Challenge Status Options",
+      "description": "Configure available status options for challenges"
+    },
+    "challenge_types": {
+      "label": "Challenge Types",
+      "description": "Configure available challenge types"
+    },
+    "allow_anonymous_submissions": {
+      "label": "Allow Anonymous Submissions",
+      "description": "Enable anonymous idea submissions"
+    },
+    "require_approval_for_publish": {
+      "label": "Require Approval for Publishing",
+      "description": "Require approval before publishing challenges"
+    },
+    "data_export_formats": {
+      "label": "Data Export Formats",
+      "description": "Configure available data export formats"
+    },
+    "evaluation_criteria": {
+      "label": "Evaluation Criteria",
+      "description": "Configure criteria for evaluating submissions"
+    }
+  },
+  "lists": {
+    "challenge_types": "Challenge Types",
+    "evaluator_types": "Evaluator Types",
+    "event_categories": "Event Categories",
+    "event_types": "Event Types",
+    "expert_role_types": "Expert Role Types",
+    "focus_question_types": "Focus Question Types",
+    "organization_types": "Organization Types",
+    "relationship_types": "Relationship Types",
+    "stakeholder_categories": "Stakeholder Categories",
+    "tag_categories": "Tag Categories",
+    "assignment_types": "Assignment Types",
+    "partner_types": "Partner Types",
+    "partnership_types": "Partnership Types",
+    "partner_status": "Partner Status",
+    "expert_status": "Expert Status",
+    "engagement_levels": "Engagement Levels",
+    "priority_levels": "Priority Levels",
+    "general_status": "General Status",
+    "stakeholder_types": "Stakeholder Types",
+    "stakeholder_status": "Stakeholder Status",
+    "user_roles": "User Roles",
+    "organization_status": "Organization Status",
+    "role_hierarchy": "Role Hierarchy",
+    "skill_levels": "Skill Levels"
+  },
+  "actions": {
+    "save_settings": "Save Settings",
+    "reset_settings": "Reset Settings",
+    "export_settings": "Export Settings",
+    "import_settings": "Import Settings",
+    "reset_to_defaults": "Reset to Defaults"
+  },
+  "messages": {
+    "settings_saved": "Settings saved successfully",
+    "settings_reset": "Settings reset successfully",
+    "save_failed": "Failed to save settings",
+    "reset_failed": "Failed to reset settings",
+    "export_success": "Settings exported successfully",
+    "import_success": "Settings imported successfully",
+    "confirm_reset": "Are you sure you want to reset all settings to defaults? This action cannot be undone."
+  }
+}

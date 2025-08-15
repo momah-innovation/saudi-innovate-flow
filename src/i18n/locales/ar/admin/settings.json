@@ -1,0 +1,100 @@
+{
+  "system_settings": {
+    "title": "إعدادات النظام",
+    "description": "تكوين إعدادات النظام العامة",
+    "general": "عام",
+    "security": "الأمان",
+    "notifications": "الإشعارات",
+    "integrations": "التكامل",
+    "performance": "الأداء",
+    "backup": "النسخ الاحتياطي والاستعادة",
+    "logs": "السجلات والمراقبة"
+  },
+  "categories": {
+    "campaigns": "الحملات",
+    "challenges": "التحديات",
+    "ideas": "الأفكار",
+    "events": "الفعاليات",
+    "partners": "الشركاء",
+    "opportunities": "الفرص",
+    "analytics": "التحليلات",
+    "ai": "الذكاء الاصطناعي",
+    "ui": "واجهة المستخدم"
+  },
+  "settings": {
+    "challenge_priority_levels": {
+      "label": "مستويات أولوية التحديات",
+      "description": "تكوين مستويات الأولوية للتحديات"
+    },
+    "challenge_sensitivity_levels": {
+      "label": "مستويات حساسية التحديات",
+      "description": "تكوين مستويات الحساسية للتحديات"
+    },
+    "challenge_status_options": {
+      "label": "خيارات حالة التحديات",
+      "description": "تكوين خيارات الحالة المتاحة للتحديات"
+    },
+    "challenge_types": {
+      "label": "أنواع التحديات",
+      "description": "تكوين أنواع التحديات المتاحة"
+    },
+    "allow_anonymous_submissions": {
+      "label": "السماح بالتقديمات المجهولة",
+      "description": "تمكين تقديم الأفكار المجهولة"
+    },
+    "require_approval_for_publish": {
+      "label": "تتطلب موافقة للنشر",
+      "description": "تتطلب موافقة قبل نشر التحديات"
+    },
+    "data_export_formats": {
+      "label": "صيغ تصدير البيانات",
+      "description": "تكوين صيغ تصدير البيانات المتاحة"
+    },
+    "evaluation_criteria": {
+      "label": "معايير التقييم",
+      "description": "تكوين معايير تقييم التقديمات"
+    }
+  },
+  "lists": {
+    "challenge_types": "أنواع التحديات",
+    "evaluator_types": "أنواع المقيمين",
+    "event_categories": "فئات الفعاليات",
+    "event_types": "أنواع الفعاليات",
+    "expert_role_types": "أدوار الخبراء",
+    "focus_question_types": "أنواع الأسئلة المحورية",
+    "organization_types": "أنواع المنظمات",
+    "relationship_types": "أنواع العلاقات",
+    "stakeholder_categories": "فئات المعنيين",
+    "tag_categories": "فئات الوسوم",
+    "assignment_types": "أنواع المهام",
+    "partner_types": "أنواع الشركاء",
+    "partnership_types": "أنواع الشراكات",
+    "partner_status": "حالات الشركاء",
+    "expert_status": "حالات الخبراء",
+    "engagement_levels": "مستويات المشاركة",
+    "priority_levels": "مستويات الأولوية",
+    "general_status": "الحالات العامة",
+    "stakeholder_types": "أنواع المعنيين",
+    "stakeholder_status": "حالات المعنيين",
+    "user_roles": "أدوار المستخدمين",
+    "organization_status": "حالات المنظمات",
+    "role_hierarchy": "التسلسل الهرمي للأدوار",
+    "skill_levels": "مستويات المهارات"
+  },
+  "actions": {
+    "save_settings": "حفظ الإعدادات",
+    "reset_settings": "إعادة تعيين الإعدادات",
+    "export_settings": "تصدير الإعدادات",
+    "import_settings": "استيراد الإعدادات",
+    "reset_to_defaults": "إعادة تعيين للافتراضي"
+  },
+  "messages": {
+    "settings_saved": "تم حفظ الإعدادات بنجاح",
+    "settings_reset": "تم إعادة تعيين الإعدادات بنجاح",
+    "save_failed": "فشل في حفظ الإعدادات",
+    "reset_failed": "فشل في إعادة تعيين الإعدادات",
+    "export_success": "تم تصدير الإعدادات بنجاح",
+    "import_success": "تم استيراد الإعدادات بنجاح",
+    "confirm_reset": "هل أنت متأكد من إعادة تعيين جميع الإعدادات للافتراضي؟ لا يمكن التراجع عن هذا الإجراء."
+  }
+}

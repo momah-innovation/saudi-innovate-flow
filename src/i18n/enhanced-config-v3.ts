@@ -7,22 +7,30 @@ import { logger } from '@/utils/logger';
 import enCommon from './locales/en/common.json';
 import enNavigation from './locales/en/navigation.json';
 import enDashboard from './locales/en/dashboard.json';
+import enAuth from './locales/en/auth.json';
+import enErrors from './locales/en/errors.json';
 
 import arCommon from './locales/ar/common.json';
 import arNavigation from './locales/ar/navigation.json';
 import arDashboard from './locales/ar/dashboard.json';
+import arAuth from './locales/ar/auth.json';
+import arErrors from './locales/ar/errors.json';
 
 // Base static resources - these are loaded immediately
 const staticResources = {
   en: { 
     common: enCommon,
     navigation: enNavigation,
-    dashboard: enDashboard
+    dashboard: enDashboard,
+    auth: enAuth,
+    errors: enErrors
   },
   ar: { 
     common: arCommon,
     navigation: arNavigation,
-    dashboard: arDashboard
+    dashboard: arDashboard,
+    auth: arAuth,
+    errors: arErrors
   }
 };
 
@@ -38,6 +46,12 @@ const loadNamespace = async (language: string, namespace: string) => {
     let translations;
     
     switch (namespace) {
+      case 'challenges-details':
+        translations = language === 'en' 
+          ? await import('./locales/en/challenges/details.json')
+          : await import('./locales/ar/challenges/details.json');
+        break;
+      
       case 'challenges':
         translations = language === 'en' 
           ? await import('./locales/en/challenges/index.json')
@@ -48,6 +62,12 @@ const loadNamespace = async (language: string, namespace: string) => {
         translations = language === 'en'
           ? await import('./locales/en/campaigns/index.json') 
           : await import('./locales/ar/campaigns/index.json');
+        break;
+        
+      case 'admin-settings':
+        translations = language === 'en'
+          ? await import('./locales/en/admin/settings.json')
+          : await import('./locales/ar/admin/settings.json');
         break;
         
       case 'admin':
@@ -129,7 +149,7 @@ i18n
     
     // Default namespaces that should be loaded immediately
     defaultNS: 'common',
-    ns: ['common', 'navigation', 'dashboard'],
+    ns: ['common', 'navigation', 'dashboard', 'auth', 'errors'],
     
     interpolation: {
       escapeValue: false,
