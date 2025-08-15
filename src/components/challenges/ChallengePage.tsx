@@ -117,29 +117,18 @@ export const ChallengePage: React.FC = () => {
 
   const loadChallengeStats = async () => {
     try {
-      // Get participants count
-      const { count: participantsCount } = await supabase
-        .from('challenge_participants')
-        .select('*', { count: 'exact', head: true })
-        .eq('challenge_id', challengeId);
+      // Batch all count queries for better performance
+      const [participantsRes, submissionsRes, expertsRes, discussionsRes] = await Promise.all([
+        supabase.from('challenge_participants').select('*', { count: 'exact', head: true }).eq('challenge_id', challengeId),
+        supabase.from('challenge_submissions').select('*', { count: 'exact', head: true }).eq('challenge_id', challengeId),
+        supabase.from('challenge_experts').select('*', { count: 'exact', head: true }).eq('challenge_id', challengeId),
+        supabase.from('challenge_comments').select('*', { count: 'exact', head: true }).eq('challenge_id', challengeId)
+      ]);
 
-      // Get submissions count
-      const { count: submissionsCount } = await supabase
-        .from('challenge_submissions')
-        .select('*', { count: 'exact', head: true })
-        .eq('challenge_id', challengeId);
-
-      // Get experts count
-      const { count: expertsCount } = await supabase
-        .from('challenge_experts')
-        .select('*', { count: 'exact', head: true })
-        .eq('challenge_id', challengeId);
-
-      // Get discussions count (comments)
-      const { count: discussionsCount } = await supabase
-        .from('challenge_comments')
-        .select('*', { count: 'exact', head: true })
-        .eq('challenge_id', challengeId);
+      const participantsCount = participantsRes.count;
+      const submissionsCount = submissionsRes.count;
+      const expertsCount = expertsRes.count;
+      const discussionsCount = discussionsRes.count;
 
       setStats({
         participants_count: participantsCount || 0,
