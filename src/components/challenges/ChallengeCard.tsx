@@ -131,7 +131,7 @@ export const ChallengeCard = ({
   // LIST VIEW
   if (viewMode === 'list') {
     return (
-      <Card className="hover:shadow-md transition-all duration-300 hover-scale animate-fade-in">
+      <Card className="card-hover-optimized animate-fade-in">
         <CardContent className="p-4">
           <div className="flex items-start gap-4">
             {/* Challenge Image */}
@@ -265,14 +265,14 @@ export const ChallengeCard = ({
 
   // CARD/GRID VIEW
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+    <Card className="group card-hover-optimized animate-fade-in overflow-hidden">
       {/* Image Section */}
       <div className="relative h-48 overflow-hidden">
         {challenge.image_url ? (
           <img 
             src={challenge.image_url} 
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover image-hover-optimized"
           />
         ) : (
           <div className={`w-full h-full ${challengesPageConfig.ui.gradients.featured} flex items-center justify-center`}>

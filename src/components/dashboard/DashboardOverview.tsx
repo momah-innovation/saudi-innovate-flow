@@ -321,7 +321,7 @@ export const DashboardOverview = () => {
                   return (
                     <Card 
                       key={index} 
-                      className="group hover:shadow-md transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 touch-manipulation"
+                      className="group card-hover-optimized cursor-pointer border-2 hover:border-primary/20 touch-manipulation"
                     >
                       <CardContent className="p-3 sm:p-4">
                         <div className={cn(
@@ -329,7 +329,7 @@ export const DashboardOverview = () => {
                           isRTL && "flex-row-reverse"
                         )}>
                           <div className={cn(
-                            "p-1.5 sm:p-2 rounded-lg bg-gradient-to-r text-white group-hover:scale-110 transition-transform shrink-0",
+                            "p-1.5 sm:p-2 rounded-lg bg-gradient-to-r text-white shrink-0",
                             action.color
                           )}>
                             <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />

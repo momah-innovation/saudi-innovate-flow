@@ -62,7 +62,7 @@ export const EventsHero = ({
 
             {/* Enhanced Stats Grid with Animation */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
+              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-opacity duration-200">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-blue-500/20 rounded-lg shadow-lg group-hover:shadow-blue-500/25 transition-shadow">
                     <CalendarIcon className="w-6 h-6 text-blue-300" />
@@ -78,7 +78,7 @@ export const EventsHero = ({
                 </div>
               </div>
 
-              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
+              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-opacity duration-200">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-green-500/20 rounded-lg shadow-lg group-hover:shadow-green-500/25 transition-shadow">
                     <TrendingUp className="w-6 h-6 text-green-300" />
@@ -94,7 +94,7 @@ export const EventsHero = ({
                 </div>
               </div>
 
-              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
+              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-opacity duration-200">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-orange-500/20 rounded-lg shadow-lg group-hover:shadow-orange-500/25 transition-shadow">
                     <Users className="w-6 h-6 text-orange-300" />
@@ -110,7 +110,7 @@ export const EventsHero = ({
                 </div>
               </div>
 
-              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
+              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-opacity duration-200">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-purple-500/20 rounded-lg shadow-lg group-hover:shadow-purple-500/25 transition-shadow">
                     <MapPin className="w-6 h-6 text-purple-300" />
@@ -165,7 +165,7 @@ export const EventsHero = ({
             <Badge 
               key={index}
               variant="secondary" 
-              className="bg-white/10 text-white border-white/20 hover:bg-white/20 cursor-pointer transition-all duration-300 hover:scale-105 px-4 py-2 text-sm shadow-sm"
+              className="bg-white/10 text-white border-white/20 hover:bg-white/20 cursor-pointer transition-opacity duration-200 px-4 py-2 text-sm shadow-sm"
             >
               <span className="mr-2">{tag.icon}</span>
               {tag.label}
