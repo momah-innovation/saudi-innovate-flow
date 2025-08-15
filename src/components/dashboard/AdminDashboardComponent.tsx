@@ -539,7 +539,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                   {t('admin.metrics.total_managers')}
+                   {t('admin:metrics.total_managers')}
                  </CardTitle>
                  <Users className="h-4 w-4 text-muted-foreground" />
                </CardHeader>
@@ -549,7 +549,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                  </div>
                  <div className="flex items-center gap-1 text-xs text-success mt-2">
                    <TrendingUp className="w-4 h-4" />
-                   <span>+8% {t('admin.metrics.this_month')}</span>
+                   <span>+8% {t('admin:metrics.this_month')}</span>
                  </div>
                </CardContent>
              </Card>
@@ -557,7 +557,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
              <Card>
                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                   {t('admin.metrics.active_teams')}
+                   {t('admin:metrics.active_teams')}
                  </CardTitle>
                  <Briefcase className="h-4 w-4 text-muted-foreground" />
                </CardHeader>
@@ -567,7 +567,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                  </div>
                  <div className="flex items-center gap-1 text-xs text-success mt-2">
                    <TrendingUp className="w-4 h-4" />
-                   <span>+12% {t('admin.metrics.this_month')}</span>
+                   <span>+12% {t('admin:metrics.this_month')}</span>
                  </div>
                </CardContent>
              </Card>
@@ -575,7 +575,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
              <Card>
                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                   {t('admin.metrics.expert_assignments')}
+                   {t('admin:metrics.expert_assignments')}
                  </CardTitle>
                  <Target className="h-4 w-4 text-muted-foreground" />
                </CardHeader>
@@ -585,7 +585,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                  </div>
                  <div className="flex items-center gap-1 text-xs text-success mt-2">
                    <TrendingUp className="w-4 h-4" />
-                   <span>+5% {t('admin.metrics.this_week')}</span>
+                   <span>+5% {t('admin:metrics.this_week')}</span>
                  </div>
                </CardContent>
              </Card>
@@ -593,7 +593,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
              <Card>
                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                   {t('admin.metrics.active_permissions')}
+                   {t('admin:metrics.active_permissions')}
                  </CardTitle>
                  <Shield className="h-4 w-4 text-muted-foreground" />
                </CardHeader>
@@ -603,7 +603,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                  </div>
                  <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
                    <CheckCircle className="w-4 h-4" />
-                   <span>{t('admin.metrics.stable')}</span>
+                   <span>{t('admin:metrics.stable')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -630,7 +630,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                     onClick={action.action}
                   >
                     <ArrowRight className="w-3 h-3 mr-2" />
-                    {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
+                    {t('admin:actions.access_interface')}
                   </Button>
                 </CardContent>
               </Card>
