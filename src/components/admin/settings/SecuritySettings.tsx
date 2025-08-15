@@ -89,7 +89,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="session_timeout">{t('settings.session_timeout.label')}</Label>
+              <Label htmlFor="session_timeout">{t('admin.settings.session_timeout')}</Label>
               <Input
                 id="session_timeout"
                 type="number"

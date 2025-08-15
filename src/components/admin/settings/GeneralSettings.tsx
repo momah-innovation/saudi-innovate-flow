@@ -23,7 +23,7 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="system_name">{t('settings.system_name.label')}</Label>
+              <Label htmlFor="system_name">{t('admin.settings.system_name')}</Label>
               <Input
                 id="system_name"
                 value={settings.system_name || ''}
@@ -50,7 +50,7 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="system_description">{t('settings.system_description.label')}</Label>
+            <Label htmlFor="system_description">{t('admin.settings.system_description')}</Label>
             <Textarea
               id="system_description"
               value={settings.system_description || ''}
@@ -71,7 +71,7 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between rtl:flex-row-reverse">
             <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">{t('settings.maintenance_mode.label')}</Label>
+              <Label className="text-base">{t('admin.settings.maintenance_mode')}</Label>
               <p className="text-sm text-muted-foreground">{isRTL ? 'منع وصول المستخدمين العاديين للنظام' : 'Prevent normal user access to system'}</p>
             </div>
             <Switch

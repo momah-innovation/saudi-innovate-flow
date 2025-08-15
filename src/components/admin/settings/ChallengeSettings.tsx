@@ -205,7 +205,7 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="max_challenges_per_user">{t('settings.max_challenges_per_user.label')}</Label>
+              <Label htmlFor="max_challenges_per_user">{t('admin.settings.max_challenges_per_user')}</Label>
               <Input
                 id="max_challenges_per_user"
                 type="number"

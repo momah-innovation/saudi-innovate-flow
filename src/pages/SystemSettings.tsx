@@ -78,7 +78,7 @@ const SystemSettings = () => {
     { key: "general", label: t('general', 'General'), icon: Settings },
     { key: "challenges", label: t('system_settings_page.challenges', 'Challenges'), icon: Settings },
     { key: "ideas", label: t('system_settings_page.ideas', 'Ideas'), icon: Settings },
-    { key: "events", label: t('settings.category.events', 'Events'), icon: Settings },
+    { key: "events", label: t('admin.settings.events') || 'Events', icon: Settings },
     { key: "campaigns", label: t('system_settings_page.campaigns', 'Campaigns'), icon: Settings },
     { key: "partners", label: t('system_settings_page.partners', 'Partners'), icon: Settings },
     { key: "opportunities", label: t('system_settings_page.opportunities', 'Opportunities'), icon: Settings },

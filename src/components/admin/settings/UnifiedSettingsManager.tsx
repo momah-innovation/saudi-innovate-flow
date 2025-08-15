@@ -79,7 +79,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
   };
 
   const handleDeleteSetting = (key: string) => {
-    if (confirm(t('settings.delete.confirm'))) {
+    if (confirm(t('admin.settings.delete_confirm'))) {
       deleteSetting(key);
       // Also remove from pending changes
       setPendingChanges(prev => {
@@ -129,13 +129,13 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
               {hasChanges && (
                 <Badge variant="outline" className="flex items-center gap-1 text-amber-600 border-amber-600">
                   <Edit className="w-3 h-3" />
-                  {t('settings.modified')}
+                  {t('admin.settings.modified')}
                 </Badge>
               )}
               {isShared && (
                 <Badge variant="secondary" className="flex items-center gap-1">
                   <Globe className="w-3 h-3" />
-                  {t('settings.shared')}
+                  {t('admin.settings.shared')}
                 </Badge>
               )}
               {setting.data_type && (
@@ -153,7 +153,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
               <div className={`flex items-center gap-1 mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <AlertTriangle className="w-3 h-3 text-amber-500" />
                 <span className="text-xs text-muted-foreground">
-                  {t('settings.affects')}: {affectedSystems.join(', ')}
+                  {t('admin.settings.affects')}: {affectedSystems.join(', ')}
                 </span>
               </div>
             )}
@@ -172,7 +172,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                   className="text-orange-500 hover:text-orange-700 gap-1"
                 >
                   <X className="w-4 h-4" />
-                  {t('settings.revert')}
+                  {t('admin.settings.revert')}
                 </Button>
                 <Button
                   variant="ghost"
@@ -181,7 +181,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                   className="text-green-600 hover:text-green-700 gap-1"
                 >
                   <Check className="w-4 h-4" />
-                  {t('settings.save')}
+                  {t('admin.settings.save')}
                 </Button>
               </>
             )}
@@ -200,7 +200,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
         <div className="space-y-2">
           {setting.data_type === 'boolean' ? (
             <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <span className="text-sm">{t('settings.enabled')}</span>
+              <span className="text-sm">{t('admin.settings.enabled')}</span>
               <Switch
                 checked={currentValue || false}
                 onCheckedChange={(checked) => 
@@ -221,7 +221,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
             <div className="space-y-2">
               <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <span className="text-sm font-medium">
-                  {t('settings.array_editor')}
+                  {t('admin.settings.array_editor')}
                 </span>
                 <Button
                   variant="outline"
@@ -231,8 +231,8 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                 >
                   <Edit className="w-4 h-4" />
                   {isArrayExpanded 
-                    ? t('settings.close_editor')
-                    : t('settings.open_editor')
+                    ? t('admin.settings.close_editor')
+                    : t('admin.settings.open_editor')
                   }
                 </Button>
               </div>
@@ -253,7 +253,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                 <div className="p-3 bg-muted rounded text-sm">
                   <code className="text-xs">
                     {Array.isArray(currentValue) 
-                      ? `[${currentValue.length} ${t('settings.items')}]`
+                      ? `[${currentValue.length} ${t('admin.settings.items')}]`
                       : '[]'
                     }
                   </code>
@@ -264,7 +264,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
             <div className="space-y-2">
               <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <span className="text-sm font-medium">
-                  {t('settings.object_editor')}
+                  {t('admin.settings.object_editor')}
                 </span>
                 <Button
                   variant="outline"
@@ -274,8 +274,8 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                 >
                   <Edit className="w-4 h-4" />
                   {isArrayExpanded 
-                    ? t('settings.close_editor')
-                    : t('settings.open_editor')
+                    ? t('admin.settings.close_editor')
+                    : t('admin.settings.open_editor')
                   }
                 </Button>
               </div>
@@ -295,7 +295,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                 <div className="p-3 bg-muted rounded text-sm">
                   <code className="text-xs">
                     {typeof currentValue === 'object' && currentValue !== null
-                      ? `{${Object.keys(currentValue).length} ${t('settings.properties')}}`
+                      ? `{${Object.keys(currentValue).length} ${t('admin.settings.properties')}}`
                       : '{}'
                     }
                   </code>
@@ -346,7 +346,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
         <Card>
           <CardContent className="text-center py-8">
             <p className="text-muted-foreground">
-              {t('settings.no_settings')}
+              {t('admin.settings.no_settings')}
             </p>
           </CardContent>
         </Card>
