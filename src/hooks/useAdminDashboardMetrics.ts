@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { debugLog } from '@/utils/debugLogger';
-import { useTimerManager } from '@/utils/timerManager';
 
 // Types for the admin dashboard metrics
 export interface AdminDashboardMetrics {
@@ -264,15 +263,14 @@ export const useAdminDashboardMetrics = (
   useEffect(() => {
     if (!autoRefresh) return;
 
-    const { setInterval: scheduleInterval } = useTimerManager();
-    const clearTimer = scheduleInterval(() => {
+    const intervalId = setInterval(() => {
       // Only auto-refresh if we're not currently loading or refreshing
       if (!isLoading && !isRefreshing) {
         fetchMetrics(true);
       }
     }, refreshInterval);
 
-    return clearTimer;
+    return () => clearInterval(intervalId);
   }, [autoRefresh, refreshInterval, isLoading, isRefreshing, fetchMetrics]);
 
   // Cleanup on unmount
