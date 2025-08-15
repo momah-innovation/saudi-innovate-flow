@@ -20,6 +20,10 @@ import arNavigation from './locales/ar/navigation.json';
 import enDashboard from './locales/en/dashboard.json';
 import arDashboard from './locales/ar/dashboard.json';
 
+// Admin translations
+import enAdmin from './locales/en/admin/index.json';
+import arAdmin from './locales/ar/admin/index.json';
+
 // Auth translations
 import enAuth from './locales/en/auth.json';
 import arAuth from './locales/ar/auth.json';
@@ -35,6 +39,7 @@ const staticResources = {
     common: enCommon,
     navigation: enNavigation,
     dashboard: enDashboard,
+    admin: enAdmin,
     auth: enAuth,
     errors: enErrors
   },
@@ -43,6 +48,7 @@ const staticResources = {
     common: arCommon,
     navigation: arNavigation,
     dashboard: arDashboard,
+    admin: arAdmin,
     auth: arAuth,
     errors: arErrors
   }
@@ -247,7 +253,7 @@ i18n
     
     // Default namespaces that should be loaded immediately
     defaultNS: 'common',
-    ns: ['common', 'landing', 'navigation', 'dashboard', 'auth', 'errors', 'validation', 'system-lists'],
+    ns: ['common', 'landing', 'navigation', 'dashboard', 'admin', 'auth', 'errors', 'validation', 'system-lists'],
     
     interpolation: {
       escapeValue: false,
