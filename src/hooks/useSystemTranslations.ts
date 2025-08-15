@@ -12,43 +12,69 @@ import { debugLog } from '@/utils/debugLogger';
 export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
   const queryClient = useQueryClient();
 
-  // Fetch essential translations only to prevent crash - with error boundary
+  // Use static translation cache to prevent multiple queries
   const { data: translations = [], isLoading, error } = useQuery({
     queryKey: queryKeys.system.translations(),
     queryFn: async (): Promise<SystemTranslation[]> => {
       try {
+        // Check if we already have cached translations in localStorage
+        const cacheKey = 'system_translations_cache';
+        const cached = localStorage.getItem(cacheKey);
+        
+        if (cached) {
+          try {
+            const cachedData = JSON.parse(cached);
+            const cacheAge = Date.now() - cachedData.timestamp;
+            // Use cache if less than 1 hour old
+            if (cacheAge < 60 * 60 * 1000) {
+              debugLog.log('📦 Using cached translations', { count: cachedData.data.length });
+              return cachedData.data;
+            }
+          } catch (e) {
+            // Invalid cache, will fetch fresh
+          }
+        }
+        
         // Safety guard: return empty array if auth or database issues
         if (typeof window === 'undefined') {
           return [];
         }
         
-        // Fetch essential translations first, then load more in background
+        // Fetch only essential translations to prevent navigation freeze
         const { data, error } = await supabase
           .from('system_translations')
-          .select('id, translation_key, text_en, text_ar, category, created_at, updated_at')
+          .select('id, translation_key, text_en, text_ar, category')
+          .in('category', ['ui', 'navigation', 'general', 'forms', 'errors']) // Only essential categories
           .order('translation_key')
-          .limit(200); // Increase to cover more essential UI elements
+          .limit(100); // Dramatically reduce to prevent freeze
 
         if (error) {
           debugLog.warn('🚨 SYSTEM TRANSLATIONS: Database error, using fallback', { error: error.message });
-          // Return empty array instead of throwing to prevent React hook errors
           return [];
+        }
+
+        // Cache the result
+        if (data && data.length > 0) {
+          localStorage.setItem(cacheKey, JSON.stringify({
+            data,
+            timestamp: Date.now()
+          }));
         }
 
         return data || [];
       } catch (error) {
         debugLog.warn('🚨 SYSTEM TRANSLATIONS: Network error, using fallback', { error });
-        // Return empty array instead of throwing to prevent React hook errors
         return [];
       }
     },
-    staleTime: 30 * 60 * 1000, // 30 minutes
-    gcTime: 60 * 60 * 1000, // 60 minutes  
-    refetchOnWindowFocus: false, // Prevent unnecessary refetches
-    refetchOnMount: false, // Don't always refetch on mount
-    retry: 0, // No retries to prevent endless loading
-    refetchInterval: false, // Disable background refresh to prevent crashes
-    enabled: typeof window !== 'undefined' // Only run in browser
+    staleTime: 60 * 60 * 1000, // 1 hour - much longer cache
+    gcTime: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 1, // Only 1 retry
+    refetchInterval: false,
+    enabled: typeof window !== 'undefined',
+    networkMode: 'offlineFirst' // Prefer cache over network
   });
 
   // Create optimized translation map

@@ -94,17 +94,10 @@ export function useUnifiedTranslation() {
 
       // Strategy 3: Provided fallback
       if (fallback && fallback.trim() !== '') {
-        const result = interpolateText(fallback, interpolationOptions);
-        if (!isLoading && translationCount > 0) {
-          debugLog.warn('⚠️ MISSING KEY - USING FALLBACK', { key, fallback: result.slice(0, 50) });
-        }
-        return result;
+        return interpolateText(fallback, interpolationOptions);
       }
 
       // Strategy 4: Return key as last resort
-      if (!isLoading && translationCount > 0) {
-        debugLog.error('❌ MISSING TRANSLATION KEY', { key, language, availableCount: translationCount });
-      }
       return key;
     } catch (error) {
       logger.warn('Translation error occurred', { key, language }, error as Error);
