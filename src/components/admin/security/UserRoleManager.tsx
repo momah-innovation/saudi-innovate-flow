@@ -38,7 +38,7 @@ import {
   Edit,
   Trash2
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { useUserRoles, useRoleManagement } from '@/hooks/admin/useRoleManagement';
@@ -49,8 +49,7 @@ interface UserRoleManagerProps {
 }
 
 const UserRoleManager: React.FC<UserRoleManagerProps> = ({ className }) => {
-  const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const { t, language, isRTL } = useUnifiedTranslation();
   
   // State management
   const [searchTerm, setSearchTerm] = useState('');
@@ -194,14 +193,14 @@ const UserRoleManager: React.FC<UserRoleManagerProps> = ({ className }) => {
                       </TableCell>
                       <TableCell>
                         {format(new Date(role.granted_at), 'dd/MM/yyyy HH:mm', { 
-                          locale: isRTL ? ar : undefined 
+                          locale: language === 'ar' ? ar : undefined 
                         })}
                       </TableCell>
                       <TableCell>
                         {role.expires_at ? 
                           format(new Date(role.expires_at), 'dd/MM/yyyy HH:mm', { 
-                            locale: isRTL ? ar : undefined 
-                          }) : 
+                            locale: language === 'ar' ? ar : undefined 
+                          }) :
                           'غير محدد'
                         }
                       </TableCell>
