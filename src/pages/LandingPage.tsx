@@ -154,7 +154,7 @@ export default function LandingPage() {
         <div className={`relative container mx-auto text-center ${isRTL ? 'text-right' : ''}`}>
           <div className={`mb-6 flex items-center justify-center ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`h-16 w-16 rounded-xl bg-background/20 flex items-center justify-center ${isRTL ? 'ml-4' : 'mr-4'}`}>
-              <div className="text-3xl">🏗️</div>
+              <div className="text-3xl">{t('landing.brand.icon')}</div>
             </div>
             <div className={isRTL ? 'text-right' : 'text-left'}>
               <h1 className="text-4xl lg:text-6xl font-bold text-primary-foreground mb-2">
@@ -392,7 +392,7 @@ export default function LandingPage() {
             <div className={`lg:col-span-2 space-y-4 ${isRTL ? 'text-right' : ''}`}>
               <div className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <div className={`h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center ${isRTL ? 'ml-3' : 'mr-3'}`}>
-                  <div className="text-xl">🏗️</div>
+                  <div className="text-xl">{t('landing.brand.icon')}</div>
                 </div>
                 <span className="text-xl font-bold">
                   {t('landing.hero.title')}

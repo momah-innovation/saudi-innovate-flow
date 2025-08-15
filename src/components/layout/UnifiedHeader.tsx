@@ -167,7 +167,7 @@ const UnifiedHeader = memo(function UnifiedHeader({
             isRTL && "flex-row-reverse"
           )}>
             <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-md bg-primary flex items-center justify-center shrink-0 shadow-lg">
-              <span className="text-primary-foreground font-bold text-xs sm:text-sm">🏗️</span>
+              <span className="text-primary-foreground font-bold text-xs sm:text-sm">{t('landing.brand.icon')}</span>
             </div>
             <div className={cn(
               "hidden sm:block min-w-0",
