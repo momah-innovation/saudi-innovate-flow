@@ -14,76 +14,86 @@ export const useTranslationAppShell = () => {
     const path = location.pathname;
     const namespacesToLoad: string[] = [];
 
-    // Route-based namespace mapping for intelligent preloading
+    // Enhanced route-based namespace mapping with predictive loading
     if (path.startsWith('/admin')) {
-      namespacesToLoad.push('admin');
+      namespacesToLoad.push('admin', 'system-lists', 'validation');
       
       if (path.includes('/users')) {
-        namespacesToLoad.push('admin-users');
+        namespacesToLoad.push('admin-users', 'profile');
       } else if (path.includes('/analytics')) {
-        namespacesToLoad.push('admin-analytics');
+        namespacesToLoad.push('admin-analytics', 'campaigns-analytics');
       } else if (path.includes('/settings')) {
         namespacesToLoad.push('admin-settings');
       }
     }
 
     if (path.startsWith('/challenges')) {
-      namespacesToLoad.push('challenges');
+      namespacesToLoad.push('challenges', 'system-lists');
       
       if (path.includes('/create') || path.includes('/edit')) {
-        namespacesToLoad.push('challenges-form');
+        namespacesToLoad.push('challenges-form', 'validation');
       } else if (path.includes('/submissions')) {
         namespacesToLoad.push('challenges-submissions');
-      } else {
+      } else if (path.match(/\/challenges\/[^\/]+$/)) {
         namespacesToLoad.push('challenges-details');
       }
     }
 
     if (path.startsWith('/campaigns')) {
-      namespacesToLoad.push('campaigns');
+      namespacesToLoad.push('campaigns', 'system-lists');
       
       if (path.includes('/create') || path.includes('/edit')) {
-        namespacesToLoad.push('campaigns-form');
+        namespacesToLoad.push('campaigns-form', 'validation');
       } else if (path.includes('/analytics')) {
         namespacesToLoad.push('campaigns-analytics');
       }
     }
 
     if (path.startsWith('/events')) {
-      namespacesToLoad.push('events');
+      namespacesToLoad.push('events', 'validation');
     }
 
     if (path.startsWith('/partners')) {
-      namespacesToLoad.push('partners');
+      namespacesToLoad.push('partners', 'validation');
     }
 
     if (path.startsWith('/opportunities')) {
-      namespacesToLoad.push('opportunities');
+      namespacesToLoad.push('opportunities', 'validation');
     }
 
     if (path.startsWith('/ideas')) {
       if (path.includes('/wizard')) {
-        namespacesToLoad.push('ideas-wizard');
+        namespacesToLoad.push('ideas-wizard', 'validation');
       }
     }
 
     if (path.startsWith('/collaboration') || path.includes('/workspace')) {
-      namespacesToLoad.push('collaboration');
+      namespacesToLoad.push('collaboration', 'validation');
     }
 
     if (path.startsWith('/profile')) {
-      namespacesToLoad.push('profile');
+      namespacesToLoad.push('profile', 'validation');
     }
 
-    // Always load system-lists for form dropdowns
-    if (path.includes('/create') || path.includes('/edit') || path.includes('/form')) {
+    // Dashboard gets comprehensive preloading for optimal UX
+    if (path === '/dashboard' || path === '/') {
+      namespacesToLoad.push('challenges', 'campaigns', 'opportunities', 'events');
+    }
+
+    // Always load system-lists for any form or interactive page
+    if (path.includes('/create') || path.includes('/edit') || path.includes('/form') || 
+        path.includes('/settings') || path.includes('/profile')) {
       namespacesToLoad.push('system-lists', 'validation');
     }
 
-    // Preload identified namespaces
+    // Production-optimized namespace preloading
     if (namespacesToLoad.length > 0) {
-      preloadNamespaces(namespacesToLoad).catch((error) => {
-        console.warn('Failed to preload translation namespaces:', error);
+      // Remove duplicates and prioritize loading
+      const uniqueNamespaces = Array.from(new Set(namespacesToLoad));
+      
+      preloadNamespaces(uniqueNamespaces).catch((error) => {
+        // Silent error handling for production
+        console.warn('Translation preload warning:', error.message);
       });
     }
   }, [location.pathname]);
@@ -109,10 +119,12 @@ export const useTranslationPerformance = () => {
 };
 
 /**
- * Critical Translation Preloader
- * Preloads essential namespaces immediately after app initialization
+ * Critical Translation Preloader - PRODUCTION OPTIMIZED
+ * Preloads essential namespaces with performance tracking
  */
 export const preloadCriticalTranslations = async () => {
+  const startTime = performance.now();
+  
   const criticalNamespaces = [
     'common',
     'navigation', 
@@ -125,9 +137,16 @@ export const preloadCriticalTranslations = async () => {
 
   try {
     await preloadNamespaces(criticalNamespaces);
-    console.log('Critical translations preloaded successfully');
+    
+    const loadTime = performance.now() - startTime;
+    console.log(`✅ Critical translations loaded in ${loadTime.toFixed(1)}ms`);
+    
+    // Performance monitoring
+    if (loadTime > 500) {
+      console.warn(`⚠️ Slow translation loading detected: ${loadTime.toFixed(1)}ms`);
+    }
   } catch (error) {
-    console.error('Failed to preload critical translations:', error);
+    console.error('❌ Failed to preload critical translations:', error);
   }
 };
 
