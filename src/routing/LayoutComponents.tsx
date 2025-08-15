@@ -2,7 +2,7 @@
 // Provides consistent navigation across different route types
 
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 
 // Public Layout (for landing, about, pricing, etc.)
 export const PublicLayout: React.FC = () => {
@@ -14,16 +14,16 @@ export const PublicLayout: React.FC = () => {
           <div className="flex items-center space-x-4">
             <h1 className="text-xl font-bold">Ruwād</h1>
             <nav className="hidden md:flex space-x-6">
-              <a href="/about" className="text-sm hover:text-primary">About</a>
-              <a href="/campaigns" className="text-sm hover:text-primary">Campaigns</a>
-              <a href="/challenges" className="text-sm hover:text-primary">Challenges</a>
-              <a href="/events" className="text-sm hover:text-primary">Events</a>
-              <a href="/marketplace" className="text-sm hover:text-primary">Marketplace</a>
+              <Link to="/about" className="text-sm hover:text-primary">About</Link>
+              <Link to="/campaigns" className="text-sm hover:text-primary">Campaigns</Link>
+              <Link to="/challenges" className="text-sm hover:text-primary">Challenges</Link>
+              <Link to="/events" className="text-sm hover:text-primary">Events</Link>
+              <Link to="/marketplace" className="text-sm hover:text-primary">Marketplace</Link>
             </nav>
           </div>
           <div className="flex items-center space-x-4">
-            <a href="/pricing" className="text-sm hover:text-primary">Pricing</a>
-            <a href="/auth" className="btn btn-primary">Get Started</a>
+            <Link to="/pricing" className="text-sm hover:text-primary">Pricing</Link>
+            <Link to="/auth" className="btn btn-primary">Get Started</Link>
           </div>
         </div>
       </header>
@@ -46,24 +46,24 @@ export const PublicLayout: React.FC = () => {
             <div>
               <h4 className="font-medium mb-4">Discover</h4>
               <div className="space-y-2 text-sm">
-                <a href="/campaigns" className="block hover:text-primary">Campaigns</a>
-                <a href="/challenges" className="block hover:text-primary">Challenges</a>
-                <a href="/events" className="block hover:text-primary">Events</a>
+                <Link to="/campaigns" className="block hover:text-primary">Campaigns</Link>
+                <Link to="/challenges" className="block hover:text-primary">Challenges</Link>
+                <Link to="/events" className="block hover:text-primary">Events</Link>
               </div>
             </div>
             <div>
               <h4 className="font-medium mb-4">Platform</h4>
               <div className="space-y-2 text-sm">
-                <a href="/pricing" className="block hover:text-primary">Pricing</a>
-                <a href="/about" className="block hover:text-primary">About</a>
-                <a href="/help" className="block hover:text-primary">Help</a>
+                <Link to="/pricing" className="block hover:text-primary">Pricing</Link>
+                <Link to="/about" className="block hover:text-primary">About</Link>
+                <Link to="/help" className="block hover:text-primary">Help</Link>
               </div>
             </div>
             <div>
               <h4 className="font-medium mb-4">Connect</h4>
               <div className="space-y-2 text-sm">
-                <a href="/auth" className="block hover:text-primary">Sign In</a>
-                <a href="/auth" className="block hover:text-primary">Register</a>
+                <Link to="/auth" className="block hover:text-primary">Sign In</Link>
+                <Link to="/auth" className="block hover:text-primary">Register</Link>
               </div>
             </div>
           </div>
@@ -103,23 +103,23 @@ export const WorkspaceLayout: React.FC<{ workspaceType: string; children: React.
           <nav className="flex space-x-6">
             {workspaceType === 'user' && (
               <>
-                <a href="/dashboard" className="text-sm hover:text-primary">Dashboard</a>
-                <a href="/ideas" className="text-sm hover:text-primary">My Ideas</a>
-                <a href="/saved" className="text-sm hover:text-primary">Saved</a>
+                <Link to="/dashboard" className="text-sm hover:text-primary">Dashboard</Link>
+                <Link to="/ideas" className="text-sm hover:text-primary">My Ideas</Link>
+                <Link to="/saved" className="text-sm hover:text-primary">Saved</Link>
               </>
             )}
             {workspaceType === 'expert' && (
               <>
-                <a href="/expert-dashboard" className="text-sm hover:text-primary">Dashboard</a>
-                <a href="/evaluations" className="text-sm hover:text-primary">Evaluations</a>
-                <a href="/challenges" className="text-sm hover:text-primary">Assigned Challenges</a>
+                <Link to="/expert-dashboard" className="text-sm hover:text-primary">Dashboard</Link>
+                <Link to="/evaluations" className="text-sm hover:text-primary">Evaluations</Link>
+                <Link to="/challenges" className="text-sm hover:text-primary">Assigned Challenges</Link>
               </>
             )}
             {workspaceType === 'admin' && (
               <>
-                <a href="/admin/dashboard" className="text-sm hover:text-primary">Dashboard</a>
-                <a href="/admin/challenges" className="text-sm hover:text-primary">Challenges</a>
-                <a href="/admin/users" className="text-sm hover:text-primary">Users</a>
+                <Link to="/admin/dashboard" className="text-sm hover:text-primary">Dashboard</Link>
+                <Link to="/admin/challenges" className="text-sm hover:text-primary">Challenges</Link>
+                <Link to="/admin/users" className="text-sm hover:text-primary">Users</Link>
               </>
             )}
           </nav>
@@ -141,9 +141,9 @@ export const SubscriptionLayout: React.FC = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <h1 className="text-xl font-bold">Subscription Management</h1>
           <nav className="flex space-x-6">
-            <a href="/settings/subscription" className="text-sm hover:text-primary">My Plan</a>
-            <a href="/billing" className="text-sm hover:text-primary">Billing</a>
-            <a href="/pricing" className="text-sm hover:text-primary">Upgrade</a>
+            <Link to="/settings/subscription" className="text-sm hover:text-primary">My Plan</Link>
+            <Link to="/billing" className="text-sm hover:text-primary">Billing</Link>
+            <Link to="/pricing" className="text-sm hover:text-primary">Upgrade</Link>
           </nav>
         </div>
       </header>

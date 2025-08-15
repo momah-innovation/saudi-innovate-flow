@@ -14,6 +14,7 @@ import {
   User, Calendar, Tag
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { Link } from 'react-router-dom';
 
 const mockFAQs = [
   {
@@ -440,10 +441,10 @@ const HelpPage = () => {
                     <div className="space-y-2">
                       <div className="text-sm text-muted-foreground">{isRTL ? 'صفحة ويب' : 'Web Page'}</div>
                       <Button className="w-full" asChild>
-                        <a href="/docs/workspaces">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          {isRTL ? 'عرض الوثائق' : 'View Documentation'}
-                        </a>
+                      <Link to="/docs/workspaces">
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        {isRTL ? 'عرض الوثائق' : 'View Documentation'}
+                      </Link>
                       </Button>
                     </div>
                   </CardContent>

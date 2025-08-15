@@ -258,7 +258,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    debug: process.env.NODE_ENV === 'development',
+    debug: false,
     
     lng: 'ar', // Changed from 'en' to 'ar' - Arabic as default
     supportedLngs: ['en', 'ar'],

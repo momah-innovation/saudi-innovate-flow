@@ -56,10 +56,6 @@ export function useUnifiedTranslation() {
    * Primary translation function - Enhanced with better fallback logic
    */
   const t = useCallback((key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
-    // Debug logging for troubleshooting
-    if (key.startsWith('landing.')) {
-      console.log('🔍 Translation debug:', { key, language, i18nLanguage: i18n.language, hasResources: i18n.hasResourceBundle(language, 'landing') });
-    }
     try {
       let fallback: string | undefined;
       let interpolationOptions: Record<string, any> | undefined;
@@ -90,15 +86,6 @@ export function useUnifiedTranslation() {
               ns: potentialNamespace 
             }) as string;
             
-            if (key.startsWith('landing.')) {
-              console.log('🔍 Namespaced translation:', { 
-                originalKey: key, 
-                namespace: potentialNamespace, 
-                actualKey, 
-                result: i18nextResult,
-                resultType: typeof i18nextResult 
-              });
-            }
           } else {
             // No namespace detected, use key as-is
             i18nextResult = i18nextT(key, interpolationOptions) as string;
