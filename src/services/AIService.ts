@@ -433,7 +433,7 @@ export class AIService {
         .select('model_configuration')
         .eq('feature_name', featureName)
         .eq('is_enabled', true)
-        .single();
+        .maybeSingle();
 
       if (error || !data) return null;
       return data.model_configuration as AIServiceConfig;
@@ -457,7 +457,7 @@ export class AIService {
         .from('ai_preferences')
         .select('ai_enabled, *')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
       if (!preferences?.ai_enabled) return false;
 
@@ -466,7 +466,7 @@ export class AIService {
         .from('ai_feature_toggles')
         .select('is_enabled')
         .eq('feature_name', featureName)
-        .single();
+        .maybeSingle();
 
       return feature?.is_enabled || false;
     } catch (error) {

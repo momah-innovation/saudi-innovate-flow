@@ -135,8 +135,8 @@ export const useSystemHealth = (
         storageStatsResult,
         recentActivitiesResult
       ] = await Promise.all([
-        supabase.from('system_metrics_view').select('*').single(),
-        supabase.from('security_metrics_view').select('*').single(),
+        supabase.from('system_metrics_view').select('*').maybeSingle(),
+        supabase.from('security_metrics_view').select('*').maybeSingle(),
         // Simulate storage stats - in real implementation, this would be from edge function
         Promise.resolve({ data: { usage: 45, total: 1000000000, used: 450000000 } }),
         supabase.from('activity_events').select('*').order('created_at', { ascending: false }).limit(100)

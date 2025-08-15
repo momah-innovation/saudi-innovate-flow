@@ -137,9 +137,9 @@ export const useAdminDashboardMetrics = (
         { data: systemMetrics },
         { data: securityMetrics }
       ] = await Promise.all([
-        supabase.from('admin_dashboard_metrics_view').select('*').single(),
-        supabase.from('system_metrics_view').select('*').single(),
-        supabase.from('security_metrics_view').select('*').single()
+        supabase.from('admin_dashboard_metrics_view').select('*').maybeSingle(),
+        supabase.from('system_metrics_view').select('*').maybeSingle(),
+        supabase.from('security_metrics_view').select('*').maybeSingle()
       ]);
 
       // Build metrics object from database data

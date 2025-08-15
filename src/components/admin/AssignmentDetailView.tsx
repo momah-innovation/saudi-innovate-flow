@@ -85,7 +85,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
           throw new Error(`Unsupported assignment type: ${assignment.assignment_type}`);
       }
 
-      const { data: assignmentData, error } = await query.single();
+      const { data: assignmentData, error } = await query.maybeSingle();
 
       if (error) throw error;
       setData(assignmentData as AssignmentDetailData);

@@ -331,7 +331,7 @@ export function CampaignWizard({
           .from('campaigns')
           .insert(campaignData)
           .select()
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
         campaignId = data.id;
@@ -549,7 +549,7 @@ export function CampaignWizard({
                 id="success_metrics"
                 value={formData.success_metrics}
                 onChange={(e) => setFormData(prev => ({ ...prev, success_metrics: e.target.value }))}
-                placeholder={t('admin.campaigns.success_metrics_placeholder')}
+                placeholder={t('admin:campaigns.success_metrics_placeholder')}
                 dir="rtl"
                 rows={4}
               />

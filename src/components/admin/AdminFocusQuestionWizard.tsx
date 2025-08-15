@@ -117,9 +117,9 @@ export function AdminFocusQuestionWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.question_text_ar.trim()) {
-      newErrors.question_text_ar = t('admin.focus_questions.question_text_required');
+      newErrors.question_text_ar = t('admin:focus_questions.question_text_required');
     } else if (formData.question_text_ar.length < 10) {
-      newErrors.question_text_ar = t('admin.focus_questions.question_text_min_length');
+      newErrors.question_text_ar = t('admin:focus_questions.question_text_min_length');
     }
     
     setErrors(newErrors);
@@ -130,7 +130,7 @@ export function AdminFocusQuestionWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.question_type) {
-      newErrors.question_type = t('admin.focus_questions.question_type_required');
+      newErrors.question_type = t('admin:focus_questions.question_type_required');
     }
     
     if (formData.order_sequence < 0) {
