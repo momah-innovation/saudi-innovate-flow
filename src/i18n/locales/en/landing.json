@@ -1,0 +1,102 @@
+{
+  "hero": {
+    "title": "National Innovation Platform",
+    "subtitle": "Kingdom of Saudi Arabia",
+    "description": "Empowering government innovation through collaborative challenges, expert networks, and data-driven solutions aligned with Vision 2030",
+    "cta_primary": "Start Your Innovation Journey",
+    "cta_secondary": "Explore Challenges",
+    "trusted_by": "Trusted by Government Entities"
+  },
+  "features": {
+    "innovation_challenges": {
+      "title": "Innovation Challenges",
+      "description": "Create and manage government innovation challenges aligned with Vision 2030 goals"
+    },
+    "expert_network": {
+      "title": "Expert Network",
+      "description": "Connect with domain experts and innovation specialists across government sectors"
+    },
+    "collaboration_tools": {
+      "title": "Collaboration Tools",
+      "description": "Advanced workspace and collaboration features for cross-sector innovation projects"
+    },
+    "data_insights": {
+      "title": "Data & Insights",
+      "description": "Real-time analytics and reporting to track innovation progress and impact"
+    },
+    "secure_platform": {
+      "title": "Secure Platform",
+      "description": "Enterprise-grade security and compliance for sensitive government innovation data"
+    },
+    "vision_2030": {
+      "title": "Vision 2030 Aligned",
+      "description": "All features designed to support Saudi Arabia's transformation goals and objectives"
+    }
+  },
+  "statistics": {
+    "active_challenges": "Active Challenges",
+    "registered_experts": "Registered Experts",
+    "government_entities": "Government Entities",
+    "success_rate": "Success Rate"
+  },
+  "process": {
+    "title": "How It Works",
+    "subtitle": "Simple steps to drive innovation",
+    "step_1": {
+      "title": "Identify Challenge",
+      "description": "Define innovation challenges aligned with your sector's Vision 2030 objectives"
+    },
+    "step_2": {
+      "title": "Engage Experts",
+      "description": "Connect with qualified domain experts and innovation specialists"
+    },
+    "step_3": {
+      "title": "Collaborate",
+      "description": "Use advanced collaboration tools to develop and refine innovative solutions"
+    },
+    "step_4": {
+      "title": "Implement",
+      "description": "Deploy solutions with data-driven insights and continuous improvement"
+    }
+  },
+  "solutions": {
+    "title": "Innovation Solutions",
+    "subtitle": "Comprehensive platform for government innovation",
+    "challenge_management": {
+      "title": "Challenge Management",
+      "description": "End-to-end challenge lifecycle management with expert evaluation and scoring"
+    },
+    "expert_collaboration": {
+      "title": "Expert Collaboration",
+      "description": "Secure collaboration spaces with real-time communication and file sharing"
+    },
+    "analytics_reporting": {
+      "title": "Analytics & Reporting",
+      "description": "Comprehensive dashboards and insights for tracking innovation progress"
+    }
+  },
+  "testimonials": {
+    "title": "Success Stories",
+    "subtitle": "Driving transformation across government sectors"
+  },
+  "cta": {
+    "title": "Ready to Drive Innovation?",
+    "subtitle": "Join the National Innovation Platform today",
+    "get_started": "Get Started",
+    "contact_sales": "Contact Sales"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about the platform"
+  },
+  "footer": {
+    "tagline": "Empowering Saudi Arabia's Innovation Ecosystem",
+    "links": {
+      "about": "About",
+      "contact": "Contact", 
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "support": "Support"
+    }
+  }
+}
