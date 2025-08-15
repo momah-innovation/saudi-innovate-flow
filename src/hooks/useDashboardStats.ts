@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { debugLog } from '@/utils/debugLogger';
+import { queryBatcher } from '@/utils/queryBatcher';
+import { timeAsync } from '@/utils/performanceMonitor';
 
 export interface DashboardStats {
   totalIdeas: number;
@@ -55,17 +57,17 @@ export const useDashboardStats = (): UseDashboardStatsReturn => {
       setIsError(false);
       setError(null);
 
-      // Get user's innovator profile - handle multiple entries by taking the first one
-      const { data: innovatorData, error: innovatorError } = await supabase
-        .from('innovators')
-        .select('id')
-        .eq('user_id', userProfile.id)
-        .limit(1)
-        .maybeSingle();
-
-      if (innovatorError) {
-        console.warn('Error fetching innovator profile:', innovatorError);
-      }
+      // Get user's innovator profile - de-duped and timed
+      const { data: innovatorData } = await queryBatcher.batch(
+        `innovator:${userProfile.id}`,
+        async () =>
+          supabase
+            .from('innovators')
+            .select('id')
+            .eq('user_id', userProfile.id)
+            .limit(1)
+            .maybeSingle()
+      );
 
       let userStats: DashboardStats = {
         totalIdeas: 0,
@@ -80,69 +82,64 @@ export const useDashboardStats = (): UseDashboardStatsReturn => {
         collaborations: 0
       };
 
-      if (innovatorData) {
-        // Load user ideas
-        const { data: ideas } = await supabase
-          .from('ideas')
-          .select('id, status, challenge_id')
-          .eq('innovator_id', innovatorData.id);
+      // Fetch all dependent datasets in parallel to avoid waterfalls
+      const result = await timeAsync(async () => {
+        if (!innovatorData) return { ideas: [], challengeParticipations: [], eventParticipations: [], userAchievements: [], activeChallengesCount: 0 };
 
-        // Load user challenge participations
-        const { data: challengeParticipations } = await supabase
-          .from('challenge_participants')
-          .select('challenge_id')
-          .eq('user_id', userProfile.id);
+        const [ideasRes, challengeRes, eventRes, achievementsRes, activeHead] = await Promise.all([
+          queryBatcher.batch(`ideas:${innovatorData.id}`, async () =>
+            supabase.from('ideas').select('id, status, challenge_id').eq('innovator_id', innovatorData.id)
+          ),
+          queryBatcher.batch(`challenge_participants:${userProfile.id}`, async () =>
+            supabase.from('challenge_participants').select('challenge_id').eq('user_id', userProfile.id)
+          ),
+          queryBatcher.batch(`event_participants:${userProfile.id}`, async () =>
+            supabase.from('event_participants').select('event_id').eq('user_id', userProfile.id)
+          ),
+          queryBatcher.batch(`user_achievements:${userProfile.id}`, async () =>
+            supabase.from('user_achievements').select('points_earned').eq('user_id', userProfile.id)
+          ),
+          queryBatcher.batch('active_challenges_count', async () =>
+            supabase.from('challenges').select('*', { count: 'exact', head: true }).eq('status', 'active')
+          )
+        ]);
 
-        // Load user event participations
-        const { data: eventParticipations } = await supabase
-          .from('event_participants')
-          .select('event_id')
-          .eq('user_id', userProfile.id);
-
-        // Load user achievements
-        const { data: userAchievements } = await supabase
-          .from('user_achievements')
-          .select('points_earned')
-          .eq('user_id', userProfile.id);
-
-        // Calculate stats
-        const totalIdeas = ideas?.length || 0;
-        const activeIdeas = ideas?.filter(idea => ['pending', 'under_review'].includes(idea.status))?.length || 0;
-        const evaluatedIdeas = ideas?.filter(idea => ['approved', 'rejected'].includes(idea.status))?.length || 0;
-        const totalPoints = userAchievements?.reduce((sum, ach) => sum + ach.points_earned, 0) || 0;
-        
-        // Calculate innovation score based on various factors
-        const innovationScore = Math.min(
-          Math.round(
-            totalIdeas * 10 + 
-            challengeParticipations?.length * 15 + 
-            eventParticipations?.length * 5 + 
-            (totalPoints / 10)
-          ), 
-          100
-        );
-
-        userStats = {
-          totalIdeas,
-          activeIdeas,
-          evaluatedIdeas,
-          activeChallenges: challengeParticipations?.length || 0,
-          totalPoints,
-          innovationScore,
-          challengesParticipated: challengeParticipations?.length || 0,
-          eventsAttended: eventParticipations?.length || 0,
-          totalAchievements: userAchievements?.length || 0,
-          collaborations: Math.floor(totalIdeas * 0.3) // Estimate based on ideas
+        return {
+          ideas: ideasRes.data || [],
+          challengeParticipations: challengeRes.data || [],
+          eventParticipations: eventRes.data || [],
+          userAchievements: achievementsRes.data || [],
+          activeChallengesCount: activeHead.count || 0
         };
-      }
+      }, 'dashboard-stats-fetch', { userId: userProfile.id });
 
-      // Get global active challenges count
-      const { count: activeChallengesCount } = await supabase
-        .from('challenges')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'active');
+      const totalIdeas = (result.ideas as any[]).length || 0;
+      const activeIdeas = (result.ideas as any[]).filter((idea: any) => ['pending', 'under_review'].includes(idea.status))?.length || 0;
+      const evaluatedIdeas = (result.ideas as any[]).filter((idea: any) => ['approved', 'rejected'].includes(idea.status))?.length || 0;
+      const totalPoints = (result.userAchievements as any[]).reduce((sum: number, ach: any) => sum + ach.points_earned, 0) || 0;
 
-      userStats.activeChallenges = activeChallengesCount || 0;
+      const innovationScore = Math.min(
+        Math.round(
+          totalIdeas * 10 +
+            (result.challengeParticipations as any[]).length * 15 +
+            (result.eventParticipations as any[]).length * 5 +
+            totalPoints / 10
+        ),
+        100
+      );
+
+      userStats = {
+        totalIdeas,
+        activeIdeas,
+        evaluatedIdeas,
+        activeChallenges: result.activeChallengesCount || 0,
+        totalPoints,
+        innovationScore,
+        challengesParticipated: (result.challengeParticipations as any[]).length || 0,
+        eventsAttended: (result.eventParticipations as any[]).length || 0,
+        totalAchievements: (result.userAchievements as any[]).length || 0,
+        collaborations: Math.floor(totalIdeas * 0.3)
+      };
 
       setStats(userStats);
       setLastUpdated(new Date());

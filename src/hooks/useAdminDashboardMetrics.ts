@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { debugLog } from '@/utils/debugLogger';
+import { queryBatcher } from '@/utils/queryBatcher';
+import { timeAsync } from '@/utils/performanceMonitor';
 
 // Types for the admin dashboard metrics
 export interface AdminDashboardMetrics {
@@ -131,16 +133,18 @@ export const useAdminDashboardMetrics = (
       setIsError(false);
       setError(null);
 
-      // Fetch data directly from database views and tables
+      // Fetch data with parallel batching and timing
       const [
         { data: adminMetrics },
         { data: systemMetrics },
         { data: securityMetrics }
-      ] = await Promise.all([
-        supabase.from('admin_dashboard_metrics_view').select('*').maybeSingle(),
-        supabase.from('system_metrics_view').select('*').maybeSingle(),
-        supabase.from('security_metrics_view').select('*').maybeSingle()
-      ]);
+      ] = await timeAsync(async () => {
+        return await Promise.all([
+          queryBatcher.batch('admin_dashboard_metrics_view', async () => supabase.from('admin_dashboard_metrics_view').select('*').maybeSingle()),
+          queryBatcher.batch('system_metrics_view', async () => supabase.from('system_metrics_view').select('*').maybeSingle()),
+          queryBatcher.batch('security_metrics_view', async () => supabase.from('security_metrics_view').select('*').maybeSingle())
+        ]);
+      }, 'admin-metrics-fetch');
 
       // Build metrics object from database data
       const metrics: AdminDashboardMetrics = {
