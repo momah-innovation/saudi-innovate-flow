@@ -56,7 +56,10 @@ export function useUnifiedTranslation() {
    * Primary translation function - Enhanced with better fallback logic
    */
   const t = (key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
-    // Removed console.log for performance
+    // Debug logging for troubleshooting
+    if (key.startsWith('landing.')) {
+      console.log('🔍 Translation debug:', { key, language, i18nLanguage: i18n.language, hasResources: i18n.hasResourceBundle(language, 'landing') });
+    }
     try {
       let fallback: string | undefined;
       let interpolationOptions: Record<string, any> | undefined;
@@ -72,9 +75,19 @@ export function useUnifiedTranslation() {
 
       // Strategy 1: i18next translation (static files) - Primary source
       try {
-        const i18nextResult = i18nextT(key, { defaultValue: fallback, returnObjects: false });
+        const i18nextResult = i18nextT(key, interpolationOptions);
+        
+        // Check if we got a valid translation (not the key itself)
         if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string') {
-          return interpolateText(i18nextResult, interpolationOptions);
+          return i18nextResult;
+        }
+        
+        // Also try with defaultValue if fallback is provided
+        if (fallback) {
+          const i18nextWithFallback = i18nextT(key, { ...interpolationOptions, defaultValue: fallback });
+          if (i18nextWithFallback && i18nextWithFallback !== key && typeof i18nextWithFallback === 'string') {
+            return i18nextWithFallback;
+          }
         }
       } catch (e) {
         // Silently handle i18next errors to prevent console spam
