@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChallengeFocusQuestionWizard } from './ChallengeFocusQuestionWizard';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
 import {
@@ -343,7 +344,7 @@ export function ChallengeViewDialog({
         </div>
         
         <div className="text-xs text-muted-foreground">
-          {isRTL ? 'تم الإرسال في' : 'Submitted on'} {new Date(submission.created_at).toLocaleDateString()}
+          {isRTL ? 'تم الإرسال في' : 'Submitted on'} {isRTL ? formatDateArabic(submission.created_at) : formatDate(submission.created_at)}
         </div>
       </CardContent>
     </Card>
@@ -498,11 +499,11 @@ export function ChallengeViewDialog({
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">{isRTL ? 'تاريخ البداية:' : 'Start Date:'}</span>
-                        <span>{challenge.start_date ? new Date(challenge.start_date).toLocaleDateString() : 'N/A'}</span>
+                        <span>{challenge.start_date ? formatDate(challenge.start_date) : 'N/A'}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">{isRTL ? 'تاريخ النهاية:' : 'End Date:'}</span>
-                        <span>{challenge.end_date ? new Date(challenge.end_date).toLocaleDateString() : 'N/A'}</span>
+                        <span>{challenge.end_date ? formatDate(challenge.end_date) : 'N/A'}</span>
                       </div>
                     </div>
                   </div>

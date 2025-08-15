@@ -13,6 +13,7 @@ import { Calendar, Clock, Plus, Search, Users, UserCheck, Target, AlertCircle, C
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
+import { formatDate } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { ExpertProfileDialog } from './ExpertProfileDialog';
 

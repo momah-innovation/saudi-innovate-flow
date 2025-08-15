@@ -374,7 +374,7 @@ export function SectorsManagement() {
               
               <div>
                 <h4 className="font-medium mb-2">{t('admin.sectors.created')}</h4>
-                <p className="text-muted-foreground">{new Date(viewingSector.created_at).toLocaleDateString()}</p>
+                <p className="text-muted-foreground">{formatDate(viewingSector.created_at)}</p>
               </div>
             </div>
           )}

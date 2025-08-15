@@ -20,6 +20,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/error-handler';
+import { formatDate } from '@/utils/unified-date-handler';
 
 interface RelationshipData {
   id: string;
@@ -193,7 +194,7 @@ export function RelationshipOverview({
                 </Badge>
                 
                 <span className="text-xs text-muted-foreground">
-                  {new Date(relationship.created_at).toLocaleDateString()}
+                   {formatDate(relationship.created_at)}
                 </span>
               </div>
               
@@ -246,7 +247,7 @@ export function RelationshipOverview({
 
           <div className="flex items-center justify-between pt-2 border-t">
             <span className="text-xs text-muted-foreground">
-              Created {new Date(relationship.created_at).toLocaleDateString()}
+              Created {formatDate(relationship.created_at)}
             </span>
             
             <div className="flex items-center gap-1">
@@ -275,7 +276,7 @@ export function RelationshipOverview({
         weakConnections={weakConnections}
         orphanedEntities={orphanedEntities}
         networkHealth={networkHealth}
-        lastUpdate={new Date().toLocaleDateString()}
+        lastUpdate={formatDate(new Date())}
       />
 
       <ViewLayouts viewMode={viewMode}>

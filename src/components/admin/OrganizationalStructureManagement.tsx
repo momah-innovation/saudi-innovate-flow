@@ -247,7 +247,7 @@ export function OrganizationalStructureManagement() {
                         {entity.parent || (isRTL ? 'لا يوجد' : 'None')}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {new Date(entity.created_at).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US')}
+                        {isRTL ? formatDateArabic(entity.created_at) : formatDate(entity.created_at)}
                       </TableCell>
                       <TableCell>
                         <Button size="sm" variant="outline" className="h-8 w-8 p-0">

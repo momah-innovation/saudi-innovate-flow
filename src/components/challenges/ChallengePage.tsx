@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { formatDateArabic } from '@/utils/unified-date-handler';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -364,7 +365,7 @@ export const ChallengePage: React.FC = () => {
                             <div>
                               <p className="text-sm font-medium">تاريخ البداية</p>
                               <p className="text-sm text-muted-foreground">
-                                {new Date(challenge.start_date).toLocaleDateString('ar-SA')}
+                                {formatDateArabic(challenge.start_date)}
                               </p>
                             </div>
                           </div>
@@ -375,7 +376,7 @@ export const ChallengePage: React.FC = () => {
                             <div>
                               <p className="text-sm font-medium">تاريخ الانتهاء</p>
                               <p className="text-sm text-muted-foreground">
-                                {new Date(challenge.end_date).toLocaleDateString('ar-SA')}
+                                {formatDateArabic(challenge.end_date)}
                               </p>
                             </div>
                           </div>
@@ -438,7 +439,7 @@ export const ChallengePage: React.FC = () => {
                             <p className="text-sm text-muted-foreground">تم إطلاق التحدي وفتح التسجيل</p>
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {new Date(challenge.created_at).toLocaleDateString('ar-SA')}
+                            {formatDateArabic(challenge.created_at)}
                           </div>
                         </div>
                         {/* Add more timeline items */}

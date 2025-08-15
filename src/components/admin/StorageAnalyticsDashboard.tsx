@@ -63,7 +63,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
     if (diffInHours < 24) return t("storage.h_ago", { hours: diffInHours })
     const diffInDays = Math.floor(diffInHours / 24)
     if (diffInDays < 7) return t("storage.d_ago", { days: diffInDays })
-    return date.toLocaleDateString()
+    return formatDate(date)
   }
 
   if (loading) {
@@ -177,11 +177,11 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                   dataKey="date" 
-                  tickFormatter={(value) => new Date(value).toLocaleDateString()} 
+                  tickFormatter={(value) => formatDate(value)} 
                 />
                 <YAxis />
                 <Tooltip 
-                  labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                  labelFormatter={(value) => formatDate(value)}
                   formatter={(value, name) => [
                     name === "uploads" ? value : formatBytes(Number(value)),
                     name === "uploads" ? t("storage.uploads") : t("storage.total_size")

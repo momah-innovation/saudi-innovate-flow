@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { formatDate } from '@/utils/unified-date-handler';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { User, Mail, Phone, Building, MapPin, Calendar, Award, Star, Clock, ExternalLink } from "lucide-react";
@@ -314,7 +315,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
                         </p>
                         {assignment.challenges?.start_date && (
                           <p className="text-xs text-muted-foreground">
-                            Started: {new Date(assignment.challenges.start_date).toLocaleDateString()}
+                            Started: {formatDate(assignment.challenges.start_date)}
                           </p>
                         )}
                       </div>
