@@ -233,7 +233,7 @@ i18n
     
     // Default namespaces that should be loaded immediately
     defaultNS: 'common',
-    ns: ['common', 'navigation', 'dashboard', 'auth', 'errors', 'validation'],
+    ns: ['common', 'navigation', 'dashboard', 'auth', 'errors', 'validation', 'system-lists'],
     
     interpolation: {
       escapeValue: false,
