@@ -132,12 +132,7 @@ export const DashboardHero = ({
   const roleConfig = getRoleConfig();
   const dashboardStats = roleConfig.stats;
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentStat((prev) => (prev + 1) % dashboardStats.length);
-    }, 3000);
-    return () => clearInterval(intervalId);
-  }, [dashboardStats.length]);
+  // Remove interval to prevent performance issues during navigation
 
   return (
     <div className="relative overflow-hidden">
@@ -191,7 +186,7 @@ export const DashboardHero = ({
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {dashboardStats.map((stat, index) => {
                 const Icon = stat.icon;
-                const isActive = currentStat === index;
+                const isActive = false; // Disable animation to prevent freeze
                 
                 return (
                   <Card 
