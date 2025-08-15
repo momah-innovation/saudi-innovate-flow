@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { RefreshCw, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
-import { invalidateTranslationCache } from '@/i18n/enhanced-config-v2';
+import { queryKeys } from '@/lib/query/query-keys';
 import { useQueryClient } from '@tanstack/react-query';
 
 /**
@@ -18,15 +18,21 @@ export const TranslationSystemStatus: React.FC = () => {
 
   const handleRefreshTranslations = async () => {
     try {
-      // Invalidate i18next cache
-      invalidateTranslationCache();
-      
-      // Invalidate React Query cache
+      // Invalidate React Query cache for system translations
       await queryClient.invalidateQueries({ 
-        queryKey: ['system', 'translation'] 
+        queryKey: queryKeys.system.translations()
       });
       
-      // Reload the page to reinitialize everything
+      // Invalidate all translation-related queries
+      await queryClient.invalidateQueries({ 
+        predicate: (query) => 
+          query.queryKey.some(key => 
+            typeof key === 'string' && 
+            (key.includes('translation') || key.includes('system'))
+          )
+      });
+      
+      // Force page reload to reinitialize translation system
       window.location.reload();
       
       toast({
