@@ -109,7 +109,7 @@ export default React.memo(function UserDashboard() {
   const currentLanguage = language;
   
   // Memoized functions - must be after state hooks
-  const getPrimaryRole = useCallback(() => getRoleFromHook(), [getRoleFromHook]);
+  const getPrimaryRole = useCallback(getRoleFromHook, []);
 
   // Memoize dashboard data loading to prevent unnecessary calls
   const loadDashboardData = useCallback(async () => {
