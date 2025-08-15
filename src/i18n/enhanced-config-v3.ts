@@ -82,6 +82,12 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/admin/users.json');
         break;
         
+      case 'admin-analytics':
+        translations = language === 'en'
+          ? await import('./locales/en/admin/analytics.json')
+          : await import('./locales/ar/admin/analytics.json');
+        break;
+        
       case 'validation':
         translations = language === 'en'
           ? await import('./locales/en/validation.json')
@@ -106,10 +112,34 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/challenges/submissions.json');
         break;
         
+      case 'campaigns-form':
+        translations = language === 'en'
+          ? await import('./locales/en/campaigns/form.json')
+          : await import('./locales/ar/campaigns/form.json');
+        break;
+        
+      case 'campaigns-analytics':
+        translations = language === 'en'
+          ? await import('./locales/en/campaigns/analytics.json')
+          : await import('./locales/ar/campaigns/analytics.json');
+        break;
+        
       case 'events':
         translations = language === 'en'
           ? await import('./locales/en/events.json')
           : await import('./locales/ar/events.json');
+        break;
+        
+      case 'partners':
+        translations = language === 'en'
+          ? await import('./locales/en/partners.json')
+          : await import('./locales/ar/partners.json');
+        break;
+        
+      case 'opportunities':
+        translations = language === 'en'
+          ? await import('./locales/en/opportunities.json')
+          : await import('./locales/ar/opportunities.json');
         break;
         
       case 'profile':
