@@ -167,64 +167,64 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'إدارة القطاعات' : 'Sectors Management',
-      description: language === 'ar' ? 'إدارة القطاعات والمجالات الابتكارية' : 'Manage innovation sectors and fields',
+      title: t('admin:dashboard.sectors_management', 'Sectors Management'),
+      description: t('admin:dashboard.sectors_management_desc', 'Manage innovation sectors and fields'),
       icon: Building,
       action: () => navigate('/admin/sectors'),
       show: true,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'مهام الخبراء' : 'Expert Assignment Management',
-      description: language === 'ar' ? 'تعيين الخبراء للتحديات وإدارة التقييمات' : 'Assign experts to challenges and manage evaluations',
+      title: t('admin:dashboard.expert_assignment', 'Expert Assignment Management'),
+      description: t('admin:dashboard.expert_assignment_desc', 'Assign experts to challenges and manage evaluations'),
       icon: Users,
       action: () => navigate('/admin/expert-assignments'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'إدارة الفريق الأساسي' : 'Core Team Management',
-      description: language === 'ar' ? 'إدارة أعضاء الفريق الأساسي والمشاريع' : 'Manage core team members and projects',
+      title: t('admin:dashboard.core_team_management', 'Core Team Management'),
+      description: t('admin:dashboard.core_team_management_desc', 'Manage core team members and projects'),
       icon: Users,
       action: () => navigate('/admin/core-team'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'الهيكل التنظيمي' : 'Organizational Structure',
-      description: language === 'ar' ? 'إدارة الهيكل التنظيمي والإدارات' : 'Manage organizational hierarchy and departments',
+      title: t('admin:dashboard.organizational_structure', 'Organizational Structure'),
+      description: t('admin:dashboard.organizational_structure_desc', 'Manage organizational hierarchy and departments'),
       icon: Building,
       action: () => navigate('/admin/organizational-structure'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'أصحاب المصلحة' : 'Stakeholders Management',
-      description: language === 'ar' ? 'إدارة علاقات أصحاب المصلحة' : 'Manage stakeholder relationships and engagement',
+      title: t('admin:dashboard.stakeholders_management', 'Stakeholders Management'),
+      description: t('admin:dashboard.stakeholders_management_desc', 'Manage stakeholder relationships and engagement'),
       icon: Users,
       action: () => navigate('/admin/stakeholders'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'إدارة الفرق' : 'Teams Management',
-      description: language === 'ar' ? 'تنظيم فرق العمل والمشاريع' : 'Organize work teams and projects',
+      title: t('admin:dashboard.teams_management', 'Teams Management'),
+      description: t('admin:dashboard.teams_management_desc', 'Organize work teams and projects'),
       icon: Users,
       action: () => navigate('/admin/teams'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'إدارة الكيانات' : 'Entities Management',
-      description: language === 'ar' ? 'إدارة الكيانات التنظيمية والمؤسسات' : 'Manage organizational entities and institutions',
+      title: t('admin:dashboard.entities_management', 'Entities Management'),
+      description: t('admin:dashboard.entities_management_desc', 'Manage organizational entities and institutions'),
       icon: Building,
       action: () => navigate('/admin/entities'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: language === 'ar' ? 'إدارة التقييم' : 'Evaluation Management',
-      description: language === 'ar' ? 'إدارة معايير التقييم والقوالب والقواعد' : 'Manage evaluation criteria, templates, and rules',
+      title: t('admin:dashboard.evaluation_management', 'Evaluation Management'),
+      description: t('admin:dashboard.evaluation_management_desc', 'Manage evaluation criteria, templates, and rules'),
       icon: Target,
       action: () => navigate('/admin/evaluation-management'),
       show: canManageSystem,
@@ -439,7 +439,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {t('admin.metrics.new')}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {t('admin:metrics.new')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -447,7 +447,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {t('admin.metrics.ideas_submitted')}
+                  {t('admin:metrics.ideas_submitted')}
                 </CardTitle>
                 <Database className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -455,7 +455,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold text-warning">{adminMetrics.metrics?.challenges?.submissions || 0}</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {t('admin.metrics.this_week')}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {t('admin:metrics.this_week')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -463,7 +463,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {t('admin.metrics.system_performance')}
+                  {t('admin:metrics.system_performance')}
                 </CardTitle>
                 <Zap className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -471,7 +471,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold text-success">{adminMetrics.metrics?.system?.uptime || 99}%</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <CheckCircle className="w-4 h-4" />
-                  <span>{t('admin.metrics.uptime')}</span>
+                  <span>{t('admin:metrics.uptime')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -481,51 +481,51 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>{t('admin.cards.quick_actions')}</CardTitle>
+                <CardTitle>{t('admin:cards.quick_actions')}</CardTitle>
                 <CardDescription>
-                  {t('admin.cards.quick_actions_desc')}
+                   {t('admin:cards.quick_actions_desc')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button onClick={() => navigate('/admin/users')} className="w-full justify-start">
                   <Users className="w-4 h-4 mr-2" />
-                  {t('admin.cards.manage_users')}
-                </Button>
-                <Button onClick={() => navigate('/admin/challenges')} variant="outline" className="w-full justify-start">
-                  <Target className="w-4 h-4 mr-2" />
-                  {t('admin.cards.manage_challenges')}
-                </Button>
-                <Button onClick={() => navigate('/admin/evaluations')} variant="outline" className="w-full justify-start">
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  {t('admin.cards.system_reports')}
+                   {t('admin:cards.manage_users')}
+                 </Button>
+                 <Button onClick={() => navigate('/admin/challenges')} variant="outline" className="w-full justify-start">
+                   <Target className="w-4 h-4 mr-2" />
+                   {t('admin:cards.manage_challenges')}
+                 </Button>
+                 <Button onClick={() => navigate('/admin/evaluations')} variant="outline" className="w-full justify-start">
+                   <BarChart3 className="w-4 h-4 mr-2" />
+                   {t('admin:cards.system_reports')}
                 </Button>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>{t('admin.cards.system_activity')}</CardTitle>
-                <CardDescription>
-                  {t('admin.cards.system_activity_desc')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center space-x-3 p-3 border rounded-lg">
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                    <Users className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-sm">{t('admin.cards.new_user_registered')}</p>
-                    <p className="text-xs text-muted-foreground">{t('admin.cards.minutes_ago_5')}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 border rounded-lg">
-                  <div className="p-2 rounded-lg bg-success/10 text-success">
-                    <Database className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-sm">{t('admin.cards.new_idea_submitted')}</p>
-                    <p className="text-xs text-muted-foreground">{t('admin.cards.minutes_ago_15')}</p>
+                 <CardTitle>{t('admin:cards.system_activity')}</CardTitle>
+                 <CardDescription>
+                   {t('admin:cards.system_activity_desc')}
+                 </CardDescription>
+               </CardHeader>
+               <CardContent className="space-y-3">
+                 <div className="flex items-center space-x-3 p-3 border rounded-lg">
+                   <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                     <Users className="w-4 h-4" />
+                   </div>
+                   <div className="flex-1">
+                     <p className="font-medium text-sm">{t('admin:cards.new_user_registered')}</p>
+                     <p className="text-xs text-muted-foreground">{t('admin:cards.minutes_ago_5')}</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center space-x-3 p-3 border rounded-lg">
+                   <div className="p-2 rounded-lg bg-success/10 text-success">
+                     <Database className="w-4 h-4" />
+                   </div>
+                   <div className="flex-1">
+                     <p className="font-medium text-sm">{t('admin:cards.new_idea_submitted')}</p>
+                     <p className="text-xs text-muted-foreground">{t('admin:cards.minutes_ago_15')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -539,71 +539,71 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {t('admin.metrics.total_managers')}
-                </CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {adminMetrics.metrics?.users?.breakdown?.admins || '47'}
-                </div>
-                <div className="flex items-center gap-1 text-xs text-success mt-2">
-                  <TrendingUp className="w-4 h-4" />
-                  <span>+8% {t('admin.metrics.this_month')}</span>
-                </div>
-              </CardContent>
-            </Card>
+                   {t('admin:metrics.total_managers')}
+                 </CardTitle>
+                 <Users className="h-4 w-4 text-muted-foreground" />
+               </CardHeader>
+               <CardContent>
+                 <div className="text-2xl font-bold">
+                   {adminMetrics.metrics?.users?.breakdown?.admins || '47'}
+                 </div>
+                 <div className="flex items-center gap-1 text-xs text-success mt-2">
+                   <TrendingUp className="w-4 h-4" />
+                   <span>+8% {t('admin:metrics.this_month')}</span>
+                 </div>
+               </CardContent>
+             </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {t('admin.metrics.active_teams')}
-                </CardTitle>
-                <Briefcase className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  23
-                </div>
-                <div className="flex items-center gap-1 text-xs text-success mt-2">
-                  <TrendingUp className="w-4 h-4" />
-                  <span>+12% {t('admin.metrics.this_month')}</span>
-                </div>
-              </CardContent>
-            </Card>
+             <Card>
+               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                 <CardTitle className="text-sm font-medium text-muted-foreground">
+                   {t('admin:metrics.active_teams')}
+                 </CardTitle>
+                 <Briefcase className="h-4 w-4 text-muted-foreground" />
+               </CardHeader>
+               <CardContent>
+                 <div className="text-2xl font-bold">
+                   23
+                 </div>
+                 <div className="flex items-center gap-1 text-xs text-success mt-2">
+                   <TrendingUp className="w-4 h-4" />
+                   <span>+12% {t('admin:metrics.this_month')}</span>
+                 </div>
+               </CardContent>
+             </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {t('admin.metrics.expert_assignments')}
-                </CardTitle>
-                <Target className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  156
-                </div>
-                <div className="flex items-center gap-1 text-xs text-success mt-2">
-                  <TrendingUp className="w-4 h-4" />
-                  <span>+5% {t('admin.metrics.this_week')}</span>
-                </div>
-              </CardContent>
-            </Card>
+             <Card>
+               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                 <CardTitle className="text-sm font-medium text-muted-foreground">
+                   {t('admin:metrics.expert_assignments')}
+                 </CardTitle>
+                 <Target className="h-4 w-4 text-muted-foreground" />
+               </CardHeader>
+               <CardContent>
+                 <div className="text-2xl font-bold">
+                   156
+                 </div>
+                 <div className="flex items-center gap-1 text-xs text-success mt-2">
+                   <TrendingUp className="w-4 h-4" />
+                   <span>+5% {t('admin:metrics.this_week')}</span>
+                 </div>
+               </CardContent>
+             </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {t('admin.metrics.active_permissions')}
-                </CardTitle>
-                <Shield className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  1,247
-                </div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>{t('admin.metrics.stable')}</span>
+             <Card>
+               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                 <CardTitle className="text-sm font-medium text-muted-foreground">
+                   {t('admin:metrics.active_permissions')}
+                 </CardTitle>
+                 <Shield className="h-4 w-4 text-muted-foreground" />
+               </CardHeader>
+               <CardContent>
+                 <div className="text-2xl font-bold">
+                   1,247
+                 </div>
+                 <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
+                   <CheckCircle className="w-4 h-4" />
+                   <span>{t('admin:metrics.stable')}</span>
                 </div>
               </CardContent>
             </Card>
