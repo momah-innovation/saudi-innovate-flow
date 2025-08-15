@@ -35,6 +35,7 @@ import { ChallengeExpertPanel } from './ChallengeExpertPanel';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { logger } from '@/utils/logger';
+import { useChallengeStats } from '@/hooks/useChallengeStats';
 
 interface Challenge {
   id: string;
@@ -81,6 +82,13 @@ export const ChallengePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isParticipant, setIsParticipant] = useState(false);
   const [userTeam, setUserTeam] = useState<any>(null);
+  const { data: challengeStats } = useChallengeStats(challengeId);
+
+  useEffect(() => {
+    if (challengeStats) {
+      setStats(prev => ({ ...prev, ...challengeStats }));
+    }
+  }, [challengeStats]);
 
   useEffect(() => {
     if (challengeId) {
@@ -117,26 +125,9 @@ export const ChallengePage: React.FC = () => {
 
   const loadChallengeStats = async () => {
     try {
-      // Batch all count queries for better performance
-      const [participantsRes, submissionsRes, expertsRes, discussionsRes] = await Promise.all([
-        supabase.from('challenge_participants').select('*', { count: 'exact', head: true }).eq('challenge_id', challengeId),
-        supabase.from('challenge_submissions').select('*', { count: 'exact', head: true }).eq('challenge_id', challengeId),
-        supabase.from('challenge_experts').select('*', { count: 'exact', head: true }).eq('challenge_id', challengeId),
-        supabase.from('challenge_comments').select('*', { count: 'exact', head: true }).eq('challenge_id', challengeId)
-      ]);
-
-      const participantsCount = participantsRes.count;
-      const submissionsCount = submissionsRes.count;
-      const expertsCount = expertsRes.count;
-      const discussionsCount = discussionsRes.count;
-
-      setStats({
-        participants_count: participantsCount || 0,
-        submissions_count: submissionsCount || 0,
-        experts_count: expertsCount || 0,
-        discussions_count: discussionsCount || 0,
-        teams_count: 0 // TODO: Calculate team count
-      });
+      if (challengeStats) {
+        setStats(prev => ({ ...prev, ...challengeStats }));
+      }
     } catch (error) {
       logger.error('Error loading challenge stats', { challengeId }, error as Error);
     }
