@@ -168,7 +168,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <User className="h-6 w-6" />
-            {expert.profiles?.name || 'Expert Profile'}
+            {expert.profiles?.name || t('admin.experts.expert_profile', 'Expert Profile')}
           </DialogTitle>
         </DialogHeader>
 

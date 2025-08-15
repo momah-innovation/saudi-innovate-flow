@@ -45,7 +45,7 @@ export function OrganizationalStructureManagement() {
 
   const getAllEntities = () => {
     const allEntities = [
-      ...sectors.map(s => ({ ...s, type: 'sector', displayName: s.name_ar || 'Unnamed Sector', parent: null })),
+      ...sectors.map(s => ({ ...s, type: 'sector', displayName: s.name_ar || t('common.unnamed_sector', 'Unnamed Sector'), parent: null })),
       ...entities.map(e => ({ ...e, type: 'entity', displayName: e.name_ar, parent: sectors.find(s => s.id === e.sector_id)?.name_ar })),
       ...deputies.map(d => ({ ...d, type: 'deputy', displayName: d.name, parent: entities.find(e => e.id === d.entity_id)?.name_ar })),
       ...departments.map(d => ({ ...d, type: 'department', displayName: d.name, parent: deputies.find(dep => dep.id === d.deputy_id)?.name })),
@@ -287,7 +287,7 @@ export function OrganizationalStructureManagement() {
                   <div key={sector.id} className="border rounded-lg p-4">
                     <div className="flex items-center gap-2 font-semibold text-blue-600">
                       <Globe className="h-5 w-5" />
-                      {sector.name_ar || 'Unnamed Sector'}
+                      {sector.name_ar || t('common.unnamed_sector', 'Unnamed Sector')}
                     </div>
                     
                     {entities.filter(e => e.sector_id === sector.id).map((entity) => (

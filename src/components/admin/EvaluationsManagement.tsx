@@ -238,8 +238,8 @@ export function EvaluationsManagement({
               key={evaluation.id}
               evaluation={{
                 ...evaluation,
-                idea_title: ideas[evaluation.idea_id]?.title_ar || 'Unknown Idea',
-                evaluator_name: profiles[evaluation.evaluator_id]?.name || 'Unknown Evaluator',
+                 idea_title: ideas[evaluation.idea_id]?.title_ar || t('common.unknown_idea', 'Unknown Idea'),
+                 evaluator_name: profiles[evaluation.evaluator_id]?.name || t('common.unknown_evaluator', 'Unknown Evaluator'),
                 overall_score: Number(getOverallScore(evaluation))
               }}
               viewMode={viewMode}

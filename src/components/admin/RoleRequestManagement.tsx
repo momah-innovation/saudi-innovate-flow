@@ -531,7 +531,7 @@ export default function RoleRequestManagement() {
                   onClick={submitReview}
                   variant={reviewAction === 'approve' ? 'default' : 'destructive'}
                 >
-                  {reviewAction === 'approve' ? 'Approve Request' : 'Reject Request'}
+                  {reviewAction === 'approve' ? t('admin.actions.approve_request', 'Approve Request') : t('admin.actions.reject_request', 'Reject Request')}
                 </Button>
               </div>
             </div>
