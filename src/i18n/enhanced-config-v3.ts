@@ -76,6 +76,30 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/admin/index.json');
         break;
         
+      case 'validation':
+        translations = language === 'en'
+          ? await import('./locales/en/validation.json')
+          : await import('./locales/ar/validation.json');
+        break;
+        
+      case 'system-lists':
+        translations = language === 'en'
+          ? await import('./locales/en/system-lists.json')
+          : await import('./locales/ar/system-lists.json');
+        break;
+        
+      case 'challenges-form':
+        translations = language === 'en'
+          ? await import('./locales/en/challenges/form.json')
+          : await import('./locales/ar/challenges/form.json');
+        break;
+        
+      case 'profile':
+        translations = language === 'en'
+          ? await import('./locales/en/profile.json')
+          : await import('./locales/ar/profile.json');
+        break;
+        
       default:
         logger.warn(`Unknown namespace: ${namespace}`, { component: 'FeatureBasedBackend' });
         return {};
@@ -149,7 +173,7 @@ i18n
     
     // Default namespaces that should be loaded immediately
     defaultNS: 'common',
-    ns: ['common', 'navigation', 'dashboard', 'auth', 'errors'],
+    ns: ['common', 'navigation', 'dashboard', 'auth', 'errors', 'validation'],
     
     interpolation: {
       escapeValue: false,

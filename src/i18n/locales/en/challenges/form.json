@@ -1,0 +1,129 @@
+{
+  "create": {
+    "title": "Create New Challenge",
+    "description": "Create a new challenge to attract innovators and find innovative solutions",
+    "button": "Create Challenge"
+  },
+  "edit": {
+    "title": "Edit Challenge",
+    "description": "Update challenge details and settings",
+    "button": "Save Changes"
+  },
+  "basic_info": {
+    "section_title": "Basic Information",
+    "title": "Challenge Title",
+    "title_placeholder": "Enter challenge title in Arabic",
+    "title_en": "Challenge Title (English)",
+    "title_en_placeholder": "Enter challenge title in English",
+    "description": "Challenge Description", 
+    "description_placeholder": "Write a detailed description of the challenge and objectives to be achieved",
+    "description_en": "Challenge Description (English)",
+    "description_en_placeholder": "Write a detailed description in English",
+    "type": "Challenge Type",
+    "select_type": "Select challenge type",
+    "priority_level": "Priority Level",
+    "select_priority": "Select priority level",
+    "sector": "Sector",
+    "select_sector": "Select government sector",
+    "department": "Department",
+    "select_department": "Select department"
+  },
+  "details": {
+    "section_title": "Challenge Details",
+    "estimated_budget": "Estimated Budget",
+    "budget_placeholder": "Enter budget in Saudi Riyals",
+    "start_date": "Start Date",
+    "end_date": "End Date", 
+    "submission_deadline": "Submission Deadline",
+    "evaluation_deadline": "Evaluation Deadline",
+    "max_participants": "Maximum Participants",
+    "max_participants_placeholder": "Enter maximum number of participants",
+    "min_team_size": "Minimum Team Size",
+    "max_team_size": "Maximum Team Size",
+    "allow_individuals": "Allow Individual Participation",
+    "eligibility_criteria": "Eligibility Criteria",
+    "eligibility_placeholder": "Describe who can participate in this challenge"
+  },
+  "settings": {
+    "section_title": "Challenge Settings",
+    "sensitivity_level": "Sensitivity Level",
+    "select_sensitivity_level": "Select sensitivity level",
+    "allow_anonymous_submissions": "Allow Anonymous Submissions",
+    "require_submission_approval": "Require Submission Approval",
+    "enable_public_voting": "Enable Public Voting",
+    "enable_expert_evaluation": "Enable Expert Evaluation",
+    "auto_publish_results": "Auto-publish Results",
+    "send_notifications": "Send Email Notifications"
+  },
+  "resources": {
+    "section_title": "Resources & Materials",
+    "challenge_image": "Challenge Banner Image",
+    "upload_image": "Upload Image",
+    "supporting_documents": "Supporting Documents",
+    "upload_documents": "Upload Documents",
+    "external_links": "External Links",
+    "add_link": "Add Link",
+    "link_placeholder": "Enter URL",
+    "link_title_placeholder": "Enter link title"
+  },
+  "evaluation": {
+    "section_title": "Evaluation Criteria",
+    "criteria": "Evaluation Criteria",
+    "add_criteria": "Add Criteria",
+    "criteria_name": "Criteria Name",
+    "criteria_weight": "Weight (%)",
+    "criteria_description": "Description",
+    "total_weight": "Total Weight",
+    "weight_error": "Total weight must equal 100%"
+  },
+  "prizes": {
+    "section_title": "Prizes & Recognition",
+    "first_place": "First Place Prize",
+    "second_place": "Second Place Prize", 
+    "third_place": "Third Place Prize",
+    "prize_amount": "Prize Amount (SAR)",
+    "prize_description": "Prize Description",
+    "additional_prizes": "Additional Prizes",
+    "add_prize": "Add Prize",
+    "certificate": "Certificate of Recognition",
+    "publication": "Publication Opportunity",
+    "mentorship": "Mentorship Program"
+  },
+  "tags": {
+    "section_title": "Tags & Categories",
+    "tags": "Tags",
+    "add_tag": "Add Tag",
+    "suggested_tags": "Suggested Tags",
+    "tag_placeholder": "Enter tag name"
+  },
+  "actions": {
+    "save_draft": "Save as Draft",
+    "publish": "Publish Challenge",
+    "preview": "Preview",
+    "cancel": "Cancel",
+    "previous": "Previous",
+    "next": "Next",
+    "saving": "Saving...",
+    "publishing": "Publishing..."
+  },
+  "validation": {
+    "title_required": "Challenge title is required",
+    "title_min_length": "Title must be at least 10 characters",
+    "description_required": "Challenge description is required",
+    "description_min_length": "Description must be at least 50 characters",
+    "type_required": "Challenge type is required",
+    "priority_required": "Priority level is required",
+    "budget_positive": "Budget must be a positive number",
+    "dates_required": "Start and end dates are required",
+    "end_after_start": "End date must be after start date",
+    "max_participants_positive": "Maximum participants must be positive",
+    "team_size_valid": "Maximum team size must be greater than minimum"
+  },
+  "messages": {
+    "draft_saved": "Draft saved successfully",
+    "challenge_published": "Challenge published successfully",
+    "save_failed": "Failed to save challenge",
+    "publish_failed": "Failed to publish challenge",
+    "unsaved_changes": "You have unsaved changes. Are you sure you want to leave?"
+  }
+}

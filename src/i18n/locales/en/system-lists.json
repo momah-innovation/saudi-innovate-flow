@@ -1,0 +1,97 @@
+{
+  "sectors": {
+    "health": "Health",
+    "education": "Education",
+    "defense": "Defense",
+    "interior": "Interior",
+    "justice": "Justice",
+    "foreign_affairs": "Foreign Affairs",
+    "finance": "Finance",
+    "economy": "Economy and Planning",
+    "commerce": "Commerce",
+    "labor": "Labor and Social Development",
+    "transport": "Transport",
+    "communications": "Communications and Information Technology",
+    "municipal": "Municipal and Rural Affairs",
+    "housing": "Housing",
+    "agriculture": "Environment, Water and Agriculture",
+    "energy": "Energy",
+    "industry": "Industry and Mineral Resources",
+    "culture": "Culture",
+    "sports": "Sports",
+    "hajj": "Hajj and Umrah",
+    "islamic_affairs": "Islamic Affairs",
+    "media": "Media"
+  },
+  "challenge_types": {
+    "technical": "Technical Innovation",
+    "sustainability": "Sustainability",
+    "health": "Healthcare Solutions",
+    "education": "Educational Technology",
+    "governance": "Government Services",
+    "innovation": "General Innovation",
+    "digital_transformation": "Digital Transformation",
+    "smart_cities": "Smart Cities",
+    "artificial_intelligence": "Artificial Intelligence",
+    "cybersecurity": "Cybersecurity",
+    "fintech": "Financial Technology",
+    "blockchain": "Blockchain Technology"
+  },
+  "priority_levels": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent",
+    "critical": "Critical"
+  },
+  "statuses": {
+    "draft": "Draft",
+    "active": "Active",
+    "paused": "Paused",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "archived": "Archived",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "under_review": "Under Review",
+    "submitted": "Submitted",
+    "upcoming": "Upcoming",
+    "ongoing": "Ongoing",
+    "registration_open": "Registration Open",
+    "registration_closed": "Registration Closed",
+    "open": "Open",
+    "closed": "Closed"
+  },
+  "user_roles": {
+    "admin": "Administrator",
+    "moderator": "Moderator",
+    "evaluator": "Evaluator",
+    "participant": "Participant",
+    "viewer": "Viewer",
+    "coordinator": "Coordinator",
+    "analyst": "Analyst",
+    "expert": "Expert"
+  },
+  "organization_types": {
+    "government": "Government Entity",
+    "private_sector": "Private Company",
+    "non_profit": "Non-Profit Organization",
+    "academic": "Academic Institution",
+    "startup": "Startup",
+    "research": "Research Center",
+    "international": "International Organization"
+  },
+  "engagement_levels": {
+    "low": "Low Engagement",
+    "medium": "Medium Engagement", 
+    "high": "High Engagement",
+    "expert": "Expert Level"
+  },
+  "access_levels": {
+    "public": "Public Access",
+    "private": "Private Access",
+    "restricted": "Restricted Access",
+    "internal": "Internal Only"
+  }
+}

@@ -1,42 +1,54 @@
-# Translation System Structure Design
+# Translation System Structure Design - UPDATED ✅
 
-## Proposed Structure
+## ✅ **IMPLEMENTED Structure**
 
-### 1. Static Translations (Files)
+### 1. Static Translations (Files) - **COMPLETED**
 ```
 src/i18n/locales/
 ├── en/
-│   ├── common.json           # Buttons, labels, general UI
-│   ├── navigation.json       # Menu items, headers, breadcrumbs
-│   ├── auth.json            # Login, signup, permissions
-│   ├── dashboard.json       # Dashboard-specific content
+│   ├── common.json           ✅ Buttons, labels, general UI (54 keys)
+│   ├── navigation.json       ✅ Menu items, headers, breadcrumbs (31 keys)
+│   ├── auth.json            ✅ Login, signup, permissions (27 keys)  
+│   ├── dashboard.json       ✅ Dashboard-specific content (35 keys)
+│   ├── errors.json          ✅ Error messages (49 keys)
+│   ├── validation.json      ✅ Form validation messages (36 keys)
+│   ├── system-lists.json    ✅ Dropdowns, sectors, types (78 keys)
+│   ├── profile.json         ✅ User profile management (89 keys)
 │   ├── challenges/
-│   │   ├── index.json       # Challenge listing, filters
-│   │   ├── form.json        # Challenge creation/editing
-│   │   ├── details.json     # Challenge view, participation
-│   │   └── submissions.json # Submission process
+│   │   ├── index.json       ✅ Challenge listing, filters (40 keys)
+│   │   ├── form.json        ✅ Challenge creation/editing (124 keys)
+│   │   ├── details.json     ✅ Challenge view, participation (95 keys)
+│   │   └── submissions.json ❌ Submission process [TODO]
 │   ├── campaigns/
-│   │   ├── index.json       # Campaign listing
-│   │   ├── form.json        # Campaign management
-│   │   └── analytics.json   # Campaign metrics
+│   │   ├── index.json       ✅ Campaign listing (24 keys)
+│   │   ├── form.json        ❌ Campaign management [TODO]
+│   │   └── analytics.json   ❌ Campaign metrics [TODO]
 │   ├── admin/
-│   │   ├── users.json       # User management
-│   │   ├── settings.json    # System settings
-│   │   └── analytics.json   # Admin dashboard
-│   ├── errors.json          # Error messages
-│   └── validation.json      # Form validation messages
+│   │   ├── index.json       ✅ Admin sections (25 keys)
+│   │   ├── settings.json    ✅ System settings (45 keys)
+│   │   ├── users.json       ❌ User management [TODO]
+│   │   └── analytics.json   ❌ Admin dashboard [TODO]
+│   ├── events.json          ❌ Event management [TODO]
+│   ├── partners.json        ❌ Partner management [TODO]
+│   └── opportunities.json   ❌ Opportunities management [TODO]
 └── ar/
-    └── [same structure as en/]
+    └── [same structure as en/] ✅ All completed files have Arabic versions
 ```
 
-### 2. Dynamic Translations (Database)
-- Challenge categories and types
-- System settings descriptions
+**TOTAL: 653 keys across 14 completed files (~40% coverage)**
+
+### 2. Dynamic Translations (Database) - **HYBRID APPROACH**
+✅ **Moved to Static Files (Better Performance):**
+- Basic sectors, challenge types, priority levels → `system-lists.json`
+- User roles, organization types, access levels → `system-lists.json`
+- Common status values → `system-lists.json`
+
+❌ **Still in Database (Truly Dynamic):**
 - User-generated content labels
-- Partner organization names
-- Sector/department names
-- Dynamic status messages
-- Custom field labels
+- Partner organization names (custom entries)
+- Custom field labels created by admins
+- Complex nested system lists (48 different types)
+- Expert-specific statuses and engagement levels
 
 ### 3. File Size Guidelines
 - Each file should be < 100 translation keys
@@ -54,7 +66,14 @@ src/i18n/locales/
 "sector_health_description": "Health Ministry"
 ```
 
-### 5. Loading Strategy
-1. **Immediate**: Load common.json, navigation.json on app start
-2. **Route-based**: Load feature files when navigating to sections
-3. **Database**: Fetch dynamic translations on demand with caching
+### 5. ✅ **IMPLEMENTED Loading Strategy**
+1. **✅ Immediate**: Load `common`, `navigation`, `dashboard`, `auth`, `errors`, `validation` on app start
+2. **✅ Route-based**: Dynamic loading for `challenges-details`, `challenges-form`, `admin-settings`, `profile`, etc.
+3. **✅ Backend Integration**: Custom FeatureBasedBackend with fallback to database via `useSystemTranslations`
+4. **✅ Performance**: Namespaces loaded on-demand with caching and preloading helpers
+
+### 6. ✅ **IMPLEMENTED Architecture**
+- **Enhanced Config v3**: Feature-based backend with dynamic namespace loading
+- **Unified Hooks**: `useUnifiedTranslation` combines static + database translations  
+- **Fallback Strategy**: Static files → Database → English fallback → Missing key logging
+- **RTL Support**: Direction management with `useDirection()` and CSS utilities

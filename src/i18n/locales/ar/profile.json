@@ -1,0 +1,98 @@
+{
+  "title": "الملف الشخصي",
+  "edit_profile": "تعديل الملف الشخصي",
+  "view_profile": "عرض الملف الشخصي",
+  "personal_info": {
+    "section_title": "المعلومات الشخصية",
+    "first_name": "الاسم الأول",
+    "last_name": "اسم العائلة",
+    "email": "عنوان البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "date_of_birth": "تاريخ الميلاد",
+    "gender": "الجنس",
+    "nationality": "الجنسية",
+    "id_number": "رقم الهوية الوطنية",
+    "passport_number": "رقم جواز السفر"
+  },
+  "professional_info": {
+    "section_title": "المعلومات المهنية",
+    "job_title": "المسمى الوظيفي",
+    "organization": "المؤسسة",
+    "department": "القسم",
+    "sector": "القطاع",
+    "experience_years": "سنوات الخبرة",
+    "education_level": "المستوى التعليمي",
+    "specialization": "التخصص",
+    "skills": "المهارات",
+    "languages": "اللغات"
+  },
+  "contact_info": {
+    "section_title": "معلومات الاتصال",
+    "address": "العنوان",
+    "city": "المدينة",
+    "region": "المنطقة",
+    "postal_code": "الرمز البريدي",
+    "linkedin": "حساب لينكد إن",
+    "website": "الموقع الشخصي",
+    "twitter": "حساب تويتر"
+  },
+  "preferences": {
+    "section_title": "التفضيلات",
+    "language": "اللغة المفضلة",
+    "notifications": "إعدادات الإشعارات",
+    "email_notifications": "إشعارات البريد الإلكتروني",
+    "sms_notifications": "إشعارات الرسائل النصية",
+    "push_notifications": "الإشعارات الفورية",
+    "privacy_settings": "إعدادات الخصوصية",
+    "profile_visibility": "مرئية الملف الشخصي"
+  },
+  "avatar": {
+    "upload": "رفع صورة",
+    "change": "تغيير الصورة",
+    "remove": "إزالة الصورة",
+    "upload_error": "فشل في رفع الصورة",
+    "size_limit": "حجم الصورة يجب أن يكون أقل من 5 ميجابايت",
+    "format_error": "فقط صيغ JPG و PNG و GIF مسموحة"
+  },
+  "actions": {
+    "save": "حفظ التغييرات",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "delete_account": "حذف الحساب",
+    "change_password": "تغيير كلمة المرور",
+    "export_data": "تصدير بياناتي"
+  },
+  "tabs": {
+    "overview": "نظرة عامة",
+    "personal": "شخصي",
+    "professional": "مهني",
+    "contact": "اتصال",
+    "preferences": "تفضيلات",
+    "security": "أمان",
+    "activity": "النشاط"
+  },
+  "security": {
+    "current_password": "كلمة المرور الحالية",
+    "new_password": "كلمة المرور الجديدة",
+    "confirm_password": "تأكيد كلمة المرور الجديدة",
+    "two_factor": "المصادقة الثنائية",
+    "enable_2fa": "تفعيل المصادقة الثنائية",
+    "disable_2fa": "إلغاء المصادقة الثنائية",
+    "backup_codes": "رموز النسخ الاحتياطي",
+    "active_sessions": "الجلسات النشطة",
+    "trusted_devices": "الأجهزة الموثوقة"
+  },
+  "validation": {
+    "name_required": "الاسم مطلوب",
+    "email_invalid": "عنوان بريد إلكتروني غير صحيح",
+    "phone_invalid": "رقم هاتف غير صحيح",
+    "password_mismatch": "كلمات المرور غير متطابقة"
+  },
+  "messages": {
+    "profile_updated": "تم تحديث الملف الشخصي بنجاح",
+    "password_changed": "تم تغيير كلمة المرور بنجاح",
+    "photo_uploaded": "تم رفع الصورة بنجاح",
+    "save_failed": "فشل في حفظ التغييرات",
+    "delete_confirmation": "هل أنت متأكد من حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء."
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "sectors": {
+    "health": "الصحة",
+    "education": "التعليم",
+    "defense": "الدفاع",
+    "interior": "الداخلية",
+    "justice": "العدل",
+    "foreign_affairs": "الخارجية",
+    "finance": "المالية",
+    "economy": "الاقتصاد والتخطيط",
+    "commerce": "التجارة",
+    "labor": "الموارد البشرية والتنمية الاجتماعية",
+    "transport": "النقل",
+    "communications": "الاتصالات وتقنية المعلومات",
+    "municipal": "الشؤون البلدية والقروية",
+    "housing": "الإسكان",
+    "agriculture": "البيئة والمياه والزراعة",
+    "energy": "الطاقة",
+    "industry": "الصناعة والثروة المعدنية",
+    "culture": "الثقافة",
+    "sports": "الرياضة",
+    "hajj": "الحج والعمرة",
+    "islamic_affairs": "الشؤون الإسلامية",
+    "media": "الإعلام"
+  },
+  "challenge_types": {
+    "technical": "الابتكار التقني",
+    "sustainability": "الاستدامة",
+    "health": "الحلول الصحية",
+    "education": "التقنيات التعليمية",
+    "governance": "الخدمات الحكومية",
+    "innovation": "الابتكار العام",
+    "digital_transformation": "التحول الرقمي",
+    "smart_cities": "المدن الذكية",
+    "artificial_intelligence": "الذكاء الاصطناعي",
+    "cybersecurity": "الأمن السيبراني",
+    "fintech": "التقنيات المالية",
+    "blockchain": "تقنية البلوك تشين"
+  },
+  "priority_levels": {
+    "low": "منخفض",
+    "medium": "متوسط",
+    "high": "عالي",
+    "urgent": "عاجل",
+    "critical": "حرج"
+  },
+  "statuses": {
+    "draft": "مسودة",
+    "active": "نشط",
+    "paused": "متوقف مؤقتاً",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "archived": "مؤرشف",
+    "pending": "في الانتظار",
+    "approved": "موافق عليه",
+    "rejected": "مرفوض",
+    "under_review": "قيد المراجعة",
+    "submitted": "مقدم",
+    "upcoming": "قادم",
+    "ongoing": "جاري",
+    "registration_open": "التسجيل مفتوح",
+    "registration_closed": "التسجيل مغلق",
+    "open": "مفتوح",
+    "closed": "مغلق"
+  },
+  "user_roles": {
+    "admin": "مدير النظام",
+    "moderator": "مشرف",
+    "evaluator": "محكم",
+    "participant": "مشارك",
+    "viewer": "مشاهد",
+    "coordinator": "منسق",
+    "analyst": "محلل",
+    "expert": "خبير"
+  },
+  "organization_types": {
+    "government": "جهة حكومية",
+    "private_sector": "شركة خاصة",
+    "non_profit": "منظمة غير ربحية",
+    "academic": "مؤسسة أكاديمية",
+    "startup": "شركة ناشئة",
+    "research": "مركز بحثي",
+    "international": "منظمة دولية"
+  },
+  "engagement_levels": {
+    "low": "مشاركة منخفضة",
+    "medium": "مشاركة متوسطة",
+    "high": "مشاركة عالية",
+    "expert": "مستوى خبير"
+  },
+  "access_levels": {
+    "public": "وصول عام",
+    "private": "وصول خاص",
+    "restricted": "وصول مقيد",
+    "internal": "داخلي فقط"
+  }
+}

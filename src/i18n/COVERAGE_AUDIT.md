@@ -8,48 +8,43 @@
 - ✅ `dashboard.json` - 35 keys (dashboard content, metrics, cards, activity)
 - ✅ `auth.json` - 27 keys (login, signup, permissions, roles)
 - ✅ `errors.json` - 49 keys (validation, network, server, user errors)
+- ✅ `validation.json` - 36 keys (form validation, error messages)
 
 ### **Dynamic Load Files (Feature-Specific)**
 - ✅ `challenges/index.json` - 40 keys (listing, filters, actions, status)
 - ✅ `challenges/details.json` - 95 keys (forms, details, actions, messages)
+- ✅ `challenges/form.json` - 124 keys (challenge creation, editing forms)
 - ✅ `campaigns/index.json` - 24 keys (management, status, metrics)
 - ✅ `admin/index.json` - 25 keys (admin interface sections)
 - ✅ `admin/settings.json` - 45 keys (system settings, lists, actions)
+- ✅ `system-lists.json` - 78 keys (sectors, types, statuses, roles)
+- ✅ `profile.json` - 89 keys (user profile management, settings)
 
-**Total Covered: ~405 translation keys across 10 files**
+**Total Covered: ~653 translation keys across 14 files**
 
 ---
 
-## ❌ **MISSING - From Original Files (1,644 keys)**
+## ❌ **REMAINING - From Original Files (~990 keys)**
 
-### **Critical Missing Categories:**
+### **Still Missing Categories:**
 
-#### **1. System Lists & Types (from old files)**
-- `sectors` with descriptions (Health, Education, etc.)
-- `systemLists` (48 different list types)
-- `challengeTypes`, `partnerTypes`, `partnershipTypes`
-- `expertStatus`, `engagementLevels`, `priorityLevels`
-- `stakeholderTypes`, `userRoles`, `organizationStatus`
-- `ideaPredefinedTags` (AI, blockchain, IoT, etc.)
+#### **1. Advanced System Lists (Partially Covered)**
+- ✅ Basic sectors, types, statuses, roles covered
+- ❌ Complex nested lists (48 different system list types)
+- ❌ `partnerTypes`, `partnershipTypes` (partnership management)
+- ❌ `expertStatus`, `engagementLevels` (expert system)
+- ❌ `stakeholderTypes`, `organizationStatus` (stakeholder management)
+- ❌ `ideaPredefinedTags` (AI, blockchain, IoT, smart city tags)
 
-#### **2. Detailed Settings Translations**
-- Complex settings with nested categories
-- Settings descriptions and help texts
-- Form field labels and placeholders
-- Validation messages for specific forms
-
-#### **3. Feature-Specific Missing Files:**
-- `challenges/form.json` - Challenge creation/editing forms
-- `challenges/submissions.json` - Submission process
-- `campaigns/form.json` - Campaign management forms
-- `campaigns/analytics.json` - Campaign metrics
-- `admin/users.json` - User management
-- `admin/analytics.json` - Admin dashboard
-- `validation.json` - Form validation messages
-- `profile.json` - Profile management
-- `events.json` - Event management
-- `partners.json` - Partner management
-- `opportunities.json` - Opportunities management
+#### **2. Advanced Feature Files:**
+- ❌ `challenges/submissions.json` - Submission process workflows
+- ❌ `campaigns/form.json` - Campaign creation/management forms
+- ❌ `campaigns/analytics.json` - Campaign metrics and reports
+- ❌ `admin/users.json` - User management interface
+- ❌ `admin/analytics.json` - Admin dashboard analytics
+- ❌ `events.json` - Event management system
+- ❌ `partners.json` - Partner management system
+- ❌ `opportunities.json` - Opportunities management system
 
 #### **4. Advanced Features:**
 - AI feature translations (`idea_evaluation_ai`, `smart_recommendations`)
@@ -70,30 +65,31 @@
 
 | Category | Covered | Missing | Total | % Complete |
 |----------|---------|---------|-------|------------|
-| **Core UI** | 405 | 0 | 405 | 100% |
-| **Feature Forms** | 95 | 200+ | 295+ | 32% |
-| **System Lists** | 0 | 400+ | 400+ | 0% |
-| **Admin Features** | 70 | 300+ | 370+ | 19% |
-| **Advanced Features** | 0 | 500+ | 500+ | 0% |
-| **Database Dynamic** | 0 | 200+ | 200+ | 0% |
+| **Core UI** | 232 | 0 | 232 | 100% |
+| **Feature Forms** | 219 | 150+ | 369+ | 59% |
+| **System Lists** | 78 | 200+ | 278+ | 28% |
+| **Admin Features** | 70 | 250+ | 320+ | 22% |
+| **Advanced Features** | 89 | 300+ | 389+ | 23% |
+| **Database Dynamic** | 0 | 150+ | 150+ | 0% |
 
-**Overall Coverage: ~25% of total translation needs**
+**Overall Coverage: ~40% of total translation needs**
 
 ---
 
 ## 🎯 **Next Priority Files to Create**
 
 ### **High Priority (Used in 100+ components)**
-1. `validation.json` - Form validation messages
-2. `challenges/form.json` - Challenge creation forms  
-3. `system-lists.json` - All system dropdown lists
-4. `admin/users.json` - User management interface
+1. ✅ `validation.json` - Form validation messages ✅ COMPLETED
+2. ✅ `challenges/form.json` - Challenge creation forms ✅ COMPLETED
+3. ✅ `system-lists.json` - All system dropdown lists ✅ COMPLETED  
+4. ❌ `admin/users.json` - User management interface
+5. ✅ `profile.json` - User profile management ✅ COMPLETED
 
 ### **Medium Priority (Used in 50+ components)**
-5. `settings/detailed.json` - Detailed system settings
-6. `profile.json` - User profile management
-7. `events.json` - Event management
-8. `partners.json` - Partner management
+6. ❌ `challenges/submissions.json` - Submission workflows
+7. ❌ `events.json` - Event management
+8. ❌ `partners.json` - Partner management
+9. ❌ `campaigns/form.json` - Campaign management forms
 
 ### **Lower Priority (Feature-specific)**
 9. AI features, storage analytics, advanced search

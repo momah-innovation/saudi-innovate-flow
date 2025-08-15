@@ -1,0 +1,129 @@
+{
+  "create": {
+    "title": "إنشاء تحدي جديد",
+    "description": "أنشئ تحدياً جديداً لجذب المبدعين وإيجاد حلول مبتكرة",
+    "button": "إنشاء التحدي"
+  },
+  "edit": {
+    "title": "تعديل التحدي",
+    "description": "تحديث تفاصيل وإعدادات التحدي",
+    "button": "حفظ التغييرات"
+  },
+  "basic_info": {
+    "section_title": "المعلومات الأساسية",
+    "title": "عنوان التحدي",
+    "title_placeholder": "أدخل عنوان التحدي بالعربية",
+    "title_en": "عنوان التحدي (بالإنجليزية)",
+    "title_en_placeholder": "أدخل عنوان التحدي بالإنجليزية",
+    "description": "وصف التحدي",
+    "description_placeholder": "اكتب وصفاً مفصلاً للتحدي والأهداف المراد تحقيقها",
+    "description_en": "وصف التحدي (بالإنجليزية)",
+    "description_en_placeholder": "اكتب وصفاً مفصلاً بالإنجليزية",
+    "type": "نوع التحدي",
+    "select_type": "اختر نوع التحدي",
+    "priority_level": "مستوى الأولوية",
+    "select_priority": "اختر مستوى الأولوية",
+    "sector": "القطاع",
+    "select_sector": "اختر القطاع الحكومي",
+    "department": "الإدارة",
+    "select_department": "اختر الإدارة"
+  },
+  "details": {
+    "section_title": "تفاصيل التحدي",
+    "estimated_budget": "الميزانية المقدرة",
+    "budget_placeholder": "أدخل الميزانية بالريال السعودي",
+    "start_date": "تاريخ البدء",
+    "end_date": "تاريخ الانتهاء",
+    "submission_deadline": "موعد تسليم المشاركات",
+    "evaluation_deadline": "موعد انتهاء التقييم",
+    "max_participants": "الحد الأقصى للمشاركين",
+    "max_participants_placeholder": "أدخل الحد الأقصى لعدد المشاركين",
+    "min_team_size": "الحد الأدنى لحجم الفريق",
+    "max_team_size": "الحد الأقصى لحجم الفريق",
+    "allow_individuals": "السماح بالمشاركة الفردية",
+    "eligibility_criteria": "معايير الأهلية",
+    "eligibility_placeholder": "اوصف من يمكنه المشاركة في هذا التحدي"
+  },
+  "settings": {
+    "section_title": "إعدادات التحدي",
+    "sensitivity_level": "مستوى الحساسية",
+    "select_sensitivity_level": "اختر مستوى الحساسية",
+    "allow_anonymous_submissions": "السماح بالمشاركات المجهولة",
+    "require_submission_approval": "يتطلب موافقة على المشاركات",
+    "enable_public_voting": "تفعيل التصويت العام",
+    "enable_expert_evaluation": "تفعيل تقييم الخبراء",
+    "auto_publish_results": "نشر النتائج تلقائياً",
+    "send_notifications": "إرسال إشعارات بريد إلكتروني"
+  },
+  "resources": {
+    "section_title": "الموارد والمواد",
+    "challenge_image": "صورة غلاف التحدي",
+    "upload_image": "رفع صورة",
+    "supporting_documents": "المستندات الداعمة",
+    "upload_documents": "رفع مستندات",
+    "external_links": "روابط خارجية",
+    "add_link": "إضافة رابط",
+    "link_placeholder": "أدخل الرابط",
+    "link_title_placeholder": "أدخل عنوان الرابط"
+  },
+  "evaluation": {
+    "section_title": "معايير التقييم",
+    "criteria": "معايير التقييم",
+    "add_criteria": "إضافة معيار",
+    "criteria_name": "اسم المعيار",
+    "criteria_weight": "الوزن (%)",
+    "criteria_description": "الوصف",
+    "total_weight": "إجمالي الوزن",
+    "weight_error": "إجمالي الوزن يجب أن يساوي 100%"
+  },
+  "prizes": {
+    "section_title": "الجوائز والتقدير",
+    "first_place": "جائزة المركز الأول",
+    "second_place": "جائزة المركز الثاني",
+    "third_place": "جائزة المركز الثالث",
+    "prize_amount": "قيمة الجائزة (ريال سعودي)",
+    "prize_description": "وصف الجائزة",
+    "additional_prizes": "جوائز إضافية",
+    "add_prize": "إضافة جائزة",
+    "certificate": "شهادة تقدير",
+    "publication": "فرصة نشر",
+    "mentorship": "برنامج إرشادي"
+  },
+  "tags": {
+    "section_title": "العلامات والفئات",
+    "tags": "العلامات",
+    "add_tag": "إضافة علامة",
+    "suggested_tags": "علامات مقترحة",
+    "tag_placeholder": "أدخل اسم العلامة"
+  },
+  "actions": {
+    "save_draft": "حفظ كمسودة",
+    "publish": "نشر التحدي",
+    "preview": "معاينة",
+    "cancel": "إلغاء",
+    "previous": "السابق",
+    "next": "التالي",
+    "saving": "جاري الحفظ...",
+    "publishing": "جاري النشر..."
+  },
+  "validation": {
+    "title_required": "عنوان التحدي مطلوب",
+    "title_min_length": "العنوان يجب أن يكون 10 أحرف على الأقل",
+    "description_required": "وصف التحدي مطلوب",
+    "description_min_length": "الوصف يجب أن يكون 50 حرف على الأقل",
+    "type_required": "نوع التحدي مطلوب",
+    "priority_required": "مستوى الأولوية مطلوب",
+    "budget_positive": "الميزانية يجب أن تكون رقماً موجباً",
+    "dates_required": "تاريخ البدء والانتهاء مطلوبان",
+    "end_after_start": "تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء",
+    "max_participants_positive": "الحد الأقصى للمشاركين يجب أن يكون موجباً",
+    "team_size_valid": "الحد الأقصى لحجم الفريق يجب أن يكون أكبر من الحد الأدنى"
+  },
+  "messages": {
+    "draft_saved": "تم حفظ المسودة بنجاح",
+    "challenge_published": "تم نشر التحدي بنجاح",
+    "save_failed": "فشل في حفظ التحدي",
+    "publish_failed": "فشل في نشر التحدي",
+    "unsaved_changes": "لديك تغييرات غير محفوظة. هل أنت متأكد من الخروج؟"
+  }
+}
