@@ -659,5 +659,30 @@
     "items": "عناصر",
     "properties": "خصائص",
     "no_settings": "لا توجد إعدادات"
+  },
+  "challenges": {
+    "title": "إدارة التحديات",
+    "description": "إدارة تحديات ومبادرات الابتكار",
+    "new_challenge": "تحدي جديد",
+    "no_challenges": "لا توجد تحديات",
+    "no_challenges_description": "أنشئ أول تحدي لك لبدء إدارة مبادرات الابتكار",
+    "create_new": "إنشاء تحدي جديد",
+    "start_date": "تاريخ البداية",
+    "end_date": "تاريخ النهاية",
+    "estimated_budget": "الميزانية المقدرة",
+    "currency": "ريال",
+    "sensitivity_level": "مستوى الحساسية",
+    "delete_success": "تم حذف التحدي بنجاح",
+    "delete_confirm": "هل أنت متأكد من رغبتك في حذف هذا التحدي؟",
+    "update_success": "تم تحديث التحدي",
+    "update_success_desc": "تم تحديث التحدي بنجاح",
+    "create_success": "تم إنشاء التحدي",
+    "create_success_desc": "تم إنشاء التحدي بنجاح",
+    "save_failed": "فشل في الحفظ",
+    "try_again": "يرجى المحاولة مرة أخرى لاحقاً",
+    "settings": {
+      "archived_success_title": "تم أرشفة التحدي",
+      "archived_success_description": "تم أرشفة التحدي بنجاح"
+    }
   }
 }

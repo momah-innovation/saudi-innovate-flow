@@ -123,5 +123,7 @@
   "pending_updates_count": "{{count}} pending update",
   "pending_updates_count_plural": "{{count}} pending updates",
   "total_challenges": "Total Challenges",
-  "save": "Save"
+  "save": "Save",
+  "all": "All",
+  "createNew": "Create New"
 }

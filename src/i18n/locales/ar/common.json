@@ -138,5 +138,36 @@
   "active_policies_count_plural": "{{count}} سياسات نشطة",
   "pending_updates_count": "{{count}} تحديث معلق",
   "pending_updates_count_plural": "{{count}} تحديثات معلقة",
-  "total_challenges": "إجمالي التحديات"
+  "total_challenges": "إجمالي التحديات",
+  "all": "الكل",
+  "createNew": "إنشاء جديد",
+  "form": {
+    "title_ar": "العنوان (العربية)",
+    "title_en": "العنوان (الإنجليزية)",
+    "description_ar": "الوصف (العربية)",
+    "description_en": "الوصف (الإنجليزية)",
+    "status": "الحالة",
+    "priority_level": "مستوى الأولوية",
+    "sensitivity_level": "مستوى الحساسية",
+    "challenge_type": "نوع التحدي",
+    "sector": "القطاع",
+    "deputy": "النائب",
+    "department": "القسم"
+  },
+  "placeholder": {
+    "enter_title": "أدخل العنوان",
+    "enter_title_en": "أدخل العنوان بالإنجليزية",
+    "enter_description": "أدخل الوصف",
+    "enter_description_en": "أدخل الوصف بالإنجليزية",
+    "select_status": "اختر الحالة",
+    "select_priority": "اختر الأولوية",
+    "select_sensitivity": "اختر مستوى الحساسية",
+    "select_sector": "اختر القطاع",
+    "select_deputy": "اختر النائب",
+    "select_department": "اختر القسم"
+  },
+  "validation": {
+    "validation_error": "خطأ في التحقق",
+    "required_field": "الحقل مطلوب: {{field}}"
+  }
 }

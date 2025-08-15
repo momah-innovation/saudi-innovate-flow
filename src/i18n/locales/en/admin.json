@@ -561,5 +561,30 @@
     "items": "items",
     "properties": "properties",
     "no_settings": "No settings found"
+  },
+  "challenges": {
+    "title": "Challenge Management",
+    "description": "Manage innovation challenges and initiatives",
+    "new_challenge": "New Challenge",
+    "no_challenges": "No challenges found",
+    "no_challenges_description": "Create your first challenge to start managing innovation initiatives",
+    "create_new": "Create New Challenge",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "estimated_budget": "Estimated Budget",
+    "currency": "SAR",
+    "sensitivity_level": "Sensitivity Level",
+    "delete_success": "Challenge deleted successfully",
+    "delete_confirm": "Are you sure you want to delete this challenge?",
+    "update_success": "Challenge Updated",
+    "update_success_desc": "Challenge has been updated successfully",
+    "create_success": "Challenge Created",
+    "create_success_desc": "Challenge has been created successfully",
+    "save_failed": "Failed to Save",
+    "try_again": "Please try again later",
+    "settings": {
+      "archived_success_title": "Challenge Archived",
+      "archived_success_description": "Challenge has been archived successfully"
+    }
   }
 }
