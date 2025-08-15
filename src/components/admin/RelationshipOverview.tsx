@@ -46,6 +46,7 @@ export function RelationshipOverview({
   const [relationships, setRelationships] = useState<RelationshipData[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     loadRelationships();
@@ -289,7 +290,7 @@ export function RelationshipOverview({
           )) : [
           <div key="empty" className="text-center py-12">
             <Network className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-            <p className="text-lg font-medium mb-2">No Relationships Found</p>
+            <p className="text-lg font-medium mb-2">{t('common.no_results_found', 'No Relationships Found')}</p>
             <p className="text-muted-foreground">No entity relationships match the current search criteria</p>
           </div>
         ]}

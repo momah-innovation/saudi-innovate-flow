@@ -51,6 +51,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
   
   const { toast } = useToast();
   const { generalStatusOptions } = useSystemLists();
+  const { t } = useUnifiedTranslation();
 
   const { attendanceStatusOptions } = useSystemLists();
   
@@ -378,7 +379,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
             {filteredParticipants.length === 0 ? (
               <div className="text-center py-8">
                 <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No participants found</p>
+                <p className="text-muted-foreground">{t('events.no_participants_found', 'No participants found')}</p>
               </div>
             ) : (
               filteredParticipants.map((participant) => (

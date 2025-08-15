@@ -9,6 +9,7 @@ import { ALL_ROUTES } from '@/routing/routes';
 import { debugLog } from '@/utils/debugLogger';
 import { UserRole } from '@/hooks/useRoleAccess';
 import { validateServerAuth, validateRole } from '@/utils/serverAuth';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -30,6 +31,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   // CRITICAL: ALL hooks must be called at the top level and in the same order every time
   const { user, userProfile, hasRole, loading, session } = useAuth();
   const location = useLocation();
+  const { t } = useUnifiedTranslation();
 
   // Server-side validation for enhanced security
   useEffect(() => {
@@ -83,7 +85,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       <div className="min-h-[400px] flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="text-sm text-muted-foreground">Loading...</p>
+          <p className="text-sm text-muted-foreground">{t('common.status.loading', 'Loading...')}</p>
         </div>
       </div>
     );

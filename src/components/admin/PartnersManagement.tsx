@@ -533,7 +533,7 @@ export function PartnersManagement() {
         {partners.length === 0 && (
           <Card>
             <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No partners found</p>
+              <p className="text-muted-foreground">{t('partners.no_partners_found', 'No partners found')}</p>
             </CardContent>
           </Card>
         )}

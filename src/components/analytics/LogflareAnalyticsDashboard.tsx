@@ -213,7 +213,7 @@ export const LogflareAnalyticsDashboard = () => {
                   </div>
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
-                    No data found for the current query
+                    {t('common.no_data_found', 'No data found for the current query')}
                   </div>
                 )}
               </CardContent>
