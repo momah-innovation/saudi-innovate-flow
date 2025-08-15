@@ -241,7 +241,7 @@ i18n
     fallbackLng: 'en',
     debug: process.env.NODE_ENV === 'development',
     
-    lng: 'en',
+    lng: 'ar', // Changed from 'en' to 'ar' - Arabic as default
     supportedLngs: ['en', 'ar'],
     nonExplicitSupportedLngs: true,
     
