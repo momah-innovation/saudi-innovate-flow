@@ -187,7 +187,19 @@ export const useUnifiedDashboardData = (
         lastUpdated: new Date(),
       };
 
-      setUnifiedData(newData);
+      // Only update if data actually changed
+      setUnifiedData(prevData => {
+        // Simple comparison to avoid unnecessary updates
+        const hasChanged = 
+          prevData.totalIdeas !== newData.totalIdeas ||
+          prevData.activeChallenges !== newData.activeChallenges ||
+          prevData.innovationScore !== newData.innovationScore ||
+          prevData.isLoading !== newData.isLoading ||
+          prevData.isError !== newData.isError ||
+          JSON.stringify(prevData.expertStats) !== JSON.stringify(newData.expertStats);
+        
+        return hasChanged ? newData : prevData;
+      });
       
       debugLog.log('✅ Unified dashboard data updated', {
         userRole,
