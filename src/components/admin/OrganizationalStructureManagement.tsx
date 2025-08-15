@@ -105,13 +105,13 @@ export function OrganizationalStructureManagement() {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">
-            {t('admin:organizational_structure.overview')}
+            {t('admin.organizational_structure.overview')}
           </TabsTrigger>
           <TabsTrigger value="list">
-            {t('admin:organizational_structure.entity_list')}
+            {t('admin.organizational_structure.entity_list')}
           </TabsTrigger>
           <TabsTrigger value="hierarchy">
-            {t('admin:organizational_structure.hierarchy')}
+            {t('admin.organizational_structure.hierarchy')}
           </TabsTrigger>
         </TabsList>
 
@@ -120,13 +120,13 @@ export function OrganizationalStructureManagement() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">
-                  {t('admin:organizational_structure.total_entities')}
+                  {t('admin.organizational_structure.total_entities')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-primary">{totalEntities}</div>
                 <p className="text-sm text-muted-foreground">
-                  {t('admin:organizational_structure.across_all_levels')}
+                  {t('admin.organizational_structure.across_all_levels')}
                 </p>
               </CardContent>
             </Card>
@@ -192,16 +192,16 @@ export function OrganizationalStructureManagement() {
               <DialogTrigger asChild>
                 <Button className="gap-2">
                   <Plus className="h-4 w-4" />
-                  {t('admin:organizational_structure.add_entity')}
+                  {t('admin.organizational_structure.add_entity')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>
-                    {t('admin:organizational_structure.add_new_entity')}
+                    {t('admin.organizational_structure.add_new_entity')}
                   </DialogTitle>
                   <DialogDescription>
-                    {t('admin:organizational_structure.feature_under_development')}
+                    {t('admin.organizational_structure.feature_under_development')}
                   </DialogDescription>
                 </DialogHeader>
               </DialogContent>

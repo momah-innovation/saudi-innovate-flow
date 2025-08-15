@@ -226,22 +226,22 @@ export function PartnersManagement() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">{t('admin:partners.management_title')}</h1>
-          <p className="text-muted-foreground">{t('admin:partners.management_description')}</p>
+          <h1 className="text-3xl font-bold">{t('admin.partners.management_title')}</h1>
+          <p className="text-muted-foreground">{t('admin.partners.management_description')}</p>
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => { resetForm(); setEditingPartner(null); }}>
               <Plus className="w-4 h-4 me-2" />
-              {t('admin:partners.add_partner')}
+              {t('admin.partners.add_partner')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{editingPartner ? t('admin:partners.edit_partner') : t('admin:partners.add_new_partner')}</DialogTitle>
+              <DialogTitle>{editingPartner ? t('admin.partners.edit_partner') : t('admin.partners.add_new_partner')}</DialogTitle>
               <DialogDescription>
-                {editingPartner ? t('admin:partners.update_partner_description') : t('admin:partners.add_partner_description')}
+                {editingPartner ? t('admin.partners.update_partner_description') : t('admin.partners.add_partner_description')}
               </DialogDescription>
             </DialogHeader>
             

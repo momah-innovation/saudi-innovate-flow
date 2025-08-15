@@ -265,25 +265,25 @@ export default function RoleRequestManagement() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold">{t('admin:role_requests.title')}</h2>
+        <h2 className="text-2xl font-bold">{t('admin.role_requests.title')}</h2>
         <p className="text-muted-foreground">
-          {t('admin:role_requests.description')}
+          {t('admin.role_requests.description')}
         </p>
       </div>
 
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">{t('admin:role_requests.filters')}</CardTitle>
+          <CardTitle className="text-lg">{t('admin.role_requests.filters')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-4">
             <div className="space-y-2">
-              <Label>{t('admin:role_requests.search')}</Label>
+              <Label>{t('admin.role_requests.search')}</Label>
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder={t('admin:role_requests.name_or_email')}
+                  placeholder={t('admin.role_requests.name_or_email')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-8"
@@ -291,13 +291,13 @@ export default function RoleRequestManagement() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>{t('admin:role_requests.status')}</Label>
+              <Label>{t('admin.role_requests.status')}</Label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">{t('admin:role_requests.all_status')}</SelectItem>
+                  <SelectItem value="all">{t('admin.role_requests.all_status')}</SelectItem>
                   {roleRequestStatusOptions.map((status) => (
                     <SelectItem key={status} value={status}>
                       {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -307,13 +307,13 @@ export default function RoleRequestManagement() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>{t('admin:role_requests.requested_role')}</Label>
+              <Label>{t('admin.role_requests.requested_role')}</Label>
               <Select value={roleFilter} onValueChange={setRoleFilter}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">{t('admin:role_requests.all_roles')}</SelectItem>
+                  <SelectItem value="all">{t('admin.role_requests.all_roles')}</SelectItem>
                   {uniqueRoles.map(role => (
                     <SelectItem key={role} value={role}>
                       {role.replace('_', ' ')}
@@ -381,13 +381,13 @@ export default function RoleRequestManagement() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{t('admin:role_requests.requester')}</TableHead>
-                <TableHead>{t('admin:role_requests.current_roles')}</TableHead>
-                <TableHead>{t('admin:role_requests.requested_role')}</TableHead>
-                <TableHead>{t('admin:role_requests.reason')}</TableHead>
-                <TableHead>{t('admin:role_requests.status')}</TableHead>
-                <TableHead>{t('admin:role_requests.requested_date')}</TableHead>
-                <TableHead>{t('admin:common.actions')}</TableHead>
+                <TableHead>{t('admin.role_requests.requester')}</TableHead>
+                <TableHead>{t('admin.role_requests.current_roles')}</TableHead>
+                <TableHead>{t('admin.role_requests.requested_role')}</TableHead>
+                <TableHead>{t('admin.role_requests.reason')}</TableHead>
+                <TableHead>{t('admin.role_requests.status')}</TableHead>
+                <TableHead>{t('admin.role_requests.requested_date')}</TableHead>
+                <TableHead>{t('admin.common.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -514,7 +514,7 @@ export default function RoleRequestManagement() {
               </div>
 
               <div className="space-y-2">
-                <Label>{t('admin:role_requests.review_notes', 'Review Notes')}</Label>
+                <Label>{t('admin.role_requests.review_notes', 'Review Notes')}</Label>
                 <Textarea
                   value={reviewNotes}
                   onChange={(e) => setReviewNotes(e.target.value)}

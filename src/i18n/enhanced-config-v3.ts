@@ -251,9 +251,13 @@ i18n
     supportedLngs: ['en', 'ar'],
     nonExplicitSupportedLngs: true,
     
-    // Default namespaces that should be loaded immediately
+    // Default namespaces that should be loaded immediately - using dot notation
     defaultNS: 'common',
     ns: ['common', 'landing', 'navigation', 'dashboard', 'admin', 'auth', 'errors', 'validation', 'system-lists'],
+    
+    // Configure for flat namespace structure (dot notation)
+    nsSeparator: '.',
+    keySeparator: '.',
     
     interpolation: {
       escapeValue: false,

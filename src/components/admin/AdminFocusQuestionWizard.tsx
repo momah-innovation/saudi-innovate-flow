@@ -117,9 +117,9 @@ export function AdminFocusQuestionWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.question_text_ar.trim()) {
-      newErrors.question_text_ar = t('admin:focus_questions.question_text_required');
+      newErrors.question_text_ar = t('admin.focus_questions.question_text_required');
     } else if (formData.question_text_ar.length < 10) {
-      newErrors.question_text_ar = t('admin:focus_questions.question_text_min_length');
+      newErrors.question_text_ar = t('admin.focus_questions.question_text_min_length');
     }
     
     setErrors(newErrors);
@@ -130,7 +130,7 @@ export function AdminFocusQuestionWizard({
     const newErrors: Record<string, string> = {};
     
     if (!formData.question_type) {
-      newErrors.question_type = t('admin:focus_questions.question_type_required');
+      newErrors.question_type = t('admin.focus_questions.question_type_required');
     }
     
     if (formData.order_sequence < 0) {
@@ -256,7 +256,7 @@ export function AdminFocusQuestionWizard({
               dir="ltr"
             />
             <p className="text-sm text-muted-foreground">
-              {t('admin:focus_question_wizard.optional_english', 'Optional English translation of the question')}
+              {t('admin.focus_question_wizard.optional_english', 'Optional English translation of the question')}
             </p>
           </div>
         </div>
@@ -346,7 +346,7 @@ export function AdminFocusQuestionWizard({
               </SelectContent>
             </Select>
             <p className="text-sm text-muted-foreground">
-              {t('admin:focus_questions.link_help')}
+              {t('admin.focus_questions.link_help')}
             </p>
           </div>
         </div>
