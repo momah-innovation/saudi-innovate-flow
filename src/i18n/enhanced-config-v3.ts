@@ -274,22 +274,40 @@ i18n
     returnObjects: false
   });
 
-// Helper function to preload namespaces for better UX
+// Enhanced helper functions for production optimization
 export const preloadNamespace = async (namespace: string, language?: string) => {
   const targetLanguage = language || i18n.language;
   
+  // Performance tracking
+  const startTime = performance.now();
+  
   if (!i18n.hasResourceBundle(targetLanguage, namespace)) {
     await loadNamespace(targetLanguage, namespace);
+    
+    const loadTime = performance.now() - startTime;
+    if (loadTime > 100) {
+      logger.warn(`Slow namespace loading detected: ${namespace} (${loadTime.toFixed(1)}ms)`, { 
+        component: 'FeatureBasedBackend' 
+      });
+    }
   }
 };
 
-// Helper function to load multiple namespaces at once
+// Optimized batch namespace loader with performance monitoring
 export const preloadNamespaces = async (namespaces: string[], language?: string) => {
   const targetLanguage = language || i18n.language;
+  const startTime = performance.now();
   
+  // Load namespaces in parallel for optimal performance
   await Promise.all(
     namespaces.map(ns => preloadNamespace(ns, targetLanguage))
   );
+  
+  const totalTime = performance.now() - startTime;
+  logger.debug(`Batch loaded ${namespaces.length} namespaces in ${totalTime.toFixed(1)}ms`, {
+    component: 'FeatureBasedBackend',
+    namespaces: namespaces.join(', ')
+  });
 };
 
 export { loadNamespace };
