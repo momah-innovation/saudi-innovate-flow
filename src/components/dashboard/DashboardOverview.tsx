@@ -19,9 +19,8 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useOptimizedDashboardCounts, useOptimizedUserSpecificCounts } from '@/hooks/useOptimizedDashboardCounts';
 import { cn } from '@/lib/utils';
-import { logger } from '@/utils/logger';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -48,20 +47,25 @@ export const DashboardOverview = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadDashboardStats();
-  }, [user]);
-
   // Use optimized hooks for dashboard data
-  const { data: dashboardCounts } = useOptimizedDashboardCounts();
-  const { data: userStats } = useOptimizedUserSpecificCounts(user?.id);
-
-  const loadDashboardStats = async () => {
-    if (!dashboardCounts) return;
-    
-    try {
+  const { data: dashboardCounts, isLoading: countsLoading } = useOptimizedDashboardCounts();
+  const { data: userStats, isLoading: userStatsLoading } = useOptimizedUserSpecificCounts(user?.id);
 
 
+  useEffect(() => {
+    if (dashboardCounts && userStats !== undefined) {
+      setStats({
+        totalIdeas: dashboardCounts.totalIdeas,
+        totalChallenges: dashboardCounts.totalChallenges,
+        totalEvents: dashboardCounts.totalEvents,
+        totalUsers: dashboardCounts.totalUsers,
+        userIdeas: userStats?.userIdeas || 0,
+        userChallenges: userStats?.userChallenges || 0,
+        userEvents: userStats?.userEvents || 0,
+      });
+      setLoading(false);
+    }
+  }, [dashboardCounts, userStats]);
   const quickActions = [
     {
       title: t('dashboard_overview.submit_new_idea'),
@@ -117,7 +121,7 @@ export const DashboardOverview = () => {
     },
   ];
 
-  if (loading) {
+  if (loading || countsLoading || userStatsLoading) {
     return (
       <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
         {/* Loading Skeleton */}

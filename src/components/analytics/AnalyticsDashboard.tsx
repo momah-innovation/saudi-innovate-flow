@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useOptimizedAnalyticsData } from '@/hooks/useOptimizedCoreData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { StatusBadge } from '@/components/ui/StatusBadge';
@@ -18,7 +19,6 @@ import {
   CheckCircle
  } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { logger } from '@/utils/logger';
 
 interface AnalyticsData {
   metric_category: string;
@@ -79,10 +79,7 @@ export function AnalyticsDashboard() {
   const [challengePerformance, setChallengePerformance] = useState<ChallengePerformance[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    loadAnalyticsData();
-  }, []);
-
+  // Use optimized analytics data hook
   const { data: rawAnalyticsData, isLoading: analyticsLoading } = useOptimizedAnalyticsData();
 
   useEffect(() => {
