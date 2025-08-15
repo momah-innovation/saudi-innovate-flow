@@ -89,7 +89,8 @@
     "apply": "Apply",
     "export": "Export",
     "import": "Import",
-    "try_again": "Try Again"
+    "try_again": "Try Again",
+    "settings": "Settings"
   },
   "placeholders": {
     "search": "Search...",

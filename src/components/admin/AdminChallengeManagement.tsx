@@ -153,10 +153,10 @@ export function AdminChallengeManagement() {
   const filters = [
     {
       id: 'status',
-      label: t('ui.status_label'),
+      label: t('common.status'),
       type: 'select' as const,
       options: [
-        { label: t('ui.all'), value: 'all' },
+        { label: t('common.actions.view'), value: 'all' },
           { label: t('status.draft'), value: 'draft' },
           { label: t('status.active'), value: 'active' },
           { label: t('status.completed'), value: 'completed' },
@@ -240,22 +240,22 @@ export function AdminChallengeManagement() {
             actions={[
               {
                 type: 'view',
-                label: t('ui.view'),
+                label: t('common.actions.view'),
                 onClick: () => handleView(challenge)
               },
               {
                 type: 'edit',
-                label: t('ui.edit'),
+                label: t('common.actions.edit'),
                 onClick: () => handleEdit(challenge)
               },
               {
                 type: 'settings',
-                label: t('ui.settings'),
+                label: t('common.actions.settings'),
                 onClick: () => handleSettings(challenge)
               },
               {
                 type: 'delete',
-                label: t('ui.delete'),
+                label: t('common.actions.delete'),
                 onClick: () => {
                   if (confirm(t('admin.challenges.delete_confirm'))) {
                     handleDelete(challenge.id);
