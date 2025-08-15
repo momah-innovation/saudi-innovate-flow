@@ -1,5 +1,4 @@
 {
-  "title": "لوحة التحكم الإدارية",
   "dashboard": {
     "title": "لوحة تحكم الإدارة",
     "user_management": "إدارة المستخدمين",
@@ -64,7 +63,30 @@
   },
   "actions": {
     "approve_request": "الموافقة على الطلب",
-    "reject_request": "رفض الطلب"
+    "reject_request": "رفض الطلب",
+    "view_details": "عرض التفاصيل",
+    "assign_expert": "تعيين خبير",
+    "add_core_team_member": "إضافة عضو فريق أساسي",
+    "manage_core_team": "إدارة الفريق الأساسي",
+    "add_stakeholder": "إضافة صاحب مصلحة",
+    "manage_stakeholders": "إدارة أصحاب المصلحة",
+    "add_department": "إضافة قسم",
+    "manage_organization": "إدارة المنظمة",
+    "add_focus_question": "إضافة سؤال محوري",
+    "manage_focus_questions": "إدارة الأسئلة المحورية",
+    "add_partner": "إضافة شريك",
+    "manage_partners": "إدارة الشركاء",
+    "add_sector": "إضافة قطاع",
+    "manage_sectors": "إدارة القطاعات",
+    "review_ideas": "مراجعة الأفكار",
+    "manage_ideas": "إدارة الأفكار",
+    "add_challenge": "إضافة تحدي",
+    "manage_challenges": "إدارة التحديات",
+    "manage_evaluations": "إدارة التقييمات",
+    "manage_storage": "إدارة التخزين",
+    "security_monitor": "مراقب الأمان",
+    "access_interface": "الوصول للواجهة",
+    "manage_expert_assignments": "إدارة تعيينات الخبراء"
   },
   "experts": {
     "expert_profile": "ملف الخبير"
@@ -233,31 +255,6 @@
     "stable": "مستقر",
     "used": "مستخدم",
     "security_score": "نقاط الأمان"
-  },
-  "actions": {
-    "view_details": "عرض التفاصيل",
-    "assign_expert": "تعيين خبير",
-    "add_core_team_member": "إضافة عضو فريق أساسي",
-    "manage_core_team": "إدارة الفريق الأساسي",
-    "add_stakeholder": "إضافة صاحب مصلحة",
-    "manage_stakeholders": "إدارة أصحاب المصلحة",
-    "add_department": "إضافة قسم",
-    "manage_organization": "إدارة المنظمة",
-    "add_focus_question": "إضافة سؤال محوري",
-    "manage_focus_questions": "إدارة الأسئلة المحورية",
-    "add_partner": "إضافة شريك",
-    "manage_partners": "إدارة الشركاء",
-    "add_sector": "إضافة قطاع",
-    "manage_sectors": "إدارة القطاعات",
-    "review_ideas": "مراجعة الأفكار",
-    "manage_ideas": "إدارة الأفكار",
-    "add_challenge": "إضافة تحدي",
-    "manage_challenges": "إدارة التحديات",
-    "manage_evaluations": "إدارة التقييمات",
-    "manage_storage": "إدارة التخزين",
-    "security_monitor": "مراقب الأمان",
-    "access_interface": "الوصول للواجهة",
-    "manage_expert_assignments": "إدارة تعيينات الخبراء"
   },
   "tabs": {
     "user_statistics": "إحصائيات المستخدمين",
