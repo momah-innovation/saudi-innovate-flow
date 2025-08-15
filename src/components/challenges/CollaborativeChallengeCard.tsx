@@ -91,17 +91,17 @@ export const CollaborativeChallengeCard = ({
     )
     .slice(0, 3);
 
-  const { setInterval: scheduleInterval } = useTimerManager();
+  // Removed useTimerManager to prevent hook violations
 
   useEffect(() => {
     // Simulate real-time participant updates
-    const clearTimer = scheduleInterval(() => {
+    const intervalId = setInterval(() => {
       const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
       setLiveParticipants(prev => Math.max(0, prev + variation));
     }, 30000); // Update every 30 seconds
 
-    return clearTimer;
-  }, [scheduleInterval]);
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Get mappings from config
   const statusMapping = getStatusMapping(challenge.status);

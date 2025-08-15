@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useTimerManager } from '@/utils/timerManager';
 import { Button } from '@/components/ui/button';
 import { 
   Target, 
@@ -65,14 +64,14 @@ export const EnhancedChallengesHero = ({
     { icon: Trophy, value: completedChallenges, label: isRTL ? 'مكتمل' : 'completed', color: 'text-yellow-400', trend: '+15%' }
   ];
 
-  const { setInterval: scheduleInterval } = useTimerManager();
+  // Removed useTimerManager to prevent hook violations
 
   React.useEffect(() => {
-    const clearTimer = scheduleInterval(() => {
+    const intervalId = setInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
     }, 3000);
-    return clearTimer;
-  }, [stats.length, scheduleInterval]);
+    return () => clearInterval(intervalId);
+  }, [stats.length]);
 
   return (
     <div className="relative overflow-hidden">

@@ -62,7 +62,7 @@ export const CollaborativeOpportunityCard = ({
   viewMode = 'cards',
   showCollaboration = true
 }: CollaborativeOpportunityCardProps) => {
-  const { setInterval: scheduleInterval } = useTimerManager();
+  // Removed useTimerManager to prevent hook violations
   const { isRTL } = useDirection();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [liveApplications, setLiveApplications] = useState(opportunity.applications_count || 0);
@@ -91,7 +91,7 @@ export const CollaborativeOpportunityCard = ({
 
   useEffect(() => {
     // Simulate real-time updates for applications and views
-    const cleanup = scheduleInterval(() => {
+    const intervalId = setInterval(() => {
       if (Math.random() > 0.85) { // 15% chance of update
         const variation = Math.floor(Math.random() * 2); // 0 or 1
         setLiveApplications(prev => prev + variation);
@@ -99,7 +99,7 @@ export const CollaborativeOpportunityCard = ({
       }
     }, 60000); // Update every minute
 
-    return cleanup;
+    return () => clearInterval(intervalId);
   }, []);
 
   const getStatusColor = (status: string) => {

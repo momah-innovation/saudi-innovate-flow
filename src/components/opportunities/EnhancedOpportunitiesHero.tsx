@@ -63,14 +63,14 @@ export const EnhancedOpportunitiesHero = ({
     { icon: DollarSign, value: `${Math.floor(totalBudget / 1000000)}M+`, label: isRTL ? 'ر.س' : 'SAR', color: 'text-yellow-400' }
   ];
 
-  const { setInterval: scheduleInterval } = useTimerManager();
+  // Removed useTimerManager to prevent hook violations
 
   useEffect(() => {
-    const clearTimer = scheduleInterval(() => {
+    const intervalId = setInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
     }, 3000);
-    return clearTimer;
-  }, [stats.length, scheduleInterval]);
+    return () => clearInterval(intervalId);
+  }, [stats.length]);
 
   return (
     <div className="relative overflow-hidden">
