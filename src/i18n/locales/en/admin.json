@@ -1,0 +1,205 @@
+{
+  "dashboard": {
+    "title": "Admin Dashboard",
+    "overview": "Overview",
+    "management": "Management",
+    "users": "Users",
+    "storage": "Storage",
+    "security": "Security",
+    "advanced": "Advanced",
+    "loading": "Loading dashboard...",
+    "refresh": "Refresh",
+    "refreshed": "Refreshed",
+    "refresh_description": "Dashboard data has been refreshed"
+  },
+  "cards": {
+    "user_management": {
+      "title": "User Management",
+      "description": "Manage users, roles, and permissions",
+      "label": "Active Users"
+    },
+    "core_team_management": {
+      "title": "Core Team Management", 
+      "description": "Manage core team members and assignments",
+      "label": "Team Members"
+    },
+    "expert_assignment_management": {
+      "title": "Expert Assignment Management",
+      "description": "Assign experts to challenges and manage evaluations",
+      "label": "Active Assignments"
+    },
+    "storage_management": {
+      "title": "Storage Management",
+      "description": "Monitor and manage file storage",
+      "label": "Storage Used"
+    },
+    "analytics": {
+      "title": "Analytics",
+      "description": "View system analytics and reports",
+      "label": "Uptime"
+    },
+    "storage_policies": {
+      "title": "Storage Policies",
+      "description": "Configure storage access policies",
+      "label": "Active Policies"
+    },
+    "system_settings": {
+      "title": "System Settings",
+      "description": "Configure system-wide settings",
+      "label": "Pending Updates"
+    },
+    "security_monitor": {
+      "title": "Security Monitor",
+      "description": "Monitor security events and alerts",
+      "label": "Recent Alerts"
+    },
+    "focus_questions_management": {
+      "title": "Focus Questions Management",
+      "description": "Manage questions that guide challenges",
+      "label": "Active Questions"
+    },
+    "ideas_management": {
+      "title": "Ideas Management",
+      "description": "Review and manage submitted ideas",
+      "label": "Total Ideas"
+    },
+    "challenges_management": {
+      "title": "Challenges Management",
+      "description": "Create and manage innovation challenges",
+      "label": "Active Challenges"
+    },
+    "partners_management": {
+      "title": "Partners Management",
+      "description": "Manage partner organizations",
+      "label": "Active Partners"
+    },
+    "sectors_management": {
+      "title": "Sectors Management",
+      "description": "Manage innovation sectors",
+      "label": "Sectors"
+    }
+  },
+  "advanced_cards": {
+    "security_advanced": {
+      "title": "Security Advanced",
+      "description": "Advanced security monitoring and threat detection",
+      "label": "Active Threats"
+    },
+    "access_control": {
+      "title": "Access Control",
+      "description": "User roles and permission management",
+      "label": "Role Assignments"
+    },
+    "elevation_monitor": {
+      "title": "Elevation Monitor",
+      "description": "Admin privilege escalation tracking",
+      "label": "Elevation Events"
+    },
+    "analytics_advanced": {
+      "title": "Analytics Advanced",
+      "description": "Real-time analytics and user insights",
+      "label": "Data Points"
+    },
+    "ai_management": {
+      "title": "AI Management",
+      "description": "AI services and model configuration",
+      "label": "AI Features"
+    },
+    "file_management": {
+      "title": "File Management",
+      "description": "Advanced file operations and lifecycle",
+      "label": "Total Storage"
+    },
+    "challenge_analytics": {
+      "title": "Challenge Analytics",
+      "description": "Challenge engagement and performance metrics",
+      "label": "Active Challenges"
+    }
+  },
+  "stats": {
+    "total_users": "Total Users",
+    "active_users": "Active Users",
+    "inactive_users": "Inactive Users",
+    "storage_used": "Storage Used",
+    "uptime": "System Uptime",
+    "security_alerts": "Security Alerts",
+    "pending_updates": "Pending Updates",
+    "active_policies": "Active Policies",
+    "core_team_members": "Core Team Members",
+    "active_members": "Active Members",
+    "active_projects": "Active Projects",
+    "total_stakeholders": "Total Stakeholders",
+    "active_stakeholders": "Active Stakeholders",
+    "pending_reviews": "Pending Reviews",
+    "departments": "Departments",
+    "active_domains": "Active Domains",
+    "services": "Services",
+    "total_questions": "Total Questions",
+    "active_questions": "Active Questions",
+    "draft_questions": "Draft Questions",
+    "total_partners": "Total Partners",
+    "active_partners": "Active Partners",
+    "total_sectors": "Total Sectors",
+    "active_sectors": "Active Sectors",
+    "total_challenges": "Total Challenges",
+    "total_ideas": "Total Ideas",
+    "approved_ideas": "Approved Ideas",
+    "pending_review": "Pending Review",
+    "published": "Published",
+    "draft": "Draft",
+    "evaluation_criteria": "Evaluation Criteria",
+    "active_templates": "Active Templates",
+    "evaluation_rules": "Evaluation Rules",
+    "used_storage": "Used Storage",
+    "storage_buckets": "Storage Buckets",
+    "system_health": "Healthy",
+    "available_experts": "Available Experts"
+  },
+  "actions": {
+    "view_details": "View Details",
+    "assign_expert": "Assign Expert",
+    "add_core_team_member": "Add Core Team Member",
+    "manage_core_team": "Manage Core Team",
+    "add_stakeholder": "Add Stakeholder",
+    "manage_stakeholders": "Manage Stakeholders",
+    "add_department": "Add Department",
+    "manage_organization": "Manage Organization",
+    "add_focus_question": "Add Focus Question",
+    "manage_focus_questions": "Manage Focus Questions",
+    "add_partner": "Add Partner",
+    "manage_partners": "Manage Partners",
+    "add_sector": "Add Sector",
+    "manage_sectors": "Manage Sectors",
+    "review_ideas": "Review Ideas",
+    "manage_ideas": "Manage Ideas",
+    "add_challenge": "Add Challenge",
+    "manage_challenges": "Manage Challenges",
+    "manage_evaluations": "Manage Evaluations",
+    "manage_storage": "Manage Storage",
+    "security_monitor": "Security Monitor",
+    "access_interface": "Access Interface",
+    "manage_expert_assignments": "Manage Expert Assignments"
+  },
+  "tabs": {
+    "user_statistics": "User Statistics",
+    "expert_assignment_management": "Expert Assignment Management",
+    "core_team_management": "Core Team Management",
+    "stakeholders_management": "Stakeholders Management",
+    "organizational_structure": "Organizational Structure",
+    "focus_questions_management": "Focus Questions Management",
+    "partners_management": "Partners Management",
+    "sectors_management": "Sectors Management",
+    "ideas_management": "Ideas Management",
+    "challenges_management": "Challenges Management",
+    "evaluation_management": "Evaluation Management",
+    "storage_overview": "Storage Overview",
+    "security_status": "Security Status",
+    "advanced_admin_interfaces": "Advanced Admin Interfaces"
+  },
+  "summary": {
+    "implementation_complete": "Implementation Complete",
+    "advanced_pages": "Advanced Pages",
+    "new_components": "New Components",
+    "description": "Complete admin interface suite with real-time monitoring, analytics, and advanced controls"
+  }
+}

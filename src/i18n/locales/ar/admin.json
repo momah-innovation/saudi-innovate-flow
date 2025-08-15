@@ -1,0 +1,205 @@
+{
+  "dashboard": {
+    "title": "لوحة تحكم الإدارة",
+    "overview": "نظرة عامة",
+    "management": "الإدارة",
+    "users": "المستخدمون",
+    "storage": "التخزين",
+    "security": "الأمان",
+    "advanced": "متقدم",
+    "loading": "جاري تحميل لوحة التحكم...",
+    "refresh": "تحديث",
+    "refreshed": "تم التحديث",
+    "refresh_description": "تم تحديث بيانات لوحة التحكم"
+  },
+  "cards": {
+    "user_management": {
+      "title": "إدارة المستخدمين",
+      "description": "إدارة المستخدمين والأدوار والصلاحيات",
+      "label": "المستخدمون النشطون"
+    },
+    "core_team_management": {
+      "title": "إدارة الفريق الأساسي", 
+      "description": "إدارة أعضاء الفريق الأساسي والمهام",
+      "label": "أعضاء الفريق"
+    },
+    "expert_assignment_management": {
+      "title": "إدارة تعيين الخبراء",
+      "description": "تعيين الخبراء للتحديات وإدارة التقييمات",
+      "label": "التعيينات النشطة"
+    },
+    "storage_management": {
+      "title": "إدارة التخزين",
+      "description": "مراقبة وإدارة تخزين الملفات",
+      "label": "التخزين المستخدم"
+    },
+    "analytics": {
+      "title": "التحليلات",
+      "description": "عرض تحليلات النظام والتقارير",
+      "label": "وقت التشغيل"
+    },
+    "storage_policies": {
+      "title": "سياسات التخزين",
+      "description": "تكوين سياسات الوصول للتخزين",
+      "label": "السياسات النشطة"
+    },
+    "system_settings": {
+      "title": "إعدادات النظام",
+      "description": "تكوين إعدادات النظام العامة",
+      "label": "التحديثات المعلقة"
+    },
+    "security_monitor": {
+      "title": "مراقب الأمان",
+      "description": "مراقبة أحداث الأمان والتنبيهات",
+      "label": "التنبيهات الأخيرة"
+    },
+    "focus_questions_management": {
+      "title": "إدارة الأسئلة المحورية",
+      "description": "إدارة الأسئلة التي توجه التحديات",
+      "label": "الأسئلة النشطة"
+    },
+    "ideas_management": {
+      "title": "إدارة الأفكار",
+      "description": "مراجعة وإدارة الأفكار المقدمة",
+      "label": "إجمالي الأفكار"
+    },
+    "challenges_management": {
+      "title": "إدارة التحديات",
+      "description": "إنشاء وإدارة تحديات الابتكار",
+      "label": "التحديات النشطة"
+    },
+    "partners_management": {
+      "title": "إدارة الشركاء",
+      "description": "إدارة المنظمات الشريكة",
+      "label": "الشركاء النشطون"
+    },
+    "sectors_management": {
+      "title": "إدارة القطاعات",
+      "description": "إدارة قطاعات الابتكار",
+      "label": "القطاعات"
+    }
+  },
+  "advanced_cards": {
+    "security_advanced": {
+      "title": "الأمان المتقدم",
+      "description": "مراقبة الأمان المتقدمة وكشف التهديدات",
+      "label": "التهديدات النشطة"
+    },
+    "access_control": {
+      "title": "التحكم في الوصول",
+      "description": "إدارة أدوار المستخدمين والصلاحيات",
+      "label": "تعيينات الأدوار"
+    },
+    "elevation_monitor": {
+      "title": "مراقب الترقية",
+      "description": "تتبع ترقية امتيازات المشرف",
+      "label": "أحداث الترقية"
+    },
+    "analytics_advanced": {
+      "title": "التحليلات المتقدمة",
+      "description": "التحليلات في الوقت الفعلي ورؤى المستخدمين",
+      "label": "نقاط البيانات"
+    },
+    "ai_management": {
+      "title": "إدارة الذكاء الاصطناعي",
+      "description": "خدمات الذكاء الاصطناعي وتكوين النماذج",
+      "label": "ميزات الذكاء الاصطناعي"
+    },
+    "file_management": {
+      "title": "إدارة الملفات",
+      "description": "عمليات الملفات المتقدمة ودورة الحياة",
+      "label": "إجمالي التخزين"
+    },
+    "challenge_analytics": {
+      "title": "تحليلات التحديات",
+      "description": "مقاييس المشاركة والأداء للتحديات",
+      "label": "التحديات النشطة"
+    }
+  },
+  "stats": {
+    "total_users": "إجمالي المستخدمين",
+    "active_users": "المستخدمون النشطون",
+    "inactive_users": "المستخدمون غير النشطين",
+    "storage_used": "التخزين المستخدم",
+    "uptime": "وقت تشغيل النظام",
+    "security_alerts": "تنبيهات الأمان",
+    "pending_updates": "التحديثات المعلقة",
+    "active_policies": "السياسات النشطة",
+    "core_team_members": "أعضاء الفريق الأساسي",
+    "active_members": "الأعضاء النشطون",
+    "active_projects": "المشاريع النشطة",
+    "total_stakeholders": "إجمالي أصحاب المصلحة",
+    "active_stakeholders": "أصحاب المصلحة النشطون",
+    "pending_reviews": "المراجعات المعلقة",
+    "departments": "الأقسام",
+    "active_domains": "المجالات النشطة",
+    "services": "الخدمات",
+    "total_questions": "إجمالي الأسئلة",
+    "active_questions": "الأسئلة النشطة",
+    "draft_questions": "الأسئلة المسودة",
+    "total_partners": "إجمالي الشركاء",
+    "active_partners": "الشركاء النشطون",
+    "total_sectors": "إجمالي القطاعات",
+    "active_sectors": "القطاعات النشطة",
+    "total_challenges": "إجمالي التحديات",
+    "total_ideas": "إجمالي الأفكار",
+    "approved_ideas": "الأفكار المعتمدة",
+    "pending_review": "في انتظار المراجعة",
+    "published": "منشور",
+    "draft": "مسودة",
+    "evaluation_criteria": "معايير التقييم",
+    "active_templates": "القوالب النشطة",
+    "evaluation_rules": "قواعد التقييم",
+    "used_storage": "التخزين المستخدم",
+    "storage_buckets": "مجموعات التخزين",
+    "system_health": "سليم",
+    "available_experts": "الخبراء المتاحون"
+  },
+  "actions": {
+    "view_details": "عرض التفاصيل",
+    "assign_expert": "تعيين خبير",
+    "add_core_team_member": "إضافة عضو فريق أساسي",
+    "manage_core_team": "إدارة الفريق الأساسي",
+    "add_stakeholder": "إضافة صاحب مصلحة",
+    "manage_stakeholders": "إدارة أصحاب المصلحة",
+    "add_department": "إضافة قسم",
+    "manage_organization": "إدارة المنظمة",
+    "add_focus_question": "إضافة سؤال محوري",
+    "manage_focus_questions": "إدارة الأسئلة المحورية",
+    "add_partner": "إضافة شريك",
+    "manage_partners": "إدارة الشركاء",
+    "add_sector": "إضافة قطاع",
+    "manage_sectors": "إدارة القطاعات",
+    "review_ideas": "مراجعة الأفكار",
+    "manage_ideas": "إدارة الأفكار",
+    "add_challenge": "إضافة تحدي",
+    "manage_challenges": "إدارة التحديات",
+    "manage_evaluations": "إدارة التقييمات",
+    "manage_storage": "إدارة التخزين",
+    "security_monitor": "مراقب الأمان",
+    "access_interface": "الوصول للواجهة",
+    "manage_expert_assignments": "إدارة تعيينات الخبراء"
+  },
+  "tabs": {
+    "user_statistics": "إحصائيات المستخدمين",
+    "expert_assignment_management": "إدارة تعيين الخبراء",
+    "core_team_management": "إدارة الفريق الأساسي",
+    "stakeholders_management": "إدارة أصحاب المصلحة",
+    "organizational_structure": "الهيكل التنظيمي",
+    "focus_questions_management": "إدارة الأسئلة المحورية",
+    "partners_management": "إدارة الشركاء",
+    "sectors_management": "إدارة القطاعات",
+    "ideas_management": "إدارة الأفكار",
+    "challenges_management": "إدارة التحديات",
+    "evaluation_management": "إدارة التقييم",
+    "storage_overview": "نظرة عامة على التخزين",
+    "security_status": "حالة الأمان",
+    "advanced_admin_interfaces": "واجهات الإدارة المتقدمة"
+  },
+  "summary": {
+    "implementation_complete": "اكتمال التنفيذ",
+    "advanced_pages": "الصفحات المتقدمة",
+    "new_components": "المكونات الجديدة",
+    "description": "مجموعة واجهات إدارة كاملة مع المراقبة في الوقت الفعلي والتحليلات والتحكم المتقدم"
+  }
+}

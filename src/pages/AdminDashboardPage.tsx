@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { debugLog } from '@/utils/debugLogger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { AdminDashboardHero } from '@/components/admin/AdminDashboardHero';
@@ -39,6 +40,7 @@ export default function AdminDashboard() {
   debugLog.debug('AdminDashboard page loaded - Management tab should be visible');
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const [loading, setLoading] = useState(true);
   const [activityDialogOpen, setActivityDialogOpen] = useState(false);
   const [healthDialogOpen, setHealthDialogOpen] = useState(false);
@@ -55,52 +57,52 @@ export default function AdminDashboard() {
 
   const adminCards = [
     {
-      title: "User Management",
-      description: "Manage users, roles, and permissions",
+      title: t('admin.cards.user_management.title'),
+      description: t('admin.cards.user_management.description'),
       icon: Users,
       href: "/admin/users",
       count: "1,234",
-      label: "Active Users"
+      label: t('admin.cards.user_management.label')
     },
     {
-      title: "Core Team Management",
-      description: "Manage core team members and assignments",
+      title: t('admin.cards.core_team_management.title'),
+      description: t('admin.cards.core_team_management.description'),
       icon: Users,
       href: "/admin/core-team",
       count: "12",
-      label: "Team Members"
+      label: t('admin.cards.core_team_management.label')
     },
     {
-      title: "Expert Assignment Management",
-      description: "Assign experts to challenges and manage evaluations", 
+      title: t('admin.cards.expert_assignment_management.title'),
+      description: t('admin.cards.expert_assignment_management.description'), 
       icon: UserCheck,
       href: "/admin/expert-assignments",
       count: "24",
-      label: "Active Assignments"
+      label: t('admin.cards.expert_assignment_management.label')
     },
     {
-      title: "Storage Management", 
-      description: "Monitor and manage file storage",
+      title: t('admin.cards.storage_management.title'), 
+      description: t('admin.cards.storage_management.description'),
       icon: Database,
       href: "/admin/storage",
       count: "2.4 GB",
-      label: "Storage Used"
+      label: t('admin.cards.storage_management.label')
     },
     {
-      title: "Analytics",
-      description: "View system analytics and reports", 
+      title: t('admin.cards.analytics.title'),
+      description: t('admin.cards.analytics.description'), 
       icon: BarChart3,
       href: "/admin/system-analytics",
       count: "98.5%",
-      label: "Uptime"
+      label: t('admin.cards.analytics.label')
     },
     {
-      title: "Storage Policies",
-      description: "Configure storage access policies",
+      title: t('admin.cards.storage_policies.title'),
+      description: t('admin.cards.storage_policies.description'),
       icon: HardDrive, 
       href: "/admin/storage/policies",
       count: "12",
-      label: "Active Policies"
+      label: t('admin.cards.storage_policies.label')
     },
     {
       title: "System Settings",
@@ -300,12 +302,12 @@ export default function AdminDashboard() {
 
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="management">Management</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="storage">Storage</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-            <TabsTrigger value="advanced">Advanced</TabsTrigger>
+            <TabsTrigger value="overview">{t('admin.dashboard.overview')}</TabsTrigger>
+            <TabsTrigger value="management">{t('admin.dashboard.management')}</TabsTrigger>
+            <TabsTrigger value="users">{t('admin.dashboard.users')}</TabsTrigger>
+            <TabsTrigger value="storage">{t('admin.dashboard.storage')}</TabsTrigger>
+            <TabsTrigger value="security">{t('admin.dashboard.security')}</TabsTrigger>
+            <TabsTrigger value="advanced">{t('admin.dashboard.advanced')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -343,7 +345,7 @@ export default function AdminDashboard() {
                         }}
                       >
                         <Eye className="w-3 h-3 mr-2" />
-                        View Details
+                        {t('admin.actions.view_details')}
                       </Button>
                     </CardContent>
                   </Card>
