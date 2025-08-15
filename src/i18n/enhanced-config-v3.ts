@@ -142,6 +142,18 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/opportunities.json');
         break;
         
+      case 'ideas-wizard':
+        translations = language === 'en'
+          ? await import('./locales/en/ideas/wizard.json')
+          : await import('./locales/ar/ideas/wizard.json');
+        break;
+        
+      case 'collaboration':
+        translations = language === 'en'
+          ? await import('./locales/en/collaboration.json')
+          : await import('./locales/ar/collaboration.json');
+        break;
+        
       case 'profile':
         translations = language === 'en'
           ? await import('./locales/en/profile.json')

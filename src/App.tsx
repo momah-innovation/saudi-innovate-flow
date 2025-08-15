@@ -16,13 +16,24 @@ import { SidebarPersistenceProvider } from "@/contexts/SidebarContext";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import { UploaderSettingsProvider } from "./contexts/UploaderSettingsContext";
 import { UnifiedRouter } from '@/routing/UnifiedRouter';
+import { useTranslationAppShell, preloadCriticalTranslations } from '@/hooks/useTranslationAppShell';
+import { useEffect } from 'react';
 
 // Use the isolated query client to prevent React Error #321
 import { createIsolatedQueryClient } from '@/lib/query/isolated-query-client';
 
 const queryClient = createIsolatedQueryClient();
 
+// Enhanced App component with translation system integration
 const App = () => {
+  // Initialize translation appshell integration
+  useTranslationAppShell();
+
+  // Preload critical translations on app startup
+  useEffect(() => {
+    preloadCriticalTranslations();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>
