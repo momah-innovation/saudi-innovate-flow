@@ -1,4 +1,6 @@
 {
+  "discover": "Discover",
+  "events": "Events",
   "main": {
     "home": "Home",
     "dashboard": "Dashboard",
