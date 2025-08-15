@@ -210,7 +210,7 @@ export const useUnifiedDashboardData = (
         isLoading: false,
       }));
     }
-  }, [dashboardStats, adminMetrics, calculateRoleSpecificStats, userProfile, userRole]);
+  }, [dashboardStats.stats, dashboardStats.isLoading, dashboardStats.isError, dashboardStats.error, adminMetrics.metrics, adminMetrics.isLoading, adminMetrics.isError, adminMetrics.error, calculateRoleSpecificStats, userProfile, userRole]);
 
   const refresh = useCallback(async () => {
     setIsRefreshing(true);
