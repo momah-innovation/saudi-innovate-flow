@@ -8,17 +8,17 @@ import { logger } from '@/utils/logger';
 // Enhanced query configuration with optimized defaults
 const queryConfig: DefaultOptions = {
   queries: {
-    // Cache for 5 minutes by default
-    staleTime: 5 * 60 * 1000,
-    // Keep in cache for 10 minutes
-    gcTime: 10 * 60 * 1000,
+    // Cache for 2 minutes by default (reduced from 5)
+    staleTime: 2 * 60 * 1000,
+    // Keep in cache for 5 minutes (reduced from 10)
+    gcTime: 5 * 60 * 1000,
     // Disable retries to prevent hook ordering issues
     retry: false,
     // Retry delay with exponential backoff
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-    // Refetch on window focus for critical data
-    refetchOnWindowFocus: true,
-    // Background refetching
+    // Disable refetching on window focus for performance
+    refetchOnWindowFocus: false,
+    // Background refetching only on reconnect
     refetchOnReconnect: true,
     // Network mode
     networkMode: 'online'

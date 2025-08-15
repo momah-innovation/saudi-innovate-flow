@@ -178,6 +178,34 @@
     "select_deputy": "اختر النائب",
     "select_department": "اختر القسم"
   },
+  "nav": {
+    "workspace": "مساحة العمل",
+    "content_management": "إدارة المحتوى",
+    "analytics": "التحليلات",
+    "settings": "الإعدادات",
+    "security": "الأمان",
+    "database": "قاعدة البيانات",
+    "help": "المساعدة",
+    "notifications": "الإشعارات",
+    "dashboard": "لوحة القيادة",
+    "challenges": "التحديات",
+    "events": "الفعاليات",
+    "ideas": "الأفكار",
+    "opportunities": "الفرص",
+    "collaboration": "التعاون",
+    "navigation_menu": "قائمة التنقل",
+    "group": {
+      "main_navigation": "التنقل الرئيسي",
+      "innovation_hub": "مركز الابتكار",
+      "administration": "الإدارة",
+      "system": "النظام",
+      "help_support": "المساعدة والدعم"
+    }
+  },
+  "system": {
+    "title": "منظومة الابتكار"
+  },
+  "search_placeholder": "البحث...",
   "validation": {
     "validation_error": "خطأ في التحقق",
     "required_field": "الحقل مطلوب: {{field}}"
