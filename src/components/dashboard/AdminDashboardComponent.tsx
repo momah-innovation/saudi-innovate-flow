@@ -175,56 +175,56 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       category: 'management'
     },
     {
-      title: t('admin.dashboard.expert_assignment', 'Expert Assignment Management'),
-      description: t('admin.dashboard.expert_assignment_desc', 'Assign experts to challenges and manage evaluations'),
+      title: t('admin:dashboard.expert_assignment', 'Expert Assignment Management'),
+      description: t('admin:dashboard.expert_assignment_desc', 'Assign experts to challenges and manage evaluations'),
       icon: Users,
       action: () => navigate('/admin/expert-assignments'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.core_team_management', 'Core Team Management'),
-      description: t('admin.dashboard.core_team_management_desc', 'Manage core team members and projects'),
+      title: t('admin:dashboard.core_team_management', 'Core Team Management'),
+      description: t('admin:dashboard.core_team_management_desc', 'Manage core team members and projects'),
       icon: Users,
       action: () => navigate('/admin/core-team'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.organizational_structure', 'Organizational Structure'),
-      description: t('admin.dashboard.organizational_structure_desc', 'Manage organizational hierarchy and departments'),
+      title: t('admin:dashboard.organizational_structure', 'Organizational Structure'),
+      description: t('admin:dashboard.organizational_structure_desc', 'Manage organizational hierarchy and departments'),
       icon: Building,
       action: () => navigate('/admin/organizational-structure'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.stakeholders_management', 'Stakeholders Management'),
-      description: t('admin.dashboard.stakeholders_management_desc', 'Manage stakeholder relationships and engagement'),
+      title: t('admin:dashboard.stakeholders_management', 'Stakeholders Management'),
+      description: t('admin:dashboard.stakeholders_management_desc', 'Manage stakeholder relationships and engagement'),
       icon: Users,
       action: () => navigate('/admin/stakeholders'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.teams_management', 'Teams Management'),
-      description: t('admin.dashboard.teams_management_desc', 'Organize work teams and projects'),
+      title: t('admin:dashboard.teams_management', 'Teams Management'),
+      description: t('admin:dashboard.teams_management_desc', 'Organize work teams and projects'),
       icon: Users,
       action: () => navigate('/admin/teams'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.entities_management', 'Entities Management'),
-      description: t('admin.dashboard.entities_management_desc', 'Manage organizational entities and institutions'),
+      title: t('admin:dashboard.entities_management', 'Entities Management'),
+      description: t('admin:dashboard.entities_management_desc', 'Manage organizational entities and institutions'),
       icon: Building,
       action: () => navigate('/admin/entities'),
       show: canManageSystem,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.evaluation_management', 'Evaluation Management'),
-      description: t('admin.dashboard.evaluation_management_desc', 'Manage evaluation criteria, templates, and rules'),
+      title: t('admin:dashboard.evaluation_management', 'Evaluation Management'),
+      description: t('admin:dashboard.evaluation_management_desc', 'Manage evaluation criteria, templates, and rules'),
       icon: Target,
       action: () => navigate('/admin/evaluation-management'),
       show: canManageSystem,
@@ -735,7 +735,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                     onClick={action.action}
                   >
                     <ArrowRight className="w-3 h-3 mr-2" />
-                    {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
+                    {t('admin:actions.access_interface')}
                   </Button>
                 </CardContent>
               </Card>
@@ -840,7 +840,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                     onClick={action.action}
                   >
                     <ArrowRight className="w-3 h-3 mr-2" />
-                    {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
+                    {t('admin:actions.access_interface')}
                   </Button>
                 </CardContent>
               </Card>
@@ -875,7 +875,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                       onClick={() => navigate(card.href)}
                     >
                       <Eye className="w-3 h-3 mr-2" />
-                      {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
+                      {t('admin:actions.access_interface')}
                     </Button>
                   </CardContent>
                 </Card>
