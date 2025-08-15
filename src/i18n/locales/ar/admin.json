@@ -535,6 +535,28 @@
       "low": "منخفض",
       "medium": "متوسط",
       "high": "عالي"
+    },
+    "dashboard": {
+      "access_control_desc": "إدارة التحكم في الوصول للصفحات والميزات",
+      "challenge_management": "إدارة التحديات",
+      "challenge_management_desc": "إنشاء وإدارة التحديات والمسابقات",
+      "ideas_management": "إدارة الأفكار",
+      "ideas_management_desc": "مراجعة وإدارة الأفكار المقدمة",
+      "analytics_reports": "التحليلات والتقارير",
+      "analytics_reports_desc": "عرض تقارير النظام والتحليلات المتقدمة",
+      "system_settings": "إعدادات النظام",
+      "system_settings_desc": "تكوين إعدادات النظام الشاملة",
+      "events_management": "إدارة الأحداث",
+      "events_management_desc": "تنظيم وإدارة الأحداث والمؤتمرات",
+      "campaigns_management": "إدارة الحملات",
+      "campaigns_management_desc": "إنشاء وإدارة حملات الابتكار",
+      "partners_management": "إدارة الشركاء",
+      "partners_management_desc": "إدارة الشراكات والتعاون الخارجي",
+      "sectors_management": "إدارة القطاعات",
+      "sectors_management_desc": "إدارة قطاعات ومجالات الابتكار",
+      "expert_assignment": "إدارة تعيين الخبراء",
+      "expert_assignment_desc": "تعيين الخبراء للتحديات وإدارة التقييمات",
+      "core_team_management": "إدارة الفريق الأساسي"
     }
   }
 }
