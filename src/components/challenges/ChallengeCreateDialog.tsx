@@ -79,8 +79,8 @@ export function ChallengeCreateDialog({
       if (error) throw error;
 
       toast({
-        title: "تم إنشاء التحدي بنجاح",
-        description: `تم إنشاء التحدي "${formData.title_ar}" بنجاح`,
+        title: t('challenges.create_success', 'Challenge Created Successfully'),
+        description: t('challenges.create_success_desc', `Challenge "${formData.title_ar}" was created successfully`),
       });
 
       onOpenChange(false);
@@ -113,8 +113,8 @@ export function ChallengeCreateDialog({
       setCurrentStep(1);
     } catch (error) {
       toast({
-        title: "خطأ",
-        description: "فشل في إنشاء التحدي",
+        title: t('error', 'Error'),
+        description: t('challenges.create_failed', 'Failed to create challenge'),
         variant: "destructive",
       });
     }
@@ -371,7 +371,7 @@ export function ChallengeCreateDialog({
         <DialogHeader>
           <DialogTitle className={cn("flex items-center gap-2", challengesPageConfig.ui.colors.text.primary)}>
             <Plus className={cn("h-5 w-5", challengesPageConfig.ui.colors.stats.green)} />
-            إنشاء تحدي جديد
+            {t('challenges.create_new', 'Create New Challenge')}
           </DialogTitle>
           <DialogDescription className={challengesPageConfig.ui.colors.text.secondary}>
             الخطوة {currentStep} من 3 - {

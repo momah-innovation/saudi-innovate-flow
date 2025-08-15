@@ -18,5 +18,29 @@
   "individual": "فردي",
   "joined": "انضم في",
   "by": "بواسطة",
-  "unknown": "مجهول"
+  "unknown": "مجهول",
+  "explore_challenges": "استكشف التحديات",
+  "create_challenge": "إنشاء تحدي",
+  "advanced_filters": "فلاتر متقدمة",
+  "active": "نشط",
+  "featured": "مميز",
+  "end_date": "تاريخ الانتهاء",
+  "view_details": "عرض التفاصيل",
+  "saved_challenges": "التحديات المحفوظة",
+  "view_saved": "عرض المحفوظات",
+  "achievements": "الإنجازات",
+  "my_achievements": "إنجازاتي",
+  "trending": "رائج",
+  "new": "جديد",
+  "create_new": "إنشاء تحدي جديد",
+  "create_success": "تم إنشاء التحدي بنجاح",
+  "create_success_desc": "تم إنشاء التحدي بنجاح",
+  "create_failed": "فشل في إنشاء التحدي",
+  "comments": {
+    "title": "تعليقات التحدي",
+    "load_failed": "فشل في تحميل التعليقات",
+    "added": "تم إضافة التعليق",
+    "add_success": "تم إضافة تعليقك بنجاح",
+    "add_failed": "فشل في إضافة التعليق"
+  }
 }

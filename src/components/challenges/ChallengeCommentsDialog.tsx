@@ -17,6 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface ChallengeCommentsDialogProps {
@@ -32,6 +33,7 @@ export function ChallengeCommentsDialog({
 }: ChallengeCommentsDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -64,8 +66,8 @@ export function ChallengeCommentsDialog({
       setComments((data || []) as Comment[]);
     } catch (error) {
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل التعليقات",
+        title: t('error', 'Error'),
+        description: t('challenges.comments.load_failed', 'Failed to load comments'),
         variant: "destructive",
       });
     } finally {
@@ -101,13 +103,13 @@ export function ChallengeCommentsDialog({
       setNewComment('');
       
       toast({
-        title: "تم إضافة التعليق",
-        description: "تم إضافة تعليقك بنجاح",
+        title: t('challenges.comments.added', 'Comment Added'),
+        description: t('challenges.comments.add_success', 'Your comment was added successfully'),
       });
     } catch (error) {
       toast({
-        title: "خطأ",
-        description: "فشل في إضافة التعليق",
+        title: t('error', 'Error'),
+        description: t('challenges.comments.add_failed', 'Failed to add comment'),
         variant: "destructive",
       });
     }
@@ -332,7 +334,7 @@ export function ChallengeCommentsDialog({
         <DialogHeader>
           <DialogTitle className={cn("flex items-center gap-2", challengesPageConfig.ui.colors.text.primary)}>
             <MessageSquare className={cn("h-5 w-5", challengesPageConfig.ui.colors.stats.blue)} />
-            تعليقات التحدي
+            {t('challenges.comments.title', 'Challenge Comments')}
           </DialogTitle>
           <DialogDescription className={challengesPageConfig.ui.colors.text.secondary}>
             {challenge.title_ar}

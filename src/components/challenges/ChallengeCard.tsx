@@ -289,13 +289,13 @@ export const ChallengeCard = ({
           {challenge.trending && (
             <Badge className={challengesPageConfig.badges.trending}>
               <TrendingUp className="w-3 h-3 mr-1" />
-              {t('trending')}
+              {t('challenges.trending', 'Trending')}
             </Badge>
           )}
           {isNew && (
             <Badge className={challengesPageConfig.badges.new}>
               <Star className="w-3 h-3 mr-1" />
-              {t('new')}
+              {t('challenges.new', 'New')}
             </Badge>
           )}
         </div>

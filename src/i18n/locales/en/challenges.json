@@ -18,5 +18,29 @@
   "individual": "Individual",
   "joined": "Joined",
   "by": "by",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "explore_challenges": "Explore Challenges",
+  "create_challenge": "Create Challenge",
+  "advanced_filters": "Advanced Filters",
+  "active": "Active",
+  "featured": "Featured",
+  "end_date": "End Date",
+  "view_details": "View Details",
+  "saved_challenges": "Saved Challenges",
+  "view_saved": "View Saved",
+  "achievements": "Achievements",
+  "my_achievements": "My Achievements",
+  "trending": "Trending",
+  "new": "New",
+  "create_new": "Create New Challenge",
+  "create_success": "Challenge Created Successfully",
+  "create_success_desc": "Your challenge was created successfully",
+  "create_failed": "Failed to create challenge",
+  "comments": {
+    "title": "Challenge Comments",
+    "load_failed": "Failed to load comments",
+    "added": "Comment Added",
+    "add_success": "Your comment was added successfully",
+    "add_failed": "Failed to add comment"
+  }
 }
