@@ -130,7 +130,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
             }}
             rows={4}
             className={`font-mono text-sm ${isRTL ? 'text-right' : 'text-left'}`}
-            placeholder={getTranslation('admin.settings.object.nested_placeholder', 'Enter nested object...')}
+            placeholder={getTranslation('admin-settings:ui.object.nested_placeholder', 'Enter nested object...')}
           />
         ) : Array.isArray(value) ? (
           <Textarea
@@ -145,7 +145,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
             }}
             rows={3}
             className={`font-mono text-sm ${isRTL ? 'text-right' : 'text-left'}`}
-            placeholder={getTranslation('admin.settings.object.array_placeholder', 'Enter array...')}
+            placeholder={getTranslation('admin-settings:ui.object.array_placeholder', 'Enter array...')}
           />
         ) : (
           <Input
@@ -178,7 +178,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
                   className="gap-1"
                 >
                   <Undo className="w-4 h-4" />
-                  {getTranslation('admin.settings.revert', 'Revert')}
+                  {getTranslation('admin-settings:ui.revert', 'Revert')}
                 </Button>
                 <Button
                   size="sm"
@@ -186,7 +186,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
                   className="gap-1"
                 >
                   <Save className="w-4 h-4" />
-                  {getTranslation('settings.save', 'Save')}
+                  {getTranslation('admin-settings:ui.save', 'Save')}
                 </Button>
               </>
             )}
@@ -198,11 +198,11 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="form" className="gap-1">
               <Eye className="w-4 h-4" />
-              {getTranslation('settings.visual_mode', 'Visual Mode')}
+              {getTranslation('admin-settings:ui.visual_mode', 'Visual Mode')}
             </TabsTrigger>
             <TabsTrigger value="json" className="gap-1">
               <Code className="w-4 h-4" />
-              {getTranslation('settings.code_mode', 'Code Mode')}
+              {getTranslation('admin-settings:ui.code_mode', 'Code Mode')}
             </TabsTrigger>
           </TabsList>
           
@@ -211,22 +211,22 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
               <Input
                 value={newKeyName}
                 onChange={(e) => setNewKeyName(e.target.value)}
-                placeholder={getTranslation('settings.property_name', 'Property name...')}
+                placeholder={getTranslation('admin-settings:ui.property_name', 'Property name...')}
                 className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddProperty()}
               />
               <Button onClick={handleAddProperty} className="gap-1">
                 <Plus className="w-4 h-4" />
-                {getTranslation('settings.add_property', 'Add')}
+                {getTranslation('admin-settings:ui.add_property', 'Add')}
               </Button>
             </div>
 
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {Object.keys(objectData).length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
-                  <p>{getTranslation('settings.no_properties', 'No properties added yet')}</p>
+                  <p>{getTranslation('admin-settings:ui.no_properties', 'No properties added yet')}</p>
                   <p className="text-xs mt-1">
-                    {getTranslation('settings.add_property_hint', 'Add a property name and click "Add"')}
+                    {getTranslation('admin-settings:ui.add_property_hint', 'Add a property name and click "Add"')}
                   </p>
                 </div>
               ) : (
@@ -241,7 +241,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
               onChange={(e) => handleJsonChange(e.target.value)}
               rows={12}
               className={`font-mono text-sm ${isRTL ? 'text-right' : 'text-left'}`}
-              placeholder={getTranslation('settings.json_placeholder', 'Enter JSON object...')}
+              placeholder={getTranslation('admin-settings:ui.json_placeholder', 'Enter JSON object...')}
             />
           </TabsContent>
         </Tabs>

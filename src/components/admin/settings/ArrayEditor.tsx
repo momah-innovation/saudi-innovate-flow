@@ -91,7 +91,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
         value={item || ''}
         onChange={(e) => handleItemChange(index, e.target.value)}
         className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}
-        placeholder={getTranslation('admin.settings.array.item_placeholder', 'Enter item value...')}
+        placeholder={getTranslation('admin-settings:ui.array.item_placeholder', 'Enter item value...')}
       />
       <Button
         variant="ghost"
@@ -129,7 +129,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
             }
           }}
           className={`w-full h-24 p-2 border rounded font-mono text-sm ${isRTL ? 'text-right' : 'text-left'}`}
-          placeholder={getTranslation('admin.settings.object.item_placeholder', 'Enter JSON object...')}
+          placeholder={getTranslation('admin-settings:ui.object.item_placeholder', 'Enter JSON object...')}
         />
       </CardContent>
     </Card>
@@ -155,7 +155,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
                   className="gap-1"
                 >
                   <Undo className="w-4 h-4" />
-                  {getTranslation('admin.settings.revert', 'Revert')}
+                  {getTranslation('admin-settings:ui.revert', 'Revert')}
                 </Button>
                 <Button
                   size="sm"
@@ -163,7 +163,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
                   className="gap-1"
                 >
                   <Save className="w-4 h-4" />
-                  {getTranslation('admin.settings.save', 'Save')}
+                  {getTranslation('admin-settings:ui.save', 'Save')}
                 </Button>
               </>
             )}
@@ -173,7 +173,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
       <CardContent className="space-y-3">
         <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
           <span className="text-sm text-muted-foreground">
-            {getTranslation('admin.settings.total_items', 'Total items')}: {items.length}
+            {getTranslation('admin-settings:ui.total_items', 'Total items')}: {items.length}
           </span>
           <Button
             variant="outline"
@@ -182,16 +182,16 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
             className="gap-1"
           >
             <Plus className="w-4 h-4" />
-            {getTranslation('admin.settings.add_item', 'Add Item')}
+            {getTranslation('admin-settings:ui.add_item', 'Add Item')}
           </Button>
         </div>
 
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {items.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              <p>{getTranslation('admin.settings.no_items', 'No items added yet')}</p>
+              <p>{getTranslation('admin-settings:ui.no_items', 'No items added yet')}</p>
               <p className="text-xs mt-1">
-                {getTranslation('admin.settings.click_add', 'Click "Add Item" to get started')}
+                {getTranslation('admin-settings:ui.click_add', 'Click "Add Item" to get started')}
               </p>
             </div>
           ) : (
@@ -209,7 +209,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
           <div className="border-t pt-3 mt-3">
             <div className="flex items-center gap-2 text-amber-600 text-sm">
               <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
-              {getTranslation('admin.settings.unsaved_changes', 'You have unsaved changes')}
+              {getTranslation('admin-settings:ui.unsaved_changes', 'You have unsaved changes')}
             </div>
           </div>
         )}
