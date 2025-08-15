@@ -240,22 +240,22 @@ export function AdminChallengeManagement() {
             actions={[
               {
                 type: 'view',
-                label: t('ui.actions.view'),
+                label: t('common:actions.view'),
                 onClick: () => handleView(challenge)
               },
               {
                 type: 'edit',
-                label: t('ui.actions.edit'),
+                label: t('common:actions.edit'),
                 onClick: () => handleEdit(challenge)
               },
               {
                 type: 'settings',
-                label: t('ui.common.settings'),
+                label: t('common:actions.settings'),
                 onClick: () => handleSettings(challenge)
               },
               {
                 type: 'delete',
-                label: t('ui.actions.delete'),
+                label: t('common:actions.delete'),
                 onClick: () => {
                   if (confirm(t('admin.challenges.delete_confirm'))) {
                     handleDelete(challenge.id);

@@ -76,18 +76,18 @@ const SystemSettings = () => {
   const categories = [
     { key: "all", label: t('all', 'All'), icon: Database },
     { key: "general", label: t('general', 'General'), icon: Settings },
-    { key: "challenges", label: t('system_settings_page.challenges', 'Challenges'), icon: Settings },
-    { key: "ideas", label: t('system_settings_page.ideas', 'Ideas'), icon: Settings },
-    { key: "events", label: t('admin.settings.events') || 'Events', icon: Settings },
-    { key: "campaigns", label: t('system_settings_page.campaigns', 'Campaigns'), icon: Settings },
-    { key: "partners", label: t('system_settings_page.partners', 'Partners'), icon: Settings },
-    { key: "opportunities", label: t('system_settings_page.opportunities', 'Opportunities'), icon: Settings },
-    { key: "analytics", label: t('system_settings_page.analytics', 'Analytics'), icon: Settings },
+    { key: "challenges", label: t('admin-settings:categories.challenges', 'Challenges'), icon: Settings },
+    { key: "ideas", label: t('admin-settings:categories.ideas', 'Ideas'), icon: Settings },
+    { key: "events", label: t('admin-settings:categories.events', 'Events'), icon: Settings },
+    { key: "campaigns", label: t('admin-settings:categories.campaigns', 'Campaigns'), icon: Settings },
+    { key: "partners", label: t('admin-settings:categories.partners', 'Partners'), icon: Settings },
+    { key: "opportunities", label: t('admin-settings:categories.opportunities', 'Opportunities'), icon: Settings },
+    { key: "analytics", label: t('admin-settings:categories.analytics', 'Analytics'), icon: Settings },
     { key: "security", label: t('security', 'Security'), icon: Settings },
-    { key: "ai", label: t('system_settings_page.ai', 'AI'), icon: Bot },
-    { key: "ui", label: t('system_settings_page.ui', 'UI'), icon: Palette },
-    { key: "performance", label: t('system_settings_page.performance', 'Performance'), icon: Zap },
-    { key: "translations", label: t('system_settings_page.translation_management', 'Translation Management'), icon: Languages },
+    { key: "ai", label: t('admin-settings:categories.ai', 'AI'), icon: Bot },
+    { key: "ui", label: t('admin-settings:categories.ui', 'UI'), icon: Palette },
+    { key: "performance", label: t('performance', 'Performance'), icon: Zap },
+    { key: "translations", label: t('admin.translations.title', 'Translation Management'), icon: Languages },
   ];
 
   return (
@@ -133,10 +133,10 @@ const SystemSettings = () => {
           <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
             <CardTitle className="flex items-center gap-2">
               <Database className="w-5 h-5" />
-              {t('system_settings_page.title', 'System Configuration')}
+              {t('admin.system_settings.title', 'System Configuration')}
             </CardTitle>
             <CardDescription>
-              {t('systemSettingsDescription', 'Manage and configure system-wide settings and preferences')}
+              {t('admin.system_settings.description', 'Manage and configure system-wide settings and preferences')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -177,10 +177,10 @@ const SystemSettings = () => {
           <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
             <CardTitle className="flex items-center gap-2">
               <List className="w-5 h-5" />
-              {t('system_settings_page.shared_settings', 'Shared Settings')}
+              {t('admin.system_settings.shared_settings', 'Shared Settings')}
             </CardTitle>
             <CardDescription>
-              {t('sharedSettingsDescription', 'Settings that are shared across multiple system components')}
+              {t('admin.system_settings.shared_settings_description', 'Settings that are shared across multiple system components')}
             </CardDescription>
           </CardHeader>
           <CardContent>

@@ -95,41 +95,32 @@
     "reset_failed": "فشل في إعادة تعيين الإعدادات",
     "export_success": "تم تصدير الإعدادات بنجاح",
     "import_success": "تم استيراد الإعدادات بنجاح",
-    "confirm_reset": "هل أنت متأكد من إعادة تعيين جميع الإعدادات للافتراضي؟ لا يمكن التراجع عن هذا الإجراء."
+    "confirm_reset": "هل أنت متأكد من إعادة تعيين جميع الإعدادات للافتراضي؟ لا يمكن التراجع عن هذا الإجراء.",
+    "setting_deleted": "تم حذف الإعداد",
+    "delete_success_description": "تم إزالة الإعداد",
+    "delete_failed": "خطأ في حذف الإعداد",
+    "save_success_description": "تم حفظ التغييرات",
+    "bulk_success_description": "تم حفظ جميع التغييرات",
+    "bulk_failed": "خطأ في حفظ الإعدادات"
   },
-  "ui": {
-    "revert": "تراجع",
-    "save": "حفظ",
-    "total_items": "إجمالي العناصر",
-    "add_item": "إضافة عنصر",
-    "no_items": "لم تتم إضافة عناصر بعد",
-    "click_add": "انقر \"إضافة عنصر\" للبدء",
-    "unsaved_changes": "لديك تغييرات غير محفوظة",
-    "visual_mode": "الوضع المرئي",
-    "code_mode": "وضع الكود",
-    "property_name": "اسم الخاصية...",
-    "add_property": "إضافة",
-    "no_properties": "لم تتم إضافة خصائص بعد",
-    "add_property_hint": "أضف اسم خاصية ثم انقر \"إضافة\"",
-    "json_placeholder": "أدخل كائن JSON...",
-    "array": {
-      "item_placeholder": "أدخل قيمة العنصر..."
-    },
-    "object": {
-      "item_placeholder": "أدخل كائن JSON...",
-      "nested_placeholder": "أدخل كائنًا متداخلًا...",
-      "array_placeholder": "أدخل مصفوفة..."
-    },
-    "modified": "معدل",
-    "shared": "مشترك",
-    "affects": "يؤثر على",
-    "enabled": "مفعل",
-    "array_editor": "محرر المصفوفة",
-    "object_editor": "محرر الكائن",
-    "close_editor": "إغلاق المحرر",
-    "open_editor": "فتح المحرر",
-    "items": "عناصر",
-    "properties": "خصائص",
-    "no_settings": "لا توجد إعدادات"
-  }
+  "categories": {
+    "campaigns": "الحملات",
+    "challenges": "التحديات",
+    "ideas": "الأفكار",
+    "events": "الفعاليات",
+    "partners": "الشركاء",
+    "opportunities": "الفرص",
+    "analytics": "التحليلات",
+    "ai": "الذكاء الاصطناعي",
+    "ui": "واجهة المستخدم",
+    "campaigns_description": "إعدادات إدارة الحملات",
+    "challenges_description": "إعدادات تكوين التحديات",
+    "ideas_description": "إعدادات إدارة الأفكار",
+    "events_description": "إعدادات إدارة الفعاليات",
+    "partners_description": "إعدادات علاقات الشركاء",
+    "opportunities_description": "إعدادات إدارة الفرص",
+    "analytics_description": "إعدادات التحليلات والتقارير",
+    "ai_description": "إعدادات ميزات الذكاء الاصطناعي",
+    "ui_description": "إعدادات واجهة المستخدم"
+  },
 }

@@ -330,10 +330,10 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
           <CardHeader>
             <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="w-5 h-5" />
-              {t(`settings.category.${categoryName}`) || categoryName}
+              {t(`admin-settings:categories.${categoryName}`) || categoryName}
             </CardTitle>
             <CardDescription>
-              {t(`settings.category.${categoryName}.description`) || `Settings for ${categoryName}`}
+              {t(`admin-settings:categories.${categoryName}_description`) || `Settings for ${categoryName}`}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

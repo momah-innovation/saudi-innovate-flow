@@ -86,13 +86,13 @@ export const useSettingsManager = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['all-system-settings'] });
       toast({
-        title: getTranslation('settings.save.success') || 'Settings saved successfully',
-        description: getTranslation('settings.save.success.description') || 'Your changes have been saved',
+        title: getTranslation('admin-settings:messages.settings_saved') || 'Settings saved successfully',
+        description: getTranslation('admin-settings:messages.save_success_description') || 'Your changes have been saved',
       });
     },
     onError: (error) => {
       toast({
-        title: getTranslation('settings.save.error') || 'Error saving settings',
+        title: getTranslation('admin-settings:messages.save_failed') || 'Error saving settings',
         description: error.message,
         variant: "destructive"
       });
@@ -112,13 +112,13 @@ export const useSettingsManager = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['all-system-settings'] });
       toast({
-        title: getTranslation('settings.delete.success') || 'Setting deleted',
-        description: getTranslation('settings.delete.success.description') || 'The setting has been removed',
+        title: getTranslation('admin-settings:messages.setting_deleted') || 'Setting deleted',
+        description: getTranslation('admin-settings:messages.delete_success_description') || 'The setting has been removed',
       });
     },
     onError: (error) => {
       toast({
-        title: getTranslation('settings.delete.error') || 'Error deleting setting',
+        title: getTranslation('admin-settings:messages.delete_failed') || 'Error deleting setting',
         description: error.message,
         variant: "destructive"
       });
@@ -147,13 +147,13 @@ export const useSettingsManager = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['all-system-settings'] });
       toast({
-        title: getTranslation('settings.bulk.success') || 'Settings saved',
-        description: getTranslation('settings.bulk.success.description') || 'All changes have been saved',
+        title: getTranslation('admin-settings:messages.settings_saved') || 'Settings saved',
+        description: getTranslation('admin-settings:messages.bulk_success_description') || 'All changes have been saved',
       });
     },
     onError: (error) => {
       toast({
-        title: getTranslation('settings.bulk.error') || 'Error saving settings',
+        title: getTranslation('admin-settings:messages.bulk_failed') || 'Error saving settings',
         description: error.message,
         variant: "destructive"
       });

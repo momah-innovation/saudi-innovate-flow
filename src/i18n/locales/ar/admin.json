@@ -631,5 +631,33 @@
       "archived_success_title": "تم أرشفة التحدي",
       "archived_success_description": "تم أرشفة التحدي بنجاح"
     }
+  },
+  "system_settings": {
+    "title": "تكوين النظام",
+    "description": "إدارة وتكوين إعدادات النظام العامة",
+    "shared_settings": "الإعدادات المشتركة",
+    "shared_settings_description": "الإعدادات المشتركة عبر مكونات النظام المتعددة"
+  },
+  "translations": {
+    "title": "إدارة الترجمة",
+    "success_title": "نجح",
+    "added_successfully": "تمت إضافة الترجمة بنجاح",
+    "filter_by_category": "تصفية حسب الفئة",
+    "all_categories": "جميع الفئات"
+  },
+  "settings": {
+    "modified": "معدل",
+    "shared": "مشترك",
+    "affects": "يؤثر على",
+    "enabled": "مفعل",
+    "revert": "تراجع",
+    "save": "حفظ",
+    "array_editor": "محرر المصفوفة",
+    "object_editor": "محرر الكائن",
+    "close_editor": "إغلاق المحرر",
+    "open_editor": "فتح المحرر",
+    "items": "عناصر",
+    "properties": "خصائص",
+    "no_settings": "لا توجد إعدادات"
   }
 }

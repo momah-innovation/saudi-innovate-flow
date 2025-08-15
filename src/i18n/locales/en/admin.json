@@ -533,5 +533,33 @@
       "archived_success_title": "Challenge Archived",
       "archived_success_description": "The challenge has been archived successfully"
     }
+  },
+  "system_settings": {
+    "title": "System Configuration",
+    "description": "Manage and configure system-wide settings and preferences",
+    "shared_settings": "Shared Settings",
+    "shared_settings_description": "Settings that are shared across multiple system components"
+  },
+  "translations": {
+    "title": "Translation Management",
+    "success_title": "Success",
+    "added_successfully": "Translation added successfully",
+    "filter_by_category": "Filter by category",
+    "all_categories": "All Categories"
+  },
+  "settings": {
+    "modified": "Modified",
+    "shared": "Shared",
+    "affects": "Affects",
+    "enabled": "Enabled",
+    "revert": "Revert",
+    "save": "Save",
+    "array_editor": "Array Editor",
+    "object_editor": "Object Editor",
+    "close_editor": "Close Editor",
+    "open_editor": "Open Editor",
+    "items": "items",
+    "properties": "properties",
+    "no_settings": "No settings found"
   }
 }
