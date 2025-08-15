@@ -39,14 +39,29 @@ export const UserPresence: React.FC<UserPresenceProps> = ({
   showLocation = false,
   size = 'md'
 }) => {
-  const visibleUsers = users.slice(0, maxVisible);
-  const remainingCount = Math.max(0, users.length - maxVisible);
+  // Deduplicate users by user_id to prevent duplicate keys
+  const uniqueUsers = users.reduce((acc, user) => {
+    const existing = acc.find(u => u.user_id === user.user_id);
+    if (!existing) {
+      acc.push(user);
+    } else {
+      // Keep the most recent presence
+      if (new Date(user.last_seen) > new Date(existing.last_seen)) {
+        const index = acc.indexOf(existing);
+        acc[index] = user;
+      }
+    }
+    return acc;
+  }, [] as UserPresenceType[]);
+
+  const visibleUsers = uniqueUsers.slice(0, maxVisible);
+  const remainingCount = Math.max(0, uniqueUsers.length - maxVisible);
 
   return (
     <TooltipProvider>
       <div className="flex items-center -space-x-2">
-        {visibleUsers.map((user) => (
-          <Tooltip key={`${user.user_id}-${user.session_id}`}>
+        {visibleUsers.map((user, index) => (
+          <Tooltip key={`user-presence-${user.user_id}-${index}`}>
             <TooltipTrigger asChild>
               <div className="relative">
                 <Avatar className={`border-2 border-background ${sizeClasses[size]}`}>
