@@ -266,3 +266,4 @@ export function useUnifiedTranslation() {
   ]);
 
   return value;
+}
