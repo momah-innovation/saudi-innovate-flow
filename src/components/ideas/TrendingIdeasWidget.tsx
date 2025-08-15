@@ -76,11 +76,11 @@ export function TrendingIdeasWidget({ className, onIdeaClick }: TrendingIdeasWid
       const ideasWithProfiles = await Promise.all(
         (data || []).map(async (idea) => {
           if (idea.innovators?.user_id) {
-            const { data: profile } = await supabase
+            const { data: profile, error: profileError } = await supabase
               .from('profiles')
               .select('name, name_ar, profile_image_url')
               .eq('id', idea.innovators.user_id)
-              .single();
+              .maybeSingle();
             
             return { ...idea, profile };
           }

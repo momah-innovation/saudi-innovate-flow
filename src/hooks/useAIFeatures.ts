@@ -71,7 +71,7 @@ export const useAIFeatures = () => {
         .from('ai_preferences')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') throw error;
       
@@ -117,7 +117,7 @@ export const useAIFeatures = () => {
         .update(updates)
         .eq('user_id', user.id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setPreferences(data);

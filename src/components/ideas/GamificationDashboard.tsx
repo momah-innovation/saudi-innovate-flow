@@ -95,13 +95,13 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
     if (!targetUserId) return;
 
     // Get user's innovation profile
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('innovation_profiles')
       .select('*')
       .eq('user_id', targetUserId)
-      .single();
+      .maybeSingle();
 
-    if (profile) {
+    if (profile && !profileError) {
       const level = getLevelFromPoints(profile.total_points);
       const progress = getLevelProgress(profile.total_points);
       const nextLevelPoints = getNextLevelPoints(profile.total_points);

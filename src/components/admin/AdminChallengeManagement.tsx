@@ -171,11 +171,11 @@ export function AdminChallengeManagement() {
   return (
     <>
       <StandardPageLayout
-        title={t('admin.challenges.title')}
-        description={t('admin.challenges.description')}
+        title={t('admin:challenges.title')}
+        description={t('admin:challenges.description')}
         itemCount={filteredChallenges.length}
         addButton={{
-          label: t('admin.challenges.new_challenge'),
+          label: t('admin:challenges.new_challenge'),
           onClick: () => {
             setSelectedChallenge(null);
             setShowWizard(true);
@@ -189,10 +189,10 @@ export function AdminChallengeManagement() {
         emptyState={
           <EmptyState
             icon={<Target className="w-6 h-6 text-muted-foreground" />}
-            title={t('admin.challenges.no_challenges')}
-            description={t('admin.challenges.no_challenges_description')}
+            title={t('admin:challenges.no_challenges')}
+            description={t('admin:challenges.no_challenges_description')}
             action={{
-              label: t('admin.challenges.create_new'),
+              label: t('admin:challenges.create_new'),
               onClick: () => {
                 setSelectedChallenge(null);
                 setShowWizard(true);
@@ -218,22 +218,22 @@ export function AdminChallengeManagement() {
             metadata={[
               ...(challenge.start_date ? [{ 
                 icon: <Calendar className="h-4 w-4" />, 
-                label: t('admin.challenges.start_date'), 
+                label: t('admin:challenges.start_date'), 
                 value: format(new Date(challenge.start_date), 'PPP') 
               }] : []),
               ...(challenge.end_date ? [{ 
                 icon: <Clock className="h-4 w-4" />, 
-                label: t('admin.challenges.end_date'), 
+                label: t('admin:challenges.end_date'), 
                 value: format(new Date(challenge.end_date), 'PPP') 
               }] : []),
               ...(challenge.estimated_budget ? [{ 
                 icon: <DollarSign className="h-4 w-4" />, 
-                label: t('admin.challenges.estimated_budget'), 
-                value: `${challenge.estimated_budget.toLocaleString()} ${t('admin.challenges.currency')}`
+                label: t('admin:challenges.estimated_budget'), 
+                value: `${challenge.estimated_budget.toLocaleString()} ${t('admin:challenges.currency')}`
               }] : []),
               { 
                 icon: <Lightbulb className="h-4 w-4" />, 
-                label: t('admin.challenges.sensitivity_level'), 
+                label: t('admin:challenges.sensitivity_level'), 
                 value: challenge.sensitivity_level 
               }
             ]}
@@ -257,7 +257,7 @@ export function AdminChallengeManagement() {
                 type: 'delete',
                 label: t('ui.delete'),
                 onClick: () => {
-                  if (confirm(t('admin.challenges.delete_confirm'))) {
+                  if (confirm(t('admin:challenges.delete_confirm'))) {
                     handleDelete(challenge.id);
                   }
                 }
