@@ -67,6 +67,26 @@
     "challenge_ending": "التحدي ينتهي قريباً",
     "evaluation_complete": "اكتمل التقييم"
   },
+  "user_management": "إدارة المستخدمين",
+  "user_management_desc": "إدارة المستخدمين والأدوار والصلاحيات",
+  "role_management": "إدارة الأدوار",
+  "role_management_desc": "تكوين الأدوار والصلاحيات",
+  "access_control": "التحكم في الوصول",
+  "access_control_desc": "إدارة التحكم في الوصول للصفحات والميزات",
+  "challenge_management": "إدارة التحديات",
+  "challenge_management_desc": "إنشاء وإدارة التحديات والمسابقات",
+  "ideas_management": "إدارة الأفكار",
+  "ideas_management_desc": "مراجعة وإدارة الأفكار المقدمة",
+  "analytics_reports": "التحليلات والتقارير",
+  "analytics_reports_desc": "عرض تقارير النظام والتحليلات المتقدمة",
+  "system_settings": "إعدادات النظام",
+  "system_settings_desc": "تكوين الإعدادات العامة للنظام",
+  "events_management": "إدارة الفعاليات",
+  "events_management_desc": "تنظيم وإدارة الفعاليات والمؤتمرات",
+  "campaigns_management": "إدارة الحملات",
+  "campaigns_management_desc": "إنشاء وإدارة حملات الابتكار",
+  "partners_management": "إدارة الشراكات",
+  "partners_management_desc": "إدارة الشراكات والتعاونات الخارجية",
   "storage": {
     "management": "إدارة التخزين",
     "description": "مراقبة وإدارة تخزين الملفات",
@@ -133,6 +153,13 @@
     "system_health": "صحة النظام",
     "uptime": "وقت التشغيل",
     "incidents": "الحوادث",
-    "high_risk_events": "أحداث عالية المخاطر"
+    "high_risk_events": "أحداث عالية المخاطر",
+    "total_users": "إجمالي المستخدمين",
+    "this_month": "هذا الشهر",
+    "active_challenges": "التحديات النشطة",
+    "new": "جديد",
+    "ideas_submitted": "الأفكار المقدمة",
+    "this_week": "هذا الأسبوع",
+    "system_performance": "أداء النظام"
   }
 }

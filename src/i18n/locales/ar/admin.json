@@ -2,6 +2,7 @@
   "title": "لوحة التحكم الإدارية",
   "dashboard": {
     "title": "لوحة تحكم الإدارة",
+    "user_management": "إدارة المستخدمين",
     "user_management_desc": "إدارة المستخدمين والأدوار والصلاحيات",
     "role_management": "إدارة الأدوار",
     "role_management_desc": "تكوين الأدوار والصلاحيات",
@@ -36,6 +37,7 @@
     "new": "جديد",
     "ideas_submitted": "الأفكار المقدمة",
     "this_week": "هذا الأسبوع",
+    "this_month": "هذا الشهر",
     "system_performance": "أداء النظام",
     "uptime": "وقت التشغيل"
   },
@@ -48,6 +50,9 @@
   },
   "cards": {
     "quick_actions": "الإجراءات السريعة",
+    "quick_actions_desc": "الوصول السريع للوظائف الرئيسية",
+    "manage_users": "إدارة المستخدمين",
+    "manage_challenges": "إدارة التحديات",
     "core_metrics": "المقاييس الأساسية",
     "security_metrics": "مقاييس الأمان",
     "admin_metrics": "مقاييس الإدارة",
