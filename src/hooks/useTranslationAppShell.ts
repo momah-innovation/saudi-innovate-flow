@@ -93,7 +93,7 @@ export const useTranslationAppShell = () => {
 
     // Dashboard gets comprehensive preloading for optimal UX
     if (path === '/dashboard') {
-      namespacesToLoad.push('dashboard', 'challenges', 'campaigns', 'opportunities', 'events');
+      namespacesToLoad.push('dashboard', 'admin', 'challenges', 'campaigns', 'opportunities', 'events');
     }
 
     // Always load system-lists for any form or interactive page
@@ -163,7 +163,7 @@ const getRouteBasedNamespaces = (pathname: string): { critical: string[], prefet
   }
   // Dashboard
   else if (pathname === '/dashboard') {
-    critical.push('dashboard');
+    critical.push('dashboard', 'admin');
     prefetch.push('challenges', 'campaigns', 'opportunities', 'events');
   }
   // Challenge routes
