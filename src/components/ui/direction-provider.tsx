@@ -99,7 +99,14 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     document.documentElement.dir = direction;
     document.documentElement.classList.remove('ltr', 'rtl');
     document.documentElement.classList.add(direction);
-  }, []);
+    
+    // Apply language classes for font handling
+    document.documentElement.classList.remove('lang-ar', 'lang-en');
+    document.documentElement.classList.add(`lang-${language}`);
+    
+    // Save direction to localStorage for persistence
+    localStorage.setItem('ui-direction', direction);
+  }, [direction, language]); // Added dependencies!
 
   return (
     <DirectionContext.Provider 
