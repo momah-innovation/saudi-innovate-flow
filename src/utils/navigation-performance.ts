@@ -15,17 +15,15 @@ const debounce = <T extends (...args: any[]) => void>(
   };
 };
 
-// Debounced navigation to prevent rapid clicks causing freezes
+// Debounced navigation to prevent rapid clicks - FIXED: Removed global pointer blocking
 export const createDebouncedNavigate = (navigate: (path: string) => void) => {
   return debounce((path: string) => {
-    // Use setTimeout to allow current render cycle to complete
-    setTimeout(() => {
-      navigate(path);
-    }, 0);
+    console.log('🔄 Debounced navigation executing to:', path);
+    navigate(path);
   }, 200);
 };
 
-// Optimized card click handler
+// Optimized card click handler - FIXED: Removed global pointer event disabling
 export const createOptimizedCardClick = (
   onClick: () => void,
   onNavigate?: (path: string) => void,
@@ -35,9 +33,7 @@ export const createOptimizedCardClick = (
     e.preventDefault();
     e.stopPropagation();
     
-    // Disable animations temporarily during navigation
-    document.body.style.pointerEvents = 'none';
-    document.body.classList.add('navigating');
+    console.log('🔄 Card click handler executing...');
     
     // Execute click handler or navigation
     if (onNavigate && path) {
@@ -45,12 +41,6 @@ export const createOptimizedCardClick = (
     } else {
       onClick();
     }
-    
-    // Re-enable interactions after a short delay
-    setTimeout(() => {
-      document.body.style.pointerEvents = '';
-      document.body.classList.remove('navigating');
-    }, 100);
   }, 150);
 };
 
