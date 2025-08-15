@@ -371,7 +371,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                     id="title_en"
                     value={formData.title_en || ''}
                     onChange={(e) => updateFormData('title_en', e.target.value)}
-                    placeholder="Enter challenge title in English"
+                    placeholder={t('challenges.form.title_placeholder', 'Enter challenge title in English')}
                     dir="ltr"
                   />
                 </div>
@@ -396,7 +396,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                     id="description_en"
                     value={formData.description_en || ''}
                     onChange={(e) => updateFormData('description_en', e.target.value)}
-                    placeholder="Enter detailed challenge description in English"
+                    placeholder={t('challenges.form.description_placeholder', 'Enter detailed challenge description in English')}
                     rows={4}
                     dir="ltr"
                   />

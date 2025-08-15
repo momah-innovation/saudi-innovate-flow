@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { useCollaboration } from '@/contexts/CollaborationContext';
 import { debugLog } from '@/utils/debugLogger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   MessageSquare, 
   Pin, 
@@ -55,6 +56,7 @@ export const SharedAnnotationSystem: React.FC<SharedAnnotationSystemProps> = ({
   className = ''
 }) => {
   const { onlineUsers, currentUserPresence } = useCollaboration();
+  const { t } = useUnifiedTranslation();
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [isAddingAnnotation, setIsAddingAnnotation] = useState(false);
   const [newAnnotationPosition, setNewAnnotationPosition] = useState<{ x: number; y: number } | null>(null);
@@ -214,7 +216,7 @@ export const SharedAnnotationSystem: React.FC<SharedAnnotationSystemProps> = ({
           <div className="absolute inset-0 bg-primary/5 border-2 border-dashed border-primary rounded-lg flex items-center justify-center">
             <div className="text-center">
               <Pin className="h-8 w-8 mx-auto mb-2 text-primary" />
-              <p className="text-sm text-muted-foreground">Click anywhere to add an annotation</p>
+              <p className="text-sm text-muted-foreground">{t('common.actions.click_to_add_annotation', 'Click anywhere to add an annotation')}</p>
             </div>
           </div>
         )}

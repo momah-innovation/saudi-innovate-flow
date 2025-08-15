@@ -214,7 +214,7 @@ export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTab
                   >
                     <Upload className="w-12 h-12 text-muted-foreground" />
                     <div>
-                      <p className="text-lg font-medium">Click to upload files</p>
+                      <p className="text-lg font-medium">{t('common.actions.click_to_upload', 'Click to upload files')}</p>
                       <p className="text-sm text-muted-foreground">
                         Or drag and drop files here
                       </p>

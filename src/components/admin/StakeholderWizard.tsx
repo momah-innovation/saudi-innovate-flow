@@ -267,7 +267,7 @@ export function StakeholderWizard({
                 id="name_ar"
                 value={formData.name_ar}
                 onChange={(e) => updateFormData("name_ar", e.target.value)}
-                placeholder="Enter stakeholder name in English"
+                placeholder={t('common.placeholders.stakeholder_name_en', 'Enter stakeholder name in English')}
                 dir="ltr"
               />
             </div>
@@ -293,7 +293,7 @@ export function StakeholderWizard({
                 id="organization_ar"
                 value={formData.organization_ar}
                 onChange={(e) => updateFormData("organization_ar", e.target.value)}
-                placeholder="Enter organization name in English"
+                placeholder={t('common.placeholders.organization_name_en', 'Enter organization name in English')}
                 dir="ltr"
               />
             </div>

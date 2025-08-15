@@ -19,6 +19,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface ChallengeCreateDialogProps {
   open: boolean;
@@ -33,6 +34,7 @@ export function ChallengeCreateDialog({
 }: ChallengeCreateDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     title_ar: '',
@@ -134,7 +136,7 @@ export function ChallengeCreateDialog({
         <Label htmlFor="title_en">العنوان بالإنجليزية</Label>
         <Input
           id="title_en"
-          placeholder="Enter challenge title in English"
+          placeholder={t('challenges.form.title_placeholder', 'Enter challenge title in English')}
           value={formData.title_en}
           onChange={(e) => handleInputChange('title_en', e.target.value)}
           dir="ltr"

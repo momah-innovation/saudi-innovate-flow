@@ -232,7 +232,7 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
               <div className="space-y-2">
                 <p className="text-lg font-medium">{t('ui.wizard_uploader.drag_drop_files')}</p>
                 <p className="text-sm text-muted-foreground">
-                  or click to browse files
+                  {t('common.actions.click_to_browse', 'or click to browse files')}
                 </p>
                 <div className="text-xs text-muted-foreground">
                   Max {config.maxFiles} files, {formatFileSize(config.maxSizeBytes || 0)} each

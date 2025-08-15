@@ -291,7 +291,7 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
           >
             <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
             <p className="text-lg font-medium mb-2">
-              {dragOver ? 'Drop files here' : 'Click to upload or drag and drop'}
+              {dragOver ? t('common.actions.drop_files_here', 'Drop files here') : t('common.actions.click_to_upload', 'Click to upload or drag and drop')}
             </p>
             <p className="text-sm text-muted-foreground mb-2">
               {config.acceptString || 'All file types'} • Max {formatFileSize(config.maxSizeBytes || 0)}
