@@ -180,12 +180,6 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/profile.json');
         break;
         
-      case 'settings':
-      case 'admin-settings':
-        translations = language === 'en'
-          ? await import('./locales/en/admin.json')
-          : await import('./locales/ar/admin.json');
-        break;
         
       case 'challenge-settings':
         translations = language === 'en'

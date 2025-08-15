@@ -51,7 +51,7 @@ function ErrorFallback() {
   
   return (
     <div className="min-h-[400px] flex flex-col items-center justify-center p-8">
-      <h2 className="text-2xl font-bold mb-4">{t('errors.something_went_wrong')}</h2>
+      <h2 className="text-2xl font-bold mb-4">{t('ui.errors.something_went_wrong')}</h2>
       <p className="text-muted-foreground mb-6 text-center max-w-md">
         {t('error_boundary.description', 'We encountered an error while loading this component. Please try refreshing the page.')}
       </p>
@@ -60,7 +60,7 @@ function ErrorFallback() {
           onClick={() => window.location.reload()}
           variant="outline"
         >
-          {t('common.actions.try_again')}
+          {t('ui.actions.try_again')}
         </Button>
         <Button onClick={() => window.location.reload()}>
           {t('error_boundary.refresh_page', 'Refresh Page')}
