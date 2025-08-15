@@ -219,7 +219,12 @@ const UnifiedHeader = memo(function UnifiedHeader({
                   variant="ghost" 
                   size="sm" 
                   className="h-8 w-8 sm:h-9 sm:w-9 p-0"
-                  onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+                  onClick={() => {
+                    console.log('🔄 Language button clicked in header');
+                    const newLang = language === 'en' ? 'ar' : 'en';
+                    console.log('🔄 Calling setLanguage with:', newLang);
+                    setLanguage(newLang);
+                  }}
                   title={t('header.switch_language', 'Switch Language')}
                 >
                   <Languages className="h-3 w-3 sm:h-4 sm:w-4" />
