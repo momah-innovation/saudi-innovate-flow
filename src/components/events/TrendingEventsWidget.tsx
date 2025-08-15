@@ -60,26 +60,17 @@ export const TrendingEventsWidget = ({
 
       if (error) throw error;
 
-      // Get participant counts for each event
-      const eventsWithCounts = await Promise.all(
-        (events || []).map(async (event, index) => {
-          const { count } = await supabase
-            .from('event_participants')
-            .select('*', { count: 'exact' })
-            .eq('event_id', event.id);
+      // Use event stats hook for participant counts
+      const eventsWithCounts = events?.map((event, index) => {
+        const daysUntilEvent = Math.ceil((new Date(event.event_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+        const popularityScore = event.registered_participants * (1 / Math.max(daysUntilEvent, 1)) * 100;
 
-          // Calculate popularity score based on participants and recency
-          const daysUntilEvent = Math.ceil((new Date(event.event_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-          const popularityScore = (count || 0) * (1 / Math.max(daysUntilEvent, 1)) * 100;
-
-          return {
-            ...event,
-            registered_participants: count || 0,
-            popularity_score: popularityScore,
-            trending_rank: index + 1
-          };
-        })
-      );
+        return {
+          ...event,
+          popularity_score: popularityScore,
+          trending_rank: index + 1
+        };
+      }) || [];
 
       setTrendingEvents(eventsWithCounts);
       setTotalViews(eventsWithCounts.reduce((sum, event) => sum + (event.popularity_score || 0), 0));

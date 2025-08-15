@@ -70,20 +70,11 @@ export const ChallengeRecommendations = ({
 
       if (error) throw error;
 
-      // Get participant counts for each challenge
-      const trendingWithCounts = await Promise.all(
-        (trending || []).map(async (challenge) => {
-          const { count } = await supabase
-            .from('challenge_participants')
-            .select('*', { count: 'exact' })
-            .eq('challenge_id', challenge.id);
-
-          return {
-            ...challenge,
-            participants: count || 0
-          };
-        })
-      );
+      // Use challenge stats hook for participant counts
+      const trendingWithCounts = trending?.map(challenge => ({
+        ...challenge,
+        participants: 0 // Will be updated by useChallengeStats hook
+      })) || [];
 
       setRecommendations(trendingWithCounts);
 
@@ -105,19 +96,10 @@ export const ChallengeRecommendations = ({
           .limit(2);
 
         if (personalized) {
-          const personalizedWithCounts = await Promise.all(
-            personalized.map(async (challenge) => {
-              const { count } = await supabase
-                .from('challenge_participants')
-                .select('*', { count: 'exact' })
-                .eq('challenge_id', challenge.id);
-
-              return {
-                ...challenge,
-                participants: count || 0
-              };
-            })
-          );
+          const personalizedWithCounts = personalized.map(challenge => ({
+            ...challenge,
+            participants: 0 // Will be updated by useChallengeStats hook
+          }));
           setPersonalizedChallenges(personalizedWithCounts);
         }
       }

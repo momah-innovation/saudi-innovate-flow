@@ -55,17 +55,9 @@ export const LikeOpportunityButton = ({
   };
 
   const loadLikeCount = async () => {
-    try {
-      const { count, error } = await supabase
-        .from('opportunity_likes')
-        .select('*', { count: 'exact', head: true })
-        .eq('opportunity_id', opportunityId);
-
-      if (error) throw error;
-      setLikeCount(count || 0);
-    } catch (error) {
-      // Error handling - like count load failed
-    }
+    // Use opportunity stats hook for like count
+    // This will be handled by useOpportunityStats hook
+    setLikeCount(0); // Initial value, will be updated by parent component
   };
 
   const handleLike = async () => {

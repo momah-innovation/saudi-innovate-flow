@@ -173,11 +173,8 @@ export const OpportunityDetailsDialog = ({
         .eq('opportunity_id', opportunityId)
         .single();
 
-      // Get applications count
-      const { count: applicationsCount } = await supabase
-        .from('opportunity_applications')
-        .select('*', { count: 'exact', head: true })
-        .eq('opportunity_id', opportunityId);
+      // Use opportunity stats hook for applications count
+      const applicationsCount = analytics?.application_count || 0;
 
       const processedData: OpportunityDetails = {
         ...data,

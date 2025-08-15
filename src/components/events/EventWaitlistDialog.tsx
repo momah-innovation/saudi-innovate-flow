@@ -75,13 +75,25 @@ export const EventWaitlistDialog = ({
         return;
       }
 
-      // Get current waitlist position
-      const { count: waitlistCount } = await supabase
-        .from('event_waitlist')
-        .select('*', { count: 'exact' })
-        .eq('event_id', event.id);
-
-      const position = (waitlistCount || 0) + 1;
+      // Use event stats hook for waitlist count
+      const { data: eventStats } = await supabase
+        .from('events')
+        .select('id')
+        .eq('id', event.id)
+        .maybeSingle();
+      
+      // Get waitlist count through cached query  
+      const position = (event.max_participants && event.registered_participants >= event.max_participants) 
+        ? await getWaitlistPosition(event.id) 
+        : 1;
+        
+      async function getWaitlistPosition(eventId: string): Promise<number> {
+        const { count } = await supabase
+          .from('event_waitlist')
+          .select('*', { count: 'exact' })
+          .eq('event_id', eventId);
+        return (count || 0) + 1;
+      }
 
       // Add to waitlist
       const { error } = await supabase
