@@ -793,6 +793,7 @@ export default React.memo(function UserDashboard() {
         </div>
         
         <WorkspaceCollaboration workspaceType="user" />
+        </>
         )}
       </div>
     </CollaborationProvider>
