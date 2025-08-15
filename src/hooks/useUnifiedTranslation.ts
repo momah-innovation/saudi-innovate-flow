@@ -64,6 +64,7 @@ export function useUnifiedTranslation() {
    * Primary translation function - Enhanced with better fallback logic
    */
   const t = (key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
+    console.log(`🔍 Translation requested: ${key}`);
     try {
       let fallback: string | undefined;
       let interpolationOptions: Record<string, any> | undefined;
@@ -86,10 +87,14 @@ export function useUnifiedTranslation() {
         }
       }
 
-      // Strategy 2: i18next translation
-      const i18nextResult = i18nextT(key, fallback);
-      if (i18nextResult && i18nextResult !== key) {
-        return interpolateText(i18nextResult, interpolationOptions);
+      // Strategy 2: i18next translation - with safe object handling
+      try {
+        const i18nextResult = i18nextT(key, { defaultValue: fallback, returnObjects: false });
+        if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string') {
+          return interpolateText(i18nextResult, interpolationOptions);
+        }
+      } catch (e) {
+        // Silently handle i18next errors to prevent console spam
       }
 
       // Strategy 3: Provided fallback
