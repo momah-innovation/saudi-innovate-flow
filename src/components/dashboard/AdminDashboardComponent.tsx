@@ -87,88 +87,88 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   const adminActions = [
     // Dashboard Routes (New unified admin interface)
     {
-      title: t('admin.dashboard.user_management', 'User Management'),
-      description: t('admin.dashboard.user_management_desc', 'Manage users, roles and permissions'),
+      title: t('admin:dashboard.user_management', 'User Management'),
+      description: t('admin:dashboard.user_management_desc', 'Manage users, roles and permissions'),
       icon: Users,
       action: () => navigate('/admin/users'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.role_management', 'Role Management'),
-      description: t('admin.dashboard.role_management_desc', 'Configure roles and permissions'),
+      title: t('admin:dashboard.role_management', 'Role Management'),
+      description: t('admin:dashboard.role_management_desc', 'Configure roles and permissions'),
       icon: Shield,
       action: () => navigate('/admin/organizational-structure'),
       show: canManageUsers,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.access_control', 'Access Control'),
-      description: t('admin.dashboard.access_control_desc', 'Manage page and feature access control'),
+      title: t('admin:dashboard.access_control', 'Access Control'),
+      description: t('admin:dashboard.access_control_desc', 'Manage page and feature access control'),
       icon: Shield,
       action: () => navigate('/admin/expert-assignments'),
       show: canManageSystem,
       category: 'security'
     },
     {
-      title: t('admin.dashboard.challenge_management', 'Challenge Management'),
-      description: t('admin.dashboard.challenge_management_desc', 'Create and manage challenges and competitions'),
+      title: t('admin:dashboard.challenge_management', 'Challenge Management'),
+      description: t('admin:dashboard.challenge_management_desc', 'Create and manage challenges and competitions'),
       icon: BarChart3,
       action: () => navigate('/admin/challenges'),
       show: true,
       category: 'content'
     },
     {
-      title: t('admin.dashboard.ideas_management', 'Ideas Management'),
-      description: t('admin.dashboard.ideas_management_desc', 'Review and manage submitted ideas'),
+      title: t('admin:dashboard.ideas_management', 'Ideas Management'),
+      description: t('admin:dashboard.ideas_management_desc', 'Review and manage submitted ideas'),
       icon: Database,
       action: () => navigate('/ideas'),
       show: true,
       category: 'content'
     },
     {
-      title: t('admin.dashboard.analytics_reports', 'Analytics & Reports'),
-      description: t('admin.dashboard.analytics_reports_desc', 'View system reports and advanced analytics'),
+      title: t('admin:dashboard.analytics_reports', 'Analytics & Reports'),
+      description: t('admin:dashboard.analytics_reports_desc', 'View system reports and advanced analytics'),
       icon: BarChart3,
       action: () => navigate('/admin/evaluations'),
       show: canViewAnalytics,
       category: 'analytics'
     },
     {
-      title: t('admin.dashboard.system_settings', 'System Settings'),
-      description: t('admin.dashboard.system_settings_desc', 'Configure global system settings'),
+      title: t('admin:dashboard.system_settings', 'System Settings'),
+      description: t('admin:dashboard.system_settings_desc', 'Configure global system settings'),
       icon: Settings,
       action: () => navigate('/admin/system-settings'),
       show: canManageSystem,
       category: 'system'
     },
     {
-      title: t('admin.dashboard.events_management', 'Events Management'),
-      description: t('admin.dashboard.events_management_desc', 'Organize and manage events and conferences'),
+      title: t('admin:dashboard.events_management', 'Events Management'),
+      description: t('admin:dashboard.events_management_desc', 'Organize and manage events and conferences'),
       icon: Users,
       action: () => navigate('/admin/events'),
       show: true,
       category: 'content'
     },
     {
-      title: t('admin.dashboard.campaigns_management', 'Campaigns Management'),
-      description: t('admin.dashboard.campaigns_management_desc', 'Create and manage innovation campaigns'),
+      title: t('admin:dashboard.campaigns_management', 'Campaigns Management'),
+      description: t('admin:dashboard.campaigns_management_desc', 'Create and manage innovation campaigns'),
       icon: Database,
       action: () => navigate('/admin/campaigns'),
       show: true,
       category: 'content'
     },
     {
-      title: t('admin.dashboard.partners_management', 'Partners Management'),
-      description: t('admin.dashboard.partners_management_desc', 'Manage partnerships and external collaborations'),
+      title: t('admin:dashboard.partners_management', 'Partners Management'),
+      description: t('admin:dashboard.partners_management_desc', 'Manage partnerships and external collaborations'),
       icon: Briefcase,
       action: () => navigate('/admin/partners'),
       show: true,
       category: 'management'
     },
     {
-      title: t('admin.dashboard.sectors_management', 'Sectors Management'),
-      description: t('admin.dashboard.sectors_management_desc', 'Manage innovation sectors and fields'),
+      title: t('admin:dashboard.sectors_management', 'Sectors Management'),
+      description: t('admin:dashboard.sectors_management_desc', 'Manage innovation sectors and fields'),
       icon: Building,
       action: () => navigate('/admin/sectors'),
       show: true,
@@ -439,7 +439,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {t('admin.metrics.new')}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newChallenges30d || 3} {t('admin:metrics.new')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -447,7 +447,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {t('admin.metrics.ideas_submitted')}
+                  {t('admin:metrics.ideas_submitted')}
                 </CardTitle>
                 <Database className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -455,7 +455,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold text-warning">{adminMetrics.metrics?.challenges?.submissions || 0}</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {t('admin.metrics.this_week')}</span>
+                  <span>+{adminMetrics.metrics?.challenges?.recentActivity?.newSubmissions30d || 0} {t('admin:metrics.this_week')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -463,7 +463,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {t('admin.metrics.system_performance')}
+                  {t('admin:metrics.system_performance')}
                 </CardTitle>
                 <Zap className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -471,7 +471,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 <div className="text-2xl font-bold text-success">{adminMetrics.metrics?.system?.uptime || 99}%</div>
                 <div className="flex items-center gap-1 text-xs text-success mt-2">
                   <CheckCircle className="w-4 h-4" />
-                  <span>{t('admin.metrics.uptime')}</span>
+                  <span>{t('admin:metrics.uptime')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -481,32 +481,32 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>{t('admin.cards.quick_actions')}</CardTitle>
+                <CardTitle>{t('admin:cards.quick_actions')}</CardTitle>
                 <CardDescription>
-                   {t('admin.cards.quick_actions_desc')}
+                   {t('admin:cards.quick_actions_desc')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button onClick={() => navigate('/admin/users')} className="w-full justify-start">
                   <Users className="w-4 h-4 mr-2" />
-                   {t('admin.cards.manage_users')}
+                   {t('admin:cards.manage_users')}
                  </Button>
                  <Button onClick={() => navigate('/admin/challenges')} variant="outline" className="w-full justify-start">
                    <Target className="w-4 h-4 mr-2" />
-                   {t('admin.cards.manage_challenges')}
+                   {t('admin:cards.manage_challenges')}
                  </Button>
                  <Button onClick={() => navigate('/admin/evaluations')} variant="outline" className="w-full justify-start">
                    <BarChart3 className="w-4 h-4 mr-2" />
-                   {t('admin.cards.system_reports')}
+                   {t('admin:cards.system_reports')}
                  </Button>
                </CardContent>
              </Card>
 
              <Card>
                <CardHeader>
-                 <CardTitle>{t('admin.cards.system_activity')}</CardTitle>
+                 <CardTitle>{t('admin:cards.system_activity')}</CardTitle>
                  <CardDescription>
-                   {t('admin.cards.system_activity_desc')}
+                   {t('admin:cards.system_activity_desc')}
                  </CardDescription>
                </CardHeader>
                <CardContent className="space-y-3">
@@ -515,8 +515,8 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                      <Users className="w-4 h-4" />
                    </div>
                    <div className="flex-1">
-                     <p className="font-medium text-sm">{t('admin.cards.new_user_registered')}</p>
-                     <p className="text-xs text-muted-foreground">{t('admin.cards.minutes_ago_5')}</p>
+                     <p className="font-medium text-sm">{t('admin:cards.new_user_registered')}</p>
+                     <p className="text-xs text-muted-foreground">{t('admin:cards.minutes_ago_5')}</p>
                    </div>
                  </div>
                  <div className="flex items-center space-x-3 p-3 border rounded-lg">
@@ -524,8 +524,8 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                      <Database className="w-4 h-4" />
                    </div>
                    <div className="flex-1">
-                     <p className="font-medium text-sm">{t('admin.cards.new_idea_submitted')}</p>
-                     <p className="text-xs text-muted-foreground">{t('admin.cards.minutes_ago_15')}</p>
+                     <p className="font-medium text-sm">{t('admin:cards.new_idea_submitted')}</p>
+                     <p className="text-xs text-muted-foreground">{t('admin:cards.minutes_ago_15')}</p>
                   </div>
                 </div>
               </CardContent>
