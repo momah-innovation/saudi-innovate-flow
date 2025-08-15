@@ -181,9 +181,22 @@ const loadNamespace = async (language: string, namespace: string) => {
         break;
         
       case 'settings':
+      case 'admin-settings':
         translations = language === 'en'
-          ? await import('./locales/en/admin/settings.json')
-          : await import('./locales/ar/admin/settings.json');
+          ? await import('./locales/en/admin.json')
+          : await import('./locales/ar/admin.json');
+        break;
+        
+      case 'challenge-settings':
+        translations = language === 'en'
+          ? await import('./locales/en/challenge_settings.json')
+          : await import('./locales/ar/challenge_settings.json');
+        break;
+        
+      case 'error-boundary':
+        translations = language === 'en'
+          ? await import('./locales/en/error_boundary.json')
+          : await import('./locales/ar/error_boundary.json');
         break;
         
       default:
