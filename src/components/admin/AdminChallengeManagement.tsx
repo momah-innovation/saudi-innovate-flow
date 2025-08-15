@@ -84,8 +84,8 @@ export function AdminChallengeManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: t('error.validation_error'),
-        description: t('error.load_failed'),
+        title: t('errors.validation_error'),
+        description: t('errors.load_failed'),
         variant: "destructive"
       });
     } finally {
@@ -104,14 +104,14 @@ export function AdminChallengeManagement() {
       
       setChallenges(prev => prev.filter(c => c.id !== challengeId));
       toast({
-        title: t('success.delete_success'),
-        description: t('success.challenge_deleted')
+        title: t('success', 'Success'),
+        description: t('admin.challenges.delete_success', 'Challenge deleted successfully')
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: t('error.validation_error'),
-        description: t('error.delete_failed'),
+        title: t('errors.validation_error'),
+        description: t('errors.delete_failed'),
         variant: "destructive"
       });
     }
@@ -153,10 +153,10 @@ export function AdminChallengeManagement() {
   const filters = [
     {
       id: 'status',
-      label: t('ui.common.status'),
+      label: t('status', 'Status'),
       type: 'select' as const,
       options: [
-        { label: t('ui.common.all'), value: 'all' },
+        { label: t('all', 'All'), value: 'all' },
           { label: t('status.draft'), value: 'draft' },
           { label: t('status.active'), value: 'active' },
           { label: t('status.completed'), value: 'completed' },
