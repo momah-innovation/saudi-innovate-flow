@@ -17,6 +17,8 @@ import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { queryBatcher } from '@/utils/queryBatcher';
+import { timeAsync } from '@/utils/performanceMonitor';
 import { useNavigate } from 'react-router-dom';
 import { createDebouncedNavigate } from '@/utils/navigation-performance';
 import { toast } from 'sonner';
@@ -174,29 +176,40 @@ export default React.memo(function UserDashboard() {
       return;
     }
 
-    // Load user ideas
-    const { data: ideas } = await supabase
-      .from('ideas')
-      .select('id, title_ar, status, created_at, challenge_id')
-      .eq('innovator_id', innovatorData.id);
+    // Load user-related data in parallel with batching
+    const [ideasRes, participantsRes, eventsRes, achievementsRes] = await timeAsync(async () => {
+      return await Promise.all([
+        queryBatcher.batch(`ideas:${innovatorData.id}`, async () =>
+          supabase
+            .from('ideas')
+            .select('id, title_ar, status, created_at, challenge_id')
+            .eq('innovator_id', innovatorData.id)
+        ),
+        queryBatcher.batch(`challenge_participants:${userProfile.id}`, async () =>
+          supabase
+            .from('challenge_participants')
+            .select('challenge_id')
+            .eq('user_id', userProfile.id)
+        ),
+        queryBatcher.batch(`event_participants:${userProfile.id}`, async () =>
+          supabase
+            .from('event_participants')
+            .select('event_id')
+            .eq('user_id', userProfile.id)
+        ),
+        queryBatcher.batch(`user_achievements:${userProfile.id}`, async () =>
+          supabase
+            .from('user_achievements')
+            .select('points_earned')
+            .eq('user_id', userProfile.id)
+        )
+      ]);
+    }, 'user-dashboard-parallel-fetch');
 
-    // Load user challenge participations
-    const { data: challengeParticipations } = await supabase
-      .from('challenge_participants')
-      .select('challenge_id')
-      .eq('user_id', userProfile.id);
-
-    // Load user events
-    const { data: eventParticipations } = await supabase
-      .from('event_participants')
-      .select('event_id')
-      .eq('user_id', userProfile.id);
-
-    // Load user achievements
-    const { data: userAchievements } = await supabase
-      .from('user_achievements')
-      .select('points_earned')
-      .eq('user_id', userProfile.id);
+    const ideas = ideasRes.data || [];
+    const challengeParticipations = participantsRes.data || [];
+    const eventParticipations = eventsRes.data || [];
+    const userAchievements = achievementsRes.data || [];
 
     // Calculate stats
     const totalIdeas = ideas?.length || 0;
@@ -357,10 +370,8 @@ export default React.memo(function UserDashboard() {
         />
         
         <div className="container mx-auto px-6 py-8 space-y-6">
-        {/* Role-specific Dashboard Content - FIXED: Always render all components but conditionally display */}
-        
         {/* Admin Dashboard */}
-        <div style={{ display: (primaryRole === 'admin' || primaryRole === 'super_admin') ? 'block' : 'none' }}>
+        {(primaryRole === 'admin' || primaryRole === 'super_admin') && (
           <AdminDashboard 
             userProfile={userProfile ? {
               id: userProfile.id,
@@ -378,7 +389,7 @@ export default React.memo(function UserDashboard() {
             canManageSystem={permissions.canManageSystem}
             canViewAnalytics={permissions.canViewAnalytics}
           />
-        </div>
+        )}
         
         {/* Expert Dashboard */}
         <div style={{ display: primaryRole === 'expert' ? 'block' : 'none' }}>
@@ -449,8 +460,8 @@ export default React.memo(function UserDashboard() {
         </div>
         
         {/* Default Innovator Dashboard for other roles */}
-        <div style={{ display: !['admin', 'super_admin', 'expert', 'partner', 'team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager', 'expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'data_analyst', 'system_auditor', 'content_manager', 'challenge_manager', 'research_lead', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'].includes(primaryRole) ? 'block' : 'none' }}>
-          <div>
+        {!['admin', 'super_admin', 'expert', 'partner', 'team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager', 'expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'data_analyst', 'system_auditor', 'content_manager', 'challenge_manager', 'research_lead', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager'].includes(primaryRole) && (
+          <>
         {/* Hero Banner */}
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-innovation to-innovation-foreground text-white">
           <div className="absolute inset-0 bg-black/20"></div>
@@ -776,13 +787,12 @@ export default React.memo(function UserDashboard() {
         </Tabs>
         
         {/* Collaboration moved to workspace pages */}
-          </div>
-        </div>
+        </>
+        )}
         
         </div>
         
         <WorkspaceCollaboration workspaceType="user" />
-        </>
         )}
       </div>
     </CollaborationProvider>
