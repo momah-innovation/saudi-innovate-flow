@@ -49,10 +49,10 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
           <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Zap className="w-5 h-5" />
-            {isRTL ? 'استراتيجيات التخزين المؤقت' : 'Cache Strategies'}
+            {t('admin.settings.cache_strategies')}
           </CardTitle>
           <CardDescription>
-            {isRTL ? 'إدارة استراتيجيات التخزين المؤقت للنظام' : 'Manage cache strategies for the system'}
+            {t('admin.settings.cache_strategies_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -60,7 +60,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
             <Input
               value={newCacheStrategy}
               onChange={(e) => setNewCacheStrategy(e.target.value)}
-              placeholder={isRTL ? "أضف استراتيجية تخزين مؤقت جديدة" : "Add new cache strategy"}
+              placeholder={t('admin.settings.add_cache_strategy')}
               className={isRTL ? 'text-right' : 'text-left'}
             />
             <Button onClick={addCacheStrategy} size="sm">
@@ -88,16 +88,16 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
 
       <Card>
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
-          <CardTitle>{isRTL ? 'إعدادات الأداء' : 'Performance Settings'}</CardTitle>
+          <CardTitle>{t('admin.settings.performance_settings')}</CardTitle>
           <CardDescription>
-            {isRTL ? 'التحكم في إعدادات أداء النظام' : 'Control system performance settings'}
+            {t('admin.settings.performance_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
               <Label htmlFor="cacheTimeout">
-                {isRTL ? 'مهلة انتهاء التخزين المؤقت (دقائق)' : 'Cache Timeout (minutes)'}
+                {t('admin.settings.cache_timeout')}
               </Label>
               <Input
                 id="cacheTimeout"
@@ -112,7 +112,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
 
             <div className="space-y-2">
               <Label htmlFor="maxCacheSize">
-                {isRTL ? 'أقصى حجم تخزين مؤقت (ميجابايت)' : 'Max Cache Size (MB)'}
+                {t('admin.settings.max_cache_size')}
               </Label>
               <Input
                 id="maxCacheSize"
@@ -127,7 +127,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
 
             <div className="space-y-2">
               <Label htmlFor="dbConnectionPoolSize">
-                {isRTL ? 'حجم مجموعة اتصالات قاعدة البيانات' : 'Database Connection Pool Size'}
+                {t('admin.settings.db_pool_size')}
               </Label>
               <Input
                 id="dbConnectionPoolSize"
@@ -142,7 +142,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
 
             <div className="space-y-2">
               <Label htmlFor="requestTimeout">
-                {isRTL ? 'مهلة انتهاء الطلب (ثانية)' : 'Request Timeout (seconds)'}
+                {t('admin.settings.request_timeout')}
               </Label>
               <Input
                 id="requestTimeout"
@@ -157,7 +157,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
 
             <div className="space-y-2">
               <Label htmlFor="defaultCacheStrategy">
-                {isRTL ? 'استراتيجية التخزين المؤقت الافتراضية' : 'Default Cache Strategy'}
+                {t('admin.settings.default_cache_strategy')}
               </Label>
               <Select 
                 value={typeof settings.defaultCacheStrategy === 'string' ? settings.defaultCacheStrategy : 'memory'} 
@@ -178,7 +178,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
 
             <div className="space-y-2">
               <Label htmlFor="compressionLevel">
-                {isRTL ? 'مستوى الضغط' : 'Compression Level'}
+                {t('admin.settings.compression_level')}
               </Label>
               <Select 
                 value={typeof settings.compressionLevel === 'string' ? settings.compressionLevel : 'medium'} 
@@ -188,10 +188,10 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">{isRTL ? 'بدون ضغط' : 'None'}</SelectItem>
-                  <SelectItem value="low">{isRTL ? 'منخفض' : 'Low'}</SelectItem>
-                  <SelectItem value="medium">{isRTL ? 'متوسط' : 'Medium'}</SelectItem>
-                  <SelectItem value="high">{isRTL ? 'عالي' : 'High'}</SelectItem>
+                  <SelectItem value="none">{t('admin.settings.compression_levels.none')}</SelectItem>
+                  <SelectItem value="low">{t('admin.settings.compression_levels.low')}</SelectItem>
+                  <SelectItem value="medium">{t('admin.settings.compression_levels.medium')}</SelectItem>
+                  <SelectItem value="high">{t('admin.settings.compression_levels.high')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -200,10 +200,10 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">
-                {isRTL ? 'تفعيل التخزين المؤقت' : 'Enable Caching'}
+                {t('admin.settings.enable_caching')}
               </Label>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'تفعيل نظام التخزين المؤقت لتحسين الأداء' : 'Enable caching system for improved performance'}
+                {t('admin.settings.caching_desc')}
               </p>
             </div>
             <Switch
@@ -215,10 +215,10 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">
-                {isRTL ? 'ضغط البيانات' : 'Data Compression'}
+                {t('admin.settings.data_compression')}
               </Label>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'تفعيل ضغط البيانات لتوفير النطاق الترددي' : 'Enable data compression to save bandwidth'}
+                {t('admin.settings.compression_desc')}
               </p>
             </div>
             <Switch
@@ -230,10 +230,10 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">
-                {isRTL ? 'التحميل التدريجي' : 'Lazy Loading'}
+                {t('admin.settings.lazy_loading')}
               </Label>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'تحميل المحتوى عند الحاجة لتحسين الأداء' : 'Load content on demand for better performance'}
+                {t('admin.settings.lazy_loading_desc')}
               </p>
             </div>
             <Switch
@@ -245,10 +245,10 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">
-                {isRTL ? 'مراقبة الأداء' : 'Performance Monitoring'}
+                {t('admin.settings.performance_monitoring')}
               </Label>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'تتبع ومراقبة أداء النظام' : 'Track and monitor system performance'}
+                {t('admin.settings.monitoring_desc')}
               </p>
             </div>
             <Switch

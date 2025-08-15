@@ -184,22 +184,22 @@ export function SectorsManagement() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Sectors Management</h1>
-          <p className="text-muted-foreground">Manage government sectors and their Vision 2030 alignment</p>
+          <h1 className="text-3xl font-bold">{t('admin.sectors.title')}</h1>
+          <p className="text-muted-foreground">{t('admin.sectors.description')}</p>
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => { resetForm(); setEditingSector(null); }}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Sector
+              {t('admin.sectors.add_sector')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>{editingSector ? t('admin.edit_sector') : t('admin.add_new_sector')}</DialogTitle>
               <DialogDescription>
-                {editingSector ? "Update sector information" : "Create a new sector"}
+                {editingSector ? t('admin.sectors.update_sector_info') : t('admin.sectors.create_new_sector')}
               </DialogDescription>
             </DialogHeader>
             
@@ -245,7 +245,7 @@ export function SectorsManagement() {
               </div>
 
               <div>
-                <Label htmlFor="vision_2030_alignment">Vision 2030 Alignment</Label>
+                <Label htmlFor="vision_2030_alignment">{t('admin.sectors.vision_2030_alignment')}</Label>
                 <Textarea
                   id="vision_2030_alignment"
                   value={formData.vision_2030_alignment}
@@ -255,10 +255,10 @@ export function SectorsManagement() {
 
               <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
                 <Button type="submit">
-                  {editingSector ? "Update" : "Create"}
+                  {editingSector ? t('common.update') : t('common.create')}
                 </Button>
               </div>
             </form>
@@ -271,7 +271,7 @@ export function SectorsManagement() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
-            placeholder="Search sectors by name, description, or Vision 2030 alignment..."
+            placeholder={t('admin.sectors.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 pr-10"
@@ -322,13 +322,13 @@ export function SectorsManagement() {
         {filteredSectors.length === 0 && searchTerm && (
           <Card>
             <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No sectors found matching your search criteria</p>
+              <p className="text-muted-foreground">{t('admin.sectors.no_sectors_matching')}</p>
               <Button 
                 variant="outline" 
                 onClick={() => setSearchTerm("")}
                 className="mt-2"
               >
-                Clear search
+                {t('admin.sectors.clear_search')}
               </Button>
             </CardContent>
           </Card>
@@ -337,7 +337,7 @@ export function SectorsManagement() {
         {sectors.length === 0 && !searchTerm && (
           <Card>
             <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No sectors found</p>
+              <p className="text-muted-foreground">{t('admin.sectors.no_sectors_found')}</p>
             </CardContent>
           </Card>
         )}
@@ -360,20 +360,20 @@ export function SectorsManagement() {
             <div className="space-y-4">
               {viewingSector.description && (
                 <div>
-                  <h4 className="font-medium mb-2">Description</h4>
+                  <h4 className="font-medium mb-2">{t('admin.sectors.description_label')}</h4>
                   <p className="text-muted-foreground">{viewingSector.description}</p>
                 </div>
               )}
               
               {viewingSector.vision_2030_alignment && (
                 <div>
-                  <h4 className="font-medium mb-2">Vision 2030 Alignment</h4>
+                  <h4 className="font-medium mb-2">{t('admin.sectors.vision_2030_alignment')}</h4>
                   <p className="text-muted-foreground">{viewingSector.vision_2030_alignment}</p>
                 </div>
               )}
               
               <div>
-                <h4 className="font-medium mb-2">Created</h4>
+                <h4 className="font-medium mb-2">{t('admin.sectors.created')}</h4>
                 <p className="text-muted-foreground">{new Date(viewingSector.created_at).toLocaleDateString()}</p>
               </div>
             </div>

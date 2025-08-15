@@ -71,10 +71,10 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
           <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <FileText className="w-5 h-5" />
-            {isRTL ? 'أنواع الفرص' : 'Opportunity Types'}
+            {t('admin.settings.opportunity_types')}
           </CardTitle>
           <CardDescription>
-            {isRTL ? 'إدارة أنواع الفرص المتاحة في النظام' : 'Manage opportunity types available in the system'}
+            {t('admin.settings.opportunity_types_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -82,7 +82,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
             <Input
               value={newOpportunityType}
               onChange={(e) => setNewOpportunityType(e.target.value)}
-              placeholder={isRTL ? "أضف نوع فرصة جديد" : "Add new opportunity type"}
+              placeholder={t('admin.settings.add_opportunity_type')}
               className={isRTL ? 'text-right' : 'text-left'}
             />
             <Button onClick={addOpportunityType} size="sm">
@@ -110,9 +110,9 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
 
       <Card>
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
-          <CardTitle>{isRTL ? 'حالات طلبات التقديم' : 'Application Status Options'}</CardTitle>
+          <CardTitle>{t('admin.settings.application_status')}</CardTitle>
           <CardDescription>
-            {isRTL ? 'إدارة حالات طلبات التقديم للفرص' : 'Manage application status options for opportunities'}
+            {t('admin.settings.application_status_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -120,7 +120,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
             <Input
               value={newApplicationStatus}
               onChange={(e) => setNewApplicationStatus(e.target.value)}
-              placeholder={isRTL ? "أضف حالة تطبيق جديدة" : "Add new application status"}
+              placeholder={t('admin.settings.add_application_status')}
               className={isRTL ? 'text-right' : 'text-left'}
             />
             <Button onClick={addApplicationStatus} size="sm">
@@ -148,16 +148,16 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
 
       <Card>
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
-          <CardTitle>{isRTL ? 'إعدادات الفرص الافتراضية' : 'Default Opportunity Settings'}</CardTitle>
+          <CardTitle>{t('admin.settings.default_opportunity_settings')}</CardTitle>
           <CardDescription>
-            {isRTL ? 'التحكم في الإعدادات الافتراضية للفرص' : 'Control default settings for opportunities'}
+            {t('admin.settings.default_settings_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
               <Label htmlFor="defaultOpportunityDuration">
-                {isRTL ? 'المدة الافتراضية (بالأيام)' : 'Default Duration (days)'}
+                {t('admin.settings.default_duration')}
               </Label>
               <Input
                 id="defaultOpportunityDuration"
@@ -172,7 +172,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
 
             <div className="space-y-2">
               <Label htmlFor="maxApplicationsPerOpportunity">
-                {isRTL ? 'الحد الأقصى للطلبات لكل فرصة' : 'Max Applications per Opportunity'}
+                {t('admin.settings.max_applications')}
               </Label>
               <Input
                 id="maxApplicationsPerOpportunity"
@@ -187,7 +187,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
 
             <div className="space-y-2">
               <Label htmlFor="defaultBudgetMin">
-                {isRTL ? 'الحد الأدنى للميزانية الافتراضية' : 'Default Minimum Budget'}
+                {t('admin.settings.default_min_budget')}
               </Label>
               <Input
                 id="defaultBudgetMin"
@@ -201,7 +201,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
 
             <div className="space-y-2">
               <Label htmlFor="defaultBudgetMax">
-                {isRTL ? 'الحد الأقصى للميزانية الافتراضية' : 'Default Maximum Budget'}
+                {t('admin.settings.default_max_budget')}
               </Label>
               <Input
                 id="defaultBudgetMax"
@@ -217,10 +217,10 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">
-                {isRTL ? 'تفعيل الموافقة التلقائية' : 'Enable Auto-Approval'}
+                {t('admin.settings.enable_auto_approval')}
               </Label>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'الموافقة التلقائية على طلبات التقديم المؤهلة' : 'Automatically approve qualified applications'}
+                {t('admin.settings.auto_approval_desc')}
               </p>
             </div>
             <Switch
@@ -232,10 +232,10 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">
-                {isRTL ? 'طلب مرفقات إلزامية' : 'Require Mandatory Attachments'}
+                {t('admin.settings.require_attachments')}
               </Label>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'إجبار تقديم مرفقات مع طلبات التقديم' : 'Force applicants to provide required attachments'}
+                {t('admin.settings.attachments_desc')}
               </p>
             </div>
             <Switch
@@ -247,10 +247,10 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">
-                {isRTL ? 'إشعارات التقديم' : 'Application Notifications'}
+                {t('admin.settings.application_notifications')}
               </Label>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'إرسال إشعارات عند تقديم طلبات جديدة' : 'Send notifications when new applications are submitted'}
+                {t('admin.settings.notifications_desc')}
               </p>
             </div>
             <Switch

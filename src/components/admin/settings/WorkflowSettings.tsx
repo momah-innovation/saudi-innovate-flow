@@ -88,10 +88,10 @@ export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettings
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
           <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <PieChart className="w-5 h-5" />
-            {isRTL ? 'خطوات سير العمل' : 'Workflow Steps'}
+            {t('admin.settings.workflow_steps')}
           </CardTitle>
           <CardDescription>
-            {isRTL ? 'إدارة خطوات سير العمل في النظام' : 'Manage workflow steps in the system'}
+            {t('admin.settings.workflow_steps_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -99,7 +99,7 @@ export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettings
             <Input
               value={newWorkflowStep}
               onChange={(e) => setNewWorkflowStep(e.target.value)}
-              placeholder={isRTL ? "أضف خطوة سير عمل جديدة" : "Add new workflow step"}
+              placeholder={t('admin.settings.add_workflow_step')}
               className={isRTL ? 'text-right' : 'text-left'}
             />
             <Button onClick={addWorkflowStep} size="sm">
@@ -127,9 +127,9 @@ export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettings
 
       <Card>
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
-          <CardTitle>{isRTL ? 'مستويات الموافقة' : 'Approval Levels'}</CardTitle>
+          <CardTitle>{t('admin.settings.approval_levels')}</CardTitle>
           <CardDescription>
-            {isRTL ? 'إدارة مستويات الموافقة في النظام' : 'Manage approval levels in the system'}
+            {t('admin.settings.approval_levels_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -137,7 +137,7 @@ export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettings
             <Input
               value={newApprovalLevel}
               onChange={(e) => setNewApprovalLevel(e.target.value)}
-              placeholder={isRTL ? "أضف مستوى موافقة جديد" : "Add new approval level"}
+              placeholder={t('admin.settings.add_approval_level')}
               className={isRTL ? 'text-right' : 'text-left'}
             />
             <Button onClick={addApprovalLevel} size="sm">
@@ -165,16 +165,16 @@ export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettings
 
       <Card>
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
-          <CardTitle>{isRTL ? 'إعدادات سير العمل' : 'Workflow Settings'}</CardTitle>
+          <CardTitle>{t('admin.settings.workflow_settings')}</CardTitle>
           <CardDescription>
-            {isRTL ? 'التحكم في إعدادات سير العمل والموافقات' : 'Control workflow and approval settings'}
+            {t('admin.settings.workflow_settings_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
               <Label htmlFor="defaultWorkflowTimeout">
-                {isRTL ? 'انتهاء مهلة سير العمل (بالأيام)' : 'Default Workflow Timeout (days)'}
+                {t('admin.settings.workflow_timeout')}
               </Label>
               <Input
                 id="defaultWorkflowTimeout"
@@ -189,7 +189,7 @@ export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettings
 
             <div className="space-y-2">
               <Label htmlFor="maxConcurrentWorkflows">
-                {isRTL ? 'الحد الأقصى لسير العمل المتزامن' : 'Max Concurrent Workflows'}
+                {t('admin.settings.max_concurrent')}
               </Label>
               <Input
                 id="maxConcurrentWorkflows"
@@ -236,7 +236,7 @@ export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettings
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">
-                {isRTL ? 'تفعيل الموافقة المتعددة المستويات' : 'Enable Multi-Level Approval'}
+                {t('admin.settings.multi_level_approval')}
               </Label>
               <p className="text-sm text-muted-foreground">
                 {isRTL ? 'طلب موافقة من عدة مستويات إدارية' : 'Require approval from multiple management levels'}
