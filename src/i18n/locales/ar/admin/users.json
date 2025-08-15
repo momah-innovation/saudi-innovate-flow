@@ -1,0 +1,140 @@
+{
+  "management": {
+    "title": "إدارة المستخدمين",
+    "description": "إدارة المستخدمين والأدوار والصلاحيات",
+    "total_users": "إجمالي المستخدمين",
+    "active_users": "المستخدمون النشطون",
+    "pending_approvals": "الموافقات المعلقة",
+    "recent_registrations": "التسجيلات الحديثة"
+  },
+  "actions": {
+    "add_user": "إضافة مستخدم جديد",
+    "edit_user": "تعديل المستخدم",
+    "delete_user": "حذف المستخدم",
+    "activate_user": "تفعيل المستخدم",
+    "deactivate_user": "إلغاء تفعيل المستخدم",
+    "reset_password": "إعادة تعيين كلمة المرور",
+    "send_invitation": "إرسال دعوة",
+    "export_users": "تصدير المستخدمين",
+    "bulk_import": "استيراد جماعي",
+    "assign_role": "تعيين دور",
+    "remove_role": "إزالة دور"
+  },
+  "form": {
+    "user_info": "معلومات المستخدم",
+    "first_name": "الاسم الأول",
+    "last_name": "اسم العائلة",
+    "email": "عنوان البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "organization": "المؤسسة",
+    "department": "القسم",
+    "job_title": "المسمى الوظيفي",
+    "status": "حالة الحساب",
+    "roles": "أدوار المستخدم",
+    "permissions": "الصلاحيات",
+    "profile_picture": "صورة الملف الشخصي",
+    "bio": "السيرة الذاتية",
+    "skills": "المهارات",
+    "languages": "اللغات"
+  },
+  "roles": {
+    "super_admin": "مدير عام",
+    "admin": "مدير",
+    "user_manager": "مدير المستخدمين",
+    "moderator": "مشرف",
+    "evaluator": "محكم",
+    "coordinator": "منسق",
+    "analyst": "محلل بيانات",
+    "participant": "مشارك",
+    "viewer": "مشاهد",
+    "guest": "زائر"
+  },
+  "permissions": {
+    "manage_users": "إدارة المستخدمين",
+    "manage_roles": "إدارة الأدوار",
+    "manage_system": "إدارة النظام",
+    "view_analytics": "عرض التحليلات",
+    "manage_content": "إدارة المحتوى",
+    "moderate_discussions": "إشراف المناقشات",
+    "evaluate_submissions": "تقييم المشاركات",
+    "export_data": "تصدير البيانات",
+    "access_api": "الوصول لواجهة برمجة التطبيقات"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "في انتظار الموافقة",
+    "suspended": "موقوف",
+    "banned": "محظور",
+    "invited": "تم إرسال الدعوة"
+  },
+  "filters": {
+    "all_users": "جميع المستخدمين",
+    "by_status": "تصفية حسب الحالة",
+    "by_role": "تصفية حسب الدور",
+    "by_organization": "تصفية حسب المؤسسة",
+    "by_registration_date": "تصفية حسب تاريخ التسجيل",
+    "search_placeholder": "البحث في المستخدمين بالاسم أو البريد الإلكتروني أو المؤسسة"
+  },
+  "bulk_actions": {
+    "select_all": "تحديد الكل",
+    "selected_count": "{{count}} مستخدم محدد",
+    "bulk_activate": "تفعيل جماعي",
+    "bulk_deactivate": "إلغاء تفعيل جماعي",
+    "bulk_assign_role": "تعيين دور جماعي",
+    "bulk_remove_role": "إزالة دور جماعي",
+    "bulk_delete": "حذف جماعي",
+    "bulk_export": "تصدير المحدد"
+  },
+  "profile": {
+    "view_profile": "عرض الملف الشخصي",
+    "edit_profile": "تعديل الملف الشخصي",
+    "activity_log": "سجل النشاط",
+    "login_history": "تاريخ تسجيل الدخول",
+    "permissions_overview": "نظرة عامة على الصلاحيات",
+    "role_assignments": "تعيينات الأدوار",
+    "last_login": "آخر تسجيل دخول",
+    "registration_date": "تاريخ التسجيل",
+    "email_verified": "البريد الإلكتروني مؤكد",
+    "phone_verified": "الهاتف مؤكد"
+  },
+  "security": {
+    "password_policy": "سياسة كلمة المرور",
+    "two_factor_auth": "المصادقة الثنائية",
+    "login_attempts": "محاولات تسجيل الدخول الفاشلة",
+    "security_alerts": "تنبيهات أمنية",
+    "session_management": "الجلسات النشطة",
+    "account_lockout": "قفل الحساب",
+    "password_reset": "إعادة تعيين كلمة المرور مطلوبة"
+  },
+  "notifications": {
+    "welcome_email": "بريد ترحيبي",
+    "account_activation": "تفعيل الحساب",
+    "password_reset_email": "بريد إعادة تعيين كلمة المرور",
+    "role_assignment": "إشعار تعيين دور",
+    "security_alert": "تنبيه أمني",
+    "account_suspension": "إشعار إيقاف الحساب"
+  },
+  "validation": {
+    "email_exists": "عنوان البريد الإلكتروني موجود بالفعل",
+    "invalid_email": "عنوان بريد إلكتروني غير صحيح",
+    "password_requirements": "كلمة المرور يجب أن تلبي المتطلبات الأمنية",
+    "role_required": "يجب تعيين دور واحد على الأقل",
+    "organization_required": "المؤسسة مطلوبة",
+    "phone_invalid": "تنسيق رقم الهاتف غير صحيح"
+  },
+  "messages": {
+    "user_created": "تم إنشاء المستخدم بنجاح",
+    "user_updated": "تم تحديث المستخدم بنجاح",
+    "user_deleted": "تم حذف المستخدم بنجاح",
+    "user_activated": "تم تفعيل المستخدم بنجاح",
+    "user_deactivated": "تم إلغاء تفعيل المستخدم بنجاح",
+    "password_reset_sent": "تم إرسال بريد إعادة تعيين كلمة المرور",
+    "invitation_sent": "تم إرسال الدعوة بنجاح",
+    "role_assigned": "تم تعيين الدور بنجاح",
+    "role_removed": "تم إزالة الدور بنجاح",
+    "bulk_operation_completed": "تمت العملية الجماعية",
+    "delete_confirmation": "هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.",
+    "deactivate_confirmation": "هل أنت متأكد من إلغاء تفعيل هذا المستخدم؟"
+  }
+}

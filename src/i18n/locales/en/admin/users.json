@@ -1,0 +1,140 @@
+{
+  "management": {
+    "title": "User Management",
+    "description": "Manage users, roles, and permissions",
+    "total_users": "Total Users",
+    "active_users": "Active Users",
+    "pending_approvals": "Pending Approvals",
+    "recent_registrations": "Recent Registrations"
+  },
+  "actions": {
+    "add_user": "Add New User",
+    "edit_user": "Edit User",
+    "delete_user": "Delete User",
+    "activate_user": "Activate User",
+    "deactivate_user": "Deactivate User",
+    "reset_password": "Reset Password",
+    "send_invitation": "Send Invitation",
+    "export_users": "Export Users",
+    "bulk_import": "Bulk Import",
+    "assign_role": "Assign Role",
+    "remove_role": "Remove Role"
+  },
+  "form": {
+    "user_info": "User Information",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "organization": "Organization",
+    "department": "Department",
+    "job_title": "Job Title",
+    "status": "Account Status",
+    "roles": "User Roles",
+    "permissions": "Permissions",
+    "profile_picture": "Profile Picture",
+    "bio": "Biography",
+    "skills": "Skills",
+    "languages": "Languages"
+  },
+  "roles": {
+    "super_admin": "Super Administrator",
+    "admin": "Administrator", 
+    "user_manager": "User Manager",
+    "moderator": "Moderator",
+    "evaluator": "Evaluator",
+    "coordinator": "Coordinator",
+    "analyst": "Data Analyst",
+    "participant": "Participant",
+    "viewer": "Viewer",
+    "guest": "Guest"
+  },
+  "permissions": {
+    "manage_users": "Manage Users",
+    "manage_roles": "Manage Roles",
+    "manage_system": "Manage System",
+    "view_analytics": "View Analytics",
+    "manage_content": "Manage Content",
+    "moderate_discussions": "Moderate Discussions",
+    "evaluate_submissions": "Evaluate Submissions",
+    "export_data": "Export Data",
+    "access_api": "API Access"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending Approval",
+    "suspended": "Suspended",
+    "banned": "Banned",
+    "invited": "Invitation Sent"
+  },
+  "filters": {
+    "all_users": "All Users",
+    "by_status": "Filter by Status",
+    "by_role": "Filter by Role",
+    "by_organization": "Filter by Organization",
+    "by_registration_date": "Filter by Registration Date",
+    "search_placeholder": "Search users by name, email, or organization"
+  },
+  "bulk_actions": {
+    "select_all": "Select All",
+    "selected_count": "{{count}} users selected",
+    "bulk_activate": "Bulk Activate",
+    "bulk_deactivate": "Bulk Deactivate",
+    "bulk_assign_role": "Bulk Assign Role",
+    "bulk_remove_role": "Bulk Remove Role",
+    "bulk_delete": "Bulk Delete",
+    "bulk_export": "Export Selected"
+  },
+  "profile": {
+    "view_profile": "View Profile",
+    "edit_profile": "Edit Profile",
+    "activity_log": "Activity Log",
+    "login_history": "Login History",
+    "permissions_overview": "Permissions Overview",
+    "role_assignments": "Role Assignments",
+    "last_login": "Last Login",
+    "registration_date": "Registration Date",
+    "email_verified": "Email Verified",
+    "phone_verified": "Phone Verified"
+  },
+  "security": {
+    "password_policy": "Password Policy",
+    "two_factor_auth": "Two-Factor Authentication",
+    "login_attempts": "Failed Login Attempts",
+    "security_alerts": "Security Alerts",
+    "session_management": "Active Sessions",
+    "account_lockout": "Account Lockout",
+    "password_reset": "Password Reset Required"
+  },
+  "notifications": {
+    "welcome_email": "Welcome Email",
+    "account_activation": "Account Activation",
+    "password_reset_email": "Password Reset Email",
+    "role_assignment": "Role Assignment Notification",
+    "security_alert": "Security Alert",
+    "account_suspension": "Account Suspension Notice"
+  },
+  "validation": {
+    "email_exists": "Email address already exists",
+    "invalid_email": "Invalid email address",
+    "password_requirements": "Password must meet security requirements",
+    "role_required": "At least one role must be assigned",
+    "organization_required": "Organization is required",
+    "phone_invalid": "Invalid phone number format"
+  },
+  "messages": {
+    "user_created": "User created successfully",
+    "user_updated": "User updated successfully", 
+    "user_deleted": "User deleted successfully",
+    "user_activated": "User activated successfully",
+    "user_deactivated": "User deactivated successfully",
+    "password_reset_sent": "Password reset email sent",
+    "invitation_sent": "Invitation sent successfully",
+    "role_assigned": "Role assigned successfully",
+    "role_removed": "Role removed successfully",
+    "bulk_operation_completed": "Bulk operation completed",
+    "delete_confirmation": "Are you sure you want to delete this user? This action cannot be undone.",
+    "deactivate_confirmation": "Are you sure you want to deactivate this user?"
+  }
+}

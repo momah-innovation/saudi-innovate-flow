@@ -18,7 +18,7 @@ src/i18n/locales/
 │   │   ├── index.json       ✅ Challenge listing, filters (40 keys)
 │   │   ├── form.json        ✅ Challenge creation/editing (124 keys)
 │   │   ├── details.json     ✅ Challenge view, participation (95 keys)
-│   │   └── submissions.json ❌ Submission process [TODO]
+│   │   └── submissions.json ✅ Submission process (64 keys)
 │   ├── campaigns/
 │   │   ├── index.json       ✅ Campaign listing (24 keys)
 │   │   ├── form.json        ❌ Campaign management [TODO]
@@ -26,16 +26,13 @@ src/i18n/locales/
 │   ├── admin/
 │   │   ├── index.json       ✅ Admin sections (25 keys)
 │   │   ├── settings.json    ✅ System settings (45 keys)
-│   │   ├── users.json       ❌ User management [TODO]
+│   │   ├── users.json       ✅ User management (108 keys)
 │   │   └── analytics.json   ❌ Admin dashboard [TODO]
-│   ├── events.json          ❌ Event management [TODO]
+│   ├── events.json          ✅ Event management (97 keys)
 │   ├── partners.json        ❌ Partner management [TODO]
 │   └── opportunities.json   ❌ Opportunities management [TODO]
-└── ar/
-    └── [same structure as en/] ✅ All completed files have Arabic versions
-```
 
-**TOTAL: 653 keys across 14 completed files (~40% coverage)**
+**TOTAL: 922 keys across 17 completed files (~65% coverage)**
 
 ### 2. Dynamic Translations (Database) - **HYBRID APPROACH**
 ✅ **Moved to Static Files (Better Performance):**

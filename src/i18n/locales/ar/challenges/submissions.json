@@ -1,0 +1,95 @@
+{
+  "process": {
+    "title": "عملية التقديم",
+    "steps": "خطوات التقديم",
+    "requirements": "متطلبات التقديم",
+    "guidelines": "إرشادات التقديم",
+    "deadline": "موعد انتهاء التقديم",
+    "status": "حالة التقديم"
+  },
+  "form": {
+    "title": "قدم فكرتك",
+    "idea_title": "عنوان الفكرة",
+    "idea_title_placeholder": "أدخل عنوان فكرتك المبتكرة",
+    "description": "الوصف التفصيلي",
+    "description_placeholder": "اوصف حلولك ومنهجيتك والتأثير المتوقع",
+    "category": "الفئة",
+    "select_category": "اختر فئة الفكرة",
+    "team_size": "حجم الفريق",
+    "team_members": "أعضاء الفريق",
+    "add_member": "إضافة عضو فريق",
+    "member_name": "اسم العضو",
+    "member_role": "الدور",
+    "member_email": "البريد الإلكتروني",
+    "attachments": "المستندات الداعمة",
+    "upload_files": "رفع الملفات",
+    "video_demo": "فيديو تجريبي",
+    "video_url": "رابط الفيديو",
+    "presentation": "ملف العرض التقديمي",
+    "prototype": "النموذج الأولي/العرض التجريبي",
+    "budget_estimate": "تقدير الميزانية",
+    "timeline": "الجدول الزمني للتنفيذ",
+    "milestones": "المعالم الرئيسية"
+  },
+  "validation": {
+    "title_required": "عنوان الفكرة مطلوب",
+    "description_required": "الوصف التفصيلي مطلوب",
+    "description_min_length": "الوصف يجب أن يكون 100 حرف على الأقل",
+    "category_required": "يرجى اختيار فئة",
+    "team_size_positive": "حجم الفريق يجب أن يكون موجباً",
+    "member_name_required": "اسم عضو الفريق مطلوب",
+    "member_email_invalid": "بريد إلكتروني صحيح مطلوب لأعضاء الفريق",
+    "file_size_limit": "حجم الملف يجب أن يكون أقل من 10 ميجابايت",
+    "budget_positive": "تقدير الميزانية يجب أن يكون موجباً"
+  },
+  "status": {
+    "draft": "مسودة",
+    "submitted": "مقدم",
+    "under_review": "قيد المراجعة",
+    "approved": "موافق عليه",
+    "rejected": "مرفوض",
+    "needs_revision": "يحتاج مراجعة",
+    "finalist": "متأهل للنهائي",
+    "winner": "فائز"
+  },
+  "actions": {
+    "save_draft": "حفظ كمسودة",
+    "submit": "تقديم الفكرة",
+    "edit": "تعديل التقديم",
+    "withdraw": "سحب التقديم",
+    "view_feedback": "عرض التعليقات",
+    "upload_revision": "رفع المراجعة"
+  },
+  "workflow": {
+    "step1": "تقديم الفكرة",
+    "step2": "المراجعة الأولية",
+    "step3": "تقييم الخبراء",
+    "step4": "الاختيار النهائي",
+    "step1_desc": "قدم فكرتك المبتكرة مع جميع المستندات المطلوبة",
+    "step2_desc": "مراجعة إدارية للتأكد من الاكتمال والأهلية",
+    "step3_desc": "لجنة الخبراء تقيم الجدوى التقنية والتأثير",
+    "step4_desc": "الاختيار النهائي وإعلان الفائزين"
+  },
+  "evaluation": {
+    "criteria": "معايير التقييم",
+    "innovation": "مستوى الابتكار",
+    "feasibility": "الجدوى التقنية",
+    "impact": "التأثير المتوقع",
+    "scalability": "إمكانية التوسع",
+    "team_capability": "قدرة الفريق",
+    "score": "النتيجة",
+    "feedback": "تعليقات المقيم",
+    "recommendations": "التوصيات"
+  },
+  "messages": {
+    "submission_successful": "تم تقديم الفكرة بنجاح",
+    "draft_saved": "تم حفظ المسودة بنجاح",
+    "submission_withdrawn": "تم سحب التقديم",
+    "revision_uploaded": "تم رفع المراجعة بنجاح",
+    "deadline_passed": "انتهى موعد التقديم",
+    "already_submitted": "لقد قدمت فكرة بالفعل لهذا التحدي",
+    "max_submissions_reached": "تم الوصول للحد الأقصى من التقديمات",
+    "file_upload_failed": "فشل في رفع الملف",
+    "submit_failed": "فشل في تقديم الفكرة"
+  }
+}

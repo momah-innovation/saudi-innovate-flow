@@ -6,44 +6,60 @@ import { useMemo } from 'react';
 import { debugLog } from '@/utils/debugLogger';
 
 /**
- * Enhanced System Translations Hook
- * Provides database-driven translations with aggressive caching
+ * Enhanced System Translations Hook - HYBRID APPROACH
+ * Provides database-driven translations for truly dynamic content only
+ * Static translations are now handled by the i18next system
  */
 export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
   const queryClient = useQueryClient();
 
-  // Static fallback translations to prevent network requests during navigation
-  const staticTranslations: SystemTranslation[] = [
-    { id: '1', translation_key: 'welcome', text_en: 'Welcome', text_ar: 'مرحباً', category: 'ui' },
-    { id: '2', translation_key: 'dashboard', text_en: 'Dashboard', text_ar: 'لوحة التحكم', category: 'navigation' },
-    { id: '3', translation_key: 'ideas', text_en: 'Ideas', text_ar: 'الأفكار', category: 'navigation' },
-    { id: '4', translation_key: 'challenges', text_en: 'Challenges', text_ar: 'التحديات', category: 'navigation' },
-    { id: '5', translation_key: 'submit', text_en: 'Submit', text_ar: 'إرسال', category: 'ui' }
-  ];
+  // Query for dynamic translations from database (only when needed)
+  const { data: dbTranslations = [], isLoading, error } = useQuery({
+    queryKey: queryKeys.system.translations(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('system_translations')
+        .select('*')
+        .in('category', [
+          'dynamic_content',
+          'user_generated',
+          'partner_organizations', 
+          'custom_fields',
+          'complex_lists',
+          'expert_statuses',
+          'stakeholder_types'
+        ]); // Only truly dynamic content
+      
+      if (error) {
+        debugLog.error('Error fetching system translations', { component: 'useSystemTranslations' }, error);
+        throw error;
+      }
+      
+      return data as SystemTranslation[];
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes - longer cache for dynamic content
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false, // Reduce unnecessary refetches
+  });
 
-  // Use static translations only to prevent navigation freeze
-  const translations = staticTranslations;
-  const isLoading = false;
-  const error = null;
-
-  // Create optimized translation map
+  // Create optimized translation map for database translations only
   const translationMap = useMemo(() => {
     const map = new Map<string, { en: string; ar: string; category: string }>();
     
-    translations.forEach(translation => {
+    dbTranslations.forEach(translation => {
       if (!translation.translation_key) return;
       
       map.set(translation.translation_key, {
         en: translation.text_en || translation.translation_key,
         ar: translation.text_ar || translation.text_en || translation.translation_key,
-        category: translation.category || 'general'
+        category: translation.category || 'dynamic'
       });
     });
     
     return map;
-  }, [translations]);
+  }, [dbTranslations]);
 
-  // Get translation function
+  // Get translation function - only for database translations
   const getTranslation = (key: string, fallback?: string): string => {
     const translation = translationMap.get(key);
     if (translation) {
@@ -52,17 +68,17 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
     return fallback || key;
   };
 
-  // Get translations by category
+  // Get translations by category - only database categories
   const getTranslationsByCategory = (category: string) => {
-    return translations.filter(t => t.category === category);
+    return dbTranslations.filter(t => t.category === category);
   };
 
-  // Check if translation exists
+  // Check if translation exists in database
   const hasTranslation = (key: string): boolean => {
     return translationMap.has(key);
   };
 
-  // Refresh translations
+  // Refresh database translations
   const refreshTranslations = async () => {
     await queryClient.invalidateQueries({
       queryKey: queryKeys.system.translations()
@@ -70,7 +86,7 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
   };
 
   return {
-    translations,
+    translations: dbTranslations,
     translationMap,
     getTranslation,
     getTranslationsByCategory,
@@ -78,15 +94,17 @@ export function useSystemTranslations(language: 'en' | 'ar' = 'en') {
     refreshTranslations,
     isLoading,
     error,
-    count: translations.length,
-    isReady: !isLoading && translations.length > 0
+    count: dbTranslations.length,
+    isReady: !isLoading && dbTranslations.length >= 0 // Allow empty database
   };
 }
 
 /**
- * Hook to get a specific translation with reactive updates
+ * Hook to get a specific dynamic translation with reactive updates
+ * NOTE: Use this only for database-stored dynamic content
+ * For static translations, use the standard useTranslation from i18next
  */
-export function useTranslation(key: string, fallback?: string, language: 'en' | 'ar' = 'en') {
+export function useSystemTranslation(key: string, fallback?: string, language: 'en' | 'ar' = 'en') {
   const { getTranslation, isLoading } = useSystemTranslations(language);
   
   return {
@@ -96,9 +114,10 @@ export function useTranslation(key: string, fallback?: string, language: 'en' | 
 }
 
 /**
- * Hook to get translations for a specific category
+ * Hook to get database translations for a specific category
+ * Use for: partner organizations, custom fields, complex dynamic lists
  */
-export function useCategoryTranslations(category: string, language: 'en' | 'ar' = 'en') {
+export function useSystemCategoryTranslations(category: string, language: 'en' | 'ar' = 'en') {
   const { getTranslationsByCategory, isLoading } = useSystemTranslations(language);
   
   return {

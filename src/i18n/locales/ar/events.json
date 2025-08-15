@@ -1,0 +1,131 @@
+{
+  "create": {
+    "title": "إنشاء فعالية جديدة",
+    "description": "تنظيم الفعاليات وورش العمل والمؤتمرات",
+    "button": "إنشاء فعالية"
+  },
+  "edit": {
+    "title": "تعديل الفعالية",
+    "description": "تحديث تفاصيل وإعدادات الفعالية",
+    "button": "حفظ التغييرات"
+  },
+  "basic_info": {
+    "section_title": "معلومات الفعالية",
+    "name": "اسم الفعالية",
+    "name_placeholder": "أدخل اسم الفعالية",
+    "description": "وصف الفعالية",
+    "description_placeholder": "اوصف الفعالية وجدول الأعمال والأهداف",
+    "type": "نوع الفعالية",
+    "select_type": "اختر نوع الفعالية",
+    "category": "الفئة",
+    "select_category": "اختر فئة الفعالية",
+    "format": "صيغة الفعالية",
+    "select_format": "اختر الصيغة"
+  },
+  "schedule": {
+    "section_title": "الجدولة والموقع",
+    "start_date": "تاريخ البدء",
+    "end_date": "تاريخ الانتهاء",
+    "start_time": "وقت البدء",
+    "end_time": "وقت الانتهاء",
+    "timezone": "المنطقة الزمنية",
+    "location": "الموقع",
+    "address": "العنوان",
+    "venue": "المكان",
+    "online_link": "رابط الاجتماع الإلكتروني",
+    "hybrid_setup": "إعداد فعالية مختلطة"
+  },
+  "registration": {
+    "section_title": "إعدادات التسجيل",
+    "registration_required": "التسجيل مطلوب",
+    "max_attendees": "الحد الأقصى للحضور",
+    "registration_deadline": "موعد انتهاء التسجيل",
+    "approval_required": "الموافقة مطلوبة",
+    "fees": "رسوم التسجيل",
+    "fee_amount": "قيمة الرسوم",
+    "early_bird_discount": "خصم التسجيل المبكر",
+    "eligibility_criteria": "معايير الأهلية"
+  },
+  "content": {
+    "section_title": "محتوى الفعالية",
+    "agenda": "جدول الأعمال",
+    "speakers": "المتحدثون",
+    "add_speaker": "إضافة متحدث",
+    "speaker_name": "اسم المتحدث",
+    "speaker_title": "المنصب/المسمى",
+    "speaker_bio": "السيرة الذاتية",
+    "sessions": "الجلسات",
+    "add_session": "إضافة جلسة",
+    "session_title": "عنوان الجلسة",
+    "session_duration": "المدة",
+    "materials": "مواد الفعالية",
+    "resources": "الموارد والروابط"
+  },
+  "types": {
+    "workshop": "ورشة عمل",
+    "conference": "مؤتمر",
+    "webinar": "ندوة إلكترونية",
+    "seminar": "ندوة",
+    "training": "تدريب",
+    "networking": "فعالية تواصل",
+    "launch": "إطلاق منتج",
+    "ceremony": "حفل تكريم"
+  },
+  "formats": {
+    "in_person": "حضوري",
+    "virtual": "إلكتروني",
+    "hybrid": "مختلط"
+  },
+  "status": {
+    "draft": "مسودة",
+    "published": "منشور",
+    "registration_open": "التسجيل مفتوح",
+    "registration_closed": "التسجيل مغلق",
+    "ongoing": "جاري",
+    "completed": "مكتمل",
+    "cancelled": "ملغي"
+  },
+  "actions": {
+    "register": "التسجيل",
+    "unregister": "إلغاء التسجيل",
+    "view_details": "عرض التفاصيل",
+    "share": "مشاركة الفعالية",
+    "export_calendar": "إضافة للتقويم",
+    "manage_attendees": "إدارة الحضور",
+    "send_notifications": "إرسال إشعارات",
+    "generate_certificates": "إنشاء شهادات"
+  },
+  "attendee": {
+    "registered": "مسجل",
+    "waitlisted": "قائمة الانتظار",
+    "attended": "حضر",
+    "no_show": "لم يحضر",
+    "cancelled": "ألغى التسجيل"
+  },
+  "notifications": {
+    "registration_confirmation": "تم إرسال تأكيد التسجيل",
+    "reminder_24h": "تذكير 24 ساعة",
+    "reminder_1h": "تذكير ساعة واحدة",
+    "event_updates": "تحديثات الفعالية",
+    "cancellation_notice": "إشعار الإلغاء"
+  },
+  "validation": {
+    "name_required": "اسم الفعالية مطلوب",
+    "description_required": "وصف الفعالية مطلوب",
+    "start_date_required": "تاريخ البدء مطلوب",
+    "end_date_after_start": "تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء",
+    "max_attendees_positive": "الحد الأقصى للحضور يجب أن يكون موجباً",
+    "location_required": "الموقع مطلوب للفعاليات الحضورية",
+    "online_link_required": "الرابط الإلكتروني مطلوب للفعاليات الإلكترونية"
+  },
+  "messages": {
+    "event_created": "تم إنشاء الفعالية بنجاح",
+    "event_updated": "تم تحديث الفعالية بنجاح",
+    "event_cancelled": "تم إلغاء الفعالية",
+    "registration_successful": "تم التسجيل بنجاح",
+    "registration_failed": "فشل في التسجيل",
+    "waitlist_added": "تم إضافتك لقائمة الانتظار",
+    "event_full": "الفعالية ممتلئة",
+    "registration_closed": "التسجيل مغلق"
+  }
+}

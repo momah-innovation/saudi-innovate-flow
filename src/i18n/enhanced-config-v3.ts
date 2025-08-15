@@ -76,6 +76,12 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/admin/index.json');
         break;
         
+      case 'admin-users':
+        translations = language === 'en'
+          ? await import('./locales/en/admin/users.json')
+          : await import('./locales/ar/admin/users.json');
+        break;
+        
       case 'validation':
         translations = language === 'en'
           ? await import('./locales/en/validation.json')
@@ -92,6 +98,18 @@ const loadNamespace = async (language: string, namespace: string) => {
         translations = language === 'en'
           ? await import('./locales/en/challenges/form.json')
           : await import('./locales/ar/challenges/form.json');
+        break;
+        
+      case 'challenges-submissions':
+        translations = language === 'en'
+          ? await import('./locales/en/challenges/submissions.json')
+          : await import('./locales/ar/challenges/submissions.json');
+        break;
+        
+      case 'events':
+        translations = language === 'en'
+          ? await import('./locales/en/events.json')
+          : await import('./locales/ar/events.json');
         break;
         
       case 'profile':

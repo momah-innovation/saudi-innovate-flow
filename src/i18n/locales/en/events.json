@@ -1,0 +1,131 @@
+{
+  "create": {
+    "title": "Create New Event",
+    "description": "Organize events, workshops, and conferences",
+    "button": "Create Event"
+  },
+  "edit": {
+    "title": "Edit Event",
+    "description": "Update event details and settings",
+    "button": "Save Changes"
+  },
+  "basic_info": {
+    "section_title": "Event Information",
+    "name": "Event Name",
+    "name_placeholder": "Enter event name",
+    "description": "Event Description",
+    "description_placeholder": "Describe the event, agenda, and objectives",
+    "type": "Event Type",
+    "select_type": "Select event type",
+    "category": "Category",
+    "select_category": "Select event category",
+    "format": "Event Format",
+    "select_format": "Select format"
+  },
+  "schedule": {
+    "section_title": "Schedule & Location",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "timezone": "Timezone",
+    "location": "Location",
+    "address": "Address",
+    "venue": "Venue",
+    "online_link": "Online Meeting Link",
+    "hybrid_setup": "Hybrid Event Setup"
+  },
+  "registration": {
+    "section_title": "Registration Settings",
+    "registration_required": "Registration Required",
+    "max_attendees": "Maximum Attendees",
+    "registration_deadline": "Registration Deadline",
+    "approval_required": "Approval Required",
+    "fees": "Registration Fees",
+    "fee_amount": "Fee Amount",
+    "early_bird_discount": "Early Bird Discount",
+    "eligibility_criteria": "Eligibility Criteria"
+  },
+  "content": {
+    "section_title": "Event Content",
+    "agenda": "Agenda",
+    "speakers": "Speakers",
+    "add_speaker": "Add Speaker",
+    "speaker_name": "Speaker Name",
+    "speaker_title": "Title/Position",
+    "speaker_bio": "Biography",
+    "sessions": "Sessions",
+    "add_session": "Add Session",
+    "session_title": "Session Title",
+    "session_duration": "Duration",
+    "materials": "Event Materials",
+    "resources": "Resources & Links"
+  },
+  "types": {
+    "workshop": "Workshop",
+    "conference": "Conference",
+    "webinar": "Webinar",
+    "seminar": "Seminar",
+    "training": "Training",
+    "networking": "Networking Event",
+    "launch": "Product Launch",
+    "ceremony": "Award Ceremony"
+  },
+  "formats": {
+    "in_person": "In-Person",
+    "virtual": "Virtual",
+    "hybrid": "Hybrid"
+  },
+  "status": {
+    "draft": "Draft",
+    "published": "Published",
+    "registration_open": "Registration Open",
+    "registration_closed": "Registration Closed",
+    "ongoing": "Ongoing",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "actions": {
+    "register": "Register",
+    "unregister": "Cancel Registration",
+    "view_details": "View Details",
+    "share": "Share Event",
+    "export_calendar": "Add to Calendar",
+    "manage_attendees": "Manage Attendees",
+    "send_notifications": "Send Notifications",
+    "generate_certificates": "Generate Certificates"
+  },
+  "attendee": {
+    "registered": "Registered",
+    "waitlisted": "On Waitlist",
+    "attended": "Attended",
+    "no_show": "No Show",
+    "cancelled": "Cancelled Registration"
+  },
+  "notifications": {
+    "registration_confirmation": "Registration confirmation sent",
+    "reminder_24h": "24-hour reminder",
+    "reminder_1h": "1-hour reminder",
+    "event_updates": "Event updates",
+    "cancellation_notice": "Cancellation notice"
+  },
+  "validation": {
+    "name_required": "Event name is required",
+    "description_required": "Event description is required",
+    "start_date_required": "Start date is required",
+    "end_date_after_start": "End date must be after start date",
+    "max_attendees_positive": "Maximum attendees must be positive",
+    "location_required": "Location is required for in-person events",
+    "online_link_required": "Online link is required for virtual events"
+  },
+  "messages": {
+    "event_created": "Event created successfully",
+    "event_updated": "Event updated successfully",
+    "event_cancelled": "Event cancelled",
+    "registration_successful": "Registration successful",
+    "registration_failed": "Registration failed",
+    "waitlist_added": "Added to waitlist",
+    "event_full": "Event is full",
+    "registration_closed": "Registration is closed"
+  }
+}

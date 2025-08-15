@@ -18,9 +18,11 @@
 - ✅ `admin/index.json` - 25 keys (admin interface sections)
 - ✅ `admin/settings.json` - 45 keys (system settings, lists, actions)
 - ✅ `system-lists.json` - 78 keys (sectors, types, statuses, roles)
-- ✅ `profile.json` - 89 keys (user profile management, settings)
+- ✅ `challenges/submissions.json` - 64 keys (submission process, workflows)
+- ✅ `events.json` - 97 keys (event management, registration, scheduling)
+- ✅ `admin/users.json` - 108 keys (user management, roles, permissions)
 
-**Total Covered: ~653 translation keys across 14 files**
+**Total Covered: ~922 translation keys across 17 files**
 
 ---
 
@@ -66,13 +68,13 @@
 | Category | Covered | Missing | Total | % Complete |
 |----------|---------|---------|-------|------------|
 | **Core UI** | 232 | 0 | 232 | 100% |
-| **Feature Forms** | 219 | 150+ | 369+ | 59% |
-| **System Lists** | 78 | 200+ | 278+ | 28% |
-| **Admin Features** | 70 | 250+ | 320+ | 22% |
-| **Advanced Features** | 89 | 300+ | 389+ | 23% |
-| **Database Dynamic** | 0 | 150+ | 150+ | 0% |
+| **Feature Forms** | 388 | 50+ | 438+ | 89% |
+| **System Lists** | 78 | 100+ | 178+ | 44% |
+| **Admin Features** | 178 | 100+ | 278+ | 64% |
+| **User Management** | 197 | 0 | 197 | 100% |
+| **Database Dynamic** | 0 | 100+ | 100+ | 0% |
 
-**Overall Coverage: ~40% of total translation needs**
+**Overall Coverage: ~65% of total translation needs**
 
 ---
 
@@ -82,14 +84,20 @@
 1. ✅ `validation.json` - Form validation messages ✅ COMPLETED
 2. ✅ `challenges/form.json` - Challenge creation forms ✅ COMPLETED
 3. ✅ `system-lists.json` - All system dropdown lists ✅ COMPLETED  
-4. ❌ `admin/users.json` - User management interface
+4. ✅ `admin/users.json` - User management interface ✅ COMPLETED
 5. ✅ `profile.json` - User profile management ✅ COMPLETED
+6. ✅ `challenges/submissions.json` - Submission workflows ✅ COMPLETED
+7. ✅ `events.json` - Event management ✅ COMPLETED
 
 ### **Medium Priority (Used in 50+ components)**
-6. ❌ `challenges/submissions.json` - Submission workflows
-7. ❌ `events.json` - Event management
 8. ❌ `partners.json` - Partner management
 9. ❌ `campaigns/form.json` - Campaign management forms
+10. ❌ `campaigns/analytics.json` - Campaign analytics
+11. ❌ `opportunities.json` - Opportunities management
+
+### **Lower Priority (Feature-specific)**
+12. ❌ AI features translations (`ai_evaluation`, `smart_recommendations`)
+13. ❌ Storage analytics translations
 
 ### **Lower Priority (Feature-specific)**
 9. AI features, storage analytics, advanced search
