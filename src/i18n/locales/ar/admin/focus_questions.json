@@ -1,0 +1,6 @@
+{
+  "question_text_required": "نص السؤال مطلوب",
+  "question_text_min_length": "يجب أن يكون نص السؤال 10 أحرف على الأقل",
+  "question_type_required": "نوع السؤال مطلوب",
+  "order_sequence_positive": "ترتيب السؤال يجب أن يكون موجباً"
+}

@@ -1,0 +1,6 @@
+{
+  "question_text_required": "Question text is required",
+  "question_text_min_length": "Question text must be at least 10 characters",
+  "question_type_required": "Question type is required",
+  "order_sequence_positive": "Order sequence must be positive"
+}

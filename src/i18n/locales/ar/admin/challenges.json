@@ -1,0 +1,14 @@
+{
+  "title": "إدارة التحديات",
+  "description": "إنشاء وإدارة تحديات الابتكار",
+  "new_challenge": "تحدٍ جديد",
+  "no_challenges": "لا توجد تحديات",
+  "no_challenges_description": "ابدأ بإنشاء أول تحدٍ لك لإشراك المبتكرين",
+  "create_new": "إنشاء تحدٍ جديد",
+  "start_date": "تاريخ البداية",
+  "end_date": "تاريخ النهاية",
+  "estimated_budget": "الميزانية المقدرة",
+  "currency": "ريال",
+  "sensitivity_level": "مستوى الحساسية",
+  "delete_confirm": "هل أنت متأكد من حذف هذا التحدي؟ لا يمكن التراجع عن هذا الإجراء."
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Challenge Management",
+  "description": "Create and manage innovation challenges",
+  "new_challenge": "New Challenge",
+  "no_challenges": "No Challenges Found",
+  "no_challenges_description": "Start by creating your first challenge to engage innovators",
+  "create_new": "Create New Challenge",
+  "start_date": "Start Date",
+  "end_date": "End Date", 
+  "estimated_budget": "Estimated Budget",
+  "currency": "SAR",
+  "sensitivity_level": "Sensitivity Level",
+  "delete_confirm": "Are you sure you want to delete this challenge? This action cannot be undone."
+}
