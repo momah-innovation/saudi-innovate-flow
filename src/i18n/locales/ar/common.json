@@ -1,4 +1,8 @@
 {
+  "language": {
+    "english": "English",
+    "arabic": "العربية"
+  },
   "buttons": {
     "save": "حفظ",
     "cancel": "إلغاء",
@@ -17,7 +21,8 @@
     "export": "تصدير",
     "import": "استيراد",
     "download": "تحميل",
-    "upload": "رفع"
+    "upload": "رفع",
+    "learn_more": "اعرف المزيد"
   },
   "status": {
     "loading": "جارٍ التحميل...",

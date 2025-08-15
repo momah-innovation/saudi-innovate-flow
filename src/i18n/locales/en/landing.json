@@ -89,7 +89,21 @@
   },
   "faq": {
     "title": "Frequently Asked Questions",
-    "subtitle": "Everything you need to know about the platform"
+    "subtitle": "Everything you need to know about the platform",
+    "questions": {
+      "what_is_platform": {
+        "question": "What is the National Innovation Platform?",
+        "answer": "A comprehensive platform for government innovation management aimed at accelerating digital transformation aligned with Vision 2030."
+      },
+      "how_to_participate": {
+        "question": "How can I participate in challenges?",
+        "answer": "You can register on the platform, explore available challenges, and submit your innovative ideas and solutions."
+      },
+      "vision_2030_alignment": {
+        "question": "Is the platform aligned with Vision 2030?",
+        "answer": "Yes, all platform features are designed to support Saudi Arabia's Vision 2030 goals and objectives."
+      }
+    }
   },
   "footer": {
     "tagline": "Empowering Saudi Arabia's Innovation Ecosystem",

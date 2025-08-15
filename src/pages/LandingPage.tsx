@@ -95,25 +95,25 @@ export default function LandingPage() {
 
   // Mock statistics data
   const statistics = [
-    { id: 1, metric_value: 124, metric_name: 'active_challenges', metric_description_en: 'Active Challenges', metric_description_ar: 'التحديات النشطة', icon_name: 'lightbulb' },
-    { id: 2, metric_value: 856, metric_name: 'registered_experts', metric_description_en: 'Registered Experts', metric_description_ar: 'الخبراء المسجلون', icon_name: 'users' },
-    { id: 3, metric_value: 45, metric_name: 'government_entities', metric_description_en: 'Government Entities', metric_description_ar: 'الجهات الحكومية', icon_name: 'target' },
-    { id: 4, metric_value: 94, metric_name: 'success_rate', metric_description_en: 'Success Rate', metric_description_ar: 'معدل النجاح', icon_name: 'trending-up' }
+    { id: 1, metric_value: 124, metric_name: 'active_challenges', icon_name: 'lightbulb' },
+    { id: 2, metric_value: 856, metric_name: 'registered_experts', icon_name: 'users' },
+    { id: 3, metric_value: 45, metric_name: 'government_entities', icon_name: 'target' },
+    { id: 4, metric_value: 94, metric_name: 'success_rate', icon_name: 'trending-up' }
   ];
 
   // Mock process steps
   const processSteps = [
-    { id: 1, title_ar: t('landing.process.step_1.title'), content_ar: t('landing.process.step_1.description') },
-    { id: 2, title_ar: t('landing.process.step_2.title'), content_ar: t('landing.process.step_2.description') },
-    { id: 3, title_ar: t('landing.process.step_3.title'), content_ar: t('landing.process.step_3.description') },
-    { id: 4, title_ar: t('landing.process.step_4.title'), content_ar: t('landing.process.step_4.description') }
+    { id: 1, title: t('landing.process.step_1.title'), content: t('landing.process.step_1.description') },
+    { id: 2, title: t('landing.process.step_2.title'), content: t('landing.process.step_2.description') },
+    { id: 3, title: t('landing.process.step_3.title'), content: t('landing.process.step_3.description') },
+    { id: 4, title: t('landing.process.step_4.title'), content: t('landing.process.step_4.description') }
   ];
 
   // Mock FAQs
   const faqs = [
-    { id: 1, question_ar: 'ما هي منصة رواد للابتكار؟', answer_ar: 'منصة شاملة لإدارة الابتكار الحكومي تهدف إلى تسريع التحول الرقمي.' },
-    { id: 2, question_ar: 'كيف يمكنني المشاركة في التحديات؟', answer_ar: 'يمكنك التسجيل في المنصة واستكشاف التحديات المتاحة وتقديم أفكارك المبتكرة.' },
-    { id: 3, question_ar: 'هل المنصة متوافقة مع رؤية 2030؟', answer_ar: 'نعم، جميع ميزات المنصة مصممة لدعم أهداف رؤية المملكة 2030.' }
+    { id: 1, question: t('landing.faq.questions.what_is_platform.question'), answer: t('landing.faq.questions.what_is_platform.answer') },
+    { id: 2, question: t('landing.faq.questions.how_to_participate.question'), answer: t('landing.faq.questions.how_to_participate.answer') },
+    { id: 3, question: t('landing.faq.questions.vision_2030_alignment.question'), answer: t('landing.faq.questions.vision_2030_alignment.answer') }
   ];
 
   const getIconComponent = (iconName: string | null) => {
@@ -143,7 +143,7 @@ export default function LandingPage() {
         >
           <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Languages className="w-4 h-4" />
-            <span>{language === 'en' ? 'العربية' : 'English'}</span>
+            <span>{language === 'en' ? t('common.language.arabic') : t('common.language.english')}</span>
           </div>
         </Button>
       </div>
@@ -205,10 +205,10 @@ export default function LandingPage() {
         <div className="container mx-auto">
           <div className={`text-center mb-12 ${isRTL ? 'text-right' : ''}`}>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              {t('landing.statistics.title', 'Platform Impact')}
+              {t('landing.statistics.title')}
             </h2>
             <p className="text-xl text-muted-foreground">
-              {t('landing.statistics.subtitle', 'Measurable results driving government innovation')}
+              {t('landing.statistics.subtitle')}
             </p>
           </div>
           
@@ -226,7 +226,7 @@ export default function LandingPage() {
                       {stat.metric_name === 'success_rate' && '%'}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {t(`landing.statistics.${stat.metric_name}`, stat.metric_description_ar)}
+                      {t(`landing.statistics.${stat.metric_name}`)}
                     </p>
                   </CardContent>
                 </Card>
@@ -259,10 +259,10 @@ export default function LandingPage() {
                   </div>
                   <div className={`flex-1 ${isRTL ? 'text-right' : ''}`}>
                     <h3 className="text-xl font-semibold mb-2">
-                      {step.title_ar}
+                      {step.title}
                     </h3>
                     <p className="text-muted-foreground">
-                      {step.content_ar}
+                      {step.content}
                     </p>
                   </div>
                   {index < processSteps.length - 1 && (
@@ -318,7 +318,7 @@ export default function LandingPage() {
                       </CardDescription>
                       <div className={`flex items-center mt-4 text-primary font-medium ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <span className="text-sm">
-                          {t('common.buttons.learn_more', 'Learn More')}
+                          {t('common.buttons.learn_more')}
                         </span>
                         <ArrowRight className={`h-4 w-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
                       </div>
@@ -348,10 +348,10 @@ export default function LandingPage() {
             {faqs.map((faq, index) => (
               <AccordionItem key={faq.id} value={`item-${index}`}>
                 <AccordionTrigger className={`text-left ${isRTL ? 'text-right' : ''}`}>
-                  {faq.question_ar}
+                  {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className={`text-muted-foreground ${isRTL ? 'text-right' : ''}`}>
-                  {faq.answer_ar}
+                  {faq.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -406,14 +406,14 @@ export default function LandingPage() {
             {/* Quick Links */}
             <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
               <h3 className="font-semibold text-foreground">
-                {t('navigation.discover', 'Discover')}
+                {t('navigation.discover')}
               </h3>
               <nav className="space-y-2">
                 <Link to="/challenges" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t('landing.features.innovation_challenges.title')}
                 </Link>
                 <Link to="/events" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {t('navigation.events', 'Events')}
+                  {t('navigation.events')}
                 </Link>
               </nav>
             </div>
