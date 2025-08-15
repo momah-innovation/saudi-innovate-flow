@@ -276,11 +276,7 @@ i18n
 
     // Additional configuration for production reliability
     saveMissing: false,
-    missingKeyHandler: (lng: string[], ns: string, key: string) => {
-      logger.warn(`Missing translation key: ${key} in namespace: ${ns} for language: ${lng[0]}`, { 
-        component: 'FeatureBasedBackend'
-      });
-    },
+    missingKeyHandler: false, // Disable to prevent console flooding
     
     // Production performance settings
     returnEmptyString: false,
