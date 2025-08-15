@@ -1,9 +1,7 @@
+@import url('./utils/card-performance.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import performance-optimized card styles */
-@import url('./utils/card-performance.css');
 
 @layer base {
   :root {

@@ -3,7 +3,7 @@
     "title": "System Settings",
     "description": "Configure global system settings",
     "general": "General",
-    "security": "Security", 
+    "security": "Security",
     "notifications": "Notifications",
     "integrations": "Integrations",
     "performance": "Performance",
@@ -19,7 +19,16 @@
     "opportunities": "Opportunities",
     "analytics": "Analytics",
     "ai": "AI",
-    "ui": "UI"
+    "ui": "UI",
+    "campaigns_description": "Settings for campaign management",
+    "challenges_description": "Settings for challenge configuration",
+    "ideas_description": "Settings for idea management",
+    "events_description": "Settings for event management",
+    "partners_description": "Settings for partner relationships",
+    "opportunities_description": "Settings for opportunity management",
+    "analytics_description": "Settings for analytics and reporting",
+    "ai_description": "Settings for AI features",
+    "ui_description": "Settings for user interface"
   },
   "settings": {
     "challenge_priority_levels": {
@@ -103,24 +112,39 @@
     "bulk_success_description": "All changes have been saved",
     "bulk_failed": "Error saving settings"
   },
-  "categories": {
-    "campaigns": "Campaigns",
-    "challenges": "Challenges",
-    "ideas": "Ideas",
-    "events": "Events",
-    "partners": "Partners",
-    "opportunities": "Opportunities",
-    "analytics": "Analytics",
-    "ai": "AI",
-    "ui": "UI",
-    "campaigns_description": "Settings for campaign management",
-    "challenges_description": "Settings for challenge configuration",
-    "ideas_description": "Settings for idea management",
-    "events_description": "Settings for event management",
-    "partners_description": "Settings for partner relationships",
-    "opportunities_description": "Settings for opportunity management",
-    "analytics_description": "Settings for analytics and reporting",
-    "ai_description": "Settings for AI features",
-    "ui_description": "Settings for user interface"
-  },
+  "ui": {
+    "revert": "Revert",
+    "save": "Save",
+    "total_items": "Total items",
+    "add_item": "Add Item",
+    "no_items": "No items added yet",
+    "click_add": "Click \"Add Item\" to get started",
+    "unsaved_changes": "You have unsaved changes",
+    "visual_mode": "Visual Mode",
+    "code_mode": "Code Mode",
+    "property_name": "Property name...",
+    "add_property": "Add",
+    "no_properties": "No properties added yet",
+    "add_property_hint": "Add a property name and click \"Add\"",
+    "json_placeholder": "Enter JSON object...",
+    "array": {
+      "item_placeholder": "Enter item value..."
+    },
+    "object": {
+      "item_placeholder": "Enter JSON object...",
+      "nested_placeholder": "Enter nested object...",
+      "array_placeholder": "Enter array..."
+    },
+    "modified": "Modified",
+    "shared": "Shared",
+    "affects": "Affects",
+    "enabled": "Enabled",
+    "array_editor": "Array Editor",
+    "object_editor": "Object Editor",
+    "close_editor": "Close Editor",
+    "open_editor": "Open Editor",
+    "items": "items",
+    "properties": "properties",
+    "no_settings": "No settings found"
+  }
 }

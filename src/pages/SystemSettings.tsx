@@ -96,8 +96,8 @@ const SystemSettings = () => {
         {/* Header */}
         <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div className={isRTL ? 'text-right' : 'text-left'}>
-            <h1 className="text-3xl font-bold">{t('systemSettings', 'System Settings')}</h1>
-            <p className="text-muted-foreground">{t('systemSettingsDescription', 'Manage and configure system-wide settings and preferences')}</p>
+            <h1 className="text-3xl font-bold">{t('admin.system_settings.title', 'System Settings')}</h1>
+            <p className="text-muted-foreground">{t('admin.system_settings.description', 'Manage and configure system-wide settings and preferences')}</p>
           </div>
           <Button 
             variant="outline" 
