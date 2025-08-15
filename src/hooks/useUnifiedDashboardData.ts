@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDashboardStats } from './useDashboardStats';
 import { useAdminDashboardMetrics } from './useAdminDashboardMetrics';
 import { supabase } from '@/integrations/supabase/client';
 import { debugLog } from '@/utils/debugLogger';
+import { timeAsync, performanceMonitor } from '@/utils/performanceMonitor';
+import { queryBatcher } from '@/utils/queryBatcher';
 
 export interface UnifiedDashboardData {
   // Core user stats
@@ -145,67 +147,80 @@ export const useUnifiedDashboardData = (
     return { expertStats, partnerStats };
   }, []);
 
+  // Memoize role-specific stats calculation for performance
+  const roleSpecificStats = useMemo(() => {
+    return calculateRoleSpecificStats(dashboardStats.stats, userProfile);
+  }, [dashboardStats.stats, userProfile, calculateRoleSpecificStats]);
+
   const updateUnifiedData = useCallback(async () => {
+    const endTimer = performanceMonitor.startTimer('unified-dashboard-update', {
+      userRole,
+      userId: userProfile?.id
+    });
+
     try {
-      // Combine data from various sources
-      const baseStats = dashboardStats.stats;
-      const adminData = adminMetrics.metrics;
-      const { expertStats, partnerStats } = calculateRoleSpecificStats(baseStats, userProfile);
+      // Use batched query execution for better performance
+      const result = await timeAsync(async () => {
+        // Combine data from various sources
+        const baseStats = dashboardStats.stats;
+        const adminData = adminMetrics.metrics;
+        const { expertStats, partnerStats } = roleSpecificStats;
 
-      // Admin stats from metrics or defaults
-      const adminStats = {
-        totalUsers: adminData?.users?.total || 2847,
-        activeUsers: adminData?.users?.active || 1234,
-        systemUptime: adminData?.system?.uptime || 99.9,
-        securityScore: adminData?.security?.securityScore || 98,
-        totalChallenges: adminData?.challenges?.total || 45,
-        totalSubmissions: adminData?.challenges?.submissions || 189,
-      };
+        // Admin stats from metrics or defaults
+        const adminStats = {
+          totalUsers: adminData?.users?.total || 2847,
+          activeUsers: adminData?.users?.active || 1234,
+          systemUptime: adminData?.system?.uptime || 99.9,
+          securityScore: adminData?.security?.securityScore || 98,
+          totalChallenges: adminData?.challenges?.total || 45,
+          totalSubmissions: adminData?.challenges?.submissions || 189,
+        };
 
-      // System health based on various factors
-      const systemHealth = {
-        api: (adminStats.systemUptime > 99) ? 'online' : (adminStats.systemUptime > 95) ? 'degraded' : 'offline',
-        database: (adminStats.totalUsers > 0) ? 'online' : 'offline',
-        storage: 'online',
-        security: (adminStats.securityScore > 95) ? 'secure' : (adminStats.securityScore > 85) ? 'warning' : 'critical',
-      } as const;
+        // System health based on various factors
+        const systemHealth = {
+          api: (adminStats.systemUptime > 99) ? 'online' : (adminStats.systemUptime > 95) ? 'degraded' : 'offline',
+          database: (adminStats.totalUsers > 0) ? 'online' : 'offline',
+          storage: 'online',
+          security: (adminStats.securityScore > 95) ? 'secure' : (adminStats.securityScore > 85) ? 'warning' : 'critical',
+        } as const;
 
-      const newData: UnifiedDashboardData = {
-        // Core stats from dashboard hook
-        ...baseStats,
-        
-        // Role-specific calculated stats
-        expertStats,
-        partnerStats,
-        adminStats,
-        systemHealth,
+        return {
+          // Core stats from dashboard hook
+          ...baseStats,
+          
+          // Role-specific calculated stats
+          expertStats,
+          partnerStats,
+          adminStats,
+          systemHealth,
 
-        // Meta data
-        isLoading: dashboardStats.isLoading || adminMetrics.isLoading,
-        isError: dashboardStats.isError || adminMetrics.isError,
-        error: dashboardStats.error || adminMetrics.error,
-        lastUpdated: new Date(),
-      };
+          // Meta data
+          isLoading: dashboardStats.isLoading || adminMetrics.isLoading,
+          isError: dashboardStats.isError || adminMetrics.isError,
+          error: dashboardStats.error || adminMetrics.error,
+          lastUpdated: new Date(),
+        };
+      }, 'unified-dashboard-calculation', { userRole });
 
       // Only update if significant data changed (skip timestamp comparisons)
       setUnifiedData(prevData => {
         // More thorough comparison to prevent unnecessary updates
         const hasChanged = 
-          prevData.totalIdeas !== newData.totalIdeas ||
-          prevData.activeChallenges !== newData.activeChallenges ||
-          prevData.innovationScore !== newData.innovationScore ||
-          prevData.isLoading !== newData.isLoading ||
-          prevData.isError !== newData.isError ||
-          prevData.expertStats.assignedChallenges !== newData.expertStats.assignedChallenges ||
-          prevData.expertStats.pendingEvaluations !== newData.expertStats.pendingEvaluations ||
-          prevData.adminStats.totalUsers !== newData.adminStats.totalUsers;
+          prevData.totalIdeas !== result.totalIdeas ||
+          prevData.activeChallenges !== result.activeChallenges ||
+          prevData.innovationScore !== result.innovationScore ||
+          prevData.isLoading !== result.isLoading ||
+          prevData.isError !== result.isError ||
+          prevData.expertStats.assignedChallenges !== result.expertStats.assignedChallenges ||
+          prevData.expertStats.pendingEvaluations !== result.expertStats.pendingEvaluations ||
+          prevData.adminStats.totalUsers !== result.adminStats.totalUsers;
         
         if (!hasChanged) {
           // Return previous data to prevent re-render
           return prevData;
         }
         
-        return newData;
+        return result;
       });
       
     } catch (error) {
@@ -216,21 +231,32 @@ export const useUnifiedDashboardData = (
         error: error instanceof Error ? error.message : 'Unknown error',
         isLoading: false,
       }));
+    } finally {
+      endTimer();
     }
-  }, [dashboardStats.stats, dashboardStats.isLoading, dashboardStats.isError, dashboardStats.error, adminMetrics.metrics, adminMetrics.isLoading, adminMetrics.isError, adminMetrics.error, calculateRoleSpecificStats, userProfile, userRole]);
+  }, [dashboardStats.stats, dashboardStats.isLoading, dashboardStats.isError, dashboardStats.error, adminMetrics.metrics, adminMetrics.isLoading, adminMetrics.isError, adminMetrics.error, roleSpecificStats, userProfile?.id, userRole]);
 
   const refresh = useCallback(async () => {
     setIsRefreshing(true);
+    const refreshTimer = performanceMonitor.startTimer('unified-dashboard-refresh', {
+      userRole,
+      userId: userProfile?.id
+    });
+
     try {
-      await Promise.all([
-        dashboardStats.refresh(),
-        adminMetrics.refresh(),
-      ]);
-      await updateUnifiedData();
+      // Execute refresh operations in parallel for better performance
+      await timeAsync(async () => {
+        await Promise.all([
+          dashboardStats.refresh(),
+          adminMetrics.refresh(),
+        ]);
+        await updateUnifiedData();
+      }, 'unified-dashboard-refresh-all', { userRole });
     } finally {
+      refreshTimer();
       setIsRefreshing(false);
     }
-  }, [dashboardStats.refresh, adminMetrics.refresh, updateUnifiedData]);
+  }, [dashboardStats.refresh, adminMetrics.refresh, updateUnifiedData, userRole, userProfile?.id]);
 
   // Update unified data when dependencies change
   useEffect(() => {
