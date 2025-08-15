@@ -54,12 +54,14 @@ export const WorkspaceCollaboration: React.FC<WorkspaceCollaborationProps> = ({
         <div className="mb-4 p-3 bg-muted/50 rounded-lg">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-medium">المستخدمون المتصلون</h3>
-            <UserPresence 
-              users={onlineUsers}
-              maxVisible={8}
-              showStatus={true}
-              showLocation={true}
-            />
+            {onlineUsers.length <= 8 && (
+              <UserPresence 
+                users={onlineUsers}
+                maxVisible={8}
+                showStatus={true}
+                showLocation={true}
+              />
+            )}
           </div>
         </div>
       )}

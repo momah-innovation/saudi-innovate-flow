@@ -197,8 +197,8 @@ export const DashboardHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-opacity duration-200",
+                      isActive && "bg-white/10 border-white/20"
                     )}
                   >
                     <CardContent className="p-4 text-center">

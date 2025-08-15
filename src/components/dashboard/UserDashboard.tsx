@@ -18,6 +18,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import { createDebouncedNavigate } from '@/utils/navigation-performance';
 import { toast } from 'sonner';
 // Removed AppShell import - route provides AppShell wrapper
 import { DashboardHero } from './DashboardHero';
@@ -85,6 +86,7 @@ export default React.memo(function UserDashboard() {
   const { t, language } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const navigate = useNavigate();
+  const debouncedNavigate = useMemo(() => createDebouncedNavigate(navigate), [navigate]);
   
   // State hooks - always called in the same order
   const [primaryRole, setPrimaryRole] = useState<string>('innovator');
@@ -345,7 +347,7 @@ export default React.memo(function UserDashboard() {
               totalSubmissions: 0
             }
           }}
-          onNavigate={navigate}
+          onNavigate={debouncedNavigate}
           userRole={primaryRole}
           rolePermissions={permissions}
         />

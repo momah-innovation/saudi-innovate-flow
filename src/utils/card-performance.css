@@ -1,0 +1,38 @@
+/* Performance-optimized card animations */
+/* Replace heavy scale transforms with subtle opacity/shadow changes */
+
+.card-hover-optimized {
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
+  will-change: opacity, box-shadow;
+}
+
+.card-hover-optimized:hover {
+  opacity: 0.95;
+  box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.15);
+}
+
+/* Disable expensive animations during navigation */
+.navigating .card-hover-optimized,
+.navigating .card-hover-optimized:hover {
+  transition: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Lightweight image hover effect */
+.image-hover-optimized {
+  transition: opacity 0.2s ease;
+}
+
+.image-hover-optimized:hover {
+  opacity: 0.9;
+}
+
+/* Remove scale transforms from heavy elements */
+.no-scale-transform {
+  transform: none !important;
+}
+
+.no-scale-transform:hover {
+  transform: none !important;
+}

@@ -141,7 +141,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
 
     channelsRef.current.presence = presenceChannel;
 
-    // Update presence every 30 seconds - only if we have a presence
+    // Update presence every 60 seconds - reduced frequency for better performance
     if (presenceTimerRef.current) {
       clearInterval(presenceTimerRef.current);
     }
@@ -159,7 +159,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
         await channelsRef.current.presence.track(updatedPresence);
         setCurrentUserPresence(updatedPresence);
       }
-    }, 30000);
+    }, 60000); // Reduced from 30s to 60s
   };
 
   // Setup activity feed

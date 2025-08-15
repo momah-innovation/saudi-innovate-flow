@@ -187,32 +187,27 @@ export const useUnifiedDashboardData = (
         lastUpdated: new Date(),
       };
 
-      // Only update if data actually changed
+      // Only update if significant data changed (skip timestamp comparisons)
       setUnifiedData(prevData => {
-        // Simple comparison to avoid unnecessary updates
+        // More thorough comparison to prevent unnecessary updates
         const hasChanged = 
           prevData.totalIdeas !== newData.totalIdeas ||
           prevData.activeChallenges !== newData.activeChallenges ||
           prevData.innovationScore !== newData.innovationScore ||
           prevData.isLoading !== newData.isLoading ||
           prevData.isError !== newData.isError ||
-          JSON.stringify(prevData.expertStats) !== JSON.stringify(newData.expertStats);
+          prevData.expertStats.assignedChallenges !== newData.expertStats.assignedChallenges ||
+          prevData.expertStats.pendingEvaluations !== newData.expertStats.pendingEvaluations ||
+          prevData.adminStats.totalUsers !== newData.adminStats.totalUsers;
         
-        return hasChanged ? newData : prevData;
+        if (!hasChanged) {
+          // Return previous data to prevent re-render
+          return prevData;
+        }
+        
+        return newData;
       });
       
-      debugLog.log('✅ Unified dashboard data updated', {
-        userRole,
-        coreStats: {
-          totalIdeas: newData.totalIdeas,
-          activeChallenges: newData.activeChallenges,
-          innovationScore: newData.innovationScore,
-        },
-        expertStats: newData.expertStats,
-        partnerStats: newData.partnerStats,
-        adminStats: newData.adminStats,
-      });
-
     } catch (error) {
       debugLog.error('❌ Error updating unified dashboard data', { error });
       setUnifiedData(prev => ({
