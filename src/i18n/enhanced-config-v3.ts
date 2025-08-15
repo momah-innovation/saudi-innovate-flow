@@ -276,7 +276,20 @@ i18n
 
     // Additional configuration for production reliability
     saveMissing: false,
-    missingKeyHandler: false, // Disable to prevent console flooding
+    missingKeyHandler: (lngs, ns, key, fallbackValue) => {
+      try {
+        const lang = Array.isArray(lngs) ? lngs[0] : (lngs as unknown as string);
+        logger.warn(`Missing translation key`, {
+          component: 'i18n',
+          language: lang,
+          namespace: ns,
+          key,
+          fallback: String(fallbackValue ?? '')
+        });
+      } catch (e) {
+        console.warn('[i18n] Missing key', lngs, ns, key);
+      }
+    },
     
     // Production performance settings
     returnEmptyString: false,
