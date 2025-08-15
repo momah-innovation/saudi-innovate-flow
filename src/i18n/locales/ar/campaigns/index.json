@@ -1,0 +1,39 @@
+{
+  "title": "الحملات",
+  "subtitle": "إدارة وتتبع حملات الابتكار",
+  "actions": {
+    "create_campaign": "إنشاء حملة",
+    "edit_campaign": "تعديل الحملة",
+    "launch_campaign": "إطلاق الحملة",
+    "pause_campaign": "إيقاف الحملة",
+    "end_campaign": "إنهاء الحملة",
+    "view_analytics": "عرض التحليلات"
+  },
+  "status": {
+    "planning": "تخطيط",
+    "active": "نشطة",
+    "paused": "متوقفة",
+    "completed": "مكتملة",
+    "cancelled": "ملغية"
+  },
+  "form": {
+    "basic_info": "المعلومات الأساسية",
+    "title": "عنوان الحملة",
+    "description": "الوصف",
+    "objectives": "الأهداف",
+    "target_audience": "الجمهور المستهدف",
+    "duration": "المدة",
+    "start_date": "تاريخ البداية",
+    "end_date": "تاريخ النهاية",
+    "budget": "الميزانية",
+    "success_metrics": "مقاييس النجاح"
+  },
+  "metrics": {
+    "reach": "الوصول",
+    "engagement": "المشاركة",
+    "conversions": "التحويلات",
+    "roi": "العائد على الاستثمار",
+    "participants": "المشاركون",
+    "submissions": "التقديمات"
+  }
+}

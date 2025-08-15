@@ -1,0 +1,39 @@
+{
+  "title": "الإدارة",
+  "subtitle": "إدارة النظام والإعدادات",
+  "sections": {
+    "users": "إدارة المستخدمين",
+    "roles": "إدارة الأدوار",
+    "settings": "إعدادات النظام",
+    "analytics": "التحليلات",
+    "security": "الأمان",
+    "content": "إدارة المحتوى"
+  },
+  "users": {
+    "title": "المستخدمون",
+    "total_users": "إجمالي المستخدمين",
+    "active_users": "المستخدمون النشطون",
+    "new_users": "المستخدمون الجدد",
+    "actions": {
+      "invite_user": "دعوة مستخدم",
+      "bulk_import": "استيراد مجمع",
+      "export_users": "تصدير المستخدمين",
+      "deactivate": "إلغاء التفعيل",
+      "activate": "تفعيل"
+    }
+  },
+  "roles": {
+    "title": "الأدوار والصلاحيات",
+    "assign_role": "تعيين دور",
+    "remove_role": "إزالة الدور",
+    "role_permissions": "صلاحيات الدور",
+    "custom_roles": "أدوار مخصصة"
+  },
+  "settings": {
+    "title": "إعدادات النظام",
+    "general": "عام",
+    "notifications": "الإشعارات",
+    "integrations": "التكامل",
+    "backup": "النسخ الاحتياطي والاستعادة"
+  }
+}

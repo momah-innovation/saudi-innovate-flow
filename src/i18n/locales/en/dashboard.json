@@ -1,0 +1,56 @@
+{
+  "title": "Dashboard",
+  "welcome": "Welcome back, {{name}}!",
+  "metrics": {
+    "total_challenges": "Total Challenges",
+    "active_challenges": "Active Challenges",
+    "total_participants": "Total Participants",
+    "new_submissions": "New Submissions",
+    "completion_rate": "Completion Rate",
+    "user_engagement": "User Engagement"
+  },
+  "cards": {
+    "recent_challenges": {
+      "title": "Recent Challenges",
+      "view_all": "View All Challenges",
+      "no_challenges": "No challenges yet",
+      "create_first": "Create your first challenge"
+    },
+    "my_submissions": {
+      "title": "My Submissions",
+      "view_all": "View All Submissions",
+      "no_submissions": "No submissions yet",
+      "start_participating": "Start participating in challenges"
+    },
+    "upcoming_events": {
+      "title": "Upcoming Events",
+      "view_calendar": "View Calendar",
+      "no_events": "No upcoming events",
+      "schedule_event": "Schedule new event"
+    },
+    "quick_actions": {
+      "title": "Quick Actions",
+      "new_challenge": "Create Challenge",
+      "new_campaign": "Start Campaign",
+      "invite_users": "Invite Users",
+      "view_analytics": "View Analytics"
+    }
+  },
+  "activity": {
+    "title": "Recent Activity",
+    "view_all": "View All Activity",
+    "no_activity": "No recent activity",
+    "challenge_created": "Challenge \"{{title}}\" was created",
+    "submission_received": "New submission for \"{{challenge}}\"",
+    "user_joined": "{{user}} joined the platform",
+    "campaign_launched": "Campaign \"{{title}}\" was launched"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "mark_all_read": "Mark all as read",
+    "no_notifications": "No new notifications",
+    "new_submission": "New submission received",
+    "challenge_ending": "Challenge ending soon",
+    "evaluation_complete": "Evaluation completed"
+  }
+}

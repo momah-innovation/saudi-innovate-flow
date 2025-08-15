@@ -1,0 +1,68 @@
+{
+  "buttons": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "submit": "إرسال",
+    "close": "إغلاق",
+    "back": "السابق",
+    "next": "التالي",
+    "previous": "السابق",
+    "confirm": "تأكيد",
+    "search": "بحث",
+    "filter": "تصفية",
+    "reset": "إعادة تعيين",
+    "export": "تصدير",
+    "import": "استيراد",
+    "download": "تحميل",
+    "upload": "رفع"
+  },
+  "status": {
+    "loading": "جارٍ التحميل...",
+    "saving": "جارٍ الحفظ...",
+    "saved": "تم الحفظ",
+    "error": "خطأ",
+    "success": "نجح",
+    "warning": "تحذير",
+    "info": "معلومات"
+  },
+  "form": {
+    "required": "هذا الحقل مطلوب",
+    "optional": "اختياري",
+    "select_option": "اختر خياراً",
+    "no_options": "لا توجد خيارات متاحة",
+    "search_placeholder": "اكتب للبحث...",
+    "upload_file": "رفع ملف",
+    "drag_drop_files": "اسحب وأفلت الملفات هنا",
+    "max_file_size": "الحد الأقصى لحجم الملف: {{size}}",
+    "allowed_formats": "الصيغ المسموحة: {{formats}}"
+  },
+  "time": {
+    "just_now": "الآن",
+    "minutes_ago": "منذ {{count}} دقيقة",
+    "minutes_ago_plural": "منذ {{count}} دقائق",
+    "hours_ago": "منذ {{count}} ساعة",
+    "hours_ago_plural": "منذ {{count}} ساعات",
+    "days_ago": "منذ {{count}} يوم",
+    "days_ago_plural": "منذ {{count}} أيام",
+    "created_at": "تم الإنشاء {{date}}",
+    "updated_at": "تم التحديث {{date}}"
+  },
+  "pagination": {
+    "showing": "عرض {{from}} إلى {{to}} من {{total}} نتيجة",
+    "page": "صفحة",
+    "per_page": "في الصفحة",
+    "no_results": "لم يتم العثور على نتائج",
+    "first": "الأولى",
+    "last": "الأخيرة"
+  },
+  "confirmation": {
+    "delete_title": "تأكيد الحذف",
+    "delete_message": "هل أنت متأكد من حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
+    "unsaved_changes": "لديك تغييرات غير محفوظة. هل أنت متأكد من المغادرة؟",
+    "yes": "نعم",
+    "no": "لا"
+  }
+}

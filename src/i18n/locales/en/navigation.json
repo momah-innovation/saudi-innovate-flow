@@ -1,0 +1,53 @@
+{
+  "header": {
+    "toggle_theme": "Toggle theme",
+    "open_navigation": "Open navigation menu",
+    "toggle_direction": "Toggle text direction",
+    "switch_language": "Switch language",
+    "user_menu": "User menu",
+    "notifications": "Notifications",
+    "search_placeholder": "Search...",
+    "logout": "Logout",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "challenges": "Challenges",
+    "campaigns": "Campaigns",
+    "partners": "Partners",
+    "experts": "Experts",
+    "analytics": "Analytics",
+    "admin": "Administration",
+    "users": "Users",
+    "roles": "Roles",
+    "system_settings": "System Settings",
+    "reports": "Reports"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "challenges": "Challenges",
+    "challenge_details": "Challenge Details",
+    "new_challenge": "New Challenge",
+    "edit_challenge": "Edit Challenge",
+    "campaigns": "Campaigns",
+    "campaign_details": "Campaign Details",
+    "new_campaign": "New Campaign",
+    "edit_campaign": "Edit Campaign",
+    "admin": "Administration",
+    "users": "User Management",
+    "user_profile": "User Profile",
+    "settings": "Settings"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "details": "Details",
+    "participants": "Participants",
+    "submissions": "Submissions",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "history": "History",
+    "files": "Files"
+  }
+}

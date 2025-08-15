@@ -1,0 +1,74 @@
+{
+  "title": "التحديات",
+  "subtitle": "اكتشف وشارك في تحديات الابتكار",
+  "actions": {
+    "create_challenge": "إنشاء تحدي",
+    "join_challenge": "الانضمام للتحدي",
+    "view_details": "عرض التفاصيل",
+    "submit_idea": "تقديم فكرة",
+    "bookmark": "إضافة للمفضلة",
+    "share": "مشاركة",
+    "like": "إعجاب"
+  },
+  "filters": {
+    "all": "جميع التحديات",
+    "active": "نشطة",
+    "upcoming": "قادمة",
+    "completed": "مكتملة",
+    "my_challenges": "تحدياتي",
+    "bookmarked": "المفضلة",
+    "category": "الفئة",
+    "sector": "القطاع",
+    "difficulty": "مستوى الصعوبة",
+    "duration": "المدة",
+    "sort_by": "ترتيب حسب",
+    "newest": "الأحدث",
+    "oldest": "الأقدم",
+    "most_popular": "الأكثر شعبية",
+    "ending_soon": "تنتهي قريباً"
+  },
+  "status": {
+    "draft": "مسودة",
+    "active": "نشط",
+    "paused": "متوقف",
+    "completed": "مكتمل",
+    "cancelled": "ملغي"
+  },
+  "card": {
+    "participants": "{{count}} مشارك",
+    "submissions": "{{count}} تقديم",
+    "days_left": "{{days}} أيام متبقية",
+    "ended": "انتهى",
+    "starts_in": "يبدأ خلال {{days}} أيام",
+    "prize": "الجائزة: {{amount}}",
+    "deadline": "الموعد النهائي: {{date}}"
+  },
+  "details": {
+    "overview": "نظرة عامة",
+    "requirements": "المتطلبات",
+    "timeline": "الجدول الزمني",
+    "prizes": "الجوائز والتقدير",
+    "evaluation": "معايير التقييم",
+    "faq": "الأسئلة الشائعة",
+    "organizer": "منظم من قبل",
+    "partners": "الشركاء",
+    "tags": "الوسوم"
+  },
+  "participation": {
+    "register": "التسجيل للمشاركة",
+    "registered": "أنت مسجل",
+    "registration_closed": "التسجيل مغلق",
+    "submit_solution": "قدم حلك",
+    "view_submission": "عرض تقديمك",
+    "edit_submission": "تعديل التقديم"
+  },
+  "messages": {
+    "no_challenges": "لم يتم العثور على تحديات",
+    "loading": "جارٍ تحميل التحديات...",
+    "registration_success": "تم التسجيل في التحدي بنجاح!",
+    "registration_error": "فشل التسجيل في التحدي",
+    "bookmark_added": "تم إضافة التحدي للمفضلة",
+    "bookmark_removed": "تم إزالة التحدي من المفضلة",
+    "share_success": "تم نسخ رابط التحدي"
+  }
+}

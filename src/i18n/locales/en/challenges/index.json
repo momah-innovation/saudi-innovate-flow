@@ -1,0 +1,74 @@
+{
+  "title": "Challenges",
+  "subtitle": "Discover and participate in innovation challenges",
+  "actions": {
+    "create_challenge": "Create Challenge",
+    "join_challenge": "Join Challenge",
+    "view_details": "View Details",
+    "submit_idea": "Submit Idea",
+    "bookmark": "Bookmark",
+    "share": "Share",
+    "like": "Like"
+  },
+  "filters": {
+    "all": "All Challenges",
+    "active": "Active",
+    "upcoming": "Upcoming", 
+    "completed": "Completed",
+    "my_challenges": "My Challenges",
+    "bookmarked": "Bookmarked",
+    "category": "Category",
+    "sector": "Sector",
+    "difficulty": "Difficulty Level",
+    "duration": "Duration",
+    "sort_by": "Sort by",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "most_popular": "Most Popular",
+    "ending_soon": "Ending Soon"
+  },
+  "status": {
+    "draft": "Draft",
+    "active": "Active",
+    "paused": "Paused",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "card": {
+    "participants": "{{count}} participants",
+    "submissions": "{{count}} submissions",
+    "days_left": "{{days}} days left",
+    "ended": "Ended",
+    "starts_in": "Starts in {{days}} days",
+    "prize": "Prize: {{amount}}",
+    "deadline": "Deadline: {{date}}"
+  },
+  "details": {
+    "overview": "Overview",
+    "requirements": "Requirements",
+    "timeline": "Timeline",
+    "prizes": "Prizes & Recognition",
+    "evaluation": "Evaluation Criteria",
+    "faq": "Frequently Asked Questions",
+    "organizer": "Organized by",
+    "partners": "Partners",
+    "tags": "Tags"
+  },
+  "participation": {
+    "register": "Register to Participate",
+    "registered": "You are registered",
+    "registration_closed": "Registration Closed",
+    "submit_solution": "Submit Your Solution",
+    "view_submission": "View Your Submission",
+    "edit_submission": "Edit Submission"
+  },
+  "messages": {
+    "no_challenges": "No challenges found",
+    "loading": "Loading challenges...",
+    "registration_success": "Successfully registered for the challenge!",
+    "registration_error": "Failed to register for the challenge",
+    "bookmark_added": "Challenge bookmarked",
+    "bookmark_removed": "Bookmark removed",
+    "share_success": "Challenge link copied to clipboard"
+  }
+}

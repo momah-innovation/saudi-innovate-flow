@@ -1,0 +1,56 @@
+{
+  "title": "لوحة القيادة",
+  "welcome": "مرحباً بعودتك، {{name}}!",
+  "metrics": {
+    "total_challenges": "إجمالي التحديات",
+    "active_challenges": "التحديات النشطة",
+    "total_participants": "إجمالي المشاركين",
+    "new_submissions": "التقديمات الجديدة",
+    "completion_rate": "معدل الإكمال",
+    "user_engagement": "مشاركة المستخدمين"
+  },
+  "cards": {
+    "recent_challenges": {
+      "title": "التحديات الحديثة",
+      "view_all": "عرض جميع التحديات",
+      "no_challenges": "لا توجد تحديات بعد",
+      "create_first": "إنشاء تحديك الأول"
+    },
+    "my_submissions": {
+      "title": "تقديماتي",
+      "view_all": "عرض جميع التقديمات",
+      "no_submissions": "لا توجد تقديمات بعد",
+      "start_participating": "ابدأ المشاركة في التحديات"
+    },
+    "upcoming_events": {
+      "title": "الفعاليات القادمة",
+      "view_calendar": "عرض التقويم",
+      "no_events": "لا توجد فعاليات قادمة",
+      "schedule_event": "جدولة فعالية جديدة"
+    },
+    "quick_actions": {
+      "title": "الإجراءات السريعة",
+      "new_challenge": "إنشاء تحدي",
+      "new_campaign": "بدء حملة",
+      "invite_users": "دعوة مستخدمين",
+      "view_analytics": "عرض التحليلات"
+    }
+  },
+  "activity": {
+    "title": "النشاط الحديث",
+    "view_all": "عرض جميع الأنشطة",
+    "no_activity": "لا يوجد نشاط حديث",
+    "challenge_created": "تم إنشاء التحدي \"{{title}}\"",
+    "submission_received": "تقديم جديد للتحدي \"{{challenge}}\"",
+    "user_joined": "انضم {{user}} للمنصة",
+    "campaign_launched": "تم إطلاق الحملة \"{{title}}\""
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "mark_all_read": "تحديد الكل كمقروء",
+    "no_notifications": "لا توجد إشعارات جديدة",
+    "new_submission": "تم استلام تقديم جديد",
+    "challenge_ending": "التحدي سينتهي قريباً",
+    "evaluation_complete": "تم إكمال التقييم"
+  }
+}

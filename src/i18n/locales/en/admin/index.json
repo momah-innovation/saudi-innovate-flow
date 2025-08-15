@@ -1,0 +1,39 @@
+{
+  "title": "Administration",
+  "subtitle": "System administration and management",
+  "sections": {
+    "users": "User Management",
+    "roles": "Role Management", 
+    "settings": "System Settings",
+    "analytics": "Analytics",
+    "security": "Security",
+    "content": "Content Management"
+  },
+  "users": {
+    "title": "Users",
+    "total_users": "Total Users",
+    "active_users": "Active Users",
+    "new_users": "New Users",
+    "actions": {
+      "invite_user": "Invite User",
+      "bulk_import": "Bulk Import",
+      "export_users": "Export Users",
+      "deactivate": "Deactivate",
+      "activate": "Activate"
+    }
+  },
+  "roles": {
+    "title": "Roles & Permissions",
+    "assign_role": "Assign Role",
+    "remove_role": "Remove Role",
+    "role_permissions": "Role Permissions",
+    "custom_roles": "Custom Roles"
+  },
+  "settings": {
+    "title": "System Settings",
+    "general": "General",
+    "notifications": "Notifications",
+    "integrations": "Integrations",
+    "backup": "Backup & Recovery"
+  }
+}

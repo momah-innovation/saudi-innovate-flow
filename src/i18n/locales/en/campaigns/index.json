@@ -1,0 +1,39 @@
+{
+  "title": "Campaigns",
+  "subtitle": "Manage and track innovation campaigns",
+  "actions": {
+    "create_campaign": "Create Campaign",
+    "edit_campaign": "Edit Campaign",
+    "launch_campaign": "Launch Campaign",
+    "pause_campaign": "Pause Campaign",
+    "end_campaign": "End Campaign",
+    "view_analytics": "View Analytics"
+  },
+  "status": {
+    "planning": "Planning",
+    "active": "Active",
+    "paused": "Paused",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "form": {
+    "basic_info": "Basic Information",
+    "title": "Campaign Title",
+    "description": "Description",
+    "objectives": "Objectives",
+    "target_audience": "Target Audience",
+    "duration": "Duration",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "budget": "Budget",
+    "success_metrics": "Success Metrics"
+  },
+  "metrics": {
+    "reach": "Reach",
+    "engagement": "Engagement",
+    "conversions": "Conversions",
+    "roi": "Return on Investment",
+    "participants": "Participants",
+    "submissions": "Submissions"
+  }
+}

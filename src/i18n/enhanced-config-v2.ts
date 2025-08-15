@@ -60,12 +60,7 @@ const StaticFirstBackend = {
     this.isLoading.add(language);
 
     try {
-      logger.info(`Loading database fallback for ${missingKeys.length} missing keys`, { 
-        component: 'StaticFirstBackend', 
-        action: 'loadDatabaseFallback', 
-        language,
-        missingKeys: missingKeys.slice(0, 5) // Log first 5 keys only
-      });
+      logger.info(`Loading database fallback for ${missingKeys.length} missing keys`, { component: 'StaticFirstBackend' });
       
       // Query only for missing keys to minimize database load
       const { data, error } = await supabase

@@ -1,0 +1,53 @@
+{
+  "header": {
+    "toggle_theme": "تبديل السمة",
+    "open_navigation": "فتح قائمة التنقل",
+    "toggle_direction": "تبديل اتجاه النص",
+    "switch_language": "تبديل اللغة",
+    "user_menu": "قائمة المستخدم",
+    "notifications": "الإشعارات",
+    "search_placeholder": "بحث...",
+    "logout": "تسجيل الخروج",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات"
+  },
+  "sidebar": {
+    "dashboard": "لوحة القيادة",
+    "challenges": "التحديات",
+    "campaigns": "الحملات",
+    "partners": "الشركاء",
+    "experts": "الخبراء",
+    "analytics": "التحليلات",
+    "admin": "الإدارة",
+    "users": "المستخدمون",
+    "roles": "الأدوار",
+    "system_settings": "إعدادات النظام",
+    "reports": "التقارير"
+  },
+  "breadcrumbs": {
+    "home": "الرئيسية",
+    "dashboard": "لوحة القيادة",
+    "challenges": "التحديات",
+    "challenge_details": "تفاصيل التحدي",
+    "new_challenge": "تحدي جديد",
+    "edit_challenge": "تعديل التحدي",
+    "campaigns": "الحملات",
+    "campaign_details": "تفاصيل الحملة",
+    "new_campaign": "حملة جديدة",
+    "edit_campaign": "تعديل الحملة",
+    "admin": "الإدارة",
+    "users": "إدارة المستخدمين",
+    "user_profile": "الملف الشخصي",
+    "settings": "الإعدادات"
+  },
+  "tabs": {
+    "overview": "نظرة عامة",
+    "details": "التفاصيل",
+    "participants": "المشاركون",
+    "submissions": "التقديمات",
+    "analytics": "التحليلات",
+    "settings": "الإعدادات",
+    "history": "التاريخ",
+    "files": "الملفات"
+  }
+}
