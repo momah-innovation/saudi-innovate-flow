@@ -75,15 +75,41 @@ export function useUnifiedTranslation() {
 
       // Strategy 1: i18next translation (static files) - Primary source
       try {
-        const i18nextResult = i18nextT(key, interpolationOptions);
+        let i18nextResult: string;
         
-        // Debug what i18next is actually returning
-        if (key.startsWith('landing.')) {
-          console.log('🔍 i18next result:', { key, result: i18nextResult, resultType: typeof i18nextResult });
+        // Handle namespaced keys (e.g., "landing.hero.title" -> namespace: "landing", key: "hero.title")
+        if (key.includes('.')) {
+          const parts = key.split('.');
+          const potentialNamespace = parts[0];
+          
+          // Check if the first part is a known namespace
+          if (['landing', 'common', 'navigation', 'dashboard', 'auth', 'errors', 'challenges', 'campaigns', 'admin', 'users', 'settings'].includes(potentialNamespace)) {
+            const actualKey = parts.slice(1).join('.');
+            i18nextResult = i18nextT(actualKey, { 
+              ...interpolationOptions, 
+              ns: potentialNamespace 
+            }) as string;
+            
+            if (key.startsWith('landing.')) {
+              console.log('🔍 Namespaced translation:', { 
+                originalKey: key, 
+                namespace: potentialNamespace, 
+                actualKey, 
+                result: i18nextResult,
+                resultType: typeof i18nextResult 
+              });
+            }
+          } else {
+            // No namespace detected, use key as-is
+            i18nextResult = i18nextT(key, interpolationOptions) as string;
+          }
+        } else {
+          // No namespace, use key as-is
+          i18nextResult = i18nextT(key, interpolationOptions) as string;
         }
         
         // Check if we got a valid translation (not the key itself)
-        if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string') {
+        if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string' && !i18nextResult.includes('.')) {
           return i18nextResult;
         }
         
