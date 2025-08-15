@@ -13,140 +13,7 @@ interface BreadcrumbConfig {
   icon?: React.ComponentType<{ className?: string }>;
 }
 
-// Admin route configurations with RTL/LTR labels
-const adminRouteConfig: Record<string, BreadcrumbConfig> = {
-  '/admin': {
-    label: 'Admin Dashboard',
-    labelAr: 'لوحة التحكم الإدارية',
-    path: '/admin/dashboard',
-    icon: Home
-  },
-  '/admin/organizational-structure': {
-    label: 'Organizational Structure',
-    labelAr: 'الهيكل التنظيمي',
-    icon: Building
-  },
-  '/admin/evaluation-management': {
-    label: 'Evaluation Management',
-    labelAr: 'إدارة التقييم',
-    icon: Target
-  },
-  '/admin/relationships': {
-    label: 'Relationship Overview',
-    labelAr: 'نظرة عامة على العلاقات',
-    icon: Users
-  },
-  '/admin/dashboard': {
-    label: 'Dashboard',
-    labelAr: 'لوحة التحكم',
-    icon: BarChart3
-  },
-  '/admin/challenges': {
-    label: 'Challenges Management',
-    labelAr: 'إدارة التحديات',
-    icon: Target
-  },
-  '/admin/users': {
-    label: 'Users Management',
-    labelAr: 'إدارة المستخدمين',
-    icon: Users
-  },
-  '/admin/events': {
-    label: 'Events Management',
-    labelAr: 'إدارة الفعاليات',
-    icon: Calendar
-  },
-  '/admin/ideas': {
-    label: 'Ideas Management',
-    labelAr: 'إدارة الأفكار',
-    icon: Lightbulb
-  },
-  '/admin/campaigns': {
-    label: 'Campaigns Management',
-    labelAr: 'إدارة الحملات',
-    icon: Briefcase
-  },
-  '/admin/core-team': {
-    label: 'Core Team Management',
-    labelAr: 'إدارة الفريق الأساسي',
-    icon: UserCheck
-  },
-  '/admin/teams': {
-    label: 'Teams Management',
-    labelAr: 'إدارة الفرق',
-    icon: Users
-  },
-  '/admin/sectors': {
-    label: 'Sectors Management',
-    labelAr: 'إدارة القطاعات',
-    icon: Building
-  },
-  '/admin/stakeholders': {
-    label: 'Stakeholders Management',
-    labelAr: 'إدارة أصحاب المصلحة',
-    icon: Users
-  },
-  '/admin/evaluations': {
-    label: 'Evaluations Management',
-    labelAr: 'إدارة التقييمات',
-    icon: Target
-  },
-  '/admin/partners': {
-    label: 'Partners Management',
-    labelAr: 'إدارة الشركاء',
-    icon: Building
-  },
-  '/admin/expert-assignments': {
-    label: 'Expert Assignments',
-    labelAr: 'تعيينات الخبراء',
-    icon: UserCheck
-  },
-  '/admin/system-settings': {
-    label: 'System Settings',
-    labelAr: 'إعدادات النظام',
-    icon: Settings
-  },
-  '/admin/access-control': {
-    label: 'Access Control',
-    labelAr: 'التحكم في الوصول',
-    icon: Shield
-  },
-  '/admin/security-advanced': {
-    label: 'Security Advanced',
-    labelAr: 'الأمان المتقدم',
-    icon: Shield
-  },
-  '/admin/access-control-advanced': {
-    label: 'Access Control Advanced',
-    labelAr: 'مركز التحكم بالصلاحيات المتقدم',
-    icon: Shield
-  },
-  '/admin/elevation-monitor': {
-    label: 'Elevation Monitor',
-    labelAr: 'مراقب رفع الصلاحيات',
-    icon: Shield
-  },
-  '/admin/analytics-advanced': {
-    label: 'Analytics Advanced',
-    labelAr: 'التحليلات المتقدمة',
-    icon: BarChart3
-  },
-  '/admin/ai-management': {
-    label: 'AI Management',
-    labelAr: 'إدارة الذكاء الاصطناعي',
-    icon: Settings
-  },
-  '/admin/file-management-advanced': {
-    label: 'File Management Advanced',
-    labelAr: 'إدارة الملفات المتقدمة',
-    icon: Settings
-  },
-  '/admin/challenges-analytics-advanced': {
-    label: 'Challenge Analytics Advanced',
-    labelAr: 'تحليلات التحديات المتقدمة',
-    icon: Target
-  }
-};
+// Removed static configuration - now defined inside component
 
 // Dynamic route patterns for challenge details, etc.
 const dynamicRoutePatterns = [
@@ -169,6 +36,143 @@ export function AdminBreadcrumb({ className, maxItems = 4 }: AdminBreadcrumbProp
   const location = useLocation();
   const { isRTL, language } = useDirection();
   const { t } = useUnifiedTranslation();
+
+  // Move route config inside component to access t function
+  const getAdminRouteConfig = (): Record<string, BreadcrumbConfig> => ({
+    '/admin': {
+      label: 'Admin Dashboard',
+      labelAr: 'لوحة التحكم الإدارية',
+      path: '/admin/dashboard',
+      icon: Home
+    },
+    '/admin/organizational-structure': {
+      label: t('navigation.breadcrumbs.organizational_structure'),
+      labelAr: t('navigation.breadcrumbs.organizational_structure'),
+      icon: Building
+    },
+    '/admin/evaluation-management': {
+      label: t('navigation.breadcrumbs.evaluation_management'),
+      labelAr: t('navigation.breadcrumbs.evaluation_management'),
+      icon: Target
+    },
+    '/admin/relationships': {
+      label: t('navigation.breadcrumbs.relationship_overview'),
+      labelAr: t('navigation.breadcrumbs.relationship_overview'),
+      icon: Users
+    },
+    '/admin/dashboard': {
+      label: t('navigation.breadcrumbs.admin_dashboard'),
+      labelAr: t('navigation.breadcrumbs.admin_dashboard'),
+      icon: BarChart3
+    },
+    '/admin/challenges': {
+      label: t('navigation.breadcrumbs.challenges_management'),
+      labelAr: t('navigation.breadcrumbs.challenges_management'),
+      icon: Target
+    },
+    '/admin/users': {
+      label: t('navigation.breadcrumbs.users_management'),
+      labelAr: t('navigation.breadcrumbs.users_management'),
+      icon: Users
+    },
+    '/admin/events': {
+      label: t('navigation.breadcrumbs.events_management'),
+      labelAr: t('navigation.breadcrumbs.events_management'),
+      icon: Calendar
+    },
+    '/admin/ideas': {
+      label: t('navigation.breadcrumbs.ideas_management'),
+      labelAr: t('navigation.breadcrumbs.ideas_management'),
+      icon: Lightbulb
+    },
+    '/admin/campaigns': {
+      label: t('navigation.breadcrumbs.campaigns_management'),
+      labelAr: t('navigation.breadcrumbs.campaigns_management'),
+      icon: Briefcase
+    },
+    '/admin/core-team': {
+      label: t('navigation.breadcrumbs.core_team_management'),
+      labelAr: t('navigation.breadcrumbs.core_team_management'),
+      icon: UserCheck
+    },
+    '/admin/teams': {
+      label: t('navigation.breadcrumbs.teams_management'),
+      labelAr: t('navigation.breadcrumbs.teams_management'),
+      icon: Users
+    },
+    '/admin/sectors': {
+      label: t('navigation.breadcrumbs.sectors_management'),
+      labelAr: t('navigation.breadcrumbs.sectors_management'),
+      icon: Building
+    },
+    '/admin/stakeholders': {
+      label: t('navigation.breadcrumbs.stakeholders_management'),
+      labelAr: t('navigation.breadcrumbs.stakeholders_management'),
+      icon: Users
+    },
+    '/admin/evaluations': {
+      label: t('navigation.breadcrumbs.evaluations_management'),
+      labelAr: t('navigation.breadcrumbs.evaluations_management'),
+      icon: Target
+    },
+    '/admin/partners': {
+      label: t('navigation.breadcrumbs.partners_management'),
+      labelAr: t('navigation.breadcrumbs.partners_management'),
+      icon: Building
+    },
+    '/admin/expert-assignments': {
+      label: t('navigation.breadcrumbs.expert_assignments'),
+      labelAr: t('navigation.breadcrumbs.expert_assignments'),
+      icon: UserCheck
+    },
+    '/admin/system-settings': {
+      label: t('navigation.breadcrumbs.system_settings'),
+      labelAr: t('navigation.breadcrumbs.system_settings'),
+      icon: Settings
+    },
+    '/admin/access-control': {
+      label: t('navigation.breadcrumbs.access_control'),
+      labelAr: t('navigation.breadcrumbs.access_control'),
+      icon: Shield
+    },
+    '/admin/security-advanced': {
+      label: t('navigation.breadcrumbs.security_advanced'),
+      labelAr: t('navigation.breadcrumbs.security_advanced'),
+      icon: Shield
+    },
+    '/admin/access-control-advanced': {
+      label: t('navigation.breadcrumbs.access_control_advanced'),
+      labelAr: t('navigation.breadcrumbs.access_control_advanced'),
+      icon: Shield
+    },
+    '/admin/elevation-monitor': {
+      label: t('navigation.breadcrumbs.elevation_monitor'),
+      labelAr: t('navigation.breadcrumbs.elevation_monitor'),
+      icon: Shield
+    },
+    '/admin/analytics-advanced': {
+      label: t('navigation.breadcrumbs.analytics_advanced'),
+      labelAr: t('navigation.breadcrumbs.analytics_advanced'),
+      icon: BarChart3
+    },
+    '/admin/ai-management': {
+      label: t('navigation.breadcrumbs.ai_management'),
+      labelAr: t('navigation.breadcrumbs.ai_management'),
+      icon: Settings
+    },
+    '/admin/file-management-advanced': {
+      label: t('navigation.breadcrumbs.file_management_advanced'),
+      labelAr: t('navigation.breadcrumbs.file_management_advanced'),
+      icon: Settings
+    },
+    '/admin/challenges-analytics-advanced': {
+      label: t('navigation.breadcrumbs.challenges_analytics_advanced'),
+      labelAr: t('navigation.breadcrumbs.challenges_analytics_advanced'),
+      icon: Target
+    }
+  });
+
+  const adminRouteConfig = getAdminRouteConfig();
 
   const generateBreadcrumbs = (): BreadcrumbConfig[] => {
     const path = location.pathname;

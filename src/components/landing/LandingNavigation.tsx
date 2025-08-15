@@ -33,84 +33,84 @@ export function LandingNavigation({ user, loading }: LandingNavigationProps) {
   const navigationItems: NavigationItem[] = [
     {
       id: 'home',
-      label: 'Home',
-      arabicLabel: 'الرئيسية',
+      label: t('navigation.main.home'),
+      arabicLabel: t('navigation.main.home'),
       path: '/',
       icon: Home,
-      description: 'Platform overview and introduction',
-      arabicDescription: 'نظرة عامة على المنصة والتعريف'
+      description: t('Platform overview and introduction'),
+      arabicDescription: t('Platform overview and introduction')
     },
     {
       id: 'about',
-      label: 'About',
-      arabicLabel: 'حول المنصة',
+      label: t('navigation.landing.about'),
+      arabicLabel: t('navigation.landing.about'),
       path: '/about',
       icon: Info,
-      description: 'Learn about Ruwād platform',
-      arabicDescription: 'تعرف على منصة رواد'
+      description: t('Learn about platform'),
+      arabicDescription: t('Learn about platform')
     },
     {
       id: 'campaigns',
-      label: 'Campaigns',
-      arabicLabel: 'الحملات',
+      label: t('navigation.landing.campaigns'),
+      arabicLabel: t('navigation.landing.campaigns'),
       path: '/campaigns',
       icon: Megaphone,
-      description: 'Ongoing innovation campaigns',
-      arabicDescription: 'حملات الابتكار الجارية'
+      description: t('Ongoing innovation campaigns'),
+      arabicDescription: t('Ongoing innovation campaigns')
     },
     {
       id: 'challenges',
-      label: 'Challenges',
-      arabicLabel: 'التحديات',
+      label: t('navigation.main.challenges'),
+      arabicLabel: t('navigation.main.challenges'),
       path: '/challenges',
       icon: Target,
-      description: 'Browse public challenges',
-      arabicDescription: 'استكشف التحديات العامة'
+      description: t('Browse public challenges'),
+      arabicDescription: t('Browse public challenges')
     },
     {
       id: 'events',
-      label: 'Events',
-      arabicLabel: 'الفعاليات',
+      label: t('navigation.main.events'),
+      arabicLabel: t('navigation.main.events'),
       path: '/events',
       icon: Calendar,
-      description: 'Upcoming innovation events',
-      arabicDescription: 'الفعاليات الابتكارية القادمة'
+      description: t('Upcoming innovation events'),
+      arabicDescription: t('Upcoming innovation events')
     },
     {
       id: 'marketplace',
-      label: 'Marketplace',
-      arabicLabel: 'السوق',
+      label: t('navigation.landing.marketplace'),
+      arabicLabel: t('navigation.landing.marketplace'),
       path: '/marketplace',
       icon: ShoppingBag,
-      description: 'Innovation opportunities & partnerships',
-      arabicDescription: 'فرص الابتكار والشراكات'
+      description: t('Innovation opportunities & partnerships'),
+      arabicDescription: t('Innovation opportunities & partnerships')
     },
     {
       id: 'pricing',
-      label: 'Pricing',
-      arabicLabel: 'الأسعار',
+      label: t('navigation.landing.pricing'),
+      arabicLabel: t('navigation.landing.pricing'),
       path: '/pricing',
       icon: DollarSign,
-      description: 'Subscription plans and pricing',
-      arabicDescription: 'خطط الاشتراك والأسعار'
+      description: t('Subscription plans and pricing'),
+      arabicDescription: t('Subscription plans and pricing')
     },
     {
       id: 'statistics',
-      label: 'Statistics',
-      arabicLabel: 'الإحصائيات',
+      label: t('navigation.main.statistics'),
+      arabicLabel: t('navigation.main.statistics'),
       path: '/statistics',
       icon: BarChart3,
-      description: 'Platform statistics and insights',
-      arabicDescription: 'إحصائيات ورؤى المنصة'
+      description: t('Platform statistics and insights'),
+      arabicDescription: t('Platform statistics and insights')
     },
     {
       id: 'help',
-      label: 'Help',
-      arabicLabel: 'المساعدة',
+      label: t('navigation.main.help'),
+      arabicLabel: t('navigation.main.help'),
       path: '/help',
       icon: HelpCircle,
-      description: 'Help and documentation',
-      arabicDescription: 'المساعدة والوثائق'
+      description: t('Help and documentation'),
+      arabicDescription: t('Help and documentation')
     }
   ];
 
