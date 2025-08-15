@@ -305,8 +305,7 @@ export const preloadNamespaces = async (namespaces: string[], language?: string)
   
   const totalTime = performance.now() - startTime;
   logger.debug(`Batch loaded ${namespaces.length} namespaces in ${totalTime.toFixed(1)}ms`, {
-    component: 'FeatureBasedBackend',
-    namespaces: namespaces.join(', ')
+    component: 'FeatureBasedBackend'
   });
 };
 
