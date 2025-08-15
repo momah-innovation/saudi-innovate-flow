@@ -1,0 +1,31 @@
+{
+  "title": "System Health",
+  "subtitle": "Real-time system status and performance metrics",
+  "checking": "Checking system health...",
+  "system_overview": "System Overview",
+  "performance_score": "Performance Score",
+  "system_uptime": "System Uptime",
+  "avg_response_time": "Avg Response Time",
+  "database": "Database",
+  "storage": "Storage",
+  "security": "Security",
+  "network": "Network",
+  "active_connections": "Active Connections",
+  "connection_usage": "Connection Usage",
+  "usage": "Usage",
+  "disk_usage": "Disk Usage",
+  "last_backup": "Last Backup",
+  "active_alerts": "Active Alerts",
+  "ssl_status": "SSL Status",
+  "firewall": "Firewall",
+  "protected": "Protected",
+  "cdn_status": "CDN Status",
+  "api_endpoints": "API Endpoints",
+  "all_available": "All Available",
+  "avg_latency": "Avg Latency",
+  "unable_to_fetch": "Unable to fetch system health data",
+  "status": {
+    "healthy": "Healthy",
+    "critical": "Critical"
+  }
+}

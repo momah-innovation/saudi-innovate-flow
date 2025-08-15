@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Loader2, Server, Database, HardDrive, Cpu, Wifi, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+import { useTranslation } from 'react-i18next';
 
 interface SystemHealth {
   overall_status: 'healthy' | 'warning' | 'critical';
@@ -30,6 +31,7 @@ interface SystemHealthDialogProps {
 export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps) {
   const [health, setHealth] = useState<SystemHealth | null>(null);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isOpen) {
@@ -72,15 +74,15 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
     switch (status) {
       case 'healthy':
       case 'online':
-        return <Badge className="badge-success">Healthy</Badge>;
+        return <Badge className="badge-success">{t('system_health.status.healthy', 'Healthy')}</Badge>;
       case 'warning':
       case 'slow':
-        return <Badge className="badge-warning">Warning</Badge>;
+        return <Badge className="badge-warning">{t('ui.status.warning')}</Badge>;
       case 'critical':
       case 'offline':
-        return <Badge className="badge-error">Critical</Badge>;
+        return <Badge className="badge-error">{t('system_health.status.critical', 'Critical')}</Badge>;
       default:
-        return <Badge variant="secondary">Unknown</Badge>;
+        return <Badge variant="secondary">{t('ui.common.unknown')}</Badge>;
     }
   };
 
@@ -113,14 +115,14 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
     <DetailModal
       isOpen={isOpen}
       onClose={onClose}
-      title="System Health"
-      subtitle="Real-time system status and performance metrics"
+      title={t('system_health.title', 'System Health')}
+      subtitle={t('system_health.subtitle', 'Real-time system status and performance metrics')}
       maxWidth="4xl"
     >
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Checking system health...</span>
+          <span className="ml-2">{t('system_health.checking', 'Checking system health...')}</span>
         </div>
       ) : health ? (
         <div className="space-y-6">
@@ -130,7 +132,7 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   {getStatusIcon(health.overall_status)}
-                  System Overview
+                  {t('system_health.system_overview', 'System Overview')}
                 </CardTitle>
                 {getStatusBadge(health.overall_status)}
               </div>
@@ -138,16 +140,16 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
             <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">{health.performance_score}%</div>
-                <div className="text-sm text-muted-foreground">Performance Score</div>
+                <div className="text-sm text-muted-foreground">{t('system_health.performance_score', 'Performance Score')}</div>
                 <Progress value={health.performance_score} className="mt-2" />
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">{formatUptime(health.uptime)}</div>
-                <div className="text-sm text-muted-foreground">System Uptime</div>
+                <div className="text-sm text-muted-foreground">{t('system_health.system_uptime', 'System Uptime')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">{health.response_time}ms</div>
-                <div className="text-sm text-muted-foreground">Avg Response Time</div>
+                <div className="text-sm text-muted-foreground">{t('system_health.avg_response_time', 'Avg Response Time')}</div>
               </div>
             </CardContent>
           </Card>
@@ -159,21 +161,21 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Database className="h-5 w-5" />
-                  Database
+                  {t('system_health.database', 'Database')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span>Status</span>
+                  <span>{t('ui.common.status')}</span>
                   {getStatusBadge(health.database_status)}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Active Connections</span>
+                  <span>{t('system_health.active_connections', 'Active Connections')}</span>
                   <span className="font-mono">{health.active_connections}/{health.max_connections}</span>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span>Connection Usage</span>
+                    <span>{t('system_health.connection_usage', 'Connection Usage')}</span>
                     <span>{Math.round((health.active_connections / health.max_connections) * 100)}%</span>
                   </div>
                   <Progress value={(health.active_connections / health.max_connections) * 100} />
@@ -186,23 +188,23 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <HardDrive className="h-5 w-5" />
-                  Storage
+                  {t('system_health.storage', 'Storage')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span>Usage</span>
+                  <span>{t('system_health.usage', 'Usage')}</span>
                   <span className="font-mono">{health.storage_usage}GB / {health.storage_total}GB</span>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span>Disk Usage</span>
+                    <span>{t('system_health.disk_usage', 'Disk Usage')}</span>
                     <span>{Math.round(health.storage_usage)}%</span>
                   </div>
                   <Progress value={health.storage_usage} />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Last Backup</span>
+                  <span>{t('system_health.last_backup', 'Last Backup')}</span>
                   <span className="text-sm">{formatLastBackup(health.last_backup)}</span>
                 </div>
               </CardContent>
@@ -213,23 +215,23 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Shield className="h-5 w-5" />
-                  Security
+                  {t('system_health.security', 'Security')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span>Active Alerts</span>
+                  <span>{t('system_health.active_alerts', 'Active Alerts')}</span>
                   <Badge variant={health.security_alerts > 0 ? "destructive" : "secondary"}>
                     {health.security_alerts}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>SSL Status</span>
-                  <Badge className="badge-success">Active</Badge>
+                  <span>{t('system_health.ssl_status', 'SSL Status')}</span>
+                  <Badge className="badge-success">{t('ui.status.active')}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Firewall</span>
-                  <Badge className="badge-success">Protected</Badge>
+                  <span>{t('system_health.firewall', 'Firewall')}</span>
+                  <Badge className="badge-success">{t('system_health.protected', 'Protected')}</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -239,20 +241,20 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Wifi className="h-5 w-5" />
-                  Network
+                  {t('system_health.network', 'Network')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span>CDN Status</span>
-                  <Badge className="badge-success">Online</Badge>
+                  <span>{t('system_health.cdn_status', 'CDN Status')}</span>
+                  <Badge className="badge-success">{t('ui.common.online')}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>API Endpoints</span>
-                  <Badge className="badge-success">All Available</Badge>
+                  <span>{t('system_health.api_endpoints', 'API Endpoints')}</span>
+                  <Badge className="badge-success">{t('system_health.all_available', 'All Available')}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Avg Latency</span>
+                  <span>{t('system_health.avg_latency', 'Avg Latency')}</span>
                   <span className="font-mono">{health.response_time}ms</span>
                 </div>
               </CardContent>
@@ -264,7 +266,7 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
               <Server className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Unable to fetch system health data</p>
+              <p className="text-muted-foreground">{t('system_health.unable_to_fetch', 'Unable to fetch system health data')}</p>
             </div>
           </CardContent>
         </Card>

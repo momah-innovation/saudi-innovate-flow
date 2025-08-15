@@ -1,0 +1,31 @@
+{
+  "title": "صحة النظام",
+  "subtitle": "حالة النظام في الوقت الفعلي ومقاييس الأداء",
+  "checking": "جاري فحص صحة النظام...",
+  "system_overview": "نظرة عامة على النظام",
+  "performance_score": "نقاط الأداء",
+  "system_uptime": "وقت تشغيل النظام",
+  "avg_response_time": "متوسط وقت الاستجابة",
+  "database": "قاعدة البيانات",
+  "storage": "التخزين",
+  "security": "الأمان",
+  "network": "الشبكة",
+  "active_connections": "الاتصالات النشطة",
+  "connection_usage": "استخدام الاتصالات",
+  "usage": "الاستخدام",
+  "disk_usage": "استخدام القرص",
+  "last_backup": "آخر نسخة احتياطية",
+  "active_alerts": "التنبيهات النشطة",
+  "ssl_status": "حالة SSL",
+  "firewall": "جدار الحماية",
+  "protected": "محمي",
+  "cdn_status": "حالة CDN",
+  "api_endpoints": "نقاط API",
+  "all_available": "جميعها متاحة",
+  "avg_latency": "متوسط زمن الاستجابة",
+  "unable_to_fetch": "غير قادر على جلب بيانات صحة النظام",
+  "status": {
+    "healthy": "سليم",
+    "critical": "حرج"
+  }
+}
