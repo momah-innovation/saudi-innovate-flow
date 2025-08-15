@@ -180,6 +180,12 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/profile.json');
         break;
         
+      case 'settings':
+        translations = language === 'en'
+          ? await import('./locales/en/admin/settings.json')
+          : await import('./locales/ar/admin/settings.json');
+        break;
+        
       default:
         logger.warn(`Unknown namespace: ${namespace}`, { component: 'FeatureBasedBackend' });
         return {};
