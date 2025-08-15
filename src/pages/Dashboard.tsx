@@ -18,15 +18,18 @@ import {
   Brain
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useOptimizedWorkspaceData } from '@/hooks/useOptimizedWorkspaceData';
 
 export default function Dashboard() {
   const { t, language, isRTL } = useUnifiedTranslation();
+  const { data: ws, isLoading } = useOptimizedWorkspaceData();
 
+  const s = ws?.stats;
   const stats = [
     {
       title: 'Active Challenges',
       titleAr: 'التحديات النشطة',
-      value: '24',
+      value: s ? String(s.activeChallenges ?? s.totalChallenges ?? 0) : '24',
       change: '+12%',
       changeType: 'increase' as const,
       icon: Target,
@@ -37,7 +40,7 @@ export default function Dashboard() {
     {
       title: 'Submitted Ideas',
       titleAr: 'الأفكار المقدمة',
-      value: '156',
+      value: s ? String(s.totalIdeas ?? 0) : '156',
       change: '+8%',
       changeType: 'increase' as const,
       icon: Lightbulb,
@@ -48,7 +51,7 @@ export default function Dashboard() {
     {
       title: 'Upcoming Events',
       titleAr: 'الفعاليات القادمة',
-      value: '12',
+      value: s ? String(s.upcomingEvents ?? s.totalEvents ?? 0) : '12',
       change: '+3',
       changeType: 'increase' as const,
       icon: Calendar,
@@ -59,7 +62,7 @@ export default function Dashboard() {
     {
       title: 'Active Innovators',
       titleAr: 'المبتكرون النشطون',
-      value: '1,247',
+      value: s ? String(s.totalPartners ?? 0) : '1,247',
       change: '+15%',
       changeType: 'increase' as const,
       icon: Users,
@@ -69,38 +72,49 @@ export default function Dashboard() {
     }
   ];
 
-  const recentActivities = [
-    {
-      id: 1,
-      type: 'challenge',
-      title: 'Smart Traffic Management System',
-      titleAr: 'نظام إدارة المرور الذكي',
-      status: 'new_submission',
-      statusAr: 'مقترح جديد',
-      time: '2 hours ago',
-      timeAr: 'منذ ساعتين'
-    },
-    {
-      id: 2,
-      type: 'idea',
-      title: 'Digital Healthcare Platform',
-      titleAr: 'منصة الرعاية الصحية الرقمية',
-      status: 'approved',
-      statusAr: 'معتمد',
-      time: '4 hours ago',
-      timeAr: 'منذ 4 ساعات'
-    },
-    {
-      id: 3,
-      type: 'event',
-      title: 'Innovation Hackathon 2024',
-      titleAr: 'هاكاثون الابتكار 2024',
-      status: 'registration_open',
-      statusAr: 'التسجيل مفتوح',
-      time: '1 day ago',
-      timeAr: 'منذ يوم واحد'
-    }
-  ];
+  const recentActivities = ws?.recentActivity && ws.recentActivity.length > 0
+    ? ws.recentActivity.map((evt: any, idx: number) => ({
+        id: evt.id || idx,
+        type: (evt.entity_type || 'event') as 'challenge' | 'idea' | 'event',
+        title: evt.metadata?.title || evt.entity_type || 'Activity',
+        titleAr: evt.metadata?.title_ar || 'نشاط',
+        status: evt.event_type || 'update',
+        statusAr: evt.event_type || 'تحديث',
+        time: evt.created_at ? new Date(evt.created_at).toLocaleString() : '',
+        timeAr: evt.created_at ? new Date(evt.created_at).toLocaleString() : ''
+      }))
+    : [
+      {
+        id: 1,
+        type: 'challenge',
+        title: 'Smart Traffic Management System',
+        titleAr: 'نظام إدارة المرور الذكي',
+        status: 'new_submission',
+        statusAr: 'مقترح جديد',
+        time: '2 hours ago',
+        timeAr: 'منذ ساعتين'
+      },
+      {
+        id: 2,
+        type: 'idea',
+        title: 'Digital Healthcare Platform',
+        titleAr: 'منصة الرعاية الصحية الرقمية',
+        status: 'approved',
+        statusAr: 'معتمد',
+        time: '4 hours ago',
+        timeAr: 'منذ 4 ساعات'
+      },
+      {
+        id: 3,
+        type: 'event',
+        title: 'Innovation Hackathon 2024',
+        titleAr: 'هاكاثون الابتكار 2024',
+        status: 'registration_open',
+        statusAr: 'التسجيل مفتوح',
+        time: '1 day ago',
+        timeAr: 'منذ يوم واحد'
+      }
+    ];
 
   const quickActions = [
     {
