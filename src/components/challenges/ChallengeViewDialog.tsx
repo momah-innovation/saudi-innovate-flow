@@ -133,7 +133,7 @@ export function ChallengeViewDialog({
         challengeId: challenge.id 
       }, error as Error);
       toast({
-        title: t('error'),
+        title: t('common.status.error'),
         description: t('challenges.submissions_error'),
         variant: "destructive"
       });
@@ -196,7 +196,7 @@ export function ChallengeViewDialog({
       });
     } catch (error) {
       toast({
-        title: "Error",
+        title: t('common.status.error'),
         description: "Failed to record your vote",
         variant: "destructive"
       });
@@ -221,7 +221,7 @@ export function ChallengeViewDialog({
       });
     } catch (error) {
       toast({
-        title: "Error", 
+        title: t('common.status.error'), 
         description: "Failed to bookmark submission",
         variant: "destructive"
       });

@@ -1,6 +1,48 @@
 {
+  "hero": {
+    "advanced_analytics_center": "مركز التحليلات المتقدم",
+    "smart_innovation_analytics": "تحليلات الابتكار الذكية",
+    "smart": "تحليلات",
+    "innovation": "الابتكار", 
+    "analytics": "الذكية",
+    "hero_description": "اكتشف الرؤى العميقة والبيانات المتقدمة لقياس أداء منصة الابتكار ومتابعة التقدم نحو رؤية 2030",
+    "labels": {
+      "ideas": "فكرة",
+      "challenges": "تحدي",
+      "events": "فعالية", 
+      "users": "مستخدم"
+    },
+    "action_buttons": {
+      "show_filters": "إظهار المرشحات",
+      "export_data": "تصدير البيانات",
+      "view_detailed_analytics": "عرض التحليلات التفصيلية",
+      "customize_dashboard": "تخصيص لوحة التحكم"
+    },
+    "stats_description": "إحصائيات المنصة في الوقت الفعلي",
+    "export_button": "تصدير التقارير",
+    "filters_button": "فلاتر متقدمة",
+    "view_demo": "عرض توضيحي",
+    "interactive_dashboard": "لوحة التحكم التفاعلية",
+    "success_rate": "معدل النجاح",
+    "monitoring": "متابعة مستمرة",
+    "view_analytics": "عرض التحليلات",
+    "platform_growth": "نمو المنصة",
+    "implementation_rate": "معدل التنفيذ",
+    "this_month": "هذا الشهر",
+    "completed": "مكتمل",
+    "live": "مباشر",
+    "interactive": "تفاعلي"
+  },
   "filters": {
-    "select_departments": "اختر الأقسام",
-    "select_sectors": "اختر القطاعات"
+    "select_departments": "اختر الإدارات",
+    "select_sectors": "اختر القطاعات",
+    "date_range": "النطاق الزمني",
+    "apply_filters": "تطبيق المرشحات",
+    "clear_filters": "مسح المرشحات"
+  },
+  "charts": {
+    "monthly_trends": "الاتجاهات الشهرية",
+    "registration_trends": "اتجاهات التسجيل",
+    "performance_metrics": "مؤشرات الأداء"
   }
 }

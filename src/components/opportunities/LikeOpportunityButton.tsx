@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Heart } from 'lucide-react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface LikeOpportunityButtonProps {
@@ -23,6 +24,7 @@ export const LikeOpportunityButton = ({
 }: LikeOpportunityButtonProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -145,7 +147,7 @@ export const LikeOpportunityButton = ({
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
+        title: t('common.status.error'),
         description: "Failed to update like status",
         variant: "destructive"
       });

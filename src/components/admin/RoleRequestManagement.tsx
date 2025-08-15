@@ -147,7 +147,7 @@ export default function RoleRequestManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
+        title: t('common.status.error'),
         description: "Failed to load role requests.",
         variant: "destructive",
       });
@@ -213,7 +213,7 @@ export default function RoleRequestManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
+        title: t('common.status.error'),
         description: "Failed to review the request.",
         variant: "destructive",
       });

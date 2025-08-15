@@ -105,13 +105,13 @@ const TranslationManagement = () => {
       const staticKeys = Object.keys(existingTranslations).length;
       
       toast({
-        title: "Success",
+        title: t('common.status.success'),
         description: `${language.toUpperCase()} translations downloaded successfully (${staticKeys} static + ${dbCount} database keys)`,
       });
     } catch (error) {
       logger.error('Download error occurred', { component: 'TranslationManagement', action: 'downloadTranslations', language }, error as Error);
       toast({
-        title: "Error",
+        title: t('common.status.error'),
         description: `Failed to download ${language.toUpperCase()} translations`,
         variant: "destructive",
       });
@@ -165,7 +165,7 @@ const TranslationManagement = () => {
   const handleAddTranslation = async () => {
     if (!newTranslation.key || !newTranslation.category || !newTranslation.ar || !newTranslation.en) {
       toast({
-        title: "Error",
+        title: t('common.status.error'),
         description: "Please fill in all required fields",
         variant: "destructive"
       });
@@ -195,7 +195,7 @@ const TranslationManagement = () => {
     } catch (error) {
       logger.error('Error adding translation', { component: 'TranslationManagement', action: 'addTranslation', key: newTranslation.key }, error as Error);
       toast({
-        title: "Error",
+        title: t('common.status.error'),
         description: "Failed to add translation",
         variant: "destructive"
       });
@@ -367,7 +367,7 @@ const TranslationManagement = () => {
             <div className="flex gap-4 items-center">
               <div className="flex-1">
                 <Input
-                  placeholder="Search translations..."
+                  placeholder={t('common.placeholders.search')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />

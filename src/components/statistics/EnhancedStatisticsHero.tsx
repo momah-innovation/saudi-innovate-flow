@@ -21,6 +21,7 @@ import {
   Activity
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface EnhancedStatisticsHeroProps {
@@ -43,13 +44,14 @@ export const EnhancedStatisticsHero = ({
   isAdmin = false
 }: EnhancedStatisticsHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Target, value: totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-blue-400' },
-    { icon: Award, value: totalChallenges, label: isRTL ? 'تحدي' : 'challenges', color: 'text-green-400' },
-    { icon: Activity, value: totalEvents, label: isRTL ? 'فعالية' : 'events', color: 'text-purple-400' },
-    { icon: Users, value: `${Math.floor(totalUsers / 1000)}K+`, label: isRTL ? 'مستخدم' : 'users', color: 'text-yellow-400' }
+    { icon: Target, value: totalIdeas, label: t('statistics.hero.labels.ideas'), color: 'text-blue-400' },
+    { icon: Award, value: totalChallenges, label: t('statistics.hero.labels.challenges'), color: 'text-green-400' },
+    { icon: Activity, value: totalEvents, label: t('statistics.hero.labels.events'), color: 'text-purple-400' },
+    { icon: Users, value: `${Math.floor(totalUsers / 1000)}K+`, label: t('statistics.hero.labels.users'), color: 'text-yellow-400' }
   ];
 
   const { setInterval: scheduleInterval } = useTimerManager();
@@ -88,7 +90,7 @@ export const EnhancedStatisticsHero = ({
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
-                  {isRTL ? 'مركز التحليلات المتقدم' : 'Advanced Analytics Center'}
+                  {t('statistics.hero.advanced_analytics_center')}
                 </Badge>
               </div>
               
@@ -96,20 +98,17 @@ export const EnhancedStatisticsHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {isRTL ? (
                     <>
-                      تحليلات <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">الابتكار</span> الذكية
+                      {t('statistics.hero.smart')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{t('statistics.hero.innovation')}</span> {t('statistics.hero.analytics')}
                     </>
                   ) : (
                     <>
-                      Smart <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Innovation</span> Analytics
+                      {t('statistics.hero.smart')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{t('statistics.hero.innovation')}</span> {t('statistics.hero.analytics')}
                     </>
                   )}
                 </h1>
                 
                 <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
-                  {isRTL 
-                    ? 'اكتشف الرؤى العميقة والبيانات المتقدمة لقياس أداء منصة الابتكار ومتابعة التقدم نحو رؤية 2030'
-                    : 'Discover deep insights and advanced data to measure innovation platform performance and track progress towards Vision 2030'
-                  }
+                  {t('statistics.hero.hero_description')}
                 </p>
               </div>
             </div>
@@ -146,7 +145,7 @@ export const EnhancedStatisticsHero = ({
                 className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <BarChart3 className="w-5 h-5 mr-2" />
-                {isRTL ? 'تصدير التقارير' : 'Export Reports'}
+                {t('statistics.hero.export_button')}
               </Button>
               
               <Button
@@ -156,7 +155,7 @@ export const EnhancedStatisticsHero = ({
                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
-                {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+                {t('statistics.hero.filters_button')}
               </Button>
 
               <Button
@@ -165,7 +164,7 @@ export const EnhancedStatisticsHero = ({
                 className="text-white hover:bg-white/10"
               >
                 <Play className="w-5 h-5 mr-2" />
-                {isRTL ? 'عرض توضيحي' : 'View Demo'}
+                {t('statistics.hero.view_demo')}
               </Button>
             </div>
           </div>
@@ -185,14 +184,14 @@ export const EnhancedStatisticsHero = ({
                   <div className="absolute top-4 left-4">
                     <Badge className="bg-green-500/90 text-white border-0 animate-pulse">
                       <TrendingUp className="w-3 h-3 mr-1" />
-                      {isRTL ? 'مباشر' : 'Live'}
+                      {t('statistics.hero.live')}
                     </Badge>
                   </div>
 
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-blue-500/90 text-white border-0">
                       <PieChart className="w-3 h-3 mr-1" />
-                      {isRTL ? 'تفاعلي' : 'Interactive'}
+                      {t('statistics.hero.interactive')}
                     </Badge>
                   </div>
 
@@ -201,7 +200,7 @@ export const EnhancedStatisticsHero = ({
 
                 <div className="p-6 space-y-4">
                   <h3 className="text-xl font-bold text-white">
-                    {isRTL ? 'لوحة التحكم التفاعلية' : 'Interactive Dashboard'}
+                    {t('statistics.hero.interactive_dashboard')}
                   </h3>
 
                   <div className="grid grid-cols-2 gap-4">
@@ -209,13 +208,13 @@ export const EnhancedStatisticsHero = ({
                       <div className="text-2xl font-bold text-green-300">
                         85%
                       </div>
-                      <div className="text-sm text-white/70">{isRTL ? 'معدل النجاح' : 'success rate'}</div>
+                      <div className="text-sm text-white/70">{t('statistics.hero.success_rate')}</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-blue-300">
                         24/7
                       </div>
-                      <div className="text-sm text-white/70">{isRTL ? 'متابعة مستمرة' : 'monitoring'}</div>
+                      <div className="text-sm text-white/70">{t('statistics.hero.monitoring')}</div>
                     </div>
                   </div>
 
@@ -227,7 +226,7 @@ export const EnhancedStatisticsHero = ({
                   <Button 
                     className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
-                    {isRTL ? 'عرض التحليلات' : 'View Analytics'}
+                    {t('statistics.hero.view_analytics')}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
@@ -240,10 +239,10 @@ export const EnhancedStatisticsHero = ({
                 <CardContent className="p-4 text-center">
                   <TrendingUp className="w-8 h-8 text-green-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'نمو المنصة' : 'Platform Growth'}
+                    {t('statistics.hero.platform_growth')}
                   </div>
                   <div className="text-xs text-white/70">
-                    +12.5% {isRTL ? 'هذا الشهر' : 'this month'}
+                    +12.5% {t('statistics.hero.this_month')}
                   </div>
                 </CardContent>
               </Card>
@@ -252,10 +251,10 @@ export const EnhancedStatisticsHero = ({
                 <CardContent className="p-4 text-center">
                   <Award className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'معدل التنفيذ' : 'Implementation Rate'}
+                    {t('statistics.hero.implementation_rate')}
                   </div>
                   <div className="text-xs text-white/70">
-                    78% {isRTL ? 'مكتمل' : 'completed'}
+                    78% {t('statistics.hero.completed')}
                   </div>
                 </CardContent>
               </Card>

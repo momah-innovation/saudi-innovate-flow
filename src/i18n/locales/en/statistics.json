@@ -1,6 +1,48 @@
 {
+  "hero": {
+    "advanced_analytics_center": "Advanced Analytics Center",
+    "smart_innovation_analytics": "Smart Innovation Analytics", 
+    "smart": "Smart",
+    "innovation": "Innovation",
+    "analytics": "Analytics",
+    "hero_description": "Discover deep insights and advanced data to measure innovation platform performance and track progress towards Vision 2030",
+    "labels": {
+      "ideas": "ideas",
+      "challenges": "challenges", 
+      "events": "events",
+      "users": "users"
+    },
+    "action_buttons": {
+      "show_filters": "Show Filters",
+      "export_data": "Export Data",
+      "view_detailed_analytics": "View Detailed Analytics",
+      "customize_dashboard": "Customize Dashboard"
+    },
+    "stats_description": "Real-time platform statistics",
+    "export_button": "Export Reports",
+    "filters_button": "Advanced Filters",
+    "view_demo": "View Demo",
+    "interactive_dashboard": "Interactive Dashboard",
+    "success_rate": "success rate",
+    "monitoring": "monitoring",
+    "view_analytics": "View Analytics",
+    "platform_growth": "Platform Growth",
+    "implementation_rate": "Implementation Rate",
+    "this_month": "this month",
+    "completed": "completed",
+    "live": "Live",
+    "interactive": "Interactive"
+  },
   "filters": {
     "select_departments": "Select departments",
-    "select_sectors": "Select sectors"
+    "select_sectors": "Select sectors",
+    "date_range": "Date Range",
+    "apply_filters": "Apply Filters",
+    "clear_filters": "Clear Filters"
+  },
+  "charts": {
+    "monthly_trends": "Monthly Trends",
+    "registration_trends": "Registration Trends",
+    "performance_metrics": "Performance Metrics"
   }
 }

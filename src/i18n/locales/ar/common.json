@@ -70,5 +70,39 @@
     "unsaved_changes": "لديك تغييرات غير محفوظة. هل أنت متأكد من المغادرة؟",
     "yes": "نعم",
     "no": "لا"
+  },
+  "actions": {
+    "create": "إنشاء",
+    "update": "تحديث",
+    "save": "حفظ", 
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض",
+    "add": "إضافة",
+    "remove": "إزالة",
+    "select": "اختيار",
+    "choose": "اختر",
+    "filter": "تصفية",
+    "search": "بحث",
+    "clear": "مسح",
+    "apply": "تطبيق",
+    "export": "تصدير",
+    "import": "استيراد"
+  },
+  "status": {
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "warning": "تحذير", 
+    "info": "معلومات"
+  },
+  "placeholders": {
+    "search": "بحث...",
+    "select_option": "اختر خياراً",
+    "enter_text": "أدخل النص...",
+    "add_item": "إضافة عنصر جديد...",
+    "no_results": "لا توجد نتائج",
+    "no_data": "لا توجد بيانات متاحة"
   }
 }

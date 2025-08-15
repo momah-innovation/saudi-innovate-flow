@@ -70,5 +70,39 @@
     "unsaved_changes": "You have unsaved changes. Are you sure you want to leave?",
     "yes": "Yes",
     "no": "No"
+  },
+  "actions": {
+    "create": "Create",
+    "update": "Update", 
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "add": "Add",
+    "remove": "Remove",
+    "select": "Select",
+    "choose": "Choose",
+    "filter": "Filter",
+    "search": "Search",
+    "clear": "Clear",
+    "apply": "Apply",
+    "export": "Export",
+    "import": "Import"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "Error", 
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "placeholders": {
+    "search": "Search...",
+    "select_option": "Select an option",
+    "enter_text": "Enter text...",
+    "add_item": "Add new item...",
+    "no_results": "No results found",
+    "no_data": "No data available"
   }
 }

@@ -24,7 +24,7 @@ export const ArraySettingsEditor: React.FC<ArraySettingsEditorProps> = ({
   category
 }) => {
   const { getSettingValue, updateSetting } = useSettingsManager();
-  const { getTranslation } = useUnifiedTranslation();
+  const { getTranslation, t } = useUnifiedTranslation();
   const [newItem, setNewItem] = useState('');
   
   const items = getSettingValue(settingKey, []);
@@ -78,7 +78,7 @@ export const ArraySettingsEditor: React.FC<ArraySettingsEditorProps> = ({
           <Input
             value={newItem}
             onChange={(e) => setNewItem(e.target.value)}
-            placeholder="Add new item..."
+            placeholder={t('common.placeholders.add_item')}
             onKeyPress={(e) => e.key === 'Enter' && addItem()}
           />
           <Button onClick={addItem} disabled={!newItem.trim()}>
