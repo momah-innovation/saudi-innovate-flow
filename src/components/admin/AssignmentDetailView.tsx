@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useExpertAssignment } from '@/hooks/useExpertAssignment';
 import { supabase } from '@/integrations/supabase/client';
 import { DetailModal } from '@/components/ui/detail-modal';
 import { DetailView } from '@/components/ui/detail-view';

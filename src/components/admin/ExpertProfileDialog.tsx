@@ -6,6 +6,7 @@ import { formatDate } from '@/utils/unified-date-handler';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { User, Mail, Phone, Building, MapPin, Calendar, Award, Star, Clock, ExternalLink } from "lucide-react";
+import { useExpertProfiles } from "@/hooks/useExpertProfiles";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/error-handler";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";

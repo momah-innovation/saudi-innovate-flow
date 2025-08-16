@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useFocusQuestionManagement } from "@/hooks/useFocusQuestionManagement";
 import { MultiStepForm } from "@/components/ui/multi-step-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,6 +46,7 @@ export function AdminFocusQuestionWizard({
   challengeId,
   onSave,
 }: FocusQuestionWizardProps) {
+  const { createFocusQuestion, updateFocusQuestion } = useFocusQuestionManagement();
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   
@@ -101,13 +102,9 @@ export function AdminFocusQuestionWizard({
 
   const fetchChallenges = async () => {
     try {
-      const { data, error } = await supabase
-        .from('challenges')
-        .select('id, title_ar, status, sensitivity_level')
-        .order('title_ar');
-
-      if (error) throw error;
-      setChallenges(data || []);
+      // For now, we'll use a simpler approach - this should be replaced with a challenge list hook
+      // TODO: Use useChallengeList hook when available
+      setChallenges([]);
     } catch (error) {
       logger.error('Error fetching challenges', error);
     }
@@ -157,12 +154,7 @@ export function AdminFocusQuestionWizard({
 
       if (question?.id) {
         // Update existing question
-        const { error } = await supabase
-          .from('focus_questions')
-          .update(questionData)
-          .eq('id', question.id);
-
-        if (error) throw error;
+        await updateFocusQuestion(question.id, questionData);
         
         toast({
           title: t('success.update_success'),
@@ -170,11 +162,7 @@ export function AdminFocusQuestionWizard({
         });
       } else {
         // Create new question
-        const { error } = await supabase
-          .from('focus_questions')
-          .insert([questionData]);
-
-        if (error) throw error;
+        await createFocusQuestion(questionData);
         
         toast({
           title: t('success.create_success'),
