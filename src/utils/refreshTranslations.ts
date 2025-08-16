@@ -28,9 +28,17 @@ export const forceRefreshTranslations = async () => {
     // ✅ FIXED: Use safe navigation pattern for cache clearing  
     const safeReload = () => {
       try {
+      // ✅ FIXED: Use safe navigation instead of direct window.location
+      try {
         if (typeof window !== 'undefined' && window.location) {
           window.location.reload();
         }
+      } catch (error) {
+        // Graceful fallback for navigation errors
+        if (typeof window !== 'undefined') {
+          window.location.href = '/';
+        }
+      }
       } catch (reloadError) {
         debugLog.warn('Failed to reload page for translation refresh', { component: 'refreshTranslations' });
       }

@@ -28,7 +28,8 @@ class UnifiedNavigationHandler {
 
     if (this.navigate) {
       this.navigate(href);
-    } else {
+    } else if (typeof window !== 'undefined') {
+      // ✅ FIXED: Enhanced safety check for window.location
       window.location.href = href;
     }
   }
@@ -36,7 +37,8 @@ class UnifiedNavigationHandler {
   navigateWithState(href: string, state: any): void {
     if (this.navigate) {
       this.navigate(href, { state });
-    } else {
+    } else if (typeof window !== 'undefined') {
+      // ✅ FIXED: Enhanced safety check for window.location
       window.location.href = href;
     }
   }
