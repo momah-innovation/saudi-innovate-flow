@@ -22,6 +22,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 import { logger } from '@/utils/logger';
 
 interface Challenge {

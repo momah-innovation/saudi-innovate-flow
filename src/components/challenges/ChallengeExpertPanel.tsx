@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
   User, 
@@ -14,6 +15,9 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useDirection } from '@/components/ui/direction-provider';
 
 interface ChallengeExpertPanelProps {
   challengeId: string;
@@ -43,6 +47,7 @@ interface Expert {
 export const ChallengeExpertPanel: React.FC<ChallengeExpertPanelProps> = ({
   challengeId
 }) => {
+  const { isRTL } = useDirection();
   const [experts, setExperts] = useState<Expert[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -222,7 +227,7 @@ export const ChallengeExpertPanel: React.FC<ChallengeExpertPanelProps> = ({
                       <div className="flex items-center space-x-4 rtl:space-x-reverse text-sm text-muted-foreground">
                         <div className="flex items-center space-x-1 rtl:space-x-reverse">
                           <Calendar className="h-4 w-4" />
-                          <span>معين منذ {new Date(expertAssignment.assignment_date).toLocaleDateString('ar-SA')}</span>
+                          <span>معين منذ {isRTL ? formatDateArabic(expertAssignment.assignment_date, 'PPP') : formatDate(expertAssignment.assignment_date, 'PPP')}</span>
                         </div>
                       </div>
                       

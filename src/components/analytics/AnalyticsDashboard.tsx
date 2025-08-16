@@ -19,6 +19,8 @@ import {
   CheckCircle
  } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { formatDate, formatDateArabic, formatRelativeTime } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface AnalyticsData {
   metric_category: string;
@@ -72,8 +74,17 @@ interface ChallengePerformance {
   actual_budget: number;
 }
 
-export function AnalyticsDashboard() {
-  const { t, getDynamicText, formatNumber } = useUnifiedTranslation();
+export default function AnalyticsDashboard() {
+  const { t, getDynamicText, formatNumber, language } = useUnifiedTranslation();
+  const isRTL = language === 'ar';
+  
+  // Error handler for this component
+  const errorHandler = createErrorHandler({
+    component: 'AnalyticsDashboard',
+    showToast: true,
+    logError: true
+  });
+  
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [userEngagement, setUserEngagement] = useState<UserEngagement[]>([]);
   const [challengePerformance, setChallengePerformance] = useState<ChallengePerformance[]>([]);
@@ -130,7 +141,7 @@ export function AnalyticsDashboard() {
         challenge_participations: Math.floor(Math.random() * 10) + 1,
         idea_submissions: Math.floor(Math.random() * 15) + 1,
         comments_made: Math.floor(Math.random() * 50) + 5,
-        last_activity: new Date().toISOString(),
+        last_activity: formatDate(new Date(), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx'),
         days_since_last_activity: Math.floor(Math.random() * 7) + 1,
         avg_session_duration: Math.floor(Math.random() * 30) + 10
       })) || [];
@@ -176,12 +187,12 @@ export function AnalyticsDashboard() {
         event_category: 'analytics',
         properties: {
           dashboard_type: 'innovation_impact',
-          timestamp: new Date().toISOString()
+          timestamp: formatDate(new Date(), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx')
         }
       });
 
     } catch (error) {
-      console.error('Error processing analytics data:', error);
+      errorHandler.handleError(error, { operation: 'processAnalyticsData' }, 'Failed to load analytics data');
     }
   };
 

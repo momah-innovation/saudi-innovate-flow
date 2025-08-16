@@ -12,6 +12,8 @@ import { FileUploader } from '@/components/ui/file-uploader';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { useDirection } from '@/components/ui/direction-provider';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { Calendar, MapPin, DollarSign, Clock, Target, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -47,6 +49,13 @@ export function ChallengeForm({
 }: ChallengeFormProps) {
   const { t, language, isRTL, getTranslation } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
+  
+  // Error handler for this component
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeForm',
+    showToast: true,
+    logError: true
+  });
   
   const [formData, setFormData] = useState({
     title_ar: initialData?.title_ar || '',

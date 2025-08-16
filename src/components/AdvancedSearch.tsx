@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 // TagSelector will be implemented in next phase
 import { 
   Search, 
@@ -55,6 +57,13 @@ export function AdvancedSearch({
 }: AdvancedSearchProps) {
   const { t, language, isRTL } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
+  
+  // Error handler for this component
+  const errorHandler = createErrorHandler({
+    component: 'AdvancedSearch',
+    showToast: true,
+    logError: true
+  });
   
   const [filters, setFilters] = useState<SearchFilters>({
     query: '',

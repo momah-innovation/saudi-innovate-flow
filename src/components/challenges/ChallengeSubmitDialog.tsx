@@ -30,6 +30,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 import { logger } from '@/utils/logger';
 
 interface Challenge {
@@ -258,7 +259,7 @@ export const ChallengeSubmitDialog = ({
       technical_details: submissionData.technicalDetails,
       is_public: submissionData.isPublic,
       status: isDraft ? 'draft' : 'submitted',
-      submission_date: isDraft ? null : new Date().toISOString()
+      submission_date: isDraft ? null : formatDate(new Date(), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx')
     };
 
     const { error } = await supabase
