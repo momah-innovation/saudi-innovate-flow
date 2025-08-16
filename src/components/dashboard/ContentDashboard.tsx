@@ -25,7 +25,7 @@ interface ContentDashboardProps {
   canResearch: boolean;
 }
 
-export function ContentDashboard({ userProfile, canManageContent, canManageChallenges, canResearch }: ContentDashboardProps) {
+export const ContentDashboard = React.memo(function ContentDashboard({ userProfile, canManageContent, canManageChallenges, canResearch }: ContentDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -226,4 +226,4 @@ export function ContentDashboard({ userProfile, canManageContent, canManageChall
       </Tabs>
     </div>
   );
-}
+});

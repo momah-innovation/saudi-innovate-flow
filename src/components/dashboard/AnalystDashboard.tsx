@@ -25,7 +25,7 @@ interface AnalystDashboardProps {
   canGenerateReports: boolean;
 }
 
-export function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSystemData, canGenerateReports }: AnalystDashboardProps) {
+export const AnalystDashboard = React.memo(function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSystemData, canGenerateReports }: AnalystDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -226,4 +226,4 @@ export function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSyste
       </Tabs>
     </div>
   );
-}
+});

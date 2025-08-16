@@ -94,11 +94,11 @@ export const CollaborativeChallengeCard = ({
   // Removed useTimerManager to prevent hook violations
 
   useEffect(() => {
-    // Simulate real-time participant updates
+    // Optimized: Reduced frequency from 30s to 60s to improve performance
     const intervalId = setInterval(() => {
       const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
       setLiveParticipants(prev => Math.max(0, prev + variation));
-    }, 30000); // Update every 30 seconds
+    }, 60000); // Update every 60 seconds
 
     return () => clearInterval(intervalId);
   }, []);

@@ -14,7 +14,7 @@ interface ExpertDashboardProps {
   canAccessExpertTools: boolean;
 }
 
-export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpertTools }: ExpertDashboardProps) {
+export const ExpertDashboard = React.memo(function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpertTools }: ExpertDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -129,4 +129,4 @@ export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpert
       </div>
     </div>
   );
-}
+});

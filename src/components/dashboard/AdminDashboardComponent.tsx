@@ -67,7 +67,7 @@ interface AdminDashboardProps {
   canViewAnalytics: boolean;
 }
 
-export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, canViewAnalytics }: AdminDashboardProps) {
+export const AdminDashboard = React.memo(function AdminDashboard({ userProfile, canManageUsers, canManageSystem, canViewAnalytics }: AdminDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -942,4 +942,4 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       </Tabs>
     </AdminPageWrapper>
   );
-}
+});

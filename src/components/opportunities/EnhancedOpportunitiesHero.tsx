@@ -66,9 +66,10 @@ export const EnhancedOpportunitiesHero = ({
   // Removed useTimerManager to prevent hook violations
 
   useEffect(() => {
+    // Optimized: Reduced frequency from 3s to 8s to improve performance
     const intervalId = setInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
-    }, 3000);
+    }, 8000);
     return () => clearInterval(intervalId);
   }, [stats.length]);
 
