@@ -283,7 +283,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           event_type: viewEvent.event_type || 'conference',
           event_category: viewEvent.event_category || 'standalone',
           event_visibility: viewEvent.event_visibility || 'public',
-          event_date: viewEvent.event_date || new Date().toISOString(),
+          event_date: viewEvent.event_date || currentTimestamp(),
           start_time: viewEvent.start_time || '09:00',
           end_time: viewEvent.end_time || '17:00',
           format: viewEvent.format || 'in-person',

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTimerManager } from '@/utils/timerManager';
+import { formatDate } from '@/utils/unified-date-handler';
 import { 
   Dialog, 
   DialogContent, 
@@ -49,8 +50,8 @@ export const EventSocialShare = ({
 
   const eventUrl = `${window.location.origin}/events/${event.id}`;
   const shareText = isRTL 
-    ? `أدعوك لحضور فعالية "${event.title_ar}" في ${new Date(event.event_date).toLocaleDateString()}`
-    : `I invite you to attend "${event.title_ar}" on ${new Date(event.event_date).toLocaleDateString()}`;
+    ? `أدعوك لحضور فعالية "${event.title_ar}" في ${formatDate(event.event_date)}`
+    : `I invite you to attend "${event.title_ar}" on ${formatDate(event.event_date)}`;
 
   const handleCopyLink = async () => {
     try {
@@ -166,7 +167,7 @@ export const EventSocialShare = ({
           <div className="p-3 bg-muted/50 rounded-lg">
             <h3 className="font-medium text-sm line-clamp-2">{event.title_ar}</h3>
             <div className="text-xs text-muted-foreground mt-1">
-              {new Date(event.event_date).toLocaleDateString()}
+              {formatDate(event.event_date)}
               {event.location && ` • ${event.location}`}
             </div>
           </div>

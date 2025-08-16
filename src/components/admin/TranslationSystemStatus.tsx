@@ -6,6 +6,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
 import { queryKeys } from '@/lib/query/query-keys';
 import { useQueryClient } from '@tanstack/react-query';
+import { navigationHandler } from '@/utils/unified-navigation';
 
 /**
  * Translation System Status and Controls
@@ -33,7 +34,7 @@ export const TranslationSystemStatus: React.FC = () => {
       });
       
       // Force page reload to reinitialize translation system
-      window.location.reload();
+      navigationHandler.navigateTo(window.location.href);
       
       toast({
         title: t('success'),

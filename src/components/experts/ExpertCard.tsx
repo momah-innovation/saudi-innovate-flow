@@ -7,6 +7,7 @@ import {
   ExternalLink, Mail, Linkedin, Twitter 
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { navigationHandler } from '@/utils/unified-navigation';
 
 interface Expert {
   id: string;
@@ -169,24 +170,24 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
           <div className="flex justify-center gap-2 pt-2 border-t">
             {expert.social_links.linkedin && (
               <Button variant="ghost" size="sm" asChild>
-                <a href={expert.social_links.linkedin} target="_blank" rel="noopener noreferrer"
-                   onClick={(e) => { e.preventDefault(); window.open(expert.social_links.linkedin, '_blank', 'noopener noreferrer'); }}>
+                 <a href={expert.social_links.linkedin} target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => { e.preventDefault(); navigationHandler.navigateTo(expert.social_links.linkedin, true, '_blank'); }}>
                   <Linkedin className="w-4 h-4" />
                 </a>
               </Button>
             )}
             {expert.social_links.twitter && (
               <Button variant="ghost" size="sm" asChild>
-                <a href={expert.social_links.twitter} target="_blank" rel="noopener noreferrer"
-                   onClick={(e) => { e.preventDefault(); window.open(expert.social_links.twitter, '_blank', 'noopener noreferrer'); }}>
+                 <a href={expert.social_links.twitter} target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => { e.preventDefault(); navigationHandler.navigateTo(expert.social_links.twitter, true, '_blank'); }}>
                   <Twitter className="w-4 h-4" />
                 </a>
               </Button>
             )}
             {expert.social_links.email && (
               <Button variant="ghost" size="sm" asChild>
-                <a href={`mailto:${expert.social_links.email}`}
-                   onClick={(e) => { e.preventDefault(); window.location.href = `mailto:${expert.social_links.email}`; }}>
+                 <a href={`mailto:${expert.social_links.email}`}
+                    onClick={(e) => { e.preventDefault(); navigationHandler.navigateTo(`mailto:${expert.social_links.email}`, true); }}>
                   <Mail className="w-4 h-4" />
                 </a>
               </Button>

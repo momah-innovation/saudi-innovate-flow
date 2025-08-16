@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { currentTimestamp } from '@/utils/unified-date-handler';
+import { currentTimestamp, dateHandler } from '@/utils/unified-date-handler';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
@@ -203,11 +203,13 @@ export function CampaignWizard({
   };
 
   const resetForm = () => {
-    const today = new Date();
-    const nextWeek = new Date(today);
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    const nextMonth = new Date(today);
-    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    const today = dateHandler.now();
+    const nextWeekDate = new Date();
+    nextWeekDate.setDate(nextWeekDate.getDate() + 7);
+    const nextMonthDate = new Date();
+    nextMonthDate.setMonth(nextMonthDate.getMonth() + 1);
+    const nextWeek = dateHandler.formatForAPI(nextWeekDate);
+    const nextMonth = dateHandler.formatForAPI(nextMonthDate);
 
     setFormData({
       title_ar: "",
@@ -216,9 +218,9 @@ export function CampaignWizard({
       description_en: "",
       status: "planning",
       theme: "",
-      start_date: nextWeek.toISOString().split('T')[0],
-      end_date: nextMonth.toISOString().split('T')[0],
-      registration_deadline: today.toISOString().split('T')[0],
+      start_date: nextWeek?.split('T')[0] || '',
+      end_date: nextMonth?.split('T')[0] || '',
+      registration_deadline: today.split('T')[0],
       target_participants: null,
       target_ideas: null,
       budget: null,
