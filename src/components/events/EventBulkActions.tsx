@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useEventManagement } from "@/hooks/useEventManagement";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 import { 
   Edit, 
@@ -50,7 +50,7 @@ export function EventBulkActions({
 }: EventBulkActionsProps) {
   const { t } = useUnifiedTranslation();
   const { generalStatusOptions } = useSystemLists();
-  const [isLoading, setIsLoading] = useState(false);
+  const { loading, bulkUpdateStatus, bulkDeleteEvents, duplicateEvent } = useEventManagement();
   const [bulkAction, setBulkAction] = useState("");
   const [newStatus, setNewStatus] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -77,83 +77,27 @@ export function EventBulkActions({
   const handleBulkStatusUpdate = async () => {
     if (!newStatus || selectedEvents.length === 0) return;
 
-    setIsLoading(true);
     try {
-      const { error } = await supabase
-        .from('events')
-        .update({ status: newStatus })
-        .in('id', selectedEvents);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: `Updated status for ${selectedEvents.length} events`,
-      });
-
+      await bulkUpdateStatus(selectedEvents, newStatus);
       onSelectionChange([]);
       setBulkAction("");
       setNewStatus("");
       onRefresh();
     } catch (error) {
-      logger.error('Error updating events', { 
-        component: 'EventBulkActions', 
-        action: 'handleBulkStatusUpdate',
-        data: { selectedEvents, newStatus }
-      }, error as Error);
-      toast({
-        title: "Error",
-        description: "Failed to update events",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      // Error already handled by hook
     }
   };
 
   const handleBulkDelete = async () => {
     if (selectedEvents.length === 0) return;
 
-    setIsLoading(true);
     try {
-      // Delete event relationships first
-      await Promise.all([
-        supabase.from('event_partner_links').delete().in('event_id', selectedEvents),
-        supabase.from('event_stakeholder_links').delete().in('event_id', selectedEvents),
-        supabase.from('event_focus_question_links').delete().in('event_id', selectedEvents),
-        supabase.from('event_challenge_links').delete().in('event_id', selectedEvents),
-        supabase.from('event_participants').delete().in('event_id', selectedEvents)
-      ]);
-
-      // Then delete events
-      const { error } = await supabase
-        .from('events')
-        .delete()
-        .in('id', selectedEvents);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: `Deleted ${selectedEvents.length} events`,
-      });
-
+      await bulkDeleteEvents(selectedEvents);
       onSelectionChange([]);
       setBulkAction("");
       onRefresh();
     } catch (error) {
-      logger.error('Error deleting events', { 
-        component: 'EventBulkActions', 
-        action: 'handleBulkDelete',
-        data: { selectedEvents }
-      }, error as Error);
-      toast({
-        title: "Error",
-        description: "Failed to delete events",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      // Error already handled by hook
     }
   };
 
@@ -191,88 +135,16 @@ export function EventBulkActions({
   const handleDuplicateEvents = async () => {
     if (selectedEvents.length === 0) return;
 
-    setIsLoading(true);
     try {
       for (const eventId of selectedEvents) {
-        const { data: originalEvent, error: fetchError } = await supabase
-          .from('events')
-          .select('*')
-          .eq('id', eventId)
-          .single();
-
-        if (fetchError) throw fetchError;
-
-        // Create duplicate event
-        const duplicateData = {
-          ...originalEvent,
-          id: undefined,
-          title_ar: `${originalEvent.title_ar} (نسخة)`,
-          status: 'scheduled',
-          registered_participants: 0,
-          actual_participants: 0,
-          created_at: new Date().toISOString()
-        };
-
-        const { data: newEvent, error: insertError } = await supabase
-          .from('events')
-          .insert(duplicateData)
-          .select()
-          .single();
-
-        if (insertError) throw insertError;
-
-        // Copy relationships
-        const [partners, stakeholders, focusQuestions, challenges] = await Promise.all([
-          supabase.from('event_partner_links').select('partner_id').eq('event_id', eventId),
-          supabase.from('event_stakeholder_links').select('stakeholder_id').eq('event_id', eventId),
-          supabase.from('event_focus_question_links').select('focus_question_id').eq('event_id', eventId),
-          supabase.from('event_challenge_links').select('challenge_id').eq('event_id', eventId)
-        ]);
-
-        // Insert relationships for duplicated event
-        if (partners.data?.length) {
-          await supabase.from('event_partner_links').insert(
-            partners.data.map(p => ({ event_id: newEvent.id, partner_id: p.partner_id }))
-          );
-        }
-        if (stakeholders.data?.length) {
-          await supabase.from('event_stakeholder_links').insert(
-            stakeholders.data.map(s => ({ event_id: newEvent.id, stakeholder_id: s.stakeholder_id }))
-          );
-        }
-        if (focusQuestions.data?.length) {
-          await supabase.from('event_focus_question_links').insert(
-            focusQuestions.data.map(f => ({ event_id: newEvent.id, focus_question_id: f.focus_question_id }))
-          );
-        }
-        if (challenges.data?.length) {
-          await supabase.from('event_challenge_links').insert(
-            challenges.data.map(c => ({ event_id: newEvent.id, challenge_id: c.challenge_id }))
-          );
-        }
+        await duplicateEvent(eventId);
       }
-
-      toast({
-        title: "Success",
-        description: `Duplicated ${selectedEvents.length} events`,
-      });
 
       onSelectionChange([]);
       setBulkAction("");
       onRefresh();
     } catch (error) {
-      logger.error('Error duplicating events', { 
-        component: 'EventBulkActions', 
-        action: 'handleDuplicateEvents',
-        data: { selectedEvents }
-      }, error as Error);
-      toast({
-        title: "Error",
-        description: "Failed to duplicate events",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      // Error already handled by hook
     }
   };
 
@@ -426,11 +298,11 @@ export function EventBulkActions({
               </Select>
               <Button
                 onClick={handleBulkStatusUpdate}
-                disabled={!newStatus || isLoading}
+                disabled={!newStatus || loading}
                 className="w-full mt-2"
               >
                 <Edit className="mr-2 h-4 w-4" />
-                {isLoading ? "Updating..." : `Update ${selectedEvents.length} Events`}
+                {loading ? "Updating..." : `Update ${selectedEvents.length} Events`}
               </Button>
             </div>
           )}
@@ -448,11 +320,11 @@ export function EventBulkActions({
           {bulkAction === "duplicate" && (
             <Button
               onClick={handleDuplicateEvents}
-              disabled={isLoading}
+              disabled={loading}
               className="w-full"
             >
               <Copy className="mr-2 h-4 w-4" />
-              {isLoading ? "Duplicating..." : `Duplicate ${selectedEvents.length} Events`}
+              {loading ? "Duplicating..." : `Duplicate ${selectedEvents.length} Events`}
             </Button>
           )}
 
@@ -477,7 +349,7 @@ export function EventBulkActions({
                     onClick={handleBulkDelete}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
-                    {isLoading ? "Deleting..." : "Delete Events"}
+                    {loading ? "Deleting..." : "Delete Events"}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

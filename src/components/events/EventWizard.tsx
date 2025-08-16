@@ -240,9 +240,17 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
       target_stakeholder_groups: eventData.target_stakeholder_groups || [],
     });
 
-    // Load relationships
+    // Load relationships using consolidated hook
     if (eventData.id) {
-      await loadEventRelationships(eventData.id);
+      try {
+        const relationships = await loadEventRelationships(eventData.id);
+        setSelectedPartners(relationships.partners);
+        setSelectedStakeholders(relationships.stakeholders);
+        setSelectedFocusQuestions(relationships.focusQuestions);
+        setSelectedChallenges(relationships.challenges);
+      } catch (error) {
+        // Failed to load relationships - using defaults
+      }
     }
   };
 
@@ -401,28 +409,10 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
       };
 
       await saveEvent(formData, relationships, event?.id);
-        updateEventFocusQuestions(eventId, selectedFocusQuestions),
-        updateEventChallenges(eventId, selectedChallenges)
-      ]);
-
-      toast({
-        title: "نجح",
-        description: `تم ${event?.id ? 'تحديث' : 'إنشاء'} الحدث بنجاح`,
-      });
-
       onSave();
       onClose();
     } catch (error) {
-      logger.error('Error saving event', { 
-        component: 'EventWizard', 
-        action: 'handleSave',
-        data: { eventId: event?.id, isEditing: !!event?.id }
-      }, error as Error);
-      toast({
-        title: "خطأ",
-        description: "فشل في حفظ الحدث",
-        variant: "destructive",
-      });
+      // Error already handled by hook
     } finally {
       setIsLoading(false);
     }
@@ -686,7 +676,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                       className="w-full justify-between"
                     >
                       {formData.campaign_id
-                        ? campaigns.find((campaign) => campaign.id === formData.campaign_id)?.title_ar
+                        ? relatedData.campaigns.find((campaign) => campaign.id === formData.campaign_id)?.title_ar
                         : "اختر الحملة..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -742,7 +732,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                       className="w-full justify-between"
                     >
                       {formData.sector_id
-                        ? sectors.find((sector) => sector.id === formData.sector_id)?.name
+                        ? relatedData.sectors.find((sector) => sector.id === formData.sector_id)?.name
                         : "اختر القطاع..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -799,7 +789,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                     className="w-full justify-between"
                   >
                     {formData.event_manager_id
-                      ? eventManagers.find((manager) => manager.id === formData.event_manager_id)?.name
+                      ? relatedData.eventManagers.find((manager) => manager.id === formData.event_manager_id)?.name
                       : "اختر مدير الحدث..."}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
@@ -862,7 +852,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                   onChange={(e) => setChallengeSearch(e.target.value)}
                 />
                 <div className="border rounded-md max-h-40 overflow-y-auto">
-                  {challenges
+                  {relatedData.challenges
                     .filter(challenge => 
                       challenge.title_ar.toLowerCase().includes(challengeSearch.toLowerCase())
                     )
@@ -888,9 +878,9 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                 </div>
                 {selectedChallenges.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {selectedChallenges.map((challengeId) => {
-                      const challenge = challenges.find(c => c.id === challengeId);
-                      return (
+                      {selectedChallenges.map((challengeId) => {
+                        const challenge = relatedData.challenges.find(c => c.id === challengeId);
+                        return (
                         <Badge key={challengeId} variant="secondary" className="text-xs">
                           {challenge?.title_ar}
                           <X
@@ -918,7 +908,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                   onChange={(e) => setPartnerSearch(e.target.value)}
                 />
                 <div className="border rounded-md max-h-40 overflow-y-auto">
-                  {partners
+                  {relatedData.partners
                     .filter(partner => 
                       partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
                     )
@@ -944,9 +934,9 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                 </div>
                 {selectedPartners.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {selectedPartners.map((partnerId) => {
-                      const partner = partners.find(p => p.id === partnerId);
-                      return (
+                      {selectedPartners.map((partnerId) => {
+                        const partner = relatedData.partners.find(p => p.id === partnerId);
+                        return (
                         <Badge key={partnerId} variant="secondary" className="text-xs">
                           {partner?.name}
                           <X
@@ -974,7 +964,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                   onChange={(e) => setStakeholderSearch(e.target.value)}
                 />
                 <div className="border rounded-md max-h-40 overflow-y-auto">
-                  {stakeholders
+                  {relatedData.stakeholders
                     .filter(stakeholder => 
                       stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
                     )
@@ -1000,9 +990,9 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                 </div>
                 {selectedStakeholders.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {selectedStakeholders.map((stakeholderId) => {
-                      const stakeholder = stakeholders.find(s => s.id === stakeholderId);
-                      return (
+                      {selectedStakeholders.map((stakeholderId) => {
+                        const stakeholder = relatedData.stakeholders.find(s => s.id === stakeholderId);
+                        return (
                         <Badge key={stakeholderId} variant="secondary" className="text-xs">
                           {stakeholder?.name}
                           <X
@@ -1035,7 +1025,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                   onChange={(e) => setFocusQuestionSearch(e.target.value)}
                 />
                 <div className="border rounded-md max-h-40 overflow-y-auto">
-                  {focusQuestions
+                  {relatedData.focusQuestions
                     .filter(question => 
                       question.question_text_ar.toLowerCase().includes(focusQuestionSearch.toLowerCase())
                     )
@@ -1061,9 +1051,9 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                 </div>
                 {selectedFocusQuestions.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {selectedFocusQuestions.map((questionId) => {
-                      const question = focusQuestions.find(q => q.id === questionId);
-                      return (
+                      {selectedFocusQuestions.map((questionId) => {
+                        const question = relatedData.focusQuestions.find(q => q.id === questionId);
+                        return (
                         <Badge key={questionId} variant="secondary" className="text-xs">
                           {question?.question_text_ar.substring(0, 50)}...
                           <X
@@ -1234,8 +1224,8 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
               إلغاء
             </Button>
             {currentStep === totalSteps ? (
-              <Button onClick={handleSave} disabled={isLoading}>
-                {isLoading ? "جاري الحفظ..." : event ? "تحديث الحدث" : "إنشاء الحدث"}
+              <Button onClick={handleSave} disabled={isLoading || eventLoading}>
+                {isLoading || eventLoading ? "جاري الحفظ..." : event ? "تحديث الحدث" : "إنشاء الحدث"}
               </Button>
             ) : (
               <Button onClick={nextStep}>
