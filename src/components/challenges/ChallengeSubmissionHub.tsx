@@ -17,6 +17,16 @@ import {
   Award,
   TrendingUp
 } from 'lucide-react';
+
+interface ChallengeSubmission {
+  id: string;
+  title: string;
+  status: 'draft' | 'submitted' | 'under_review' | 'approved' | 'rejected';
+  lastUpdated: string;
+  completionPercentage?: number;
+  author: string;
+  timeAgo: string;
+}
 interface ChallengeSubmissionHubProps {
   challengeId: string;
 }
@@ -32,8 +42,8 @@ export const ChallengeSubmissionHub: React.FC<ChallengeSubmissionHubProps> = ({
   React.useEffect(() => {
     navigationHandler.setNavigate(navigate);
   }, [navigate]);
-  const [submissions, setSubmissions] = useState<any[]>([]);
-  const [userSubmission, setUserSubmission] = useState<any>(null);
+  const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
+  const [userSubmission, setUserSubmission] = useState<ChallengeSubmission | null>(null);
 
   const getStatusColor = (status: string) => {
     switch (status) {

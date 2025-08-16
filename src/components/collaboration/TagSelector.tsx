@@ -16,10 +16,19 @@ import {
 import { useTagIntegration } from '@/hooks/useTagIntegration';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
+interface Tag {
+  id: string;
+  name?: string;
+  name_ar?: string;
+  name_en?: string;
+  category?: string;
+  color?: string;
+}
+
 interface TagSelectorProps {
   entityType: string;
   entityId: string;
-  onTagsChange?: (tags: any[]) => void;
+  onTagsChange?: (tags: Tag[]) => void;
   showSuggestions?: boolean;
   maxTags?: number;
 }
@@ -42,10 +51,10 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
     getEntityTags
   } = useTagIntegration();
 
-  const [selectedTags, setSelectedTags] = useState<any[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [suggestedTags, setSuggestedTags] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<Tag[]>([]);
+  const [suggestedTags, setSuggestedTags] = useState<Tag[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const { setTimeout: scheduleTimeout } = useTimerManager();
 
@@ -91,7 +100,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
     return cleanup;
   }, [searchQuery, selectedTags]);
 
-  const handleAddTag = async (tag: any) => {
+  const handleAddTag = async (tag: Tag) => {
     if (selectedTags.length >= maxTags) return;
     
     const success = await addTagToEntity(entityType, entityId, tag.id);
@@ -104,7 +113,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
     }
   };
 
-  const handleRemoveTag = async (tag: any) => {
+  const handleRemoveTag = async (tag: Tag) => {
     const success = await removeTagFromEntity(entityType, entityId, tag.id);
     if (success) {
       const newTags = selectedTags.filter(t => t.id !== tag.id);
@@ -113,7 +122,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
     }
   };
 
-  const getTagDisplayName = (tag: any): string => {
+  const getTagDisplayName = (tag: Tag): string => {
     return tag.name_ar || tag.name_en || tag.name || 'علامة';
   };
 

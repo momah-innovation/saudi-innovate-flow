@@ -19,6 +19,22 @@ import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceColl
 import { UserPresence } from '@/components/collaboration/UserPresence';
 import { ChallengeTeamWorkspace } from '@/types/common';
 
+interface OnlineUser {
+  id: string;
+  name: string;
+  avatar?: string;
+  status: 'online' | 'away' | 'busy';
+}
+
+interface RecentActivity {
+  id: string;
+  title: string;
+  description: string;
+  timeAgo: string;
+  userId: string;
+  type: 'comment' | 'submission' | 'join' | 'update';
+}
+
 interface ChallengeCollaborationSidebarProps {
   challengeId: string;
   isParticipant: boolean;
@@ -30,8 +46,8 @@ export const ChallengeCollaborationSidebar: React.FC<ChallengeCollaborationSideb
   isParticipant,
   userTeam
 }) => {
-  const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
-  const [recentActivity, setRecentActivity] = useState<any[]>([]);
+  const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
+  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
 
   return (
     <div className="space-y-6">

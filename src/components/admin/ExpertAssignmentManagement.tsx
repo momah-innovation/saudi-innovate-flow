@@ -305,7 +305,14 @@ export function ExpertAssignmentManagement() {
     }
 
     try {
-      const assignments = [];
+      const assignments: Array<{
+        challenge_id: string;
+        expert_id: string;
+        role_type: string;
+        status: string;
+        notes?: string | null;
+        assigned_at?: string;
+      }> = [];
       for (const challengeId of bulkSelectedChallenges) {
         for (const expertId of bulkSelectedExperts) {
           assignments.push({

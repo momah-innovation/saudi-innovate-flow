@@ -83,7 +83,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
 
       // Organize comments into tree structure
       const commentMap = new Map();
-      const rootComments: Comment[] = [];
+      let rootComments: Comment[] = [];
 
       // First pass: create all comments
       data.forEach((commentData: {
@@ -117,11 +117,11 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
         const formattedComment = commentMap.get(commentData.id);
         if (commentData.parent_comment_id) {
           const parent = commentMap.get(commentData.parent_comment_id);
-          if (parent) {
-            parent.replies!.push(formattedComment);
+          if (parent && formattedComment) {
+            parent.replies = [...(parent.replies || []), formattedComment];
           }
-        } else {
-          rootComments.push(formattedComment);
+        } else if (formattedComment) {
+          rootComments = [...rootComments, formattedComment];
         }
       });
 

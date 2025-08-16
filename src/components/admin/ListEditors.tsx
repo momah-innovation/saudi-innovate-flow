@@ -123,12 +123,12 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
   const saveRole = () => {
     if (!formData.value || !formData.label) return;
 
-    const newRoles = [...roles];
+    let newRoles = [...roles];
     if (editingRole) {
       const index = roles.findIndex(r => r.value === editingRole.value);
       newRoles[index] = formData;
     } else {
-      newRoles.push(formData);
+      newRoles = [...newRoles, formData];
     }
     
     onChange(newRoles);
