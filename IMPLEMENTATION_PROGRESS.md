@@ -213,7 +213,9 @@
 - src/components/admin/security/SuspiciousActivityTable.tsx
 - src/components/admin/security/UserRoleManager.tsx
 - src/components/opportunities/TimeRangeFilter.tsx
-- src/components/layout/EnhancedNavigationSidebar.tsx
+- src/components/layout/EnhancedNavigationSidebar.tsx (sidebar loading fix)
+- src/config/navigation-menu.ts (role filtering fix)
+- src/contexts/AuthContext.tsx (roles compatibility fix)
 
 ## Technical Achievements This Session
 

@@ -40,12 +40,25 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
   const { theme } = useTheme();
   const { user } = useAuth();
   
-  // Get user roles robustly (supports multiple profile shapes); default to ['user']
+  // Get user roles robustly with comprehensive fallback system
   const userRoles = React.useMemo(() => {
-    const rolesA = (userProfile as any)?.roles as string[] | undefined;
-    const rolesB = (userProfile as any)?.user_roles?.map((ur: any) => ur.role) as string[] | undefined;
-    const rolesC = (user as any)?.user_metadata?.roles as string[] | undefined;
-    const merged = rolesA?.length ? rolesA : rolesB?.length ? rolesB : rolesC?.length ? rolesC : ['user'];
+    if (!user) return ['user'];
+    
+    // Try multiple sources for roles with comprehensive fallbacks
+    const sources = [
+      (userProfile as any)?.roles as string[] | undefined,
+      (userProfile as any)?.user_roles?.map((ur: any) => ur.role) as string[] | undefined,
+      (user as any)?.user_metadata?.roles as string[] | undefined,
+      // Check auth.user.app_metadata as well (common Supabase pattern)
+      (user as any)?.app_metadata?.roles as string[] | undefined,
+      // Try raw role field
+      userProfile?.user_roles?.filter(ur => ur.is_active).map(ur => ur.role),
+      // Always fallback to 'user' if nothing found
+      ['user']
+    ];
+    
+    const merged = sources.find(roles => Array.isArray(roles) && roles.length > 0) || ['user'];
+    console.log('🔍 Sidebar roles resolved:', { userProfile, user, merged });
     return Array.from(new Set(merged));
   }, [userProfile, user]);
   
@@ -67,9 +80,25 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Filter menu items by user roles
+  // Filter menu items by user roles with debug logging
   const filteredMenuItems = useMemo(() => {
-    return filterMenuItemsByRoles(NAVIGATION_ITEMS, userRoles);
+    const filtered = filterMenuItemsByRoles(NAVIGATION_ITEMS, userRoles);
+    console.log('📋 Menu items filtered:', { 
+      totalItems: NAVIGATION_ITEMS.length, 
+      filteredItems: filtered.length, 
+      userRoles, 
+      filtered: filtered.map(i => i.id) 
+    });
+    
+    // Always ensure at least basic navigation is available
+    if (filtered.length === 0) {
+      console.warn('⚠️ No menu items available, providing fallback navigation');
+      return NAVIGATION_ITEMS.filter(item => 
+        ['dashboard', 'workspace', 'settings'].includes(item.id)
+      );
+    }
+    
+    return filtered;
   }, [userRoles]);
 
   // Group filtered menu items
@@ -313,15 +342,25 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
         {/* Navigation Menu */}
         <ScrollArea className="flex-1 px-4 py-2">
           <div className="space-y-2">
-            {Object.entries(searchFilteredItems).map(([groupId, items]) =>
-              renderGroup(groupId, items)
-            )}
-            
-            {Object.keys(searchFilteredItems).length === 0 && searchQuery && (
+            {Object.entries(searchFilteredItems).length > 0 ? (
+              Object.entries(searchFilteredItems).map(([groupId, items]) =>
+                renderGroup(groupId, items)
+              )
+            ) : searchQuery ? (
               <div className="text-center py-8 text-muted-foreground">
                 <Search className="h-8 w-8 mx-auto mb-2" />
                 <p className="text-sm">
                   {t('common.no_results_found', 'No results found')}
+                </p>
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <Menu className="h-8 w-8 mx-auto mb-2" />
+                <p className="text-sm font-medium mb-2">Navigation Loading...</p>
+                <p className="text-xs">
+                  User: {user?.email || 'None'}<br/>
+                  Roles: {userRoles.join(', ') || 'None'}<br/>
+                  Items: {filteredMenuItems.length}
                 </p>
               </div>
             )}

@@ -144,10 +144,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logger.info('No roles found for user', { component: 'AuthContext', action: 'fetchUserProfile', userId });
       }
 
-      // Combine profile with roles
+      // Combine profile with roles and add debug roles array for compatibility
       const enrichedProfile = {
         ...profile,
-        user_roles: userRoles || []
+        user_roles: userRoles || [],
+        // Add roles array for easier access in components
+        roles: userRoles?.map(r => r.role) || ['user']
       };
 
       setUserProfile(enrichedProfile);
