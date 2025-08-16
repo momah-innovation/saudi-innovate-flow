@@ -7,6 +7,7 @@ import { useEffect, useCallback, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { queryKeys } from '@/lib/query/query-keys';
+import { debugLog } from '@/utils/debugLogger';
 
 interface CacheWarmingConfig {
   enabled?: boolean;
@@ -209,7 +210,7 @@ export const useAdvancedCacheWarming = (config: CacheWarmingConfig = {}) => {
       });
 
     } catch (error) {
-      console.warn('Cache warming failed for:', task.queryKey, error);
+      debugLog.warn('Cache warming failed', { component: 'AdvancedCacheWarming', data: { queryKey: task.queryKey }, error });
     } finally {
       activeRequests.current--;
       
@@ -310,7 +311,7 @@ export const useAdvancedCacheWarming = (config: CacheWarmingConfig = {}) => {
           staleTime: task.staleTime
         });
       } catch (error) {
-        console.warn('Failed to refresh critical cache:', task.queryKey, error);
+        debugLog.warn('Failed to refresh critical cache', { component: 'AdvancedCacheWarming', data: { queryKey: task.queryKey } });
       }
     }
   }, [getWarmingTasks, queryClient]);

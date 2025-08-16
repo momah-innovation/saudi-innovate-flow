@@ -246,6 +246,7 @@ class GlobalErrorHandler extends Component<GlobalErrorHandlerProps, GlobalErrorS
     if (typeof window !== 'undefined' && (window as any).APP_NAVIGATE) {
       (window as any).APP_NAVIGATE('/');
     } else {
+      // Use proper navigation with fallback
       window.location.href = '/';
     }
   };

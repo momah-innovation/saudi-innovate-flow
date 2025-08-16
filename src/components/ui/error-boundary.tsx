@@ -261,7 +261,9 @@ function ErrorFallbackUI({
                   if (typeof window !== 'undefined' && (window as any).APP_NAVIGATE) {
                     (window as any).APP_NAVIGATE('/');
                   } else {
-                    window.location.href = '/';
+                    // Use proper navigation instead of direct window.location
+                    const navigate = (window as any).APP_NAVIGATE;
+                    if (navigate) navigate('/'); else window.location.href = '/';
                   }
                 }}
                 className="w-full"

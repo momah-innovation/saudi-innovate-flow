@@ -7,6 +7,7 @@ import { useEffect, useCallback, useRef, useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { queryKeys } from '@/lib/query/query-keys';
+import { debugLog } from '@/utils/debugLogger';
 
 interface UserBehaviorPattern {
   route: string;
@@ -64,7 +65,7 @@ export const useIntelligentPrefetch = () => {
         const patterns = JSON.parse(stored);
         behaviorPatterns.current = new Map(patterns);
       } catch (error) {
-        console.warn('Failed to load behavior patterns:', error);
+        debugLog.warn('Failed to load behavior patterns', { component: 'IntelligentPrefetch' });
       }
     }
   }, []);
