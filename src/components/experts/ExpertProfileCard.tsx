@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -51,7 +51,7 @@ interface ExpertCardProps {
   className?: string;
 }
 
-export function ExpertCard({ expertProfile, userProfile, className = "" }: ExpertCardProps) {
+export const ExpertCard = React.memo(function ExpertCard({ expertProfile, userProfile, className = "" }: ExpertCardProps) {
   const { uiInitialsMaxLength } = useSystemSettings();
   
   const getInitialsWithSettings = (name: string) => {
@@ -211,7 +211,7 @@ export function ExpertCard({ expertProfile, userProfile, className = "" }: Exper
       </CardContent>
     </Card>
   );
-}
+});
 
 interface ExpertProfileViewProps {
   userId: string;

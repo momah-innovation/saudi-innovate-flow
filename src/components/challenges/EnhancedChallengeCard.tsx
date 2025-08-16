@@ -67,7 +67,7 @@ interface EnhancedChallengeCardProps {
   isLiked?: boolean;
 }
 
-export function EnhancedChallengeCard({
+export const EnhancedChallengeCard = React.memo(function EnhancedChallengeCard({
   challenge,
   onViewDetails,
   onParticipate,
@@ -411,6 +411,6 @@ export function EnhancedChallengeCard({
       </CardContent>
     </Card>
   );
-}
+});
 
 export default EnhancedChallengeCard;

@@ -25,7 +25,7 @@ interface PartnerProfileCardProps {
   showActions?: boolean;
 }
 
-export function PartnerProfileCard({ partner, onViewDetails, showActions = true }: PartnerProfileCardProps) {
+export const PartnerProfileCard = React.memo(function PartnerProfileCard({ partner, onViewDetails, showActions = true }: PartnerProfileCardProps) {
   const { t } = useUnifiedTranslation();
   const getInitials = (name: string) => {
     return name
@@ -157,4 +157,4 @@ export function PartnerProfileCard({ partner, onViewDetails, showActions = true 
       </CardContent>
     </Card>
   );
-}
+});

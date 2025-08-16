@@ -19,7 +19,7 @@ interface SectorProfileCardProps {
   showActions?: boolean;
 }
 
-export function SectorProfileCard({ sector, onViewDetails, showActions = true }: SectorProfileCardProps) {
+export const SectorProfileCard = React.memo(function SectorProfileCard({ sector, onViewDetails, showActions = true }: SectorProfileCardProps) {
   const { t } = useUnifiedTranslation();
   const getInitials = (name: string) => {
     return name
@@ -98,4 +98,4 @@ export function SectorProfileCard({ sector, onViewDetails, showActions = true }:
       </CardContent>
     </Card>
   );
-}
+});

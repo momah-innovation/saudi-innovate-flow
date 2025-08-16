@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -36,7 +37,7 @@ interface EnhancedEvaluationCardProps {
   onDelete: (evaluation: EvaluationCardData) => void;
 }
 
-export function EnhancedEvaluationCard({
+export const EnhancedEvaluationCard = React.memo(function EnhancedEvaluationCard({
   evaluation,
   viewMode,
   onView,
@@ -181,4 +182,4 @@ export function EnhancedEvaluationCard({
       </CardContent>
     </Card>
   );
-}
+});
