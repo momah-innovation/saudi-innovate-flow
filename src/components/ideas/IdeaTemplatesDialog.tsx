@@ -60,7 +60,7 @@ export function IdeaTemplatesDialog({
       if (error) throw error;
       setTemplates((data || []).map(item => ({
         ...item,
-        template_data: (item.template_data as unknown as IdeaTemplateStructure) || { sections: [], fields: [], guidelines: [], estimated_time: 0, difficulty_level: 'beginner' as const }
+        template_data: item.template_data as any || { sections: [], fields: [], guidelines: [], estimated_time: 0, difficulty_level: 'beginner' as const }
       })));
     } catch (error) {
       logger.error('Failed to load idea templates', {

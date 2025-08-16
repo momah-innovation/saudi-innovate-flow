@@ -151,7 +151,12 @@ export class AnalyticsService {
         const hasAccess = await this.checkAnalyticsAccess(userId);
         
         if (!hasAccess) {
-          // Silently return public metrics without console warnings to prevent spam
+          debugLog.warn('AnalyticsService.getCoreMetrics: Access denied, using public metrics', {
+            timeframe,
+            component: 'AnalyticsService',
+            userId,
+            error: 'Access denied: insufficient privileges for analytics data'
+          });
           return this.getPublicMetrics(timeframe);
         }
 
@@ -374,8 +379,8 @@ export class AnalyticsService {
    */
   private async checkAnalyticsAccess(userId: string): Promise<boolean> {
     try {
-      // Always return false to prevent spam console warnings
-      // Use public metrics for all users to prevent excessive logging
+      // For now, return false to prevent network errors
+      // This will use public metrics instead
       return false;
       
       // TODO: Re-enable when database schema is properly set up
