@@ -78,49 +78,18 @@ export class AnalyticsService {
    */
   private async hasMetricsAccess(userId: string, metricsType: string): Promise<boolean> {
     try {
-      // Check admin access for sensitive metrics
-      if (metricsType === 'security' || metricsType === 'admin') {
-        const { data: isAdmin } = await supabase.rpc('has_role', {
-          _user_id: userId,
-          _role: 'admin'
-        });
-        return !!isAdmin;
-      }
+      const analyticsHook = (window as any).__ANALYTICS_SERVICE_HOOK__;
 
-      // Check team member access for analytics with improved error handling
-      if (metricsType === 'analytics' || metricsType === 'reporting') {
-        try {
-          const { data: isTeamMember, error } = await supabase
-            .from('innovation_team_members')
-            .select('id')
-            .eq('user_id', userId)
-            .eq('status', 'active')
-            .maybeSingle(); // Use maybeSingle() instead of single() to handle no results gracefully
-          
-          if (error) {
-            // Log error but continue with fallback (assume no team access)
-            debugLog.warn('Analytics access check failed', {
-              error: error.message, 
-              userId, 
-              metricsType 
-            });
-            return false;
-          }
-          
-          if (isTeamMember) return true;
-        } catch (networkError) {
-          // Handle network errors gracefully
-          debugLog.warn('Network error checking team member access', { 
-            error: networkError instanceof Error ? networkError.message : 'Unknown network error',
-            userId 
-          });
-          return false;
+      if (analyticsHook?.checkAccess) {
+        if (metricsType === 'security' || metricsType === 'admin') {
+          return await analyticsHook.checkAccess('admin');
         }
+        // Basic analytics/reporting access
+        return await analyticsHook.checkAccess('basic');
       }
 
-      
-      // Default: authenticated users have basic access
-      return true;
+      // Fallback: basic access for authenticated users (no direct DB queries)
+      return metricsType !== 'security' && metricsType !== 'admin';
     } catch (error) {
       logger.error('Error checking metrics access', { component: 'AnalyticsService', userId, type: metricsType }, error as Error);
       return false;
@@ -356,41 +325,15 @@ export class AnalyticsService {
    */
   private async checkAnalyticsAccess(userId: string): Promise<boolean> {
     try {
-      // Check team member access with maybeSingle for better error handling
-      const { data: isTeamMember, error } = await supabase
-        .from('innovation_team_members')
-        .select('id')
-        .eq('user_id', userId)
-        .eq('status', 'active')
-        .maybeSingle();
-      
-      if (error) {
-        debugLog.warn('Team member check failed', { 
-          component: 'AnalyticsService', 
-          error: error.message, 
-          userId 
-        });
-        // Continue to admin check
-      } else if (isTeamMember) {
-        return true;
+      const analyticsHook = (window as any).__ANALYTICS_SERVICE_HOOK__;
+      if (analyticsHook?.checkAccess) {
+        const basic = await analyticsHook.checkAccess('basic');
+        if (basic) return true;
+        const admin = await analyticsHook.checkAccess('admin');
+        return Boolean(admin);
       }
-
-      // Check admin role
-      try {
-        const { data: isAdmin } = await supabase.rpc('has_role', {
-          _user_id: userId,
-          _role: 'admin'
-        });
-        
-        return Boolean(isAdmin);
-      } catch (roleError) {
-        debugLog.warn('Role check failed', { 
-          component: 'AnalyticsService', 
-          error: roleError instanceof Error ? roleError.message : 'Unknown role check error',
-          userId 
-        });
-        return false;
-      }
+      debugLog.warn('AnalyticsService.checkAnalyticsAccess: Hook not available');
+      return false;
     } catch (error) {
       debugLog.warn('Analytics access check failed', { 
         component: 'AnalyticsService', 

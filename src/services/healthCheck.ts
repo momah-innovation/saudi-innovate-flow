@@ -217,10 +217,10 @@ export const healthCheckService = new HealthCheckService();
 // Register default health checks using structured approach
 healthCheckService.register('supabase-connection', async () => {
   try {
-    const { error } = await supabase.from('profiles').select('count').limit(1);
-    return { status: !error, metadata: { connectionTest: 'profiles-table' } };
+    const { error } = await supabase.rpc('get_dashboard_stats');
+    return { status: !error, metadata: { connectionTest: 'rpc:get_dashboard_stats' } };
   } catch (error) {
-    return { status: false, metadata: { error: error.message } };
+    return { status: false, metadata: { error: (error as any)?.message } };
   }
 }, { interval: 30000 }); // Check every 30 seconds
 
