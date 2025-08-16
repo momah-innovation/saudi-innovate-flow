@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useCampaignManagement } from "@/hooks/useCampaignManagement";
 import { CampaignFormData, SystemLists } from "@/types";
 
 // Use the centralized CampaignFormData type
@@ -56,7 +57,17 @@ export function CampaignWizard({
   const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
   const campaignThemeOptions = getSettingValue('campaign_theme_options', []) as string[];
   const [currentStep, setCurrentStep] = useState(0);
-  const [loading, setLoading] = useState(false);
+  
+  // ✅ MIGRATED: Using centralized campaign management hook
+  const {
+    loading,
+    error,
+    options,
+    loadCampaignOptions,
+    loadCampaignLinks,
+    createCampaign,
+    updateCampaign
+  } = useCampaignManagement();
 
   // Form data
   const [formData, setFormData] = useState<CampaignFormData>({
@@ -86,24 +97,7 @@ export function CampaignWizard({
     stakeholder_ids: []
   });
 
-  // Related data
-  interface RelatedEntity {
-    id: string;
-    name?: string;
-    name_ar?: string;
-    title?: string;
-    title_ar?: string;
-    email?: string;
-    position?: string;
-  }
-  
-  const [sectors, setSectors] = useState<RelatedEntity[]>([]);
-  const [deputies, setDeputies] = useState<RelatedEntity[]>([]);
-  const [departments, setDepartments] = useState<RelatedEntity[]>([]);
-  const [challenges, setChallenges] = useState<RelatedEntity[]>([]);
-  const [partners, setPartners] = useState<RelatedEntity[]>([]);
-  const [stakeholders, setStakeholders] = useState<RelatedEntity[]>([]);
-  const [managers, setManagers] = useState<RelatedEntity[]>([]);
+  // ✅ MIGRATED: Using options from centralized hook instead of local state
 
   // Search states
   const [managerSearch, setManagerSearch] = useState("");
@@ -127,76 +121,27 @@ export function CampaignWizard({
 
   useEffect(() => {
     if (open) {
-      fetchRelatedData();
+      // ✅ MIGRATED: Using centralized hook method
+      loadCampaignOptions();
       if (editingCampaign) {
         loadCampaignData();
       } else {
         resetForm();
       }
     }
-  }, [open, editingCampaign]);
+  }, [open, editingCampaign, loadCampaignOptions]);
 
-  const fetchRelatedData = async () => {
-    try {
-      const [
-        sectorsRes, 
-        deputiesRes, 
-        departmentsRes, 
-        challengesRes, 
-        partnersRes, 
-        stakeholdersRes, 
-        managersRes
-      ] = await Promise.all([
-        supabase.from('sectors').select('*').order('name_ar'),
-        supabase.from('deputies').select('*').order('name_ar'),
-        supabase.from('departments').select('*').order('name_ar'),
-        supabase.from('challenges').select('*').order('title_ar'),
-        supabase.from('partners').select('*').order('name_ar'),
-        supabase.from('stakeholders').select('*').order('name_ar'),
-        supabase.from('profiles').select('id, name, name_ar, email, position').eq('status', 'active').order('name_ar')
-      ]);
-
-      setSectors(sectorsRes.data || []);
-      setDeputies(deputiesRes.data || []);
-      setDepartments(departmentsRes.data || []);
-      setChallenges(challengesRes.data || []);
-      setPartners(partnersRes.data || []);
-      setStakeholders(stakeholdersRes.data || []);
-      setManagers(managersRes.data || []);
-    } catch (error) {
-      // Failed to fetch campaign wizard data - using defaults
-    }
-  };
+  // ✅ MIGRATED: Removed direct supabase queries - now using centralized hook
 
   const loadCampaignData = async () => {
     if (!editingCampaign?.id) return;
 
     try {
-      // Load linked data
-      const [
-        sectorLinksRes,
-        deputyLinksRes,
-        departmentLinksRes,
-        challengeLinksRes,
-        partnerLinksRes,
-        stakeholderLinksRes
-      ] = await Promise.all([
-        supabase.from('campaign_sector_links').select('sector_id').eq('campaign_id', editingCampaign.id),
-        supabase.from('campaign_deputy_links').select('deputy_id').eq('campaign_id', editingCampaign.id),
-        supabase.from('campaign_department_links').select('department_id').eq('campaign_id', editingCampaign.id),
-        supabase.from('campaign_challenge_links').select('challenge_id').eq('campaign_id', editingCampaign.id),
-        supabase.from('campaign_partner_links').select('partner_id').eq('campaign_id', editingCampaign.id),
-        supabase.from('campaign_stakeholder_links').select('stakeholder_id').eq('campaign_id', editingCampaign.id)
-      ]);
-
+      // ✅ MIGRATED: Using centralized hook method
+      const links = await loadCampaignLinks(editingCampaign.id);
       setFormData({
         ...editingCampaign,
-        sector_ids: sectorLinksRes.data?.map(link => link.sector_id) || [],
-        deputy_ids: deputyLinksRes.data?.map(link => link.deputy_id) || [],
-        department_ids: departmentLinksRes.data?.map(link => link.department_id) || [],
-        challenge_ids: challengeLinksRes.data?.map(link => link.challenge_id) || [],
-        partner_ids: partnerLinksRes.data?.map(link => link.partner_id) || [],
-        stakeholder_ids: stakeholderLinksRes.data?.map(link => link.stakeholder_id) || []
+        ...links
       });
     } catch (error) {
       // Failed to load campaign data
@@ -284,133 +229,13 @@ export function CampaignWizard({
       return;
     }
 
-    setLoading(true);
     try {
-      // Prepare campaign data
-      const campaignData = {
-        title_ar: formData.title_ar,
-        title_en: formData.title_en || null,
-        description_ar: formData.description_ar,
-        description_en: formData.description_en || null,
-        status: formData.status,
-        theme: formData.theme,
-        start_date: formData.start_date,
-        end_date: formData.end_date,
-        registration_deadline: formData.registration_deadline,
-        target_participants: formData.target_participants,
-        target_ideas: formData.target_ideas,
-        budget: formData.budget,
-        success_metrics: formData.success_metrics,
-        campaign_manager_id: formData.campaign_manager_id || null,
-        sector_id: formData.sector_id || null,
-        deputy_id: formData.deputy_id || null,
-        department_id: formData.department_id || null,
-        challenge_id: formData.challenge_id || null
-      };
-
-      let campaignId: string;
-
+      // ✅ MIGRATED: Using centralized hook methods
       if (editingCampaign?.id) {
-        // Update existing campaign
-        const { error } = await supabase
-          .from('campaigns')
-          .update(campaignData)
-          .eq('id', editingCampaign.id);
-
-        if (error) throw error;
-        campaignId = editingCampaign.id;
-
-        // Delete existing links
-        await Promise.all([
-          supabase.from('campaign_sector_links').delete().eq('campaign_id', campaignId),
-          supabase.from('campaign_deputy_links').delete().eq('campaign_id', campaignId),
-          supabase.from('campaign_department_links').delete().eq('campaign_id', campaignId),
-          supabase.from('campaign_challenge_links').delete().eq('campaign_id', campaignId),
-          supabase.from('campaign_partner_links').delete().eq('campaign_id', campaignId),
-          supabase.from('campaign_stakeholder_links').delete().eq('campaign_id', campaignId)
-        ]);
+        await updateCampaign(editingCampaign.id, formData);
       } else {
-        // Create new campaign
-        const { data, error } = await supabase
-          .from('campaigns')
-          .insert(campaignData)
-          .select()
-          .maybeSingle();
-
-        if (error) throw error;
-        campaignId = data.id;
+        await createCampaign(formData);
       }
-
-      // Create new links
-      const linkPromises = [];
-
-      if (formData.sector_ids.length > 0) {
-        linkPromises.push(
-          supabase.from('campaign_sector_links').insert(
-            formData.sector_ids.map(sectorId => ({
-              campaign_id: campaignId,
-              sector_id: sectorId
-            }))
-          )
-        );
-      }
-
-      if (formData.deputy_ids.length > 0) {
-        linkPromises.push(
-          supabase.from('campaign_deputy_links').insert(
-            formData.deputy_ids.map(deputyId => ({
-              campaign_id: campaignId,
-              deputy_id: deputyId
-            }))
-          )
-        );
-      }
-
-      if (formData.department_ids.length > 0) {
-        linkPromises.push(
-          supabase.from('campaign_department_links').insert(
-            formData.department_ids.map(departmentId => ({
-              campaign_id: campaignId,
-              department_id: departmentId
-            }))
-          )
-        );
-      }
-
-      if (formData.challenge_ids.length > 0) {
-        linkPromises.push(
-          supabase.from('campaign_challenge_links').insert(
-            formData.challenge_ids.map(challengeId => ({
-              campaign_id: campaignId,
-              challenge_id: challengeId
-            }))
-          )
-        );
-      }
-
-      if (formData.partner_ids.length > 0) {
-        linkPromises.push(
-          supabase.from('campaign_partner_links').insert(
-            formData.partner_ids.map(partnerId => ({
-              campaign_id: campaignId,
-              partner_id: partnerId
-            }))
-          )
-        );
-      }
-
-      if (formData.stakeholder_ids.length > 0) {
-        linkPromises.push(
-          supabase.from('campaign_stakeholder_links').insert(
-            formData.stakeholder_ids.map(stakeholderId => ({
-              campaign_id: campaignId,
-              stakeholder_id: stakeholderId
-            }))
-          )
-        );
-      }
-
-      await Promise.all(linkPromises);
 
       toast({
         title: t('dialog.save_success'),
@@ -420,14 +245,7 @@ export function CampaignWizard({
       onSuccess();
       onOpenChange(false);
     } catch (error) {
-      // Failed to save campaign
-      toast({
-        title: t('dialog.save_failed'),
-        description: t('dialog.try_again'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
+      // Error already handled by hook
     }
   };
 
@@ -570,8 +388,8 @@ export function CampaignWizard({
                     className="w-full justify-between"
                   >
                     {formData.campaign_manager_id
-                      ? managers.find(manager => manager.id === formData.campaign_manager_id)?.name_ar || 
-                        managers.find(manager => manager.id === formData.campaign_manager_id)?.name
+                      ? options.managers.find(manager => manager.id === formData.campaign_manager_id)?.name_ar || 
+                        options.managers.find(manager => manager.id === formData.campaign_manager_id)?.name
                       : t('admin.campaigns.choose_manager')}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
@@ -586,7 +404,7 @@ export function CampaignWizard({
                     <CommandEmpty>{t('admin.campaigns.no_results')}</CommandEmpty>
                     <CommandGroup>
                       <CommandList>
-                        {managers
+                        {options.managers
                           .filter(manager => 
                             !managerSearch || 
                             (manager.name_ar?.toLowerCase().includes(managerSearch.toLowerCase())) ||
@@ -681,7 +499,7 @@ export function CampaignWizard({
                     <SelectValue placeholder={t('admin.campaigns.choose_main_sector')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {sectors.map((sector) => (
+                    {options.sectors.map((sector) => (
                       <SelectItem key={sector.id} value={sector.id}>
                         {sector.name_ar || sector.name}
                       </SelectItem>
@@ -697,7 +515,7 @@ export function CampaignWizard({
                     <SelectValue placeholder={t('admin.campaigns.choose_main_deputy')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {deputies.map((deputy) => (
+                    {options.deputies.map((deputy) => (
                       <SelectItem key={deputy.id} value={deputy.id}>
                         {deputy.name_ar || deputy.name}
                       </SelectItem>
@@ -715,7 +533,7 @@ export function CampaignWizard({
                     <SelectValue placeholder={t('admin.campaigns.choose_main_department')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {departments.map((department) => (
+                    {options.departments.map((department) => (
                       <SelectItem key={department.id} value={department.id}>
                         {department.name_ar || department.name}
                       </SelectItem>
@@ -731,7 +549,7 @@ export function CampaignWizard({
                     <SelectValue placeholder={t('admin.campaigns.choose_main_challenge')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {challenges.map((challenge) => (
+                    {options.challenges.map((challenge) => (
                       <SelectItem key={challenge.id} value={challenge.id}>
                         {challenge.title_ar}
                       </SelectItem>
@@ -746,7 +564,7 @@ export function CampaignWizard({
             <div className="space-y-4">
               <h4 className="font-medium">{t('admin.campaigns.participating_sectors')}</h4>
               <div className="grid grid-cols-2 gap-2">
-                {sectors.map((sector) => (
+                {options.sectors.map((sector) => (
                   <div key={sector.id} className="flex items-center space-x-2">
                     <Checkbox
                       id={`sector-${sector.id}`}
@@ -770,7 +588,7 @@ export function CampaignWizard({
             <div className="space-y-4">
               <h4 className="font-medium">{t('admin.campaigns.participating_deputies')}</h4>
               <div className="grid grid-cols-2 gap-2">
-                {deputies.map((deputy) => (
+                {options.deputies.map((deputy) => (
                   <div key={deputy.id} className="flex items-center space-x-2">
                     <Checkbox
                       id={`deputy-${deputy.id}`}
@@ -794,7 +612,7 @@ export function CampaignWizard({
             <div className="space-y-4">
               <h4 className="font-medium">{t('admin.campaigns.participating_departments')}</h4>
               <div className="grid grid-cols-2 gap-2">
-                {departments.map((department) => (
+                {options.departments.map((department) => (
                   <div key={department.id} className="flex items-center space-x-2">
                     <Checkbox
                       id={`department-${department.id}`}
@@ -818,7 +636,7 @@ export function CampaignWizard({
             <div className="space-y-4">
               <h4 className="font-medium">{t('admin.campaigns.participating_challenges')}</h4>
               <div className="grid grid-cols-1 gap-2">
-                {challenges.map((challenge) => (
+                {options.challenges.map((challenge) => (
                   <div key={challenge.id} className="flex items-center space-x-2">
                     <Checkbox
                       id={`challenge-${challenge.id}`}
@@ -853,7 +671,7 @@ export function CampaignWizard({
                   onChange={(e) => setPartnerSearch(e.target.value)}
                 />
                 <div className="max-h-40 overflow-y-auto border rounded-md p-2 space-y-1">
-                  {partners
+                  {options.partners
                     .filter(partner => 
                       !partnerSearch || 
                       (partner.name_ar?.toLowerCase().includes(partnerSearch.toLowerCase())) ||
@@ -883,7 +701,7 @@ export function CampaignWizard({
               {formData.partner_ids.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {formData.partner_ids.map(partnerId => {
-                    const partner = partners.find(p => p.id === partnerId);
+                    const partner = options.partners.find(p => p.id === partnerId);
                     return (
                       <Badge key={partnerId} variant="secondary" className="gap-1">
                         {partner?.name_ar || partner?.name}
@@ -910,7 +728,7 @@ export function CampaignWizard({
                   onChange={(e) => setStakeholderSearch(e.target.value)}
                 />
                 <div className="max-h-40 overflow-y-auto border rounded-md p-2 space-y-1">
-                  {stakeholders
+                  {options.stakeholders
                     .filter(stakeholder => 
                       !stakeholderSearch || 
                       (stakeholder.name_ar?.toLowerCase().includes(stakeholderSearch.toLowerCase())) ||
@@ -940,7 +758,7 @@ export function CampaignWizard({
               {formData.stakeholder_ids.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {formData.stakeholder_ids.map(stakeholderId => {
-                    const stakeholder = stakeholders.find(s => s.id === stakeholderId);
+                    const stakeholder = options.stakeholders.find(s => s.id === stakeholderId);
                     return (
                       <Badge key={stakeholderId} variant="secondary" className="gap-1">
                         {stakeholder?.name_ar || stakeholder?.name}

@@ -17,6 +17,7 @@ import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useChallengeManagement } from "@/hooks/useChallengeManagement";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import type { Challenge, Partner, Expert } from "@/types";
 
@@ -87,18 +88,15 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
     showToast: true,
     logError: true
   });
-  const [loading, setLoading] = useState(false);
-  const [systemLists, setSystemLists] = useState<SystemLists>({
-    departments: [],
-    deputies: [],
-    sectors: [],
-    domains: [],
-    subDomains: [],
-    services: [],
-    partners: [],
-    experts: [],
-    focusQuestions: []
-  });
+  
+  // ✅ MIGRATED: Using centralized challenge management hook
+  const {
+    loading,
+    options,
+    loadChallengeOptions,
+    createChallenge,
+    updateChallenge
+  } = useChallengeManagement();
 
   const [formData, setFormData] = useState<ChallengeFormData>({
     title_ar: '',
@@ -136,7 +134,8 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
 
   useEffect(() => {
     if (isOpen) {
-      loadSystemLists();
+      // ✅ MIGRATED: Using centralized hook method
+      loadChallengeOptions();
       if (challenge) {
         setFormData({
           ...challenge,

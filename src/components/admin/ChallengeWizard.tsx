@@ -21,6 +21,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useChallengeManagement } from "@/hooks/useChallengeManagement";
 import { ChallengeFormSchema } from '@/schemas/validation';
 import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service, Partner, Expert } from "@/types";
 
@@ -79,17 +80,15 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
   const challengePriorityLevels = getSettingValue('priority_levels', []) as string[];
   const challengeSensitivityLevels = getSettingValue('sensitivity_levels', []) as string[];
   
-  const [loading, setLoading] = useState(false);
-  const [systemLists, setSystemLists] = useState<SystemLists>({
-    departments: [],
-    deputies: [],
-    sectors: [],
-    domains: [],
-    subDomains: [],
-    services: [],
-    partners: [],
-    experts: []
-  });
+  // ✅ MIGRATED: Using centralized challenge management hook
+  const {
+    loading,
+    error,
+    options,
+    loadChallengeOptions,
+    createChallenge,
+    updateChallenge
+  } = useChallengeManagement();
 
   const [formData, setFormData] = useState<ChallengeFormData>({
     title_ar: '',
@@ -130,7 +129,8 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
 
   useEffect(() => {
     if (isOpen) {
-      loadSystemLists();
+      // ✅ MIGRATED: Using centralized hook method
+      loadChallengeOptions();
       if (challenge) {
         setFormData({
           ...challenge,
@@ -141,44 +141,9 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
         resetForm();
       }
     }
-  }, [isOpen, challenge]);
+  }, [isOpen, challenge, loadChallengeOptions]);
 
-  const loadSystemLists = async () => {
-    try {
-      const [
-        departmentsRes,
-        deputiesRes,
-        sectorsRes,
-        domainsRes,
-        subDomainsRes,
-        servicesRes,
-        partnersRes,
-        expertsRes
-      ] = await Promise.all([
-        supabase.from('departments').select('*').order('name_ar'),
-        supabase.from('deputies').select('*').order('name_ar'),
-        supabase.from('sectors').select('*').order('name_ar'),
-        supabase.from('domains').select('*').order('name_ar'),
-        supabase.from('sub_domains').select('*').order('name_ar'),
-        supabase.from('services').select('*').order('name_ar'),
-        supabase.from('partners').select('*').order('name_ar'),
-        supabase.from('experts').select('id, user_id, expertise_areas').order('created_at')
-      ]);
-
-      setSystemLists({
-        departments: departmentsRes.data || [],
-        deputies: deputiesRes.data || [],
-        sectors: sectorsRes.data || [],
-        domains: domainsRes.data || [],
-        subDomains: subDomainsRes.data || [],
-        services: servicesRes.data || [],
-        partners: partnersRes.data || [],
-        experts: expertsRes.data || []
-      });
-    } catch (error) {
-      // Failed to load challenge wizard data
-    }
-  };
+  // ✅ MIGRATED: Removed direct supabase queries - now using centralized hook
 
   const resetForm = () => {
     setFormData({
@@ -251,62 +216,25 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
   };
 
   const handleComplete = async () => {
-    setLoading(true);
     try {
       const challengeData = {
         ...formData,
         estimated_budget: Number(formData.estimated_budget) || 0,
-        actual_budget: Number(formData.actual_budget) || 0
+        actual_budget: Number(formData.actual_budget) || 0,
+        expert_ids: selectedExperts,
+        partner_ids: selectedPartners
       };
 
+      // ✅ MIGRATED: Using centralized hook methods
       if (challenge?.id) {
-        // Update existing challenge
-        const { error } = await supabase
-          .from('challenges')
-          .update(challengeData)
-          .eq('id', challenge.id);
-
-        if (error) throw error;
-
+        await updateChallenge(challenge.id, challengeData);
         toast({
            title: t('admin.challenges.update_success'),
            description: t('admin.challenges.update_success_desc')
         });
       } else {
-        // Create new challenge
-        const { data, error } = await supabase
-          .from('challenges')
-          .insert([challengeData])
-          .select()
-          .single();
-
-        if (error) throw error;
-
-        // Add selected experts
-        if (selectedExperts.length > 0 && data) {
-          const expertLinks = selectedExperts.map(expertId => ({
-            challenge_id: data.id,
-            expert_id: expertId,
-            role_type: 'evaluator',
-            status: 'active'
-          }));
-
-          await supabase.from('challenge_experts').insert(expertLinks);
-        }
-
-        // Add selected partners
-        if (selectedPartners.length > 0 && data) {
-          const partnerLinks = selectedPartners.map(partnerId => ({
-            challenge_id: data.id,
-            partner_id: partnerId,
-            partnership_type: 'collaborator',
-            status: 'active'
-          }));
-
-          await supabase.from('challenge_partners').insert(partnerLinks);
-        }
-
-         toast({
+        await createChallenge(challengeData);
+        toast({
            title: t('admin.challenges.create_success'),
            description: t('admin.challenges.create_success_desc')
          });
@@ -315,14 +243,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       onSuccess();
       onClose();
     } catch (error) {
-      // Failed to save challenge
-       toast({
-         title: t('admin.challenges.save_failed'),
-         description: t('admin.challenges.try_again'),
-         variant: 'destructive'
-       });
-    } finally {
-      setLoading(false);
+      // Error already handled by hook
     }
   };
 
@@ -460,7 +381,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                   <SelectValue placeholder={t('placeholder.select_sector')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {systemLists.sectors.map((sector) => (
+                  {options.sectors.map((sector) => (
                     <SelectItem key={sector.id} value={sector.id}>
                       {sector.name_ar || sector.name}
                     </SelectItem>
@@ -476,7 +397,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                   <SelectValue placeholder={t('placeholder.select_deputy')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {systemLists.deputies.map((deputy) => (
+                  {options.deputies.map((deputy) => (
                     <SelectItem key={deputy.id} value={deputy.id}>
                       {deputy.name_ar || deputy.name}
                     </SelectItem>
@@ -494,7 +415,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                   <SelectValue placeholder={t('placeholder.select_department')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {systemLists.departments.map((dept) => (
+                  {options.departments.map((dept) => (
                     <SelectItem key={dept.id} value={dept.id}>
                       {dept.name_ar || dept.name}
                     </SelectItem>
@@ -510,7 +431,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                   <SelectValue placeholder={t('placeholder.select_domain')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {systemLists.domains.map((domain) => (
+                  {options.domains.map((domain) => (
                     <SelectItem key={domain.id} value={domain.id}>
                       {domain.name_ar || domain.name}
                     </SelectItem>
@@ -528,7 +449,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                   <SelectValue placeholder={t('form.sub_domain')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {systemLists.subDomains.map((subDomain) => (
+                  {options.subDomains.map((subDomain) => (
                     <SelectItem key={subDomain.id} value={subDomain.id}>
                       {subDomain.name_ar || subDomain.name}
                     </SelectItem>
@@ -544,7 +465,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                   <SelectValue placeholder={t('form.service')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {systemLists.services.map((service) => (
+                  {options.services.map((service) => (
                     <SelectItem key={service.id} value={service.id}>
                       {service.name_ar || service.name}
                     </SelectItem>
@@ -649,7 +570,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           <div className="space-y-2">
             <Label>{t('form.participating_partners')}</Label>
             <div className="border rounded-lg p-4 max-h-32 overflow-y-auto">
-              {systemLists.partners.map((partner) => (
+              {options.partners.map((partner) => (
                 <div key={partner.id} className="flex items-center space-x-2 mb-2">
                   <Checkbox
                     id={`partner-${partner.id}`}
@@ -671,7 +592,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
             {selectedPartners.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 {selectedPartners.map((partnerId) => {
-                  const partner = systemLists.partners.find(p => p.id === partnerId);
+                  const partner = options.partners.find(p => p.id === partnerId);
                   return (
                     <Badge key={partnerId} variant="secondary" className="flex items-center gap-1">
                       {partner?.name_ar || partner?.name}
@@ -689,7 +610,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
           <div className="space-y-2">
             <Label>{t('form.assigned_experts')}</Label>
             <div className="border rounded-lg p-4 max-h-32 overflow-y-auto">
-              {systemLists.experts.map((expert) => (
+              {options.experts.map((expert) => (
                 <div key={expert.id} className="flex items-center space-x-2 mb-2">
                   <Checkbox
                     id={`expert-${expert.id}`}
@@ -711,7 +632,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
             {selectedExperts.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 {selectedExperts.map((expertId) => {
-                  const expert = systemLists.experts.find(e => e.id === expertId);
+                  const expert = options.experts.find(e => e.id === expertId);
                   return (
                     <Badge key={expertId} variant="secondary" className="flex items-center gap-1">
                       {t('expert.prefix')} - {expert?.expertise_areas?.[0] || t('expert.varied')}
