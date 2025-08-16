@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 export interface ProfileData {
   name: string;
@@ -38,48 +37,45 @@ export interface SecuritySettings {
 export const useProfileOperations = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
 
   const updateProfile = async (userId: string, profileData: Partial<ProfileData>) => {
     setLoading(true);
     setError(null);
     
     try {
-      const { error: updateError } = await supabase
+      // Import supabase dynamically to avoid type issues
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const updateData = {
+        name: profileData.name,
+        name_ar: profileData.name_ar,
+        bio: profileData.bio,
+        phone: profileData.phone,
+        department: profileData.department,
+        position: profileData.position,
+        location: profileData.location,
+        website: profileData.website,
+        linkedin: profileData.linkedin,
+        updated_at: new Date().toISOString()
+      };
+
+      const result: any = await supabase
         .from('profiles')
-        .update({
-          name: profileData.name,
-          name_ar: profileData.name_ar,
-          bio: profileData.bio,
-          phone: profileData.phone,
-          department: profileData.department,
-          position: profileData.position,
-          location: profileData.location,
-          website: profileData.website,
-          linkedin: profileData.linkedin,
-          updated_at: new Date().toISOString()
-        })
+        .update(updateData)
         .eq('user_id', userId);
 
-      if (updateError) throw updateError;
+      if (result.error) throw result.error;
 
       // Trigger profile completion calculation
       await supabase.functions.invoke('calculate-profile-completion', {
         body: { user_id: userId }
       });
 
-      toast({
-        title: 'Success',
-        description: 'Profile updated successfully'
-      });
+      toast.success('Profile updated successfully');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to update profile';
       setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive'
-      });
+      toast.error(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -91,22 +87,25 @@ export const useProfileOperations = () => {
     setError(null);
     
     try {
+      const { supabase } = await import('@/integrations/supabase/client');
       const fileName = `avatars/${userId}/${Date.now()}.${file.name.split('.').pop()}`;
       
       // Upload file to storage
-      const { error: uploadError } = await supabase.storage
+      const uploadResult = await supabase.storage
         .from('avatars')
         .upload(fileName, file, { upsert: true });
 
-      if (uploadError) throw uploadError;
+      if (uploadResult.error) throw uploadResult.error;
 
       // Get public URL
-      const { data: { publicUrl } } = supabase.storage
+      const urlResult = supabase.storage
         .from('avatars')
         .getPublicUrl(fileName);
 
+      const publicUrl = urlResult.data.publicUrl;
+
       // Update profile with new avatar URL
-      const { error: updateError } = await supabase
+      const updateResult = await supabase
         .from('profiles')
         .update({ 
           avatar_url: publicUrl,
@@ -114,22 +113,14 @@ export const useProfileOperations = () => {
         })
         .eq('user_id', userId);
 
-      if (updateError) throw updateError;
+      if (updateResult.error) throw updateResult.error;
 
-      toast({
-        title: 'Success',
-        description: 'Avatar uploaded successfully'
-      });
-
+      toast.success('Avatar uploaded successfully');
       return publicUrl;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to upload avatar';
       setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive'
-      });
+      toast.error(errorMessage);
       return null;
     } finally {
       setLoading(false);
@@ -141,38 +132,35 @@ export const useProfileOperations = () => {
     setError(null);
     
     try {
-      const { error: updateError } = await supabase
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const settingsData = {
+        emailNotifications: settings.emailNotifications,
+        smsNotifications: settings.smsNotifications,
+        marketingEmails: settings.marketingEmails,
+        activityNotifications: settings.activityNotifications,
+        challengeUpdates: settings.challengeUpdates,
+        eventReminders: settings.eventReminders,
+        privacy_level: settings.privacy_level,
+        language_preference: settings.language_preference,
+        timezone: settings.timezone
+      };
+
+      const result = await supabase
         .from('profiles')
         .update({
-          settings: {
-            emailNotifications: settings.emailNotifications,
-            smsNotifications: settings.smsNotifications,
-            marketingEmails: settings.marketingEmails,
-            activityNotifications: settings.activityNotifications,
-            challengeUpdates: settings.challengeUpdates,
-            eventReminders: settings.eventReminders,
-            privacy_level: settings.privacy_level,
-            language_preference: settings.language_preference,
-            timezone: settings.timezone
-          },
+          settings: settingsData,
           updated_at: new Date().toISOString()
         })
         .eq('user_id', userId);
 
-      if (updateError) throw updateError;
+      if (result.error) throw result.error;
 
-      toast({
-        title: 'Success',
-        description: 'Settings updated successfully'
-      });
+      toast.success('Settings updated successfully');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to update settings';
       setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive'
-      });
+      toast.error(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -184,59 +172,54 @@ export const useProfileOperations = () => {
     setError(null);
     
     try {
-      const { error: updateError } = await supabase
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const securityData = {
+        two_factor_enabled: securitySettings.two_factor_enabled,
+        login_notifications: securitySettings.login_notifications,
+        session_timeout: securitySettings.session_timeout,
+        allowed_login_attempts: securitySettings.allowed_login_attempts
+      };
+
+      const result = await supabase
         .from('profiles')
         .update({
-          security_settings: {
-            two_factor_enabled: securitySettings.two_factor_enabled,
-            login_notifications: securitySettings.login_notifications,
-            session_timeout: securitySettings.session_timeout,
-            allowed_login_attempts: securitySettings.allowed_login_attempts
-          },
+          security_settings: securityData,
           updated_at: new Date().toISOString()
         })
         .eq('user_id', userId);
 
-      if (updateError) throw updateError;
+      if (result.error) throw result.error;
 
-      toast({
-        title: 'Success',
-        description: 'Security settings updated successfully'
-      });
+      toast.success('Security settings updated successfully');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to update security settings';
       setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive'
-      });
+      toast.error(errorMessage);
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  const loadUserProfile = async (userId: string) => {
+  const loadUserProfile = async (userId: string): Promise<any> => {
     setLoading(true);
     setError(null);
     
     try {
-      const result: any = await supabase
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const result = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', userId);
       
+      if (result.error) throw result.error;
+
       const profile = result.data?.[0] || null;
-      const profileError = result.error;
-
-      if (profileError) {
-        throw profileError;
-      }
-
-      return profile || null;
+      return profile;
     } catch (err: any) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to load profile';
+      const errorMessage = err?.message || 'Failed to load profile';
       setError(errorMessage);
       return null;
     } finally {
@@ -244,21 +227,21 @@ export const useProfileOperations = () => {
     }
   };
 
-  const loadUserSettings = async (userId: string) => {
+  const loadUserSettings = async (userId: string): Promise<any> => {
     setLoading(true);
     
     try {
-      const result: any = await supabase
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const result = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', userId);
       
+      if (result.error) throw result.error;
+
       const profile = result.data?.[0] || null;
-      const error = result.error;
-
-      if (error) throw error;
-
-      return profile || null;
+      return profile;
     } catch (error: any) {
       setError(error?.message || 'Failed to load settings');
       return null;
@@ -272,7 +255,9 @@ export const useProfileOperations = () => {
     setError(null);
     
     try {
-      const { error: deleteError } = await supabase
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const result = await supabase
         .from('profiles')
         .update({ 
           status: 'deleted',
@@ -280,20 +265,13 @@ export const useProfileOperations = () => {
         })
         .eq('user_id', userId);
 
-      if (deleteError) throw deleteError;
+      if (result.error) throw result.error;
 
-      toast({
-        title: 'Account Deleted',
-        description: 'Your account has been deleted successfully'
-      });
+      toast.success('Account deleted successfully');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to delete account';
       setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive'
-      });
+      toast.error(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -305,24 +283,19 @@ export const useProfileOperations = () => {
     setError(null);
     
     try {
-      const { error: updateError } = await supabase.auth.updateUser({
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const result = await supabase.auth.updateUser({
         password: newPassword
       });
 
-      if (updateError) throw updateError;
+      if (result.error) throw result.error;
 
-      toast({
-        title: 'Success',
-        description: 'Password updated successfully'
-      });
+      toast.success('Password updated successfully');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to update password';
       setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive'
-      });
+      toast.error(errorMessage);
       throw err;
     } finally {
       setLoading(false);
