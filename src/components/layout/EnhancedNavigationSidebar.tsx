@@ -58,7 +58,7 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
     ];
     
     const merged = sources.find(roles => Array.isArray(roles) && roles.length > 0) || ['user'];
-    console.log('🔍 Sidebar roles resolved:', { userProfile, user, merged });
+    console.log('🔍 Sidebar roles resolved:', { roles: Array.from(new Set(merged)) });
     return Array.from(new Set(merged));
   }, [userProfile, user]);
   
