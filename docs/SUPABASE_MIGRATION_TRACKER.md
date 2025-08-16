@@ -190,13 +190,22 @@ All remaining components in various directories.
 ### **Phase 4 Progress (Low): 0/40 (0%)**
 - Remaining Components: 0/40 migrated
 
-## **OVERALL PROGRESS: 8/195 (4%) COMPLETE**
+## **OVERALL PROGRESS: 10/195 (5%) COMPLETE + 3 NEW HOOKS CREATED**
 
-### **BATCH 3 STATUS:**
+### **BATCH 4 STATUS (1 complete, 1 partial):**
+10. **FocusQuestionManagement.tsx** - ✅ Migrated to `useFocusQuestionManagement`
+11. **IdeaWizard.tsx** - ⚠️ PARTIAL (Hook imported, direct calls remain for complex operations)
+
+### **BATCH 3 COMPLETE (2/2 files):**
 8. **EvaluationsManagement.tsx** - ✅ Migrated to `useEvaluationManagement`
-9. **ExpertAssignmentManagement.tsx** - ⚠️ NEEDS COMPLETION (Supabase import missing)
+9. **ExpertAssignmentManagement.tsx** - ✅ BUILD ERRORS FIXED (Supabase import resolved)
 
-### **BATCH 2 COMPLETE (3/3 files migrated):**
+### **NEW HOOKS CREATED (3 critical hooks for migrations):**
+- ✅ `useFocusQuestionManagement.ts` - Focus questions CRUD operations
+- ✅ `useIdeaManagement.ts` - Ideas management operations  
+- ✅ `useExpertProfiles.ts` - Expert profiles management
+
+### **BATCH 2 COMPLETE (4/4 files):**
 4. **BulkAvatarUploader.tsx** - ✅ Migrated to `useStorageOperations`
 5. **CampaignsManagement.tsx** - ✅ Migrated to `useCampaignManagement`  
 6. **EventsManagement.tsx** - ✅ Migrated to `useEventOperations`

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from "@/integrations/supabase/client";
+import { useFocusQuestionManagement } from "@/hooks/useFocusQuestionManagement";
 import { ManagementCard } from "@/components/ui/management-card";
 import { AdminFocusQuestionWizard } from "./AdminFocusQuestionWizard";
 import { FocusQuestionDetailView } from "./focus-questions/FocusQuestionDetailView";
@@ -61,52 +61,35 @@ const getTypeConfig = (t: (key: string) => string) => ({
 });
 
 export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: FocusQuestionManagementProps) {
-  const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { 
+    focusQuestions: hookFocusQuestions, 
+    loading, 
+    loadFocusQuestions,
+    deleteFocusQuestion
+  } = useFocusQuestionManagement();
+  
   const [selectedQuestion, setSelectedQuestion] = useState<FocusQuestion | null>(null);
   const [showDetailView, setShowDetailView] = useState(false);
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
   const sensitivityConfig = getSensitivityConfig(t);
   const typeConfig = getTypeConfig(t);
+  
+  // Convert hook data to expected format
+  const focusQuestions: FocusQuestion[] = hookFocusQuestions || [];
 
   useEffect(() => {
-    fetchFocusQuestions();
+    // Hook automatically loads data, no manual fetching needed
   }, []);
-
-  const fetchFocusQuestions = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('focus_questions')
-        .select(`
-          *,
-          challenges!challenge_id(id, title_ar, status, sensitivity_level)
-        `)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      setFocusQuestions(data || []);
-    } catch (error) {
-      logger.error('Error fetching focus questions', error);
-    }
-  };
 
   const handleDeleteQuestion = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('focus_questions')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
+      await deleteFocusQuestion(id);
+      
       toast({
         title: t('focus_questions.delete_success'),
         description: t('focus_questions.delete_success_description')
       });
-
-      fetchFocusQuestions();
     } catch (error) {
       toast({
         title: t('focus_questions.delete_error'),
@@ -248,7 +231,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
           setSelectedQuestion(null);
         }}
         onSave={() => {
-          fetchFocusQuestions();
+          loadFocusQuestions();
           onAddDialogChange(false);
           setSelectedQuestion(null);
         }}
@@ -267,7 +250,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
           setShowDetailView(false);
           onAddDialogChange(true);
         }}
-        onRefresh={fetchFocusQuestions}
+        onRefresh={loadFocusQuestions}
       />
     </>
   );
