@@ -27,6 +27,7 @@ import {
   Settings,
   Bell
 } from 'lucide-react';
+import { formatDate } from '@/utils/unified-date-handler';
 import { useAdminAnalytics } from '@/hooks/useAnalytics';
 import { AdminAnalyticsWrapper } from '@/components/analytics/ProtectedAnalyticsWrapper';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -216,7 +217,7 @@ export function MigratedAdminDashboard() {
           <div className="flex items-center gap-2">
             {lastUpdated && (
               <Badge variant="outline" className="text-xs">
-                {t('admin.errors.last_updated')}: {new Date(lastUpdated).toLocaleTimeString()}
+                {t('admin.errors.last_updated')}: {formatDate(lastUpdated, 'HH:mm:ss')}
               </Badge>
             )}
             <Button 

@@ -27,6 +27,7 @@ import { cn } from '@/lib/utils';
 import { getActivityTypeMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { formatDate, formatRelativeTime } from '@/utils/unified-date-handler';
 
 interface Challenge {
   id: string;
@@ -162,18 +163,7 @@ export const ChallengeActivityHub = ({
   };
 
   const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-    
-    if (diffInMinutes < 1) return isRTL ? t('challenges.now') : t('challenges.now');
-    if (diffInMinutes < 60) return `${diffInMinutes}${isRTL ? ' د' : 'm'}`;
-    
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `${diffInHours}${isRTL ? ' س' : 'h'}`;
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays}${isRTL ? ' ي' : 'd'}`;
+    return formatRelativeTime(dateString);
   };
 
   const calculateProgress = () => {
@@ -226,7 +216,7 @@ export const ChallengeActivityHub = ({
             {profiles?.display_name as string || t('challenges.participant')}
           </h4>
           <p className="text-xs text-muted-foreground">
-            {isRTL ? t('challenges.joined') : t('challenges.joined')} {new Date(p.registration_date as string).toLocaleDateString()}
+            {isRTL ? t('challenges.joined') : t('challenges.joined')} {formatDate(p.registration_date as string, 'MMM dd, yyyy')}
           </p>
         </div>
         

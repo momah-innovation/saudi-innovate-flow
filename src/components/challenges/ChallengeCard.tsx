@@ -13,6 +13,7 @@ import {
   TrendingUp, Clock, Zap, CheckCircle, AlertCircle, Heart,
   Share2, MessageSquare, Trophy
 } from 'lucide-react';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
@@ -99,10 +100,7 @@ export const ChallengeCard = ({
   };
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return isRTL ? 
-      date.toLocaleDateString('ar-SA', { day: 'numeric', month: 'short' }) : 
-      date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return isRTL ? formatDateArabic(dateString, 'd MMM') : formatDate(dateString, 'MMM d');
   };
 
   const handleBookmark = () => {

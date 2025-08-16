@@ -9,6 +9,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/error-handler';
 import { formatDate } from '@/utils/unified-date-handler';
+import { navigationHandler } from '@/utils/unified-navigation';
 
 interface Assignment {
   id: string;
@@ -175,7 +176,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
 
     const basePath = routes[assignment.assignment_type];
     if (basePath) {
-      window.open(`${basePath}/${assignment.assignment_id}`, '_blank');
+      navigationHandler.navigateTo(`${basePath}/${assignment.assignment_id}`, true);
     }
   };
 

@@ -8,6 +8,7 @@ import { ComprehensiveEventDialog } from '@/components/events/ComprehensiveEvent
 import { AdminEventsHero } from '@/components/events/AdminEventsHero';
 import { AdminEventCard } from '@/components/events/AdminEventCard';
 import { supabase } from '@/integrations/supabase/client';
+import { currentTimestamp } from '@/utils/unified-date-handler';
 import { useToast } from '@/hooks/use-toast';
 // Enhanced event management with proper types
 import { logger } from '@/utils/logger';
@@ -221,7 +222,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
                 event_type: event.event_type || 'conference',
                 event_category: event.event_category || 'standalone',
                 event_visibility: event.event_visibility || 'public',
-                event_date: event.event_date || new Date().toISOString(),
+                event_date: event.event_date || currentTimestamp(),
                 start_time: event.start_time || '09:00',
                 end_time: event.end_time || '17:00',
                 format: event.format || 'in-person',

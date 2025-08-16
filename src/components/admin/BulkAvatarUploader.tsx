@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { currentTimestamp } from '@/utils/unified-date-handler';
 import { getAvatarUrl } from '@/utils/storageUtils';
 
 // Avatar mapping for the existing users
@@ -65,7 +66,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
                 profile_image_url: storageUrl,
                 avatar_file_size: 150000, // Approximate file size
                 avatar_mime_type: 'image/jpeg',
-                avatar_uploaded_at: new Date().toISOString()
+                avatar_uploaded_at: currentTimestamp()
               })
               .eq('name', userName);
 

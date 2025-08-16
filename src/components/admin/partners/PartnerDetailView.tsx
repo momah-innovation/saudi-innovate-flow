@@ -24,6 +24,7 @@ import {
   BarChart3
 } from "lucide-react";
 import { format } from "date-fns";
+import { navigationHandler } from '@/utils/unified-navigation';
 import type { PartnerDetailView, PartnerDetailViewProps } from "@/types/api";
 
 export function PartnerDetailView({ 
@@ -172,10 +173,11 @@ export function PartnerDetailView({
                     <p className="text-sm text-muted-foreground flex items-center gap-1">
                       <Globe className="w-4 h-4" />
                       {partner.website ? (
-                        <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"
-                           onClick={(e) => { e.preventDefault(); window.open(partner.website, '_blank', 'noopener noreferrer'); }}>
+                        <button
+                           className="text-primary hover:underline focus:outline-none"
+                           onClick={() => navigationHandler.navigateTo(partner.website, true)}>
                           زيارة الموقع
-                        </a>
+                        </button>
                       ) : (
                         'غير محدد'
                       )}

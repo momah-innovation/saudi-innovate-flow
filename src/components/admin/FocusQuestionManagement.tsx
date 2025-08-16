@@ -8,6 +8,7 @@ import { ViewLayouts } from "@/components/ui/view-layouts";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/error-handler";
+import { formatDate } from '@/utils/unified-date-handler';
 
 import { 
   HelpCircle, 
@@ -210,7 +211,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
               {
                 icon: <Calendar className="w-4 h-4" />,
                 label: t('creation_date'),
-                value: format(new Date(question.created_at), 'dd/MM/yyyy')
+                value: formatDate(question.created_at, 'dd/MM/yyyy')
               },
               ...(question.challenge ? [{
                 icon: <Target className="w-4 h-4" />,
