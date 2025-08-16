@@ -26,6 +26,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useDirection } from '@/components/ui/direction-provider';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 import { useTimerManager } from '@/utils/timerManager';
 
 interface IdeaFormData {
@@ -404,7 +405,7 @@ export default function IdeaSubmissionWizard() {
       navigate('/dashboard');
       
     } catch (error) {
-      logger.error('Error submitting idea', {}, error as Error);
+      errorHandler.handleError(error, 'IdeaSubmissionWizard.handleSubmit');
       toast.error(isRTL ? 'خطأ في إرسال الفكرة. يرجى المحاولة مرة أخرى.' : 'Error submitting idea. Please try again.');
     } finally {
       setLoading(false);

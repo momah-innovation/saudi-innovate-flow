@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 import { 
   FileText, Plus, Clock, Trash2, 
   Edit, Calendar, AlertCircle 
@@ -67,7 +68,7 @@ export default function IdeaDrafts() {
       if (error) throw error;
       setDrafts(data || []);
     } catch (error) {
-      logger.error('Error fetching drafts', { userId: userProfile?.id }, error as Error);
+      errorHandler.handleError(error, 'IdeaDrafts.fetchDrafts');
       toast.error(t('toast.drafts_load_error'));
     } finally {
       setLoading(false);
@@ -100,7 +101,7 @@ export default function IdeaDrafts() {
       setDrafts(drafts.filter(draft => draft.id !== draftId));
       toast.success(t('toast.draft_deleted'));
     } catch (error) {
-      logger.error('Error deleting draft', { entityId: draftId }, error as Error);
+      errorHandler.handleError(error, 'IdeaDrafts.deleteDraft');
       toast.error(t('toast.draft_delete_error'));
     }
   };

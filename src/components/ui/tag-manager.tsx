@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTags } from '@/hooks/useTags';
+import { errorHandler } from '@/utils/error-handler';
 import { toast } from 'sonner';
 
 interface TagFormData {
@@ -99,6 +100,7 @@ export const TagManager: React.FC = () => {
       setEditingTag(null);
       resetForm();
     } catch (error) {
+      errorHandler.handleError(error, 'TagManager.handleSubmit');
       toast.error(t('error'));
     }
   };

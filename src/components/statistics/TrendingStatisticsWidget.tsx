@@ -20,6 +20,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
+import { errorHandler } from '@/utils/error-handler';
 import { toast } from 'sonner';
 
 interface TrendingStat {
@@ -142,7 +143,7 @@ export const TrendingStatisticsWidget = ({ className = "" }: TrendingStatisticsW
 
       setStats(trendingStats);
     } catch (error) {
-      debugLog.error('Error loading trending statistics', { error });
+      errorHandler.handleError(error, 'TrendingStatisticsWidget.loadStats');
       toast.error(isRTL ? 'خطأ في تحميل الإحصائيات' : 'Error loading statistics');
     } finally {
       setLoading(false);
