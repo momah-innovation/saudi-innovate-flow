@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useChallengeManagement } from "@/hooks/useChallengeManagement";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useRolePermissions } from "@/hooks/useRolePermissions";
 import type { Challenge, Partner, Expert } from "@/types";
 
 interface ChallengeFormData {
@@ -80,7 +81,6 @@ interface SystemLists {
 export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardV2Props) {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
-  const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
   
   // Initialize error handler
   const errorHandler = createErrorHandler({
@@ -89,14 +89,27 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
     logError: true
   });
   
-  // ✅ MIGRATED: Using centralized challenge management hook
-  const {
-    loading,
-    options,
-    loadChallengeOptions,
-    createChallenge,
-    updateChallenge
-  } = useChallengeManagement();
+  // ✅ MIGRATED: Using centralized hooks
+  const { createChallenge, updateChallenge, challenges, loading: challengeLoading } = useChallengeManagement();
+  const { 
+    departments, 
+    sectors, 
+    deputies, 
+    domains, 
+    subDomains, 
+    services, 
+    partners, 
+    experts,
+    challengeStatusOptions,
+    challengePriorityLevels, 
+    challengeSensitivityLevels, 
+    challengeTypes,
+    loading: systemLoading 
+  } = useSystemLists();
+  const { canManageChallenges } = useRolePermissions();
+  
+  const [currentStep, setCurrentStep] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState<ChallengeFormData>({
     title_ar: '',
@@ -174,17 +187,8 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         supabase.from('focus_questions').select('*').order('order_sequence')
       ]);
 
-      setSystemLists({
-        departments: departmentsRes.data || [],
-        deputies: deputiesRes.data || [],
-        sectors: sectorsRes.data || [],
-        domains: domainsRes.data || [],
-        subDomains: subDomainsRes.data || [],
-        services: servicesRes.data || [],
-        partners: partnersRes.data || [],
-        experts: expertsRes.data || [],
-        focusQuestions: focusQuestionsRes.data || []
-      });
+      // System lists are now handled by useSystemLists hook
+      // Data is automatically available through the hook
     } catch (error) {
       errorHandler.handleError(error, 
         { operation: 'loadSystemLists' },
@@ -520,7 +524,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_sector', 'اختر القطاع')} />
                     </SelectTrigger>
                     <SelectContent>
-                       {systemLists.sectors.map((sector) => (
+                       {sectors.map((sector) => (
                          <SelectItem key={sector.id} value={sector.id}>
                            {sector.name_ar || sector.name_en || 'Unnamed Sector'}
                          </SelectItem>
@@ -536,7 +540,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_deputy', 'اختر الوكالة')} />
                     </SelectTrigger>
                     <SelectContent>
-                       {systemLists.deputies.map((deputy) => (
+                       {deputies.map((deputy) => (
                          <SelectItem key={deputy.id} value={deputy.id}>
                            {deputy.name_ar || deputy.name || 'Unnamed Deputy'}
                          </SelectItem>
@@ -554,7 +558,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_management', 'اختر الإدارة')} />
                     </SelectTrigger>
                     <SelectContent>
-                       {systemLists.departments.map((dept) => (
+                       {departments.map((dept) => (
                          <SelectItem key={dept.id} value={dept.id}>
                            {dept.name_ar || dept.name || 'Unnamed Department'}
                          </SelectItem>
@@ -570,7 +574,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_domain', 'اختر المجال')} />
                     </SelectTrigger>
                     <SelectContent>
-                       {systemLists.domains.map((domain) => (
+                       {domains.map((domain) => (
                          <SelectItem key={domain.id} value={domain.id}>
                            {domain.name_ar || domain.name || 'Unnamed Domain'}
                          </SelectItem>
@@ -726,7 +730,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
               <div className="space-y-3">
                 <Label>الخبراء المعينون</Label>
                 <div className="space-y-2">
-                  {systemLists.experts.map((expert) => (
+                  {experts.map((expert) => (
                     <div key={expert.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`expert-${expert.id}`}
@@ -750,7 +754,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
               <div className="space-y-3">
                 <Label>الشركاء</Label>
                 <div className="space-y-2">
-                  {systemLists.partners.map((partner) => (
+                  {partners.map((partner) => (
                     <div key={partner.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`partner-${partner.id}`}
