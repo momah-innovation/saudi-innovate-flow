@@ -40,8 +40,14 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
   const { theme } = useTheme();
   const { user } = useAuth();
   
-  // Get user roles from auth context
-  const userRoles = userProfile?.user_roles?.map(ur => ur.role) || [];
+  // Get user roles robustly (supports multiple profile shapes); default to ['user']
+  const userRoles = React.useMemo(() => {
+    const rolesA = (userProfile as any)?.roles as string[] | undefined;
+    const rolesB = (userProfile as any)?.user_roles?.map((ur: any) => ur.role) as string[] | undefined;
+    const rolesC = (user as any)?.user_metadata?.roles as string[] | undefined;
+    const merged = rolesA?.length ? rolesA : rolesB?.length ? rolesB : rolesC?.length ? rolesC : ['user'];
+    return Array.from(new Set(merged));
+  }, [userProfile, user]);
   
   const location = useLocation();
   
