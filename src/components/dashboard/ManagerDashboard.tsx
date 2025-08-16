@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,6 +29,11 @@ interface ManagerDashboardProps {
 export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics, canManageProjects }: ManagerDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
 
   const { data: unifiedData } = useUnifiedDashboardData('manager');
   
@@ -71,42 +77,42 @@ export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics
       title: language === 'ar' ? 'إدارة الفريق' : 'Team Management',
       description: language === 'ar' ? 'إدارة أعضاء الفريق والأدوار' : 'Manage team members and roles',
       icon: Users,
-      action: () => navigate('/admin/teams'),
+      action: () => navigationHandler.navigateTo('/admin/teams'),
       show: canManageTeams
     },
     {
       title: language === 'ar' ? 'تقارير الأداء' : 'Performance Reports',
       description: language === 'ar' ? 'عرض تقارير أداء الفريق والمشاريع' : 'View team and project performance reports',
       icon: BarChart3,
-      action: () => navigate('/analytics'),
+      action: () => navigationHandler.navigateTo('/analytics'),
       show: canViewAnalytics
     },
     {
       title: language === 'ar' ? 'إدارة المشاريع' : 'Project Management',
       description: language === 'ar' ? 'تتبع وإدارة المشاريع النشطة' : 'Track and manage active projects',
       icon: Target,
-      action: () => navigate('/projects'),
+      action: () => navigationHandler.navigateTo('/projects'),
       show: canManageProjects
     },
     {
       title: language === 'ar' ? 'جدولة الاجتماعات' : 'Meeting Scheduling',
       description: language === 'ar' ? 'تنظيم اجتماعات الفريق والمراجعات' : 'Schedule team meetings and reviews',
       icon: Calendar,
-      action: () => navigate('/meetings'),
+      action: () => navigationHandler.navigateTo('/meetings'),
       show: true
     },
     {
       title: language === 'ar' ? 'تقييم الأداء' : 'Performance Reviews',
       description: language === 'ar' ? 'إجراء تقييمات دورية للأداء' : 'Conduct periodic performance evaluations',
       icon: UserCheck,
-      action: () => navigate('/reviews'),
+      action: () => navigationHandler.navigateTo('/reviews'),
       show: canManageTeams
     },
     {
       title: language === 'ar' ? 'موارد القطاع' : 'Sector Resources',
       description: language === 'ar' ? 'إدارة موارد ومتطلبات القطاع' : 'Manage sector resources and requirements',
       icon: Building,
-      action: () => navigate('/admin/sectors'),
+      action: () => navigationHandler.navigateTo('/admin/sectors'),
       show: canViewAnalytics
     }
   ];

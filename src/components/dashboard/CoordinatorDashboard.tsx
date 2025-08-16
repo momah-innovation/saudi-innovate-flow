@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -27,6 +28,11 @@ interface CoordinatorDashboardProps {
 export function CoordinatorDashboard({ userProfile, canCoordinateExperts, canManageEvents, canViewAnalytics }: CoordinatorDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
 
   const coordinatorStats = [
     {
@@ -68,42 +74,42 @@ export function CoordinatorDashboard({ userProfile, canCoordinateExperts, canMan
       title: language === 'ar' ? 'تنسيق الخبراء' : 'Expert Coordination',
       description: language === 'ar' ? 'تنسيق وإدارة تعيينات الخبراء' : 'Coordinate and manage expert assignments',
       icon: Users,
-      action: () => navigate('/admin/expert-assignments'),
+      action: () => navigationHandler.navigateTo('/admin/expert-assignments'),
       show: canCoordinateExperts
     },
     {
       title: language === 'ar' ? 'إدارة الفعاليات' : 'Event Management',
       description: language === 'ar' ? 'تنظيم وإدارة الفعاليات والمؤتمرات' : 'Organize and manage events and conferences',
       icon: Calendar,
-      action: () => navigate('/admin/events'),
+      action: () => navigationHandler.navigateTo('/admin/events'),
       show: canManageEvents
     },
     {
       title: language === 'ar' ? 'إدارة الحملات' : 'Campaign Management',
       description: language === 'ar' ? 'إنشاء وإدارة حملات الابتكار' : 'Create and manage innovation campaigns',
       icon: Briefcase,
-      action: () => navigate('/admin/campaigns'),
+      action: () => navigationHandler.navigateTo('/admin/campaigns'),
       show: true
     },
     {
       title: language === 'ar' ? 'التواصل' : 'Communications',
       description: language === 'ar' ? 'إدارة التواصل مع أصحاب المصلحة' : 'Manage stakeholder communications',
       icon: MessageSquare,
-      action: () => navigate('/communications'),
+      action: () => navigationHandler.navigateTo('/communications'),
       show: true
     },
     {
       title: language === 'ar' ? 'تقارير التنسيق' : 'Coordination Reports',
       description: language === 'ar' ? 'عرض تقارير أداء التنسيق' : 'View coordination performance reports',
       icon: BarChart3,
-      action: () => navigate('/analytics'),
+      action: () => navigationHandler.navigateTo('/analytics'),
       show: canViewAnalytics
     },
     {
       title: language === 'ar' ? 'أصحاب المصلحة' : 'Stakeholder Management',
       description: language === 'ar' ? 'إدارة علاقات أصحاب المصلحة' : 'Manage stakeholder relationships',
       icon: Settings,
-      action: () => navigate('/admin/stakeholders'),
+      action: () => navigationHandler.navigateTo('/admin/stakeholders'),
       show: true
     }
   ];

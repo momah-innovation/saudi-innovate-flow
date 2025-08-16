@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, Brain, FileText, Clock, Award, ArrowRight } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
 
 interface ExpertDashboardProps {
@@ -16,6 +17,11 @@ interface ExpertDashboardProps {
 export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpertTools }: ExpertDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const { data: unifiedData } = useUnifiedDashboardData('expert');
 
   // Use real expert stats from unified data
@@ -44,13 +50,13 @@ export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpert
     {
       title: language === 'ar' ? 'تقييم الأفكار' : 'Evaluate Ideas',
       description: language === 'ar' ? 'مراجعة وتقييم الأفكار المرسلة' : 'Review and evaluate submitted ideas',
-      action: () => navigate('/expert/evaluate'),
+      action: () => navigationHandler.navigateTo('/expert/evaluate'),
       show: canEvaluateIdeas
     },
     {
       title: language === 'ar' ? 'أدوات الخبير' : 'Expert Tools',
       description: language === 'ar' ? 'الوصول إلى أدوات التحليل المتقدمة' : 'Access advanced analysis tools',
-      action: () => navigate('/expert/tools'),
+      action: () => navigationHandler.navigateTo('/expert/tools'),
       show: canAccessExpertTools
     }
   ];

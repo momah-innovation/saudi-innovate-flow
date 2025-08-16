@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +34,11 @@ interface Challenge {
 export const InnovatorDashboard = () => {
   const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const { challengePriorityLevels, challengeTypes, challengeStatusOptions } = useSystemLists();
@@ -139,11 +145,11 @@ export const InnovatorDashboard = () => {
   };
 
   const handleViewChallenge = (challengeId: string) => {
-    navigate(`/challenges/${challengeId}`);
+    navigationHandler.navigateTo(`/challenges/${challengeId}`);
   };
 
   const handleSubmitIdea = (challengeId: string) => {
-    navigate(`/challenges/${challengeId}/submit-idea`);
+    navigationHandler.navigateTo(`/challenges/${challengeId}/submit-idea`);
   };
 
   if (loading) {

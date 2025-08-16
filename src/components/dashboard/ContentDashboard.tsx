@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -27,6 +28,11 @@ interface ContentDashboardProps {
 export function ContentDashboard({ userProfile, canManageContent, canManageChallenges, canResearch }: ContentDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
 
   const contentStats = [
     {
@@ -68,42 +74,42 @@ export function ContentDashboard({ userProfile, canManageContent, canManageChall
       title: language === 'ar' ? 'إدارة المحتوى' : 'Content Management',
       description: language === 'ar' ? 'إنشاء وتحرير وإدارة المحتوى' : 'Create, edit and manage content',
       icon: FileText,
-      action: () => navigate('/content/manage'),
+      action: () => navigationHandler.navigateTo('/content/manage'),
       show: canManageContent
     },
     {
       title: language === 'ar' ? 'إدارة التحديات' : 'Challenge Management',
       description: language === 'ar' ? 'إنشاء وإدارة التحديات والمسابقات' : 'Create and manage challenges and competitions',
       icon: Target,
-      action: () => navigate('/admin/challenges'),
+      action: () => navigationHandler.navigateTo('/admin/challenges'),
       show: canManageChallenges
     },
     {
       title: language === 'ar' ? 'قيادة البحوث' : 'Research Leadership',
       description: language === 'ar' ? 'قيادة وتنسيق المشاريع البحثية' : 'Lead and coordinate research projects',
       icon: Search,
-      action: () => navigate('/research/projects'),
+      action: () => navigationHandler.navigateTo('/research/projects'),
       show: canResearch
     },
     {
       title: language === 'ar' ? 'مكتبة المحتوى' : 'Content Library',
       description: language === 'ar' ? 'إدارة مكتبة الموارد والوثائق' : 'Manage resource and document library',
       icon: BookOpen,
-      action: () => navigate('/library'),
+      action: () => navigationHandler.navigateTo('/library'),
       show: canManageContent
     },
     {
       title: language === 'ar' ? 'تحليل الأداء' : 'Performance Analytics',
       description: language === 'ar' ? 'تحليل أداء المحتوى والتفاعل' : 'Analyze content performance and engagement',
       icon: Eye,
-      action: () => navigate('/analytics/content'),
+      action: () => navigationHandler.navigateTo('/analytics/content'),
       show: canManageContent
     },
     {
       title: language === 'ar' ? 'إعدادات المحتوى' : 'Content Settings',
       description: language === 'ar' ? 'تكوين إعدادات النشر والمراجعة' : 'Configure publishing and review settings',
       icon: Settings,
-      action: () => navigate('/content/settings'),
+      action: () => navigationHandler.navigateTo('/content/settings'),
       show: canManageContent
     }
   ];
