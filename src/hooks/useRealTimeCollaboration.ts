@@ -29,11 +29,14 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
   const channelsRef = useRef<Record<string, any>>({});
   const presenceTimerRef = useRef<NodeJS.Timeout | undefined>();
 
-  // Initialize real-time connections
+  // Initialize real-time connections - with debouncing to prevent duplicate sessions
   useEffect(() => {
     if (!user) {
       // Cleanup when user is not available
       Object.values(channelsRef.current).forEach(channel => {
+        if (channel && typeof channel.unsubscribe === 'function') {
+          channel.unsubscribe();
+        }
         supabase.removeChannel(channel);
       });
       channelsRef.current = {};
@@ -42,14 +45,18 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
     }
 
     let isMounted = true;
+    let initializationTimeout: NodeJS.Timeout;
 
     const initializeCollaboration = async () => {
       try {
-        // Prevent multiple initializations
+        // Prevent multiple initializations with a small delay to allow cleanup
         if (Object.keys(channelsRef.current).length > 0) {
+          debugLog.log('Collaboration already initialized, skipping');
           return;
         }
 
+        debugLog.log('Initializing collaboration for user', { userId: user.id });
+        
         await setupPresenceChannel();
         await setupActivityChannel();
         await setupMessagingChannel();
@@ -57,6 +64,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
         
         if (isMounted) {
           setIsConnected(true);
+          debugLog.log('Collaboration initialized successfully');
         }
       } catch (error) {
         debugLog.error('Failed to initialize collaboration', { error });
@@ -71,11 +79,19 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
       }
     };
 
-    initializeCollaboration();
+    // Debounce initialization to prevent rapid re-initialization
+    initializationTimeout = setTimeout(initializeCollaboration, 100);
 
     return () => {
       isMounted = false;
-      // Cleanup all channels
+      
+      if (initializationTimeout) {
+        clearTimeout(initializationTimeout);
+      }
+      
+      debugLog.log('Cleaning up collaboration channels');
+      
+      // Cleanup all channels with proper unsubscription
       Object.values(channelsRef.current).forEach(channel => {
         if (channel && typeof channel.unsubscribe === 'function') {
           channel.unsubscribe();
@@ -95,10 +111,13 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
     };
   }, [user?.id]); // Only depend on user ID, not the entire user object
 
-  // Setup presence tracking
+  // Setup presence tracking with session management
   const setupPresenceChannel = async () => {
     if (!user) return;
 
+    // Use a stable session ID to prevent duplicates
+    const sessionId = `${user.id}-${Math.floor(Date.now() / 60000) * 60000}`; // Stable per minute
+    
     const presenceChannel = supabase.channel('global-presence', {
       config: { presence: { key: user.id } }
     });
@@ -121,7 +140,7 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
       if (status === 'SUBSCRIBED') {
         const userPresence: UserPresence = {
           user_id: user.id,
-          session_id: `${user.id}-${Date.now()}`,
+          session_id: sessionId,
           status: 'online',
           current_location: {
             page: window.location.pathname,
@@ -130,36 +149,35 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
           user_info: {
             display_name: user.user_metadata?.display_name || user.email || 'مستخدم',
             avatar_url: user.user_metadata?.avatar_url,
-            role: user.app_metadata?.role || 'user' // Get actual role from metadata
+            role: user.app_metadata?.role || 'user'
           }
         };
 
         await presenceChannel.track(userPresence);
         setCurrentUserPresence(userPresence);
+        debugLog.log('Presence tracked successfully', { sessionId });
       }
     });
 
     channelsRef.current.presence = presenceChannel;
 
-    // Update presence every 60 seconds - reduced frequency for better performance
-    if (presenceTimerRef.current) {
-      clearInterval(presenceTimerRef.current);
+    // Only set timer if not already set to prevent multiple timers
+    if (!presenceTimerRef.current) {
+      presenceTimerRef.current = setInterval(async () => {
+        const currentPresence = channelsRef.current.presence?.presenceState()?.[user.id]?.[0];
+        if (currentPresence && channelsRef.current.presence) {
+          const updatedPresence = {
+            ...currentPresence,
+            last_seen: new Date().toISOString(),
+            current_location: {
+              page: window.location.pathname,
+            }
+          };
+          await channelsRef.current.presence.track(updatedPresence);
+          setCurrentUserPresence(updatedPresence);
+        }
+      }, 120000); // Increased to 2 minutes to reduce frequency
     }
-    
-    presenceTimerRef.current = setInterval(async () => {
-      const currentPresence = channelsRef.current.presence?.presenceState()?.[user.id]?.[0];
-      if (currentPresence && channelsRef.current.presence) {
-        const updatedPresence = {
-          ...currentPresence,
-          last_seen: new Date().toISOString(),
-          current_location: {
-            page: window.location.pathname,
-          }
-        };
-        await channelsRef.current.presence.track(updatedPresence);
-        setCurrentUserPresence(updatedPresence);
-      }
-    }, 60000); // Reduced from 30s to 60s
   };
 
   // Setup activity feed

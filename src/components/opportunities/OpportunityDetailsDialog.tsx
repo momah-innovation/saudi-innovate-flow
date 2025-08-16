@@ -469,7 +469,7 @@ export const OpportunityDetailsDialog = ({
                   </div>
                   <p className="text-muted-foreground ml-6">
                     <a href={`mailto:${opportunity.contact_email}`} className="hover:underline"
-                       onClick={(e) => { e.preventDefault(); window.location.href = `mailto:${opportunity.contact_email}`; }}>
+                       onClick={(e) => { e.preventDefault(); window.open(`mailto:${opportunity.contact_email}`, '_self'); }}>
                       {opportunity.contact_email}
                     </a>
                   </p>
