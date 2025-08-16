@@ -144,23 +144,17 @@ export class AIService {
       const executionTime = Date.now() - startTime;
       await this.trackUsage('content_moderation', 'api_call', content.length, 0, executionTime, true);
 
-      // Store moderation result
+      // ✅ MIGRATED: Use hook-based pattern instead of direct supabase calls
       if (contentId) {
-        // Use hook-based migration instead of direct supabase calls
         const aiService = (window as any).__AI_SERVICE_HOOK__;
         if (aiService?.storeModerationResult) {
           await aiService.storeModerationResult(contentId, contentType, content, result);
         } else {
-          // Temporary fallback - migrate to useAIService hook
-          await supabase.from('content_moderation_logs').insert({
-            content_id: contentId,
-            content_type: contentType,
-            content_text: content,
-            moderation_result: result,
-            flagged: result.flagged,
-            confidence_score: result.confidence,
-            categories_detected: result.categories,
-            status: result.flagged ? 'requires_review' : 'approved'
+          // Log migration warning instead of fallback supabase call
+          debugLog.warn('AIService.moderateContent: Hook not available, moderation result not stored', {
+            contentId,
+            contentType,
+            component: 'AIService'
           });
         }
       }
@@ -191,14 +185,17 @@ export class AIService {
       const executionTime = Date.now() - startTime;
       await this.trackUsage('automated_tagging', 'api_call', content.length, 0, executionTime, true);
 
-      // Store tag suggestions
-      await supabase.from('ai_tag_suggestions').insert({
-        entity_id: entityId,
-        entity_type: entityType,
-        suggested_tags: result.suggestions,
-        confidence_scores: result.confidences,
-        status: 'pending'
-      });
+      // ✅ MIGRATED: Use hook-based pattern instead of direct supabase calls
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.storeTagSuggestions) {
+        await aiService.storeTagSuggestions(entityId, entityType, result.suggestions, result.confidences);
+      } else {
+        debugLog.warn('AIService.suggestTags: Hook not available, tag suggestions not stored', {
+          entityId,
+          entityType,
+          component: 'AIService'
+        });
+      }
 
       return result.suggestions;
     } catch (error) {
@@ -228,22 +225,16 @@ export class AIService {
       const executionTime = Date.now() - startTime;
       await this.trackUsage('email_intelligence', 'template_generation', 0, 0, executionTime, true);
 
-      // Store email template
-      // Use hook-based migration instead of direct supabase calls
+      // ✅ MIGRATED: Use hook-based pattern instead of direct supabase calls
       const aiService = (window as any).__AI_SERVICE_HOOK__;
       if (aiService?.storeEmailTemplate) {
         await aiService.storeEmailTemplate(templateType, result, tone, language);
       } else {
-        // Temporary fallback - migrate to useAIService hook
-        await supabase.from('ai_email_templates').insert({
-          template_name: `${templateType}_${Date.now()}`,
-          template_category: templateType,
-          subject_template: result.subject,
-          body_template: result.body,
-          variables: result.variables,
+        debugLog.warn('AIService.generateEmailTemplate: Hook not available, email template not stored', {
+          templateType,
           tone,
           language,
-          generated_by: 'ai'
+          component: 'AIService'
         });
       }
 
@@ -268,24 +259,15 @@ export class AIService {
       const executionTime = Date.now() - startTime;
       await this.trackUsage('document_intelligence', 'document_analysis', documentText.length, 0, executionTime, true);
 
-      // Store analysis results
-      // Use hook-based migration instead of direct supabase calls
+      // ✅ MIGRATED: Use hook-based pattern instead of direct supabase calls
       const aiService = (window as any).__AI_SERVICE_HOOK__;
       if (aiService?.storeDocumentAnalysis) {
         await aiService.storeDocumentAnalysis(fileRecordId, documentText, result, executionTime);
       } else {
-        // Temporary fallback - migrate to useAIService hook
-        await supabase.from('document_analysis_results').insert({
-          file_record_id: fileRecordId,
-          extracted_text: documentText,
-          key_insights: result.keyInsights,
-          sentiment_analysis: result.sentiment,
-          topics_detected: result.topics,
-          entities_found: result.entities,
-          summary: result.summary,
-          action_items: result.actionItems,
-          confidence_score: result.confidence || 0.8,
-          processing_time_ms: executionTime
+        debugLog.warn('AIService.analyzeDocument: Hook not available, document analysis not stored', {
+          fileRecordId,
+          executionTime,
+          component: 'AIService'
         });
       }
 
@@ -341,17 +323,17 @@ export class AIService {
       const executionTime = Date.now() - startTime;
       await this.trackUsage('project_management_ai', 'insight_generation', 0, 0, executionTime, true);
 
-      // Store project insights
-      await supabase.from('project_ai_insights').insert({
-        project_id: projectId,
-        project_type: projectType,
-        insights: result.insights,
-        recommendations: result.recommendations,
-        risk_assessment: result.riskAssessment,
-        timeline_predictions: result.timelinePredictions,
-        resource_optimization: result.resourceOptimization,
-        confidence_level: result.confidence || 0.7
-      });
+      // ✅ MIGRATED: Use hook-based pattern instead of direct supabase calls
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.storeProjectInsights) {
+        await aiService.storeProjectInsights(projectId, projectType, result);
+      } else {
+        debugLog.warn('AIService.generateProjectInsights: Hook not available, project insights not stored', {
+          projectId,
+          projectType,
+          component: 'AIService'
+        });
+      }
 
       return result.insights;
     } catch (error) {
@@ -377,15 +359,16 @@ export class AIService {
       const executionTime = Date.now() - startTime;
       await this.trackUsage('predictive_behavior', 'behavior_prediction', 0, 0, executionTime, true);
 
-      // Store behavior predictions
-      await supabase.from('user_behavior_predictions').insert({
-        user_id: userId,
-        prediction_type: 'engagement',
-        predictions: result,
-        behavioral_patterns: userActivity,
-        next_likely_actions: result.nextActions,
-        confidence_score: result.confidence || 0.6
-      });
+      // ✅ MIGRATED: Use hook-based pattern instead of direct supabase calls
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.storeBehaviorPredictions) {
+        await aiService.storeBehaviorPredictions(userId, result, userActivity);
+      } else {
+        debugLog.warn('AIService.predictUserBehavior: Hook not available, behavior predictions not stored', {
+          userId,
+          component: 'AIService'
+        });
+      }
 
       return result;
     } catch (error) {
@@ -411,17 +394,17 @@ export class AIService {
       const executionTime = Date.now() - startTime;
       await this.trackUsage('competitive_intelligence', 'market_analysis', 0, 0, executionTime, true);
 
-      // Store competitive intelligence
-      await supabase.from('competitive_intelligence').insert({
-        sector_id: sectorId,
-        analysis_type: analysisType,
-        insights: result.insights,
-        trends_identified: result.trends,
-        opportunities: result.opportunities,
-        threats: result.threats,
-        recommendations: result.recommendations,
-        confidence_level: result.confidence || 0.7
-      });
+      // ✅ MIGRATED: Use hook-based pattern instead of direct supabase calls
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.storeCompetitiveIntelligence) {
+        await aiService.storeCompetitiveIntelligence(sectorId, analysisType, result);
+      } else {
+        debugLog.warn('AIService.generateCompetitiveIntelligence: Hook not available, intelligence not stored', {
+          sectorId,
+          analysisType,
+          component: 'AIService'
+        });
+      }
 
       return result;
     } catch (error) {
@@ -457,52 +440,46 @@ export class AIService {
     }
   }
 
-  // Get AI feature configuration
+  // ✅ MIGRATED: Get AI feature configuration through hook
   async getFeatureConfig(featureName: string): Promise<AIServiceConfig | null> {
     try {
-      const { data, error } = await supabase
-        .from('ai_feature_toggles')
-        .select('model_configuration')
-        .eq('feature_name', featureName)
-        .eq('is_enabled', true)
-        .maybeSingle();
-
-      if (error || !data) return null;
-      return data.model_configuration as AIServiceConfig;
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.getFeatureConfig) {
+        return await aiService.getFeatureConfig(featureName);
+      }
+      
+      debugLog.warn('AIService.getFeatureConfig: Hook not available, feature config unavailable', {
+        featureName,
+        component: 'AIService'
+      });
+      return null;
     } catch (error) {
       logger.error('Error fetching AI feature config', {}, error as Error);
       return null;
     }
   }
 
-  // Check if feature is enabled for user
+  // ✅ MIGRATED: Check if feature is enabled for user through hook
   async isFeatureEnabled(featureName: string, userId?: string): Promise<boolean> {
     try {
-      // Use passed user ID instead of making auth call
       if (!userId) {
         debugLog.warn('AIService.isFeatureEnabled: No user ID provided');
         return false;
       }
 
-      // Check user preferences
-      const { data: preferences } = await supabase
-        .from('ai_preferences')
-        .select('ai_enabled, *')
-        .eq('user_id', userId)
-        .maybeSingle();
-
-      if (!preferences?.ai_enabled) return false;
-
-      // Check feature toggle
-      const { data: feature } = await supabase
-        .from('ai_feature_toggles')
-        .select('is_enabled')
-        .eq('feature_name', featureName)
-        .maybeSingle();
-
-      return feature?.is_enabled || false;
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.isFeatureEnabled) {
+        return await aiService.isFeatureEnabled(featureName, userId);
+      }
+      
+      debugLog.warn('AIService.isFeatureEnabled: Hook not available, feature disabled', {
+        featureName,
+        userId,
+        component: 'AIService'
+      });
+      return false;
     } catch (error) {
-      logger.error('Error checking feature status', { featureName }, error as Error);
+      logger.error('Error checking AI feature status', { featureName, userId }, error as Error);
       return false;
     }
   }

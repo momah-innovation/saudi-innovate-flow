@@ -80,36 +80,29 @@ export class AnalyticsService {
     try {
       // Check admin access for sensitive metrics
       if (metricsType === 'security' || metricsType === 'admin') {
-        const { data: isAdmin } = await supabase.rpc('has_role', {
-          _user_id: userId,
-          _role: 'admin'
-        });
-        return !!isAdmin;
+        // ✅ MIGRATED: Use hook-based pattern for admin role checking
+        const analyticsService = (window as any).__ANALYTICS_SERVICE_HOOK__;
+        if (analyticsService?.hasRole) {
+          return await analyticsService.hasRole(userId, 'admin');
+        }
+        return false;
       }
 
-      // Check team member access for analytics with improved error handling
+      // ✅ MIGRATED: Use hook-based pattern for team member checking
       if (metricsType === 'analytics' || metricsType === 'reporting') {
         try {
-          const { data: isTeamMember, error } = await supabase
-            .from('innovation_team_members')
-            .select('id')
-            .eq('user_id', userId)
-            .eq('status', 'active')
-            .maybeSingle(); // Use maybeSingle() instead of single() to handle no results gracefully
-          
-          if (error) {
-            // Log error but continue with fallback (assume no team access)
-            debugLog.warn('Analytics access check failed', {
-              error: error.message, 
-              userId, 
-              metricsType 
-            });
-            return false;
+          const analyticsService = (window as any).__ANALYTICS_SERVICE_HOOK__;
+          if (analyticsService?.isTeamMember) {
+            return await analyticsService.isTeamMember(userId);
           }
           
-          if (isTeamMember) return true;
+          debugLog.warn('Analytics access check - hook not available', {
+            userId, 
+            metricsType,
+            component: 'AnalyticsService'
+          });
+          return false;
         } catch (networkError) {
-          // Handle network errors gracefully
           debugLog.warn('Network error checking team member access', { 
             error: networkError instanceof Error ? networkError.message : 'Unknown network error',
             userId 
@@ -117,7 +110,6 @@ export class AnalyticsService {
           return false;
         }
       }
-
       
       // Default: authenticated users have basic access
       return true;
@@ -151,33 +143,23 @@ export class AnalyticsService {
         return this.getPublicMetrics(timeframe);
       }
 
-      // Try to call the database function with proper error handling
-      const { data, error } = await supabase.rpc('get_analytics_data', {
-        p_user_id: userId,
-        p_user_role: 'innovator',
-        p_filters: { timeframe }
-      });
-
-      if (error) {
-        debugLog.warn('AnalyticsService.getCoreMetrics: Database function error, using fallback', {
-          timeframe,
-          component: 'AnalyticsService',
-          error: error.message
-        });
-        return this.getFallbackMetrics(timeframe);
+      // ✅ MIGRATED: Use hook-based pattern for analytics data fetching
+      const analyticsService = (window as any).__ANALYTICS_SERVICE_HOOK__;
+      if (analyticsService?.getCoreAnalyticsData) {
+        const data = await analyticsService.getCoreAnalyticsData(userId, 'innovator', { timeframe });
+        if (data && typeof data === 'object') {
+          const metrics = data as unknown as CoreMetrics;
+          this.setCache(cacheKey, metrics);
+          await this.trackMetricsAccess(userId, 'core_metrics', filters);
+          return metrics;
+        }
       }
       
-      if (data && typeof data === 'object') {
-        const metrics = data as unknown as CoreMetrics;
-        this.setCache(cacheKey, metrics);
-        await this.trackMetricsAccess(userId, 'core_metrics', filters);
-        return metrics;
-      }
-
-      // Fallback to default metrics
-      const defaultMetrics = this.getDefaultCoreMetrics();
-      await this.trackMetricsAccess(userId, 'core_metrics', filters);
-      return defaultMetrics;
+      debugLog.warn('AnalyticsService.getCoreMetrics: Hook not available, using fallback', {
+        timeframe,
+        component: 'AnalyticsService'
+      });
+      return this.getFallbackMetrics(timeframe);
     } catch (error) {
       logger.error('Error fetching core metrics', { component: 'AnalyticsService', userId }, error as Error);
       return this.getFallbackMetrics(filters.timeframe || '30d');
@@ -356,41 +338,18 @@ export class AnalyticsService {
    */
   private async checkAnalyticsAccess(userId: string): Promise<boolean> {
     try {
-      // Check team member access with maybeSingle for better error handling
-      const { data: isTeamMember, error } = await supabase
-        .from('innovation_team_members')
-        .select('id')
-        .eq('user_id', userId)
-        .eq('status', 'active')
-        .maybeSingle();
+      // ✅ MIGRATED: Use hook-based pattern for analytics access checking
+      const analyticsService = (window as any).__ANALYTICS_SERVICE_HOOK__;
+      if (analyticsService?.checkAnalyticsAccess) {
+        return await analyticsService.checkAnalyticsAccess(userId);
+      }
       
-      if (error) {
-        debugLog.warn('Team member check failed', { 
-          component: 'AnalyticsService', 
-          error: error.message, 
-          userId 
-        });
-        // Continue to admin check
-      } else if (isTeamMember) {
-        return true;
-      }
+      debugLog.warn('AnalyticsService.checkAnalyticsAccess: Hook not available, denying access', {
+        userId,
+        component: 'AnalyticsService'
+      });
+      return false;
 
-      // Check admin role
-      try {
-        const { data: isAdmin } = await supabase.rpc('has_role', {
-          _user_id: userId,
-          _role: 'admin'
-        });
-        
-        return Boolean(isAdmin);
-      } catch (roleError) {
-        debugLog.warn('Role check failed', { 
-          component: 'AnalyticsService', 
-          error: roleError instanceof Error ? roleError.message : 'Unknown role check error',
-          userId 
-        });
-        return false;
-      }
     } catch (error) {
       debugLog.warn('Analytics access check failed', { 
         component: 'AnalyticsService', 
