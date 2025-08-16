@@ -90,7 +90,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
   });
   
   // ✅ MIGRATED: Using centralized hooks
-  const { createChallenge, updateChallenge, loading: challengeLoading } = useChallengeManagement();
+  const challengeManagement = useChallengeManagement();
   const systemLists = useSystemLists();
   const { canManageChallenges } = useRolePermissions();
   
@@ -297,24 +297,13 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         if (error) throw error;
 
         // Add related entities
+        // Use challengeManagement hook for expert and partner linking
         if (selectedExperts.length > 0 && data) {
-          const expertLinks = selectedExperts.map(expertId => ({
-            challenge_id: data.id,
-            expert_id: expertId,
-            role_type: 'evaluator',
-            status: 'active'
-          }));
-          await supabase.from('challenge_experts').insert(expertLinks);
+          await challengeManagement.linkExperts(data.id, selectedExperts);
         }
 
         if (selectedPartners.length > 0 && data) {
-          const partnerLinks = selectedPartners.map(partnerId => ({
-            challenge_id: data.id,
-            partner_id: partnerId,
-            partnership_type: 'collaborator',
-            status: 'active'
-          }));
-          await supabase.from('challenge_partners').insert(partnerLinks);
+          await challengeManagement.linkPartners(data.id, selectedPartners);
         }
 
         toast({

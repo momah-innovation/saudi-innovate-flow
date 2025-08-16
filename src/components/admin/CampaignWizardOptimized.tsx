@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
+import { debugLog } from '@/utils/debugLogger';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -181,7 +182,7 @@ const CampaignWizard = React.memo(({
         errors: {}
       });
     } catch (error) {
-      console.error('Failed to save campaign:', error);
+      debugLog.error('Failed to save campaign:', { error });
     }
   }, [validateForm, editingCampaign, state.formData, updateCampaign, createCampaign, onSuccess, onOpenChange, updateState]);
 

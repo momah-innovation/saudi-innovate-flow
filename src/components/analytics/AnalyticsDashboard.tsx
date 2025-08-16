@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import React, { useState, useEffect } from 'react';
+import { useAnalyticsTracking } from '@/hooks/useAnalyticsTracking';
 import { useOptimizedAnalyticsData } from '@/hooks/useOptimizedCoreData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -92,6 +92,7 @@ export default function AnalyticsDashboard() {
 
   // Use optimized analytics data hook
   const { data: rawAnalyticsData, isLoading: analyticsLoading } = useOptimizedAnalyticsData();
+  const analyticsTracking = useAnalyticsTracking();
 
   useEffect(() => {
     if (rawAnalyticsData) {
@@ -181,15 +182,8 @@ export default function AnalyticsDashboard() {
 
       setChallengePerformance(challengePerformanceData);
 
-      // Track dashboard view
-      await supabase.from('analytics_events').insert({
-        event_type: 'dashboard_view',
-        event_category: 'analytics',
-        properties: {
-          dashboard_type: 'innovation_impact',
-          timestamp: formatDate(new Date(), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx')
-        }
-      });
+      // Track dashboard view using centralized analytics
+      await analyticsTracking.trackDashboardView('innovation_impact');
 
     } catch (error) {
       errorHandler.handleError(error, { operation: 'processAnalyticsData' }, 'Failed to load analytics data');
