@@ -22,7 +22,8 @@ import {
   Settings,
   Lightbulb
 } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface AdminChallenge {
   id: string;
@@ -219,12 +220,12 @@ export function AdminChallengeManagement() {
               ...(challenge.start_date ? [{ 
                 icon: <Calendar className="h-4 w-4" />, 
                 label: t('admin.challenges.start_date'), 
-                value: format(new Date(challenge.start_date), 'PPP') 
+                value: formatDate(challenge.start_date) 
               }] : []),
               ...(challenge.end_date ? [{ 
                 icon: <Clock className="h-4 w-4" />, 
                 label: t('admin.challenges.end_date'), 
-                value: format(new Date(challenge.end_date), 'PPP') 
+                value: formatDate(challenge.end_date) 
               }] : []),
               ...(challenge.estimated_budget ? [{ 
                 icon: <DollarSign className="h-4 w-4" />, 

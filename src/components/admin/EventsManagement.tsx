@@ -9,6 +9,7 @@ import { AdminEventsHero } from '@/components/events/AdminEventsHero';
 import { AdminEventCard } from '@/components/events/AdminEventCard';
 import { supabase } from '@/integrations/supabase/client';
 import { currentTimestamp } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useToast } from '@/hooks/use-toast';
 // Enhanced event management with proper types
 import { logger } from '@/utils/logger';

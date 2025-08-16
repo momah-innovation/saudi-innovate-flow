@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Plus, Edit, Trash2, Building, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { formatDate } from '@/utils/unified-date-handler';
+import { formatDate, currentTimestamp } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from "@/utils/error-handler";
 
@@ -93,7 +93,7 @@ export function SectorsManagement() {
             description: formData.description,
             description_ar: formData.description_ar,
             vision_2030_alignment: formData.vision_2030_alignment,
-            updated_at: new Date().toISOString()
+            updated_at: currentTimestamp()
           })
           .eq('id', editingSector.id);
 

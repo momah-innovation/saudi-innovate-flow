@@ -19,6 +19,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/error-handler";
+import { currentTimestamp } from "@/utils/unified-date-handler";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 
 interface Challenge {
   id: string;
@@ -159,7 +161,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
         .from('challenges')
         .update({ 
           status: 'archived',
-          updated_at: new Date().toISOString()
+          updated_at: currentTimestamp()
         })
         .eq('id', challenge.id);
 

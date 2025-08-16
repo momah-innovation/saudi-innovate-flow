@@ -19,7 +19,7 @@ import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { formatDate } from '@/utils/unified-date-handler';
+import { formatDate, currentTimestamp } from '@/utils/unified-date-handler';
 
 interface RoleRequest {
   id: string;
@@ -181,7 +181,7 @@ export default function RoleRequestManagement() {
         .from('role_requests')
         .update({
           status: reviewAction === 'approve' ? 'approved' : 'rejected',
-          reviewed_at: new Date().toISOString(),
+          reviewed_at: currentTimestamp(),
           reviewed_by: user.id,
           reviewer_notes: reviewNotes || null
         })

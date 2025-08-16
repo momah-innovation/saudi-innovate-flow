@@ -14,6 +14,7 @@ import {
   Activity
 } from 'lucide-react';
 import { debugLog } from '@/utils/debugLogger';
+import { currentTimestamp } from '@/utils/unified-date-handler';
 
 interface StakeholdersManagementProps {
   viewMode: 'cards' | 'list' | 'grid';
@@ -82,7 +83,7 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
         engagement_status: item.engagement_status || 'pending',
         notes: item.notes || '',
         projects_count: 0,
-        last_interaction: item.updated_at || new Date().toISOString()
+        last_interaction: item.updated_at || currentTimestamp()
       }));
 
       setStakeholders(transformedStakeholders);

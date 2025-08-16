@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { useStorageAnalytics } from '@/hooks/useStorageAnalytics'
-import { formatDate } from '@/utils/unified-date-handler'
+import { formatDate, dateHandler } from '@/utils/unified-date-handler';
 import { 
   BarChart, 
   Bar, 
@@ -56,9 +56,9 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
   }
 
   const formatTimeAgo = (dateString: string): string => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
+    const date = dateHandler.parseDate(dateString);
+    const now = new Date();
+    const diffInHours = date ? Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60)) : 0;
     
     if (diffInHours < 1) return t("storage.just_now")
     if (diffInHours < 24) return t("storage.h_ago", { hours: diffInHours })
