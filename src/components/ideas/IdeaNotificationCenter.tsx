@@ -26,7 +26,7 @@ interface IdeaNotification {
   message: string;
   is_read: boolean;
   action_url?: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
   created_at: string;
   sender_profile?: {
     name: string;

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
-import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { IdeaTemplateStructure } from '@/types/common';
 import { logger } from '@/utils/logger';
 import { 
   Palette, FileText, Zap, Users, Lightbulb, TreePine, 
@@ -20,7 +22,7 @@ interface IdeaTemplate {
   description: string;
   description_ar: string;
   category: string;
-  template_data: any;
+  template_data: IdeaTemplateStructure;
 }
 
 interface IdeaTemplatesDialogProps {
@@ -56,9 +58,12 @@ export function IdeaTemplatesDialog({
         .order('name');
 
       if (error) throw error;
-      setTemplates(data || []);
+      setTemplates((data || []).map(item => ({
+        ...item,
+        template_data: item.template_data as any || { sections: [], fields: [], guidelines: [], estimated_time: 0, difficulty_level: 'beginner' as const }
+      })));
     } catch (error) {
-      logger.error('Failed to load idea templates', { 
+      logger.error('Failed to load idea templates', {
         component: 'IdeaTemplatesDialog', 
         action: 'loadTemplates' 
       }, error as Error);

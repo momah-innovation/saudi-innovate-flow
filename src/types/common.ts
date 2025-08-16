@@ -368,13 +368,11 @@ export function transformToDashboardProfile(userProfile: any): DashboardUserProf
 }
 
 export interface IdeaTemplateStructure {
-  template_data: {
-    sections: TemplateSection[];
-    fields: TemplateField[];
-    guidelines: string[];
-    estimated_time: number;
-    difficulty_level: 'beginner' | 'intermediate' | 'advanced';
-  };
+  sections: string[];
+  fields: TemplateField[];
+  guidelines: string[];
+  estimated_time: number;
+  difficulty_level: 'beginner' | 'intermediate' | 'advanced';
 }
 
 export interface TemplateSection {
@@ -553,6 +551,81 @@ function mapOpportunityType(dbType: string): 'internship' | 'job' | 'volunteer' 
     case 'research': return 'collaboration';
     default: return 'partnership';
   }
+}
+
+// ✅ IDEAS COMPONENT TYPES AND INTERFACES
+
+export interface IdeaTemplate {
+  id: string;
+  name: string;
+  name_ar: string;
+  description: string;
+  description_ar: string;
+  category: string;
+  template_data: IdeaTemplateStructure;
+}
+
+export interface IdeaNotification {
+  id: string;
+  user_id: string;
+  idea_id?: string;
+  challenge_id?: string;
+  sender_id?: string;
+  notification_type: string;
+  title: string;
+  message: string;
+  is_read: boolean;
+  action_url?: string;
+  metadata?: Record<string, unknown>;
+  created_at: string;
+  sender_profile?: {
+    name: string;
+    name_ar: string;
+    profile_image_url?: string;
+  };
+}
+
+export interface SmartRecommendation {
+  id: string;
+  title: string;
+  title_ar?: string;
+  description: string;
+  description_ar?: string;
+  overall_score: number;
+  like_count: number;
+  view_count: number;
+  created_at: string;
+  recommendation_type: 'high_potential' | 'trending' | 'popular' | 'similar_interests' | 'expert_recommended' | 'discovery';
+  confidence_score: number;
+  reasoning: string;
+  tags?: string[];
+  author?: {
+    name: string;
+    avatar_url?: string;
+  };
+}
+
+export interface SuccessStory {
+  id: string;
+  idea_id: string;
+  title: string;
+  summary: string;
+  detailed_story: string;
+  implementation_timeline: TimelineStep[];
+  roi_metrics: ROIMetric[];
+  impact_areas: ImpactArea[];
+  testimonials: StoryTestimonial[];
+  media_urls: MediaFile[];
+  featured_image_url: string;
+  status: string;
+  published_at: string;
+  created_at: string;
+  ideas?: {
+    title_ar: string;
+    title_en?: string;
+    description_ar: string;
+    description_en?: string;
+  };
 }
 
 export interface OpportunityRequirements {
