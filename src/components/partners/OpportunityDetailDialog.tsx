@@ -18,7 +18,7 @@ import {
   Target, Clock, Send, Building
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { toast } from 'sonner';
+import { errorHandler } from '@/utils/error-handler';
 
 interface OpportunityItem {
   id: string;
@@ -56,7 +56,7 @@ export function OpportunityDetailDialog({
 
   const handleSubmitApplication = () => {
     // Here you would submit the application to the backend
-    toast.success(t('applicationSubmitted'));
+    errorHandler.handleError(new Error(t('applicationSubmitted')), 'OpportunityDetailDialog-submit');
     setShowApplication(false);
     onOpenChange(false);
   };

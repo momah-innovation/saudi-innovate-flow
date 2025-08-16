@@ -84,12 +84,12 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
 
   const handleSubmitRequest = async () => {
     if (!selectedRole || !reason || !justification) {
-      toast.error('Please fill in all required fields');
+      errorHandler.handleError(new Error('Please fill in all required fields'));
       return;
     }
 
     if (!user) {
-      toast.error('You must be logged in to request a role');
+      errorHandler.handleError(new Error('You must be logged in to request a role'));
       return;
     }
 

@@ -23,7 +23,7 @@ import {
   CheckCircle,
   BarChart3
 } from "lucide-react";
-import { format } from "date-fns";
+import { dateHandler } from '@/utils/unified-date-handler';
 import { navigationHandler } from '@/utils/unified-navigation';
 import type { PartnerDetailView, PartnerDetailViewProps } from "@/types/api";
 
@@ -187,7 +187,7 @@ export function PartnerDetailView({
                     <h4 className="font-semibold mb-1 text-sm">تاريخ الانضمام</h4>
                     <p className="text-sm text-muted-foreground flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {format(new Date(partner.created_at), 'dd/MM/yyyy')}
+                      {dateHandler.formatDate(new Date(partner.created_at))}
                     </p>
                   </div>
                 </div>
@@ -304,7 +304,7 @@ export function PartnerDetailView({
                         <div className="flex-1">
                           <p className="font-medium">تعاون مكتمل</p>
                           <p className="text-sm text-muted-foreground">
-                            {format(new Date(), 'dd/MM/yyyy')}
+                            {dateHandler.formatDate(new Date())}
                           </p>
                         </div>
                         <Badge variant="secondary">مكتمل</Badge>

@@ -23,7 +23,7 @@ import {
   Plus,
   Search
 } from "lucide-react";
-import { format } from "date-fns";
+import { dateHandler } from '@/utils/unified-date-handler';
 import { ManagementListProps } from "@/types";
 import { debugLog } from '@/utils/debugLogger';
 
@@ -240,7 +240,7 @@ export function OpportunityManagementList({
         {
           icon: <Calendar className="w-4 h-4" />,
           label: "موعد انتهاء التقديم",
-          value: format(new Date(opportunity.application_deadline), 'dd/MM/yyyy')
+          value: dateHandler.formatDate(new Date(opportunity.application_deadline))
         },
         {
           icon: <MapPin className="w-4 h-4" />,

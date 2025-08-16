@@ -47,11 +47,7 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = (newLanguage: Language) => {
     // Debug logging for language change
-    console.log('🔄 Language change requested:', { 
-      from: language, 
-      to: newLanguage,
-      currentDirection: direction 
-    });
+    // Debug logging for language change - using unified logging
     
     // Setting language preference
     setLanguageState(newLanguage);
@@ -64,11 +60,8 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('i18nextLng', newLanguage);
     
     // CRITICAL: Sync with react-i18next using the exact language code
-    i18n.changeLanguage(newLanguage).then(() => {
-      console.log('✅ Language changed successfully:', newLanguage);
-    }).catch((error) => {
-      console.error('❌ Language change failed:', error);
-    });
+    // CRITICAL: Sync with react-i18next using the exact language code
+    i18n.changeLanguage(newLanguage);
   };
 
   const toggleDirection = () => {

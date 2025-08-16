@@ -19,10 +19,10 @@ import {
   Layers, Maximize2, Check, X, Filter, Settings, Grid3X3
 } from 'lucide-react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'sonner'
 import { logger } from '@/utils/logger'
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
 import { useTimerManager } from '@/utils/timerManager';
+import { errorHandler } from '@/utils/error-handler';
 
 interface UnsplashImage {
   id: string
@@ -241,7 +241,7 @@ export function UnsplashImageBrowser({
       }
     } catch (error) {
       logger.error('Error searching images', { component: 'UnsplashImageBrowser', action: 'searchImages', query }, error as Error)
-      toast.error(t('unsplash_browser.search_failed', 'Failed to search images'))
+      errorHandler.handleError(error as Error, 'UnsplashImageBrowser-search');
     } finally {
       setLoading(false)
     }

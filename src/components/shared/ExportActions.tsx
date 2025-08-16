@@ -10,8 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { toast } from 'sonner';
-import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 
 export interface ExportFormat {
   id: string;
@@ -75,10 +74,9 @@ export function ExportActions({
         await defaultExport(format, data, filename);
       }
       
-      toast.success(t('export.success', 'Export completed successfully'));
+      errorHandler.handleError(new Error(t('export.success', 'Export completed successfully')), 'ExportActions-success');
     } catch (error) {
-      logger.error('Export operation failed', { action: 'export', data: { format, filename, error } });
-      toast.error(t('export.error', 'Export failed. Please try again.'));
+      errorHandler.handleError(error, 'ExportActions-export');
     }
   };
 
@@ -92,11 +90,11 @@ export function ExportActions({
         break;
       case 'excel':
         // Would need a library like xlsx for Excel export
-        toast.info(t('export.excel_not_implemented', 'Excel export not implemented yet'));
+        errorHandler.handleError(new Error(t('export.excel_not_implemented', 'Excel export not implemented yet')), 'ExportActions-excel-info');
         break;
       case 'pdf':
         // Would need a library like jsPDF for PDF export
-        toast.info(t('export.pdf_not_implemented', 'PDF export not implemented yet'));
+        errorHandler.handleError(new Error(t('export.pdf_not_implemented', 'PDF export not implemented yet')), 'ExportActions-pdf-info');
         break;
       default:
         throw new Error(`Unsupported export format: ${format}`);

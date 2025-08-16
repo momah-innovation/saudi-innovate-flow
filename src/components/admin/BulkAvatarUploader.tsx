@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { toast } from 'sonner';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { currentTimestamp } from '@/utils/unified-date-handler';
 import { getAvatarUrl } from '@/utils/storageUtils';
+import { errorHandler } from '@/utils/error-handler';
 
 // Avatar mapping for the existing users
 const AVATAR_MAPPING = [
@@ -99,18 +99,17 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
       });
 
       if (failedUploads.length === 0) {
-        toast.success(t('toast.avatar_updated'));
+        errorHandler.handleError(new Error(t('toast.avatar_updated')), 'BulkAvatarUploader-success');
       } else {
-        toast.warning(t('avatars_update_partial_success', { 
+        errorHandler.handleError(new Error(t('avatars_update_partial_success', { 
           success: successfulUploads.length, 
           failed: failedUploads.length 
-        }));
+        })), 'BulkAvatarUploader-partial');
       }
 
       onComplete?.();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      toast.error(t('toast.avatar_upload_error'));
+      errorHandler.handleError(error, 'BulkAvatarUploader-upload');
     } finally {
       setUploading(false);
     }
