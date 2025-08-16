@@ -25,8 +25,7 @@ import {
   Clock
 } from 'lucide-react';
 import { useSuspiciousActivities } from '@/hooks/admin/useSuspiciousActivities';
-import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { dateHandler } from '@/utils/unified-date-handler';
 
 interface SuspiciousActivityTableProps {
   className?: string;
@@ -169,7 +168,7 @@ const SuspiciousActivityTable: React.FC<SuspiciousActivityTableProps> = ({ class
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-muted-foreground" />
                         <span className="text-sm">
-                          {format(new Date(activity.created_at), 'dd/MM HH:mm', { locale: ar })}
+                          {dateHandler.formatDate(activity.created_at, 'dd/MM HH:mm')}
                         </span>
                       </div>
                     </TableCell>

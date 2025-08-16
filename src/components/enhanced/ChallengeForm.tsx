@@ -13,8 +13,7 @@ import { FileUploadField } from '@/components/ui/FileUploadField';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon, Save, X, Sparkles } from 'lucide-react';
-import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -404,7 +403,7 @@ export function ChallengeForm({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, 'PPP', { locale: ar })
+                              dateHandler.formatDate(field.value, 'PPP')
                             ) : (
                               <span>اختر التاريخ</span>
                             )}
@@ -445,7 +444,7 @@ export function ChallengeForm({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, 'PPP', { locale: ar })
+                              dateHandler.formatDate(field.value, 'PPP')
                             ) : (
                               <span>اختر التاريخ</span>
                             )}

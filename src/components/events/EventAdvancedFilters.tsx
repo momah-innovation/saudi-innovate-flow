@@ -12,7 +12,7 @@ import { CalendarIcon, Filter, X, MapPin, Clock, Users, DollarSign } from 'lucid
 import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
-import { format } from 'date-fns';
+import { dateHandler } from '@/utils/unified-date-handler';
 
 interface FilterState {
   eventTypes: string[];
@@ -209,11 +209,11 @@ export const EventAdvancedFilters = ({
                     {filters.dateRange.from ? (
                       filters.dateRange.to ? (
                         <>
-                          {format(filters.dateRange.from, "LLL dd, y")} -{" "}
-                          {format(filters.dateRange.to, "LLL dd, y")}
+                          {dateHandler.formatDate(filters.dateRange.from, "LLL dd, y")} -{" "}
+                          {dateHandler.formatDate(filters.dateRange.to, "LLL dd, y")}
                         </>
                       ) : (
-                        format(filters.dateRange.from, "LLL dd, y")
+                        dateHandler.formatDate(filters.dateRange.from, "LLL dd, y")
                       )
                     ) : (
                       <span>{isRTL ? 'اختر التاريخ' : 'Pick a date'}</span>

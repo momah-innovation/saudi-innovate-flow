@@ -39,8 +39,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { useUserRoles, useRoleManagement } from '@/hooks/admin/useRoleManagement';
 import { debugLog } from '@/utils/debugLogger';
 
@@ -192,17 +191,13 @@ const UserRoleManager: React.FC<UserRoleManagerProps> = ({ className }) => {
                         <Badge variant="outline">{role.role}</Badge>
                       </TableCell>
                       <TableCell>
-                        {format(new Date(role.granted_at), 'dd/MM/yyyy HH:mm', { 
-                          locale: language === 'ar' ? ar : undefined 
-                        })}
+                        {dateHandler.formatDate(role.granted_at, 'dd/MM/yyyy HH:mm')}
                       </TableCell>
                       <TableCell>
-                        {role.expires_at ? 
-                          format(new Date(role.expires_at), 'dd/MM/yyyy HH:mm', { 
-                            locale: language === 'ar' ? ar : undefined 
-                          }) :
+                         {role.expires_at ? 
+                          dateHandler.formatDate(role.expires_at, 'dd/MM/yyyy HH:mm') :
                           'غير محدد'
-                        }
+                         }
                       </TableCell>
                       <TableCell>
                         <Badge variant={getStatusBadgeVariant(role.is_active, role.expires_at)}>

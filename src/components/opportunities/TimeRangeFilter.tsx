@@ -6,7 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, Clock, ChevronDown, RotateCcw } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { format, subDays, subMonths, startOfDay, endOfDay } from 'date-fns';
+import { dateHandler } from '@/utils/unified-date-handler';
+import { subDays, subMonths, startOfDay, endOfDay } from 'date-fns';
 import { cn } from '@/lib/utils';
 
 interface TimeRangeFilterProps {
@@ -98,7 +99,7 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
 
   const getSelectedRangeLabel = () => {
     if (selectedRange === 'custom' && customStart && customEnd) {
-      return `${format(customStart, 'MMM dd')} - ${format(customEnd, 'MMM dd')}`;
+      return `${dateHandler.formatDate(customStart, 'MMM dd')} - ${dateHandler.formatDate(customEnd, 'MMM dd')}`;
     }
     
     const preset = presetRanges.find(r => `${r.days}d` === selectedRange);

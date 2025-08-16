@@ -17,7 +17,7 @@ import {
   Shield,
   Calendar
 } from "lucide-react";
-import { format } from "date-fns";
+import { dateHandler } from '@/utils/unified-date-handler';
 
 interface Challenge {
   id: string;

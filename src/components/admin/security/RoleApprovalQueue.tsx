@@ -27,8 +27,7 @@ import {
 } from 'lucide-react';
 import { useRoleApprovalRequests, useRoleManagement } from '@/hooks/admin/useRoleManagement';
 import { debugLog } from '@/utils/debugLogger';
-import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { dateHandler } from '@/utils/unified-date-handler';
 
 interface RoleApprovalQueueProps {
   className?: string;
@@ -180,7 +179,7 @@ const RoleApprovalQueue: React.FC<RoleApprovalQueueProps> = ({ className }) => {
                     <TableCell>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="w-4 h-4" />
-                        {format(new Date(request.created_at), 'dd/MM/yyyy HH:mm', { locale: ar })}
+                        {dateHandler.formatDate(request.created_at, 'dd/MM/yyyy HH:mm')}
                       </div>
                     </TableCell>
                     <TableCell>

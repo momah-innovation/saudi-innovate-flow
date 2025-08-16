@@ -16,7 +16,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon, X } from 'lucide-react';
-import { format } from 'date-fns';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSettingsManager } from "@/hooks/useSettingsManager";
