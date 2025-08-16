@@ -59,52 +59,16 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
   const { toast } = useToast();
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [viewEvent, setViewEvent] = useState<EventData | null>(null);
-  const [events, setEvents] = useState<EventData[]>([]);
-  const [loading, setLoading] = useState(true);
+  
+  // ✅ MIGRATED: Using centralized event operations hook
+  const { events, loading, error, loadEvents, createEvent, updateEvent, deleteEvent } = useEventOperations();
 
-  // Load events from Supabase
+  // Load events using hook
   useEffect(() => {
     loadEvents();
-  }, []);
+  }, [loadEvents]);
 
-  const loadEvents = async () => {
-    try {
-      setLoading(true);
-      const { data: eventsData, error } = await supabase
-        .from('events')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      // Get participant counts for each event
-      const eventsWithCounts = await Promise.all(
-        (eventsData || []).map(async (event) => {
-          const { count, error: countError } = await supabase
-            .from('event_participants')
-            .select('*', { count: 'exact' })
-            .eq('event_id', event.id);
-
-          return {
-            ...event,
-            registered_participants: count || 0,
-            image_url: event.image_url || getDefaultEventImage(event.event_type)
-          };
-        })
-      );
-
-      setEvents(eventsWithCounts);
-    } catch (error) {
-      errorHandler.handleError(error, 'EventsManagement.loadEvents');
-      toast({
-        title: t('events.load_error_title'),
-        description: t('events.load_error_description'),
-        variant: 'destructive'
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  // ✅ MIGRATED: Event operations now handled by hook
 
   const getDefaultEventImage = (eventType: string) => {
     const imageMap: { [key: string]: string } = {
@@ -135,19 +99,13 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
   const handleDelete = async (event: EventData) => {
     try {
       logger.info('Deleting event', { component: 'EventsManagement', action: 'handleDelete', data: { eventId: event.id } });
-      const { error } = await supabase
-        .from('events')
-        .delete()
-        .eq('id', event.id);
-
-      if (error) throw error;
+      // ✅ MIGRATED: Using hook method
+      await deleteEvent(event.id);
 
       toast({
         title: t('events.delete_success_title'),
         description: t('events.delete_success_description', { title: event.title_ar }),
       });
-
-      loadEvents(); // Reload events
     } catch (error) {
       logger.error('Error deleting event', { component: 'EventsManagement', action: 'handleDelete' }, error as Error);
       toast({
@@ -160,19 +118,13 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
   const handleStatusChange = async (event: EventData, newStatus: string) => {
     try {
       logger.info('Changing event status', { component: 'EventsManagement', action: 'handleStatusChange', data: { eventId: event.id, newStatus } });
-      const { error } = await supabase
-        .from('events')
-        .update({ status: newStatus })
-        .eq('id', event.id);
-
-      if (error) throw error;
+      // ✅ MIGRATED: Using hook method
+      await updateEvent(event.id, { status: newStatus });
 
       toast({
         title: t('events.status_update_success_title'),
         description: t('events.status_update_success_description', { status: newStatus }),
       });
-
-      loadEvents(); // Reload events
     } catch (error) {
       logger.error('Error updating event status', { component: 'EventsManagement', action: 'handleStatusChange' }, error as Error);
       toast({
@@ -183,18 +135,18 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
   };
 
   // Filter events based on search term
-  const filteredEvents = events.filter(event =>
+  const filteredEvents = (events || []).filter(event =>
     event.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
     event.description_ar.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Calculate metrics for hero
-  const totalEvents = events.length;
-  const activeEvents = events.filter(e => e.status === 'active').length;
-  const totalParticipants = events.reduce((sum, e) => sum + (e.registered_participants || 0), 0);
-  const totalRevenue = events.reduce((sum, e) => sum + (e.budget || 0), 0);
-  const upcomingEvents = events.filter(e => e.status === 'scheduled').length;
-  const completedEvents = events.filter(e => e.status === 'completed').length;
+  const totalEvents = (events || []).length;
+  const activeEvents = (events || []).filter(e => e.status === 'active').length;
+  const totalParticipants = (events || []).reduce((sum, e) => sum + (e.registered_participants || 0), 0);
+  const totalRevenue = (events || []).reduce((sum, e) => sum + (e.budget || 0), 0);
+  const upcomingEvents = (events || []).filter(e => e.status === 'scheduled').length;
+  const completedEvents = (events || []).filter(e => e.status === 'completed').length;
 
   return (
     <>
@@ -271,7 +223,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           inherit_from_campaign: selectedEvent.inherit_from_campaign || false
         } : undefined}
         onSave={(eventData) => {
-          // Event saved successfully
+          // ✅ MIGRATED: Using hook method
           loadEvents(); // Reload events after save
           onAddDialogChange(false);
         }}

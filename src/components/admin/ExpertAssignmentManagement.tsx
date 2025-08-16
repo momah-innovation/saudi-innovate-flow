@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar, Clock, Plus, Search, Users, UserCheck, Target, AlertCircle, CheckCircle2, XCircle, Building, User, Filter, Eye } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { useExpertAssignment } from '@/hooks/useExpertAssignment';
 import { useToast } from '@/hooks/use-toast';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { formatDate } from '@/utils/unified-date-handler';

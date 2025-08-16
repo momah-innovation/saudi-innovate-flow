@@ -34,7 +34,7 @@ export const useEventOperations = () => {
     error,
     refetch: loadEvents,
     isError
-  } = useQuery<EventListItem[]>({
+  } = useQuery({
     queryKey: ['events-list'],
     queryFn: async () => {
       logger.info('Fetching events list', { component: 'useEventOperations' });
@@ -60,8 +60,8 @@ export const useEventOperations = () => {
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  const createEvent = useCallback(async (eventData: Partial<EventListItem>): Promise<EventListItem> => {
-    logger.info('Creating event', { component: 'useEventOperations', eventData });
+  const createEvent = useCallback(async (eventData: any): Promise<any> => {
+    logger.info('Creating event', { component: 'useEventOperations' });
     
     const { data, error } = await supabase
       .from('events')
@@ -74,15 +74,15 @@ export const useEventOperations = () => {
       throw error;
     }
     
-    logger.info('Event created successfully', { component: 'useEventOperations', eventId: data.id });
+    logger.info('Event created successfully', { component: 'useEventOperations' });
     
     // Refetch the list after creation
     await loadEvents();
     return data;
   }, [loadEvents]);
 
-  const updateEvent = useCallback(async (eventId: string, eventData: Partial<EventListItem>): Promise<EventListItem> => {
-    logger.info('Updating event', { component: 'useEventOperations', eventId, eventData });
+  const updateEvent = useCallback(async (eventId: string, eventData: any): Promise<any> => {
+    logger.info('Updating event', { component: 'useEventOperations' });
     
     const { data, error } = await supabase
       .from('events')
@@ -92,11 +92,11 @@ export const useEventOperations = () => {
       .single();
     
     if (error) {
-      logger.error('Failed to update event', { component: 'useEventOperations', eventId }, error);
+      logger.error('Failed to update event', { component: 'useEventOperations' }, error);
       throw error;
     }
     
-    logger.info('Event updated successfully', { component: 'useEventOperations', eventId });
+    logger.info('Event updated successfully', { component: 'useEventOperations' });
     
     // Refetch the list after update
     await loadEvents();
@@ -104,7 +104,7 @@ export const useEventOperations = () => {
   }, [loadEvents]);
 
   const deleteEvent = useCallback(async (eventId: string): Promise<void> => {
-    logger.info('Deleting event', { component: 'useEventOperations', eventId });
+    logger.info('Deleting event', { component: 'useEventOperations' });
     
     const { error } = await supabase
       .from('events')
@@ -112,11 +112,11 @@ export const useEventOperations = () => {
       .eq('id', eventId);
     
     if (error) {
-      logger.error('Failed to delete event', { component: 'useEventOperations', eventId }, error);
+      logger.error('Failed to delete event', { component: 'useEventOperations' }, error);
       throw error;
     }
     
-    logger.info('Event deleted successfully', { component: 'useEventOperations', eventId });
+    logger.info('Event deleted successfully', { component: 'useEventOperations' });
     
     // Refetch the list after deletion
     await loadEvents();

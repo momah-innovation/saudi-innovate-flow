@@ -17,7 +17,7 @@
 - [ ] `src/components/admin/ChallengeSettings.tsx` → Use `useChallengeManagement`
 - [ ] `src/components/admin/ChallengeWizard.tsx` → Use `useChallengeManagement`
 - [ ] `src/components/admin/EvaluationsManagement.tsx` → Use `useEvaluations`
-- [ ] `src/components/admin/EventsManagement.tsx` → Use `useEventOperations`
+- [x] `src/components/admin/EventsManagement.tsx` → Use `useEventOperations` ✅
 - [ ] `src/components/admin/ExpertAssignmentManagement.tsx` → Use `useExpertAssignment`
 - [ ] `src/components/admin/ExpertProfileDialog.tsx` → Use `useExpertProfiles`
 - [ ] `src/components/admin/FocusQuestionManagement.tsx` → Use `useFocusQuestionManagement`
