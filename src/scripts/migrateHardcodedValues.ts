@@ -160,7 +160,10 @@ export async function migrateAllHardcodedValues(): Promise<MigrationResult[]> {
   // console.log('Starting hardcoded values migration...');
 
   for (const migration of migrations) {
-    console.log(`Migrating ${migration.table}.${migration.column} (${migration.category})...`);
+    // Use structured logging for migration progress
+    if (typeof window !== 'undefined' && (window as any).debugLog) {
+      (window as any).debugLog.log('Starting table migration', { component: 'MigrationScript', data: { table: migration.table, column: migration.column, category: migration.category } });
+    }
     
     const result = await migrateTableColumn(
       migration.table,
@@ -171,9 +174,15 @@ export async function migrateAllHardcodedValues(): Promise<MigrationResult[]> {
     results.push(result);
     
     if (result.errors.length > 0) {
-      console.error(`Errors in ${migration.table}.${migration.column}:`, result.errors);
+      // Use structured logging for migration errors
+      if (typeof window !== 'undefined' && (window as any).debugLog) {
+        (window as any).debugLog.error('Migration errors occurred', { component: 'MigrationScript', data: { table: migration.table, column: migration.column, errors: result.errors } });
+      }
     } else {
-      console.log(`✓ Updated ${result.updated} records in ${migration.table}.${migration.column}`);
+      // Use structured logging for migration success
+      if (typeof window !== 'undefined' && (window as any).debugLog) {
+        (window as any).debugLog.log('Migration completed successfully', { component: 'MigrationScript', data: { table: migration.table, column: migration.column, updated: result.updated } });
+      }
     }
   }
 
@@ -181,16 +190,19 @@ export async function migrateAllHardcodedValues(): Promise<MigrationResult[]> {
   const totalUpdated = results.reduce((sum, r) => sum + r.updated, 0);
   const totalErrors = results.reduce((sum, r) => sum + r.errors.length, 0);
   
-  console.log('\n=== Migration Summary ===');
-  console.log(`Total records updated: ${totalUpdated}`);
-  console.log(`Total errors: ${totalErrors}`);
-  
-  if (totalErrors > 0) {
-    console.log('\nErrors by table:');
-    results.forEach(r => {
-      if (r.errors.length > 0) {
-        console.log(`${r.table}.${r.column}: ${r.errors.join(', ')}`);
-      }
+  // Use structured logging for migration summary
+  if (typeof window !== 'undefined' && (window as any).debugLog) {
+    (window as any).debugLog.log('Migration summary', { 
+      component: 'MigrationScript', 
+      data: { 
+        totalUpdated, 
+        totalErrors,
+        tablesProcessed: results.length,
+        errorsByTable: totalErrors > 0 ? results.filter(r => r.errors.length > 0).map(r => ({
+          table: `${r.table}.${r.column}`,
+          errors: r.errors
+        })) : []
+      } 
     });
   }
 
@@ -205,14 +217,23 @@ export async function migrateSingleColumn(
   column: string,
   category: keyof typeof VALUE_KEY_MAPPINGS
 ): Promise<MigrationResult> {
-  console.log(`Migrating ${table}.${column} (${category})...`);
+  // Use structured logging for single column migration
+  if (typeof window !== 'undefined' && (window as any).debugLog) {
+    (window as any).debugLog.log('Starting single column migration', { component: 'MigrationScript', data: { table, column, category } });
+  }
   
   const result = await migrateTableColumn(table, column, category);
   
   if (result.errors.length > 0) {
-    console.error(`Errors:`, result.errors);
+    // Use structured logging for errors
+    if (typeof window !== 'undefined' && (window as any).debugLog) {
+      (window as any).debugLog.error('Single column migration errors', { component: 'MigrationScript', data: { table, column, errors: result.errors } });
+    }
   } else {
-    console.log(`✓ Updated ${result.updated} records`);
+    // Use structured logging for success
+    if (typeof window !== 'undefined' && (window as any).debugLog) {
+      (window as any).debugLog.log('Single column migration completed', { component: 'MigrationScript', data: { table, column, updated: result.updated } });
+    }
   }
   
   return result;

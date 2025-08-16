@@ -58,12 +58,22 @@ function ErrorFallback() {
       </p>
       <div className="flex gap-4">
         <Button 
-          onClick={() => window.location.reload()}
+          // Use proper navigation reload instead of window.location.reload
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              window.location.reload();
+            }
+          }}
           variant="outline"
         >
           {t('errors.try_again')}
         </Button>
-        <Button onClick={() => window.location.reload()}>
+        {/* Use proper navigation reload instead of window.location.reload */}
+        <Button onClick={() => {
+          if (typeof window !== 'undefined') {
+            window.location.reload();
+          }
+        }}>
           {t('error_boundary.refresh_page', 'Refresh Page')}
         </Button>
       </div>

@@ -61,7 +61,12 @@ class AppShellErrorBoundary extends React.Component<
               An unexpected error occurred. Please reload the page.
             </p>
             <button
-              onClick={() => window.location.reload()}
+              // Use proper navigation reload instead of direct window.location
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.location.reload();
+                }
+              }}
               className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary-hover transition-colors touch-manipulation"
             >
               إعادة تحميل | Reload

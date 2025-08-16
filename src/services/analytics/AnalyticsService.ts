@@ -124,7 +124,13 @@ export class AnalyticsService {
       const daysBack = this.parseDaysFromTimeframe(timeframe);
       const startDate = new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000);
 
-      // Parallel fetch for better performance
+      // Use hook-based migration instead of direct supabase calls
+      const analyticsService = (window as any).__ANALYTICS_SERVICE_HOOK__;
+      if (analyticsService?.getCoreMetrics) {
+        return await analyticsService.getCoreMetrics(timeframe);
+      }
+      
+      // Temporary fallback - migrate to useAnalyticsService hook
       const [usersData, challengesData, submissionsData, participantsData] = await Promise.all([
         supabase.from('profiles').select('id, created_at'),
         supabase.from('challenges').select('id, status, created_at'),

@@ -96,7 +96,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         stack: error.stack,
         componentStack: errorInfo.componentStack,
         timestamp: new Date().toISOString(),
-        url: window.location.href,
+        // Use proper URL building for error reporting
+        url: typeof window !== 'undefined' ? window.location.href : '',
         userAgent: navigator.userAgent,
         errorId: this.state.errorId,
         level: this.props.level || 'component'

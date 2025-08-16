@@ -29,7 +29,10 @@ export const useNavigationHandler = () => {
       // Use structured logging instead of console.error
       debugLog.error('Navigation error', { component: 'NavigationHandler', action: 'navigateTo', path }, error);
       // Fallback to window.location for edge cases
-      window.location.href = path;
+      // Use safe navigation fallback
+      if (typeof window !== 'undefined') {
+        window.location.href = path;
+      }
     }
   }, [navigate]);
 
