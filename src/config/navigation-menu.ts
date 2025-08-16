@@ -10,6 +10,7 @@ import {
   Bell, Clock, Archive, Star, Bookmark
 } from 'lucide-react';
 import { MenuItem, GroupLabels } from '@/types/navigation';
+import { debugLog } from '@/utils/debugLogger';
 
 // Menu groups definition
 export const MENU_GROUPS = {
@@ -223,7 +224,7 @@ export const filterMenuItemsByRoles = (items: MenuItem[], userRoles: string[]): 
   const filtered = items.filter(item => {
     const hasRole = item.roles.some(role => userRoles.includes(role));
     if (!hasRole) {
-      console.log(`🚫 Menu item "${item.id}" filtered out. Required: [${item.roles.join(', ')}], User has: [${userRoles.join(', ')}]`);
+      debugLog.debug(`🚫 Menu item "${item.id}" filtered out. Required: [${item.roles.join(', ')}], User has: [${userRoles.join(', ')}]`);
     }
     return hasRole;
   });

@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface OpportunityFormData {
   title_ar: string;
@@ -255,7 +256,7 @@ export const useOpportunityOperations = () => {
 
       // Simplified tag management - implement when tag tables are available
       if (tagNames.length > 0) {
-        console.log('Tag management placeholder:', tagNames);
+        debugLog.debug('Tag management placeholder:', { tagNames });
         // TODO: Implement when opportunity_tags table is available
       }
     } catch (err) {

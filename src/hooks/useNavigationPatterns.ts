@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigationHandler, useUrlUtils } from '@/hooks/useNavigationHandler';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * ✅ PHASE 4: NAVIGATION OPTIMIZATION
@@ -12,12 +13,12 @@ export const useErrorBoundaryNavigation = () => {
   const { navigateTo, refreshPage } = useNavigationHandler();
 
   const handleErrorReload = useCallback(() => {
-    console.log('Error boundary reload triggered');
+    debugLog.debug('Error boundary reload triggered');
     refreshPage();
   }, [refreshPage]);
 
   const handleErrorNavigation = useCallback((path: string = '/') => {
-    console.log('Error boundary navigation to:', path);
+    debugLog.debug('Error boundary navigation to path', { path });
     navigateTo(path);
   }, [navigateTo]);
 

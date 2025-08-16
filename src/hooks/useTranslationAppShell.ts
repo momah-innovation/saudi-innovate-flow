@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { preloadNamespaces } from '@/i18n/enhanced-config-v3';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * Translation AppShell Integration Hook - V3 PRODUCTION READY
@@ -209,7 +210,7 @@ export const preloadCriticalTranslations = async () => {
     await preloadNamespaces(criticalNamespaces);
     
     const loadTime = performance.now() - startTime;
-    console.log(`✅ Critical translations loaded in ${loadTime.toFixed(1)}ms`);
+    debugLog.debug(`✅ Critical translations loaded in ${loadTime.toFixed(1)}ms`);
     
     // Prefetch non-critical namespaces in background (non-blocking)
     const prefetchNamespaces = Array.from(new Set(prefetch));

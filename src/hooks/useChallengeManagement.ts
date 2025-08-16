@@ -331,6 +331,48 @@ export const useChallengeManagement = () => {
     }
   }, [toast]);
 
+  // Link experts to challenge
+  const linkExperts = useCallback(async (challengeId: string, expertIds: string[]) => {
+    setLoading(true);
+    try {
+      const links = expertIds.map(expertId => ({
+        challenge_id: challengeId,
+        expert_id: expertId,
+        role_type: 'evaluator',
+        status: 'active'
+      }));
+
+      const { error } = await supabase.from('challenge_experts').insert(links);
+      if (error) throw error;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to link experts');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Link partners to challenge
+  const linkPartners = useCallback(async (challengeId: string, partnerIds: string[]) => {
+    setLoading(true);
+    try {
+      const links = partnerIds.map(partnerId => ({
+        challenge_id: challengeId,
+        partner_id: partnerId,
+        partnership_type: 'collaborator',
+        status: 'active'
+      }));
+
+      const { error } = await supabase.from('challenge_partners').insert(links);
+      if (error) throw error;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to link partners');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return {
     // State
     loading,
@@ -343,6 +385,8 @@ export const useChallengeManagement = () => {
     updateChallenge,
     deleteChallenge,
     manageExpertAssignment,
-    managePartnerAssignment
+    managePartnerAssignment,
+    linkExperts,
+    linkPartners
   };
 };

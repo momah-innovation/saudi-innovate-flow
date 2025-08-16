@@ -108,7 +108,7 @@ export function useUnifiedTranslation() {
           }
         }
       } catch (e) {
-        console.log('🔍 i18next error:', e);
+        debugLog.warn('i18next error', { error: e });
       }
 
       // Strategy 2: Provided fallback

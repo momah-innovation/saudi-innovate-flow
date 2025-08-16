@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAnalyticsTracking } from '@/hooks/useAnalyticsTracking';
 import { useOptimizedAnalyticsData } from '@/hooks/useOptimizedCoreData';
+import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { StatusBadge } from '@/components/ui/StatusBadge';
