@@ -33,7 +33,19 @@ import { AdminAnalyticsWrapper } from '@/components/analytics/ProtectedAnalytics
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 import { errorHandler } from '@/utils/error-handler';
-import { AdminMetricCardProps, AdminMetrics, AdminAnalyticsData } from '@/types/admin';
+
+interface AdminMetricCardProps {
+  title: string;
+  value: number | string;
+  change?: number;
+  trend?: 'up' | 'down' | 'stable';
+  icon: React.ComponentType<any>;
+  loading?: boolean;
+  error?: boolean;
+  variant?: 'default' | 'security' | 'performance';
+  fallbackValue?: string;
+  t: (key: string, fallback?: string) => string;
+}
 
 const AdminMetricCard: React.FC<AdminMetricCardProps> = ({ 
   title, 
@@ -84,20 +96,20 @@ export function MigratedAdminDashboard() {
   const { t, formatNumber } = useUnifiedTranslation();
   const adminAnalytics = useAdminAnalytics();
   
-  // Extract analytics data with safe type handling
-  const coreMetrics = adminAnalytics.coreMetrics || null;
-  const securityMetrics = adminAnalytics.securityMetrics || null;
-  const roleBasedMetrics = adminAnalytics.roleBasedMetrics || null;
-  const isLoading = adminAnalytics.isLoading || false;
-  const isError = adminAnalytics.isError || false;
-  const error = adminAnalytics.error || null;
-  const refresh = adminAnalytics.refresh || (() => Promise.resolve());
-  const isRefreshing = adminAnalytics.isRefreshing || false;
-  const lastUpdated = adminAnalytics.lastUpdated || null;
-  const hasAccess = adminAnalytics.hasAccess || { security: false, analytics: false };
+  // Extract analytics data with proper type handling
+  const coreMetrics = (adminAnalytics as any).coreMetrics || null;
+  const securityMetrics = (adminAnalytics as any).securityMetrics || null;
+  const roleBasedMetrics = (adminAnalytics as any).roleBasedMetrics || null;
+  const isLoading = (adminAnalytics as any).isLoading || false;
+  const isError = (adminAnalytics as any).isError || false;
+  const error = (adminAnalytics as any).error || null;
+  const refresh = (adminAnalytics as any).refresh || (() => Promise.resolve());
+  const isRefreshing = (adminAnalytics as any).isRefreshing || false;
+  const lastUpdated = (adminAnalytics as any).lastUpdated || null;
+  const hasAccess = (adminAnalytics as any).hasAccess || { security: false, analytics: false };
 
   // Memoized admin-specific calculations
-  const adminMetrics = useMemo((): AdminMetrics => {
+  const adminMetrics = useMemo(() => {
     if (!coreMetrics || isError) {
       return {
         systemHealth: 0,
@@ -112,9 +124,9 @@ export function MigratedAdminDashboard() {
     }
 
     try {
-      const users = (coreMetrics as any)?.users || { active: 0 };
+      const users = (coreMetrics as any)?.users || {};
       const adminData = (roleBasedMetrics as any)?.admin_metrics || {};
-      const securityData = (securityMetrics as any) || { securityScore: 98, riskLevel: 'low' };
+      const securityData = securityMetrics as any || {};
 
       return {
         systemHealth: adminData?.system_health?.uptime || 99.9,
@@ -122,7 +134,7 @@ export function MigratedAdminDashboard() {
         totalRoles: adminData?.total_roles_assigned || 0,
         pendingApprovals: adminData?.pending_approvals || 0,
         securityScore: securityData?.securityScore || 98,
-        riskLevel: (securityData?.riskLevel as AdminMetrics['riskLevel']) || 'low',
+        riskLevel: securityData?.riskLevel || 'low',
         hasError: false,
         errorMessage: null
       };

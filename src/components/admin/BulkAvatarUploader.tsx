@@ -49,8 +49,8 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
       setResults({ success: [], failed: [], total: AVATAR_MAPPING.length });
 
       let completed = 0;
-      let successfulUploads: string[] = [];
-      let failedUploads: string[] = [];
+      const successfulUploads: string[] = [];
+      const failedUploads: string[] = [];
 
       for (const mapping of AVATAR_MAPPING) {
         try {
@@ -72,9 +72,9 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
 
             if (error) {
               const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-              failedUploads = [...failedUploads, `${userName} (${mapping.fileName})`];
+              failedUploads.push(`${userName} (${mapping.fileName})`);
             } else {
-              successfulUploads = [...successfulUploads, `${userName} (${mapping.fileName})`];
+              successfulUploads.push(`${userName} (${mapping.fileName})`);
             }
           }
 
@@ -86,7 +86,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-          failedUploads = [...failedUploads, mapping.fileName];
+          failedUploads.push(mapping.fileName);
           completed++;
           setProgress((completed / AVATAR_MAPPING.length) * 100);
         }
