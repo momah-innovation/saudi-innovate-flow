@@ -219,6 +219,7 @@
 - src/i18n/enhanced-config-v3.ts (translation performance fix)
 - src/hooks/useTranslationAppShell.ts (loading threshold optimization)
 - src/utils/navigation-optimization.ts (new navigation performance utilities)
+- src/components/layout/AppShell.tsx (sidebar state unified with persistence)
 
 ## Technical Achievements This Session
 

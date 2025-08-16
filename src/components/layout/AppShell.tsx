@@ -14,6 +14,7 @@ import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTim
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
+import { useSidebarPersistence } from '@/contexts/SidebarContext';
 
 interface AppShellProps {
   children: ReactNode;
@@ -131,18 +132,18 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   const systemSettings = useSystemSettings();
   const location = useLocation();
   
-  // Local state with debug logging
-  const [sidebarOpen, setSidebarOpenInternal] = useState(false);
+  // Sidebar state from persistence context (keeps state consistent app-wide)
+  const { isOpen: sidebarOpen, setIsOpen } = useSidebarPersistence();
   
   const setSidebarOpen = (open: boolean | ((prev: boolean) => boolean)) => {
-    const newValue = typeof open === 'function' ? open(sidebarOpen) : open;
+    const newValue = typeof open === 'function' ? (open as (prev: boolean) => boolean)(sidebarOpen) : open;
     debugLog.debug('Sidebar state change requested', {
       timestamp: Date.now(),
       from: sidebarOpen,
       to: newValue,
       isFunction: typeof open === 'function'
     });
-    setSidebarOpenInternal(newValue);
+    setIsOpen(newValue);
   };
   
   // Determine if collaboration should be enabled based on route
