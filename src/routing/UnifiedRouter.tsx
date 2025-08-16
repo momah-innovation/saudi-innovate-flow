@@ -643,8 +643,18 @@ function RouterWithPerformanceMonitoring() {
   const location = useLocation();
 
   // Phase 2: Translation Optimization
-  useTranslationPrefetch({ enabled: true, aggressive: false });
-  useNavigationPreload({ enabled: true, preloadDelay: 100 });
+  useTranslationPrefetch({ 
+    enabled: true, 
+    preloadCoreNamespaces: true,
+    preloadRoleBasedNamespaces: true,
+    preloadNavigationNamespaces: true
+  });
+  useNavigationPreload({ 
+    enabled: true, 
+    preloadTranslations: true,
+    preloadData: true,
+    debounceMs: 100 
+  });
 
   // Phase 3: Data Prefetching Architecture  
   useDataPrefetching({ 
