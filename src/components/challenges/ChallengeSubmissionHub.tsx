@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,6 +27,11 @@ export const ChallengeSubmissionHub: React.FC<ChallengeSubmissionHubProps> = ({
   const { user } = useAuth();
   const { metrics } = useAdminDashboardMetrics();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [userSubmission, setUserSubmission] = useState<any>(null);
 

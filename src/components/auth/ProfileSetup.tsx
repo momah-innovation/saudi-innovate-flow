@@ -1,8 +1,9 @@
 // User Profile Setup - Phase 2
 // Comprehensive profile completion flow
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -76,6 +77,11 @@ export const ProfileSetup = () => {
   const { toast } = useToast();
   const { user, userProfile, updateProfile } = useAuth();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   
   // Get specializations and experience levels from settings
   const specializationsData = getSettingValue('specializations', []) as string[];

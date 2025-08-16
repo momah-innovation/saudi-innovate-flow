@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -46,6 +47,11 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   onClose
 }) => {
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const { notifications, markAsRead } = useCollaboration();
   const { t } = useUnifiedTranslation();
   const [selectedTab, setSelectedTab] = useState('all');
@@ -96,7 +102,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
 
     // Navigate to action URL if available
     if (notification.data.action_url) {
-      navigate(notification.data.action_url);
+      navigationHandler.navigateTo(notification.data.action_url);
     }
   };
 

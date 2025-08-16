@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -27,6 +28,11 @@ interface AnalystDashboardProps {
 export function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSystemData, canGenerateReports }: AnalystDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
 
   const analystStats = [
     {
@@ -68,42 +74,42 @@ export function AnalystDashboard({ userProfile, canAccessAnalytics, canViewSyste
       title: language === 'ar' ? 'التحليلات المتقدمة' : 'Advanced Analytics',
       description: language === 'ar' ? 'تحليلات فورية ورؤى المستخدمين' : 'Real-time analytics and user insights',
       icon: BarChart3,
-      action: () => navigate('/admin/analytics-advanced'),
+      action: () => navigationHandler.navigateTo('/admin/analytics-advanced'),
       show: canAccessAnalytics
     },
     {
       title: language === 'ar' ? 'تدقيق النظام' : 'System Auditing',
       description: language === 'ar' ? 'مراجعة وتدقيق أمان النظام' : 'System security review and auditing',
       icon: Shield,
-      action: () => navigate('/admin/security-advanced'),
+      action: () => navigationHandler.navigateTo('/admin/security-advanced'),
       show: canViewSystemData
     },
     {
       title: language === 'ar' ? 'تقارير البيانات' : 'Data Reports',
       description: language === 'ar' ? 'إنشاء تقارير مخصصة وتحليلات' : 'Generate custom reports and analytics',
       icon: PieChart,
-      action: () => navigate('/reports'),
+      action: () => navigationHandler.navigateTo('/reports'),
       show: canGenerateReports
     },
     {
       title: language === 'ar' ? 'مراقبة الأداء' : 'Performance Monitoring',
       description: language === 'ar' ? 'مراقبة أداء النظام والتطبيقات' : 'Monitor system and application performance',
       icon: LineChart,
-      action: () => navigate('/monitoring'),
+      action: () => navigationHandler.navigateTo('/monitoring'),
       show: canViewSystemData
     },
     {
       title: language === 'ar' ? 'تحليل المستخدمين' : 'User Analytics',
       description: language === 'ar' ? 'تحليل سلوك وتفاعل المستخدمين' : 'Analyze user behavior and engagement',
       icon: Eye,
-      action: () => navigate('/user-analytics'),
+      action: () => navigationHandler.navigateTo('/user-analytics'),
       show: canAccessAnalytics
     },
     {
       title: language === 'ar' ? 'إعدادات التحليل' : 'Analytics Configuration',
       description: language === 'ar' ? 'تكوين أدوات التحليل والمقاييس' : 'Configure analytics tools and metrics',
       icon: Settings,
-      action: () => navigate('/analytics/settings'),
+      action: () => navigationHandler.navigateTo('/analytics/settings'),
       show: canViewSystemData
     }
   ];

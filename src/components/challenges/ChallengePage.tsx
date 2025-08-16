@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { formatDateArabic } from '@/utils/unified-date-handler';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -68,6 +69,11 @@ interface ChallengeStats {
 export const ChallengePage: React.FC = () => {
   const { challengeId } = useParams<{ challengeId: string }>();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const { user } = useAuth();
   const { toast } = useToast();
   
@@ -225,7 +231,7 @@ export const ChallengePage: React.FC = () => {
             <AlertTriangle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">التحدي غير موجود</h3>
             <p className="text-muted-foreground mb-4">لم نتمكن من العثور على التحدي المطلوب</p>
-            <Button onClick={() => navigate('/challenges')}>
+            <Button onClick={() => navigationHandler.navigateTo('/challenges')}>
               <ArrowLeft className="h-4 w-4 mr-2" />
               العودة للتحديات
             </Button>
@@ -246,7 +252,7 @@ export const ChallengePage: React.FC = () => {
                 <Button 
                   variant="ghost" 
                   size="sm"
-                  onClick={() => navigate('/challenges')}
+                  onClick={() => navigationHandler.navigateTo('/challenges')}
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   العودة للتحديات

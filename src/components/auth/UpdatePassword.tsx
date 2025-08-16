@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 
 export const UpdatePassword = () => {
   const [password, setPassword] = useState('');
@@ -17,6 +18,11 @@ export const UpdatePassword = () => {
   const [isUpdated, setIsUpdated] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
@@ -116,7 +122,7 @@ export const UpdatePassword = () => {
           </CardHeader>
           <CardContent>
             <Button 
-              onClick={() => navigate('/auth')}
+              onClick={() => navigationHandler.navigateTo('/auth')}
               className="w-full gradient-primary hover:opacity-90 text-white"
             >
               تسجيل الدخول الآن

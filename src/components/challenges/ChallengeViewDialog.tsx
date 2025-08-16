@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { ChallengeFocusQuestionWizard } from './ChallengeFocusQuestionWizard';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -82,6 +83,11 @@ export function ChallengeViewDialog({
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -636,7 +642,7 @@ export function ChallengeViewDialog({
                     <Button 
                       variant="outline" 
                       className="h-16 flex-col gap-2"
-                      onClick={() => navigate(`/admin/challenges/activity/${challenge.id}`)}
+                      onClick={() => navigationHandler.navigateTo(`/admin/challenges/activity/${challenge.id}`)}
                     >
                       <Activity className="w-6 h-6" />
                       <span>{isRTL ? 'مركز النشاط' : 'Activity Hub'}</span>

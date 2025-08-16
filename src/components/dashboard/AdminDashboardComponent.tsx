@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { logger } from '@/utils/logger';
@@ -69,6 +70,11 @@ interface AdminDashboardProps {
 export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, canViewAnalytics }: AdminDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const { getPrimaryRole } = useRoleAccess();
   const systemHealth = useSystemHealth();
   const adminMetrics = useAdminDashboardMetrics();
@@ -90,7 +96,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.user_management', 'User Management'),
       description: t('admin.dashboard.user_management_desc', 'Manage users, roles and permissions'),
       icon: Users,
-      action: () => navigate('/admin/users'),
+      action: () => navigationHandler.navigateTo('/admin/users'),
       show: canManageUsers,
       category: 'management'
     },
@@ -98,7 +104,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.role_management', 'Role Management'),
       description: t('admin.dashboard.role_management_desc', 'Configure roles and permissions'),
       icon: Shield,
-      action: () => navigate('/admin/organizational-structure'),
+      action: () => navigationHandler.navigateTo('/admin/organizational-structure'),
       show: canManageUsers,
       category: 'management'
     },
@@ -106,7 +112,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.access_control', 'Access Control'),
       description: t('admin.dashboard.access_control_desc', 'Manage page and feature access control'),
       icon: Shield,
-      action: () => navigate('/admin/expert-assignments'),
+      action: () => navigationHandler.navigateTo('/admin/expert-assignments'),
       show: canManageSystem,
       category: 'security'
     },
@@ -114,7 +120,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.challenge_management', 'Challenge Management'),
       description: t('admin.dashboard.challenge_management_desc', 'Create and manage challenges and competitions'),
       icon: BarChart3,
-      action: () => navigate('/admin/challenges'),
+      action: () => navigationHandler.navigateTo('/admin/challenges'),
       show: true,
       category: 'content'
     },
@@ -122,7 +128,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.ideas_management', 'Ideas Management'),
       description: t('admin.dashboard.ideas_management_desc', 'Review and manage submitted ideas'),
       icon: Database,
-      action: () => navigate('/ideas'),
+      action: () => navigationHandler.navigateTo('/ideas'),
       show: true,
       category: 'content'
     },
@@ -130,7 +136,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.analytics_reports', 'Analytics & Reports'),
       description: t('admin.dashboard.analytics_reports_desc', 'View system reports and advanced analytics'),
       icon: BarChart3,
-      action: () => navigate('/admin/evaluations'),
+      action: () => navigationHandler.navigateTo('/admin/evaluations'),
       show: canViewAnalytics,
       category: 'analytics'
     },
@@ -138,7 +144,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.system_settings', 'System Settings'),
       description: t('admin.dashboard.system_settings_desc', 'Configure global system settings'),
       icon: Settings,
-      action: () => navigate('/admin/system-settings'),
+      action: () => navigationHandler.navigateTo('/admin/system-settings'),
       show: canManageSystem,
       category: 'system'
     },
@@ -146,7 +152,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.events_management', 'Events Management'),
       description: t('admin.dashboard.events_management_desc', 'Organize and manage events and conferences'),
       icon: Users,
-      action: () => navigate('/admin/events'),
+      action: () => navigationHandler.navigateTo('/admin/events'),
       show: true,
       category: 'content'
     },
@@ -154,7 +160,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.campaigns_management', 'Campaigns Management'),
       description: t('admin.dashboard.campaigns_management_desc', 'Create and manage innovation campaigns'),
       icon: Database,
-      action: () => navigate('/admin/campaigns'),
+      action: () => navigationHandler.navigateTo('/admin/campaigns'),
       show: true,
       category: 'content'
     },
@@ -162,7 +168,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.partners_management', 'Partners Management'),
       description: t('admin.dashboard.partners_management_desc', 'Manage partnerships and external collaborations'),
       icon: Briefcase,
-      action: () => navigate('/admin/partners'),
+      action: () => navigationHandler.navigateTo('/admin/partners'),
       show: true,
       category: 'management'
     },
@@ -170,7 +176,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.sectors_management', 'Sectors Management'),
       description: t('admin.dashboard.sectors_management_desc', 'Manage innovation sectors and fields'),
       icon: Building,
-      action: () => navigate('/admin/sectors'),
+      action: () => navigationHandler.navigateTo('/admin/sectors'),
       show: true,
       category: 'management'
     },
@@ -178,7 +184,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.expert_assignment', 'Expert Assignment Management'),
       description: t('admin.dashboard.expert_assignment_desc', 'Assign experts to challenges and manage evaluations'),
       icon: Users,
-      action: () => navigate('/admin/expert-assignments'),
+      action: () => navigationHandler.navigateTo('/admin/expert-assignments'),
       show: canManageUsers,
       category: 'management'
     },
@@ -186,7 +192,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.core_team_management', 'Core Team Management'),
       description: t('admin.dashboard.core_team_management_desc', 'Manage core team members and projects'),
       icon: Users,
-      action: () => navigate('/admin/core-team'),
+      action: () => navigationHandler.navigateTo('/admin/core-team'),
       show: canManageUsers,
       category: 'management'
     },
@@ -194,7 +200,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.organizational_structure', 'Organizational Structure'),
       description: t('admin.dashboard.organizational_structure_desc', 'Manage organizational hierarchy and departments'),
       icon: Building,
-      action: () => navigate('/admin/organizational-structure'),
+      action: () => navigationHandler.navigateTo('/admin/organizational-structure'),
       show: canManageSystem,
       category: 'management'
     },
@@ -202,7 +208,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.stakeholders_management', 'Stakeholders Management'),
       description: t('admin.dashboard.stakeholders_management_desc', 'Manage stakeholder relationships and engagement'),
       icon: Users,
-      action: () => navigate('/admin/stakeholders'),
+      action: () => navigationHandler.navigateTo('/admin/stakeholders'),
       show: canManageSystem,
       category: 'management'
     },
@@ -210,7 +216,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.teams_management', 'Teams Management'),
       description: t('admin.dashboard.teams_management_desc', 'Organize work teams and projects'),
       icon: Users,
-      action: () => navigate('/admin/teams'),
+      action: () => navigationHandler.navigateTo('/admin/teams'),
       show: canManageSystem,
       category: 'management'
     },
@@ -218,7 +224,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.entities_management', 'Entities Management'),
       description: t('admin.dashboard.entities_management_desc', 'Manage organizational entities and institutions'),
       icon: Building,
-      action: () => navigate('/admin/entities'),
+      action: () => navigationHandler.navigateTo('/admin/entities'),
       show: canManageSystem,
       category: 'management'
     },
@@ -226,7 +232,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('admin.dashboard.evaluation_management', 'Evaluation Management'),
       description: t('admin.dashboard.evaluation_management_desc', 'Manage evaluation criteria, templates, and rules'),
       icon: Target,
-      action: () => navigate('/admin/evaluation-management'),
+      action: () => navigationHandler.navigateTo('/admin/evaluation-management'),
       show: canManageSystem,
       category: 'management'
     },
@@ -234,7 +240,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('dashboard.storage.management'), 
       description: t('dashboard.storage.description'),
       icon: Database,
-      action: () => navigate('/admin/storage'),
+      action: () => navigationHandler.navigateTo('/admin/storage'),
       show: canManageSystem,
       category: 'system'
     },
@@ -242,7 +248,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('dashboard.storage.policies'),
       description: t('dashboard.storage.policies_description'),
       icon: HardDrive, 
-      action: () => navigate('/admin/storage/policies'),
+      action: () => navigationHandler.navigateTo('/admin/storage/policies'),
       show: canManageSystem,
       category: 'system'
     },
@@ -250,7 +256,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('dashboard.security.monitor'),
       description: t('dashboard.security.description'),
       icon: Shield,
-      action: () => navigate('/admin/security'),
+      action: () => navigationHandler.navigateTo('/admin/security'),
       show: canManageSystem,
       category: 'security'
     },
@@ -258,7 +264,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('dashboard.focus_questions.management'),
       description: t('dashboard.focus_questions.description'),
       icon: HelpCircle,
-      action: () => navigate('/admin/focus-questions'),
+      action: () => navigationHandler.navigateTo('/admin/focus-questions'),
       show: canManageSystem,
       category: 'content'
     },
@@ -266,7 +272,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: t('dashboard.system_analytics.title'),
       description: t('dashboard.system_analytics.description'),
       icon: BarChart3,
-      action: () => navigate('/admin/system-analytics'),
+      action: () => navigationHandler.navigateTo('/admin/system-analytics'),
       show: canViewAnalytics,
       category: 'analytics'
     }
@@ -487,15 +493,15 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button onClick={() => navigate('/admin/users')} className="w-full justify-start">
+                <Button onClick={() => navigationHandler.navigateTo('/admin/users')} className="w-full justify-start">
                   <Users className="w-4 h-4 mr-2" />
                    {t('admin.cards.manage_users')}
                  </Button>
-                 <Button onClick={() => navigate('/admin/challenges')} variant="outline" className="w-full justify-start">
+                 <Button onClick={() => navigationHandler.navigateTo('/admin/challenges')} variant="outline" className="w-full justify-start">
                    <Target className="w-4 h-4 mr-2" />
                    {t('admin.cards.manage_challenges')}
                  </Button>
-                 <Button onClick={() => navigate('/admin/evaluations')} variant="outline" className="w-full justify-start">
+                 <Button onClick={() => navigationHandler.navigateTo('/admin/evaluations')} variant="outline" className="w-full justify-start">
                    <BarChart3 className="w-4 h-4 mr-2" />
                    {t('admin.cards.system_reports')}
                  </Button>
@@ -872,7 +878,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                       variant="outline" 
                       size="sm" 
                       className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                      onClick={() => navigate(card.href)}
+                      onClick={() => navigationHandler.navigateTo(card.href)}
                     >
                       <Eye className="w-3 h-3 mr-2" />
                       {t('admin.actions.access_interface')}
