@@ -238,26 +238,26 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
     averageTimeSpent: number;
     clickThroughRate: number;
   }) => {
-    const recommendations: string[] = [];
+    let recommendations: string[] = [];
     
     if (metrics.conversionRate < 2) {
-      recommendations.push(isRTL ? 'تبسيط عملية التطبيق لزيادة التحويلات' : 'Simplify application process to increase conversions');
+      recommendations = [...recommendations, isRTL ? 'تبسيط عملية التطبيق لزيادة التحويلات' : 'Simplify application process to increase conversions'];
     }
     
     if (metrics.engagementRate < 10) {
-      recommendations.push(isRTL ? 'إضافة محتوى تفاعلي أكثر جاذبية' : 'Add more engaging interactive content');
+      recommendations = [...recommendations, isRTL ? 'إضافة محتوى تفاعلي أكثر جاذبية' : 'Add more engaging interactive content'];
     }
     
     if (metrics.bounceRate > 60) {
-      recommendations.push(isRTL ? 'تحسين المحتوى لتقليل معدل الارتداد' : 'Improve content to reduce bounce rate');
+      recommendations = [...recommendations, isRTL ? 'تحسين المحتوى لتقليل معدل الارتداد' : 'Improve content to reduce bounce rate'];
     }
     
     if (metrics.averageTimeSpent < 60) {
-      recommendations.push(isRTL ? 'إضافة المزيد من التفاصيل والوسائط' : 'Add more detailed content and media');
+      recommendations = [...recommendations, isRTL ? 'إضافة المزيد من التفاصيل والوسائط' : 'Add more detailed content and media'];
     }
     
     if (metrics.clickThroughRate < 5) {
-      recommendations.push(isRTL ? 'تحسين العناوين والأزرار لزيادة النقرات' : 'Optimize headings and buttons for better click-through');
+      recommendations = [...recommendations, isRTL ? 'تحسين العناوين والأزرار لزيادة النقرات' : 'Optimize headings and buttons for better click-through'];
     }
     
     return recommendations;

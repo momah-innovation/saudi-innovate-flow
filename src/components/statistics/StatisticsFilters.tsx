@@ -19,8 +19,16 @@ interface StatisticsFiltersProps {
   onDepartmentChange: (departments: string[]) => void;
   selectedSectors: string[];
   onSectorChange: (sectors: string[]) => void;
-  departments: any[];
-  sectors: any[];
+  departments: Array<{
+    id: string;
+    name: string;
+    name_ar?: string;
+  }>;
+  sectors: Array<{
+    id: string;
+    name: string;
+    name_ar?: string;
+  }>;
   onExport: () => void;
   onReset: () => void;
 }

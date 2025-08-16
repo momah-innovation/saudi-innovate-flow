@@ -103,7 +103,7 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
       }));
 
       // Calculate monthly trends (last 6 months)
-      const monthlyData = [];
+      let monthlyData = [];
       for (let i = 5; i >= 0; i--) {
         const date = new Date();
         date.setMonth(date.getMonth() - i);
@@ -120,15 +120,15 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
           return regDate >= monthStart && regDate <= monthEnd;
         });
 
-        monthlyData.push({
+        monthlyData = [...monthlyData, {
           month: date.toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { month: 'short' }),
           events: monthEvents.length,
           registrations: monthRegistrations.length
-        });
+        }];
       }
 
       // Calculate registration trends (last 30 days)
-      const registrationTrends = [];
+      let registrationTrends = [];
       for (let i = 29; i >= 0; i--) {
         const date = new Date();
         date.setDate(date.getDate() - i);
@@ -142,11 +142,11 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
           e.event_date === dateStr
         );
 
-        registrationTrends.push({
+        registrationTrends = [...registrationTrends, {
           date: date.toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { month: 'short', day: 'numeric' }),
           registrations: dayRegistrations.length,
           events: dayEvents.length
-        });
+        }];
       }
 
       // Calculate average attendance

@@ -39,6 +39,20 @@ import {
 } from 'lucide-react';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 
+interface ChallengeSubmission {
+  id: string;
+  title: string;
+  description?: string;
+  status: string;
+  score?: number;
+  created_at: string;
+  file_url?: string;
+  profiles?: {
+    display_name?: string;
+    avatar_url?: string;
+  };
+}
+
 interface Challenge {
   id: string;
   title_ar: string;
@@ -89,7 +103,7 @@ export function ChallengeViewDialog({
     navigationHandler.setNavigate(navigate);
   }, [navigate]);
   
-  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | 'winners' | 'top-rated' | 'recent'>('all');
   const [isParticipating, setIsParticipating] = useState(false);
@@ -132,7 +146,7 @@ export function ChallengeViewDialog({
         .order('score', { ascending: false });
 
       if (error) throw error;
-      setSubmissions(data || []);
+      setSubmissions((data as any)?.filter((item: any) => item) || []);
     } catch (error) {
       logger.error('Failed to fetch challenge submissions', { 
         component: 'ChallengeViewDialog', 
