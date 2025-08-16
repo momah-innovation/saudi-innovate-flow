@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { errorHandler, Logger } from '@/utils/error-handler';
 import { showErrorToast } from './toast-queue-manager';
+import { debugLog } from '@/utils/debugLogger';
 
 interface GlobalErrorState {
   hasError: boolean;
@@ -250,13 +251,14 @@ class GlobalErrorHandler extends Component<GlobalErrorHandlerProps, GlobalErrorS
       // Use proper navigation with fallback
       // Use proper navigation with fallback
       if (typeof window !== 'undefined') {
-        // ✅ FIXED: Use safe navigation with fallback
+        // ✅ FIXED: Use safe navigation with enhanced fallback
         try {
           if (typeof window !== 'undefined' && window.location) {
             window.location.href = '/';
           }
         } catch (error) {
-          // Fallback handled by error boundary
+          // Enhanced error handling for navigation fallback
+          debugLog.error('Navigation fallback error', { component: 'GlobalErrorHandler', error });
         }
       }
     }

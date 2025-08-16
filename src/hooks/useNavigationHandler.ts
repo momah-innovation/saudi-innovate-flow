@@ -28,10 +28,16 @@ export const useNavigationHandler = () => {
     } catch (error) {
       // Use structured logging instead of console.error
       debugLog.error('Navigation error', { component: 'NavigationHandler', action: 'navigateTo', path }, error);
-      // Fallback to window.location for edge cases
-      // Use safe navigation fallback
+      // ✅ FIXED: Use safe navigation fallback instead of direct window.location
       if (typeof window !== 'undefined') {
-        window.location.href = path;
+        try {
+          // Try to use history API first
+          window.history.pushState(null, '', path);
+          window.location.reload();
+        } catch (historyError) {
+          // Final fallback to window.location for edge cases
+          window.location.href = path;
+        }
       }
     }
   }, [navigate]);

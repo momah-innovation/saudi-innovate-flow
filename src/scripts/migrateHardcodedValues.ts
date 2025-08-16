@@ -156,8 +156,10 @@ export async function migrateAllHardcodedValues(): Promise<MigrationResult[]> {
 
   const results: MigrationResult[] = [];
 
-  // Use structured logging for migration scripts
-  // console.log('Starting hardcoded values migration...');
+  // ✅ FIXED: Use structured logging for migration scripts
+  if (typeof window !== 'undefined' && (window as any).debugLog) {
+    (window as any).debugLog.log('Starting hardcoded values migration', { component: 'MigrationScript', data: { totalMigrations: migrations.length } });
+  }
 
   for (const migration of migrations) {
     // Use structured logging for migration progress

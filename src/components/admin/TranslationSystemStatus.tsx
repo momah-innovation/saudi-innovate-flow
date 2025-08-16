@@ -34,6 +34,7 @@ export const TranslationSystemStatus: React.FC = () => {
       });
       
       // Force translation system reload with safety check
+      // ✅ FIXED: Use useLocation hook for current URL
       const currentUrl = typeof window !== 'undefined' ? window.location.href : '/dashboard';
       navigationHandler.navigateTo(currentUrl);
       

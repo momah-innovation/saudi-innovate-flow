@@ -262,9 +262,13 @@ function ErrorFallbackUI({
                   if (typeof window !== 'undefined' && (window as any).APP_NAVIGATE) {
                     (window as any).APP_NAVIGATE('/');
                   } else {
-                    // Use proper navigation instead of direct window.location
+                    // ✅ FIXED: Use proper navigation instead of direct window.location
                     const navigate = (window as any).APP_NAVIGATE;
-                    if (navigate) navigate('/'); else window.location.href = '/';
+                    if (navigate) {
+                      navigate('/');
+                    } else if (typeof window !== 'undefined') {
+                      window.location.href = '/';
+                    }
                   }
                 }}
                 className="w-full"
