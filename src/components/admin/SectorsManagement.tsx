@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useSectorManagement } from "@/hooks/useSectorManagement";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,13 +24,21 @@ interface Sector {
 }
 
 export function SectorsManagement() {
-  const [sectors, setSectors] = useState<Sector[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [editingSector, setEditingSector] = useState<Sector | null>(null);
+  const { 
+    sectors, 
+    loading: isLoading, 
+    error, 
+    loadSectors, 
+    createSector, 
+    updateSector, 
+    deleteSector 
+  } = useSectorManagement();
+  
+  const [editingSector, setEditingSector] = useState<any | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   // Detail view states
-  const [viewingSector, setViewingSector] = useState<Sector | null>(null);
+  const [viewingSector, setViewingSector] = useState<any | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   
   // Search and filter states
@@ -58,22 +66,8 @@ export function SectorsManagement() {
   });
 
   useEffect(() => {
-    fetchSectors();
-  }, []);
-
-  const fetchSectors = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("sectors")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setSectors(data || []);
-    } catch (error) {
-      errorHandler.handleError(error, 'SectorsManagement.fetchSectors');
-    }
-  };
+    loadSectors();
+  }, [loadSectors]);
 
   const isFormValid = () => {
     return formData.name.trim().length > 0;
@@ -83,33 +77,21 @@ export function SectorsManagement() {
     if (!isFormValid()) return;
 
     try {
-      setIsLoading(true);
-      
       if (editingSector) {
-        const { error } = await supabase
-          .from('sectors')
-          .update({
-            name: formData.name,
-            name_ar: formData.name_ar,
-            description: formData.description,
-            description_ar: formData.description_ar,
-            vision_2030_alignment: formData.vision_2030_alignment,
-            updated_at: currentTimestamp()
-          })
-          .eq('id', editingSector.id);
-
-        if (error) throw error;
+        await updateSector(editingSector.id, {
+          name: formData.name,
+          name_ar: formData.name_ar,
+          description: formData.description,
+          description_ar: formData.description_ar,
+          vision_2030_alignment: formData.vision_2030_alignment
+        });
         
         toast({
           title: t('sectors.update_success'),
           description: t('sectors.update_success_description')
         });
       } else {
-        const { error } = await supabase
-          .from('sectors')
-          .insert([formData]);
-
-        if (error) throw error;
+        await createSector(formData);
         
         toast({
           title: t('sectors.create_success'),
@@ -117,17 +99,13 @@ export function SectorsManagement() {
         });
       }
 
-      fetchSectors();
       resetForm();
     } catch (error) {
-      logger.error("Error saving sector", error);
       toast({
         title: t('sectors.save_error'),
         description: t('sectors.save_error_description'),
         variant: 'destructive'
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -145,21 +123,13 @@ export function SectorsManagement() {
 
   const handleDelete = async (sectorId: string) => {
     try {
-      const { error } = await supabase
-        .from('sectors')
-        .delete()
-        .eq('id', sectorId);
-
-      if (error) throw error;
+      await deleteSector(sectorId);
 
       toast({
         title: t('sectors.success_title'),
         description: t('sectors.deleted_successfully')
       });
-
-      fetchSectors();
     } catch (error) {
-      logger.error("Error deleting sector", error);
       toast({
         title: t('sectors.error_title'),
         description: t('sectors.failed_to_delete'),

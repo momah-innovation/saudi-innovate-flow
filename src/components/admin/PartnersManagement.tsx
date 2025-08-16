@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { usePartnerManagement } from "@/hooks/usePartnerManagement";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from '@/components/ui/StatusBadge';
@@ -34,11 +34,19 @@ interface Partner {
 }
 
 export function PartnersManagement() {
-  const [partners, setPartners] = useState<Partner[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [editingPartner, setEditingPartner] = useState<Partner | null>(null);
+  const { 
+    partners, 
+    loading: isLoading, 
+    error, 
+    loadPartners, 
+    createPartner, 
+    updatePartner, 
+    deletePartner 
+  } = usePartnerManagement();
+  
+  const [editingPartner, setEditingPartner] = useState<any | null>(null);
   // Detail view states
-  const [viewingPartner, setViewingPartner] = useState<Partner | null>(null);
+  const [viewingPartner, setViewingPartner] = useState<any | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   
@@ -67,51 +75,21 @@ export function PartnersManagement() {
   });
 
   useEffect(() => {
-    fetchPartners();
-  }, []);
-
-  const fetchPartners = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("partners")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setPartners(data || []);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      toast({
-        title: t('error.title'),
-        description: t('error.fetch_partners_failed'),
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    loadPartners();
+  }, [loadPartners]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
       if (editingPartner) {
-        const { error } = await supabase
-          .from("partners")
-          .update(formData)
-          .eq("id", editingPartner.id);
-
-        if (error) throw error;
+        await updatePartner(editingPartner.id, formData);
         toast({
           title: t('success.title'),
           description: t('success.partner_updated'),
         });
       } else {
-        const { error } = await supabase
-          .from("partners")
-          .insert([formData]);
-
-        if (error) throw error;
+        await createPartner(formData);
         toast({
           title: t('success.title'),
           description: t('success.partner_created'),
@@ -121,7 +99,6 @@ export function PartnersManagement() {
       setIsDialogOpen(false);
       setEditingPartner(null);
       resetForm();
-      fetchPartners();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
@@ -177,18 +154,12 @@ export function PartnersManagement() {
     if (!confirm(t('partners.delete_confirmation'))) return;
 
     try {
-      const { error } = await supabase
-        .from("partners")
-        .delete()
-        .eq("id", id);
-
-      if (error) throw error;
+      await deletePartner(id);
       
       toast({
         title: t('success.title'),
         description: t('success.partner_deleted'),
       });
-      fetchPartners();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
