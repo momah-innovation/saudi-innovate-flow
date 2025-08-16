@@ -13,6 +13,7 @@ import { Search, Filter, Clock, Target, AlertTriangle, Users } from "lucide-reac
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { logger } from "@/utils/logger";
+import { dateHandler } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Challenge {
@@ -347,7 +348,7 @@ export const InnovatorDashboard = () => {
                 {challenge.end_date && (
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
-                    {t('innovator_dashboard.deadline')}: {new Date(challenge.end_date).toLocaleDateString()}
+                    {t('innovator_dashboard.deadline')}: {dateHandler.formatDate(challenge.end_date)}
                   </div>
                 )}
                 {challenge.estimated_budget && (

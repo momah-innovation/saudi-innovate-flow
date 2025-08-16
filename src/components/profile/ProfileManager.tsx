@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -68,6 +69,12 @@ export const ProfileManager: React.FC = () => {
   }, [userProfile]);
 
   const handleSaveProfile = async () => {
+    const errorHandler = createErrorHandler({
+      component: 'ProfileManager',
+      showToast: true,
+      logError: true
+    });
+
     setLoading(true);
     try {
       const updateData = formData;

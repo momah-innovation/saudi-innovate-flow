@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
+import { dateHandler } from '@/utils/unified-date-handler';
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";
 import { useOptimizedDashboardCounts, useOptimizedTeamCounts } from '@/hooks/useOptimizedDashboardCounts';
@@ -404,7 +405,7 @@ await Promise.all([
                         {currentLanguage === 'ar' ? notification.message_ar : notification.message_en}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        {new Date(notification.created_at).toLocaleDateString(currentLanguage === 'ar' ? 'ar-SA' : 'en-US')}
+                        {dateHandler.formatDate(notification.created_at)}
                       </p>
                     </div>
                     {!notification.is_read && (

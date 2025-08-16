@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { createErrorHandler } from '@/utils/unified-error-handler';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -158,6 +160,12 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
     e.preventDefault();
     setLoading(true);
 
+    const errorHandler = createErrorHandler({
+      component: 'OrganizationalProfileForm',
+      showToast: true,
+      logError: true
+    });
+
     try {
       const { error } = await supabase
         .from('profiles')
@@ -176,7 +184,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
           service_id: formData.service_id || null,
           bio: formData.bio,
           organization: formData.organization,
-          updated_at: new Date().toISOString()
+          updated_at: dateHandler.formatForAPI(new Date())
         })
         .eq('id', userProfile?.id);
 

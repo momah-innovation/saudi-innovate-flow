@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useForm } from 'react-hook-form';
+import { useAuth } from '@/contexts/AuthContext';
+import { createErrorHandler } from '@/utils/unified-error-handler';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -53,6 +55,12 @@ export function ProfileEditForm({ onCancel, onSave }: ProfileEditFormProps) {
   const onSubmit = async (data: ProfileFormData) => {
     if (!user) return;
 
+    const errorHandler = createErrorHandler({
+      component: 'ProfileEditForm',
+      showToast: true,
+      logError: true
+    });
+
     setIsLoading(true);
     try {
       const { error } = await supabase
@@ -65,7 +73,7 @@ export function ProfileEditForm({ onCancel, onSave }: ProfileEditFormProps) {
           position: data.position,
           department: data.department,
           sector: data.sector,
-          updated_at: new Date().toISOString()
+          updated_at: dateHandler.formatForAPI(new Date())
         })
         .eq('id', user.id);
 

@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
 import { createDebouncedNavigate } from '@/utils/navigation-performance';
 import { toast } from 'sonner';
-import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
+import { formatDate, formatDateArabic, dateHandler } from '@/utils/unified-date-handler';
 // Removed AppShell import - route provides AppShell wrapper
 import { DashboardHero } from './DashboardHero';
 import { AdminDashboard } from './AdminDashboardComponent';
@@ -270,7 +270,7 @@ export default React.memo(function UserDashboard() {
         points_earned: 100,
         badge_icon: 'lightbulb',
         badge_color: '#10B981',
-        earned_at: new Date().toISOString()
+        earned_at: dateHandler.formatForAPI(new Date())
       }
     ]);
   };
