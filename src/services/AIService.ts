@@ -7,7 +7,7 @@ export interface AIServiceConfig {
   model: string;
   temperature: number;
   maxTokens: number;
-  [key: string]: any;
+  [key: string]: string | number | boolean;
 }
 
 export interface ContentModerationResult {

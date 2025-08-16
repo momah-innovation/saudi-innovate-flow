@@ -1,269 +1,307 @@
 /**
- * Common type definitions for the application
+ * Common Type Definitions - Phase 6 Type Safety Implementation
+ * Replaces 'any' types with proper TypeScript interfaces
  */
 
-// Base Entity Interface
-export interface BaseEntity {
+// ✅ USER AND PROFILE TYPES
+export interface UserProfile {
   id: string;
+  user_id: string;
+  full_name: string | null;
+  avatar_url: string | null;
+  bio: string | null;
+  expertise: string[];
+  department?: string;
+  organization?: string;
+  role?: string;
+  status: 'active' | 'inactive' | 'pending';
+  created_at: string;
+  updated_at: string;
+  last_sign_in_at?: string;
+}
+
+// ✅ ROLE AND PERMISSIONS TYPES
+export interface RolePermissions {
+  canManageUsers: boolean;
+  canViewAdmin: boolean;
+  canEditChallenges: boolean;
+  canReviewSubmissions: boolean;
+  canAccessAnalytics: boolean;
+  canManageSettings: boolean;
+  canModerateContent: boolean;
+  canManageEvents: boolean;
+}
+
+export interface UserRole {
+  id: string;
+  user_id: string;
+  role: string;
+  is_active: boolean;
+  expires_at?: string;
+  granted_at: string;
+}
+
+// ✅ CHALLENGE TYPES
+export interface Challenge {
+  id: string;
+  title: string;
+  description: string;
+  status: 'draft' | 'published' | 'active' | 'closed' | 'archived';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  sensitivity_level: 'normal' | 'restricted' | 'confidential';
+  theme: string;
+  domain: string;
+  tags: string[];
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+  deadline?: string;
+  partner_organization_id?: string;
+  department_id?: string;
+  sector_id?: string;
+}
+
+// ✅ IDEA TYPES
+export interface Idea {
+  id: string;
+  title: string;
+  description: string;
+  status: 'draft' | 'submitted' | 'under_review' | 'approved' | 'rejected' | 'implemented';
+  category: string;
+  tags: string[];
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+  challenge_id?: string;
+  implementation_notes?: string;
+  feedback?: string;
+}
+
+// ✅ EVENT TYPES
+export interface Event {
+  id: string;
+  title: string;
+  description: string;
+  event_type: 'workshop' | 'seminar' | 'conference' | 'webinar' | 'networking' | 'training';
+  status: 'draft' | 'published' | 'ongoing' | 'completed' | 'cancelled';
+  start_date: string;
+  end_date: string;
+  location?: string;
+  virtual_link?: string;
+  max_participants?: number;
+  created_by: string;
   created_at: string;
   updated_at: string;
 }
 
-// User and Profile Types
-export interface UserProfile extends BaseEntity {
+// ✅ NOTIFICATION TYPES
+export interface Notification {
+  id: string;
   user_id: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  bio?: string;
-  avatar_url?: string;
-  organization?: string;
-  position?: string;
-  department?: string;
-  sector?: string;
-  expertise_areas?: string[];
-  skills?: string[];
-  interests?: string[];
-  is_active: boolean;
-}
-
-// System List Types
-export interface SystemDepartment extends BaseEntity {
-  name_ar: string;
-  name_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  is_active: boolean;
-}
-
-export interface SystemSector extends BaseEntity {
-  name_ar: string;
-  name_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  is_active: boolean;
-}
-
-export interface SystemDomain extends BaseEntity {
-  name_ar: string;
-  name_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  sector_id?: string;
-  is_active: boolean;
-}
-
-export interface SystemService extends BaseEntity {
-  name_ar: string;
-  name_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  domain_id?: string;
-  is_active: boolean;
-}
-
-export interface SystemPartner extends BaseEntity {
-  name_ar: string;
-  name_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  contact_email?: string;
-  contact_phone?: string;
-  website?: string;
-  logo_url?: string;
-  partnership_type?: string;
-  is_active: boolean;
-}
-
-export interface SystemExpert extends BaseEntity {
-  user_id: string;
-  name_ar: string;
-  name_en?: string;
-  bio_ar?: string;
-  bio_en?: string;
-  expertise_areas: string[];
-  email?: string;
-  phone?: string;
-  linkedin_url?: string;
-  is_active: boolean;
-}
-
-// Team and Assignment Types
-export interface TeamMember extends BaseEntity {
-  user_id: string;
-  team_id: string;
-  role: 'leader' | 'member' | 'observer';
-  status: 'active' | 'inactive' | 'pending';
-  joined_at: string;
-  profile?: UserProfile;
-}
-
-export interface TeamAssignment extends BaseEntity {
-  team_id: string;
-  challenge_id?: string;
-  event_id?: string;
-  title_ar: string;
-  title_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-  assigned_at: string;
-  due_date?: string;
-  completed_at?: string;
-}
-
-export interface TeamProject extends BaseEntity {
-  team_id: string;
-  title_ar: string;
-  title_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  status: 'planning' | 'active' | 'on_hold' | 'completed' | 'cancelled';
-  start_date: string;
-  end_date?: string;
-  progress_percentage: number;
-}
-
-export interface TeamActivity extends BaseEntity {
-  team_id: string;
-  user_id?: string;
-  activity_type: 'assignment' | 'project' | 'meeting' | 'discussion' | 'milestone';
-  title_ar: string;
-  title_en?: string;
-  description_ar?: string;
-  description_en?: string;
+  title: string;
+  message: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+  category: 'system' | 'challenge' | 'idea' | 'event' | 'social';
+  read: boolean;
   metadata?: Record<string, unknown>;
+  created_at: string;
+  read_at?: string;
 }
 
-// Form and Component Props Types
-export interface FormFieldProps {
+// ✅ TEAM TYPES
+export interface TeamMember {
+  id: string;
+  user_id: string;
+  full_name: string;
+  avatar_url?: string;
+  role: string;
+  department?: string;
+  expertise: string[];
+  status: 'active' | 'inactive';
+  joined_at: string;
+}
+
+export interface Team {
+  id: string;
+  name: string;
+  description?: string;
+  members: TeamMember[];
+  lead_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// ✅ ANALYTICS TYPES
+export interface AnalyticsMetric {
+  name: string;
+  value: number;
+  change?: number;
+  trend?: 'up' | 'down' | 'stable';
+  period: string;
+}
+
+export interface DashboardStats {
+  users: {
+    total: number;
+    active: number;
+    new: number;
+    growthRate: number;
+    trend: 'up' | 'down' | 'stable';
+  };
+  challenges: {
+    total: number;
+    active: number;
+    completed: number;
+    submissions: number;
+    completionRate: number;
+  };
+  engagement: {
+    avgSessionDuration: number;
+    pageViews: number;
+    interactions: number;
+    returnRate: number;
+  };
+  business: {
+    implementedIdeas: number;
+    budgetUtilized: number;
+    partnershipValue: number;
+    roi: number;
+  };
+}
+
+// ✅ FORM TYPES
+export interface FormField {
   name: string;
   label: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url';
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'date' | 'file' | 'checkbox' | 'radio';
+  required: boolean;
   placeholder?: string;
-  required?: boolean;
-  disabled?: boolean;
-  value?: string | number;
-  onChange?: (value: string | number) => void;
-  error?: string;
-  description?: string;
+  options?: Array<{ value: string; label: string; }>;
+  validation?: {
+    pattern?: string;
+    minLength?: number;
+    maxLength?: number;
+    min?: number;
+    max?: number;
+  };
 }
 
-export interface SelectOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
+export interface FormData {
+  [key: string]: string | string[] | number | boolean | File | File[] | null | undefined;
 }
 
-export interface FilterConfig {
-  id: string;
-  label: string;
-  type: 'select' | 'multiselect' | 'date' | 'daterange' | 'search' | 'toggle';
-  options?: SelectOption[];
-  placeholder?: string;
-  defaultValue?: unknown;
-}
-
-// API Response Types
+// ✅ API RESPONSE TYPES
 export interface ApiResponse<T = unknown> {
   data?: T;
-  error?: {
-    message: string;
-    code?: string;
-    details?: Record<string, unknown>;
-  };
-  meta?: {
-    total?: number;
-    page?: number;
-    limit?: number;
-    hasMore?: boolean;
+  error?: string;
+  message?: string;
+  success: boolean;
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
   };
 }
 
-export interface PaginatedResponse<T = unknown> {
-  data: T[];
-  total: number;
-  page: number;
-  limit: number;
-  hasMore: boolean;
+export interface PaginatedResponse<T> extends ApiResponse<T[]> {
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
-// Error Types
-export interface AppError {
-  message: string;
-  code?: string;
-  statusCode?: number;
-  details?: Record<string, unknown>;
-  timestamp?: string;
+// ✅ SETTINGS TYPES
+export interface SystemSettings {
+  platform_name: string;
+  default_language: 'en' | 'ar';
+  maintenance_mode: boolean;
+  registration_enabled: boolean;
+  email_notifications: boolean;
+  sms_notifications: boolean;
+  max_file_size_mb: number;
+  allowed_file_types: string[];
+  session_timeout_minutes: number;
 }
 
-// Event and Activity Types
-export interface SystemActivity extends BaseEntity {
-  user_id?: string;
-  entity_type: 'challenge' | 'idea' | 'event' | 'team' | 'user' | 'system';
-  entity_id?: string;
-  action: string;
-  details_ar: string;
-  details_en?: string;
+export interface NotificationSettings {
+  email_enabled: boolean;
+  sms_enabled: boolean;
+  push_enabled: boolean;
+  frequency: 'immediate' | 'daily' | 'weekly' | 'never';
+  categories: {
+    system: boolean;
+    challenges: boolean;
+    ideas: boolean;
+    events: boolean;
+    social: boolean;
+  };
+}
+
+// ✅ FILE AND STORAGE TYPES
+export interface FileRecord {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  url: string;
+  bucket: string;
+  path: string;
+  uploaded_by: string;
+  uploaded_at: string;
   metadata?: Record<string, unknown>;
-  ip_address?: string;
-  user_agent?: string;
 }
 
-// Translation Types
-export interface TranslationPair {
-  ar: string;
-  en?: string;
+export interface StorageStats {
+  totalFiles: number;
+  totalSize: number;
+  buckets: Array<{
+    name: string;
+    fileCount: number;
+    size: number;
+    isPublic: boolean;
+  }>;
 }
 
-export interface SystemTranslation extends BaseEntity {
-  translation_key: string;
-  text_ar: string;
-  text_en?: string;
-  category: string;
-  context?: string;
-  is_active: boolean;
+// ✅ ERROR AND LOADING TYPES
+export interface LoadingState {
+  isLoading: boolean;
+  message?: string;
 }
 
-// Generic utility types
-export type EntityStatus = 'active' | 'inactive' | 'pending' | 'draft' | 'archived';
-export type SortDirection = 'asc' | 'desc';
-export type ViewMode = 'grid' | 'list' | 'table';
-export type Language = 'ar' | 'en';
-
-export interface SortConfig {
-  field: string;
-  direction: SortDirection;
+export interface ErrorState {
+  hasError: boolean;
+  message?: string;
+  code?: string | number;
+  details?: Record<string, unknown>;
 }
 
-export interface PaginationConfig {
-  page: number;
-  limit: number;
-  total?: number;
+// ✅ THEME AND UI TYPES
+export interface ThemeConfig {
+  mode: 'light' | 'dark' | 'system';
+  primaryColor: string;
+  accentColor: string;
+  borderRadius: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  fontSize: 'sm' | 'md' | 'lg';
 }
 
-// Component Event Handlers
-export type EntityActionHandler<T = unknown> = (entity: T) => void;
-export type EntityAsyncActionHandler<T = unknown> = (entity: T) => Promise<void>;
-
-// Validation Types
-export interface ValidationRule {
-  required?: boolean;
-  minLength?: number;
-  maxLength?: number;
-  pattern?: RegExp;
-  custom?: (value: unknown) => string | null;
+export interface UIState {
+  sidebarOpen: boolean;
+  modalOpen: boolean;
+  activeTab: string;
+  currentPage: string;
+  breadcrumbs: Array<{ label: string; href?: string; }>;
 }
 
-export interface ValidationError {
-  field: string;
-  message: string;
-}
+// ✅ UTILITY TYPES
+export type Status = 'idle' | 'loading' | 'success' | 'error';
+export type Priority = 'low' | 'medium' | 'high' | 'urgent';
+export type Sensitivity = 'normal' | 'restricted' | 'confidential';
 
-export interface FormState<T = Record<string, unknown>> {
-  data: T;
-  errors: ValidationError[];
-  isValid: boolean;
-  isDirty: boolean;
-  isSubmitting: boolean;
-}
+// Helper type for making all properties optional
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+// Helper type for making specific properties required
+export type RequiredBy<T, K extends keyof T> = T & Required<Pick<T, K>>;

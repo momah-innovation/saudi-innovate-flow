@@ -1,12 +1,11 @@
 /**
- * AI Service Hook - Replaces direct SQL calls in AIService
- * Provides centralized AI operations with proper error handling
+ * AI Service Hook - Phase 6 Services Layer Migration
+ * Centralizes all AI service operations and eliminates direct supabase calls
  */
 
-import { useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { useStructuredLogging } from './useStructuredLogging';
+import { debugLog } from '@/utils/debugLogger';
 import type { Json } from '@/integrations/supabase/types';
 
 export interface ContentModerationResult {
@@ -22,44 +21,44 @@ export interface TagSuggestion {
   category: string;
 }
 
+export interface DocumentAnalysisResult {
+  summary: string;
+  keyInsights: string[];
+  sentiment: {
+    score: number;
+    label: string;
+  };
+  topics: string[];
+  entities: Array<{
+    name: string;
+    type: string;
+    confidence: number;
+  }>;
+  actionItems: string[];
+}
+
+export interface ProjectInsight {
+  type: string;
+  title: string;
+  description: string;
+  impact: 'low' | 'medium' | 'high';
+  confidence: number;
+}
+
+export interface UserBehaviorPrediction {
+  nextActions: string[];
+  engagementScore: number;
+  churnRisk: number;
+  preferences: Record<string, number>;
+}
+
 export const useAIService = () => {
-  const { user } = useAuth();
-  const logging = useStructuredLogging();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const trackUsage = useCallback(async (
-    featureName: string,
-    usageType: string,
-    inputTokens: number = 0,
-    outputTokens: number = 0,
-    executionTime: number = 0,
-    success: boolean = true,
-    errorMessage?: string,
-    metadata: Json = {}
-  ) => {
-    if (!user?.id) {
-      logging.debug('AIService.trackUsage: No user ID available, skipping tracking');
-      return;
-    }
-
-    try {
-      const { error } = await supabase.from('ai_usage_tracking').insert({
-        user_id: user.id,
-        feature_name: featureName,
-        usage_type: usageType,
-        input_tokens: inputTokens,
-        output_tokens: outputTokens,
-        execution_time_ms: executionTime,
-        success,
-        error_message: errorMessage,
-        metadata
-      });
-
-      if (error) throw error;
-    } catch (error) {
-      logging.warn('Failed to track AI usage', { component: 'AIService', data: { feature: featureName, type: usageType }, error });
-    }
-  }, [user?.id, logging]);
-
+  /**
+   * ✅ CENTRALIZED: Store content moderation results
+   */
   const storeModerationResult = useCallback(async (
     contentId: string,
     contentType: string,
@@ -71,123 +70,314 @@ export const useAIService = () => {
         content_id: contentId,
         content_type: contentType,
         content_text: content,
-        moderation_result: result as any,
+        moderation_result: result as unknown as Json,
         flagged: result.flagged,
         confidence_score: result.confidence,
-        categories_detected: result.categories,
-        status: result.flagged ? 'requires_review' : 'approved'
+        flagged_categories: result.categories,
+        reviewed_at: new Date().toISOString()
       });
 
       if (error) throw error;
+      
+      debugLog.log('Content moderation result stored', {
+        component: 'AIService',
+        contentId,
+        flagged: result.flagged
+      });
     } catch (error) {
-      logging.error('Failed to store moderation result', { component: 'AIService', data: { contentId }, error });
+      debugLog.error('Failed to store moderation result', {
+        component: 'AIService',
+        contentId
+      }, error);
       throw error;
     }
-  }, [logging]);
+  }, []);
 
+  /**
+   * ✅ CENTRALIZED: Store AI tag suggestions
+   */
   const storeTagSuggestions = useCallback(async (
     entityId: string,
     entityType: string,
-    suggestions: TagSuggestion[],
-    confidences: Record<string, number>
+    suggestions: TagSuggestion[]
   ) => {
     try {
       const { error } = await supabase.from('ai_tag_suggestions').insert({
         entity_id: entityId,
         entity_type: entityType,
-        suggested_tags: suggestions as any,
-        confidence_scores: confidences as any,
-        status: 'pending'
+        suggested_tags: suggestions.map(s => s.tag),
+        confidence_scores: suggestions.map(s => s.confidence),
+        categories: suggestions.map(s => s.category),
+        status: 'pending',
+        created_at: new Date().toISOString()
       });
 
       if (error) throw error;
+      
+      debugLog.log('AI tag suggestions stored', {
+        component: 'AIService',
+        entityId,
+        suggestionsCount: suggestions.length
+      });
     } catch (error) {
-      logging.error('Failed to store tag suggestions', { component: 'AIService', data: { entityId }, error });
+      debugLog.error('Failed to store tag suggestions', {
+        component: 'AIService',
+        entityId
+      }, error);
       throw error;
     }
-  }, [logging]);
+  }, []);
 
+  /**
+   * ✅ CENTRALIZED: Store email templates
+   */
   const storeEmailTemplate = useCallback(async (
     templateType: string,
-    subject: string,
-    body: string,
-    variables: string[],
-    tone: string,
-    language: string
+    template: { subject: string; body: string; variables: string[] },
+    tone?: string,
+    language?: string
   ) => {
     try {
       const { error } = await supabase.from('ai_email_templates').insert({
         template_name: `${templateType}_${Date.now()}`,
         template_category: templateType,
-        subject_template: subject,
-        body_template: body,
-        variables: variables as any,
+        subject_template: template.subject,
+        body_template: template.body,
+        variables: template.variables,
+        tone: tone || 'professional',
+        language: language || 'en',
+        status: 'active',
+        created_at: new Date().toISOString()
+      });
+
+      if (error) throw error;
+      
+      debugLog.log('Email template stored', {
+        component: 'AIService',
+        templateType,
         tone,
-        language,
-        generated_by: 'ai',
-        created_by: user?.id
+        language
+      });
+    } catch (error) {
+      debugLog.error('Failed to store email template', {
+        component: 'AIService',
+        templateType
+      }, error);
+      throw error;
+    }
+  }, []);
+
+  /**
+   * ✅ CENTRALIZED: Store document analysis results
+   */
+  const storeDocumentAnalysis = useCallback(async (
+    fileRecordId: string,
+    documentText: string,
+    result: DocumentAnalysisResult,
+    executionTime?: number
+  ) => {
+    try {
+      const { error } = await supabase.from('document_analysis_results').insert({
+        file_record_id: fileRecordId,
+        extracted_text: documentText,
+        summary: result.summary,
+        key_insights: result.keyInsights,
+        sentiment_analysis: result.sentiment as Json,
+        topics_detected: result.topics,
+        entities_extracted: result.entities as Json,
+        action_items: result.actionItems,
+        processing_time_ms: executionTime,
+        analyzed_at: new Date().toISOString()
+      });
+
+      if (error) throw error;
+      
+      debugLog.log('Document analysis stored', {
+        component: 'AIService',
+        fileRecordId,
+        processingTime: executionTime
+      });
+    } catch (error) {
+      debugLog.error('Failed to store document analysis', {
+        component: 'AIService',
+        fileRecordId
+      }, error);
+      throw error;
+    }
+  }, []);
+
+  /**
+   * ✅ CENTRALIZED: Store project insights
+   */
+  const storeProjectInsights = useCallback(async (
+    projectId: string,
+    projectType: string,
+    insights: ProjectInsight[],
+    recommendations: string[],
+    riskAssessment: Record<string, unknown>
+  ) => {
+    try {
+      const { error } = await supabase.from('project_ai_insights').insert({
+        project_id: projectId,
+        project_type: projectType,
+        insights: insights as unknown as Json,
+        recommendations: recommendations,
+        risk_assessment: riskAssessment as Json,
+        confidence_score: insights.reduce((avg, insight) => avg + insight.confidence, 0) / insights.length,
+        generated_at: new Date().toISOString()
+      });
+
+      if (error) throw error;
+      
+      debugLog.log('Project insights stored', {
+        component: 'AIService',
+        projectId,
+        insightsCount: insights.length
+      });
+    } catch (error) {
+      debugLog.error('Failed to store project insights', {
+        component: 'AIService',
+        projectId
+      }, error);
+      throw error;
+    }
+  }, []);
+
+  /**
+   * ✅ CENTRALIZED: Store user behavior predictions
+   */
+  const storeBehaviorPredictions = useCallback(async (
+    userId: string,
+    predictions: UserBehaviorPrediction,
+    userActivity: Record<string, unknown>
+  ) => {
+    try {
+      const { error } = await supabase.from('user_behavior_predictions').insert({
+        user_id: userId,
+        prediction_type: 'engagement',
+        predictions: predictions as unknown as Json,
+        behavioral_patterns: userActivity as Json,
+        next_likely_actions: predictions.nextActions,
+        engagement_score: predictions.engagementScore,
+        churn_risk_score: predictions.churnRisk,
+        user_preferences: predictions.preferences as Json,
+        predicted_at: new Date().toISOString()
+      });
+
+      if (error) throw error;
+      
+      debugLog.log('Behavior predictions stored', {
+        component: 'AIService',
+        userId,
+        engagementScore: predictions.engagementScore
+      });
+    } catch (error) {
+      debugLog.error('Failed to store behavior predictions', {
+        component: 'AIService',
+        userId
+      }, error);
+      throw error;
+    }
+  }, []);
+
+  /**
+   * ✅ CENTRALIZED: Store competitive intelligence
+   */
+  const storeCompetitiveIntelligence = useCallback(async (
+    sectorId: string,
+    analysisType: string,
+    insights: string[],
+    trends: string[],
+    opportunities: string[]
+  ) => {
+    try {
+      const { error } = await supabase.from('competitive_intelligence').insert({
+        sector_id: sectorId,
+        analysis_type: analysisType,
+        insights: insights,
+        trends_identified: trends,
+        opportunities: opportunities,
+        competitive_landscape: { analysis_type: analysisType } as Json,
+        market_positioning: { sector_id: sectorId } as Json,
+        analyzed_at: new Date().toISOString()
+      });
+
+      if (error) throw error;
+      
+      debugLog.log('Competitive intelligence stored', {
+        component: 'AIService',
+        sectorId,
+        analysisType
+      });
+    } catch (error) {
+      debugLog.error('Failed to store competitive intelligence', {
+        component: 'AIService',
+        sectorId
+      }, error);
+      throw error;
+    }
+  }, []);
+
+  /**
+   * ✅ CENTRALIZED: Track AI service usage
+   */
+  const trackUsage = useCallback(async (
+    serviceType: string,
+    operationType: string,
+    inputTokens: number,
+    outputTokens: number,
+    executionTime: number,
+    success: boolean
+  ) => {
+    try {
+      // Use security_audit_log for AI service usage tracking since ai_service_usage table doesn't exist
+      const { error } = await supabase.from('security_audit_log').insert({
+        user_id: null,
+        action_type: 'AI_SERVICE_USAGE',
+        resource_type: 'ai_service',
+        resource_id: null,
+        details: {
+          service_type: serviceType,
+          operation_type: operationType,
+          input_tokens: inputTokens,
+          output_tokens: outputTokens,
+          execution_time_ms: executionTime,
+          success: success,
+          cost_estimate: (inputTokens * 0.001 + outputTokens * 0.002)
+        },
+        risk_level: 'low'
       });
 
       if (error) throw error;
     } catch (error) {
-      logging.error('Failed to store email template', { component: 'AIService', data: { templateType }, error });
-      throw error;
+      debugLog.error('Failed to track AI usage', {
+        component: 'AIService',
+        serviceType,
+        operationType
+      }, error);
+      // Don't throw usage tracking errors
     }
-  }, [user?.id, logging]);
-
-  const getFeatureConfig = useCallback(async (featureName: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('ai_feature_toggles')
-        .select('model_configuration')
-        .eq('feature_name', featureName)
-        .eq('is_enabled', true)
-        .maybeSingle();
-
-      if (error) throw error;
-      return data?.model_configuration || null;
-    } catch (error) {
-      logging.error('Error fetching AI feature config', { component: 'AIService', data: { featureName }, error });
-      return null;
-    }
-  }, [logging]);
-
-  const isFeatureEnabled = useCallback(async (featureName: string) => {
-    if (!user?.id) {
-      logging.debug('AIService.isFeatureEnabled: No user authenticated');
-      return false;
-    }
-
-    try {
-      // Check user preferences
-      const { data: preferences } = await supabase
-        .from('ai_preferences')
-        .select('ai_enabled, *')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (!preferences?.ai_enabled) return false;
-
-      // Check feature toggle
-      const { data: feature } = await supabase
-        .from('ai_feature_toggles')
-        .select('is_enabled')
-        .eq('feature_name', featureName)
-        .maybeSingle();
-
-      return feature?.is_enabled || false;
-    } catch (error) {
-      logging.error('Error checking feature status', { component: 'AIService', data: { featureName }, error });
-      return false;
-    }
-  }, [user?.id, logging]);
+  }, []);
 
   return {
-    trackUsage,
+    // State
+    isLoading,
+    error,
+    
+    // Operations
     storeModerationResult,
     storeTagSuggestions,
     storeEmailTemplate,
-    getFeatureConfig,
-    isFeatureEnabled
+    storeDocumentAnalysis,
+    storeProjectInsights,
+    storeBehaviorPredictions,
+    storeCompetitiveIntelligence,
+    trackUsage,
+    
+    // Utilities
+    setIsLoading,
+    setError
   };
 };
+
+export default useAIService;
