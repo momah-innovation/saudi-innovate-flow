@@ -200,6 +200,16 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
     
   }, [direction.isRTL, direction.language]);
   
+  // Ensure sidebar is open by default on desktop
+  React.useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && window.innerWidth >= 1024 && sidebarOpen === false) {
+        debugLog.debug('Auto-opening sidebar on desktop due to persisted closed state');
+        setSidebarOpen(true);
+      }
+    } catch {}
+  }, []);
+  
   // Provide unified context
   const appContextValue: AppContextType = {
     // Auth
