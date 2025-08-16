@@ -12,10 +12,11 @@ export interface BaseEntity {
 
 // ✅ SYSTEM ORGANIZATIONAL TYPES
 export interface SystemSector extends BaseEntity {
+  name: string; // actual database field
   name_ar: string;
   name_en: string;
   description?: string;
-  status: 'active' | 'inactive';
+  status?: 'active' | 'inactive'; // optional to match database
 }
 
 export interface SystemDepartment extends BaseEntity {
@@ -34,12 +35,16 @@ export interface SystemDomain extends BaseEntity {
   status: 'active' | 'inactive';
 }
 
-export interface SystemPartner extends BaseEntity {
+export interface SystemPartner {
+  id: string;
+  name: string; // actual database field
   name_ar: string;
   name_en: string;
   description?: string;
-  organization_type: 'government' | 'private' | 'non_profit' | 'academic';
-  status: 'active' | 'inactive';
+  organization_type?: 'government' | 'private' | 'non_profit' | 'academic'; // optional to match database
+  status?: string; // flexible to match any database status
+  created_at?: string; // optional to match database
+  updated_at?: string; // optional to match database
 }
 
 export interface SystemExpert extends BaseEntity {
@@ -60,44 +65,49 @@ export interface Entity extends BaseEntity {
 }
 
 export interface Deputy extends BaseEntity {
+  name: string; // actual database field
   name_ar: string;
   name_en: string;
   entity_id: string;
   description?: string;
-  status: 'active' | 'inactive';
+  status?: 'active' | 'inactive'; // optional to match database
 }
 
 export interface Department extends BaseEntity {
+  name: string; // actual database field
   name_ar: string;
   name_en: string;
   deputy_id?: string;
   entity_id?: string;
   description?: string;
-  status: 'active' | 'inactive';
+  status?: 'active' | 'inactive'; // optional to match database
 }
 
 export interface Domain extends BaseEntity {
+  name: string; // actual database field
   name_ar: string;
   name_en: string;
   department_id?: string;
   description?: string;
-  status: 'active' | 'inactive';
+  status?: 'active' | 'inactive'; // optional to match database
 }
 
 export interface SubDomain extends BaseEntity {
+  name: string; // actual database field
   name_ar: string;
-  name_en: string;
+  name_en?: string; // optional to match database
   domain_id: string;
   description?: string;
-  status: 'active' | 'inactive';
+  status?: 'active' | 'inactive'; // optional to match database
 }
 
 export interface Service extends BaseEntity {
+  name: string; // actual database field
   name_ar: string;
-  name_en: string;
+  name_en?: string; // optional to match database
   sub_domain_id?: string;
   description?: string;
-  status: 'active' | 'inactive';
+  status?: 'active' | 'inactive'; // optional to match database
 }
 
 // ✅ ERROR TYPES
@@ -151,14 +161,18 @@ export interface UserRole {
 // ✅ CHALLENGE TYPES
 export interface Challenge {
   id: string;
-  title: string;
-  description: string;
-  status: 'draft' | 'published' | 'active' | 'closed' | 'archived';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  sensitivity_level: 'normal' | 'restricted' | 'confidential';
-  theme: string;
-  domain: string;
-  tags: string[];
+  title_ar: string; // actual database field
+  title_en?: string;
+  description_ar: string; // actual database field  
+  description_en?: string;
+  title?: string; // for backward compatibility
+  description?: string; // for backward compatibility
+  status: string; // flexible to accommodate any status from database
+  priority?: 'low' | 'medium' | 'high' | 'urgent';
+  sensitivity_level: string; // flexible to accommodate any sensitivity level from database
+  theme?: string;
+  domain?: string;
+  tags?: string[];
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -504,6 +518,95 @@ export interface SystemOperation {
   resourceId?: string;
   details: Record<string, any>;
   riskLevel?: 'low' | 'medium' | 'high' | 'critical';
+}
+
+// ✅ QUERY KEY TYPES (Phase 7 Type Safety)
+export type QueryKey = (string | number | boolean | Record<string, any>)[];
+
+export interface CacheWarmingTask {
+  queryKey: QueryKey;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  staleTime: number;
+  condition?: () => boolean;
+}
+
+export interface WarmingMetrics {
+  totalTasks: number;
+  warmedQueries: number;
+  warmingRatio: number;
+  queueLength: number;
+  activeRequests: number;
+}
+
+// ✅ CAMPAIGN MANAGEMENT TYPES
+export interface CampaignOptions {
+  sectors: SystemSector[];
+  deputies: Deputy[];
+  departments: Department[];
+  challenges: Challenge[];
+  partners: SystemPartner[];
+  stakeholders: Stakeholder[];
+  managers: Manager[];
+}
+
+export interface Stakeholder extends BaseEntity {
+  name: string; // actual database field  
+  name_ar?: string; // optional to match database
+  name_en?: string;
+  organization?: string;
+  role?: string;
+  contact_email?: string;
+  status?: 'active' | 'inactive'; // optional to match database
+}
+
+export interface Manager {
+  id: string;
+  name: string; // actual database field
+  name_ar?: string; // optional to match database
+  email: string;
+  position?: string;
+  status?: 'active' | 'inactive'; // optional to match database
+  created_at?: string; // optional to match database
+  updated_at?: string; // optional to match database
+}
+
+// ✅ CHALLENGE MANAGEMENT TYPES
+export interface ChallengeOptions {
+  departments: Department[];
+  deputies: Deputy[];
+  sectors: SystemSector[];
+  domains: Domain[];
+  subDomains: SubDomain[];
+  services: Service[];
+  partners: SystemPartner[];
+  experts: Expert[];
+}
+
+export interface Expert {
+  id: string;
+  user_id: string;
+  expertise_areas: string[];
+  certifications?: string[];
+  years_of_experience?: number;
+  availability_status?: 'available' | 'busy' | 'unavailable'; // optional to match database
+  rating?: number;
+  created_at?: string; // optional to match database
+  updated_at?: string; // optional to match database
+}
+
+// ✅ NAVIGATION AND CACHE TYPES
+export interface NavigationContext {
+  currentPath: string;
+  previousPath?: string;
+  userRole?: string;
+  permissions?: string[];
+}
+
+export interface CacheContext {
+  user: UserProfile | null;
+  role: string | null;
+  permissions: string[];
+  aggressiveMode: boolean;
 }
 
 // Helper type for making all properties optional

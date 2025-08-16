@@ -16,8 +16,10 @@ interface CacheWarmingConfig {
   maxConcurrentRequests?: number;
 }
 
-interface WarmingTask {
-  queryKey: any[];
+import type { CacheWarmingTask, WarmingMetrics, QueryKey, CacheContext } from '@/types/common';
+
+interface WarmingTask extends CacheWarmingTask {
+  queryKey: QueryKey;
   priority: 'critical' | 'high' | 'medium' | 'low';
   staleTime: number;
   condition?: () => boolean;
@@ -42,64 +44,64 @@ export const useAdvancedCacheWarming = (config: CacheWarmingConfig = {}) => {
     const tasks: WarmingTask[] = [
       // Critical tasks - always warm
       {
-        queryKey: [...queryKeys.system.departments()] as any[],
+        queryKey: [...queryKeys.system.departments()] as QueryKey,
         priority: 'critical',
         staleTime: 30 * 60 * 1000 // 30 minutes
       },
       {
-        queryKey: [...queryKeys.system.sectors()] as any[],
+        queryKey: [...queryKeys.system.sectors()] as QueryKey,
         priority: 'critical',
         staleTime: 30 * 60 * 1000
       },
       {
-        queryKey: [...queryKeys.challenges.all, 'featured'] as any[],
+        queryKey: [...queryKeys.challenges.all, 'featured'] as QueryKey,
         priority: 'critical',
         staleTime: 15 * 60 * 1000 // 15 minutes
       },
 
       // High priority tasks
       {
-        queryKey: [...queryKeys.challenges.list({ status: 'active', limit: 20 })] as any[],
+        queryKey: [...queryKeys.challenges.list({ status: 'active', limit: 20 })] as QueryKey,
         priority: 'high',
         staleTime: 5 * 60 * 1000 // 5 minutes
       },
       {
-        queryKey: [...queryKeys.ideas.all, 'trending'] as any[],
+        queryKey: [...queryKeys.ideas.all, 'trending'] as QueryKey,
         priority: 'high',
         staleTime: 10 * 60 * 1000 // 10 minutes
       },
       {
-        queryKey: [...queryKeys.events.list({ upcoming: true, limit: 10 })] as any[],
+        queryKey: [...queryKeys.events.list({ upcoming: true, limit: 10 })] as QueryKey,
         priority: 'high',
         staleTime: 10 * 60 * 1000
       },
 
       // Medium priority tasks
       {
-        queryKey: [...queryKeys.system.partners()] as any[],
+        queryKey: [...queryKeys.system.partners()] as QueryKey,
         priority: 'medium',
         staleTime: 20 * 60 * 1000 // 20 minutes
       },
       {
-        queryKey: [...queryKeys.system.experts()] as any[],
+        queryKey: [...queryKeys.system.experts()] as QueryKey,
         priority: 'medium',
         staleTime: 15 * 60 * 1000
       },
       {
-        queryKey: [...queryKeys.ideas.list({ status: 'published', limit: 15 })] as any[],
+        queryKey: [...queryKeys.ideas.list({ status: 'published', limit: 15 })] as QueryKey,
         priority: 'medium',
         staleTime: 8 * 60 * 1000
       },
 
       // Low priority tasks
       {
-        queryKey: [...queryKeys.system.translation('ar')] as any[],
+        queryKey: [...queryKeys.system.translation('ar')] as QueryKey,
         priority: 'low',
         staleTime: 60 * 60 * 1000, // 1 hour
         condition: () => true // Always warm translations
       },
       {
-        queryKey: [...queryKeys.system.translation('en')] as any[],
+        queryKey: [...queryKeys.system.translation('en')] as QueryKey,
         priority: 'low',
         staleTime: 60 * 60 * 1000
       }
@@ -109,17 +111,17 @@ export const useAdvancedCacheWarming = (config: CacheWarmingConfig = {}) => {
     if (user?.id) {
       tasks.push(
         {
-          queryKey: [...queryKeys.user.profile(user.id)] as any[],
+          queryKey: [...queryKeys.user.profile(user.id)] as QueryKey,
           priority: 'high',
           staleTime: 15 * 60 * 1000
         },
         {
-          queryKey: [...queryKeys.user.profile(user.id), 'activity'] as any[],
+          queryKey: [...queryKeys.user.profile(user.id), 'activity'] as QueryKey,
           priority: 'medium',
           staleTime: 10 * 60 * 1000
         },
         {
-          queryKey: [...queryKeys.user.preferences(user.id)] as any[],
+          queryKey: [...queryKeys.user.preferences(user.id)] as QueryKey,
           priority: 'medium',
           staleTime: 20 * 60 * 1000
         }
@@ -129,12 +131,12 @@ export const useAdvancedCacheWarming = (config: CacheWarmingConfig = {}) => {
       if (user.role === 'admin' || user.role === 'super_admin') {
         tasks.push(
           {
-            queryKey: [...queryKeys.system.all, 'analytics'] as any[],
+            queryKey: [...queryKeys.system.all, 'analytics'] as QueryKey,
             priority: 'high',
             staleTime: 5 * 60 * 1000
           },
           {
-            queryKey: [...queryKeys.system.all, 'reports'] as any[],
+            queryKey: [...queryKeys.system.all, 'reports'] as QueryKey,
             priority: 'medium',
             staleTime: 15 * 60 * 1000
           }
@@ -144,12 +146,12 @@ export const useAdvancedCacheWarming = (config: CacheWarmingConfig = {}) => {
       if (user.role === 'expert' || user.role === 'domain_expert') {
         tasks.push(
           {
-            queryKey: [...queryKeys.user.profile(user.id), 'expert'] as any[],
+            queryKey: [...queryKeys.user.profile(user.id), 'expert'] as QueryKey,
             priority: 'high',
             staleTime: 10 * 60 * 1000
           },
           {
-            queryKey: [...queryKeys.challenges.all, 'expert-queue', user.id] as any[],
+            queryKey: [...queryKeys.challenges.all, 'expert-queue', user.id] as QueryKey,
             priority: 'high',
             staleTime: 3 * 60 * 1000
           }
@@ -161,17 +163,17 @@ export const useAdvancedCacheWarming = (config: CacheWarmingConfig = {}) => {
     if (aggressiveMode) {
       tasks.push(
         {
-          queryKey: [...queryKeys.challenges.list({ status: 'draft', limit: 10 })] as any[],
+          queryKey: [...queryKeys.challenges.list({ status: 'draft', limit: 10 })] as QueryKey,
           priority: 'low',
           staleTime: 15 * 60 * 1000
         },
         {
-          queryKey: [...queryKeys.ideas.list({ status: 'draft', limit: 10 })] as any[],
+          queryKey: [...queryKeys.ideas.list({ status: 'draft', limit: 10 })] as QueryKey,
           priority: 'low',
           staleTime: 15 * 60 * 1000
         },
         {
-          queryKey: [...queryKeys.events.list({ past: true, limit: 5 })] as any[],
+          queryKey: [...queryKeys.events.list({ past: true, limit: 5 })] as QueryKey,
           priority: 'low',
           staleTime: 30 * 60 * 1000
         }
@@ -317,7 +319,7 @@ export const useAdvancedCacheWarming = (config: CacheWarmingConfig = {}) => {
   }, [getWarmingTasks, queryClient]);
 
   // Cache warming metrics
-  const getWarmingMetrics = useCallback(() => {
+  const getWarmingMetrics = useCallback((): WarmingMetrics => {
     const allTasks = getWarmingTasks();
     const warmedQueries = allTasks.filter(task => {
       const state = queryClient.getQueryState(task.queryKey);

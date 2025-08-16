@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { queryBatcher } from '@/utils/queryBatcher';
 import { useToast } from '@/hooks/use-toast';
+import type { CampaignOptions, SystemSector, Deputy, Department, Challenge, SystemPartner, Stakeholder, Manager } from '@/types/common';
 
 export interface CampaignFormData {
   id?: string;
@@ -31,15 +32,7 @@ export interface CampaignFormData {
   stakeholder_ids?: string[];
 }
 
-export interface CampaignOptions {
-  sectors: any[];
-  deputies: any[];
-  departments: any[];
-  challenges: any[];
-  partners: any[];
-  stakeholders: any[];
-  managers: any[];
-}
+// CampaignOptions interface is now imported from types/common.ts
 
 export const useCampaignManagement = () => {
   const [loading, setLoading] = useState(false);

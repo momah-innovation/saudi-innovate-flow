@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { queryBatcher } from '@/utils/queryBatcher';
 import { useToast } from '@/hooks/use-toast';
+import type { ChallengeOptions, Department, Deputy, SystemSector, Domain, SubDomain, Service, SystemPartner, Expert } from '@/types/common';
 
 export interface ChallengeFormData {
   title_ar: string;
@@ -30,16 +31,7 @@ export interface ChallengeFormData {
   partner_ids?: string[];
 }
 
-export interface ChallengeOptions {
-  departments: any[];
-  deputies: any[];
-  sectors: any[];
-  domains: any[];
-  subDomains: any[];
-  services: any[];
-  partners: any[];
-  experts: any[];
-}
+// ChallengeOptions interface is now imported from types/common.ts
 
 export const useChallengeManagement = () => {
   const [loading, setLoading] = useState(false);
