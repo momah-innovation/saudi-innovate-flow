@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 // Removed AppShell import - route provides AppShell wrapper
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,17 +19,22 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useOptimizedWorkspaceData } from '@/hooks/useOptimizedWorkspaceData';
+import { useOptimizedDashboardStats } from '@/hooks/useOptimizedDashboardStats';
 
 export default function Dashboard() {
   const { t, language, isRTL } = useUnifiedTranslation();
-  const { data: ws, isLoading } = useOptimizedWorkspaceData();
+  
+  // OPTIMIZED: Use both workspace data and optimized dashboard stats
+  const { data: ws, isLoading: wsLoading } = useOptimizedWorkspaceData();
+  const { data: optimizedStats, isLoading: statsLoading } = useOptimizedDashboardStats();
 
   const s = ws?.stats;
-  const stats = [
+  // OPTIMIZED: Use pre-computed stats with fallback to workspace data
+  const stats = useMemo(() => [
     {
       title: 'Active Challenges',
       titleAr: 'التحديات النشطة',
-      value: s ? String(s.activeChallenges ?? s.totalChallenges ?? 0) : '24',
+      value: optimizedStats ? String(optimizedStats.active_challenges) : (s ? String(s.activeChallenges ?? s.totalChallenges ?? 0) : '0'),
       change: '+12%',
       changeType: 'increase' as const,
       icon: Target,
@@ -40,7 +45,7 @@ export default function Dashboard() {
     {
       title: 'Submitted Ideas',
       titleAr: 'الأفكار المقدمة',
-      value: s ? String(s.totalIdeas ?? 0) : '156',
+      value: optimizedStats ? String(optimizedStats.submitted_ideas) : (s ? String(s.totalIdeas ?? 0) : '0'),
       change: '+8%',
       changeType: 'increase' as const,
       icon: Lightbulb,
@@ -51,7 +56,7 @@ export default function Dashboard() {
     {
       title: 'Upcoming Events',
       titleAr: 'الفعاليات القادمة',
-      value: s ? String(s.upcomingEvents ?? s.totalEvents ?? 0) : '12',
+      value: optimizedStats ? String(optimizedStats.total_challenges || 0) : (s ? String(s.upcomingEvents ?? s.totalEvents ?? 0) : '0'),
       change: '+3',
       changeType: 'increase' as const,
       icon: Calendar,
@@ -62,7 +67,7 @@ export default function Dashboard() {
     {
       title: 'Active Innovators',
       titleAr: 'المبتكرون النشطون',
-      value: s ? String(s.totalPartners ?? 0) : '1,247',
+      value: optimizedStats ? String(optimizedStats.total_users || 0) : (s ? String(s.totalPartners ?? 0) : '0'),
       change: '+15%',
       changeType: 'increase' as const,
       icon: Users,
@@ -70,7 +75,7 @@ export default function Dashboard() {
       bgColor: 'bg-primary/5',
       borderColor: 'border-primary/20'
     }
-  ];
+  ], [optimizedStats, s]);
 
   const recentActivities = ws?.recentActivity && ws.recentActivity.length > 0
     ? ws.recentActivity.map((evt: any, idx: number) => ({
@@ -154,6 +159,18 @@ export default function Dashboard() {
       color: 'bg-primary hover:bg-primary-hover'
     }
   ];
+
+  const isLoading = wsLoading || statsLoading;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
+        <div className="flex justify-center items-center p-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">

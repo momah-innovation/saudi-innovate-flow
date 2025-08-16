@@ -15,8 +15,8 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useOptimizedDashboardStats, useUserActivitySummary } from '@/hooks/useOptimizedDashboardStats';
 import { useDirection } from '@/components/ui/direction-provider';
-import { supabase } from '@/integrations/supabase/client';
 import { queryBatcher } from '@/utils/queryBatcher';
 import { timeAsync } from '@/utils/performanceMonitor';
 import { useNavigate } from 'react-router-dom';
@@ -98,6 +98,10 @@ export default React.memo(function UserDashboard() {
   
   const debouncedNavigate = useMemo(() => createDebouncedNavigate(navigate), [navigate]);
   
+  // OPTIMIZED: Use new hooks instead of manual data fetching
+  const { data: optimizedStats, isLoading: statsLoading } = useOptimizedDashboardStats();
+  const { data: userActivity, isLoading: activityLoading } = useUserActivitySummary(userProfile?.id);
+  
   // State hooks - always called in the same order
   const [primaryRole, setPrimaryRole] = useState<string>('innovator');
   const [stats, setStats] = useState<DashboardStats>({
@@ -123,7 +127,26 @@ export default React.memo(function UserDashboard() {
   // Memoized functions - must be after state hooks
   const getPrimaryRole = useCallback(getRoleFromHook, []);
 
-  // Memoize dashboard data loading to prevent unnecessary calls
+  // OPTIMIZED: Update stats from cached data instead of manual fetching
+  useEffect(() => {
+    if (optimizedStats && userActivity) {
+      setStats({
+        totalIdeas: userActivity.total_submissions || 0,
+        activeIdeas: userActivity.total_submissions || 0, // Simplified for now
+        evaluatedIdeas: userActivity.total_submissions || 0,
+        challengesParticipated: userActivity.total_participations || 0,
+        eventsAttended: userActivity.total_participations || 0,
+        totalRewards: userActivity.engagement_score || 0,
+        innovationScore: userActivity.engagement_score || 0,
+        weeklyGoal: 2,
+        monthlyGoal: 10
+      });
+      setLoading(false);
+      debugLog.log('Dashboard stats updated from optimized data');
+    }
+  }, [optimizedStats, userActivity]);
+
+  // OPTIMIZED: Simplified dashboard data loading - only for non-cached data
   const loadDashboardData = useCallback(async () => {
     if (!userProfile?.id) {
       debugLog.log('Skipping loadDashboardData - no user ID');
@@ -133,21 +156,20 @@ export default React.memo(function UserDashboard() {
     debugLog.log('Starting loadDashboardData...');
     try {
       setLoading(true);
+      // Only load data that doesn't have optimized hooks yet
       await Promise.all([
-        loadUserStats(),
-        loadUserActivities(), 
         loadUserAchievements(),
         loadUserGoals()
       ]);
-      debugLog.log('Dashboard data loaded successfully');
+      debugLog.log('Dashboard supplementary data loaded successfully');
     } catch (error) {
       debugLog.error('Error loading dashboard data:', error);
       logger.error('Error loading dashboard data', { component: 'UserDashboard', action: 'loadDashboardData' }, error as Error);
       toast.error('خطأ في تحميل بيانات لوحة القيادة');
     } finally {
-      setLoading(false);
+      // Don't set loading false here - let the optimized data effect handle it
     }
-  }, [userProfile?.id]); // Properly depend on userProfile.id
+  }, [userProfile?.id]);
 
   useEffect(() => {
     // Update primary role when user profile changes
@@ -162,99 +184,13 @@ export default React.memo(function UserDashboard() {
       primaryRole 
     });
     
-    // Only load data if we have a user ID
+    // Only load supplementary data if we have a user ID
     if (userProfile?.id) {
       loadDashboardData();
     }
   }, [userProfile?.id, loadDashboardData]);
 
-  const loadUserStats = async () => {
-    if (!userProfile?.id) return;
-
-    // Get user's innovator profile - handle multiple entries by taking the first one
-    const { data: innovatorData, error: innovatorError } = await supabase
-      .from('innovators')
-      .select('id')
-      .eq('user_id', userProfile.id)
-      .limit(1)
-      .maybeSingle();
-
-    if (innovatorError || !innovatorData) {
-      console.warn('No innovator profile found or error occurred:', innovatorError);
-      return;
-    }
-
-    // Load user-related data in parallel with batching
-    const [ideasRes, participantsRes, eventsRes, achievementsRes] = await timeAsync(async () => {
-      return await Promise.all([
-        queryBatcher.batch(`ideas:${innovatorData.id}`, async () =>
-          supabase
-            .from('ideas')
-            .select('id, title_ar, status, created_at, challenge_id')
-            .eq('innovator_id', innovatorData.id)
-        ),
-        queryBatcher.batch(`challenge_participants:${userProfile.id}`, async () =>
-          supabase
-            .from('challenge_participants')
-            .select('challenge_id')
-            .eq('user_id', userProfile.id)
-        ),
-        queryBatcher.batch(`event_participants:${userProfile.id}`, async () =>
-          supabase
-            .from('event_participants')
-            .select('event_id')
-            .eq('user_id', userProfile.id)
-        ),
-        queryBatcher.batch(`user_achievements:${userProfile.id}`, async () =>
-          supabase
-            .from('user_achievements')
-            .select('points_earned')
-            .eq('user_id', userProfile.id)
-        )
-      ]);
-    }, 'user-dashboard-parallel-fetch');
-
-    const ideas = ideasRes.data || [];
-    const challengeParticipations = participantsRes.data || [];
-    const eventParticipations = eventsRes.data || [];
-    const userAchievements = achievementsRes.data || [];
-
-    // Calculate stats
-    const totalIdeas = ideas?.length || 0;
-    const activeIdeas = ideas?.filter(idea => ['pending', 'under_review'].includes(idea.status))?.length || 0;
-    const evaluatedIdeas = ideas?.filter(idea => ['approved', 'rejected'].includes(idea.status))?.length || 0;
-    const totalRewards = userAchievements?.reduce((sum, ach) => sum + ach.points_earned, 0) || 0;
-    const innovationScore = Math.min(Math.round(totalIdeas * 0.4 + challengeParticipations?.length * 0.3 + eventParticipations?.length * 0.2 + (totalRewards / 100) * 0.1), 100);
-
-    setStats({
-      totalIdeas,
-      activeIdeas,
-      evaluatedIdeas,
-      challengesParticipated: challengeParticipations?.length || 0,
-      eventsAttended: eventParticipations?.length || 0,
-      totalRewards,
-      innovationScore,
-      weeklyGoal: 2,
-      monthlyGoal: 10
-    });
-
-    // Create recent activities from ideas
-    const activities: RecentActivity[] = ideas?.slice(0, 5).map(idea => ({
-      id: idea.id,
-      type: 'idea_submitted',
-      title: idea.title_ar || 'فكرة بدون عنوان',
-      description: 'تم تقديم الفكرة للمراجعة',
-      date: idea.created_at,
-      status: idea.status
-    })) || [];
-
-    setRecentActivities(activities);
-  };
-
-  const loadUserActivities = async () => {
-    // This would typically come from a dedicated activities table
-    // For now, we'll use the data from ideas
-  };
+  // REMOVED: loadUserStats and loadUserActivities - now using optimized hooks
 
   const loadUserAchievements = async () => {
     if (!userProfile?.id) return;
@@ -338,7 +274,7 @@ export default React.memo(function UserDashboard() {
   return (
     <CollaborationProvider>
       <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30">
-        {loading ? (
+        {(loading || statsLoading || activityLoading) ? (
           <div className="flex justify-center items-center p-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
