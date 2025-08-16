@@ -54,9 +54,10 @@ export const EnhancedEvaluationHero = ({
   const { setInterval: scheduleInterval } = useTimerManager();
 
   useEffect(() => {
+    // Optimized: Reduced frequency from 3s to 8s to improve performance
     const clearTimer = scheduleInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
-    }, 3000);
+    }, 8000);
     return clearTimer;
   }, [stats.length, scheduleInterval]);
 
@@ -123,8 +124,8 @@ export const EnhancedEvaluationHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-500",
-                      isActive && "bg-primary/10 border-primary/20 scale-105"
+                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-300",
+                      isActive && "bg-primary/10 border-primary/20 scale-[1.02]"
                     )}
                   >
                     <CardContent className="p-4 text-center">
@@ -143,7 +144,7 @@ export const EnhancedEvaluationHero = ({
                 <Button
                   onClick={onCreateEvaluation}
                   size="lg"
-                  className="gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                 >
                   <Plus className="w-5 h-5 mr-2" />
                   {isRTL ? 'تقييم جديد' : 'New Evaluation'}

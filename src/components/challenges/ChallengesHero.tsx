@@ -70,9 +70,10 @@ export const ChallengesHero = ({
   ];
 
   useEffect(() => {
+    // Optimized: Reduced frequency from 3s to 8s to improve performance  
     const intervalId = setInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
-    }, 3000);
+    }, 8000);
     return () => clearInterval(intervalId);
   }, [stats.length]);
 
@@ -139,8 +140,8 @@ export const ChallengesHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      `${challengesPageConfig.ui.glassMorphism.light} transition-all duration-500`,
-                      isActive && `${challengesPageConfig.ui.glassMorphism.medium} scale-105`
+                      `${challengesPageConfig.ui.glassMorphism.light} transition-all duration-300`,
+                      isActive && `${challengesPageConfig.ui.glassMorphism.medium} scale-[1.02]`
                     )}
                   >
                     <CardContent className="p-4 text-center">
@@ -161,7 +162,7 @@ export const ChallengesHero = ({
                   onClick={onCreateChallenge}
                   variant="gradient-primary"
                   size="lg"
-                  className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                 >
                   <Plus className="w-5 h-5 mr-2" />
                   {isRTL ? 'إنشاء تحدي جديد' : 'Create New Challenge'}

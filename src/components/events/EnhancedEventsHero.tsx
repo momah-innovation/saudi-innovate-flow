@@ -60,9 +60,10 @@ export const EnhancedEventsHero = ({
   const { setInterval: scheduleInterval } = useTimerManager();
 
   useEffect(() => {
+    // Optimized: Reduced frequency from 3s to 8s to improve performance
     const clearTimer = scheduleInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
-    }, 3000);
+    }, 8000);
     return clearTimer;
   }, [stats.length, scheduleInterval]);
 
@@ -129,8 +130,8 @@ export const EnhancedEventsHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-300",
+                      isActive && "bg-white/10 border-white/20 scale-[1.02]"
                     )}
                   >
                     <CardContent className="p-4 text-center">
@@ -150,7 +151,7 @@ export const EnhancedEventsHero = ({
                   onClick={onCreateEvent}
                   variant="gradient-primary"
                   size="lg"
-                  className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                 >
                   <Plus className="w-5 h-5 mr-2" />
                   {isRTL ? 'إنشاء فعالية جديدة' : 'Create New Event'}

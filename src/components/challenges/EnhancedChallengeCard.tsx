@@ -160,7 +160,7 @@ export function EnhancedChallengeCard({
           <img
             src={challenge.image_url}
             alt={challenge.title_ar}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
           
           {/* Overlay Gradient */}

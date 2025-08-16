@@ -124,7 +124,7 @@ export const ChallengeFilters = ({
       size="sm"
       onClick={onClick}
       className={cn(
-        "transition-all duration-200 hover:scale-105 animate-fade-in",
+        "transition-all duration-200 hover:scale-[1.02] animate-fade-in",
         isSelected && "shadow-lg",
         animateFilters && "animate-pulse"
       )}
