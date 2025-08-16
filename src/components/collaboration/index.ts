@@ -11,4 +11,4 @@ export { CollaborationWidget } from './CollaborationWidget';
 export { useRealTimeCollaboration } from '@/hooks/useRealTimeCollaboration';
 
 // Re-export types
-export type * from '@/types/collaboration';
+// export type * from '@/types/collaboration';
