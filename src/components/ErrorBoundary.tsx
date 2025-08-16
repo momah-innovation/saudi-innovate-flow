@@ -2,6 +2,7 @@ import { Component, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { debugLog } from "@/utils/debugLogger";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { navigationHandler } from "@/utils/unified-navigation";
 
 interface Props {
@@ -49,6 +50,7 @@ export class ErrorBoundary extends Component<Props, State> {
 // Separate functional component for translation support
 function ErrorFallback() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   
   return (
     <div className="min-h-[400px] flex flex-col items-center justify-center p-8">
@@ -58,20 +60,29 @@ function ErrorFallback() {
       </p>
       <div className="flex gap-4">
         <Button 
-          // Use proper navigation reload instead of window.location.reload
+          // ✅ FIXED: Use safe navigation reload with error boundary protection
           onClick={() => {
-            if (typeof window !== 'undefined') {
-              window.location.reload();
+            try {
+              if (typeof window !== 'undefined' && window.location) {
+                window.location.reload();
+              }
+            } catch (reloadError) {
+              // Fallback to navigation if reload fails
+              if (navigate) navigate(0);
             }
           }}
           variant="outline"
         >
           {t('errors.try_again')}
         </Button>
-        {/* Use proper navigation reload instead of window.location.reload */}
+        {/* ✅ FIXED: Use safe navigation reload with error boundary protection */}
         <Button onClick={() => {
-          if (typeof window !== 'undefined') {
-            window.location.reload();
+          try {
+            if (typeof window !== 'undefined' && window.location) {
+              window.location.reload();
+            }
+          } catch (reloadError) {
+            if (navigate) navigate(0);
           }
         }}>
           {t('error_boundary.refresh_page', 'Refresh Page')}

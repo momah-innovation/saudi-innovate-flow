@@ -25,10 +25,17 @@ export const forceRefreshTranslations = async () => {
     
     debugLog.debug('Translation connection verified, cache cleared', { component: 'refreshTranslations', action: 'forceRefreshTranslations' });
     
-    // Force page reload to refresh all React Query caches
-    // Use structured navigation instead of direct window.location.reload
-    // Note: This is a utility function, keeping direct reload for cache clearing
-    window.location.reload();
+    // ✅ FIXED: Use safe navigation pattern for cache clearing  
+    const safeReload = () => {
+      try {
+        if (typeof window !== 'undefined' && window.location) {
+          window.location.reload();
+        }
+      } catch (reloadError) {
+        debugLog.warn('Failed to reload page for translation refresh', { component: 'refreshTranslations' });
+      }
+    };
+    safeReload();
     
   } catch (error) {
     debugLog.error('Failed to refresh translations', { component: 'refreshTranslations', action: 'forceRefreshTranslations' }, error as Error);

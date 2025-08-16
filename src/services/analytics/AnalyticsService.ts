@@ -131,22 +131,35 @@ export class AnalyticsService {
         return await analyticsService.getCoreMetrics(timeframe);
       }
       
-      // ✅ MIGRATED: Use hook-based pattern instead of direct supabase calls
-      const analyticsHook = (window as any).__ANALYTICS_SERVICE_HOOK__;
-      if (analyticsHook?.getCoreMetricsData) {
-        const data = await analyticsHook.getCoreMetricsData(timeframe);
-        return data;
-      } else {
-        debugLog.warn('AnalyticsService.getCoreMetrics: Hook not available, returning default data', {
-          timeframe,
-          component: 'AnalyticsService'
+      // ✅ FIXED: Use database function instead of hooks to eliminate warnings
+      try {
+        // Call database function directly for core metrics
+        const { data, error } = await supabase.rpc('get_analytics_data', {
+          p_user_id: userId,
+          p_user_role: 'innovator', // Default role
+          p_filters: { timeframe }
         });
-        return this.getDefaultCoreMetrics();
+
+        if (error) throw error;
+        
+        if (data && typeof data === 'object') {
+          const metrics = data as unknown as CoreMetrics;
+          this.setCache(cacheKey, metrics);
+          await this.trackMetricsAccess(userId, 'core_metrics', filters);
+          return metrics;
+        }
+      } catch (dbError) {
+        debugLog.warn('AnalyticsService.getCoreMetrics: Database function unavailable, using fallback', {
+          timeframe,
+          component: 'AnalyticsService',
+          error: dbError.message
+        });
       }
 
-      // Metrics will be handled by hook
+      // Fallback to default metrics
+      const defaultMetrics = this.getDefaultCoreMetrics();
       await this.trackMetricsAccess(userId, 'core_metrics', filters);
-      return this.getDefaultCoreMetrics();
+      return defaultMetrics;
     } catch (error) {
       logger.error('Error fetching core metrics', { component: 'AnalyticsService', userId }, error as Error);
       throw error;

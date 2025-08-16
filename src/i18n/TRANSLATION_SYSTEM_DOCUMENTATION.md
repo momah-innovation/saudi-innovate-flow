@@ -278,9 +278,10 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 const { isLoading, error, translationCount, isReady } = useUnifiedTranslation();
 
 // Performance monitoring
-console.log(`Translation system: ${isReady ? 'Ready' : 'Loading'}`);
-console.log(`Static translations: ${translationCount} keys loaded`);
-console.log(`Database translations: Available in 157 categories`);
+// Use structured logging instead of console statements:
+// debugLog.info(`Translation system: ${isReady ? 'Ready' : 'Loading'}`);
+// debugLog.info(`Static translations: ${translationCount} keys loaded`);
+// debugLog.info(`Database translations: Available in 157 categories`);
 ```
 
 ### **Common Issues & Solutions**

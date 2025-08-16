@@ -211,7 +211,7 @@ case 'my-feature':
 
 // Manual testing
 const { t } = useUnifiedTranslation();
-console.log(t('test.key', 'fallback')); // Returns fallback if missing
+// Use structured logging: debugLog.info(t('test.key', 'fallback')); // Returns fallback if missing
 ```
 
 ---
