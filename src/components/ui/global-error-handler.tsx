@@ -163,7 +163,8 @@ class GlobalErrorHandler extends Component<GlobalErrorHandlerProps, GlobalErrorS
         stack: error.stack,
         source,
         timestamp: new Date().toISOString(),
-        url: window.location.href,
+        // Use proper URL building for error reporting
+        url: typeof window !== 'undefined' ? window.location.href : '',
         userAgent: navigator.userAgent,
         userId: null // Get from auth context if available
       };
@@ -247,7 +248,10 @@ class GlobalErrorHandler extends Component<GlobalErrorHandlerProps, GlobalErrorS
       (window as any).APP_NAVIGATE('/');
     } else {
       // Use proper navigation with fallback
-      window.location.href = '/';
+      // Use proper navigation with fallback
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
     }
   };
 

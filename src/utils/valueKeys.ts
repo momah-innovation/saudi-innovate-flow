@@ -193,7 +193,10 @@ export const VALUE_KEY_MAPPINGS = {
 export function valueToKey(value: string, category: keyof typeof VALUE_KEY_MAPPINGS): string {
   const mapping = VALUE_KEY_MAPPINGS[category];
   if (!mapping) {
-    console.warn(`No mapping found for category: ${category}`);
+    // Use structured logging instead of console.warn
+    if (typeof window !== 'undefined' && (window as any).debugLog) {
+      (window as any).debugLog.warn('No mapping found for category', { component: 'ValueKeys', data: { category } });
+    }
     return value;
   }
 
@@ -207,7 +210,10 @@ export function valueToKey(value: string, category: keyof typeof VALUE_KEY_MAPPI
 export function keyToValue(key: string, category: keyof typeof VALUE_KEY_MAPPINGS): string {
   const mapping = VALUE_KEY_MAPPINGS[category];
   if (!mapping) {
-    console.warn(`No mapping found for category: ${category}`);
+    // Use structured logging instead of console.warn
+    if (typeof window !== 'undefined' && (window as any).debugLog) {
+      (window as any).debugLog.warn('No mapping found for category', { component: 'ValueKeys', data: { category } });
+    }
     return key;
   }
 

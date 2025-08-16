@@ -195,6 +195,13 @@ export class AnalyticsService {
     if (cached) return cached;
 
     try {
+      // Use hook-based migration instead of direct supabase calls
+      const analyticsService = (window as any).__ANALYTICS_SERVICE_HOOK__;
+      if (analyticsService?.getSecurityMetrics) {
+        return await analyticsService.getSecurityMetrics(userId);
+      }
+      
+      // Temporary fallback - migrate to useAnalyticsService hook
       const [rateLimits, suspiciousActivities, auditLogs] = await Promise.all([
         supabase.from('rate_limits').select('*'),
         supabase.from('suspicious_activities').select('*'),

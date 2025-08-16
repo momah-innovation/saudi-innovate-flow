@@ -68,7 +68,12 @@ export const useNavigationHandler = () => {
     openExternal: (url: string) => navigateTo(url, { external: true }),
     
     // Page refresh (when truly needed)
-    refreshPage: () => window.location.reload()
+    // Use safe page refresh with proper fallback
+    refreshPage: () => {
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
+    }
   };
 
   return {
@@ -83,11 +88,13 @@ export const useNavigationHandler = () => {
  */
 export const useUrlUtils = () => {
   const getBaseUrl = useCallback(() => {
-    return window.location.origin;
+    // Use safe origin access
+    return typeof window !== 'undefined' ? window.location.origin : '';
   }, []);
 
   const getCurrentPath = useCallback(() => {
-    return window.location.pathname;
+    // Use safe pathname access
+    return typeof window !== 'undefined' ? window.location.pathname : '/';
   }, []);
 
   const buildShareUrl = useCallback((path: string) => {
@@ -96,7 +103,9 @@ export const useUrlUtils = () => {
 
   const copyCurrentUrl = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      // Use safe URL access for clipboard
+      const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+      await navigator.clipboard.writeText(currentUrl);
       return true;
     } catch (error) {
       debugLog.error('Failed to copy URL', { component: 'NavigationHandler', action: 'copyCurrentUrl' }, error);
