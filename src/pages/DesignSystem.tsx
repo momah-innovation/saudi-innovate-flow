@@ -36,6 +36,7 @@ import { SimpleLineChart, SimpleBarChart, SimpleDonutChart, MetricCard, Analytic
 import { SplitView, ResizablePanel, MasonryLayout } from '@/components/ui/layout-components';
 import { AdvancedSearch } from '@/components/ui/advanced-search';
 import { CalendarView } from '@/components/ui/calendar-scheduler';
+import { SafeNavigationLink } from '@/components/ui/SafeNavigationLink';
 
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
@@ -4896,18 +4897,18 @@ const DesignSystem = () => {
                         <p className="text-sm text-muted-foreground mb-2">Right-click anywhere in this area</p>
                         <div className="border rounded-lg shadow-lg bg-background p-1 max-w-48 mx-auto">
                           <div className="py-1">
-                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                            <SafeNavigationLink href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
                               <Copy className="w-4 h-4" />
                               Copy
-                            </a>
-                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                            </SafeNavigationLink>
+                            <SafeNavigationLink href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
                               <Edit className="w-4 h-4" />
                               Edit
-                            </a>
-                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                            </SafeNavigationLink>
+                            <SafeNavigationLink href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
                               <Search className="w-4 h-4" />
                               Inspect
-                            </a>
+                            </SafeNavigationLink>
                           </div>
                         </div>
                       </div>
@@ -7489,9 +7490,9 @@ const DesignSystem = () => {
                     <div>
                       <h4 className="font-medium mb-4">Breadcrumb Navigation</h4>
                       <nav className="flex items-center space-x-2 text-sm">
-                        <a href="#" className="text-muted-foreground hover:text-foreground">Home</a>
+                        <SafeNavigationLink href="/dashboard" className="text-muted-foreground hover:text-foreground">Home</SafeNavigationLink>
                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                        <a href="#" className="text-muted-foreground hover:text-foreground">Challenges</a>
+                        <SafeNavigationLink href="/challenges" className="text-muted-foreground hover:text-foreground">Challenges</SafeNavigationLink>
                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
                         <span className="text-foreground font-medium">Smart City Solutions</span>
                       </nav>
@@ -7979,7 +7980,7 @@ const DesignSystem = () => {
                                     <input type="checkbox" className="rounded" />
                                     Remember me
                                   </label>
-                                  <a href="#" className="text-sm text-primary hover:underline">Forgot password?</a>
+                                  <SafeNavigationLink href="/auth/forgot-password" className="text-sm text-primary hover:underline">Forgot password?</SafeNavigationLink>
                                 </div>
                                 <Button className="w-full">Sign In</Button>
                                 
@@ -8011,7 +8012,7 @@ const DesignSystem = () => {
                                 </div>
                                 
                                 <p className="text-center text-sm text-muted-foreground">
-                                  Don't have an account? <a href="#" className="text-primary hover:underline">Sign up</a>
+                                  Don't have an account? <SafeNavigationLink href="/auth/register" className="text-primary hover:underline">Sign up</SafeNavigationLink>
                                 </p>
                               </div>
                             </div>
@@ -8080,13 +8081,13 @@ const DesignSystem = () => {
                                 <div>
                                   <label className="flex items-start gap-2 text-sm">
                                     <input type="checkbox" className="rounded mt-0.5" />
-                                    <span>I agree to the <a href="#" className="text-primary hover:underline">Terms of Service</a> and <a href="#" className="text-primary hover:underline">Privacy Policy</a></span>
+                                    <span>I agree to the <SafeNavigationLink href="/terms" className="text-primary hover:underline">Terms of Service</SafeNavigationLink> and <SafeNavigationLink href="/privacy" className="text-primary hover:underline">Privacy Policy</SafeNavigationLink></span>
                                   </label>
                                 </div>
                                 <Button className="w-full">Create Account</Button>
                                 
                                 <p className="text-center text-sm text-muted-foreground">
-                                  Already have an account? <a href="#" className="text-primary hover:underline">Sign in</a>
+                                  Already have an account? <SafeNavigationLink href="/auth/login" className="text-primary hover:underline">Sign in</SafeNavigationLink>
                                 </p>
                               </div>
                             </div>
@@ -8114,7 +8115,7 @@ const DesignSystem = () => {
                             </div>
                             <Button className="w-full">Send Reset Link</Button>
                             <div className="text-center">
-                              <a href="#" className="text-sm text-primary hover:underline">Back to sign in</a>
+                              <SafeNavigationLink href="/auth/login" className="text-sm text-primary hover:underline">Back to sign in</SafeNavigationLink>
                             </div>
                           </div>
                         </div>

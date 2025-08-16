@@ -17,8 +17,8 @@ export type FilterConfig = {
   type: 'select' | 'multiselect' | 'date' | 'daterange' | 'text' | 'number';
   options?: { label: string; value: string }[];
   placeholder?: string;
-  value?: any;
-  onChange: (value: any) => void;
+  value?: string | number | boolean | string[] | null;
+  onChange: (value: string | number | boolean | string[] | null) => void;
 };
 
 export type BulkAction = {

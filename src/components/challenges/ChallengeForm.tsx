@@ -109,10 +109,10 @@ export function ChallengeForm({ challenge, onSuccess, onCancel }: ChallengeFormP
       }
       
       onSuccess();
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
       toast({
         title: t('error'),
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive'
       });
     } finally {

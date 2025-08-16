@@ -165,7 +165,7 @@ export function AdminChallengeManagement() {
           { label: t('status.on_hold'), value: 'on_hold' }
       ],
       value: statusFilter,
-      onChange: setStatusFilter
+      onChange: (value: string | number | boolean | string[] | null) => setStatusFilter(value as string)
     }
   ];
 
