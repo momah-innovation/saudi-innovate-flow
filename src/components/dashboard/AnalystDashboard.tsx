@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { DashboardUserProfile } from '@/types/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ import {
 } from 'lucide-react';
 
 interface AnalystDashboardProps {
-  userProfile: any;
+  userProfile: DashboardUserProfile;
   canAccessAnalytics: boolean;
   canViewSystemData: boolean;
   canGenerateReports: boolean;

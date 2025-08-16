@@ -7,9 +7,10 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
+import { DashboardUserProfile } from '@/types/common';
 
 interface ExpertDashboardProps {
-  userProfile: any;
+  userProfile: DashboardUserProfile;
   canEvaluateIdeas: boolean;
   canAccessExpertTools: boolean;
 }

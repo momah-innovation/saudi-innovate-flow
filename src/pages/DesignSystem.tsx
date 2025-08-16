@@ -2464,26 +2464,26 @@ const DesignSystem = () => {
                        <nav className="flex items-center space-x-2 text-sm p-3 bg-muted/30 rounded-lg">
                          <Home className="w-4 h-4 text-muted-foreground" />
                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                         <a href="#" className="text-muted-foreground hover:text-foreground">Government</a>
-                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                         <a href="#" className="text-muted-foreground hover:text-foreground">Innovation Hub</a>
-                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                         <a href="#" className="text-muted-foreground hover:text-foreground">Challenges</a>
-                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                         <span className="text-foreground font-medium">AI Healthcare Platform</span>
-                       </nav>
-                     </div>
-                     
-                     <div>
-                       <h4 className="font-medium mb-4">Collapsible Breadcrumbs</h4>
-                       <nav className="flex items-center space-x-2 text-sm p-3 bg-muted/30 rounded-lg">
-                         <Home className="w-4 h-4 text-muted-foreground" />
-                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                         <span className="text-muted-foreground">...</span>
-                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                         <a href="#" className="text-muted-foreground hover:text-foreground">Challenges</a>
-                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                         <a href="#" className="text-muted-foreground hover:text-foreground">Technology</a>
+                          <span {...createNavigationProps('government')}>Government</span>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          <span {...createNavigationProps('innovation-hub')}>Innovation Hub</span>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          <span {...createNavigationProps('challenges')}>Challenges</span>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-foreground font-medium">AI Healthcare Platform</span>
+                        </nav>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-4">Collapsible Breadcrumbs</h4>
+                        <nav className="flex items-center space-x-2 text-sm p-3 bg-muted/30 rounded-lg">
+                          <Home className="w-4 h-4 text-muted-foreground" />
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-muted-foreground">...</span>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          <span {...createNavigationProps('challenges')}>Challenges</span>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          <span {...createNavigationProps('technology')}>Technology</span>
                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
                          <span className="text-foreground font-medium">Current Page</span>
                        </nav>
@@ -2528,28 +2528,28 @@ const DesignSystem = () => {
                            <div>
                              <h5 className="font-medium mb-3 text-primary">Challenges</h5>
                              <div className="space-y-2">
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Technology</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Healthcare</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Education</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Environment</a>
-                             </div>
-                           </div>
-                           <div>
-                             <h5 className="font-medium mb-3 text-primary">Community</h5>
-                             <div className="space-y-2">
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Forums</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Events</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Teams</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Mentorship</a>
-                             </div>
-                           </div>
-                           <div>
-                             <h5 className="font-medium mb-3 text-primary">Resources</h5>
-                             <div className="space-y-2">
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Documentation</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">API Reference</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Tutorials</a>
-                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Best Practices</a>
+                                <span {...createNavigationProps('technology')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Technology</span>
+                                <span {...createNavigationProps('healthcare')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Healthcare</span>
+                                <span {...createNavigationProps('education')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Education</span>
+                                <span {...createNavigationProps('environment')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Environment</span>
+                              </div>
+                            </div>
+                            <div>
+                              <h5 className="font-medium mb-3 text-primary">Community</h5>
+                              <div className="space-y-2">
+                                <span {...createNavigationProps('forums')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Forums</span>
+                                <span {...createNavigationProps('events')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Events</span>
+                                <span {...createNavigationProps('teams')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Teams</span>
+                                <span {...createNavigationProps('mentorship')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Mentorship</span>
+                              </div>
+                            </div>
+                            <div>
+                              <h5 className="font-medium mb-3 text-primary">Resources</h5>
+                              <div className="space-y-2">
+                                <span {...createNavigationProps('documentation')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Documentation</span>
+                                <span {...createNavigationProps('api-reference')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">API Reference</span>
+                                <span {...createNavigationProps('tutorials')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Tutorials</span>
+                                <span {...createNavigationProps('best-practices')} className="block text-sm text-muted-foreground hover:text-foreground cursor-pointer">Best Practices</span>
                              </div>
                            </div>
                            <div>

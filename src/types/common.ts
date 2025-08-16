@@ -304,12 +304,21 @@ export interface MediaFile {
   upload_date: string;
 }
 
+// Dashboard-specific types with proper inheritance
 export interface DashboardUserProfile extends UserProfile {
   user_roles: UserRole[];
   department?: string; // Keep as string for compatibility
   organization?: string; // Keep as string for compatibility  
   permissions?: string[];
   recent_activity?: ActivityFeedEvent[];
+  // Dashboard-specific fields
+  total_ideas?: number;
+  active_challenges?: number;
+  total_points?: number;
+  innovation_score?: number;
+  expertise_areas?: string[];
+  current_role?: string;
+  role_permissions?: string[];
 }
 
 export interface IdeaTemplateStructure {
