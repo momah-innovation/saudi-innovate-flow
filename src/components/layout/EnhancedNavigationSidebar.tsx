@@ -5,7 +5,9 @@
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { createDebouncedNavigate } from '@/utils/navigation-performance';
+import { useNavigationCache } from '@/hooks/useOptimizedDashboardStats';
 import { Search, X, ChevronDown, ChevronRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
@@ -39,6 +41,12 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
   const { t } = useUnifiedTranslation();
   const { theme } = useTheme();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // OPTIMIZED: Debounced navigation to prevent cascades
+  const debouncedNavigate = useMemo(() => createDebouncedNavigate(navigate), [navigate]);
+  const { data: navigationCache } = useNavigationCache(user?.id);
   
   // Get user roles robustly with comprehensive fallback system
   const userRoles = React.useMemo(() => {
@@ -62,10 +70,36 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
     return Array.from(new Set(merged));
   }, [userProfile, user]);
   
-  const location = useLocation();
+  // State management with navigation cache restoration
   
   // Local state
   const [searchQuery, setSearchQuery] = useState('');
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // OPTIMIZED: Restore sidebar state from cache
+  useEffect(() => {
+    if (navigationCache?.sidebar_open !== undefined) {
+      onOpenChange(navigationCache.sidebar_open);
+    }
+  }, [navigationCache, onOpenChange]);
+
+  // OPTIMIZED: Navigation handler with debouncing
+  const handleNavigation = useCallback((path: string, event?: React.MouseEvent) => {
+    if (event) {
+      event.preventDefault();
+    }
+    
+    debouncedNavigate(path);
+    
+    // Close mobile sidebar on navigation
+    if (window.innerWidth < 768) {
+      onOpenChange(false);
+      setIsMobileMenuOpen(false);
+    }
+  }, [debouncedNavigate, onOpenChange]);
+  
+  // REMOVED: old state management - now using optimized handlers
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set([MENU_GROUPS.MAIN]));
   const [isMobile, setIsMobile] = useState(false);
 
@@ -166,15 +200,14 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
     const Icon = item.icon;
     
     return (
-      <NavLink
+      <button
         key={item.id}
-        to={item.path}
-        onClick={handleItemClick}
-        className={({ isActive: navIsActive }) => cn(
-          'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200',
+        onClick={(e) => handleNavigation(item.path, e)}
+        className={cn(
+          'w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200',
           'hover:bg-accent hover:text-accent-foreground',
           'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-          (navIsActive || isActive) && 'bg-primary text-primary-foreground shadow-sm',
+          isActive && 'bg-primary text-primary-foreground shadow-sm',
           isRTL && 'flex-row-reverse text-right'
         )}
       >
@@ -198,7 +231,7 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
             {item.badge}
           </Badge>
         )}
-      </NavLink>
+      </button>
     );
   }, [t, isRTL, handleItemClick, isActiveItem]);
 

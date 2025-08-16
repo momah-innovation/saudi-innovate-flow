@@ -2236,10 +2236,10 @@ const DesignSystem = () => {
                           <span className="font-semibold">InnovateLab</span>
                         </div>
                         <nav className="hidden md:flex items-center gap-6">
-                          <a href="#" className="text-sm font-medium">Challenges</a>
-                          <a href="#" className="text-sm text-muted-foreground hover:text-foreground">Community</a>
-                          <a href="#" className="text-sm text-muted-foreground hover:text-foreground">Resources</a>
-                          <a href="#" className="text-sm text-muted-foreground hover:text-foreground">About</a>
+                          <button className="text-sm font-medium">Challenges</button>
+                          <button className="text-sm text-muted-foreground hover:text-foreground">Community</button>
+                          <button className="text-sm text-muted-foreground hover:text-foreground">Resources</button>
+                          <button className="text-sm text-muted-foreground hover:text-foreground">About</button>
                         </nav>
                       </div>
                       <div className="flex items-center gap-4">
