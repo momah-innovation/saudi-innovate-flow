@@ -190,12 +190,17 @@ All remaining components in various directories.
 ### **Phase 4 Progress (Low): 0/40 (0%)**
 - Remaining Components: 0/40 migrated
 
-## **OVERALL PROGRESS: 6/195 (3%) COMPLETE**
+## **OVERALL PROGRESS: 8/195 (4%) COMPLETE**
 
-### **BATCH 2 PARTIAL COMPLETE (3/3 files migrated):**
+### **BATCH 3 STATUS:**
+8. **EvaluationsManagement.tsx** - ✅ Migrated to `useEvaluationManagement`
+9. **ExpertAssignmentManagement.tsx** - ⚠️ NEEDS COMPLETION (Supabase import missing)
+
+### **BATCH 2 COMPLETE (3/3 files migrated):**
 4. **BulkAvatarUploader.tsx** - ✅ Migrated to `useStorageOperations`
 5. **CampaignsManagement.tsx** - ✅ Migrated to `useCampaignManagement`  
-6. **EventsManagement.tsx** - ⚠️ Partial migration (needs `useEventOperations` hook)
+6. **EventsManagement.tsx** - ✅ Migrated to `useEventOperations`
+7. **ChallengeSettings.tsx** - ✅ Migrated to `useChallengeManagement`
 
 ### **COMPLETED MIGRATIONS:**
 

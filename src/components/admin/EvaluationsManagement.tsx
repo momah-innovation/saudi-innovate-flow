@@ -74,10 +74,14 @@ export function EvaluationsManagement({
   showAddDialog = false,
   onAddDialogChange
 }: EvaluationsManagementProps) {
-  const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
+  const { 
+    evaluations: hookEvaluations, 
+    loading, 
+    loadEvaluations 
+  } = useEvaluationManagement();
+  
   const [ideas, setIdeas] = useState<{ [key: string]: Idea }>({});
   const [profiles, setProfiles] = useState<{ [key: string]: Profile }>({});
-  const [loading, setLoading] = useState(true);
   const [selectedEvaluation, setSelectedEvaluation] = useState<Evaluation | null>(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [filterType, setFilterType] = useState<string>("all");
@@ -91,70 +95,13 @@ export function EvaluationsManagement({
   const { getSettingValue } = useSettingsManager();
   const expertRoleTypes = getSettingValue('expert_role_types', []) as string[];
   const evaluatorTypes = getSettingValue('evaluator_types', []) as string[];
+  
+  // Convert hook data to expected format
+  const evaluations: Evaluation[] = hookEvaluations || [];
 
   useEffect(() => {
-    fetchEvaluations();
+    // Hook automatically loads data, no manual fetching needed
   }, []);
-
-  const fetchEvaluations = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch evaluations
-      const { data: evaluationsData, error: evaluationsError } = await supabase
-        .from("idea_evaluations")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (evaluationsError) throw evaluationsError;
-
-      setEvaluations(evaluationsData || []);
-
-      // Fetch related ideas
-      const ideaIds = [...new Set(evaluationsData?.map(e => e.idea_id).filter(Boolean))];
-      if (ideaIds.length > 0) {
-        const { data: ideasData, error: ideasError } = await supabase
-          .from("ideas")
-          .select("id, title_ar, title_en, description_ar, description_en, status")
-          .in("id", ideaIds);
-
-        if (ideasError) throw ideasError;
-
-        const ideasMap = (ideasData || []).reduce((acc, idea) => {
-          acc[idea.id] = idea;
-          return acc;
-        }, {} as { [key: string]: Idea });
-        setIdeas(ideasMap);
-      }
-
-      // Fetch evaluator profiles
-      const evaluatorIds = [...new Set(evaluationsData?.map(e => e.evaluator_id).filter(Boolean))];
-      if (evaluatorIds.length > 0) {
-        const { data: profilesData, error: profilesError } = await supabase
-          .from("profiles")
-          .select("id, name, email")
-          .in("id", evaluatorIds);
-
-        if (profilesError) throw profilesError;
-
-        const profilesMap = (profilesData || []).reduce((acc, profile) => {
-          acc[profile.id] = profile;
-          return acc;
-        }, {} as { [key: string]: Profile });
-        setProfiles(profilesMap);
-      }
-
-    } catch (error) {
-      errorHandler.handleError(error, 'EvaluationsManagement.fetchEvaluations');
-      toast({
-        title: t('error.title'),
-        description: t('error.fetch_evaluations_failed'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getOverallScore = (evaluation: Evaluation) => {
     const scores = [

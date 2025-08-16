@@ -56,7 +56,7 @@ export const useExpertAssignment = () => {
     logger.info('Creating expert assignment', { component: 'useExpertAssignment' });
     
     const { data, error } = await supabase
-      .from('expert_assignments')
+      .from('challenge_experts')
       .insert([assignmentData])
       .select()
       .single();
@@ -77,7 +77,7 @@ export const useExpertAssignment = () => {
     logger.info('Updating expert assignment', { component: 'useExpertAssignment' });
     
     const { data, error } = await supabase
-      .from('expert_assignments')
+      .from('challenge_experts')
       .update(assignmentData)
       .eq('id', assignmentId)
       .select()
@@ -99,7 +99,7 @@ export const useExpertAssignment = () => {
     logger.info('Deleting expert assignment', { component: 'useExpertAssignment' });
     
     const { error } = await supabase
-      .from('expert_assignments')
+      .from('challenge_experts')
       .delete()
       .eq('id', assignmentId);
     

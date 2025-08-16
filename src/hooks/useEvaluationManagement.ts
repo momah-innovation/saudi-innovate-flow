@@ -34,7 +34,7 @@ export const useEvaluationManagement = () => {
       logger.info('Fetching evaluations list', { component: 'useEvaluationManagement' });
       
       const { data, error } = await supabase
-        .from('challenge_submissions')
+        .from('idea_evaluations')
         .select('*')
         .order('created_at', { ascending: false });
       
@@ -57,11 +57,11 @@ export const useEvaluationManagement = () => {
   const createEvaluation = useCallback(async (evaluationData: any): Promise<any> => {
     logger.info('Creating evaluation', { component: 'useEvaluationManagement' });
     
-    const { data, error } = await supabase
-      .from('evaluations')
-      .insert([evaluationData])
-      .select()
-      .single();
+      const { data, error } = await supabase
+        .from('idea_evaluations')
+        .insert([evaluationData])
+        .select()
+        .single();
     
     if (error) {
       logger.error('Failed to create evaluation', { component: 'useEvaluationManagement' }, error);
@@ -79,7 +79,7 @@ export const useEvaluationManagement = () => {
     logger.info('Updating evaluation', { component: 'useEvaluationManagement' });
     
     const { data, error } = await supabase
-      .from('evaluations')
+      .from('idea_evaluations')
       .update(evaluationData)
       .eq('id', evaluationId)
       .select()
@@ -101,7 +101,7 @@ export const useEvaluationManagement = () => {
     logger.info('Deleting evaluation', { component: 'useEvaluationManagement' });
     
     const { error } = await supabase
-      .from('evaluations')
+      .from('idea_evaluations')
       .delete()
       .eq('id', evaluationId);
     
