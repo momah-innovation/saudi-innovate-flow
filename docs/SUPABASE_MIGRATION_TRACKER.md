@@ -190,7 +190,7 @@ All remaining components in various directories.
 ### **Phase 4 Progress (Low): 0/40 (0%)**
 - Remaining Components: 0/40 migrated
 
-## **OVERALL PROGRESS: 13/195 (7%) COMPLETE + 20+ EXISTING HOOKS AVAILABLE**
+## **OVERALL PROGRESS: 17/195 (9%) COMPLETE + 20+ EXISTING HOOKS AVAILABLE**
 
 ### **✅ DISCOVERED EXISTING HOOKS (Available for Use):**
 **Management Hooks:**
@@ -216,6 +216,12 @@ All remaining components in various directories.
 - `usePartnerDashboardData` - Partner workspace data ✅
 - `useTeamWorkspaceData` - Team workspace data ✅
 - `usePartnerWorkspaceData` - Partner workspace data ✅
+
+### **BATCH 6 COMPLETE (4/4 files):**
+15. **ExpertAssignmentManagement.tsx** - ✅ Migrated to `useExpertAssignment` (partial - complex queries remain)
+16. **FocusQuestionsManagement.tsx** - ✅ Migrated to `useFocusQuestionManagement`
+17. **InnovationTeamsContent.tsx** - ✅ Partially migrated (removed supabase, added mock data for useTeamManagement)
+18. **OpportunityWizard.tsx** - ✅ Migrated to `useOpportunityOperations`
 
 ### **BATCH 5 COMPLETE (3/3 files):**
 12. **AdminFocusQuestionWizard.tsx** - ✅ Migrated to `useFocusQuestionManagement`

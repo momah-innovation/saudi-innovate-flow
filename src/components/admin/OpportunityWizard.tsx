@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useOpportunityOperations } from "@/hooks/useOpportunityOperations";
 import { MultiStepForm } from "@/components/ui/multi-step-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,6 +52,7 @@ export function OpportunityWizard({
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
+  const { createOpportunity, updateOpportunity } = useOpportunityOperations();
   const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
   
   const [formData, setFormData] = useState<OpportunityFormData>({
@@ -195,10 +196,21 @@ export function OpportunityWizard({
     setErrors({});
     
     try {
-      // Mock save operation for now
-      logger.info('Saving opportunity', formData);
+      // Convert formData to match hook interface
+      const opportunityData = {
+        ...formData,
+        title_ar: formData.title,
+        description_ar: formData.description,
+        opportunity_type: formData.type,
+        deadline: formData.application_deadline
+      };
 
-      // For now, show success since the opportunity table doesn't exist yet
+      if (opportunity) {
+        await updateOpportunity(opportunity.id, opportunityData);
+      } else {
+        await createOpportunity(opportunityData);
+      }
+
       toast({
         title: t('opportunity.save_success'),
         description: t('opportunity.save_success_description'),

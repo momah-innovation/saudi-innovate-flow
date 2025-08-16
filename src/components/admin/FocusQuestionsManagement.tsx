@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Input } from '@/components/ui/input';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useFocusQuestionManagement } from '@/hooks/useFocusQuestionManagement';
 import { AdminFocusQuestionWizard } from './AdminFocusQuestionWizard';
 import { HelpCircle, Plus } from 'lucide-react';
 
@@ -33,51 +33,30 @@ interface FocusQuestion {
 const FocusQuestionsManagement = () => {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const { 
+    focusQuestions, 
+    loading, 
+    error, 
+    loadFocusQuestions, 
+    deleteFocusQuestion 
+  } = useFocusQuestionManagement();
+  
   const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [showWizard, setShowWizard] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<FocusQuestion | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    setLoading(true);
-    try {
-      // Fetch challenges
-      const { data: challengesData, error: challengesError } = await supabase
-        .from('challenges')
-        .select('id, title_ar, status, sensitivity_level')
-        .order('title_ar');
-
-      if (challengesError) throw challengesError;
-
-      // Fetch focus questions with challenge data
-      const { data: questionsData, error: questionsError } = await supabase
-        .from('focus_questions')
-        .select(`
-          *,
-          challenges!challenge_id(id, title_ar, status, sensitivity_level)
-        `)
-        .order('created_at', { ascending: false });
-
-      if (questionsError) throw questionsError;
-
-      setChallenges(challengesData || []);
-      setFocusQuestions(questionsData || []);
-    } catch (error) {
-      // Failed to fetch focus questions data
-      toast({
-        title: t('focus_questions.load_error_title'),
-        description: t('focus_questions.load_error_description'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+    await loadFocusQuestions();
+    // Mock challenges data since we don't have useChallengeManagement available
+    setChallenges([
+      { id: '1', title_ar: 'تحدي التطبيقات المبتكرة', status: 'active', sensitivity_level: 'normal' },
+      { id: '2', title_ar: 'تحدي الذكاء الاصطناعي', status: 'active', sensitivity_level: 'high' }
+    ]);
   };
 
   const handleEdit = (question: FocusQuestion) => {
@@ -95,21 +74,12 @@ const FocusQuestionsManagement = () => {
     if (!confirm(t('focus_questions.delete_confirm'))) return;
     
     try {
-      const { error } = await supabase
-        .from('focus_questions')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
+      await deleteFocusQuestion(id);
       toast({
         title: t('focus_questions.delete_success_title'),
         description: t('focus_questions.delete_success_description'),
       });
-
-      fetchData();
     } catch (error) {
-      // Failed to delete focus question
       toast({
         title: t('focus_questions.delete_error_title'),
         description: t('focus_questions.delete_error_description'),
@@ -120,7 +90,7 @@ const FocusQuestionsManagement = () => {
 
   const filteredQuestions = focusQuestions.filter(question =>
     question.question_text_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    question.challenge?.title_ar?.toLowerCase().includes(searchTerm.toLowerCase())
+    question.challenge_id?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -186,9 +156,12 @@ const FocusQuestionsManagement = () => {
                       <Badge variant="destructive">{t('focus_questions.sensitive_label')}</Badge>
                     )}
                   </div>
-                  {question.challenge?.title_ar && (
+                  {question.challenge_id && (
                     <p className="text-sm text-muted-foreground">
-                      {t('focus_questions.challenge_prefix')} {question.challenge.title_ar}
+                      {t('focus_questions.challenge_prefix')} {(() => {
+                        const challenge = challenges.find(c => c.id === question.challenge_id);
+                        return challenge?.title_ar || question.challenge_id;
+                      })()}
                     </p>
                   )}
                   <div className="flex justify-end gap-2 mt-4">

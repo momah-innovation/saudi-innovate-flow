@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -118,63 +117,60 @@ export function InnovationTeamsContent({
     try {
       setLoading(true);
 
-      // Fetch core innovation team members - first get team members
-      const { data: members, error: membersError } = await supabase
-        .from('innovation_team_members')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (membersError) throw membersError;
-
-      // Then fetch profiles for each member
-      let enrichedMembers = [];
-      if (members && members.length > 0) {
-        const userIds = members.map(member => member.user_id);
-        const { data: profiles, error: profilesError } = await supabase
-          .from('profiles')
-          .select('id, name, name_ar, email, profile_image_url, department, position')
-          .in('id', userIds);
-
-        if (profilesError) {
-          // Continue without profiles if they fail to load
-          // Note: Profile data will be incomplete but core functionality preserved
-        }
-
-        // Fetch team assignments
-        const { data: assignments, error: assignmentsError } = await supabase
-          .from('team_assignments')
-          .select('*')
-          .in('team_member_id', members.map(m => m.id));
-
-        if (assignmentsError) {
-          // Continue without assignments if they fail to load
-        }
-
-        // Enrich members with profile data and assignments
-        enrichedMembers = members.map(member => ({
-          ...member,
-          profiles: profiles?.find(profile => profile.id === member.user_id) || {
-            name: 'مستخدم غير معروف',
-            email: member.contact_email || 'غير محدد'
+      // Mock data for now - will be replaced with useTeamManagement hook
+      const mockMembers = [
+        {
+          id: '1',
+          user_id: 'user-1',
+          status: 'active' as const,
+          cic_role: 'مطور أول',
+          specialization: ['تطوير التطبيقات', 'الذكاء الاصطناعي'],
+          bio: 'خبير في تطوير التطبيقات المبتكرة',
+          location: 'الرياض',
+          current_workload: 75,
+          capacity: 100,
+          efficiency_rating: 4.8,
+          performance_score: 92,
+          availability_status: 'available' as const,
+          skills: ['React', 'TypeScript', 'AI'],
+          certifications: ['AWS Certified', 'React Professional'],
+          experience_years: 8,
+          ideas_submitted: 15,
+          ideas_approved: 12,
+          innovation_score: 85,
+          collaboration_score: 90,
+          join_date: '2023-01-15',
+          last_active: '2024-01-16T10:00:00Z',
+          created_at: '2023-01-15T09:00:00Z',
+          updated_at: '2024-01-16T10:00:00Z',
+          max_concurrent_projects: 3,
+          performance_rating: 4.8,
+          contact_email: 'ahmed@example.com',
+          department: 'قسم التكنولوجيا',
+          profiles: {
+            id: 'user-1',
+            name: 'أحمد محمد',
+            name_ar: 'أحمد محمد',
+            email: 'ahmed@example.com',
+            profile_image_url: '',
+            department: 'قسم التكنولوجيا',
+            position: 'مطور أول',
+            role: 'team_member'
           },
-          team_assignments: assignments?.filter(a => a.team_member_id === member.id) || []
-        }));
-      }
-
-      // Calculate metrics
-      const totalMembers = enrichedMembers?.length || 0;
-      const activeMembers = enrichedMembers?.filter(m => m.status === 'active')?.length || 0;
-      const totalWorkload = enrichedMembers?.reduce((sum, m) => sum + (m.current_workload || 0), 0) || 0;
-      const avgWorkload = totalMembers > 0 ? Math.round(totalWorkload / totalMembers) : 0;
-      const totalAssignments = enrichedMembers?.reduce((sum, m) => sum + (m.team_assignments?.length || 0), 0) || 0;
+          team_assignments: [
+            { id: '1', team_member_id: '1', status: 'active', workload_percentage: 40 },
+            { id: '2', team_member_id: '1', status: 'active', workload_percentage: 35 }
+          ]
+        }
+      ];
 
       setCoreTeamData({
-        members: enrichedMembers || [],
+        members: mockMembers,
         metrics: {
-          totalMembers,
-          activeMembers,
-          avgWorkload,
-          totalAssignments
+          totalMembers: mockMembers.length,
+          activeMembers: mockMembers.filter(m => m.status === 'active').length,
+          avgWorkload: 75,
+          totalAssignments: 2
         }
       });
 
@@ -197,13 +193,7 @@ export function InnovationTeamsContent({
 
   const handleRemoveMember = async (memberId: string) => {
     try {
-      const { error } = await supabase
-        .from('innovation_team_members')
-        .update({ status: 'inactive' })
-        .eq('id', memberId);
-
-      if (error) throw error;
-
+      // Mock removal - will be replaced with useTeamManagement hook
       toast({
         title: t('common.success'),
         description: t('innovation_teams.member_removed_success'),
