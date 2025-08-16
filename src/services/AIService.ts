@@ -144,16 +144,23 @@ export class AIService {
 
       // Store moderation result
       if (contentId) {
-        await supabase.from('content_moderation_logs').insert({
-          content_id: contentId,
-          content_type: contentType,
-          content_text: content,
-          moderation_result: result,
-          flagged: result.flagged,
-          confidence_score: result.confidence,
-          categories_detected: result.categories,
-          status: result.flagged ? 'requires_review' : 'approved'
-        });
+        // Use hook-based migration instead of direct supabase calls
+        const aiService = (window as any).__AI_SERVICE_HOOK__;
+        if (aiService?.storeModerationResult) {
+          await aiService.storeModerationResult(contentId, contentType, content, result);
+        } else {
+          // Temporary fallback - migrate to useAIService hook
+          await supabase.from('content_moderation_logs').insert({
+            content_id: contentId,
+            content_type: contentType,
+            content_text: content,
+            moderation_result: result,
+            flagged: result.flagged,
+            confidence_score: result.confidence,
+            categories_detected: result.categories,
+            status: result.flagged ? 'requires_review' : 'approved'
+          });
+        }
       }
 
       return result;
@@ -220,16 +227,23 @@ export class AIService {
       await this.trackUsage('email_intelligence', 'template_generation', 0, 0, executionTime, true);
 
       // Store email template
-      await supabase.from('ai_email_templates').insert({
-        template_name: `${templateType}_${Date.now()}`,
-        template_category: templateType,
-        subject_template: result.subject,
-        body_template: result.body,
-        variables: result.variables,
-        tone,
-        language,
-        generated_by: 'ai'
-      });
+      // Use hook-based migration instead of direct supabase calls
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.storeEmailTemplate) {
+        await aiService.storeEmailTemplate(templateType, result, tone, language);
+      } else {
+        // Temporary fallback - migrate to useAIService hook
+        await supabase.from('ai_email_templates').insert({
+          template_name: `${templateType}_${Date.now()}`,
+          template_category: templateType,
+          subject_template: result.subject,
+          body_template: result.body,
+          variables: result.variables,
+          tone,
+          language,
+          generated_by: 'ai'
+        });
+      }
 
       return result;
     } catch (error) {

@@ -143,7 +143,8 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
           session_id: sessionId,
           status: 'online',
           current_location: {
-            page: window.location.pathname,
+            // Use proper pathname access for collaboration tracking
+            page: typeof window !== 'undefined' ? window.location.pathname : '/',
           },
           last_seen: new Date().toISOString(),
           user_info: {
@@ -170,7 +171,8 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
             ...currentPresence,
             last_seen: new Date().toISOString(),
             current_location: {
-              page: window.location.pathname,
+              // Use proper pathname access for collaboration tracking
+              page: typeof window !== 'undefined' ? window.location.pathname : '/',
             }
           };
           await channelsRef.current.presence.track(updatedPresence);

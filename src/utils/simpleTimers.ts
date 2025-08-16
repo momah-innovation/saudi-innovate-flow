@@ -20,7 +20,10 @@ export const createAsyncTimeoutCleanup = (callback: () => Promise<void>, delay: 
     try {
       await callback();
     } catch (error) {
-      console.error('Async timeout callback failed:', error);
+      // Use structured logging instead of console.error
+      if (typeof window !== 'undefined' && (window as any).debugLog) {
+        (window as any).debugLog.error('Async timeout callback failed', { component: 'SimpleTimers' }, error);
+      }
     }
   }, delay);
   return () => clearTimeout(timeoutId);
@@ -31,7 +34,10 @@ export const createAsyncIntervalCleanup = (callback: () => Promise<void>, interv
     try {
       await callback();
     } catch (error) {
-      console.error('Async interval callback failed:', error);
+      // Use structured logging instead of console.error
+      if (typeof window !== 'undefined' && (window as any).debugLog) {
+        (window as any).debugLog.error('Async interval callback failed', { component: 'SimpleTimers' }, error);
+      }
     }
   }, interval);
   return () => clearInterval(intervalId);

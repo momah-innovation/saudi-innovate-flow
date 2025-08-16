@@ -42,7 +42,8 @@ export const useEnhancedViewTracking = ({
             behaviorMetadata: {
               timestamp: Date.now(),
               userAgent: navigator.userAgent,
-              pageUrl: window.location.href
+              // Use proper URL building for analytics tracking
+              pageUrl: typeof window !== 'undefined' ? window.location.href : ''
             }
           }
         }
@@ -72,7 +73,8 @@ export const useEnhancedViewTracking = ({
             timeSpentSeconds,
             stepMetadata: {
               timestamp: Date.now(),
-              pageUrl: window.location.href,
+              // Use proper URL building for analytics tracking
+              pageUrl: typeof window !== 'undefined' ? window.location.href : '',
               referrer: document.referrer
             }
           }
@@ -114,13 +116,12 @@ export const useEnhancedViewTracking = ({
             action: 'view',
             metadata: {
               ...locationInfo,
-              userAgent: navigator.userAgent,
+              // Use proper URL building for analytics tracking
+              pageUrl: typeof window !== 'undefined' ? window.location.href : '',
               referrer: document.referrer,
-              pageUrl: window.location.href,
-              timestamp: Date.now(),
-              utmSource: new URLSearchParams(window.location.search).get('utm_source'),
-              utmMedium: new URLSearchParams(window.location.search).get('utm_medium'),
-              utmCampaign: new URLSearchParams(window.location.search).get('utm_campaign')
+              utmSource: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_source') : null,
+              utmMedium: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_medium') : null,
+              utmCampaign: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_campaign') : null
             }
           }
         });
