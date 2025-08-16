@@ -16,33 +16,10 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
+import { useStatisticsAnalytics, StatisticsAnalyticsData } from '@/hooks/useStatisticsAnalytics';
 
-interface StatisticsAnalyticsData {
-  totalMetrics: number;
-  activeReports: number;
-  totalUsers: number;
-  averageEngagement: number;
-  completedAnalyses: number;
-  monthlyTrends: Array<{
-    month: string;
-    reports: number;
-    users: number;
-    engagement: number;
-  }>;
-  topCategories: Array<{
-    name: string;
-    count: number;
-    percentage: number;
-  }>;
-  reportTypes: Array<{
-    type: string;
-    count: number;
-    percentage: number;
-  }>;
-}
+// Interface moved to hook
 
 interface StatisticsAnalyticsDashboardProps {
   className?: string;
@@ -50,65 +27,12 @@ interface StatisticsAnalyticsDashboardProps {
 
 export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
-  const [data, setData] = useState<StatisticsAnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const { loading, data, loadAnalyticsData } = useStatisticsAnalytics();
 
   useEffect(() => {
-    loadAnalyticsData();
-  }, []);
-
-  const loadAnalyticsData = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch analytics data from Supabase
-      const [ideasData, challengesData, eventsData, usersData] = await Promise.all([
-        supabase.from('ideas').select('id, created_at', { count: 'exact' }),
-        supabase.from('challenges').select('id, created_at', { count: 'exact' }),
-        supabase.from('events').select('id, event_date', { count: 'exact' }),
-        supabase.from('innovators').select('id', { count: 'exact' })
-      ]);
-
-      // Process and calculate analytics
-      const analyticsData: StatisticsAnalyticsData = {
-        totalMetrics: 15,
-        activeReports: 8,
-        totalUsers: usersData.count || 0,
-        averageEngagement: 78.5,
-        completedAnalyses: 12,
-        monthlyTrends: [
-          { month: 'Jan', reports: 25, users: 150, engagement: 72 },
-          { month: 'Feb', reports: 32, users: 180, engagement: 75 },
-          { month: 'Mar', reports: 28, users: 165, engagement: 78 },
-          { month: 'Apr', reports: 35, users: 195, engagement: 82 },
-          { month: 'May', reports: 42, users: 220, engagement: 85 },
-          { month: 'Jun', reports: 38, users: 205, engagement: 79 }
-        ],
-        topCategories: [
-          { name: isRTL ? 'الأفكار' : 'Ideas', count: ideasData.count || 0, percentage: 35 },
-          { name: isRTL ? 'التحديات' : 'Challenges', count: challengesData.count || 0, percentage: 28 },
-          { name: isRTL ? 'الفعاليات' : 'Events', count: eventsData.count || 0, percentage: 22 },
-          { name: isRTL ? 'المستخدمين' : 'Users', count: usersData.count || 0, percentage: 15 }
-        ],
-        reportTypes: [
-          { type: isRTL ? 'تقارير شهرية' : 'Monthly Reports', count: 8, percentage: 40 },
-          { type: isRTL ? 'تحليلات مباشرة' : 'Real-time Analytics', count: 6, percentage: 30 },
-          { type: isRTL ? 'ملخصات تنفيذية' : 'Executive Summaries', count: 4, percentage: 20 },
-          { type: isRTL ? 'تقارير مخصصة' : 'Custom Reports', count: 2, percentage: 10 }
-        ]
-      };
-
-      setData(analyticsData);
-    } catch (error) {
-      logger.error('Failed to load statistics analytics data', { 
-        component: 'StatisticsAnalyticsDashboard', 
-        action: 'loadAnalyticsData' 
-      }, error as Error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    loadAnalyticsData(isRTL);
+  }, [isRTL, loadAnalyticsData]);
 
   if (loading) {
     return (

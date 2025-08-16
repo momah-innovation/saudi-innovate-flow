@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { logger } from "@/utils/logger";
+import { useEventManagement, EventFormData } from "@/hooks/useEventManagement";
 import { 
   Check,
   ChevronsUpDown,
@@ -30,8 +29,7 @@ import {
   HelpCircle,
   Settings
 } from "lucide-react";
-import { updateEventPartners, updateEventStakeholders, updateEventFocusQuestions, updateEventChallenges } from "@/lib/relationshipHelpers";
-import { EventFormData, SystemLists } from "@/types";
+import { SystemLists } from "@/types";
 
 interface Event {
   id: string;
@@ -118,14 +116,24 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
     target_stakeholder_groups: [] as string[],
   });
 
-  // Related data
-  const [campaigns, setCampaigns] = useState<any[]>([]);
-  const [challenges, setChallenges] = useState<any[]>([]);
-  const [sectors, setSectors] = useState<any[]>([]);
-  const [partners, setPartners] = useState<any[]>([]);
-  const [stakeholders, setStakeholders] = useState<any[]>([]);
-  const [focusQuestions, setFocusQuestions] = useState<any[]>([]);
-  const [eventManagers, setEventManagers] = useState<any[]>([]);  // TODO: Apply types in next iteration
+  // Related data - now using typed interfaces
+  const [relatedData, setRelatedData] = useState<{
+    campaigns: Array<{id: string, title_ar: string}>;
+    challenges: Array<{id: string, title_ar: string}>;
+    sectors: Array<{id: string, name: string}>;
+    partners: Array<{id: string, name: string}>;
+    stakeholders: Array<{id: string, name: string}>;
+    focusQuestions: Array<{id: string, question_text_ar: string}>;
+    eventManagers: Array<{id: string, name: string, email: string, position: string}>;
+  }>({
+    campaigns: [],
+    challenges: [],
+    sectors: [],
+    partners: [],
+    stakeholders: [],
+    focusQuestions: [],
+    eventManagers: []
+  });
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
   const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
@@ -133,6 +141,12 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
 
   const { toast } = useToast();
   const { generalStatusOptions, eventTypes, eventFormats, eventCategories, eventVisibilityOptions, recurrencePatternOptions } = useSystemLists();
+  const { 
+    loading: eventLoading, 
+    fetchEventWizardData, 
+    loadEventRelationships, 
+    saveEvent 
+  } = useEventManagement();
 
   // Options from system lists
   const eventTypeOptions = eventTypes.map(type => ({
@@ -188,31 +202,8 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
 
   const fetchRelatedData = async () => {
     try {
-      const [
-        campaignsRes, 
-        challengesRes, 
-        sectorsRes,
-        partnersRes, 
-        stakeholdersRes, 
-        focusQuestionsRes,
-        eventManagersRes
-      ] = await Promise.all([
-        supabase.from('campaigns').select('*').order('title_ar'),
-        supabase.from('challenges').select('*').order('title_ar'),
-        supabase.from('sectors').select('*').order('name'),
-        supabase.from('partners').select('*').order('name'),
-        supabase.from('stakeholders').select('*').order('name'),
-        supabase.from('focus_questions').select('*').order('question_text_ar'),
-        supabase.from('profiles').select('id, name, email, position').order('name')
-      ]);
-
-      setCampaigns(campaignsRes.data || []);
-      setChallenges(challengesRes.data || []);
-      setSectors(sectorsRes.data || []);
-      setPartners(partnersRes.data || []);
-      setStakeholders(stakeholdersRes.data || []);
-      setFocusQuestions(focusQuestionsRes.data || []);
-      setEventManagers(eventManagersRes.data || []);
+      const data = await fetchEventWizardData();
+      setRelatedData(data);
     } catch (error) {
       // Failed to fetch event wizard data - using defaults
     }
@@ -255,35 +246,16 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
     }
   };
 
-  const loadEventRelationships = async (eventId: string) => {
-    try {
-      const [partnersRes, stakeholdersRes, focusQuestionsRes, challengesRes] = await Promise.all([
-        supabase
-          .from('event_partner_links')
-          .select('partner_id')
-          .eq('event_id', eventId),
-        supabase
-          .from('event_stakeholder_links')
-          .select('stakeholder_id')
-          .eq('event_id', eventId),
-        supabase
-          .from('event_focus_question_links')
-          .select('focus_question_id')
-          .eq('event_id', eventId),
-        supabase
-          .from('event_challenge_links')
-          .select('challenge_id')
-          .eq('event_id', eventId)
-      ]);
-
-      setSelectedPartners(partnersRes.data?.map(link => link.partner_id) || []);
-      setSelectedStakeholders(stakeholdersRes.data?.map(link => link.stakeholder_id) || []);
-      setSelectedFocusQuestions(focusQuestionsRes.data?.map(link => link.focus_question_id) || []);
-      setSelectedChallenges(challengesRes.data?.map(link => link.challenge_id) || []);
-    } catch (error) {
-      // Failed to load event relationships
+  useEffect(() => {
+    if (isOpen) {
+      fetchRelatedData();
+      if (event) {
+        loadEventData(event);
+      } else {
+        resetForm();
+      }
     }
-  };
+  }, [isOpen, event]);
 
   const resetForm = () => {
     setFormData({
@@ -421,61 +393,14 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
 
     setIsLoading(true);
     try {
-      const eventData = {
-        title_ar: formData.title_ar || null,
-        description_ar: formData.description_ar || null,
-        event_type: formData.event_type,
-        event_date: formData.event_date,
-        end_date: formData.end_date || null,
-        start_time: formData.start_time || null,
-        end_time: formData.end_time || null,
-        location: formData.location || null,
-        virtual_link: formData.virtual_link || null,
-        format: formData.format,
-        max_participants: formData.max_participants ? parseInt(String(formData.max_participants)) : null,
-        registered_participants: formData.registered_participants ? parseInt(String(formData.registered_participants)) : null,
-        actual_participants: formData.actual_participants ? parseInt(String(formData.actual_participants)) : null,
-        status: formData.status,
-        budget: formData.budget ? parseFloat(String(formData.budget)) : null,
-        event_manager_id: formData.event_manager_id || null,
-        campaign_id: formData.campaign_id || null,
-        challenge_id: formData.challenge_id || null,
-        sector_id: formData.sector_id || null,
-        event_visibility: formData.event_visibility,
-        event_category: formData.event_category,
-        inherit_from_campaign: formData.inherit_from_campaign,
-        is_recurring: formData.is_recurring,
-        recurrence_pattern: formData.recurrence_pattern || null,
-        recurrence_end_date: formData.recurrence_end_date || null,
-        target_stakeholder_groups: formData.target_stakeholder_groups,
+      const relationships = {
+        partners: selectedPartners,
+        stakeholders: selectedStakeholders,
+        focusQuestions: selectedFocusQuestions,
+        challenges: selectedChallenges
       };
 
-      let result;
-      if (event?.id) {
-        // Update existing event
-        result = await supabase
-          .from('events')
-          .update(eventData)
-          .eq('id', event.id)
-          .select()
-          .single();
-      } else {
-        // Create new event
-        result = await supabase
-          .from('events')
-          .insert(eventData)
-          .select()
-          .single();
-      }
-
-      if (result.error) throw result.error;
-
-      const eventId = result.data.id;
-
-      // Update relationships
-      await Promise.all([
-        updateEventPartners(eventId, selectedPartners),
-        updateEventStakeholders(eventId, selectedStakeholders),
+      await saveEvent(formData, relationships, event?.id);
         updateEventFocusQuestions(eventId, selectedFocusQuestions),
         updateEventChallenges(eventId, selectedChallenges)
       ]);
@@ -782,7 +707,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                             <Check className="mr-2 h-4 w-4 opacity-0" />
                             لا شيء
                           </CommandItem>
-                          {campaigns.map((campaign) => (
+                          {relatedData.campaigns.map((campaign) => (
                             <CommandItem
                               key={campaign.id}
                               value={campaign.title_ar}
@@ -838,7 +763,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                             <Check className="mr-2 h-4 w-4 opacity-0" />
                             لا شيء
                           </CommandItem>
-                          {sectors.map((sector) => (
+                          {relatedData.sectors.map((sector) => (
                             <CommandItem
                               key={sector.id}
                               value={sector.name}
@@ -895,7 +820,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                           <Check className="mr-2 h-4 w-4 opacity-0" />
                           لا شيء
                         </CommandItem>
-                        {eventManagers.map((manager) => (
+                        {relatedData.eventManagers.map((manager) => (
                           <CommandItem
                             key={manager.id}
                             value={manager.name || manager.email}
