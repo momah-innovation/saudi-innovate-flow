@@ -8786,6 +8786,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_activity_summary: {
+        Row: {
+          created_at: string | null
+          engagement_score: number | null
+          last_activity_at: string | null
+          total_bookmarks: number | null
+          total_likes: number | null
+          total_participations: number | null
+          total_submissions: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          engagement_score?: number | null
+          last_activity_at?: string | null
+          total_bookmarks?: number | null
+          total_likes?: number | null
+          total_participations?: number | null
+          total_submissions?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          engagement_score?: number | null
+          last_activity_at?: string | null
+          total_bookmarks?: number | null
+          total_likes?: number | null
+          total_participations?: number | null
+          total_submissions?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_behavior_predictions: {
         Row: {
           behavioral_patterns: Json | null
@@ -8915,6 +8951,33 @@ export type Database = {
           name_ar?: string | null
           position?: string | null
           status?: string
+        }
+        Relationships: []
+      }
+      user_navigation_cache: {
+        Row: {
+          created_at: string | null
+          last_route: string | null
+          navigation_preferences: Json | null
+          sidebar_open: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          last_route?: string | null
+          navigation_preferences?: Json | null
+          sidebar_open?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          last_route?: string | null
+          navigation_preferences?: Json | null
+          sidebar_open?: boolean | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -9098,6 +9161,27 @@ export type Database = {
           team_members_count: number | null
           total_users: number | null
           user_growth_rate_percentage: number | null
+        }
+        Relationships: []
+      }
+      dashboard_aggregated_stats: {
+        Row: {
+          active_challenges: number | null
+          completed_challenges: number | null
+          generated_at: string | null
+          ideas_per_challenge: number | null
+          implementation_rate: number | null
+          implemented_ideas: number | null
+          new_challenges_30d: number | null
+          new_ideas_30d: number | null
+          new_participants_30d: number | null
+          new_users_30d: number | null
+          new_users_7d: number | null
+          submitted_ideas: number | null
+          total_challenges: number | null
+          total_ideas: number | null
+          total_participants: number | null
+          total_users: number | null
         }
         Relationships: []
       }
@@ -9468,6 +9552,10 @@ export type Database = {
           total_size: number
         }[]
       }
+      get_dashboard_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       get_event_stats: {
         Args: { event_uuid: string }
         Returns: Json
@@ -9719,6 +9807,10 @@ export type Database = {
       }
       update_file_paths_for_migration: {
         Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      update_user_activity_summary: {
+        Args: { p_user_id: string }
         Returns: undefined
       }
       update_weekly_capacity: {
