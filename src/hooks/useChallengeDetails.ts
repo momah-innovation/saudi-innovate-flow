@@ -116,7 +116,6 @@ export const useChallengeDetails = (challengeId: string | undefined) => {
                     'challenge_type',
                     'start_date',
                     'end_date',
-                    'submission_deadline',
                     'sensitivity_level',
                     'image_url',
                     'sector_id',
