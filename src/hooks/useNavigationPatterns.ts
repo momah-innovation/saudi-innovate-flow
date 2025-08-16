@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigationHandler } from '@/hooks/useNavigationHandler';
+import { useNavigationHandler, useUrlUtils } from '@/hooks/useNavigationHandler';
 
 /**
  * ✅ PHASE 4: NAVIGATION OPTIMIZATION
@@ -29,7 +29,8 @@ export const useErrorBoundaryNavigation = () => {
 
 // ✅ AUTH NAVIGATION FIXES  
 export const useAuthNavigation = () => {
-  const { getBaseUrl, navigateTo } = useNavigationHandler();
+  const { navigateTo } = useNavigationHandler();
+  const { getBaseUrl } = useUrlUtils();
 
   const buildAuthRedirectUrl = useCallback((path: string) => {
     return `${getBaseUrl()}/auth${path}`;
@@ -55,7 +56,8 @@ export const useAuthNavigation = () => {
 
 // ✅ SHARE URL BUILDERS
 export const useShareUrlBuilders = () => {
-  const { getBaseUrl, copyCurrentUrl } = useNavigationHandler();
+  const { navigateTo } = useNavigationHandler();
+  const { getBaseUrl, copyCurrentUrl } = useUrlUtils();
 
   const buildChallengeUrl = useCallback((challengeId: string) => {
     return `${getBaseUrl()}/challenges/${challengeId}`;

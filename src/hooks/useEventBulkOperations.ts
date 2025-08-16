@@ -42,7 +42,7 @@ export const useEventBulkOperations = () => {
 
       return { success: true };
     } catch (error) {
-      logger.error('Failed to bulk delete events', { selectedEvents }, error as Error);
+      logger.error('Failed to bulk delete events', { component: 'useEventBulkOperations', action: 'bulkDeleteEvents' }, error as Error);
       toast({
         title: 'خطأ في الحذف',
         description: 'فشل في حذف الفعاليات. يرجى المحاولة مرة أخرى',
@@ -71,7 +71,7 @@ export const useEventBulkOperations = () => {
 
       return { success: true };
     } catch (error) {
-      logger.error('Failed to bulk update event status', { selectedEvents, status }, error as Error);
+      logger.error('Failed to bulk update event status', { component: 'useEventBulkOperations', action: 'bulkUpdateEventStatus' }, error as Error);
       toast({
         title: 'خطأ في التحديث',
         description: 'فشل في تحديث حالة الفعاليات. يرجى المحاولة مرة أخرى',
@@ -84,7 +84,7 @@ export const useEventBulkOperations = () => {
   // ✅ BULK CATEGORY ASSIGNMENT
   const bulkAssignCategory = useCallback(async (selectedEvents: string[], category: string) => {
     try {
-      logger.info('Bulk assigning category to events', { count: selectedEvents.length, category });
+      logger.info('Bulk assigning category to events', { component: 'useEventBulkOperations', action: 'bulkAssignCategory' });
 
       const { error } = await supabase
         .from('events')
@@ -100,7 +100,7 @@ export const useEventBulkOperations = () => {
 
       return { success: true };
     } catch (error) {
-      logger.error('Failed to bulk assign category', { selectedEvents, category }, error as Error);
+      logger.error('Failed to bulk assign category', { component: 'useEventBulkOperations', action: 'bulkAssignCategory' }, error as Error);
       toast({
         title: 'خطأ في التحديث',
         description: 'فشل في تعيين الفئة للفعاليات. يرجى المحاولة مرة أخرى',
@@ -193,7 +193,7 @@ export const useEventBulkOperations = () => {
       await Promise.all(promises);
       return { success: true };
     } catch (error) {
-      logger.error('Failed to update event relationships', { eventId, relationships }, error as Error);
+      logger.error('Failed to update event relationships', { component: 'useEventBulkOperations', action: 'updateEventRelationships' }, error as Error);
       throw error;
     }
   }, []);

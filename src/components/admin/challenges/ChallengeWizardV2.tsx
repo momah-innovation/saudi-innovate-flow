@@ -96,9 +96,6 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
   
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  
-  const [currentStep, setCurrentStep] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState<ChallengeFormData>({
     title_ar: '',
@@ -410,7 +407,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                     <SelectValue placeholder={t('challenges.select_challenge_type', 'اختر نوع التحدي')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {challengeTypes.map(type => (
+                    {systemLists.challengeTypes.map(type => (
                       <SelectItem key={type} value={type}>
                         {type === 'technology' ? 'تقني' : type === 'sustainability' ? 'استدامة' : type === 'healthcare' ? 'رعاية صحية' : 
                          type === 'education' ? 'تعليم' : type === 'governance' ? 'حوكمة' : type}
@@ -438,7 +435,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_challenge_status', 'اختر حالة التحدي')} />
                     </SelectTrigger>
                     <SelectContent>
-                      {challengeStatusOptions.map(status => (
+                      {systemLists.challengeStatusOptions.map(status => (
                         <SelectItem key={status} value={status}>
                           {status === 'draft' ? t('status.draft', 'مسودة') : 
                            status === 'published' ? t('status.published', 'منشور') : 
@@ -459,7 +456,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenge_wizard.select_priority', 'اختر مستوى الأولوية')} />
                     </SelectTrigger>
                     <SelectContent>
-                      {challengePriorityLevels.map(priority => (
+                      {systemLists.challengePriorityLevels.map(priority => (
                         <SelectItem key={priority} value={priority}>
                           {priority === 'low' ? 'منخفض' : priority === 'medium' ? 'متوسط' : 'عالي'}
                         </SelectItem>
@@ -477,7 +474,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                     <SelectValue placeholder={t('challenges.select_sensitivity_level', 'اختر مستوى السرية')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {challengeSensitivityLevels.map(level => (
+                    {systemLists.challengeSensitivityLevels.map(level => (
                       <SelectItem key={level} value={level}>
                         {level === 'normal' ? 'عادي - وصول عام' : level === 'sensitive' ? 'حساس - أعضاء الفريق فقط' : 'سري - المدراء فقط'}
                       </SelectItem>

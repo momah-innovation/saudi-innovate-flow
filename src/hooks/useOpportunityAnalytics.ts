@@ -33,7 +33,7 @@ export const useOpportunityAnalytics = () => {
   ) => {
     try {
       setLoading(true);
-      logger.info('Fetching opportunity analytics', { opportunityId, dateRange });
+      logger.info('Fetching opportunity analytics', { component: 'useOpportunityAnalytics', action: 'fetchOpportunityAnalytics' });
 
       // Single consolidated query for all analytics data
       const [
@@ -95,7 +95,7 @@ export const useOpportunityAnalytics = () => {
       setAnalyticsData(data);
       return data;
     } catch (error) {
-      logger.error('Failed to fetch opportunity analytics', { opportunityId }, error as Error);
+      logger.error('Failed to fetch opportunity analytics', { component: 'useOpportunityAnalytics', action: 'fetchOpportunityAnalytics' }, error as Error);
       toast({
         title: 'خطأ في تحميل التحليلات',
         description: 'فشل في تحميل بيانات تحليل الفرصة. يرجى المحاولة مرة أخرى',

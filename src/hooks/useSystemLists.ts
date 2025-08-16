@@ -8,6 +8,17 @@ import { queryBatcher } from '@/utils/queryBatcher';
 // Debug logging for useSystemLists hook (removed to prevent re-renders)
 
 interface SystemListsHook {
+  // ✅ SYSTEM DATA ENTITIES
+  departments: any[];
+  sectors: any[];
+  deputies: any[];
+  domains: any[];
+  subDomains: any[];
+  services: any[];
+  partners: any[];
+  experts: any[];
+  
+  // ✅ SYSTEM OPTIONS
   challengePriorityLevels: string[];
   challengeSensitivityLevels: string[];
   challengeTypes: string[];
@@ -67,7 +78,7 @@ interface SystemListsHook {
   dataExportFormats: string[];
   chartVisualizationColors: string[];
   
-  // NEW: Translation-aware helper functions
+  // ✅ TRANSLATION HELPER FUNCTIONS
   getTranslatedOptions: (category: keyof typeof VALUE_KEY_MAPPINGS) => Array<{
     value: string;
     label: string;
@@ -80,6 +91,15 @@ interface SystemListsHook {
 export const useSystemLists = (): SystemListsHook => {
   const { t } = useUnifiedTranslation();
   const [settings, setSettings] = useState<SystemListsHook>({
+    // ✅ SYSTEM DATA ENTITIES  
+    departments: [],
+    sectors: [],
+    deputies: [],
+    domains: [],
+    subDomains: [],
+    services: [],
+    partners: [],
+    experts: [],
     // Initialize with empty arrays - will be populated from translation keys
     challengePriorityLevels: [],
     challengeSensitivityLevels: [],
