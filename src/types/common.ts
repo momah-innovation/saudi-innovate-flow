@@ -635,3 +635,114 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 // Helper type for making specific properties required
 export type RequiredBy<T, K extends keyof T> = T & Required<Pick<T, K>>;
+
+// ✅ ENTITY RELATIONSHIP TYPES (For UI Components)
+export interface TeamMemberExtended {
+  id: string;
+  user_id: string;
+  email?: string;
+  name?: string;
+  specialization?: string;
+  role?: string;
+  department?: string;
+  status?: 'active' | 'inactive';
+  join_date?: string;
+  last_active?: string;
+  campaigns?: CampaignReference[];
+  challenges?: ChallengeReference[];
+  events?: Event[];
+  projects?: ProjectReference[];
+  stakeholders?: Stakeholder[];
+  partners?: SystemPartner[];
+  experts?: Expert[];
+  team_members?: TeamMemberExtended[];
+  activeAssignments?: number;
+  completedAssignments?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ProjectReference {
+  id: string;
+  name: string;
+  status: 'active' | 'completed' | 'on-hold';
+  progress?: number;
+  start_date?: string;
+  end_date?: string;
+}
+
+// ✅ FORM DATA TYPES  
+export interface CampaignFormData {
+  title_ar: string;
+  title_en?: string;
+  description_ar: string;
+  description_en?: string;
+  start_date: string;
+  end_date: string;
+  budget?: number;
+  status: 'planning' | 'active' | 'completed' | 'cancelled';
+  campaign_manager_id?: string;
+  department_id?: string;
+  sector_id?: string;
+  deputy_id?: string;
+  target_participants?: number;
+  target_ideas?: number;
+  registration_deadline?: string;
+  theme?: string;
+  success_metrics?: string;
+}
+
+export interface ChallengeFormData {
+  title_ar: string;
+  title_en?: string;
+  description_ar: string;
+  description_en?: string;
+  status: 'draft' | 'published' | 'active' | 'completed' | 'closed';
+  challenge_type?: string;
+  difficulty_level?: 'beginner' | 'intermediate' | 'advanced';
+  estimated_duration?: number;
+  rewards_ar?: string;
+  rewards_en?: string;
+  submission_deadline?: string;
+  department_id?: string;
+  sector_id?: string;
+  partner_organization_id?: string;
+  created_by?: string;
+  sensitivity_level?: 'normal' | 'restricted' | 'confidential';
+  priority_level?: 'low' | 'medium' | 'high' | 'urgent';
+}
+
+// ✅ ENTITY REFERENCE TYPES (For Transformation Functions)
+export interface DepartmentReference {
+  id: string;
+  name: string;
+  name_ar?: string;
+  department_head?: string;
+}
+
+export interface DeputyReference {
+  id: string;
+  name: string;
+  name_ar?: string;
+  deputy_minister?: string;
+}
+
+export interface SectorReference {
+  id: string;
+  name: string;
+  name_ar?: string;
+}
+
+export interface CampaignReference {
+  id: string;
+  title_ar: string;
+  title_en?: string;
+  status: string;
+}
+
+export interface ChallengeReference {
+  id: string;
+  title_ar: string;
+  title_en?: string;
+  status: string;
+}

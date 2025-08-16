@@ -15,6 +15,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { 
+  CampaignReference, 
+  ChallengeReference, 
+  Event, 
+  ProjectReference, 
+  Stakeholder, 
+  SystemPartner, 
+  Expert, 
+  TeamMemberExtended 
+} from '@/types/common';
 
 export interface CoreTeamMemberData {
   id: string;
@@ -46,16 +56,16 @@ export interface CoreTeamMemberData {
   // Assignments & Projects
   activeAssignments?: number;
   completedAssignments?: number;
-  campaigns?: any[];
-  challenges?: any[];
-  events?: any[];
-  projects?: any[];
+  campaigns?: CampaignReference[];
+  challenges?: ChallengeReference[];
+  events?: Event[];
+  projects?: ProjectReference[];
   
   // Relationships & Collaborations
-  stakeholders?: any[];
-  partners?: any[];
-  experts?: any[];
-  team_members?: any[];
+  stakeholders?: Stakeholder[];
+  partners?: SystemPartner[];
+  experts?: Expert[];
+  team_members?: TeamMemberExtended[];
   
   // Timeline & History
   join_date?: string;

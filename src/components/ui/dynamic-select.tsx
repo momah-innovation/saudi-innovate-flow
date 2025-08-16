@@ -1,16 +1,17 @@
-import React from 'react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import React, { useState, useRef, useEffect } from 'react';
+import { Check, ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import { Loader2 } from 'lucide-react';
-import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { 
+  DepartmentReference, 
+  DeputyReference, 
+  SectorReference, 
+  CampaignReference, 
+  ChallengeReference, 
+  TeamMemberExtended 
+} from '@/types/common';
 
-interface DynamicSelectOption {
+export interface DynamicSelectOption {
   value: string;
   label: string;
   sublabel?: string;
@@ -21,89 +22,173 @@ interface DynamicSelectOption {
 interface DynamicSelectProps {
   options: DynamicSelectOption[];
   value?: string;
-  onValueChange?: (value: string) => void;
+  onChange: (value: string) => void;
   placeholder?: string;
-  loading?: boolean;
-  emptyMessage?: string;
-  className?: string;
+  searchPlaceholder?: string;
+  isRTL?: boolean;
   disabled?: boolean;
-  showAllOption?: boolean;
-  allOptionLabel?: string;
+  className?: string;
+  showBadges?: boolean;
+  showSublabels?: boolean;
+  enableSearch?: boolean;
+  maxDisplayOptions?: number;
 }
 
 export function DynamicSelect({
   options,
   value,
-  onValueChange,
-  placeholder,
-  loading = false,
-  emptyMessage,
-  className,
+  onChange,
+  placeholder = "اختر...",
+  searchPlaceholder = "البحث...",
+  isRTL = true,
   disabled = false,
-  showAllOption = false,
-  allOptionLabel
+  className = "",
+  showBadges = true,
+  showSublabels = true,
+  enableSearch = true,
+  maxDisplayOptions = 100
 }: DynamicSelectProps) {
-  const { t, isRTL } = useUnifiedTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const defaultEmptyMessage = emptyMessage || t('no_options_available');
-  const defaultAllLabel = allOptionLabel || t('all');
+  const selectedOption = options.find(option => option.value === value);
+
+  const filteredOptions = options.filter(option =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (option.sublabel && option.sublabel.toLowerCase().includes(searchTerm.toLowerCase()))
+  ).slice(0, maxDisplayOptions);
+
+  const handleSelect = (optionValue: string) => {
+    onChange(optionValue);
+    setIsOpen(false);
+    setSearchTerm('');
+  };
+
+  const handleToggle = () => {
+    if (disabled) return;
+    setIsOpen(!isOpen);
+    if (!isOpen) {
+      setTimeout(() => {
+        searchRef.current?.focus();
+      }, 100);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        setSearchTerm('');
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
-    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
-      <Select value={value} onValueChange={onValueChange} disabled={disabled || loading}>
-        <SelectTrigger className={className}>
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent className="bg-background border shadow-lg z-[102]">
-          {loading ? (
-            <SelectItem value="loading" disabled>
-              <div className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                {t('loading')}
+    <div className={`relative ${className}`} ref={dropdownRef}>
+      {/* Select Button */}
+      <button
+        type="button"
+        onClick={handleToggle}
+        disabled={disabled}
+        className={cn(
+          "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background",
+          "placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          isRTL ? "text-right" : "text-left"
+        )}
+      >
+        <span className="block truncate">
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
+        <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      {/* Dropdown */}
+      {isOpen && (
+        <div className="absolute z-50 mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md">
+          {/* Search Input */}
+          {enableSearch && (
+            <div className="px-3 py-2 border-b">
+              <input
+                ref={searchRef}
+                type="text"
+                placeholder={searchPlaceholder}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={cn(
+                  "w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-ring",
+                  isRTL ? "text-right" : "text-left"
+                )}
+              />
+            </div>
+          )}
+
+          {/* Options List */}
+          <div className="max-h-60 overflow-auto">
+            {filteredOptions.length === 0 ? (
+              <div className="px-3 py-2 text-sm text-muted-foreground text-center">
+                لا توجد نتائج
               </div>
-            </SelectItem>
-          ) : options.length === 0 ? (
-            <SelectItem value="empty" disabled>
-              {defaultEmptyMessage}
-            </SelectItem>
-          ) : (
-            <>
-              {showAllOption && (
-                <SelectItem value="all">
-                  {defaultAllLabel}
-                </SelectItem>
-              )}
-              {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  <div className="flex items-center gap-2 w-full">
-                    <span className="flex-1">{option.label}</span>
-                    {option.badge && (
-                      <Badge 
-                        variant={option.badgeVariant || 'secondary'}
-                        className="text-xs"
-                      >
-                        {option.badge}
-                      </Badge>
+            ) : (
+              filteredOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => handleSelect(option.value)}
+                  className={cn(
+                    "relative flex w-full cursor-pointer select-none items-center px-3 py-2 text-sm outline-none",
+                    "hover:bg-accent hover:text-accent-foreground",
+                    "focus:bg-accent focus:text-accent-foreground",
+                    option.value === value && "bg-accent text-accent-foreground",
+                    isRTL ? "text-right" : "text-left"
+                  )}
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="block truncate font-medium">
+                        {option.label}
+                      </span>
+                      {showBadges && option.badge && (
+                        <Badge 
+                          variant={option.badgeVariant || 'default'} 
+                          className="text-xs ml-2"
+                        >
+                          {option.badge}
+                        </Badge>
+                      )}
+                    </div>
+                    {showSublabels && option.sublabel && (
+                      <span className="block truncate text-xs text-muted-foreground mt-0.5">
+                        {option.sublabel}
+                      </span>
                     )}
                   </div>
-                  {option.sublabel && (
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {option.sublabel}
-                    </div>
+                  {option.value === value && (
+                    <Check className="h-4 w-4 ml-2 flex-shrink-0" />
                   )}
-                </SelectItem>
-              ))}
-            </>
-          )}
-        </SelectContent>
-      </Select>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 // Utility functions to transform data for the DynamicSelect component
 
-export const transformDepartments = (departments: any[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformDepartments = (departments: DepartmentReference[], isRTL: boolean): DynamicSelectOption[] => {
   return departments.map(dept => ({
     value: dept.id,
     label: isRTL ? (dept.name_ar || dept.name) : dept.name,
@@ -112,7 +197,7 @@ export const transformDepartments = (departments: any[], isRTL: boolean): Dynami
   }));
 };
 
-export const transformDeputies = (deputies: any[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformDeputies = (deputies: DeputyReference[], isRTL: boolean): DynamicSelectOption[] => {
   return deputies.map(deputy => ({
     value: deputy.id,
     label: isRTL ? (deputy.name_ar || deputy.name) : deputy.name,
@@ -121,7 +206,7 @@ export const transformDeputies = (deputies: any[], isRTL: boolean): DynamicSelec
   }));
 };
 
-export const transformSectors = (sectors: any[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformSectors = (sectors: SectorReference[], isRTL: boolean): DynamicSelectOption[] => {
   return sectors.map(sector => ({
     value: sector.id,
     label: isRTL ? (sector.name_ar || sector.name) : sector.name,
@@ -129,7 +214,7 @@ export const transformSectors = (sectors: any[], isRTL: boolean): DynamicSelectO
   }));
 };
 
-export const transformCampaigns = (campaigns: any[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformCampaigns = (campaigns: CampaignReference[], isRTL: boolean): DynamicSelectOption[] => {
   return campaigns.map(campaign => ({
     value: campaign.id,
     label: campaign.title_ar,
@@ -138,7 +223,7 @@ export const transformCampaigns = (campaigns: any[], isRTL: boolean): DynamicSel
   }));
 };
 
-export const transformChallenges = (challenges: any[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformChallenges = (challenges: ChallengeReference[], isRTL: boolean): DynamicSelectOption[] => {
   return challenges.map(challenge => ({
     value: challenge.id,
     label: challenge.title_ar,
@@ -148,7 +233,7 @@ export const transformChallenges = (challenges: any[], isRTL: boolean): DynamicS
   }));
 };
 
-export const transformTeamMembers = (members: any[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformTeamMembers = (members: TeamMemberExtended[], isRTL: boolean): DynamicSelectOption[] => {
   return members.map(member => ({
     value: member.id,
     label: member.email || member.user_id,

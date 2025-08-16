@@ -1,18 +1,28 @@
 import React, { useReducer } from 'react';
+import { 
+  CampaignFormData, 
+  SectorReference, 
+  DeputyReference, 
+  DepartmentReference, 
+  ChallengeReference, 
+  SystemPartner, 
+  Stakeholder, 
+  TeamMemberExtended 
+} from '@/types/common';
 
 // State management optimization for CampaignWizard
 interface CampaignWizardState {
   loading: boolean;
   currentStep: number;
-  formData: any;
+  formData: CampaignFormData;
   entities: {
-    sectors: any[];
-    deputies: any[];
-    departments: any[];
-    challenges: any[];
-    partners: any[];
-    stakeholders: any[];
-    managers: any[];
+    sectors: SectorReference[];
+    deputies: DeputyReference[];
+    departments: DepartmentReference[];
+    challenges: ChallengeReference[];
+    partners: SystemPartner[];
+    stakeholders: Stakeholder[];
+    managers: TeamMemberExtended[];
   };
   searchTerms: {
     manager: string;
@@ -31,8 +41,8 @@ interface CampaignWizardState {
 type CampaignWizardAction = 
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_CURRENT_STEP'; payload: number }
-  | { type: 'UPDATE_FORM_DATA'; payload: Partial<any> }
-  | { type: 'SET_ENTITIES'; entityType: keyof CampaignWizardState['entities']; payload: any[] }
+  | { type: 'UPDATE_FORM_DATA'; payload: Partial<CampaignFormData> }
+  | { type: 'SET_ENTITIES'; entityType: keyof CampaignWizardState['entities']; payload: SectorReference[] | DeputyReference[] | DepartmentReference[] | ChallengeReference[] | SystemPartner[] | Stakeholder[] | TeamMemberExtended[] }
   | { type: 'SET_SEARCH_TERM'; searchType: keyof CampaignWizardState['searchTerms']; payload: string }
   | { type: 'TOGGLE_DROPDOWN'; dropdown: keyof CampaignWizardState['dropdownStates'] }
   | { type: 'SET_DROPDOWN'; dropdown: keyof CampaignWizardState['dropdownStates']; payload: boolean };
@@ -40,7 +50,13 @@ type CampaignWizardAction =
 const initialState: CampaignWizardState = {
   loading: false,
   currentStep: 0,
-  formData: {},
+  formData: {
+    title_ar: '',
+    description_ar: '',
+    start_date: '',
+    end_date: '',
+    status: 'planning'
+  } as CampaignFormData,
   entities: {
     sectors: [],
     deputies: [],
@@ -110,8 +126,8 @@ export function useCampaignWizardState() {
   const actions = React.useMemo(() => ({
     setLoading: (loading: boolean) => dispatch({ type: 'SET_LOADING', payload: loading }),
     setCurrentStep: (step: number) => dispatch({ type: 'SET_CURRENT_STEP', payload: step }),
-    updateFormData: (data: Partial<any>) => dispatch({ type: 'UPDATE_FORM_DATA', payload: data }),
-    setEntities: (entityType: keyof CampaignWizardState['entities'], data: any[]) => 
+    updateFormData: (data: Partial<CampaignFormData>) => dispatch({ type: 'UPDATE_FORM_DATA', payload: data }),
+    setEntities: (entityType: keyof CampaignWizardState['entities'], data: SectorReference[] | DeputyReference[] | DepartmentReference[] | ChallengeReference[] | SystemPartner[] | Stakeholder[] | TeamMemberExtended[]) => 
       dispatch({ type: 'SET_ENTITIES', entityType, payload: data }),
     setSearchTerm: (searchType: keyof CampaignWizardState['searchTerms'], term: string) =>
       dispatch({ type: 'SET_SEARCH_TERM', searchType, payload: term }),
