@@ -222,6 +222,7 @@ export const EventAdvancedFilters = ({
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
+                    className="p-3 pointer-events-auto"
                     initialFocus
                     mode="range"
                     defaultMonth={filters.dateRange.from}
