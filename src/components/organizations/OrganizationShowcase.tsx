@@ -3,6 +3,7 @@ import { Users, Building, Globe, Search, Filter } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -95,10 +96,7 @@ export function OrganizationShowcase() {
       setPartners(partnersData || []);
       setSectors(sectorsData || []);
     } catch (error) {
-      logger.error('Failed to load organization showcase data', { 
-        component: 'OrganizationShowcase', 
-        action: 'loadData' 
-      }, error as Error);
+      errorHandler.handleError(error, 'OrganizationShowcase.loadData');
       toast.error(t('organization_showcase.error_loading_data'));
     } finally {
       setLoading(false);

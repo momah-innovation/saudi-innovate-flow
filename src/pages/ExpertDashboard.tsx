@@ -16,6 +16,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 import { AppShell } from '@/components/layout/AppShell';
 import { EnhancedExpertDashboardHero } from '@/components/experts/EnhancedExpertDashboardHero';
 import { ExpertAnalyticsDashboard } from '@/components/experts/ExpertAnalyticsDashboard';
@@ -154,7 +155,7 @@ export default function ExpertDashboard() {
       }
       
     } catch (error) {
-      logger.error('Error loading expert data', { expertId: userProfile?.id }, error as Error);
+      errorHandler.handleError(error, 'ExpertDashboard.loadExpertData');
       toast.error('Error loading expert dashboard data');
     } finally {
       setLoading(false);

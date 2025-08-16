@@ -15,6 +15,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 import { dateHandler } from '@/utils/unified-date-handler';
+import { errorHandler } from '@/utils/error-handler';
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";
 import { useOptimizedDashboardCounts, useOptimizedTeamCounts } from '@/hooks/useOptimizedDashboardCounts';
@@ -119,7 +120,7 @@ await Promise.all([
   loadTrends()
 ]);
     } catch (error) {
-      logger.error('Error loading dashboard data', { component: 'EnhancedDashboardOverview', action: 'loadDashboardData' }, error as Error);
+      errorHandler.handleError(error, 'EnhancedDashboardOverview.loadDashboardData');
       toast.error('خطأ في تحميل بيانات لوحة القيادة');
     } finally {
       setLoading(false);

@@ -18,6 +18,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 import { AppShell } from '@/components/layout/AppShell';
 
 interface ExpertProfile {
@@ -118,7 +119,7 @@ export default function ExpertProfile() {
         setIsEditing(true); // New profile, start in edit mode
       }
     } catch (error) {
-      logger.error('Error loading expert profile', { expertId: userProfile?.id }, error as Error);
+      errorHandler.handleError(error, 'ExpertProfile.loadExpertProfile');
       toast.error('Error loading expert profile');
     } finally {
       setLoading(false);
@@ -153,7 +154,7 @@ export default function ExpertProfile() {
       await loadExpertProfile();
       
     } catch (error) {
-      logger.error('Error saving expert profile', { userId: userProfile?.id }, error as Error);
+      errorHandler.handleError(error, 'ExpertProfile.saveProfile');
       toast.error('Error saving expert profile');
     } finally {
       setSaving(false);
