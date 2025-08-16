@@ -39,6 +39,7 @@ export class AppErrorHandler {
 
     if (error instanceof Error) {
       return {
+        name: error.name,
         message: error.message,
         code: 'JS_ERROR',
         statusCode: 500,
@@ -53,6 +54,7 @@ export class AppErrorHandler {
 
     if (typeof error === 'string') {
       return {
+        name: 'StringError',
         message: error,
         code: 'STRING_ERROR',
         statusCode: 500,
@@ -64,15 +66,17 @@ export class AppErrorHandler {
     if (error && typeof error === 'object' && 'message' in error) {
       const errorObj = error as Record<string, unknown>;
       return {
+        name: errorObj.name as string || 'ObjectError',
         message: errorObj.message as string || 'Unknown error',
         code: errorObj.code as string || 'UNKNOWN_ERROR',
         statusCode: errorObj.statusCode as number || 500,
-        details: { ...error, context },
+        details: { context, message: errorObj.message },
         timestamp
       };
     }
 
     return {
+      name: 'UnknownError',
       message: 'An unknown error occurred',
       code: 'UNKNOWN_ERROR',
       statusCode: 500,
