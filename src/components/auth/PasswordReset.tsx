@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 
 export const PasswordReset = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,11 @@ export const PasswordReset = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +89,7 @@ export const PasswordReset = () => {
             
             <div className="flex flex-col gap-2">
               <Button 
-                onClick={() => navigate('/auth')}
+                onClick={() => navigationHandler.navigateTo('/auth')}
                 className="w-full"
               >
                 العودة لتسجيل الدخول
@@ -109,7 +115,7 @@ export const PasswordReset = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate('/auth')}
+          onClick={() => navigationHandler.navigateTo('/auth')}
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="w-4 h-4" />

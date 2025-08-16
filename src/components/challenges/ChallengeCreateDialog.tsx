@@ -20,6 +20,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
+import { useDirection } from '@/components/ui/direction-provider';
 
 interface ChallengeCreateDialogProps {
   open: boolean;
@@ -35,6 +37,7 @@ export function ChallengeCreateDialog({
   const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const { isRTL } = useDirection();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     title_ar: '',
@@ -350,7 +353,10 @@ export function ChallengeCreateDialog({
             <div className="flex justify-between">
               <span>المدة:</span>
               <span className="font-medium">
-                {formData.start_date} إلى {formData.end_date}
+                {isRTL 
+                  ? `${formatDateArabic(formData.start_date)} إلى ${formatDateArabic(formData.end_date)}`
+                  : `${formatDate(formData.start_date)} to ${formatDate(formData.end_date)}`
+                }
               </span>
             </div>
           )}

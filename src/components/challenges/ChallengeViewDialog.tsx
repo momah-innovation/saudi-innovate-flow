@@ -499,11 +499,11 @@ export function ChallengeViewDialog({
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">{isRTL ? 'تاريخ البداية:' : 'Start Date:'}</span>
-                        <span>{challenge.start_date ? formatDate(challenge.start_date) : 'N/A'}</span>
+                        <span>{challenge.start_date ? (isRTL ? formatDateArabic(challenge.start_date) : formatDate(challenge.start_date)) : 'N/A'}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">{isRTL ? 'تاريخ النهاية:' : 'End Date:'}</span>
-                        <span>{challenge.end_date ? formatDate(challenge.end_date) : 'N/A'}</span>
+                        <span>{challenge.end_date ? (isRTL ? formatDateArabic(challenge.end_date) : formatDate(challenge.end_date)) : 'N/A'}</span>
                       </div>
                     </div>
                   </div>

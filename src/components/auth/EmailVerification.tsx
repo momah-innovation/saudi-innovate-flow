@@ -8,6 +8,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const EmailVerification = () => {
@@ -19,6 +20,11 @@ export const EmailVerification = () => {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
 
@@ -69,7 +75,7 @@ export const EmailVerification = () => {
 
       // Redirect to dashboard after successful verification
       scheduleTimeout(() => {
-        navigate('/dashboard');
+        navigationHandler.navigateTo('/dashboard');
       }, 2000);
     } catch (error: unknown) {
       toast({
@@ -134,7 +140,7 @@ export const EmailVerification = () => {
           </CardHeader>
           <CardContent>
             <Button 
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigationHandler.navigateTo('/dashboard')}
               className="w-full gradient-primary hover:opacity-90 text-primary-foreground"
             >
               {t('auth.go_to_dashboard')}
@@ -192,7 +198,7 @@ export const EmailVerification = () => {
                 </Button>
 
                 <Button 
-                  onClick={() => navigate('/auth')}
+                  onClick={() => navigationHandler.navigateTo('/auth')}
                   variant="ghost"
                   className="w-full"
                 >

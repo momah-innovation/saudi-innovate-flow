@@ -99,7 +99,7 @@ export const ChallengeCard = ({
     return Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
   };
 
-  const formatDate = (dateString: string) => {
+  const formatChallengeDate = (dateString: string) => {
     return isRTL ? formatDateArabic(dateString, 'd MMM') : formatDate(dateString, 'MMM d');
   };
 
@@ -402,8 +402,8 @@ export const ChallengeCard = ({
             </div>
             <Progress value={progress} className="h-2" />
             <div className="flex justify-between text-xs text-muted-foreground mt-1">
-              <span>{formatDate(challenge.start_date)}</span>
-              <span>{formatDate(challenge.end_date)}</span>
+              <span>{formatChallengeDate(challenge.start_date)}</span>
+              <span>{formatChallengeDate(challenge.end_date)}</span>
             </div>
           </div>
         )}

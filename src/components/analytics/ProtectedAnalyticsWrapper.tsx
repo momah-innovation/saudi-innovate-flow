@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, AlertTriangle, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 
 interface ProtectedAnalyticsWrapperProps {
   children: React.ReactNode;
@@ -29,6 +30,11 @@ export function ProtectedAnalyticsWrapper({
   const { user } = useAuth();
   const { canAccess, getPrimaryRole } = useRoleAccess();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
 
   // Check if user is authenticated
   if (!user) {
@@ -44,7 +50,7 @@ export function ProtectedAnalyticsWrapper({
           <p className="text-muted-foreground mb-4">
             You must be logged in to access analytics data.
           </p>
-          <Button onClick={() => navigate('/auth/login')}>
+          <Button onClick={() => navigationHandler.navigateTo('/auth/login')}>
             Sign In
           </Button>
         </CardContent>
@@ -91,13 +97,13 @@ export function ProtectedAnalyticsWrapper({
             <div className="flex gap-2">
               <Button 
                 variant="outline" 
-                onClick={() => navigate('/admin/roles/request')}
+                onClick={() => navigationHandler.navigateTo('/admin/roles/request')}
               >
                 Request Access
               </Button>
               <Button 
                 variant="outline" 
-                onClick={() => navigate('/contact')}
+                onClick={() => navigationHandler.navigateTo('/contact')}
               >
                 Contact Admin
               </Button>

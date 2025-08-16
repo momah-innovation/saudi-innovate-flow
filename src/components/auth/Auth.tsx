@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Eye, EyeOff, Mail, Lock, User, Shield, Building2, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 
 interface AuthFormData {
   email: string;
@@ -36,6 +37,11 @@ export const Auth = () => {
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
   const { t } = useUnifiedTranslation();
 
   const handleInputChange = (field: keyof AuthFormData, value: string) => {
@@ -138,7 +144,7 @@ export const Auth = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate('/')}
+          onClick={() => navigationHandler.navigateTo('/')}
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -303,7 +309,7 @@ export const Auth = () => {
                   <Button 
                     variant="link" 
                     className="text-sm text-muted-foreground hover-primary"
-                    onClick={() => navigate('/auth/forgot-password')}
+                    onClick={() => navigationHandler.navigateTo('/auth/forgot-password')}
                   >
                     {t('auth.forgot_password')}
                   </Button>

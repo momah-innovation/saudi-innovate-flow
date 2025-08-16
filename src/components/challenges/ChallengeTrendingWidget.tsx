@@ -18,6 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { getPriorityMapping, getCategoryMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 
 interface TrendingChallenge {
   id: string;

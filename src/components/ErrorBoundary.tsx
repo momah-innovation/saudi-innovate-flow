@@ -2,6 +2,7 @@ import { Component, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { debugLog } from "@/utils/debugLogger";
 import { useTranslation } from "react-i18next";
+import { navigationHandler } from "@/utils/unified-navigation";
 
 interface Props {
   children: ReactNode;
@@ -57,12 +58,12 @@ function ErrorFallback() {
       </p>
       <div className="flex gap-4">
         <Button 
-          onClick={() => window.location.reload()}
+          onClick={() => navigationHandler.navigateTo(window.location.href)}
           variant="outline"
         >
           {t('errors.try_again')}
         </Button>
-        <Button onClick={() => window.location.reload()}>
+        <Button onClick={() => navigationHandler.navigateTo(window.location.href)}>
           {t('error_boundary.refresh_page', 'Refresh Page')}
         </Button>
       </div>

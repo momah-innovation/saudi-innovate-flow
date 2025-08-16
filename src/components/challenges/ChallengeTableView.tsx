@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { useDirection } from '@/components/ui/direction-provider';
 import { Challenge } from '@/hooks/useChallengesData';
 import { formatDistanceToNow } from 'date-fns';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 
 interface ChallengeTableViewProps {
   challenges: Challenge[];
@@ -234,7 +235,7 @@ export const ChallengeTableView: React.FC<ChallengeTableViewProps> = ({
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4 text-muted-foreground" />
                       <span className="text-xs text-muted-foreground">
-                        {challenge.end_date ? formatDate(challenge.end_date) : 'غير محدد'}
+                        {challenge.end_date ? (isRTL ? formatDateArabic(challenge.end_date) : formatDate(challenge.end_date)) : 'غير محدد'}
                       </span>
                     </div>
                   </TableCell>
