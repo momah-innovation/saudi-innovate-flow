@@ -27,7 +27,7 @@ import {
 import { getOpportunityImageUrl } from '@/utils/storageUtils';
 
 interface EditOpportunityDialogProps {
-  opportunity: any;
+  opportunity: OpportunityData;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess?: () => void;

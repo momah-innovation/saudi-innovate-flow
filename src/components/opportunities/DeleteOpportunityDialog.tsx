@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { OpportunityData } from '@/types/common';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +17,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Trash2, AlertTriangle } from 'lucide-react';
 
 interface DeleteOpportunityDialogProps {
-  opportunity: any;
+  opportunity: OpportunityData;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess?: () => void;

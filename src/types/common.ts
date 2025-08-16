@@ -304,14 +304,25 @@ export interface MediaFile {
   upload_date: string;
 }
 
-// Dashboard-specific types with proper inheritance
-export interface DashboardUserProfile extends UserProfile {
+// Dashboard-specific types that extend base UserProfile
+export interface DashboardUserProfile {
+  id: string;
+  user_id: string;
+  full_name: string | null;
+  avatar_url: string | null;
+  bio: string | null;
+  expertise: string[];
+  department?: string;
+  organization?: string;
+  role?: string;
+  status: 'active' | 'inactive' | 'pending';
+  created_at: string;
+  updated_at: string;
+  last_sign_in_at?: string;
+  // Extended fields for dashboard components
   user_roles: UserRole[];
-  department?: string; // Keep as string for compatibility
-  organization?: string; // Keep as string for compatibility  
   permissions?: string[];
   recent_activity?: ActivityFeedEvent[];
-  // Dashboard-specific fields
   total_ideas?: number;
   active_challenges?: number;
   total_points?: number;
@@ -319,6 +330,8 @@ export interface DashboardUserProfile extends UserProfile {
   expertise_areas?: string[];
   current_role?: string;
   role_permissions?: string[];
+  display_name?: string; // Alternative to full_name
+  name?: string; // Alternative to full_name for backward compatibility
 }
 
 export interface IdeaTemplateStructure {
@@ -404,6 +417,95 @@ export interface StoryTestimonial {
   rating: number;
   date: string;
   verified: boolean;
+}
+
+// ✅ OPPORTUNITY TYPES AND INTERFACES
+export interface OpportunityData {
+  id: string;
+  title: string;
+  description: string;
+  type: 'internship' | 'job' | 'volunteer' | 'partnership' | 'collaboration';
+  status: 'draft' | 'published' | 'filled' | 'expired' | 'cancelled';
+  location?: string;
+  remote_allowed: boolean;
+  contact_person: string;
+  contact_email: string;
+  contact_phone?: string;
+  image_url?: string;
+  requirements: OpportunityRequirements;
+  benefits: OpportunityBenefits;
+  created_at: string;
+  updated_at: string;
+  applications_count?: number;
+  views_count?: number;
+  partner_organization_id?: string;
+}
+
+export interface OpportunityRequirements {
+  education_level?: string;
+  experience_years?: number;
+  skills: string[];
+  certifications?: string[];
+  languages?: string[];
+  availability?: string;
+}
+
+export interface OpportunityBenefits {
+  compensation?: string;
+  benefits: string[];
+  learning_opportunities?: string[];
+  networking?: boolean;
+  certificate?: boolean;
+}
+
+export interface OpportunityAnalytics {
+  views: number;
+  likes: number;
+  applications: number;
+  conversion_rate: number;
+  engagement_trend: AnalyticsDataPoint[];
+  demographics: DemographicData;
+  traffic_sources: TrafficSource[];
+}
+
+export interface AnalyticsDataPoint {
+  date: string;
+  value: number;
+  type: 'views' | 'applications' | 'likes' | 'shares';
+}
+
+export interface DemographicData {
+  age_groups: Array<{ range: string; count: number; }>;
+  education_levels: Array<{ level: string; count: number; }>;
+  experience_levels: Array<{ level: string; count: number; }>;
+  geographic_distribution: Array<{ location: string; count: number; }>;
+}
+
+export interface TrafficSource {
+  source: string;
+  visitors: number;
+  percentage: number;
+}
+
+export interface OpportunityNotification {
+  id: string;
+  user_id: string;
+  opportunity_id: string;
+  notification_type: string;
+  title: string;
+  message: string;
+  action_url?: string;
+  metadata: NotificationMetadata;
+  is_read: boolean;
+  created_at: string;
+}
+
+export interface NotificationMetadata {
+  opportunity_title?: string;
+  application_status?: string;
+  deadline?: string;
+  priority?: 'low' | 'medium' | 'high';
+  additional_info?: Record<string, unknown>;
 }
 
 // ✅ NOTIFICATION TYPES

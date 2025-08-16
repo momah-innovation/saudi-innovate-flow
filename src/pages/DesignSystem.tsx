@@ -46,7 +46,7 @@ const DesignSystem = () => {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
-  const { createNavigationProps } = useDesignSystemNavigation();
+  const { createNavigationProps, createTabNavigationProps } = useDesignSystemNavigation();
 
   // Sample data for component demonstrations
   const [notifications, setNotifications] = useState([
@@ -4868,23 +4868,23 @@ const DesignSystem = () => {
                         
                         <div className="border rounded-lg shadow-lg bg-background p-1 max-w-48">
                           <div className="py-1">
-                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
-                              <Edit className="w-4 h-4" />
-                              Edit Challenge
-                            </a>
-                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
-                              <Copy className="w-4 h-4" />
-                              Duplicate
-                            </a>
-                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
-                              <Download className="w-4 h-4" />
-                              Export Data
-                            </a>
-                            <div className="border-t my-1"></div>
-                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-destructive/10 text-destructive rounded">
-                              <Trash2 className="w-4 h-4" />
-                              Delete
-                            </a>
+                             <span {...createNavigationProps('edit-challenge')} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded cursor-pointer">
+                               <Edit className="w-4 h-4" />
+                               Edit Challenge
+                             </span>
+                             <span {...createNavigationProps('duplicate')} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded cursor-pointer">
+                               <Copy className="w-4 h-4" />
+                               Duplicate
+                             </span>
+                             <span {...createNavigationProps('export-data')} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded cursor-pointer">
+                               <Download className="w-4 h-4" />
+                               Export Data
+                             </span>
+                             <div className="border-t my-1"></div>
+                             <span {...createNavigationProps('delete')} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-destructive/10 text-destructive rounded cursor-pointer">
+                               <Trash2 className="w-4 h-4" />
+                               Delete
+                             </span>
                           </div>
                         </div>
                       </div>
@@ -7517,10 +7517,10 @@ const DesignSystem = () => {
                       <h4 className="font-medium mb-4">Tab Navigation</h4>
                       <div className="border-b">
                         <nav className="flex space-x-8">
-                          <a href="#" className="border-b-2 border-primary text-primary py-2 px-1 text-sm font-medium">Overview</a>
-                          <a href="#" className="text-muted-foreground hover:text-foreground py-2 px-1 text-sm font-medium">Participants</a>
-                          <a href="#" className="text-muted-foreground hover:text-foreground py-2 px-1 text-sm font-medium">Submissions</a>
-                          <a href="#" className="text-muted-foreground hover:text-foreground py-2 px-1 text-sm font-medium">Results</a>
+                           <span {...createTabNavigationProps('overview', true)}>Overview</span>
+                           <span {...createTabNavigationProps('participants')}>Participants</span>
+                           <span {...createTabNavigationProps('submissions')}>Submissions</span>
+                           <span {...createTabNavigationProps('results')}>Results</span>
                         </nav>
                       </div>
                     </div>
