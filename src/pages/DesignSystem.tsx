@@ -46,7 +46,7 @@ const DesignSystem = () => {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
-  const { DemoLink, createDemoNavigation } = useDesignSystemNavigation();
+  const { createNavigationProps } = useDesignSystemNavigation();
 
   // Sample data for component demonstrations
   const [notifications, setNotifications] = useState([
@@ -2307,11 +2307,11 @@ const DesignSystem = () => {
                     <div>
                       <h4 className="font-medium mb-4">Breadcrumb Navigation</h4>
                       <nav className="flex items-center space-x-2 text-sm">
-                        <a href="#" className="text-muted-foreground hover:text-foreground">Home</a>
+                        <span {...createNavigationProps('home')}>Home</span>
                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                        <a href="#" className="text-muted-foreground hover:text-foreground">Challenges</a>
+                        <span {...createNavigationProps('challenges')}>Challenges</span>
                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                        <a href="#" className="text-muted-foreground hover:text-foreground">Technology</a>
+                        <span {...createNavigationProps('technology')}>Technology</span>
                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
                         <span className="text-foreground font-medium">AI Healthcare Platform</span>
                       </nav>

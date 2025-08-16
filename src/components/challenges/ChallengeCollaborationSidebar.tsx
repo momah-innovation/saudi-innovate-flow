@@ -17,11 +17,12 @@ import {
 } from 'lucide-react';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { UserPresence } from '@/components/collaboration/UserPresence';
+import { ChallengeTeamWorkspace } from '@/types/common';
 
 interface ChallengeCollaborationSidebarProps {
   challengeId: string;
   isParticipant: boolean;
-  userTeam: any;
+  userTeam: ChallengeTeamWorkspace;
 }
 
 export const ChallengeCollaborationSidebar: React.FC<ChallengeCollaborationSidebarProps> = ({
@@ -86,7 +87,7 @@ export const ChallengeCollaborationSidebar: React.FC<ChallengeCollaborationSideb
           <CardContent>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="font-medium">{userTeam.name}</span>
+                <span className="font-medium">{userTeam.team_name}</span>
                 <Badge variant="outline">{userTeam.members?.length || 0} أعضاء</Badge>
               </div>
               <div className="flex -space-x-2 rtl:space-x-reverse">

@@ -169,9 +169,15 @@ export interface Challenge {
   description?: string; // for backward compatibility
   status: string; // flexible to accommodate any status from database
   priority?: 'low' | 'medium' | 'high' | 'urgent';
+  priority_level?: string; // Flexible to accommodate database values
   sensitivity_level: string; // flexible to accommodate any sensitivity level from database
+  challenge_type?: string; // For challenge form compatibility
   theme?: string;
   domain?: string;
+  domain_id?: string; // For form compatibility
+  sub_domain_id?: string; // For form compatibility
+  service_id?: string; // For form compatibility
+  deputy_id?: string; // For form compatibility
   tags?: string[];
   created_by: string;
   created_at: string;
@@ -213,6 +219,182 @@ export interface Event {
   created_by: string;
   created_at: string;
   updated_at: string;
+}
+
+// ✅ COMPONENT SPECIFIC TYPES - UI INTERFACES
+export interface ChallengeTeamMember {
+  id: string;
+  user_id: string;
+  display_name: string;
+  avatar_url?: string;
+  role: string;
+  expertise_areas?: string[];
+  joined_at: string;
+  is_team_lead?: boolean;
+}
+
+export interface ChallengeTeamWorkspace {
+  team_id: string;
+  team_name: string;
+  leader_id: string;
+  members?: ChallengeTeamMember[];
+  challenge_id: string;
+  status: 'active' | 'inactive' | 'completed';
+  created_at: string;
+}
+
+export interface ActivityFeedEvent {
+  id: string;
+  entity_type: 'challenge' | 'idea' | 'opportunity' | 'event';
+  event_type: 'create' | 'update' | 'submit' | 'comment' | 'like' | 'share';
+  actor_id: string;
+  actor_name: string;
+  actor_avatar?: string;
+  timestamp: string;
+  metadata?: Record<string, unknown>;
+  entity_title?: string;
+}
+
+export interface LiveDocumentContent {
+  version: number;
+  content: Record<string, unknown>;
+  last_modified: string;
+  modified_by: string;
+  collaborators: string[];
+  permissions?: DocumentPermissions;
+}
+
+export interface DocumentPermissions {
+  read: string[];
+  write: string[];
+  admin: string[];
+}
+
+export interface TagSelectorProps {
+  selectedTags?: string[];
+  onTagsChange?: (tags: string[]) => void;
+  placeholder?: string;
+  maxTags?: number;
+  allowCustomTags?: boolean;
+  suggestedTags?: string[];
+}
+
+export interface UserMentionOption {
+  id: string;
+  user_id: string;
+  display_name: string;
+  avatar_url?: string;
+  role?: string;
+  department?: string;
+  is_available?: boolean;
+}
+
+export interface OrganizationReference {
+  id: string;
+  name: string;
+  type: 'government' | 'private' | 'non_profit' | 'academic';
+}
+
+export interface MediaFile {
+  id: string;
+  name: string;
+  url: string;
+  type: 'image' | 'video' | 'document';
+  size: number;
+  upload_date: string;
+}
+
+export interface DashboardUserProfile extends UserProfile {
+  user_roles: UserRole[];
+  department?: string; // Keep as string for compatibility
+  organization?: string; // Keep as string for compatibility  
+  permissions?: string[];
+  recent_activity?: ActivityFeedEvent[];
+}
+
+export interface IdeaTemplateStructure {
+  template_data: {
+    sections: TemplateSection[];
+    fields: TemplateField[];
+    guidelines: string[];
+    estimated_time: number;
+    difficulty_level: 'beginner' | 'intermediate' | 'advanced';
+  };
+}
+
+export interface TemplateSection {
+  id: string;
+  title: string;
+  description?: string;
+  required: boolean;
+  order: number;
+  icon?: string;
+}
+
+export interface TemplateField {
+  id: string;
+  section_id: string;
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'file' | 'date' | 'number';
+  label: string;
+  placeholder?: string;
+  required: boolean;
+  options?: string[];
+  validation?: FieldValidation;
+}
+
+export interface FieldValidation {
+  min_length?: number;
+  max_length?: number;
+  pattern?: string;
+  custom_message?: string;
+}
+
+export interface SuccessStoryMetrics {
+  implementation_timeline: TimelineStep[];
+  roi_metrics: ROIMetric[];
+  impact_areas: ImpactArea[];
+  testimonials: StoryTestimonial[];
+  media_urls: MediaFile[];
+}
+
+export interface TimelineStep {
+  id: string;
+  phase: string;
+  title: string;
+  description: string;
+  duration: string;
+  milestone: boolean;
+  completed: boolean;
+  start_date?: string;
+  end_date?: string;
+}
+
+export interface ROIMetric {
+  metric: string;
+  value: number;
+  unit: string;
+  timeframe: string;
+  category: 'financial' | 'operational' | 'social' | 'environmental';
+  trend?: 'increasing' | 'decreasing' | 'stable';
+}
+
+export interface ImpactArea {
+  area: string;
+  description: string;
+  beneficiaries: number;
+  measurable_outcomes: string[];
+  geographic_scope?: string;
+}
+
+export interface StoryTestimonial {
+  id: string;
+  author: string;
+  role: string;
+  organization: string;
+  content: string;
+  rating: number;
+  date: string;
+  verified: boolean;
 }
 
 // ✅ NOTIFICATION TYPES

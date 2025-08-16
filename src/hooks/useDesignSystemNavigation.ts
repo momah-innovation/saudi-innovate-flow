@@ -1,94 +1,100 @@
-/**
- * Design System Navigation Hook - Phase 8: Link Navigation Fixes
- * Replaces anchor tag navigation with React Router navigation in DesignSystem.tsx
- */
-
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { debugLog } from '@/utils/debugLogger';
 
-export interface NavigationProps {
-  href?: string;
-  onClick?: () => void;
-  className?: string;
-  children: React.ReactNode;
-}
-
+/**
+ * Hook for handling design system demo navigation
+ * Replaces anchor tags with proper React Router navigation
+ */
 export const useDesignSystemNavigation = () => {
   const navigate = useNavigate();
 
-  // Create navigation handler for demo links
-  const createDemoNavigation = useCallback((path: string, label: string) => {
-    return (e: React.MouseEvent) => {
-      e.preventDefault();
-      debugLog.debug('Demo navigation clicked', { 
-        component: 'DesignSystem', 
-        path, 
-        label 
-      });
-      
-      // For demo purposes, don't actually navigate
-      // In production, would use: navigate(path);
+  const handleNavigate = useCallback((path: string, external = false) => {
+    if (external) {
+      window.open(path, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    // Handle internal navigation
+    if (path === '#') {
+      debugLog.debug('Design System Navigation', { message: 'Demo link clicked - no actual navigation needed' });
+      return;
+    }
+
+    // Map demo paths to actual routes
+    const routeMap: Record<string, string> = {
+      'home': '/dashboard',
+      'challenges': '/challenges',
+      'technology': '/challenges?category=technology',
+      'government': '/challenges?category=government',
+      'innovation-hub': '/innovation-hub',
+      'forums': '/collaboration/forums',
+      'events': '/events',
+      'teams': '/collaboration/teams',
+      'mentorship': '/mentorship',
+      'documentation': '/docs',
+      'api-reference': '/docs/api',
+      'tutorials': '/docs/tutorials',
+      'best-practices': '/docs/best-practices',
+      'overview': '#overview',
+      'participants': '#participants',
+      'submissions': '#submissions',
+      'results': '#results'
     };
+
+    const targetRoute = routeMap[path.toLowerCase()] || path;
+    
+    if (targetRoute.startsWith('#')) {
+      // Handle anchor links
+      const element = document.getElementById(targetRoute.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(targetRoute);
+    }
   }, [navigate]);
 
-  // Navigation component that replaces anchor tags
-  const DemoLink = ({ href, onClick, className, children }: NavigationProps) => {
-    const handleClick = useCallback((e: React.MouseEvent) => {
+  const createNavigationProps = useCallback((path: string, external = false) => ({
+    onClick: (e: React.MouseEvent) => {
       e.preventDefault();
-      if (onClick) {
-        onClick();
-      } else if (href && href !== '#') {
-        // Only navigate for real paths, not demo anchors
-        if (!href.startsWith('#')) {
-          navigate(href);
-        }
+      handleNavigate(path, external);
+    },
+    className: "text-muted-foreground hover:text-foreground cursor-pointer",
+    role: "button",
+    tabIndex: 0,
+    onKeyDown: (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleNavigate(path, external);
       }
-    }, [href, onClick]);
+    }
+  }), [handleNavigate]);
 
-    return React.createElement(
-      'button',
-      {
-        type: 'button',
-        onClick: handleClick,
-        className: className,
-        style: { border: 'none', background: 'none', padding: 0, textAlign: 'inherit' }
-      },
-      children
-    );
-  };
-
-  // Breadcrumb navigation
-  const createBreadcrumbNavigation = useCallback((items: Array<{ label: string; path?: string }>) => {
-    return items.map((item, index) => ({
-      ...item,
-      onClick: item.path ? () => navigate(item.path!) : undefined
-    }));
-  }, [navigate]);
-
-  // Tab navigation for design system sections
-  const createTabNavigation = useCallback((tabs: Array<{ id: string; label: string }>) => {
-    return tabs.map(tab => ({
-      ...tab,
-      onClick: () => {
-        debugLog.debug('Tab navigation', { 
-          component: 'DesignSystem', 
-          tabId: tab.id,
-          label: tab.label 
-        });
-        // Scroll to section or update state
-        const element = document.getElementById(tab.id);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+  const createTabNavigationProps = useCallback((tabId: string, isActive = false) => ({
+    onClick: (e: React.MouseEvent) => {
+      e.preventDefault();
+      handleNavigate(`#${tabId}`);
+    },
+    className: `${
+      isActive 
+        ? "border-b-2 border-primary text-primary py-2 px-1 text-sm font-medium" 
+        : "text-muted-foreground hover:text-foreground py-2 px-1 text-sm font-medium"
+    } cursor-pointer`,
+    role: "tab",
+    tabIndex: 0,
+    'aria-selected': isActive,
+    onKeyDown: (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleNavigate(`#${tabId}`);
       }
-    }));
-  }, []);
+    }
+  }), [handleNavigate]);
 
   return {
-    DemoLink,
-    createDemoNavigation,
-    createBreadcrumbNavigation,
-    createTabNavigation
+    handleNavigate,
+    createNavigationProps,
+    createTabNavigationProps
   };
 };

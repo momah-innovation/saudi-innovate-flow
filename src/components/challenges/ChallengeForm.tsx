@@ -13,6 +13,7 @@ import { useOrganizationalHierarchy } from '@/hooks/useOrganizationalHierarchy';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { Challenge } from '@/types/common';
 
 const challengeSchema = z.object({
   title_ar: z.string().min(1, 'Arabic title is required'),
@@ -33,7 +34,7 @@ const challengeSchema = z.object({
 type ChallengeFormData = z.infer<typeof challengeSchema>;
 
 interface ChallengeFormProps {
-  challenge?: any;
+  challenge?: Challenge;
   onSuccess: () => void;
   onCancel: () => void;
 }
