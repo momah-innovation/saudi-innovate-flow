@@ -60,11 +60,17 @@ class PerformanceValidator {
       isWithinTarget: navigationTime < 500
     });
     
-    // Log performance status
+    // Use structured logging for performance status
     if (navigationTime < 500) {
-      console.log(`✅ PERFORMANCE TARGET MET: ${navigationTime.toFixed(2)}ms < 500ms`);
+      debugLog.log('Performance target met', { 
+        component: 'PerformanceValidator', 
+        data: { navigationTime: `${navigationTime.toFixed(2)}ms`, target: '500ms' } 
+      });
     } else {
-      console.warn(`⚠️ PERFORMANCE TARGET MISSED: ${navigationTime.toFixed(2)}ms > 500ms`);
+      debugLog.warn('Performance target missed', { 
+        component: 'PerformanceValidator', 
+        data: { navigationTime: `${navigationTime.toFixed(2)}ms`, target: '500ms' } 
+      });
     }
     
     return metrics;

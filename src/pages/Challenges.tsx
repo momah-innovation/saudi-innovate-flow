@@ -327,7 +327,8 @@ export default function Challenges() {
     const shareData = {
       title: challenge.title_ar,
       text: challenge.description_ar,
-      url: `${window.location.origin}/challenges/${challenge.id}`
+      // Use proper URL building for challenge sharing
+      url: `${typeof window !== 'undefined' ? window.location.origin : ''}/challenges/${challenge.id}`
     };
 
     if (navigator.share) {

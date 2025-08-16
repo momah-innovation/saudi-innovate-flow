@@ -27,7 +27,8 @@ export const useAnalyticsTracking = () => {
       const enrichedData = {
         ...eventData,
         user_id: eventData.user_id || user?.id,
-        page_url: eventData.page_url || window.location.pathname,
+        // Use proper pathname access for analytics tracking
+        page_url: eventData.page_url || (typeof window !== 'undefined' ? window.location.pathname : '/'),
         session_id: eventData.session_id || `${user?.id}-${Date.now()}`,
         timestamp: new Date().toISOString(),
         properties: {

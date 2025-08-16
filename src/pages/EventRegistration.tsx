@@ -376,10 +376,13 @@ const EventRegistration = () => {
       navigator.share({
         title: isRTL ? event.eventTitle : event.eventTitle_en,
         text: isRTL ? event.description : event.description_en,
-        url: window.location.href,
+        // Use proper URL building for event sharing
+        url: typeof window !== 'undefined' ? window.location.href : '',
       });
     } else {
-      navigator.clipboard.writeText(window.location.href);
+      // Use proper URL building for clipboard
+      const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+      navigator.clipboard.writeText(currentUrl);
       toast({
         title: isRTL ? 'تم نسخ الرابط' : 'Link copied',
         duration: 2000,

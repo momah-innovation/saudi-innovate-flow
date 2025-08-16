@@ -101,18 +101,24 @@ export class AIService {
         return;
       }
       
-      // Temporary fallback - should be migrated to hook
-      await supabase.from('ai_usage_tracking').insert({
-        user_id: userId,
-        feature_name: featureName,
-        usage_type: usageType,
-        input_tokens: inputTokens,
-        output_tokens: outputTokens,
-        execution_time_ms: executionTime,
-        success,
-        error_message: errorMessage,
-        metadata
-      });
+      // Use hook-based migration instead of direct supabase calls
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.trackUsage) {
+        await aiService.trackUsage(featureName, usageType, inputTokens, outputTokens, executionTime, success, errorMessage, metadata);
+      } else {
+        // Temporary fallback - migrate to useAIService hook
+        await supabase.from('ai_usage_tracking').insert({
+          user_id: userId,
+          feature_name: featureName,
+          usage_type: usageType,
+          input_tokens: inputTokens,
+          output_tokens: outputTokens,
+          execution_time_ms: executionTime,
+          success,
+          error_message: errorMessage,
+          metadata
+        });
+      }
     } catch (error) {
       logger.warn('Failed to track AI usage', { featureName, usageType }, error as Error);
     }

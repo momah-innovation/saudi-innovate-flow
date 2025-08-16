@@ -53,7 +53,8 @@ export const CollaborationProvider: React.FC<CollaborationProviderProps> = ({ ch
     }));
 
     await collaboration.updatePresence({
-      page: window.location.pathname,
+      // Use proper pathname access for collaboration tracking
+      page: typeof window !== 'undefined' ? window.location.pathname : '/',
       entity_type: entityType,
       entity_id: entityId
     });
@@ -74,7 +75,8 @@ export const CollaborationProvider: React.FC<CollaborationProviderProps> = ({ ch
     });
 
     await collaboration.updatePresence({
-      page: window.location.pathname
+      // Use proper pathname access for collaboration tracking
+      page: typeof window !== 'undefined' ? window.location.pathname : '/'
     });
   };
 

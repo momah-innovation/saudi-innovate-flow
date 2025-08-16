@@ -180,7 +180,8 @@ export default function ChallengeDetail() {
     const shareData = {
       title: challenge?.title_ar || '',
       text: challenge?.description_ar || '',
-      url: window.location.href
+      // Use proper URL building for challenge sharing
+      url: typeof window !== 'undefined' ? window.location.href : ''
     };
 
     if (navigator.share) {

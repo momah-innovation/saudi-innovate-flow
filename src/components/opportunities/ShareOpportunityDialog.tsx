@@ -50,7 +50,9 @@ export const ShareOpportunityDialog = ({
   const [copied, setCopied] = useState(false);
   const { setTimeout: scheduleTimeout } = useTimerManager();
 
-  const opportunityUrl = `${window.location.origin}/opportunities/${opportunityId}`;
+  // Use proper URL building for opportunity sharing
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const opportunityUrl = `${baseUrl}/opportunities/${opportunityId}`;
 
   const platforms: SharePlatform[] = [
     {

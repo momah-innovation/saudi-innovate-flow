@@ -201,7 +201,9 @@ export const InteractionButtons = ({
   };
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/${itemType}s/${itemId}`;
+    // Use proper URL building for interaction sharing
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    const url = `${baseUrl}/${itemType}s/${itemId}`;
     
     if (navigator.share) {
       try {
