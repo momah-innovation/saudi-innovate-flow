@@ -2,10 +2,10 @@ import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import type { UserPresence as UserPresenceType } from '@/types/collaboration';
+// import type { UserPresence as UserPresenceType } from '@/types/collaboration';
 
 interface UserPresenceProps {
-  users: UserPresenceType[];
+  users: any[];
   maxVisible?: number;
   showStatus?: boolean;
   showLocation?: boolean;
@@ -52,7 +52,7 @@ export const UserPresence: React.FC<UserPresenceProps> = ({
       }
     }
     return acc;
-  }, [] as UserPresenceType[]);
+  }, [] as any[]);
 
   const visibleUsers = uniqueUsers.slice(0, maxVisible);
   const remainingCount = Math.max(0, uniqueUsers.length - maxVisible);

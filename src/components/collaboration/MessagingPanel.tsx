@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import type { CollaborationMessage } from '@/types/collaboration';
+// import type { CollaborationMessage } from '@/types/collaboration';
 
 interface MessagingPanelProps {
   contextType?: 'global' | 'organization' | 'team' | 'project' | 'direct';

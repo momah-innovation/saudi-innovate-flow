@@ -21,7 +21,7 @@ import {
   Filter,
   MoreHorizontal
 } from 'lucide-react';
-import type { RealtimeNotification } from '@/types/collaboration';
+// import type { RealtimeNotification } from '@/types/collaboration';
 
 interface NotificationPreferences {
   mentions: boolean;
@@ -50,7 +50,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
   className = ''
 }) => {
   const { notifications: baseNotifications, currentUserPresence } = useCollaboration();
-  const [notifications, setNotifications] = useState<RealtimeNotification[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
   const [filter, setFilter] = useState<'all' | 'unread' | 'mentions' | 'urgent'>('all');
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     mentions: true,

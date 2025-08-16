@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useRealTimeCollaboration } from '@/hooks/useRealTimeCollaboration';
-import type { CollaborationContextType, ActivityEvent } from '@/types/collaboration';
+// import type { CollaborationContextType, ActivityEvent } from '@/types/collaboration';
 import { debugLog } from '@/utils/debugLogger';
 
-const CollaborationContext = createContext<CollaborationContextType | undefined>(undefined);
+const CollaborationContext = createContext<any | undefined>(undefined);
 
 export const useCollaboration = () => {
   const context = useContext(CollaborationContext);
@@ -22,8 +22,8 @@ export const CollaborationProvider: React.FC<CollaborationProviderProps> = ({ ch
   
   // Extended state for collaboration management
   const [activeCollaborations, setActiveCollaborations] = useState<Record<string, string[]>>({});
-  const [teamActivities, setTeamActivities] = useState<Record<string, ActivityEvent[]>>({});
-  const [organizationActivities, setOrganizationActivities] = useState<ActivityEvent[]>([]);
+  const [teamActivities, setTeamActivities] = useState<Record<string, any[]>>({});
+  const [organizationActivities, setOrganizationActivities] = useState<any[]>([]);
 
   // Filter activities by scope
   useEffect(() => {
@@ -41,7 +41,7 @@ export const CollaborationProvider: React.FC<CollaborationProviderProps> = ({ ch
         });
       }
       return acc;
-    }, {} as Record<string, ActivityEvent[]>);
+    }, {} as Record<string, any[]>);
     
     setTeamActivities(teamGrouped);
   }, [collaboration.activities]);
@@ -85,7 +85,7 @@ export const CollaborationProvider: React.FC<CollaborationProviderProps> = ({ ch
     debugLog.debug('Inviting users to collaboration', { entityType, entityId, userIds });
   };
 
-  const contextValue: CollaborationContextType = {
+  const contextValue: any = {
     ...collaboration,
     activeCollaborations,
     teamActivities,

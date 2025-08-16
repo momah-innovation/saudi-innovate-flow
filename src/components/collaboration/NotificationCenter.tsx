@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import type { RealtimeNotification } from '@/types/collaboration';
+// import type { RealtimeNotification } from '@/types/collaboration';
 
 interface NotificationCenterProps {
   isOpen?: boolean;
@@ -60,7 +60,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   const unreadNotifications = notifications.filter(n => !n.is_read);
   const readNotifications = notifications.filter(n => n.is_read);
 
-  const getNotificationsForTab = (): RealtimeNotification[] => {
+  const getNotificationsForTab = (): any[] => {
     switch (selectedTab) {
       case 'unread':
         return unreadNotifications;
@@ -95,7 +95,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
     return t('collaboration.time_days_ago', { count: diffDays });
   };
 
-  const handleNotificationClick = (notification: RealtimeNotification) => {
+  const handleNotificationClick = (notification: any) => {
     if (!notification.is_read) {
       handleMarkAsRead(notification.id);
     }

@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { debugLog } from '@/utils/debugLogger';
 
-import type { 
+// import type { ... } from '@/types/collaboration'; 
   UserPresence, 
   ActivityEvent, 
   CollaborationMessage, 

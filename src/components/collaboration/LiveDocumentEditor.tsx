@@ -18,7 +18,7 @@ import {
 import { useCollaboration } from '@/contexts/CollaborationContext';
 import { debugLog } from '@/utils/debugLogger';
 import { UserPresence } from './UserPresence';
-import type { LiveDocument } from '@/types/collaboration';
+// import type { LiveDocument } from '@/types/collaboration';
 
 interface LiveDocumentEditorProps {
   documentId?: string;

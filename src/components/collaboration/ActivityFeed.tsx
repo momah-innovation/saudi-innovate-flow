@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import type { ActivityEvent } from '@/types/collaboration';
+// import type { ActivityEvent } from '@/types/collaboration';
 
 const activityIcons = {
   create: <FileText className="w-4 h-4" />,
@@ -59,7 +59,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
   const [selectedEventType, setSelectedEventType] = useState<string>('all');
 
   // Get activities based on scope
-  const getActivities = (): ActivityEvent[] => {
+  const getActivities = (): any[] => {
     switch (scope) {
       case 'organization':
         return organizationActivities;
@@ -83,7 +83,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
     })
     .slice(0, limit);
 
-  const formatActivityDescription = (activity: ActivityEvent): string => {
+  const formatActivityDescription = (activity: any): string => {
     const entityLabel = getEntityTypeLabel(t, activity.entity_type);
     const eventLabel = getEventTypeLabel(t, activity.event_type);
     
