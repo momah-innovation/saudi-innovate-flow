@@ -134,7 +134,7 @@ export function ChallengeManagementList() {
   };
 
   const handleEdit = (challenge: any) => {
-    setSelectedChallenge(challenge as unknown as Challenge);
+    setSelectedChallenge(challenge as Challenge);
     setShowWizard(true);
   };
 

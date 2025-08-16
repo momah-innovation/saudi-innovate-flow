@@ -146,7 +146,7 @@ export function ChallengeViewDialog({
         .order('score', { ascending: false });
 
       if (error) throw error;
-      setSubmissions((data as any)?.filter((item: any) => item) || []);
+      setSubmissions((data as any[])?.filter((item: any) => item) || []);
     } catch (error) {
       logger.error('Failed to fetch challenge submissions', { 
         component: 'ChallengeViewDialog', 

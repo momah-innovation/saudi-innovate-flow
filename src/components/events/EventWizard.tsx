@@ -303,56 +303,53 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
   };
 
   const validateStep = (step: number): string[] => {
-    const errors: string[] = [];
+    // Use immutable array building instead of mutations
+    const buildErrors = (): string[] => {
+      switch (step) {
+        case 1: // Basic Information
+          return [
+            ...(!formData.title_ar.trim() ? ["العنوان بالعربية مطلوب"] : []),
+            ...(!formData.event_type ? ["نوع الحدث مطلوب"] : []),
+            ...(!formData.description_ar?.trim() ? ["الوصف بالعربية مطلوب"] : [])
+          ];
+        case 2: // Event Details
+          return [
+            ...(!formData.event_date ? ["تاريخ الحدث مطلوب"] : []),
+            ...(!formData.format ? ["تنسيق الحدث مطلوب"] : []),
+            ...(formData.format === "in_person" && !formData.location?.trim() ? 
+              ["الموقع مطلوب للأحداث الحضورية"] : []),
+            ...(formData.format === "virtual" && !formData.virtual_link?.trim() ? 
+              ["الرابط الافتراضي مطلوب للأحداث الافتراضية"] : []),
+            ...(formData.format === "hybrid" && (!formData.location?.trim() || !formData.virtual_link?.trim()) ? 
+              ["الموقع والرابط الافتراضي مطلوبان للأحداث المختلطة"] : []),
+            ...(formData.max_participants && parseInt(String(formData.max_participants)) <= 0 ? 
+              ["الحد الأقصى للمشاركين يجب أن يكون أكبر من صفر"] : []),
+            ...(formData.budget && parseFloat(String(formData.budget)) < 0 ? 
+              ["الميزانية لا يمكن أن تكون سالبة"] : []),
+            ...(formData.start_time && formData.end_time && formData.start_time >= formData.end_time ? 
+              ["وقت الانتهاء يجب أن يكون بعد وقت البداية"] : []),
+            ...(formData.end_date && formData.event_date && formData.end_date < formData.event_date ? 
+              ["تاريخ الانتهاء لا يمكن أن يكون قبل تاريخ البداية"] : [])
+          ];
+        case 3: // Organization & Campaign
+          // Optional validation
+          return [];
+        case 4: // Partners & Stakeholders
+          // Optional validation
+          return [];
+        case 5: // Additional Settings
+          return [
+            ...(formData.is_recurring && !formData.recurrence_pattern ? 
+              ["نمط التكرار مطلوب للأحداث المتكررة"] : []),
+            ...(formData.is_recurring && formData.recurrence_pattern && !formData.recurrence_end_date ? 
+              ["تاريخ انتهاء التكرار مطلوب للأحداث المتكررة"] : [])
+          ];
+        default:
+          return [];
+      }
+    };
 
-    switch (step) {
-      case 1: // Basic Information
-        if (!formData.title_ar.trim()) errors.push("العنوان بالعربية مطلوب");
-        if (!formData.event_type) errors.push("نوع الحدث مطلوب");
-        if (!formData.description_ar?.trim()) errors.push("الوصف بالعربية مطلوب");
-        break;
-      case 2: // Event Details
-        if (!formData.event_date) errors.push("تاريخ الحدث مطلوب");
-        if (!formData.format) errors.push("تنسيق الحدث مطلوب");
-        if (formData.format === "in_person" && !formData.location?.trim()) {
-          errors.push("الموقع مطلوب للأحداث الحضورية");
-        }
-        if (formData.format === "virtual" && !formData.virtual_link?.trim()) {
-          errors.push("الرابط الافتراضي مطلوب للأحداث الافتراضية");
-        }
-        if (formData.format === "hybrid" && (!formData.location?.trim() || !formData.virtual_link?.trim())) {
-          errors.push("الموقع والرابط الافتراضي مطلوبان للأحداث المختلطة");
-        }
-        if (formData.max_participants && parseInt(String(formData.max_participants)) <= 0) {
-          errors.push("الحد الأقصى للمشاركين يجب أن يكون أكبر من صفر");
-        }
-        if (formData.budget && parseFloat(String(formData.budget)) < 0) {
-          errors.push("الميزانية لا يمكن أن تكون سالبة");
-        }
-        if (formData.start_time && formData.end_time && formData.start_time >= formData.end_time) {
-          errors.push("وقت الانتهاء يجب أن يكون بعد وقت البداية");
-        }
-        if (formData.end_date && formData.event_date && formData.end_date < formData.event_date) {
-          errors.push("تاريخ الانتهاء لا يمكن أن يكون قبل تاريخ البداية");
-        }
-        break;
-      case 3: // Organization & Campaign
-        // Optional validation
-        break;
-      case 4: // Partners & Stakeholders
-        // Optional validation
-        break;
-      case 5: // Additional Settings
-        if (formData.is_recurring && !formData.recurrence_pattern) {
-          errors.push("نمط التكرار مطلوب للأحداث المتكررة");
-        }
-        if (formData.is_recurring && formData.recurrence_pattern && !formData.recurrence_end_date) {
-          errors.push("تاريخ انتهاء التكرار مطلوب للأحداث المتكررة");
-        }
-        break;
-    }
-
-    return errors;
+    return buildErrors();
   };
 
   const nextStep = () => {

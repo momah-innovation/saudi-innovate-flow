@@ -85,7 +85,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
 
   const performSearch = async (searchQuery: string) => {
     setIsLoading(true);
-    let searchResults: SearchResult[] = [];
+    const allResults: SearchResult[] = [];
 
     try {
       const searchLower = searchQuery.toLowerCase();
@@ -107,18 +107,17 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
         .or(`title_ar.ilike.%${searchQuery}%,description_ar.ilike.%${searchQuery}%`)
         .limit(5);
 
-      campaigns?.forEach(campaign => {
-        searchResults.push({
-          id: campaign.id,
-          title: campaign.title_ar,
-          description: campaign.description_ar,
-          type: 'campaign',
-          status: campaign.status,
-          icon: Target,
-          url: `/admin/campaigns?highlight=${campaign.id}`,
-          metadata: { status: campaign.status }
-        });
-      });
+      // Use immutable array building instead of mutations
+      const campaignResults = campaigns?.map(campaign => ({
+        id: campaign.id,
+        title: campaign.title_ar,
+        description: campaign.description_ar,
+        type: 'campaign' as const,
+        status: campaign.status,
+        icon: Target,
+        url: `/admin/campaigns?highlight=${campaign.id}`,
+        metadata: { status: campaign.status }
+      })) || [];
 
       // Search challenges (based on sensitivity level and user permissions)
       let challengeQuery = supabase
@@ -139,21 +138,19 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
 
       const { data: challenges } = await challengeQuery;
 
-      challenges?.forEach(challenge => {
-        searchResults = [...searchResults, {
-          id: challenge.id,
-          title: challenge.title_ar,
-          description: challenge.description_ar,
-          type: 'challenge',
+      const challengeResults = challenges?.map(challenge => ({
+        id: challenge.id,
+        title: challenge.title_ar,
+        description: challenge.description_ar,
+        type: 'challenge' as const,
+        status: challenge.status,
+        icon: Lightbulb,
+        url: `/challenges/${challenge.id}`,
+        metadata: { 
           status: challenge.status,
-          icon: Lightbulb,
-          url: `/challenges/${challenge.id}`,
-          metadata: { 
-            status: challenge.status,
-            sensitivity: challenge.sensitivity_level 
-          }
-        }];
-      });
+          sensitivity: challenge.sensitivity_level 
+        }
+      })) || [];
 
       // Search events (all users can view events)
       const { data: events } = await supabase
@@ -162,23 +159,22 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
         .or(`title_ar.ilike.%${searchQuery}%,description_ar.ilike.%${searchQuery}%`)
         .limit(5);
 
-      events?.forEach(event => {
-        searchResults.push({
-          id: event.id,
-          title: event.title_ar,
-          description: event.description_ar,
-          type: 'event',
+      const eventResults = events?.map(event => ({
+        id: event.id,
+        title: event.title_ar,
+        description: event.description_ar,
+        type: 'event' as const,
+        status: event.status,
+        icon: Calendar,
+        url: `/admin/events?highlight=${event.id}`,
+        metadata: { 
           status: event.status,
-          icon: Calendar,
-          url: `/admin/events?highlight=${event.id}`,
-          metadata: { 
-            status: event.status,
-            date: event.event_date 
-          }
-        });
-      });
+          date: event.event_date 
+        }
+      })) || [];
 
       // Search stakeholders (team members and admins only)
+      let stakeholderResults: SearchResult[] = [];
       if (isAdmin || isTeamMemberFlag) {
         const { data: stakeholders } = await supabase
           .from('stakeholders')
@@ -186,20 +182,19 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
           .or(`name.ilike.%${searchQuery}%,organization.ilike.%${searchQuery}%`)
           .limit(5);
 
-        stakeholders?.forEach(stakeholder => {
-          searchResults.push({
-            id: stakeholder.id,
-            title: stakeholder.name,
-            description: `${stakeholder.organization} - ${stakeholder.email}`,
-            type: 'stakeholder',
-            icon: Users,
-            url: `/admin/stakeholders?highlight=${stakeholder.id}`,
-            metadata: { organization: stakeholder.organization }
-          });
-        });
+        stakeholderResults = stakeholders?.map(stakeholder => ({
+          id: stakeholder.id,
+          title: stakeholder.name,
+          description: `${stakeholder.organization} - ${stakeholder.email}`,
+          type: 'stakeholder' as const,
+          icon: Users,
+          url: `/admin/stakeholders?highlight=${stakeholder.id}`,
+          metadata: { organization: stakeholder.organization }
+        })) || [];
       }
 
       // Search partners (team members and admins only)
+      let partnerResults: SearchResult[] = [];
       if (isAdmin || isTeamMemberFlag) {
         const { data: partners } = await supabase
           .from('partners')
@@ -207,17 +202,15 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
           .or(`name.ilike.%${searchQuery}%,partner_type.ilike.%${searchQuery}%`)
           .limit(5);
 
-        partners?.forEach(partner => {
-          searchResults.push({
-            id: partner.id,
-            title: partner.name,
-            description: `${partner.partner_type} - ${partner.email || 'No email'}`,
-            type: 'partner',
-            icon: Building,
-            url: `/admin/partners?highlight=${partner.id}`,
-            metadata: { type: partner.partner_type }
-          });
-        });
+        partnerResults = partners?.map(partner => ({
+          id: partner.id,
+          title: partner.name,
+          description: `${partner.partner_type} - ${partner.email || 'No email'}`,
+          type: 'partner' as const,
+          icon: Building,
+          url: `/admin/partners?highlight=${partner.id}`,
+          metadata: { type: partner.partner_type }
+        })) || [];
       }
 
       // Search ideas (users can see their own ideas, evaluators can see assigned ideas, admins see all)
@@ -237,21 +230,29 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
 
       const { data: ideas } = await ideaQuery;
 
-      ideas?.forEach(idea => {
-        searchResults.push({
-          id: idea.id,
-          title: idea.title_ar,
-          description: idea.description_ar,
-          type: 'idea',
-          status: idea.status,
-          icon: FileText,
-          url: `/ideas/${idea.id}`,
-          metadata: { status: idea.status }
-        });
-      });
+      const ideaResults = ideas?.map(idea => ({
+        id: idea.id,
+        title: idea.title_ar,
+        description: idea.description_ar,
+        type: 'idea' as const,
+        status: idea.status,
+        icon: FileText,
+        url: `/ideas/${idea.id}`,
+        metadata: { status: idea.status }
+      })) || [];
 
-      setResults(searchResults);
-      setIsOpen(searchResults.length > 0);
+      // Combine all results using spread operator
+      const finalResults = [
+        ...campaignResults,
+        ...challengeResults, 
+        ...eventResults,
+        ...stakeholderResults,
+        ...partnerResults,
+        ...ideaResults
+      ];
+      
+      setResults(finalResults);
+      setIsOpen(finalResults.length > 0);
       setSelectedIndex(0);
 
     } catch (error) {
