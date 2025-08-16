@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -211,7 +212,7 @@ export const DashboardHero = ({
               {roleConfig.actions.map((action, index) => (
                 <button
                   key={index}
-                  onClick={() => onNavigate(action.path)}
+                  onClick={() => navigationHandler.navigateTo(action.path)}
                   className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all"
                 >
                   <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">

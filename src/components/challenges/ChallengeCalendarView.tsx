@@ -18,8 +18,8 @@ import {
 import { cn } from '@/lib/utils';
 import { useDirection } from '@/components/ui/direction-provider';
 import { Challenge } from '@/hooks/useChallengesData';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, format } from 'date-fns';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 
 interface ChallengeCalendarViewProps {
   challenges: Challenge[];
@@ -98,10 +98,7 @@ export const ChallengeCalendarView: React.FC<ChallengeCalendarViewProps> = ({
   };
 
   const formatMonthYear = (date: Date) => {
-    if (isRTL) {
-      return format(date, 'MMMM yyyy', { locale: ar });
-    }
-    return format(date, 'MMMM yyyy');
+    return isRTL ? formatDateArabic(date, 'MMMM yyyy') : formatDate(date, 'MMMM yyyy');
   };
 
   const getDayName = (dayIndex: number) => {

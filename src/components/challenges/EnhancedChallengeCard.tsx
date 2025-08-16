@@ -17,8 +17,7 @@ import {
   User,
   ChevronRight
 } from 'lucide-react';
-import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
@@ -329,7 +328,7 @@ export function EnhancedChallengeCard({
             {challenge.end_date && (
               <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
                 <Calendar className="w-4 h-4" />
-                <span>{format(new Date(challenge.end_date), 'MMM dd', { locale: ar })}</span>
+                <span>{isRTL ? formatDateArabic(challenge.end_date, 'MMM dd') : formatDate(challenge.end_date, 'MMM dd')}</span>
               </div>
             )}
           </div>

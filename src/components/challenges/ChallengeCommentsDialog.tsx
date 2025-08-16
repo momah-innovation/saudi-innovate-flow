@@ -9,6 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
+import { useDirection } from '@/components/ui/direction-provider';
 import { 
   MessageSquare, Send, Heart, Flag, Pin, Reply, 
   ThumbsUp, MoreHorizontal, Edit3, Trash2, Star
@@ -34,6 +36,7 @@ export function ChallengeCommentsDialog({
   const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const { isRTL } = useDirection();
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -246,7 +249,7 @@ export function ChallengeCommentsDialog({
               </Badge>
             )}
             <span className="text-xs text-muted-foreground">
-              {new Date(comment.created_at).toLocaleDateString('ar-SA')}
+              {isRTL ? formatDateArabic(comment.created_at, 'PPP') : formatDate(comment.created_at, 'PPP')}
             </span>
           </div>
           

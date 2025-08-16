@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Handshake, Briefcase, TrendingUp, Target, ArrowRight } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
 
 interface PartnerDashboardProps {
@@ -15,6 +16,12 @@ interface PartnerDashboardProps {
 export function PartnerDashboard({ userProfile, canManageOpportunities, canViewPartnerDashboard }: PartnerDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
+  
   const { data: unifiedData } = useUnifiedDashboardData('partner');
 
   // Use real partner stats from unified data
@@ -43,13 +50,13 @@ export function PartnerDashboard({ userProfile, canManageOpportunities, canViewP
     {
       title: language === 'ar' ? 'إدارة الفرص' : 'Manage Opportunities',
       description: language === 'ar' ? 'إنشاء وإدارة فرص الاستثمار' : 'Create and manage investment opportunities',
-      action: () => navigate('/partner/opportunities'),
+      action: () => navigationHandler.navigateTo('/partner/opportunities'),
       show: canManageOpportunities
     },
     {
       title: language === 'ar' ? 'لوحة الشريك' : 'Partner Dashboard',
       description: language === 'ar' ? 'عرض إحصائيات الشراكة المفصلة' : 'View detailed partnership statistics',
-      action: () => navigate('/partner/dashboard'),
+      action: () => navigationHandler.navigateTo('/partner/dashboard'),
       show: canViewPartnerDashboard
     }
   ];

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -27,6 +28,11 @@ interface OrganizationDashboardProps {
 export function OrganizationDashboard({ userProfile, canManageOrganization, canManageEntities, canViewOrgAnalytics }: OrganizationDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
 
   const orgStats = [
     {
@@ -68,42 +74,42 @@ export function OrganizationDashboard({ userProfile, canManageOrganization, canM
       title: language === 'ar' ? 'إدارة المنظمة' : 'Organization Management',
       description: language === 'ar' ? 'إدارة هيكل المنظمة والعضوية' : 'Manage organization structure and membership',
       icon: Building,
-      action: () => navigate('/admin/organizational-structure'),
+      action: () => navigationHandler.navigateTo('/admin/organizational-structure'),
       show: canManageOrganization
     },
     {
       title: language === 'ar' ? 'إدارة الكيانات' : 'Entity Management',
       description: language === 'ar' ? 'إدارة الكيانات التابعة والفروع' : 'Manage subsidiary entities and branches',
       icon: Briefcase,
-      action: () => navigate('/admin/entities'),
+      action: () => navigationHandler.navigateTo('/admin/entities'),
       show: canManageEntities
     },
     {
       title: language === 'ar' ? 'إدارة الأعضاء' : 'Member Management',
       description: language === 'ar' ? 'إدارة أعضاء المنظمة والصلاحيات' : 'Manage organization members and permissions',
       icon: UserCheck,
-      action: () => navigate('/organization/members'),
+      action: () => navigationHandler.navigateTo('/organization/members'),
       show: canManageOrganization
     },
     {
       title: language === 'ar' ? 'الهيكل التنظيمي' : 'Organizational Structure',
       description: language === 'ar' ? 'تصميم وتحديث الهيكل التنظيمي' : 'Design and update organizational structure',
       icon: BarChart3,
-      action: () => navigate('/admin/organizational-structure'),
+      action: () => navigationHandler.navigateTo('/admin/organizational-structure'),
       show: canManageOrganization
     },
     {
       title: language === 'ar' ? 'تقارير المنظمة' : 'Organization Reports',
       description: language === 'ar' ? 'عرض تقارير أداء المنظمة' : 'View organization performance reports',
       icon: BarChart3,
-      action: () => navigate('/analytics/organization'),
+      action: () => navigationHandler.navigateTo('/analytics/organization'),
       show: canViewOrgAnalytics
     },
     {
       title: language === 'ar' ? 'إعدادات المنظمة' : 'Organization Settings',
       description: language === 'ar' ? 'تكوين إعدادات المنظمة العامة' : 'Configure general organization settings',
       icon: Settings,
-      action: () => navigate('/organization/settings'),
+      action: () => navigationHandler.navigateTo('/organization/settings'),
       show: canManageOrganization
     }
   ];
