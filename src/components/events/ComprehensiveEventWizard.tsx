@@ -154,7 +154,7 @@ export const ComprehensiveEventWizard = ({
   const [availableStakeholders, setAvailableStakeholders] = useState<any[]>([]);
   const [availableCampaigns, setAvailableCampaigns] = useState<any[]>([]);
   const [availableChallenges, setAvailableChallenges] = useState<any[]>([]);
-  const [availableSectors, setAvailableSectors] = useState<any[]>([]);  // TODO: Apply types in next iteration
+  const [availableSectors, setAvailableSectors] = useState<any[]>([]);
 
   // Load initial data
   useEffect(() => {

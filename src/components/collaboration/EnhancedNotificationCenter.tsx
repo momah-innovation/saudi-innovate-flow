@@ -38,6 +38,25 @@ interface NotificationPreferences {
   };
 }
 
+interface EnhancedNotification {
+  id: string;
+  recipient_id?: string;
+  user_id?: string;
+  type: 'mention' | 'assignment' | 'collaboration' | 'meeting' | 'document' | 'system';
+  title: string;
+  content?: string;
+  message?: string;
+  priority: 'low' | 'medium' | 'high';
+  is_read: boolean;
+  created_at: string;
+  context?: {
+    entity_type: string;
+    entity_id: string;
+    workspace_id?: string;
+  };
+  metadata?: Record<string, any>;
+}
+
 interface EnhancedNotificationCenterProps {
   contextType?: 'global' | 'organization' | 'team' | 'project';
   contextId?: string;
@@ -50,7 +69,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
   className = ''
 }) => {
   const { notifications: baseNotifications, currentUserPresence } = useCollaboration();
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<EnhancedNotification[]>([]);
   const [filter, setFilter] = useState<'all' | 'unread' | 'mentions' | 'urgent'>('all');
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     mentions: true,
@@ -70,7 +89,7 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
 
   // Simulate enhanced notifications with smart categorization
   useEffect(() => {
-    const enhancedNotifications: any[] = [
+    const enhancedNotifications: EnhancedNotification[] = [
       {
         id: 'notif_1',
         recipient_id: 'user_1',
