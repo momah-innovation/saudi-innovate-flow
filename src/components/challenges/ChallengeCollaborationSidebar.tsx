@@ -20,10 +20,13 @@ import { UserPresence } from '@/components/collaboration/UserPresence';
 import { ChallengeTeamWorkspace } from '@/types/common';
 
 interface OnlineUser {
-  id: string;
-  name: string;
-  avatar?: string;
-  status: 'online' | 'away' | 'busy';
+  user_id: string;
+  user_info: {
+    display_name?: string;
+    avatar_url?: string;
+  };
+  last_seen: string;
+  status?: 'online' | 'away' | 'busy' | 'offline';
 }
 
 interface RecentActivity {

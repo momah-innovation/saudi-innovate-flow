@@ -76,24 +76,30 @@ export const EventCalendarView = ({
   const daysInMonth = lastDayOfMonth.getDate();
 
   // Generate calendar days including previous/next month padding
-  const calendarDays: (Date | null)[] = [];
+  let calendarDays: (Date | null)[] = [];
   
   // Previous month padding
   const prevMonth = new Date(year, month - 1, 0);
-  for (let i = firstDayWeekday - 1; i >= 0; i--) {
-    calendarDays.push(new Date(year, month - 1, prevMonth.getDate() - i));
-  }
+  const prevMonthDays = Array.from(
+    { length: firstDayWeekday }, 
+    (_, i) => new Date(year, month - 1, prevMonth.getDate() - (firstDayWeekday - 1 - i))
+  );
   
   // Current month days
-  for (let day = 1; day <= daysInMonth; day++) {
-    calendarDays.push(new Date(year, month, day));
-  }
+  const currentMonthDays = Array.from(
+    { length: daysInMonth }, 
+    (_, i) => new Date(year, month, i + 1)
+  );
   
   // Next month padding to complete the grid
-  const remainingDays = 42 - calendarDays.length; // 6 weeks * 7 days
-  for (let day = 1; day <= remainingDays; day++) {
-    calendarDays.push(new Date(year, month + 1, day));
-  }
+  const totalDays = prevMonthDays.length + currentMonthDays.length;
+  const remainingDays = 42 - totalDays; // 6 weeks * 7 days
+  const nextMonthDays = Array.from(
+    { length: remainingDays }, 
+    (_, i) => new Date(year, month + 1, i + 1)
+  );
+  
+  calendarDays = [...prevMonthDays, ...currentMonthDays, ...nextMonthDays];
 
   // Get events for a specific date
   const getEventsForDate = (date: Date) => {

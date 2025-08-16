@@ -146,8 +146,7 @@ export const CollaborativeWhiteboard: React.FC<CollaborativeWhiteboardProps> = (
     setCurrentElement(null);
 
     // Add to history for undo/redo
-    const newHistory = history.slice(0, historyStep + 1);
-    newHistory.push([...elements, currentElement]);
+    const newHistory = [...history.slice(0, historyStep + 1), [...elements, currentElement]];
     setHistory(newHistory);
     setHistoryStep(newHistory.length - 1);
 
@@ -164,8 +163,7 @@ export const CollaborativeWhiteboard: React.FC<CollaborativeWhiteboardProps> = (
     setCurrentElement(null);
     
     // Add to history
-    const newHistory = history.slice(0, historyStep + 1);
-    newHistory.push([]);
+    const newHistory = [...history.slice(0, historyStep + 1), []];
     setHistory(newHistory);
     setHistoryStep(newHistory.length - 1);
   };
