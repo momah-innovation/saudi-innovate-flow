@@ -349,9 +349,10 @@ export const AdminDashboard = React.memo(function AdminDashboard({ userProfile, 
   // Group actions by category for better organization
   const actionsByCategory = adminActions.filter(action => action.show).reduce((acc, action) => {
     const category = action.category || 'other';
-    if (!acc[category]) acc[category] = [];
-    acc[category].push(action);
-    return acc;
+    return {
+      ...acc,
+      [category]: [...(acc[category] || []), action]
+    };
   }, {} as Record<string, typeof adminActions>);
 
   const categoryLabels = {

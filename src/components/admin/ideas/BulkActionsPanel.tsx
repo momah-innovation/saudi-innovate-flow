@@ -137,17 +137,14 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       // Get current user
       if (!user) throw new Error('Not authenticated');
       
-      // Create tag links for all selected ideas
-      const tagLinks = [];
-      for (const ideaId of selectedItems) {
-        for (const tagId of selectedTags) {
-          tagLinks.push({
-            idea_id: ideaId,
-            tag_id: tagId,
-            added_by: user?.id
-          });
-        }
-      }
+      // Create tag links using immutable array building
+      const tagLinks = selectedItems.flatMap(ideaId =>
+        selectedTags.map(tagId => ({
+          idea_id: ideaId,
+          tag_id: tagId,
+          added_by: user?.id
+        }))
+      );
 
       const { error } = await supabase
         .from('idea_tag_links')

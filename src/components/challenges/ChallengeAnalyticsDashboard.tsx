@@ -87,16 +87,19 @@ export const ChallengeAnalyticsDashboard = ({
       // Calculate total prizes
       const totalPrizes = challenges?.reduce((sum, c) => sum + (c.estimated_budget || 0), 0) || 0;
 
-      // Category breakdown
+      // Category breakdown using immutable reduce
       const categoryBreakdown = challenges?.reduce((acc: { category: string; count: number; percentage: number }[], challenge) => {
         const category = challenge.challenge_type || 'other';
         const existing = acc.find(item => item.category === category);
         if (existing) {
-          existing.count++;
+          return acc.map(item => 
+            item.category === category 
+              ? { ...item, count: item.count + 1 }
+              : item
+          );
         } else {
-          acc.push({ category, count: 1, percentage: 0 });
+          return [...acc, { category, count: 1, percentage: 0 }];
         }
-        return acc;
       }, []) || [];
 
       // Calculate percentages

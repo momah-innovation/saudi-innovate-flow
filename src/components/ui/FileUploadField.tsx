@@ -138,8 +138,8 @@ export function FileUploadField({
   };
 
   const removeFile = (index: number) => {
-    const newFiles = [...value];
-    newFiles.splice(index, 1);
+    // Use immutable array filtering instead of splice
+    const newFiles = value.filter((_, i) => i !== index);
     onChange(newFiles);
   };
 

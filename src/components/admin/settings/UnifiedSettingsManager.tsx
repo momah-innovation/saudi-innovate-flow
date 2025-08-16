@@ -45,12 +45,13 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
     return true;
   });
 
-  // Group settings by category
+  // Group settings by category using immutable reduce
   const groupedSettings = filteredSettings.reduce((acc, setting) => {
     const cat = setting.setting_category || 'general';
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(setting);
-    return acc;
+    return {
+      ...acc,
+      [cat]: [...(acc[cat] || []), setting]
+    };
   }, {} as Record<string, typeof filteredSettings>);
 
   const handleSettingChange = (key: string, value: unknown, category: string, dataType: string) => {
