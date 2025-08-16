@@ -72,9 +72,9 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
 
             if (error) {
               const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-              failedUploads.push(`${userName} (${mapping.fileName})`);
+              setResults(prev => ({ ...prev, failed: [...prev.failed, `${userName} (${mapping.fileName})`] }));
             } else {
-              successfulUploads.push(`${userName} (${mapping.fileName})`);
+              setResults(prev => ({ ...prev, success: [...prev.success, `${userName} (${mapping.fileName})`] }));
             }
           }
 
@@ -86,24 +86,23 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-          failedUploads.push(mapping.fileName);
+          setResults(prev => ({ ...prev, failed: [...prev.failed, mapping.fileName] }));
           completed++;
           setProgress((completed / AVATAR_MAPPING.length) * 100);
         }
       }
 
-      setResults({
-        success: successfulUploads,
-        failed: failedUploads,
+      setResults(prev => ({
+        ...prev,
         total: AVATAR_MAPPING.length
-      });
+      }));
 
-      if (failedUploads.length === 0) {
+      if (results.failed.length === 0) {
         errorHandler.handleError(new Error(t('toast.avatar_updated')), 'BulkAvatarUploader-success');
       } else {
         errorHandler.handleError(new Error(t('avatars_update_partial_success', { 
-          success: successfulUploads.length, 
-          failed: failedUploads.length 
+          success: results.success.length, 
+          failed: results.failed.length 
         })), 'BulkAvatarUploader-partial');
       }
 

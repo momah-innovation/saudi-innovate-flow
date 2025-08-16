@@ -78,7 +78,7 @@ export const LiveEngagementMonitor: React.FC = () => {
         {
           id: 'active_users',
           name: t('live_monitor.active_users', 'المستخدمون النشطون'),
-          value: (coreMetrics.users as any)?.active || 0,
+          value: coreMetrics.users?.active || 0,
           change: 12.5,
           changeType: 'increase',
           icon: <Users className="h-4 w-4" />,
@@ -88,7 +88,7 @@ export const LiveEngagementMonitor: React.FC = () => {
         {
           id: 'live_views',
           name: t('live_monitor.live_views', 'المشاهدات المباشرة'),
-          value: (coreMetrics.engagement as any)?.pageViews || 0,
+          value: coreMetrics.engagement?.pageViews || 0,
           change: 8.3,
           changeType: 'increase',
           icon: <Eye className="h-4 w-4" />,
@@ -98,7 +98,7 @@ export const LiveEngagementMonitor: React.FC = () => {
         {
           id: 'interactions',
           name: t('live_monitor.interactions', 'التفاعلات'),
-          value: Math.floor(((coreMetrics.engagement as any)?.totalParticipants || 0) * 1.2),
+          value: Math.floor((coreMetrics.engagement?.interactions || 0) * 1.2),
           change: -3.2,
           changeType: 'decrease',
           icon: <MessageCircle className="h-4 w-4" />,
@@ -108,7 +108,7 @@ export const LiveEngagementMonitor: React.FC = () => {
         {
           id: 'engagement_rate',
           name: t('live_monitor.engagement_rate', 'معدل التفاعل'),
-          value: (coreMetrics.engagement as any)?.participationRate || 0,
+          value: coreMetrics.engagement?.returnRate || 0,
           change: 15.7,
           changeType: 'increase',
           icon: <Heart className="h-4 w-4" />,

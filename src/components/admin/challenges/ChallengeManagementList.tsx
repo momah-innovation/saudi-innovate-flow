@@ -55,7 +55,7 @@ interface Challenge {
   estimated_budget?: number;
   actual_budget?: number;
   created_at: string;
-  updated_at: string;
+  updated_at?: string; // Make optional to match AdminChallengeListItem
   sector_id?: string;
   deputy_id?: string;
   department_id?: string;
@@ -426,8 +426,8 @@ export function ChallengeManagementList() {
           setShowDetails(false);
           setSelectedChallenge(null);
         }}
-        challenge={selectedChallenge}
-        onEdit={handleEdit}
+        challenge={selectedChallenge as any}
+        onEdit={(c: any) => handleEdit(c)}
         onRefresh={refetch}
       />
     </>
