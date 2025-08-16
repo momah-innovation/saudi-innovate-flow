@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { useStorageAnalytics } from '@/hooks/useStorageAnalytics'
+import { formatDate } from '@/utils/unified-date-handler'
 import { 
   BarChart, 
   Bar, 
