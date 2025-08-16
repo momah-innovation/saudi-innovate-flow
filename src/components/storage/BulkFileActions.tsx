@@ -27,10 +27,10 @@ import {
   Square
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 import { BulkFileActionsProps, TeamMember } from '@/types/storage';
+import { useStorageOperations } from '@/hooks/useStorageOperations';
 
 export function BulkFileActions({
   selectedFiles,
@@ -44,9 +44,9 @@ export function BulkFileActions({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showMoveDialog, setShowMoveDialog] = useState(false);
   const [targetBucket, setTargetBucket] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
   const [assigneeId, setAssigneeId] = useState('');
   const [assignmentNotes, setAssignmentNotes] = useState('');
+  const { bulkDeleteFiles, moveFiles, loading } = useStorageOperations();
   
   // This would come from useOrganizationalData hook
   const teamMembers: TeamMember[] = []; // Placeholder for now

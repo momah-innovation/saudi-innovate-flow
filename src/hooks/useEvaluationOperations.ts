@@ -5,40 +5,34 @@ import { useToast } from '@/hooks/use-toast';
 export interface EvaluationFormData {
   idea_id: string;
   evaluator_id: string;
-  evaluation_type: string;
-  criteria_scores: Record<string, number>;
+  evaluator_type: string;
+  financial_viability: number;
+  implementation_complexity: number;
+  innovation_level: number;
+  market_potential: number;
   overall_score: number;
+  recommendation: string;
   strengths: string;
   weaknesses: string;
-  recommendations: string;
-  feasibility_assessment: string;
-  impact_assessment: string;
-  risk_assessment: string;
-  resource_requirements: string;
-  timeline_estimate: string;
-  status: string;
-  notes?: string;
+  evaluation_date: string;
 }
 
 export interface EvaluationData {
   id: string;
   idea_id: string;
   evaluator_id: string;
-  evaluation_type: string;
-  criteria_scores: Record<string, number>;
+  evaluator_type: string;
+  financial_viability: number;
+  implementation_complexity: number;
+  innovation_level: number;
+  market_potential: number;
   overall_score: number;
+  recommendation: string;
   strengths: string;
   weaknesses: string;
-  recommendations: string;
-  feasibility_assessment: string;
-  impact_assessment: string;
-  risk_assessment: string;
-  resource_requirements: string;
-  timeline_estimate: string;
-  status: string;
-  notes?: string;
+  evaluation_date: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export const useEvaluationOperations = () => {
@@ -138,19 +132,16 @@ export const useEvaluationOperations = () => {
         .insert([{
           idea_id: evaluationData.idea_id,
           evaluator_id: evaluationData.evaluator_id,
-          evaluation_type: evaluationData.evaluation_type,
-          criteria_scores: evaluationData.criteria_scores,
+          evaluator_type: evaluationData.evaluator_type,
+          financial_viability: evaluationData.financial_viability,
+          implementation_complexity: evaluationData.implementation_complexity,
+          innovation_level: evaluationData.innovation_level,
+          market_potential: evaluationData.market_potential,
           overall_score: evaluationData.overall_score,
+          recommendation: evaluationData.recommendation,
           strengths: evaluationData.strengths,
           weaknesses: evaluationData.weaknesses,
-          recommendations: evaluationData.recommendations,
-          feasibility_assessment: evaluationData.feasibility_assessment,
-          impact_assessment: evaluationData.impact_assessment,
-          risk_assessment: evaluationData.risk_assessment,
-          resource_requirements: evaluationData.resource_requirements,
-          timeline_estimate: evaluationData.timeline_estimate,
-          status: evaluationData.status,
-          notes: evaluationData.notes
+          evaluation_date: evaluationData.evaluation_date
         }])
         .select()
         .single();
@@ -194,19 +185,16 @@ export const useEvaluationOperations = () => {
       const { error: updateError } = await supabase
         .from('idea_evaluations')
         .update({
-          evaluation_type: updates.evaluation_type,
-          criteria_scores: updates.criteria_scores,
+          evaluator_type: updates.evaluator_type,
+          financial_viability: updates.financial_viability,
+          implementation_complexity: updates.implementation_complexity,
+          innovation_level: updates.innovation_level,
+          market_potential: updates.market_potential,
           overall_score: updates.overall_score,
+          recommendation: updates.recommendation,
           strengths: updates.strengths,
           weaknesses: updates.weaknesses,
-          recommendations: updates.recommendations,
-          feasibility_assessment: updates.feasibility_assessment,
-          impact_assessment: updates.impact_assessment,
-          risk_assessment: updates.risk_assessment,
-          resource_requirements: updates.resource_requirements,
-          timeline_estimate: updates.timeline_estimate,
-          status: updates.status,
-          notes: updates.notes,
+          evaluation_date: updates.evaluation_date,
           updated_at: new Date().toISOString()
         })
         .eq('id', evaluationId);
@@ -266,22 +254,19 @@ export const useEvaluationOperations = () => {
     setError(null);
     
     try {
-      const evaluationInserts = evaluations.map(eval => ({
-        idea_id: eval.idea_id,
-        evaluator_id: eval.evaluator_id,
-        evaluation_type: eval.evaluation_type,
-        criteria_scores: eval.criteria_scores,
-        overall_score: eval.overall_score,
-        strengths: eval.strengths,
-        weaknesses: eval.weaknesses,
-        recommendations: eval.recommendations,
-        feasibility_assessment: eval.feasibility_assessment,
-        impact_assessment: eval.impact_assessment,
-        risk_assessment: eval.risk_assessment,
-        resource_requirements: eval.resource_requirements,
-        timeline_estimate: eval.timeline_estimate,
-        status: eval.status,
-        notes: eval.notes
+      const evaluationInserts = evaluations.map(evaluationData => ({
+        idea_id: evaluationData.idea_id,
+        evaluator_id: evaluationData.evaluator_id,
+        evaluator_type: evaluationData.evaluator_type,
+        financial_viability: evaluationData.financial_viability,
+        implementation_complexity: evaluationData.implementation_complexity,
+        innovation_level: evaluationData.innovation_level,
+        market_potential: evaluationData.market_potential,
+        overall_score: evaluationData.overall_score,
+        recommendation: evaluationData.recommendation,
+        strengths: evaluationData.strengths,
+        weaknesses: evaluationData.weaknesses,
+        evaluation_date: evaluationData.evaluation_date
       }));
 
       const { data: createdEvaluations, error: batchError } = await supabase
@@ -335,11 +320,10 @@ export const useEvaluationOperations = () => {
         idea?.title_ar?.toLowerCase().includes(state.searchTerm.toLowerCase()) ||
         idea?.title_en?.toLowerCase().includes(state.searchTerm.toLowerCase()) ||
         evaluator?.name?.toLowerCase().includes(state.searchTerm.toLowerCase()) ||
-        evaluation.evaluation_type?.toLowerCase().includes(state.searchTerm.toLowerCase());
+        evaluation.evaluator_type?.toLowerCase().includes(state.searchTerm.toLowerCase());
       
       const matchesFilter = state.filterType === 'all' || 
-        evaluation.status === state.filterType ||
-        evaluation.evaluation_type === state.filterType;
+        evaluation.evaluator_type === state.filterType;
       
       return matchesSearch && matchesFilter;
     });

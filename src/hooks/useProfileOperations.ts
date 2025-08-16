@@ -250,18 +250,14 @@ export const useProfileOperations = () => {
     setLoading(true);
     
     try {
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', userId)
         .single();
 
-      if (profileError && profileError.code !== 'PGRST116') {
-        throw profileError;
-      }
-
       return profile || null;
-    } catch (err) {
+    } catch (err: any) {
       setError('Failed to load settings');
       return null;
     } finally {
