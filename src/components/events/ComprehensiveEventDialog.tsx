@@ -177,11 +177,11 @@ export const ComprehensiveEventDialog = ({
   const { getSettingValue } = useSettingsManager();
   const baseVisibleTabs = getSettingValue('event_dialog_visible_tabs', ['details', 'registration', 'feedback']) as string[];
   const visibleTabs = useMemo(() => {
-    const tabs = [...baseVisibleTabs];
-    if (canShowParticipants) tabs.push('attendees');
-    if (canShowPartners) tabs.push('partners');
-    if (canShowRelated) tabs.push('related');
-    if (canShowResources) tabs.push('resources');
+    let tabs = [...baseVisibleTabs];
+    if (canShowParticipants) tabs = [...tabs, 'attendees'];
+    if (canShowPartners) tabs = [...tabs, 'partners'];
+    if (canShowRelated) tabs = [...tabs, 'related'];
+    if (canShowResources) tabs = [...tabs, 'resources'];
     return tabs;
   }, [baseVisibleTabs, canShowParticipants, canShowPartners, canShowRelated, canShowResources]);
 

@@ -144,7 +144,7 @@ export const ChallengeSubmitDialog = ({
 
     setUploading(true);
     try {
-      const uploadedUrls: string[] = [];
+      let uploadedUrls: string[] = [];
       
       for (const file of Array.from(files)) {
         const fileExt = file.name.split('.').pop();
@@ -160,7 +160,7 @@ export const ChallengeSubmitDialog = ({
           .from('challenge-attachments')
           .getPublicUrl(fileName);
 
-        uploadedUrls.push(publicUrl);
+        uploadedUrls = [...uploadedUrls, publicUrl];
       }
 
       updateSubmissionData('attachmentUrls', [...submissionData.attachmentUrls, ...uploadedUrls]);

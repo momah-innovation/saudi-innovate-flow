@@ -12,6 +12,21 @@ import {
   Clock
 } from 'lucide-react';
 
+interface Team {
+  id: string;
+  name: string;
+  description?: string;
+  members?: TeamMember[];
+  createdAgo?: string;
+  messagesCount?: number;
+}
+
+interface TeamMember {
+  id: string;
+  name?: string;
+  avatar?: string;
+}
+
 interface ChallengeTeamWorkspaceProps {
   challengeId: string;
 }
@@ -19,7 +34,7 @@ interface ChallengeTeamWorkspaceProps {
 export const ChallengeTeamWorkspace: React.FC<ChallengeTeamWorkspaceProps> = ({
   challengeId
 }) => {
-  const [teams] = useState<any[]>([]);
+  const [teams] = useState<Team[]>([]);
 
   return (
     <div className="space-y-6">
@@ -101,7 +116,7 @@ export const ChallengeTeamWorkspace: React.FC<ChallengeTeamWorkspaceProps> = ({
                 <div className="mt-4 pt-4 border-t">
                   <div className="flex items-center justify-between">
                     <div className="flex -space-x-2 rtl:space-x-reverse">
-                      {team.members?.slice(0, 4).map((member: any, idx: number) => (
+                      {team.members?.slice(0, 4).map((member: TeamMember, idx: number) => (
                         <Avatar key={idx} className="h-8 w-8 border-2 border-background">
                           <AvatarImage src={member.avatar} />
                           <AvatarFallback>{member.name?.charAt(0)}</AvatarFallback>
