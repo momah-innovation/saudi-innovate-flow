@@ -93,12 +93,21 @@ export class AnalyticsService {
         
         if (isTeamMember) return true;
 
-        // Fallback to admin check
-        const { data: isAdmin } = await supabase.rpc('has_role', {
-          _user_id: userId,
-          _role: 'admin'
-        });
-        return !!isAdmin;
+        // ✅ ENHANCED: Better error handling for analytics access
+        try {
+          const { data: isAdmin } = await supabase.rpc('has_role', {
+            _user_id: userId,
+            _role: 'admin'
+          });
+          return Boolean(isAdmin);
+        } catch (roleError) {
+          debugLog.warn('Analytics role check failed', { 
+            component: 'AnalyticsService', 
+            error: roleError instanceof Error ? roleError.message : 'Unknown role check error',
+            userId 
+          });
+          return false;
+        }
       }
 
       return true; // Basic metrics accessible to all authenticated users

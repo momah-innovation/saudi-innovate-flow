@@ -174,6 +174,12 @@ export const SESSION_4_PROGRESS = {
   }
 } as const;
 
-console.info('🚀 SESSION 4: Accelerated migration - 29 strings migrated, 17.8% complete!');
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Migration Session 4 Progress', {
+    component: 'MigrationSession4Progress',
+    data: { message: 'SESSION 4: Accelerated migration - 29 strings migrated, 17.8% complete!' }
+  });
+}
 
 export default SESSION_4_PROGRESS;

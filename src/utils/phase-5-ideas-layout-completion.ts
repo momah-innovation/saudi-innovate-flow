@@ -89,23 +89,12 @@ The platform has achieved exceptional production-grade type safety with systemat
   }
 } as const;
 
-console.info(`
-🎉 PHASE 5 IDEAS & LAYOUT COMPLETION ACHIEVED! 🎉
-================================================
-
-📊 PLATFORM NOW: 91% Type-Safe (EXCEPTIONAL!)
-✅ DASHBOARD: 100% Complete
-✅ ADMIN: 80% Complete  
-✅ EVENTS: 70% Infrastructure Ready
-✅ HOOKS: 85% Complete
-✅ IDEAS: 100% Complete (Bulletproof!)
-✅ NAVIGATION: 100% Complete (Bulletproof!)
-✅ BUILD: Rock-solid
-
-🚀 EXCEPTIONAL PRODUCTION-GRADE TYPE SAFETY ACHIEVED!
-
-The Ideas and Navigation systems are now fully type-safe and bulletproof.
-Platform reliability has reached new heights!
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Phase 5 Ideas Layout Completion', {
+    component: 'Phase5IdeasLayoutCompletion',
+    data: PHASE_5_IDEAS_LAYOUT_COMPLETION
+  });
+}
 
 export default PHASE_5_IDEAS_LAYOUT_COMPLETION;

@@ -99,26 +99,12 @@ The platform has achieved EXCEPTIONAL production-grade type safety with a system
   }
 } as const;
 
-console.info(`
-🎉 PHASE 6 STORAGE & ANALYTICS COMPLETION ACHIEVED! 🎉
-====================================================
-
-📊 PLATFORM NOW: 95% Type-Safe (EXCEPTIONAL!)
-✅ DASHBOARD: 100% Complete (Bulletproof)
-✅ ADMIN: 80% Complete  
-✅ EVENTS: 70% Infrastructure Ready
-✅ HOOKS: 85% Complete
-✅ IDEAS: 100% Complete (Bulletproof)
-✅ NAVIGATION: 100% Complete (Bulletproof)
-✅ STORAGE: 100% Complete (Bulletproof)
-✅ ANALYTICS: 100% Complete (Bulletproof)
-✅ BUILD: Bulletproof
-
-🚀 EXCEPTIONAL ENTERPRISE-GRADE TYPE SAFETY ACHIEVED!
-
-Storage and Analytics systems are now fully type-safe and bulletproof.
-Platform reliability has reached world-class standards!
-Only 5% minor work remains for absolute perfection.
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Phase 6 Storage Analytics Completion', {
+    component: 'Phase6StorageAnalyticsCompletion',
+    data: PHASE_6_STORAGE_ANALYTICS_COMPLETION
+  });
+}
 
 export default PHASE_6_STORAGE_ANALYTICS_COMPLETION;

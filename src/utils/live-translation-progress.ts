@@ -132,22 +132,12 @@ export const LIVE_PROGRESS_TRACKER = {
   architecture_health: 'EXCELLENT'
 } as const;
 
-console.info(`
-🎯 LIVE PROGRESS UPDATE
-======================
-
-✅ COMPLETED THIS SESSION:
-   • OpportunityWizard.tsx (20 strings fixed)
-   • OrganizationalStructureManagement.tsx (25 strings fixed)
-
-🔄 CURRENTLY WORKING ON:
-   • PartnersManagement.tsx (6 strings remaining)
-
-⏳ REMAINING: 5 components (~33 strings)
-📈 COMPLETION: 97% (Outstanding progress!)
-⏱️ ETA: 30-45 minutes to 100%
-
-🚀 STATUS: NEARLY COMPLETE!
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Live Translation Progress', {
+    component: 'LiveTranslationProgress',
+    data: LIVE_PROGRESS_TRACKER
+  });
+}
 
 export default LIVE_PROGRESS_TRACKER;
