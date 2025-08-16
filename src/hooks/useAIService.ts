@@ -359,12 +359,88 @@ export const useAIService = () => {
     }
   }, []);
 
+  // AI Operations (delegating to edge functions)
+  const moderateContent = useCallback(async (
+    content: string, 
+    contentType: string,
+    contentId?: string
+  ): Promise<ContentModerationResult> => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('content-moderation', {
+        body: { content, contentType, contentId }
+      });
+      if (error) throw error;
+      
+      // Store result if contentId provided
+      if (contentId) {
+        await storeModerationResult(contentId, contentType, content, data);
+      }
+      
+      return data;
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Moderation failed');
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [storeModerationResult]);
+
+  const suggestTags = useCallback(async (
+    entityId: string,
+    entityType: string,
+    content: string
+  ): Promise<TagSuggestion[]> => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('automated-tagging', {
+        body: { entityId, entityType, content }
+      });
+      if (error) throw error;
+      
+      // Store suggestions
+      await storeTagSuggestions(entityId, entityType, data.suggestions);
+      
+      return data.suggestions;
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Tagging failed');
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [storeTagSuggestions]);
+
+  const semanticSearch = useCallback(async (
+    query: string,
+    entityTypes: string[] = [],
+    limit: number = 10
+  ): Promise<any[]> => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('smart-search', {
+        body: { query, entityTypes, limit }
+      });
+      if (error) throw error;
+      return data.results;
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Search failed');
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   return {
     // State
     isLoading,
     error,
     
-    // Operations
+    // AI Operations
+    moderateContent,
+    suggestTags,
+    semanticSearch,
+    
+    // Storage Operations
     storeModerationResult,
     storeTagSuggestions,
     storeEmailTemplate,

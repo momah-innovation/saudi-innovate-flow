@@ -20,7 +20,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { aiService } from '@/services/AIService';
+import { useAIService } from '@/hooks/useAIService';
 import { logger } from '@/utils/logger';
 
 interface ModerationResult {
@@ -56,6 +56,7 @@ export const ContentModerationPanel: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const aiService = useAIService();
 
   useEffect(() => {
     fetchModerationLogs();

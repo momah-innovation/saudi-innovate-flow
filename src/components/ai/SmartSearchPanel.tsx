@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { aiService } from '@/services/AIService';
+import { useAIService } from '@/hooks/useAIService';
 import { logger } from '@/utils/logger';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 
@@ -67,6 +67,7 @@ export const SmartSearchPanel: React.FC = () => {
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
   const { toast } = useToast();
   const { user } = useCurrentUser();
+  const aiService = useAIService();
 
   useEffect(() => {
     loadSearchHistory();

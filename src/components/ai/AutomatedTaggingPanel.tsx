@@ -21,7 +21,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { aiService } from '@/services/AIService';
+import { useAIService } from '@/hooks/useAIService';
 import { logger } from '@/utils/logger';
 
 interface TagData {
@@ -64,6 +64,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
   });
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const aiService = useAIService();
 
   useEffect(() => {
     fetchTagSuggestions();

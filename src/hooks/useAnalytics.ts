@@ -4,10 +4,11 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { analyticsService, CoreMetrics, SecurityMetrics, RoleBasedMetrics, AnalyticsFilters } from '@/services/analytics/AnalyticsService';
+import { useAnalyticsService } from '@/hooks/useAnalyticsService';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { logger } from '@/utils/logger';
+import type { CoreMetrics, SecurityMetrics, RoleBasedMetrics, AnalyticsFilters } from '@/types/common';
 
 export interface UseAnalyticsOptions {
   filters?: AnalyticsFilters;
@@ -45,6 +46,7 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
 
   const { user, userProfile } = useAuth();
   const { getPrimaryRole, canAccess } = useRoleAccess();
+  const { operations: analyticsService } = useAnalyticsService();
 
   const [coreMetrics, setCoreMetrics] = useState<CoreMetrics | null>(null);
   const [securityMetrics, setSecurityMetrics] = useState<SecurityMetrics | null>(null);
@@ -75,14 +77,14 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
 
       // Fetch core metrics (always included)
       if (hasAccess.core) {
-        const core = await analyticsService.getCoreMetrics(user.id, filters);
+        const core = await analyticsService.getCoreMetrics(filters);
         setCoreMetrics(core);
       }
 
       // Fetch security metrics if requested and user has access
       if (includeSecurity && hasAccess.security) {
         try {
-          const security = await analyticsService.getSecurityMetrics(user.id);
+          const security = await analyticsService.getSecurityMetrics();
           setSecurityMetrics(security);
         } catch (securityError) {
           logger.warn('Security metrics access denied', { component: 'useAnalytics', userId: user.id });
@@ -93,7 +95,7 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
       // Fetch role-based metrics if requested
       if (includeRoleSpecific && hasAccess.analytics) {
         try {
-          const roleBased = await analyticsService.getRoleBasedMetrics(user.id, userRole, filters);
+          const roleBased = await analyticsService.getRoleBasedMetrics(userRole, filters);
           setRoleBasedMetrics(roleBased);
         } catch (roleError) {
           logger.warn('Role-based metrics access limited', { component: 'useAnalytics', userId: user.id });
