@@ -59,9 +59,9 @@ export const useProfileOperations = () => {
         updated_at: new Date().toISOString()
       };
 
-      const result: any = await supabase
+      const result: any = await (supabase as any)
         .from('profiles')
-        .update(updateData)
+        .update(updateData as any)
         .eq('user_id', userId);
 
       if (result.error) throw result.error;
@@ -91,26 +91,26 @@ export const useProfileOperations = () => {
       const fileName = `avatars/${userId}/${Date.now()}.${file.name.split('.').pop()}`;
       
       // Upload file to storage
-      const uploadResult = await supabase.storage
+      const uploadResult = await (supabase as any).storage
         .from('avatars')
         .upload(fileName, file, { upsert: true });
 
       if (uploadResult.error) throw uploadResult.error;
 
       // Get public URL
-      const urlResult = supabase.storage
+      const urlResult = (supabase as any).storage
         .from('avatars')
         .getPublicUrl(fileName);
 
       const publicUrl = urlResult.data.publicUrl;
 
       // Update profile with new avatar URL
-      const updateResult = await supabase
+      const updateResult = await (supabase as any)
         .from('profiles')
         .update({ 
           avatar_url: publicUrl,
           updated_at: new Date().toISOString()
-        })
+        } as any)
         .eq('user_id', userId);
 
       if (updateResult.error) throw updateResult.error;
@@ -146,12 +146,12 @@ export const useProfileOperations = () => {
         timezone: settings.timezone
       };
 
-      const result = await supabase
+      const result = await (supabase as any)
         .from('profiles')
         .update({
           settings: settingsData,
           updated_at: new Date().toISOString()
-        })
+        } as any)
         .eq('user_id', userId);
 
       if (result.error) throw result.error;
@@ -181,12 +181,12 @@ export const useProfileOperations = () => {
         allowed_login_attempts: securitySettings.allowed_login_attempts
       };
 
-      const result = await supabase
+      const result = await (supabase as any)
         .from('profiles')
         .update({
           security_settings: securityData,
           updated_at: new Date().toISOString()
-        })
+        } as any)
         .eq('user_id', userId);
 
       if (result.error) throw result.error;
@@ -209,7 +209,7 @@ export const useProfileOperations = () => {
     try {
       const { supabase } = await import('@/integrations/supabase/client');
       
-      const result = await supabase
+      const result = await (supabase as any)
         .from('profiles')
         .select('*')
         .eq('user_id', userId);
@@ -233,7 +233,7 @@ export const useProfileOperations = () => {
     try {
       const { supabase } = await import('@/integrations/supabase/client');
       
-      const result = await supabase
+      const result = await (supabase as any)
         .from('profiles')
         .select('*')
         .eq('user_id', userId);
@@ -257,12 +257,12 @@ export const useProfileOperations = () => {
     try {
       const { supabase } = await import('@/integrations/supabase/client');
       
-      const result = await supabase
+      const result = await (supabase as any)
         .from('profiles')
         .update({ 
           status: 'deleted',
           deleted_at: new Date().toISOString()
-        })
+        } as any)
         .eq('user_id', userId);
 
       if (result.error) throw result.error;
