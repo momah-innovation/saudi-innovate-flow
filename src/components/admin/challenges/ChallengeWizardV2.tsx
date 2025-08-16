@@ -90,23 +90,12 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
   });
   
   // ✅ MIGRATED: Using centralized hooks
-  const { createChallenge, updateChallenge, challenges, loading: challengeLoading } = useChallengeManagement();
-  const { 
-    departments, 
-    sectors, 
-    deputies, 
-    domains, 
-    subDomains, 
-    services, 
-    partners, 
-    experts,
-    challengeStatusOptions,
-    challengePriorityLevels, 
-    challengeSensitivityLevels, 
-    challengeTypes,
-    loading: systemLoading 
-  } = useSystemLists();
+  const { createChallenge, updateChallenge, loading: challengeLoading } = useChallengeManagement();
+  const systemLists = useSystemLists();
   const { canManageChallenges } = useRolePermissions();
+  
+  const [currentStep, setCurrentStep] = useState(0);
+  const [loading, setLoading] = useState(false);
   
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -148,7 +137,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
   useEffect(() => {
     if (isOpen) {
       // ✅ MIGRATED: Using centralized hook method
-      loadChallengeOptions();
+      // System lists loaded via useSystemLists hook
       if (challenge) {
         setFormData({
           ...challenge,
@@ -524,7 +513,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_sector', 'اختر القطاع')} />
                     </SelectTrigger>
                     <SelectContent>
-                       {sectors.map((sector) => (
+                       {systemLists.sectors?.map((sector) => (
                          <SelectItem key={sector.id} value={sector.id}>
                            {sector.name_ar || sector.name_en || 'Unnamed Sector'}
                          </SelectItem>
@@ -540,7 +529,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_deputy', 'اختر الوكالة')} />
                     </SelectTrigger>
                     <SelectContent>
-                       {deputies.map((deputy) => (
+                       {systemLists.deputies?.map((deputy) => (
                          <SelectItem key={deputy.id} value={deputy.id}>
                            {deputy.name_ar || deputy.name || 'Unnamed Deputy'}
                          </SelectItem>
@@ -558,7 +547,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_management', 'اختر الإدارة')} />
                     </SelectTrigger>
                     <SelectContent>
-                       {departments.map((dept) => (
+                       {systemLists.departments?.map((dept) => (
                          <SelectItem key={dept.id} value={dept.id}>
                            {dept.name_ar || dept.name || 'Unnamed Department'}
                          </SelectItem>
@@ -574,7 +563,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder={t('challenges.select_domain', 'اختر المجال')} />
                     </SelectTrigger>
                     <SelectContent>
-                       {domains.map((domain) => (
+                       {systemLists.domains?.map((domain) => (
                          <SelectItem key={domain.id} value={domain.id}>
                            {domain.name_ar || domain.name || 'Unnamed Domain'}
                          </SelectItem>
@@ -730,7 +719,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
               <div className="space-y-3">
                 <Label>الخبراء المعينون</Label>
                 <div className="space-y-2">
-                  {experts.map((expert) => (
+                  {systemLists.experts?.map((expert) => (
                     <div key={expert.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`expert-${expert.id}`}
@@ -754,7 +743,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
               <div className="space-y-3">
                 <Label>الشركاء</Label>
                 <div className="space-y-2">
-                  {partners.map((partner) => (
+                  {systemLists.partners?.map((partner) => (
                     <div key={partner.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`partner-${partner.id}`}

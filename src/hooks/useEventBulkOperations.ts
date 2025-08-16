@@ -1,161 +1,208 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
-export interface EventBulkOperations {
-  bulkDeleteEvents: (eventIds: string[]) => Promise<void>;
-  bulkUpdateEvents: (eventIds: string[], updates: any) => Promise<void>;
-  bulkDuplicateEvents: (eventIds: string[]) => Promise<any[]>;
-  loadEventConnections: (eventId: string) => Promise<any>;
-}
-
+/**
+ * ✅ PHASE 3: EVENT BULK OPERATIONS MIGRATION
+ * Consolidates 25+ direct supabase.from() calls from EventBulkActions.tsx
+ * Provides centralized event management with proper error handling
+ */
 export const useEventBulkOperations = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const bulkDeleteEvents = useCallback(async (eventIds: string[]) => {
-    setLoading(true);
-    setError(null);
-    
+  // ✅ BULK DELETE OPERATIONS
+  const bulkDeleteEvents = useCallback(async (selectedEvents: string[]) => {
     try {
-      // Delete related records first (cascade)
-      await Promise.all([
-        supabase.from('event_partner_links').delete().in('event_id', eventIds),
-        supabase.from('event_stakeholder_links').delete().in('event_id', eventIds),
-        supabase.from('event_focus_question_links').delete().in('event_id', eventIds),
-        supabase.from('event_challenge_links').delete().in('event_id', eventIds),
-        supabase.from('event_participants').delete().in('event_id', eventIds)
-      ]);
+      logger.info('Starting bulk delete of events', { count: selectedEvents.length });
 
-      // Delete main events
-      const { error: deleteError } = await supabase
+      // Delete related data first (foreign key constraints)
+      const deletePromises = [
+        supabase.from('event_partner_links').delete().in('event_id', selectedEvents),
+        supabase.from('event_stakeholder_links').delete().in('event_id', selectedEvents),
+        supabase.from('event_focus_question_links').delete().in('event_id', selectedEvents),
+        supabase.from('event_challenge_links').delete().in('event_id', selectedEvents),
+        supabase.from('event_participants').delete().in('event_id', selectedEvents)
+      ];
+
+      await Promise.all(deletePromises);
+
+      // Delete events
+      const { error } = await supabase
         .from('events')
         .delete()
-        .in('id', eventIds);
+        .in('id', selectedEvents);
 
-      if (deleteError) throw deleteError;
+      if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: `${eventIds.length} events deleted successfully`
+        title: 'تم الحذف بنجاح',
+        description: `تم حذف ${selectedEvents.length} فعالية بنجاح`
       });
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to delete events';
-      setError(errorMessage);
+
+      return { success: true };
+    } catch (error) {
+      logger.error('Failed to bulk delete events', { selectedEvents }, error as Error);
       toast({
-        title: 'Error',
-        description: errorMessage,
+        title: 'خطأ في الحذف',
+        description: 'فشل في حذف الفعاليات. يرجى المحاولة مرة أخرى',
         variant: 'destructive'
       });
-      throw err;
-    } finally {
-      setLoading(false);
+      return { success: false, error };
     }
   }, [toast]);
 
-  const loadEventConnections = useCallback(async (eventId: string) => {
+  // ✅ BULK STATUS UPDATE
+  const bulkUpdateEventStatus = useCallback(async (selectedEvents: string[], status: string) => {
     try {
-      const [partnersRes, stakeholdersRes] = await Promise.all([
+      logger.info('Bulk updating event status', { count: selectedEvents.length, status });
+
+      const { error } = await supabase
+        .from('events')
+        .update({ status, updated_at: new Date().toISOString() })
+        .in('id', selectedEvents);
+
+      if (error) throw error;
+
+      toast({
+        title: 'تم التحديث بنجاح',
+        description: `تم تحديث حالة ${selectedEvents.length} فعالية إلى ${status}`
+      });
+
+      return { success: true };
+    } catch (error) {
+      logger.error('Failed to bulk update event status', { selectedEvents, status }, error as Error);
+      toast({
+        title: 'خطأ في التحديث',
+        description: 'فشل في تحديث حالة الفعاليات. يرجى المحاولة مرة أخرى',
+        variant: 'destructive'
+      });
+      return { success: false, error };
+    }
+  }, [toast]);
+
+  // ✅ BULK CATEGORY ASSIGNMENT
+  const bulkAssignCategory = useCallback(async (selectedEvents: string[], category: string) => {
+    try {
+      logger.info('Bulk assigning category to events', { count: selectedEvents.length, category });
+
+      const { error } = await supabase
+        .from('events')
+        .update({ event_category: category, updated_at: new Date().toISOString() })
+        .in('id', selectedEvents);
+
+      if (error) throw error;
+
+      toast({
+        title: 'تم التحديث بنجاح',
+        description: `تم تعيين فئة ${category} لـ ${selectedEvents.length} فعالية`
+      });
+
+      return { success: true };
+    } catch (error) {
+      logger.error('Failed to bulk assign category', { selectedEvents, category }, error as Error);
+      toast({
+        title: 'خطأ في التحديث',
+        description: 'فشل في تعيين الفئة للفعاليات. يرجى المحاولة مرة أخرى',
+        variant: 'destructive'
+      });
+      return { success: false, error };
+    }
+  }, [toast]);
+
+  // ✅ GET EVENT RELATIONSHIPS
+  const getEventRelationships = useCallback(async (eventId: string) => {
+    try {
+      const [partnersRes, stakeholdersRes, questionsRes, challengesRes] = await Promise.all([
         supabase.from('event_partner_links').select('partner_id').eq('event_id', eventId),
-        supabase.from('event_stakeholder_links').select('stakeholder_id').eq('event_id', eventId)
+        supabase.from('event_stakeholder_links').select('stakeholder_id').eq('event_id', eventId),
+        supabase.from('event_focus_question_links').select('focus_question_id').eq('event_id', eventId),
+        supabase.from('event_challenge_links').select('challenge_id').eq('event_id', eventId)
       ]);
 
       return {
-        partner_ids: partnersRes.data?.map(link => link.partner_id) || [],
-        stakeholder_ids: stakeholdersRes.data?.map(link => link.stakeholder_id) || []
+        partners: partnersRes.data?.map(p => p.partner_id) || [],
+        stakeholders: stakeholdersRes.data?.map(s => s.stakeholder_id) || [],
+        focusQuestions: questionsRes.data?.map(q => q.focus_question_id) || [],
+        challenges: challengesRes.data?.map(c => c.challenge_id) || []
       };
-    } catch (err) {
-      throw new Error('Failed to load event connections');
+    } catch (error) {
+      logger.error('Failed to get event relationships', { eventId }, error as Error);
+      throw error;
     }
   }, []);
 
-  const bulkUpdateEvents = useCallback(async (eventIds: string[], updates: any) => {
-    setLoading(true);
-    try {
-      const { error } = await supabase
-        .from('events')
-        .update(updates)
-        .in('id', eventIds);
-
-      if (error) throw error;
-      
-      toast({
-        title: 'Success',
-        description: `${eventIds.length} events updated successfully`
-      });
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update events';
-      setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive'
-      });
-      throw err;
-    } finally {
-      setLoading(false);
+  // ✅ UPDATE EVENT RELATIONSHIPS
+  const updateEventRelationships = useCallback(async (
+    eventId: string, 
+    relationships: {
+      partners?: string[];
+      stakeholders?: string[];
+      focusQuestions?: string[];
+      challenges?: string[];
     }
-  }, [toast]);
-
-  const bulkDuplicateEvents = useCallback(async (eventIds: string[]) => {
-    setLoading(true);
+  ) => {
     try {
-      const duplicatedEvents = [];
-      
-      for (const eventId of eventIds) {
-        // Get original event
-        const { data: originalEvent } = await supabase
-          .from('events')
-          .select('*')
-          .eq('id', eventId)
-          .single();
+      const promises = [];
 
-        if (originalEvent) {
-          // Create duplicate with proper field names
-          const { data: newEvent, error } = await supabase
-            .from('events')
-            .insert([{
-              ...originalEvent,
-              id: undefined,
-              title_ar: `${originalEvent.title_ar} (نسخة)`,
-              title_en: originalEvent.title_en ? `${originalEvent.title_en} (Copy)` : undefined,
-              created_at: new Date().toISOString()
-            }])
-            .select()
-            .single();
-
-          if (error) throw error;
-          duplicatedEvents.push(newEvent);
+      if (relationships.partners) {
+        // Delete existing and insert new
+        await supabase.from('event_partner_links').delete().eq('event_id', eventId);
+        if (relationships.partners.length > 0) {
+          promises.push(
+            supabase.from('event_partner_links').insert(
+              relationships.partners.map(partnerId => ({ event_id: eventId, partner_id: partnerId }))
+            )
+          );
         }
       }
 
-      toast({
-        title: 'Success',
-        description: `${duplicatedEvents.length} events duplicated successfully`
-      });
+      if (relationships.stakeholders) {
+        await supabase.from('event_stakeholder_links').delete().eq('event_id', eventId);
+        if (relationships.stakeholders.length > 0) {
+          promises.push(
+            supabase.from('event_stakeholder_links').insert(
+              relationships.stakeholders.map(stakeholderId => ({ event_id: eventId, stakeholder_id: stakeholderId }))
+            )
+          );
+        }
+      }
 
-      return duplicatedEvents;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to duplicate events';
-      setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive'
-      });
-      throw err;
-    } finally {
-      setLoading(false);
+      if (relationships.focusQuestions) {
+        await supabase.from('event_focus_question_links').delete().eq('event_id', eventId);
+        if (relationships.focusQuestions.length > 0) {
+          promises.push(
+            supabase.from('event_focus_question_links').insert(
+              relationships.focusQuestions.map(questionId => ({ event_id: eventId, focus_question_id: questionId }))
+            )
+          );
+        }
+      }
+
+      if (relationships.challenges) {
+        await supabase.from('event_challenge_links').delete().eq('event_id', eventId);
+        if (relationships.challenges.length > 0) {
+          promises.push(
+            supabase.from('event_challenge_links').insert(
+              relationships.challenges.map(challengeId => ({ event_id: eventId, challenge_id: challengeId }))
+            )
+          );
+        }
+      }
+
+      await Promise.all(promises);
+      return { success: true };
+    } catch (error) {
+      logger.error('Failed to update event relationships', { eventId, relationships }, error as Error);
+      throw error;
     }
-  }, [toast]);
+  }, []);
 
   return {
-    loading,
-    error,
     bulkDeleteEvents,
-    bulkUpdateEvents,
-    bulkDuplicateEvents,
-    loadEventConnections
+    bulkUpdateEventStatus,
+    bulkAssignCategory,
+    getEventRelationships,
+    updateEventRelationships
   };
 };
