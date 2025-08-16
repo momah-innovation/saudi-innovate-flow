@@ -5,7 +5,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CampaignWizard } from './CampaignWizard';
-import { useCampaignManagement } from '@/hooks/useCampaignManagement';
+import { useCampaignList } from '@/hooks/useCampaignList';
 import { 
   Calendar, 
   Users, 
@@ -72,8 +72,8 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
   const [campaignToDelete, setCampaignToDelete] = useState<Campaign | null>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   
-  // ✅ MIGRATED: Using centralized campaign management hook
-  const { loading, campaigns, loadCampaigns } = useCampaignManagement();
+  // ✅ MIGRATED: Using centralized campaign list hook
+  const { loading, campaigns, loadCampaigns } = useCampaignList();
 
   useEffect(() => {
     // ✅ MIGRATED: Using hook method
@@ -100,7 +100,7 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
   return (
     <>
       <ViewLayouts viewMode={viewMode}>
-        {campaigns.map((campaign) => (
+        {(campaigns || []).map((campaign: any) => (
           <ManagementCard
             key={campaign.id}
             id={campaign.id}
