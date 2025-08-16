@@ -62,12 +62,18 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
   };
 
   const moveItem = (fromIndex: number, toIndex: number) => {
+    // Use immutable array operations instead of splice
     const updatedItems = [...items];
-    const [movedItem] = updatedItems.splice(fromIndex, 1);
-    updatedItems.splice(toIndex, 0, movedItem);
-    setItems(updatedItems);
+    const itemToMove = updatedItems[fromIndex];
+    const filteredItems = updatedItems.filter((_, index) => index !== fromIndex);
+    const finalItems = [
+      ...filteredItems.slice(0, toIndex),
+      itemToMove,
+      ...filteredItems.slice(toIndex)
+    ];
+    setItems(finalItems);
     setHasChanges(true);
-    onChange(updatedItems);
+    onChange(finalItems);
   };
 
   const handleSave = () => {

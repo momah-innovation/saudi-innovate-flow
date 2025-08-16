@@ -12,8 +12,26 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 
+interface DashboardUserProfile {
+  id: string;
+  name?: string;
+  display_name?: string;
+  email?: string;
+  role?: string;
+  avatar_url?: string;
+  department?: string;
+  organization?: string;
+}
+
+interface DashboardRolePermissions {
+  canManageUsers?: boolean;
+  canViewAdmin?: boolean;
+  canCreateChallenges?: boolean;
+  canModerateContent?: boolean;
+}
+
 interface DashboardHeroProps {
-  userProfile?: any;
+  userProfile?: DashboardUserProfile;
   unifiedData: {
     totalIdeas: number;
     activeChallenges: number;
@@ -42,7 +60,7 @@ interface DashboardHeroProps {
   };
   onNavigate: (path: string) => void;
   userRole?: string;
-  rolePermissions?: any;
+  rolePermissions?: DashboardRolePermissions;
 }
 
 export const DashboardHero = ({ 
