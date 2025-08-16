@@ -23,7 +23,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
-import { logger } from '@/utils/logger';
+import { createErrorHandler } from '@/utils/unified-error-handler';
+import { dateHandler } from '@/utils/unified-date-handler';
 
 interface Challenge {
   id: string;
@@ -52,6 +53,12 @@ export const ChallengeRecommendations = ({
   const [recommendations, setRecommendations] = useState<Challenge[]>([]);
   const [personalizedChallenges, setPersonalizedChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeRecommendations',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     loadRecommendations();
@@ -105,11 +112,10 @@ export const ChallengeRecommendations = ({
         }
       }
     } catch (error) {
-      logger.error('Error loading recommendations', { 
-        component: 'ChallengeRecommendations', 
-        action: 'loadRecommendations',
-        userId: user?.id
-      }, error as Error);
+      errorHandler.handleError(error, 
+        { operation: 'loadRecommendations', userId: user?.id },
+        'Failed to load recommendations'
+      );
     } finally {
       setLoading(false);
     }
@@ -125,8 +131,9 @@ export const ChallengeRecommendations = ({
   };
 
   const getDaysLeft = (endDate: string) => {
-    const deadline = new Date(endDate);
-    const now = new Date();
+    const deadline = dateHandler.parseDate(endDate);
+    const now = dateHandler.parseDate(new Date());
+    if (!deadline || !now) return 0;
     const diffTime = deadline.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return Math.max(0, diffDays);

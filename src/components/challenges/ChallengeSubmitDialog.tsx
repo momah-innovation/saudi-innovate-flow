@@ -30,8 +30,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
-import { logger } from '@/utils/logger';
+import { createErrorHandler } from '@/utils/unified-error-handler';
+import { dateHandler } from '@/utils/unified-date-handler';
 
 interface Challenge {
   id: string;
@@ -81,6 +81,12 @@ export const ChallengeSubmitDialog = ({
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const { user } = useAuth();
+  
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeSubmitDialog',
+    showToast: true,
+    logError: true
+  });
   
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -259,7 +265,7 @@ export const ChallengeSubmitDialog = ({
       technical_details: submissionData.technicalDetails,
       is_public: submissionData.isPublic,
       status: isDraft ? 'draft' : 'submitted',
-      submission_date: isDraft ? null : formatDate(new Date(), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx')
+      submission_date: isDraft ? null : dateHandler.formatForAPI(new Date())
     };
 
     const { error } = await supabase
@@ -306,19 +312,10 @@ export const ChallengeSubmitDialog = ({
       setLoading(true);
       await submitSubmission(false);
     } catch (error) {
-      logger.error('Submission error', { 
-        component: 'ChallengeSubmitDialog', 
-        action: 'handleSubmit',
-        data: {
-          challengeId: challenge?.id,
-          userId: user?.id
-        }
-      }, error as Error);
-      toast({
-        title: isRTL ? 'خطأ في التسليم' : 'Submission Error',
-        description: isRTL ? 'حدث خطأ أثناء تسليم المشروع' : 'An error occurred while submitting',
-        variant: 'destructive'
-      });
+      errorHandler.handleError(error, 
+        { operation: 'handleSubmit', metadata: { challengeId: challenge?.id, userId: user?.id } },
+        isRTL ? 'حدث خطأ أثناء تسليم المشروع' : 'An error occurred while submitting'
+      );
     } finally {
       setLoading(false);
     }

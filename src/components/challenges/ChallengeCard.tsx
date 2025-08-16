@@ -13,7 +13,7 @@ import {
   TrendingUp, Clock, Zap, CheckCircle, AlertCircle, Heart,
   Share2, MessageSquare, Trophy
 } from 'lucide-react';
-import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
+import { formatDate, formatDateArabic, dateHandler } from '@/utils/unified-date-handler';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
@@ -82,8 +82,9 @@ export const ChallengeCard = ({
 
   const calculateDaysLeft = () => {
     if (!challenge.end_date) return null;
-    const endDate = new Date(challenge.end_date);
-    const now = new Date();
+    const endDate = dateHandler.parseDate(challenge.end_date);
+    const now = dateHandler.parseDate(new Date());
+    if (!endDate || !now) return null;
     const diffTime = endDate.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return Math.max(0, diffDays);
@@ -91,9 +92,10 @@ export const ChallengeCard = ({
 
   const calculateProgress = () => {
     if (!challenge.start_date || !challenge.end_date) return 0;
-    const startDate = new Date(challenge.start_date);
-    const endDate = new Date(challenge.end_date);
-    const now = new Date();
+    const startDate = dateHandler.parseDate(challenge.start_date);
+    const endDate = dateHandler.parseDate(challenge.end_date);
+    const now = dateHandler.parseDate(new Date());
+    if (!startDate || !endDate || !now) return 0;
     const totalDuration = endDate.getTime() - startDate.getTime();
     const elapsed = now.getTime() - startDate.getTime();
     return Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
@@ -122,7 +124,7 @@ export const ChallengeCard = ({
   const progress = calculateProgress();
   const StatusIcon = statusMapping.icon;
   const isUrgent = daysLeft !== null && daysLeft <= 7 && daysLeft > 0;
-  const isNew = new Date(challenge.start_date || Date.now()) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const isNew = challenge.start_date && new Date(challenge.start_date) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const title = isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar;
   const description = isRTL ? challenge.description_ar : challenge.description_en || challenge.description_ar;
 
