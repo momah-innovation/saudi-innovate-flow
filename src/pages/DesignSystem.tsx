@@ -40,11 +40,13 @@ import { CalendarView } from '@/components/ui/calendar-scheduler';
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useDesignSystemNavigation } from '@/hooks/useDesignSystemNavigation';
 
 const DesignSystem = () => {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
+  const { DemoLink, createDemoNavigation } = useDesignSystemNavigation();
 
   // Sample data for component demonstrations
   const [notifications, setNotifications] = useState([

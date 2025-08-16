@@ -8,20 +8,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { queryKeys } from '@/lib/query/query-keys';
 import { debugLog } from '@/utils/debugLogger';
+import { QueryKeyConfig, UserBehaviorPattern, PrefetchPriority } from '@/types/common';
 
-interface UserBehaviorPattern {
-  route: string;
-  frequency: number;
-  lastVisited: number;
-  timeSpent: number;
-  interactions: string[];
-}
-
-interface PrefetchPriority {
-  queryKey: any[];
-  priority: 'high' | 'medium' | 'low';
-  staleTime: number;
-}
+// Types now imported from common types
 
 export const useIntelligentPrefetch = () => {
   const queryClient = useQueryClient();
@@ -98,19 +87,19 @@ export const useIntelligentPrefetch = () => {
       // Map routes to query keys
       if (pattern.route.includes('/challenges')) {
         priorities.push({
-          queryKey: [...queryKeys.challenges.list({ status: 'active', limit: 10 })] as any[],
+          queryKey: [...queryKeys.challenges.list({ status: 'active', limit: 10 })] as QueryKeyConfig[],
           priority,
           staleTime
         });
       } else if (pattern.route.includes('/ideas')) {
         priorities.push({
-          queryKey: [...queryKeys.ideas.list({ status: 'published', limit: 10 })] as any[],
+          queryKey: [...queryKeys.ideas.list({ status: 'published', limit: 10 })] as QueryKeyConfig[],
           priority,
           staleTime
         });
       } else if (pattern.route.includes('/events')) {
         priorities.push({
-          queryKey: [...queryKeys.events.list({ upcoming: true, limit: 10 })] as any[],
+          queryKey: [...queryKeys.events.list({ upcoming: true, limit: 10 })] as QueryKeyConfig[],
           priority,
           staleTime
         });
@@ -216,7 +205,7 @@ export const useIntelligentPrefetch = () => {
     }
 
     // Prefetch based on user metadata
-    const userMeta = (user as any).user_metadata || {};
+    const userMeta = user?.user_metadata || {};
     if (userMeta.favoriteCategories) {
       userMeta.favoriteCategories.forEach((category: string) => {
         queryClient.prefetchQuery({

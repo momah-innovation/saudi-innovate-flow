@@ -609,6 +609,27 @@ export interface CacheContext {
   aggressiveMode: boolean;
 }
 
+// Query & Prefetch types for hooks
+export interface QueryKeyConfig {
+  entity: string;
+  operation: string;
+  params?: Record<string, any>;
+}
+
+export interface UserBehaviorPattern {
+  route: string;
+  frequency: number;
+  lastVisited: number;
+  timeSpent: number;
+  interactions: string[];
+}
+
+export interface PrefetchPriority {
+  queryKey: QueryKeyConfig[];
+  priority: 'high' | 'medium' | 'low';
+  staleTime: number;
+}
+
 // Helper type for making all properties optional
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
