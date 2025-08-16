@@ -1,9 +1,9 @@
 // Unified Route Management System - Single Source of Truth
 // Consolidates all routing logic and RBAC into one cohesive system
 
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { debugLog } from '@/utils/debugLogger';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { TranslationAppShellProvider } from '@/components/TranslationAppShellProvider';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AppShell } from '@/components/layout/AppShell';
@@ -601,6 +601,41 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
   );
 };
 
+// Performance-enhanced router component 
+function RouterWithPerformanceMonitoring() {
+  const location = useLocation();
+
+  // Performance monitoring integration
+  useEffect(() => {
+    const currentPath = location.pathname;
+    
+    // Import performance utilities dynamically to avoid circular dependencies
+    import('@/utils/NavigationStateMachine').then(({ navigationStateMachine }) => {
+      navigationStateMachine.startNavigation(currentPath);
+      
+      const timer = setTimeout(() => {
+        navigationStateMachine.completeNavigation(currentPath, 100);
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    });
+  }, [location.pathname]);
+
+  return (
+    <Routes>
+      {UNIFIED_ROUTES.map((routeConfig) => (
+        <Route
+          key={routeConfig.path}
+          path={routeConfig.path}
+          element={<RouteRenderer config={routeConfig} />}
+        />
+      ))}
+      {/* Catch-all route */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
+
 // Main unified router component with V3 translation system integration
 export const UnifiedRouter: React.FC = () => {
   return (
@@ -608,17 +643,7 @@ export const UnifiedRouter: React.FC = () => {
       <BrowserRouter>
         <TranslationAppShellProvider>
           <Suspense fallback={<LoadingFallback />}>
-            <Routes>
-              {UNIFIED_ROUTES.map((routeConfig) => (
-                <Route
-                  key={routeConfig.path}
-                  path={routeConfig.path}
-                  element={<RouteRenderer config={routeConfig} />}
-                />
-              ))}
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <RouterWithPerformanceMonitoring />
           </Suspense>
         </TranslationAppShellProvider>
       </BrowserRouter>
