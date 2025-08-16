@@ -1,3 +1,13 @@
+/**
+ * AI Service - Core AI Operations
+ * 
+ * ⚠️ MIGRATION NOTE: This service is being migrated to hook-based architecture.
+ * Direct supabase calls are being replaced with useAIService hook.
+ * See: src/hooks/useAIService.ts for the new implementation.
+ * 
+ * @deprecated Use useAIService hook instead for new components
+ */
+
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { logger } from '@/utils/logger';

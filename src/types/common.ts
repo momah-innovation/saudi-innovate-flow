@@ -407,6 +407,105 @@ export type Status = 'idle' | 'loading' | 'success' | 'error';
 export type Priority = 'low' | 'medium' | 'high' | 'urgent';
 export type Sensitivity = 'normal' | 'restricted' | 'confidential';
 
+// ✅ ANALYTICS AND METRICS TYPES
+export interface CoreMetrics {
+  users: {
+    total: number;
+    active: number;
+    new: number;
+    growthRate: number;
+  };
+  challenges: {
+    total: number;
+    active: number;
+    completed: number;
+    submissions: number;
+    completionRate: number;
+  };
+  engagement: {
+    avgSessionDuration: number;
+    pageViews: number;
+    interactions: number;
+    returnRate: number;
+  };
+  business: {
+    implementedIdeas: number;
+    budgetUtilized: number;
+    partnershipValue: number;
+    roi: number;
+  };
+}
+
+export interface SecurityMetrics {
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  threatCount: number;
+  suspiciousActivities: number;
+  rateLimitViolations: number;
+  failedLogins: number;
+}
+
+export interface RoleBasedMetrics {
+  userSpecific: Record<string, any>;
+  roleSpecific: Record<string, any>;
+  departmentSpecific: Record<string, any>;
+}
+
+export interface AnalyticsFilters {
+  timeframe?: '7d' | '30d' | '90d' | '1y';
+  userRole?: string;
+  department?: string;
+  sector?: string;
+}
+
+export interface AnalyticsEvent {
+  id: string;
+  user_id: string;
+  event_type: string;
+  event_category: string;
+  properties: Record<string, any>;
+  created_at: string;
+}
+
+export interface SecurityEvent {
+  id: string;
+  user_id: string;
+  action_type: string;
+  resource_type: string;
+  resource_id?: string;
+  details: Record<string, any>;
+  risk_level: 'low' | 'medium' | 'high' | 'critical';
+  created_at: string;
+}
+
+// ✅ MIGRATION AND SYSTEM OPERATION TYPES
+export interface MigrationStatus {
+  id: string;
+  name: string;
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  executedAt: string;
+  executedBy: string;
+  details: Record<string, any>;
+  error?: string;
+}
+
+export interface MigrationResult {
+  migrationId: string;
+  success: boolean;
+  duration: number;
+  message: string;
+  affectedRecords: number;
+  errors: string[];
+}
+
+export interface SystemOperation {
+  type: string;
+  component?: string;
+  resourceType?: string;
+  resourceId?: string;
+  details: Record<string, any>;
+  riskLevel?: 'low' | 'medium' | 'high' | 'critical';
+}
+
 // Helper type for making all properties optional
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 

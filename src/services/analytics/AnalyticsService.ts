@@ -1,6 +1,11 @@
 /**
- * Centralized Analytics Service
- * Single source of truth for all analytics and metrics data
+ * Analytics Service - Core Analytics Operations
+ * 
+ * ⚠️ MIGRATION NOTE: This service is being migrated to hook-based architecture.
+ * Direct supabase calls are being replaced with useAnalyticsService hook.
+ * See: src/hooks/useAnalyticsService.ts for the new implementation.
+ * 
+ * @deprecated Use useAnalyticsService hook instead for new components
  */
 
 import { supabase } from '@/integrations/supabase/client';
