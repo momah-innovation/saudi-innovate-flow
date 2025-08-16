@@ -169,6 +169,44 @@ export const useOpportunityOperations = () => {
     }
   }, [toast]);
 
+  const uploadOpportunityImage = useCallback(async (opportunityId: string, file: File): Promise<string | null> => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const fileName = `opportunity-${opportunityId}-${Date.now()}.${file.name.split('.').pop()}`;
+      
+      const { data, error } = await supabase.storage
+        .from('opportunity-images')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) throw error;
+
+      const relativePath = `/opportunity-images/${fileName}`;
+      
+      toast({
+        title: 'Success',
+        description: 'Image uploaded successfully'
+      });
+
+      return relativePath;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to upload image';
+      setError(errorMessage);
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        variant: 'destructive'
+      });
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]);
+
   const deleteOpportunity = useCallback(async (opportunityId: string) => {
     setLoading(true);
     setError(null);
@@ -332,6 +370,7 @@ export const useOpportunityOperations = () => {
     updateOpportunity,
     deleteOpportunity,
     submitApplication,
-    manageTags
+    manageTags,
+    uploadOpportunityImage
   };
 };

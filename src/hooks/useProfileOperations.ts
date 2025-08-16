@@ -238,9 +238,8 @@ export const useProfileOperations = () => {
       }
 
       return profile || null;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to load profile';
-      setError(errorMessage);
+    } catch (err: any) {
+      setError(err.message || 'Failed to load profile');
       return null;
     } finally {
       setLoading(false);
