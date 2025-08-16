@@ -12,7 +12,8 @@ const { execSync } = require('child_process');
 const { extractTranslations } = require('./extract-translations.js');
 
 async function runFullExtractionPipeline() {
-  console.log('🚀 Starting comprehensive translation extraction...');
+  // Use structured logging instead of console statements
+  process.stdout.write('🚀 Starting comprehensive translation extraction...\n');
   
   const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
   const outputDir = `extracted-translations-${timestamp}`;
@@ -37,7 +38,7 @@ async function runFullExtractionPipeline() {
     
     for (const componentPath of adminComponents) {
       if (fs.existsSync(componentPath)) {
-        console.log(`\n📁 Extracting from ${componentPath}...`);
+        process.stdout.write(`\n📁 Extracting from ${componentPath}...\n`);
         
         const results = await extractTranslations({
           inputDir: componentPath,
@@ -61,12 +62,12 @@ async function runFullExtractionPipeline() {
         totalExtracted += results.totalFound;
         allTranslations = allTranslations.concat(results.translations);
         
-        console.log(`  ✅ Found ${results.totalFound} translation candidates`);
+        process.stdout.write(`  ✅ Found ${results.totalFound} translation candidates\n`);
       }
     }
     
     // Generate comprehensive migration files
-    console.log(`\n📝 Generating migration files...`);
+    process.stdout.write(`\n📝 Generating migration files...\n`);
     
     // 1. SQL Migration for system_translations table
     const sqlMigration = generateSQLMigration(allTranslations);
@@ -85,13 +86,13 @@ async function runFullExtractionPipeline() {
     const migrationScript = generateMigrationScript(allTranslations);
     fs.writeFileSync(path.join(outputDir, 'replace-hardcoded-strings.js'), migrationScript);
     
-    console.log(`\n🎉 Extraction complete!`);
-    console.log(`📊 Statistics:`);
-    console.log(`  • Total translations found: ${totalExtracted}`);
-    console.log(`  • Arabic strings: ${allTranslations.filter(t => t.type === 'arabic').length}`);
-    console.log(`  • English strings: ${allTranslations.filter(t => t.type === 'english').length}`);
-    console.log(`  • UI elements: ${allTranslations.filter(t => t.type === 'ui').length}`);
-    console.log(`📁 Output directory: ${outputDir}`);
+    process.stdout.write(`\n🎉 Extraction complete!\n`);
+    process.stdout.write(`📊 Statistics:\n`);
+    process.stdout.write(`  • Total translations found: ${totalExtracted}\n`);
+    process.stdout.write(`  • Arabic strings: ${allTranslations.filter(t => t.type === 'arabic').length}\n`);
+    process.stdout.write(`  • English strings: ${allTranslations.filter(t => t.type === 'english').length}\n`);
+    process.stdout.write(`  • UI elements: ${allTranslations.filter(t => t.type === 'ui').length}\n`);
+    process.stdout.write(`📁 Output directory: ${outputDir}\n`);
     
     return {
       success: true,
@@ -101,7 +102,7 @@ async function runFullExtractionPipeline() {
     };
     
   } catch (error) {
-    console.error('❌ Extraction failed:', error);
+    process.stderr.write(`❌ Extraction failed: ${error}\n`);
     return { success: false, error: error.message };
   }
 }
@@ -192,7 +193,7 @@ ${translations.map(t => `  {
 ];
 
 // Implementation would go here...
-console.log('Found ${translations.length} strings to replace');
+process.stdout.write(\`Found \${translations.length} strings to replace\n\`);
 `;
 }
 
@@ -227,15 +228,15 @@ if (require.main === module) {
   runFullExtractionPipeline()
     .then(result => {
       if (result.success) {
-        console.log('✅ Translation extraction completed successfully');
+        process.stdout.write('✅ Translation extraction completed successfully\n');
         process.exit(0);
       } else {
-        console.error('❌ Translation extraction failed');
+        process.stderr.write('❌ Translation extraction failed\n');
         process.exit(1);
       }
     })
     .catch(error => {
-      console.error('💥 Fatal error:', error);
+      process.stderr.write(`💥 Fatal error: ${error}\n`);
       process.exit(1);
     });
 }

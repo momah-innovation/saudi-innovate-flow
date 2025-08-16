@@ -33,8 +33,9 @@ export const TranslationSystemStatus: React.FC = () => {
           )
       });
       
-      // Force page reload to reinitialize translation system
-      navigationHandler.navigateTo(window.location.href);
+      // Force translation system reload with safety check
+      const currentUrl = typeof window !== 'undefined' ? window.location.href : '/dashboard';
+      navigationHandler.navigateTo(currentUrl);
       
       toast({
         title: t('success'),
