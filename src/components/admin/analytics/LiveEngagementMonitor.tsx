@@ -25,6 +25,8 @@ import { AnalyticsErrorBoundary } from '@/components/analytics/AnalyticsErrorBou
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 import { toast } from '@/hooks/use-toast';
+import { dateHandler } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface LiveMetric {
   id: string;
@@ -48,6 +50,12 @@ export const LiveEngagementMonitor: React.FC = () => {
   const { t } = useUnifiedTranslation();
   const [liveData, setLiveData] = useState<LiveEngagementData | null>(null);
   const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(true);
+  
+  const errorHandler = createErrorHandler({
+    component: 'LiveEngagementMonitor',
+    showToast: true,
+    logError: true
+  });
   
   const { 
     coreMetrics, 
@@ -111,7 +119,7 @@ export const LiveEngagementMonitor: React.FC = () => {
 
       setLiveData({
         metrics,
-        lastUpdate: new Date(),
+        lastUpdate: dateHandler.parseDate(new Date()) || new Date(),
         isLive: isRealTimeEnabled && !isError,
         connectionStatus: isError ? 'disconnected' : isLoading ? 'connecting' : 'connected'
       });
@@ -139,12 +147,7 @@ export const LiveEngagementMonitor: React.FC = () => {
         description: t('analytics.refresh_success', 'تم تحديث البيانات بنجاح'),
       });
     } catch (err) {
-      logger.error('Manual refresh failed', { component: 'LiveEngagementMonitor' }, err as Error);
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('analytics.refresh_failed', 'فشل في تحديث البيانات'),
-        variant: 'destructive'
-      });
+      errorHandler.handleError(err, { operation: 'manualRefresh' }, t('analytics.refresh_failed', 'فشل في تحديث البيانات'));
     }
   };
 

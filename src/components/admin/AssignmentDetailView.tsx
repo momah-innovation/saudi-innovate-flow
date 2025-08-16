@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/error-handler';
 import { formatDate } from '@/utils/unified-date-handler';
 import { navigationHandler } from '@/utils/unified-navigation';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface Assignment {
   id: string;
@@ -50,6 +51,12 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
   const { toast } = useToast();
   const [data, setData] = useState<AssignmentDetailData | null>(null);
   const [loading, setLoading] = useState(false);
+  
+  const errorHandler = createErrorHandler({
+    component: 'AssignmentDetailView',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     if (assignment && isOpen) {
@@ -92,12 +99,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
       if (error) throw error;
       setData(assignmentData as AssignmentDetailData);
     } catch (error) {
-      logger.error('Error fetching assignment data', error);
-      toast({
-        title: t('error'),
-        description: t('failedToFetchData'),
-        variant: 'destructive',
-      });
+      errorHandler.handleError(error, { operation: 'fetchAssignmentData' }, t('failedToFetchData'));
     } finally {
       setLoading(false);
     }

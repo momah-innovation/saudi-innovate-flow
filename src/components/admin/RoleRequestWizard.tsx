@@ -12,6 +12,8 @@ import { UserPlus, Send } from "lucide-react";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/logger";
+import { dateHandler, formatForAPI } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 // Function to get role rejection wait days from system settings
 const getRoleRejectionWaitDays = async (): Promise<number> => {
@@ -70,6 +72,12 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
   const [reason, setReason] = useState("");
   const [justification, setJustification] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  const errorHandler = createErrorHandler({
+    component: 'RoleRequestWizard',
+    showToast: true,
+    logError: true
+  });
 
   // Filter out roles user already has
   const availableRoles = requestableUserRoles.filter(role => !currentRoles.includes(role.value));
@@ -119,8 +127,9 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
       }
 
       // Check if they were recently rejected for this role (within 30 days)
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const rejectionWaitDays = await getRoleRejectionWaitDays();
+      const waitPeriodAgo = dateHandler.parseDate(new Date());
+      waitPeriodAgo?.setDate(waitPeriodAgo.getDate() - rejectionWaitDays);
 
       const { data: recentRejections, error: rejectionError } = await supabase
         .from('role_requests')
@@ -128,13 +137,13 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
         .eq('requester_id', user.id)
         .eq('requested_role', selectedRole as 'admin' | 'domain_expert' | 'evaluator' | 'innovator')
         .eq('status', 'rejected')
-        .gte('reviewed_at', thirtyDaysAgo.toISOString());
+        .gte('reviewed_at', formatForAPI(waitPeriodAgo) || new Date().toISOString());
 
       if (rejectionError) throw rejectionError;
 
       if (recentRejections && recentRejections.length > 0) {
-        const lastRejection = new Date(recentRejections[0].reviewed_at);
-        const daysSince = Math.ceil((Date.now() - lastRejection.getTime()) / (1000 * 60 * 60 * 24));
+        const lastRejection = dateHandler.parseDate(recentRejections[0].reviewed_at);
+        const daysSince = lastRejection ? dateHandler.daysDifference(lastRejection, new Date()) || 0 : 0;
         const waitDays = await getRoleRejectionWaitDays() - daysSince;
         const waitDaysRemaining = Math.max(0, waitDays);
         if (waitDaysRemaining > 0) {
@@ -145,14 +154,14 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
 
       // Check rate limit - configurable max requests per week
       const maxRequestsPerWeek = await getMaxRoleRequestsPerWeek();
-      const oneWeekAgo = new Date();
-      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      const oneWeekAgo = dateHandler.parseDate(new Date());
+      oneWeekAgo?.setDate(oneWeekAgo.getDate() - 7);
 
       const { data: recentRequests, error: rateError } = await supabase
         .from('role_requests')
         .select('id')
         .eq('requester_id', user.id)
-        .gte('requested_at', oneWeekAgo.toISOString());
+        .gte('requested_at', formatForAPI(oneWeekAgo) || new Date().toISOString());
 
       if (rateError) throw rateError;
 
@@ -186,8 +195,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
       onOpenChange(false);
       onRequestSubmitted?.();
     } catch (error) {
-      logger.error('Error submitting role request', { component: 'RoleRequestWizard', action: 'handleSubmitRequest' }, error as Error);
-      toast.error(t('roleRequest.submitError'));
+      errorHandler.handleError(error, { operation: 'handleSubmitRequest' }, t('roleRequest.submitError'));
     } finally {
       setLoading(false);
     }

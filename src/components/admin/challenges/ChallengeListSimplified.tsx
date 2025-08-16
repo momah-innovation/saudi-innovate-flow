@@ -20,7 +20,8 @@ import {
 import { useSystemLists } from "@/hooks/useSystemLists";
 import type { BadgeVariant } from "@/types";
 import { Target, Calendar, DollarSign, Edit, Eye, Trash2 } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface Challenge {
   id: string;
@@ -62,6 +63,12 @@ export function ChallengeListSimplified() {
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
+  
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeListSimplified',
+    showToast: true,
+    logError: true
+  });
 
   // Configure data table with simpler options
   const dataTableConfig = {
@@ -93,12 +100,7 @@ export function ChallengeListSimplified() {
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
-      logger.error('Error fetching challenges', { component: 'ChallengeList', action: 'fetchChallenges' }, error as Error);
-      toast({
-        title: t('error.title'),
-        description: t('error.fetch_challenges'),
-        variant: "destructive"
-      });
+      errorHandler.handleError(error, { operation: 'fetchChallenges' }, t('error.fetch_challenges'));
     } finally {
       setLoading(false);
     }
@@ -119,12 +121,7 @@ export function ChallengeListSimplified() {
         description: t('success.challenge_deleted')
       });
     } catch (error) {
-      logger.error('Error deleting challenge', { component: 'ChallengeList', action: 'handleDelete', data: { challengeId } }, error as Error);
-      toast({
-        title: t('error.title'),
-        description: t('error.delete_challenge'),
-        variant: "destructive"
-      });
+      errorHandler.handleError(error, { operation: 'handleDelete', metadata: { challengeId } }, t('error.delete_challenge'));
     }
   };
 
@@ -217,7 +214,7 @@ export function ChallengeListSimplified() {
       label: t('challenge.start_date'),
       sortable: true,
       render: (challenge) => challenge.start_date 
-        ? format(new Date(challenge.start_date), 'PPP')
+        ? formatDate(challenge.start_date, 'PPP')
         : '-'
     },
     {
