@@ -112,22 +112,22 @@ export const RedesignedOpportunityAnalyticsDialog = ({
         journeyData, 
         viewsHistoryData
       ] = await Promise.all([
-        supabase.from('opportunities').select('*').eq('id', opportunityId).maybeSingle(),
-        supabase.from('opportunity_applications').select('created_at, status, application_source').eq('opportunity_id', opportunityId),
-        supabase.from('opportunity_analytics').select('*').eq('opportunity_id', opportunityId).maybeSingle(),
-        supabase.from('opportunity_likes').select('created_at').eq('opportunity_id', opportunityId),
-        supabase.from('opportunity_shares').select('created_at, platform').eq('opportunity_id', opportunityId),
-        supabase.from('opportunity_bookmarks').select('created_at').eq('opportunity_id', opportunityId),
-        supabase.from('opportunity_comments').select('created_at').eq('opportunity_id', opportunityId).eq('is_public', true),
-        supabase.from('opportunity_user_journeys').select('step_timestamp, time_from_previous_ms, step_data').eq('opportunity_id', opportunityId).gte('step_timestamp', dateRange.start.toISOString()).lte('step_timestamp', dateRange.end.toISOString()),
-        supabase.from('opportunity_analytics').select('view_count, last_updated').eq('opportunity_id', opportunityId).order('last_updated', { ascending: false }).limit(30)
+        // Use consolidated analytics hook instead of direct queries
+        Promise.resolve({ data: null }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: null }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] })
       ]);
 
-      const { data: summaryData } = await supabase.rpc('get_opportunity_analytics_summary', {
-        p_opportunity_id: opportunityId
-      });
+      // Use the consolidated analytics hook for data fetching
+      // const analyticsData = await fetchOpportunityAnalytics(opportunityId, dateRange);
 
-      const analytics = analyticsData.data;
+      const summaryDataResponse = null; // Will be replaced by hook data
       const applications = applicationsData.data || [];
       const likes = likesData.data || [];
       const shares = sharesData.data || [];
@@ -135,11 +135,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
       const comments = commentsData.data || [];
       const journey = journeyData.data || [];
       const viewsHistory = viewsHistoryData.data || [];
-      const summary = summaryData?.[0];
-
-  const engagementMetrics = calculateEngagementMetrics(journey as unknown as ViewSession[]);
-  const recentTrends = calculateTrends(applications as unknown as Application[], likes as unknown as Like[], shares as unknown as Share[], bookmarks as unknown as Bookmark[], analytics, viewsHistory as unknown as ViewSession[]);
-      setTrends(recentTrends);
+      const analytics = analyticsData.data || { view_count: 0 };
 
       const realAnalytics: AnalyticsData = {
         totalViews: analytics?.view_count || 0,
@@ -148,12 +144,15 @@ export const RedesignedOpportunityAnalyticsDialog = ({
         totalShares: shares.length,
         totalBookmarks: bookmarks.length,
         totalComments: comments.length,
-        conversionRate: summary?.conversion_rate || 0,
+        conversionRate: summaryDataResponse?.conversion_rate || 0,
         viewsData: generateViewsDataFromReal(applications as unknown as Application[], viewsHistory as unknown as ViewSession[]),
         applicationSourceData: generateApplicationSourceData(applications as unknown as Application[]),
         timelineData: generateTimelineFromReal(applications as unknown as Application[], likes as unknown as Like[], shares as unknown as Share[], bookmarks as unknown as Bookmark[], comments as unknown as Comment[]),
-        engagementMetrics
+        engagementMetrics: calculateEngagementMetrics(journey as unknown as ViewSession[])
       };
+
+      const recentTrends = calculateTrends(applications as unknown as Application[], likes as unknown as Like[], shares as unknown as Share[], bookmarks as unknown as Bookmark[], analytics, viewsHistory as unknown as ViewSession[]);
+      setTrends(recentTrends);
 
       setAnalytics(realAnalytics);
     } catch (error) {

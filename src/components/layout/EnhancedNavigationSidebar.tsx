@@ -6,6 +6,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { debugLog } from '@/utils/debugLogger';
 // Removed debounced navigation - using direct navigate
 import { useNavigationCache } from '@/hooks/useOptimizedDashboardStats';
 import { Search, X, ChevronDown, ChevronRight, Menu } from 'lucide-react';
@@ -66,7 +67,7 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
     ];
     
     const merged = sources.find(roles => Array.isArray(roles) && roles.length > 0) || ['user'];
-    console.log('🔍 Sidebar roles resolved:', { roles: Array.from(new Set(merged)) });
+    debugLog.log('🔍 Sidebar roles resolved:', { roles: Array.from(new Set(merged)) });
     return Array.from(new Set(merged));
   }, [userProfile, user]);
   
@@ -119,7 +120,7 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
   // Filter menu items by user roles with debug logging
   const filteredMenuItems = useMemo(() => {
     const filtered = filterMenuItemsByRoles(NAVIGATION_ITEMS, userRoles);
-    console.log('📋 Menu items filtered:', { 
+    debugLog.log('📋 Menu items filtered:', { 
       totalItems: NAVIGATION_ITEMS.length, 
       filteredItems: filtered.length, 
       userRoles, 
@@ -128,7 +129,7 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
     
     // Always ensure at least basic navigation is available
     if (filtered.length === 0) {
-      console.warn('⚠️ No menu items available, providing fallback navigation');
+      debugLog.warn('⚠️ No menu items available, providing fallback navigation');
       return NAVIGATION_ITEMS.filter(item => 
         ['dashboard', 'workspace', 'settings'].includes(item.id)
       );

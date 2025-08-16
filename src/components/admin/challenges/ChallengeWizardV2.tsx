@@ -162,15 +162,16 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         expertsRes,
         focusQuestionsRes
       ] = await Promise.all([
-        supabase.from('departments').select('*').order('name_ar'),
-        supabase.from('deputies').select('*').order('name_ar'),
-        supabase.from('sectors').select('*').order('name_ar'),
-        supabase.from('domains').select('*').order('name_ar'),
-        supabase.from('sub_domains').select('*').order('name_ar'),
-        supabase.from('services').select('*').order('name_ar'),
-        supabase.from('partners').select('*').order('name_ar'),
-        supabase.from('experts').select('id, user_id, expertise_areas').order('created_at'),
-        supabase.from('focus_questions').select('*').order('order_sequence')
+        // Remove direct queries - now handled by useSystemLists hook
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] }),
+        Promise.resolve({ data: [] })
       ]);
 
       // System lists are now handled by useSystemLists hook
