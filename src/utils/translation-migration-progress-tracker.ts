@@ -97,6 +97,12 @@ export const LIVE_MIGRATION_PROGRESS = {
   ]
 } as const;
 
-console.info('🎯 LIVE MIGRATION: 45% complete, 3 components migrated this session!');
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Translation Migration Progress Tracker', {
+    component: 'TranslationMigrationProgressTracker',
+    data: { message: 'LIVE MIGRATION: 45% complete, 3 components migrated this session!' }
+  });
+}
 
 export default LIVE_MIGRATION_PROGRESS;

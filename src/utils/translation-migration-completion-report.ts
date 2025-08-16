@@ -86,25 +86,12 @@ export const FINAL_MIGRATION_STATUS = {
 } as const;
 
 // 🎉 SUCCESS NOTIFICATION
-console.info(`
-🎉 TRANSLATION SYSTEM MIGRATION COMPLETED! 🎉
-=============================================
-
-✅ Database: All values standardized to English keys
-✅ Components: Hardcoded strings replaced with translation system  
-✅ Global Setup: Translation injection active at AppShell level
-✅ Infrastructure: useUnifiedTranslation + Supabase backend ready
-✅ RTL Support: Complete Arabic/English switching
-✅ Build Status: STABLE with no critical errors
-
-📊 FINAL RESULTS:
-   • 750+ translation keys in database
-   • 680+ hardcoded strings eliminated  
-   • 17/18 components fully migrated
-   • Real-time language switching functional
-   • Production deployment ready
-
-🚀 PLATFORM STATUS: FULLY INTERNATIONALIZED!
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Translation Migration Completion Report', {
+    component: 'TranslationMigrationCompletionReport',
+    data: FINAL_MIGRATION_STATUS
+  });
+}
 
 export default FINAL_MIGRATION_STATUS;

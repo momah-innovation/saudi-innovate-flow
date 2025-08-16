@@ -379,45 +379,24 @@ export class TranslationProgressTracker {
   logDetailedProgress() {
     const report = this.generateProgressReport();
     
-    console.info(`
-🎯 TRANSLATION SYSTEM COMPREHENSIVE PROGRESS
-==========================================
-📊 Components: ${report.overall.components.completed}/${report.overall.components.total} (${report.overall.percentage}%)
-📝 Strings Fixed: ${report.overall.strings.fixed}/${report.overall.strings.total} (${report.overall.stringPercentage}%)
-🔑 Translation Keys Added: ${report.overall.translationKeys}
-
-🚨 Critical Pending: ${report.critical.pending}
-${report.critical.components.map(c => `   • ${c}`).join('\n')}
-
-🔄 Next Priority Tasks:
-${report.nextTasks.map(task => 
-  `   • ${task.component} (${task.priority}) - ${task.estimatedStrings} strings`
-).join('\n')}
-
-📂 Progress by Category:
-   • Admin: ${report.categories.admin.filter(f => f.status === 'completed').length}/${report.categories.admin.length} ✓
-   • Wizards: ${report.categories.wizard.filter(f => f.status === 'completed').length}/${report.categories.wizard.length} 🧙‍♂️
-   • Management: ${report.categories.management.filter(f => f.status === 'completed').length}/${report.categories.management.length} 📋
-   • UI Components: ${report.categories.ui.filter(f => f.status === 'completed').length}/${report.categories.ui.length} 🎨
-   • Forms: ${report.categories.form.filter(f => f.status === 'completed').length}/${report.categories.form.length} 📝
-   • Dialogs: ${report.categories.dialog.filter(f => f.status === 'completed').length}/${report.categories.dialog.length} 💬
-
-🎯 Target: 100% Internationalized Platform
-    `);
+    // ✅ FIXED: Use structured logging instead of console.info
+    if (typeof window !== 'undefined' && (window as any).debugLog) {
+      (window as any).debugLog.log('Translation Progress Tracker', {
+        component: 'TranslationProgressTracker',
+        data: report
+      });
+    }
   }
 }
 
 export const translationProgressTracker = new TranslationProgressTracker();
 
-// 🎯 LOG CURRENT PROGRESS - PHASE 2 COMPLETED
-console.info(`
-🔄 TRANSLATION MIGRATION PROGRESS UPDATE
-=======================================
-✅ PHASE 1: Database values standardized to English keys
-✅ PHASE 2: Component hardcoded strings replaced with translation keys  
-🔄 PHASE 3: Global injection setup in progress
-📊 Database: Campaigns, Events, Ideas tables standardized
-🔧 Components: EventRegistration, EventsManagement, ComprehensiveEventWizard fixed
-📈 Translation keys: 750+ keys in database
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Translation Migration Progress Update', {
+    component: 'TranslationProgressTracker',
+    data: 'PHASE 1 & 2 completed'
+  });
+}
+
 translationProgressTracker.logDetailedProgress();

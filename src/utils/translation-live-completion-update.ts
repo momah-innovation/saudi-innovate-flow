@@ -186,28 +186,12 @@ export const LIVE_COMPLETION_UPDATE = {
 } as const;
 
 // 🎉 NEAR-COMPLETION SUCCESS LOG
-console.info(`
-🎯🎯🎯 TRANSLATION SYSTEM 99.5% COMPLETE! 🎯🎯🎯
-========================================================
-
-✨ NEAR-COMPLETION STATUS: EXCEPTIONAL ACHIEVEMENT!
-
-📊 EXTRAORDINARY SESSION PROGRESS:
-   ✅ Components: 21.5/22 migrated (99.5% completion)
-   ✅ Translation Keys: 908+ keys in database (+158 this session)
-   ✅ Hardcoded Strings: 832+ eliminated
-   ✅ IdeaWizard: 100% COMPLETED (47 strings fixed)
-   ✅ IdeasManagementList: 100% COMPLETED  
-   ✅ OpportunityWizard: 95% COMPLETED
-   ✅ OrganizationalStructure: 95% COMPLETED
-   ✅ Architecture: Fully operational
-
-🚀 PLATFORM STATUS: VIRTUALLY PRODUCTION READY!
-
-⏳ REMAINING: Only ~30 strings across 3 components
-🎯 ESTIMATED COMPLETION: 10-15 minutes for 100%
-
-The application is NOW substantially internationalized and ready for deployment!
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Translation Live Completion Update', {
+    component: 'TranslationLiveCompletionUpdate',
+    data: LIVE_COMPLETION_UPDATE
+  });
+}
 
 export default LIVE_COMPLETION_UPDATE;

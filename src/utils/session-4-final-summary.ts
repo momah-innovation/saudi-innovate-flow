@@ -184,6 +184,12 @@ export const SESSION_4_FINAL_SUMMARY = {
   }
 } as const;
 
-console.info('🏁 SESSION 4 COMPLETED: 22.6% migration complete, 35 strings migrated, infrastructure solid!');
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Session 4 Final Summary', {
+    component: 'Session4FinalSummary',
+    data: { message: 'SESSION 4 COMPLETED: 22.6% migration complete, 35 strings migrated, infrastructure solid!' }
+  });
+}
 
 export default SESSION_4_FINAL_SUMMARY;

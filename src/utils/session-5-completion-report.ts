@@ -189,6 +189,12 @@ export const SESSION_5_COMPLETION_REPORT = {
   }
 } as const;
 
-console.info('🚀 SESSION 5 EXCEPTIONAL: 29.5% complete, Settings system transformation achieved!');
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Session 5 Completion Report', {
+    component: 'Session5CompletionReport',
+    data: { message: 'SESSION 5 EXCEPTIONAL: 29.5% complete, Settings system transformation achieved!' }
+  });
+}
 
 export default SESSION_5_COMPLETION_REPORT;

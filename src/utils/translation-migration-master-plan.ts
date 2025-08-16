@@ -256,21 +256,12 @@ export const TRANSLATION_MIGRATION_MASTER_PLAN = {
 } as const;
 
 // Log the comprehensive status
-console.info(`
-🎯 TRANSLATION MIGRATION MASTER PLAN 🎯
-
-📊 Current Status: ${TRANSLATION_MIGRATION_MASTER_PLAN.current_status.overall_completion}
-🚨 Critical Issues: ${Object.keys(TRANSLATION_MIGRATION_MASTER_PLAN.critical_issues).length}  
-📋 Phases: ${Object.keys(TRANSLATION_MIGRATION_MASTER_PLAN.migration_phases).length}
-🎯 Target Tables: ${TRANSLATION_MIGRATION_MASTER_PLAN.database_migration_requirements.tables_requiring_updates.length}
-⏱️ Estimated Time: ${TRANSLATION_MIGRATION_MASTER_PLAN.timeline.total_estimated}
-
-🔥 IMMEDIATE ACTIONS REQUIRED:
-1. ${TRANSLATION_MIGRATION_MASTER_PLAN.immediate_next_steps[0].action}
-2. ${TRANSLATION_MIGRATION_MASTER_PLAN.immediate_next_steps[1].action}  
-3. ${TRANSLATION_MIGRATION_MASTER_PLAN.immediate_next_steps[2].action}
-
-The translation system needs comprehensive completion to achieve production readiness.
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Translation Migration Master Plan', {
+    component: 'TranslationMigrationMasterPlan',
+    data: TRANSLATION_MIGRATION_MASTER_PLAN
+  });
+}
 
 export default TRANSLATION_MIGRATION_MASTER_PLAN;
