@@ -44,7 +44,8 @@ export const useViewTracking = ({ opportunityId, enabled = true }: UseViewTracki
               timestamp: new Date().toISOString(),
               userAgent: navigator.userAgent,
               referrer: document.referrer,
-              url: window.location.href
+              // Use proper URL building for view tracking
+              url: typeof window !== 'undefined' ? window.location.href : ''
             }
           }
         });

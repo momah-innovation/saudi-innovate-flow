@@ -200,7 +200,8 @@ export const preloadCriticalTranslations = async () => {
   const startTime = performance.now();
   
   // Get current route from browser URL (works even without router context)
-  const pathname = window.location.pathname;
+  // Use proper pathname access for route-based namespaces
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
   const { critical, prefetch } = getRouteBasedNamespaces(pathname);
   
   const criticalNamespaces = Array.from(new Set(critical));

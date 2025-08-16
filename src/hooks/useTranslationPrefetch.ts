@@ -150,7 +150,8 @@ export const useTranslationPrefetch = (config: TranslationPrefetchConfig = {}) =
         }
 
         // Prefetch based on current location
-        const currentPath = window.location.pathname;
+        // Use proper pathname access for prefetch navigation
+        const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
         await prefetchNavigationTranslations(currentPath);
       }
     };

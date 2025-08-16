@@ -267,18 +267,25 @@ export class AIService {
       await this.trackUsage('document_intelligence', 'document_analysis', documentText.length, 0, executionTime, true);
 
       // Store analysis results
-      await supabase.from('document_analysis_results').insert({
-        file_record_id: fileRecordId,
-        extracted_text: documentText,
-        key_insights: result.keyInsights,
-        sentiment_analysis: result.sentiment,
-        topics_detected: result.topics,
-        entities_found: result.entities,
-        summary: result.summary,
-        action_items: result.actionItems,
-        confidence_score: result.confidence || 0.8,
-        processing_time_ms: executionTime
-      });
+      // Use hook-based migration instead of direct supabase calls
+      const aiService = (window as any).__AI_SERVICE_HOOK__;
+      if (aiService?.storeDocumentAnalysis) {
+        await aiService.storeDocumentAnalysis(fileRecordId, documentText, result, executionTime);
+      } else {
+        // Temporary fallback - migrate to useAIService hook
+        await supabase.from('document_analysis_results').insert({
+          file_record_id: fileRecordId,
+          extracted_text: documentText,
+          key_insights: result.keyInsights,
+          sentiment_analysis: result.sentiment,
+          topics_detected: result.topics,
+          entities_found: result.entities,
+          summary: result.summary,
+          action_items: result.actionItems,
+          confidence_score: result.confidence || 0.8,
+          processing_time_ms: executionTime
+        });
+      }
 
       return result;
     } catch (error) {

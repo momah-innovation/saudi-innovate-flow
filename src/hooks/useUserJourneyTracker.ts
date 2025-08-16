@@ -34,7 +34,8 @@ export const useUserJourneyTracker = ({ opportunityId, sessionId }: UserJourneyT
           journey_step: step,
           step_data: data,
           step_timestamp: new Date().toISOString(),
-          page_url: window.location.href,
+          // Use proper URL building for journey tracking
+          page_url: typeof window !== 'undefined' ? window.location.href : '',
           previous_step: previousStep,
           time_from_previous_ms: timeFromPrevious
         });
