@@ -92,13 +92,16 @@ export class AIService {
     metadata: Json = {},
     userId?: string
   ) {
+    // Deprecated: Use useAIService hook instead
+    debugLog.warn('AIService.trackUsage: Deprecated method - migrate to useAIService hook');
+    
     try {
-      // Use passed user ID if available, otherwise skip tracking
       if (!userId) {
         debugLog.warn('AIService.trackUsage: No user ID provided, skipping tracking');
         return;
       }
       
+      // Temporary fallback - should be migrated to hook
       await supabase.from('ai_usage_tracking').insert({
         user_id: userId,
         feature_name: featureName,

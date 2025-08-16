@@ -6,6 +6,7 @@
 import React from 'react';
 import { performanceValidator } from '@/utils/performance-validator';
 import { navigationStateMachine } from '@/utils/NavigationStateMachine';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * Performance validation component for live testing
@@ -89,7 +90,7 @@ export function usePerformanceValidation(componentName: string) {
   React.useEffect(() => {
     renderCount.current++;
     if (renderCount.current > 5) {
-      console.warn(`🚨 Performance Warning: ${componentName} has rendered ${renderCount.current} times`);
+      debugLog.warn(`Performance Warning: ${componentName} has rendered ${renderCount.current} times`, { component: componentName, renders: renderCount.current });
     }
   });
   
@@ -108,6 +109,7 @@ async function timeAsync<T>(operation: () => Promise<T>, label: string): Promise
   const start = performance.now();
   const result = await operation();
   const end = performance.now();
-  console.log(`⏱️ ${label}: ${(end - start).toFixed(2)}ms`);
+  // Use structured logging instead of console.log
+  debugLog.performance(label, end - start);
   return result;
 }

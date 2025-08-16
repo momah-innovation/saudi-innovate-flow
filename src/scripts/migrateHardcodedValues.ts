@@ -156,7 +156,8 @@ export async function migrateAllHardcodedValues(): Promise<MigrationResult[]> {
 
   const results: MigrationResult[] = [];
 
-  console.log('Starting hardcoded values migration...');
+  // Use structured logging for migration scripts
+  // console.log('Starting hardcoded values migration...');
 
   for (const migration of migrations) {
     console.log(`Migrating ${migration.table}.${migration.column} (${migration.category})...`);
