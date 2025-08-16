@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useEventManagement, EventFormData } from "@/hooks/useEventManagement";
+import { useArrayMutationFix } from "@/hooks/useArrayMutationFix";
 import { 
   Check,
   ChevronsUpDown,
@@ -303,37 +304,38 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
   };
 
   const validateStep = (step: number): string[] => {
-    const errors: string[] = [];
+    const { push: addError } = useArrayMutationFix<string>();
+    let errors: string[] = [];
 
     switch (step) {
       case 1: // Basic Information
-        if (!formData.title_ar.trim()) errors.push("العنوان بالعربية مطلوب");
-        if (!formData.event_type) errors.push("نوع الحدث مطلوب");
-        if (!formData.description_ar?.trim()) errors.push("الوصف بالعربية مطلوب");
+        if (!formData.title_ar.trim()) errors = addError(errors, "العنوان بالعربية مطلوب");
+        if (!formData.event_type) errors = addError(errors, "نوع الحدث مطلوب");
+        if (!formData.description_ar?.trim()) errors = addError(errors, "الوصف بالعربية مطلوب");
         break;
       case 2: // Event Details
-        if (!formData.event_date) errors.push("تاريخ الحدث مطلوب");
-        if (!formData.format) errors.push("تنسيق الحدث مطلوب");
+        if (!formData.event_date) errors = addError(errors, "تاريخ الحدث مطلوب");
+        if (!formData.format) errors = addError(errors, "تنسيق الحدث مطلوب");
         if (formData.format === "in_person" && !formData.location?.trim()) {
-          errors.push("الموقع مطلوب للأحداث الحضورية");
+          errors = addError(errors, "الموقع مطلوب للأحداث الحضورية");
         }
         if (formData.format === "virtual" && !formData.virtual_link?.trim()) {
-          errors.push("الرابط الافتراضي مطلوب للأحداث الافتراضية");
+          errors = addError(errors, "الرابط الافتراضي مطلوب للأحداث الافتراضية");
         }
         if (formData.format === "hybrid" && (!formData.location?.trim() || !formData.virtual_link?.trim())) {
-          errors.push("الموقع والرابط الافتراضي مطلوبان للأحداث المختلطة");
+          errors = addError(errors, "الموقع والرابط الافتراضي مطلوبان للأحداث المختلطة");
         }
         if (formData.max_participants && parseInt(String(formData.max_participants)) <= 0) {
-          errors.push("الحد الأقصى للمشاركين يجب أن يكون أكبر من صفر");
+          errors = addError(errors, "الحد الأقصى للمشاركين يجب أن يكون أكبر من صفر");
         }
         if (formData.budget && parseFloat(String(formData.budget)) < 0) {
-          errors.push("الميزانية لا يمكن أن تكون سالبة");
+          errors = addError(errors, "الميزانية لا يمكن أن تكون سالبة");
         }
         if (formData.start_time && formData.end_time && formData.start_time >= formData.end_time) {
-          errors.push("وقت الانتهاء يجب أن يكون بعد وقت البداية");
+          errors = addError(errors, "وقت الانتهاء يجب أن يكون بعد وقت البداية");
         }
         if (formData.end_date && formData.event_date && formData.end_date < formData.event_date) {
-          errors.push("تاريخ الانتهاء لا يمكن أن يكون قبل تاريخ البداية");
+          errors = addError(errors, "تاريخ الانتهاء لا يمكن أن يكون قبل تاريخ البداية");
         }
         break;
       case 3: // Organization & Campaign
@@ -344,10 +346,10 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
         break;
       case 5: // Additional Settings
         if (formData.is_recurring && !formData.recurrence_pattern) {
-          errors.push("نمط التكرار مطلوب للأحداث المتكررة");
+          errors = addError(errors, "نمط التكرار مطلوب للأحداث المتكررة");
         }
         if (formData.is_recurring && formData.recurrence_pattern && !formData.recurrence_end_date) {
-          errors.push("تاريخ انتهاء التكرار مطلوب للأحداث المتكررة");
+          errors = addError(errors, "تاريخ انتهاء التكرار مطلوب للأحداث المتكررة");
         }
         break;
     }
