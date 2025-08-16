@@ -21,7 +21,7 @@ import { queryBatcher } from '@/utils/queryBatcher';
 import { timeAsync } from '@/utils/performanceMonitor';
 import { useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
-import { createDebouncedNavigate } from '@/utils/navigation-performance';
+// Removed navigation performance import - no longer using debounced navigate
 import { toast } from 'sonner';
 import { formatDate, formatDateArabic, dateHandler } from '@/utils/unified-date-handler';
 // Removed AppShell import - route provides AppShell wrapper
@@ -96,7 +96,7 @@ export default React.memo(function UserDashboard() {
     navigationHandler.setNavigate(navigate);
   }, [navigate]);
   
-  const debouncedNavigate = useMemo(() => createDebouncedNavigate(navigate), [navigate]);
+  // Direct navigate - no debouncing needed
   
   // OPTIMIZED: Use new hooks instead of manual data fetching
   const { data: optimizedStats, isLoading: statsLoading } = useOptimizedDashboardStats();
@@ -308,7 +308,7 @@ export default React.memo(function UserDashboard() {
               totalSubmissions: 0
             }
           }}
-          onNavigate={debouncedNavigate}
+          onNavigate={navigate}
           userRole={primaryRole}
           rolePermissions={permissions}
         />

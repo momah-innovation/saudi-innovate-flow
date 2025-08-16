@@ -1,4 +1,4 @@
-import React, { ReactNode, Suspense, useState, createContext, useContext } from 'react';
+import React, { ReactNode, useState, createContext, useContext } from 'react';
 import { SystemHeader } from './UnifiedHeader';
 import { EnhancedNavigationSidebar } from './EnhancedNavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
@@ -292,15 +292,9 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
                     });
                   }} />
                   
-                  {/* Page Content with Loading */}
+                  {/* Page Content */}
                   <main className="flex-1 overflow-auto overscroll-behavior-contain">
-                    <Suspense fallback={
-                      <div className="flex items-center justify-center min-h-[50vh] px-4">
-                        <LoadingSpinner />
-                      </div>
-                    }>
-                      {children}
-                    </Suspense>
+                    {children}
                   </main>
                 </div>
               </div>

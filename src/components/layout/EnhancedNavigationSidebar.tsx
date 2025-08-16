@@ -6,7 +6,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { createDebouncedNavigate } from '@/utils/navigation-performance';
+// Removed debounced navigation - using direct navigate
 import { useNavigationCache } from '@/hooks/useOptimizedDashboardStats';
 import { Search, X, ChevronDown, ChevronRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -44,8 +44,8 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
   const navigate = useNavigate();
   const location = useLocation();
   
-  // OPTIMIZED: Debounced navigation to prevent cascades
-  const debouncedNavigate = useMemo(() => createDebouncedNavigate(navigate), [navigate]);
+  // Direct navigation - no debouncing needed
+  const directNavigate = navigate;
   const { data: navigationCache } = useNavigationCache(user?.id);
   
   // Get user roles robustly with comprehensive fallback system
@@ -84,20 +84,20 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
     }
   }, [navigationCache, onOpenChange]);
 
-  // OPTIMIZED: Navigation handler with debouncing
+  // Navigation handler with direct navigate
   const handleNavigation = useCallback((path: string, event?: React.MouseEvent) => {
     if (event) {
       event.preventDefault();
     }
     
-    debouncedNavigate(path);
+    directNavigate(path);
     
     // Close mobile sidebar on navigation
     if (window.innerWidth < 768) {
       onOpenChange(false);
       setIsMobileMenuOpen(false);
     }
-  }, [debouncedNavigate, onOpenChange]);
+  }, [directNavigate, onOpenChange]);
   
   // OPTIMIZED: State management for navigation groups
   const [openGroups, setOpenGroups] = useState<Set<string>>(

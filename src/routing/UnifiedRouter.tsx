@@ -1,7 +1,7 @@
 // Unified Route Management System - Single Source of Truth
 // Consolidates all routing logic and RBAC into one cohesive system
 
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { debugLog } from '@/utils/debugLogger';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
@@ -11,9 +11,74 @@ import { AppShell } from '@/components/layout/AppShell';
 import { ALL_ROUTES } from './routes';
 import { UserRole } from '@/hooks/useRoleAccess';
 import { Loader2 } from 'lucide-react';
-import { lazyWithRetry } from '@/utils/lazyWithRetry';
-import { withErrorBoundary } from '@/utils/withErrorBoundary';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+
+// Direct imports - no lazy loading
+import LandingPage from '@/pages/LandingPage';
+import AuthPage from '@/pages/Auth';
+import AdminDashboardPage from '@/pages/AdminDashboardPage';
+import HelpPage from '@/pages/HelpPage';
+import NotFound from '@/pages/NotFound';
+import DesignSystem from '@/pages/DesignSystem';
+import WorkspaceDocumentation from '@/pages/WorkspaceDocumentation';
+import PartnersManagement from '@/pages/admin/PartnersManagement';
+import SectorsManagement from '@/pages/admin/SectorsManagement';
+import ExpertAssignmentManagement from '@/pages/admin/ExpertAssignmentManagement';
+import AdminEvaluations from '@/pages/admin/AdminEvaluations';
+import AdminRelationships from '@/pages/admin/AdminRelationships';
+import Challenges from '@/pages/Challenges';
+import ChallengeDetails from '@/pages/ChallengeDetails';
+import ChallengeIdeaSubmission from '@/pages/ChallengeIdeaSubmission';
+import OpportunitiesPage from '@/pages/Opportunities';
+import UserDashboard from '@/components/dashboard/UserDashboard';
+import ProfileSetupPage from '@/pages/ProfileSetup';
+import SettingsPage from '@/pages/Settings';
+import EventsBrowse from '@/pages/EventsBrowse';
+import ChallengesBrowse from '@/pages/ChallengesBrowse';
+import AccessControlManagement from '@/pages/dashboard/AccessControlManagement';
+import UserManagement from '@/pages/admin/UserManagement';
+import ChallengesManagement from '@/pages/admin/ChallengesManagement';
+import CampaignsManagement from '@/pages/admin/CampaignsManagement';
+import EventsManagement from '@/pages/admin/EventsManagement';
+import IdeasManagement from '@/pages/admin/IdeasManagement';
+import OrganizationalStructureManagement from '@/pages/admin/OrganizationalStructure';
+import StakeholdersManagement from '@/pages/admin/StakeholdersManagement';
+import EntitiesManagement from '@/pages/admin/EntitiesManagement';
+import CoreTeamManagement from '@/pages/admin/CoreTeamManagement';
+import AdminChallengeSubmissions from '@/pages/admin/AdminChallengeSubmissions';
+import ChallengeDetailAdmin from '@/pages/admin/ChallengeDetail';
+import TeamManagement from '@/pages/admin/TeamManagement';
+import FocusQuestionsManagement from '@/pages/admin/FocusQuestionsManagement';
+import OpportunitiesManagement from '@/pages/admin/OpportunitiesManagement';
+import RelationshipOverview from '@/pages/admin/RelationshipOverview';
+import UserManagementPage from '@/pages/admin/UserManagementPage';
+import EvaluationManagement from '@/pages/admin/EvaluationManagement';
+import SystemSettings from '@/pages/admin/SystemSettings';
+import SystemAnalytics from '@/pages/admin/SystemAnalytics';
+import StorageManagement from '@/pages/admin/StorageManagement';
+import StoragePolicies from '@/pages/admin/StoragePolicies';
+import SecurityMonitor from '@/pages/admin/SecurityMonitor';
+import SecurityAdvanced from '@/pages/admin/SecurityAdvanced';
+import AccessControlAdvanced from '@/pages/admin/AccessControlAdvanced';
+import ElevationMonitor from '@/pages/admin/ElevationMonitor';
+import AnalyticsAdvanced from '@/pages/admin/AnalyticsAdvanced';
+import AIManagement from '@/pages/admin/AIManagement';
+import FileManagementAdvanced from '@/pages/admin/FileManagementAdvanced';
+import ChallengesAnalyticsAdvanced from '@/pages/admin/ChallengesAnalyticsAdvanced';
+import CollaborationLandingPage from '@/pages/CollaborationLandingPage';
+import { CollaborativeIdeasPage } from '@/pages/CollaborativeBrowse';
+import { CollaborativeChallengesPage } from '@/pages/CollaborativeBrowse';
+import { CollaborativeEventsPage } from '@/pages/CollaborativeBrowse';
+import { CollaborativeOpportunitiesPage } from '@/pages/CollaborativeBrowse';
+
+// Workspace Components
+import UserWorkspace from '@/pages/workspace/UserWorkspace';
+import ExpertWorkspace from '@/pages/workspace/ExpertWorkspace';
+import OrganizationWorkspace from '@/pages/workspace/OrganizationWorkspace';
+import PartnerWorkspace from '@/pages/workspace/PartnerWorkspace';
+import AdminWorkspace from '@/pages/workspace/AdminWorkspace';
+import TeamWorkspace from '@/pages/workspace/TeamWorkspace';
+import { MigratedAdminDashboard } from '@/components/admin/MigratedAdminDashboard';
 
 // Loading component
 const LoadingFallback = () => {
@@ -23,77 +88,6 @@ const LoadingFallback = () => {
     </div>
   );
 };
-
-// Enhanced lazy loading with error boundaries and retry logic
-const createLazyComponent = (importFn: () => Promise<any>) => {
-  return withErrorBoundary(lazyWithRetry(importFn));
-};
-// Enhanced lazy loaded components with retry and error boundaries
-const LandingPage = createLazyComponent(() => import('@/pages/LandingPage'));
-const AuthPage = createLazyComponent(() => import('@/pages/Auth'));
-const AdminDashboardPage = createLazyComponent(() => import('@/pages/AdminDashboardPage'));
-const HelpPage = createLazyComponent(() => import('@/pages/HelpPage'));
-const NotFound = createLazyComponent(() => import('@/pages/NotFound'));
-const DesignSystem = createLazyComponent(() => import('@/pages/DesignSystem'));
-const WorkspaceDocumentation = createLazyComponent(() => import('@/pages/WorkspaceDocumentation'));
-const PartnersManagement = createLazyComponent(() => import('@/pages/admin/PartnersManagement'));
-const SectorsManagement = createLazyComponent(() => import('@/pages/admin/SectorsManagement'));
-const ExpertAssignmentManagement = createLazyComponent(() => import('@/pages/admin/ExpertAssignmentManagement'));
-const AdminEvaluations = createLazyComponent(() => import('@/pages/admin/AdminEvaluations'));
-const AdminRelationships = createLazyComponent(() => import('@/pages/admin/AdminRelationships'));
-const Challenges = createLazyComponent(() => import('@/pages/Challenges'));
-const ChallengeDetails = createLazyComponent(() => import('@/pages/ChallengeDetails'));
-const ChallengeIdeaSubmission = createLazyComponent(() => import('@/pages/ChallengeIdeaSubmission'));
-const OpportunitiesPage = createLazyComponent(() => import('@/pages/Opportunities'));
-const UserDashboard = createLazyComponent(() => import('@/components/dashboard/UserDashboard'));
-const ProfileSetupPage = createLazyComponent(() => import('@/pages/ProfileSetup'));
-const SettingsPage = createLazyComponent(() => import('@/pages/Settings'));
-const EventsBrowse = createLazyComponent(() => import('@/pages/EventsBrowse'));
-const ChallengesBrowse = createLazyComponent(() => import('@/pages/ChallengesBrowse'));
-const AccessControlManagement = createLazyComponent(() => import('@/pages/dashboard/AccessControlManagement'));
-const UserManagement = createLazyComponent(() => import('@/pages/admin/UserManagement'));
-const ChallengesManagement = createLazyComponent(() => import('@/pages/admin/ChallengesManagement'));
-const CampaignsManagement = createLazyComponent(() => import('@/pages/admin/CampaignsManagement'));
-const EventsManagement = createLazyComponent(() => import('@/pages/admin/EventsManagement'));
-const IdeasManagement = createLazyComponent(() => import('@/pages/admin/IdeasManagement'));
-const OrganizationalStructureManagement = createLazyComponent(() => import('@/pages/admin/OrganizationalStructure'));
-const StakeholdersManagement = createLazyComponent(() => import('@/pages/admin/StakeholdersManagement'));
-const EntitiesManagement = createLazyComponent(() => import('@/pages/admin/EntitiesManagement'));
-const CoreTeamManagement = createLazyComponent(() => import('@/pages/admin/CoreTeamManagement'));
-const AdminChallengeSubmissions = createLazyComponent(() => import('@/pages/admin/AdminChallengeSubmissions'));
-const ChallengeDetailAdmin = createLazyComponent(() => import('@/pages/admin/ChallengeDetail'));
-const TeamManagement = createLazyComponent(() => import('@/pages/admin/TeamManagement'));
-const FocusQuestionsManagement = createLazyComponent(() => import('@/pages/admin/FocusQuestionsManagement'));
-const OpportunitiesManagement = createLazyComponent(() => import('@/pages/admin/OpportunitiesManagement'));
-const RelationshipOverview = createLazyComponent(() => import('@/pages/admin/RelationshipOverview'));
-const UserManagementPage = createLazyComponent(() => import('@/pages/admin/UserManagementPage'));
-const EvaluationManagement = createLazyComponent(() => import('@/pages/admin/EvaluationManagement'));
-const SystemSettings = createLazyComponent(() => import('@/pages/admin/SystemSettings'));
-const SystemAnalytics = createLazyComponent(() => import('@/pages/admin/SystemAnalytics'));
-const StorageManagement = createLazyComponent(() => import('@/pages/admin/StorageManagement'));
-const StoragePolicies = createLazyComponent(() => import('@/pages/admin/StoragePolicies'));
-const SecurityMonitor = createLazyComponent(() => import('@/pages/admin/SecurityMonitor'));
-const SecurityAdvanced = createLazyComponent(() => import('@/pages/admin/SecurityAdvanced'));
-const AccessControlAdvanced = createLazyComponent(() => import('@/pages/admin/AccessControlAdvanced'));
-const ElevationMonitor = createLazyComponent(() => import('@/pages/admin/ElevationMonitor'));
-const AnalyticsAdvanced = createLazyComponent(() => import('@/pages/admin/AnalyticsAdvanced'));
-const AIManagement = createLazyComponent(() => import('@/pages/admin/AIManagement'));
-const FileManagementAdvanced = createLazyComponent(() => import('@/pages/admin/FileManagementAdvanced'));
-const ChallengesAnalyticsAdvanced = createLazyComponent(() => import('@/pages/admin/ChallengesAnalyticsAdvanced'));
-const CollaborationLandingPage = createLazyComponent(() => import('@/pages/CollaborationLandingPage'));
-const CollaborativeIdeasPage = createLazyComponent(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeIdeasPage })));
-const CollaborativeChallengesPage = createLazyComponent(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeChallengesPage })));
-const CollaborativeEventsPage = createLazyComponent(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeEventsPage })));
-const CollaborativeOpportunitiesPage = createLazyComponent(() => import('@/pages/CollaborativeBrowse').then(m => ({ default: m.CollaborativeOpportunitiesPage })));
-
-// Workspace Components
-const UserWorkspace = createLazyComponent(() => import('@/pages/workspace/UserWorkspace'));
-const ExpertWorkspace = createLazyComponent(() => import('@/pages/workspace/ExpertWorkspace'));
-const OrganizationWorkspace = createLazyComponent(() => import('@/pages/workspace/OrganizationWorkspace'));
-const PartnerWorkspace = createLazyComponent(() => import('@/pages/workspace/PartnerWorkspace'));
-const AdminWorkspace = createLazyComponent(() => import('@/pages/workspace/AdminWorkspace'));
-const TeamWorkspace = createLazyComponent(() => import('@/pages/workspace/TeamWorkspace'));
-const MigratedAdminDashboard = createLazyComponent(() => import('@/components/admin/MigratedAdminDashboard').then(m => ({ default: m.MigratedAdminDashboard })));
 
 // Route configuration interface
 export interface UnifiedRouteConfig {
@@ -643,9 +637,7 @@ export const UnifiedRouter: React.FC = () => {
     <ErrorBoundary fallback={<div className="p-8 text-center">An error occurred. <button onClick={() => window.location.reload()} className="underline">Reload</button></div>}>
       <BrowserRouter>
         <TranslationAppShellProvider>
-          <Suspense fallback={<LoadingFallback />}>
-            <RouterWithPerformanceMonitoring />
-          </Suspense>
+          <RouterWithPerformanceMonitoring />
         </TranslationAppShellProvider>
       </BrowserRouter>
     </ErrorBoundary>
