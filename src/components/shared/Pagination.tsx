@@ -40,29 +40,29 @@ export function Pagination({
 
   const getVisiblePages = () => {
     const delta = 2;
-    const range = [];
-    const rangeWithDots = [];
+    let range: number[] = [];
+    let rangeWithDots: (number | string)[] = [];
 
     for (
       let i = Math.max(2, currentPage - delta);
       i <= Math.min(totalPages - 1, currentPage + delta);
       i++
     ) {
-      range.push(i);
+      range = [...range, i];
     }
 
     if (currentPage - delta > 2) {
-      rangeWithDots.push(1, '...');
+      rangeWithDots = [...rangeWithDots, 1, '...'];
     } else {
-      rangeWithDots.push(1);
+      rangeWithDots = [...rangeWithDots, 1];
     }
 
-    rangeWithDots.push(...range);
+    rangeWithDots = [...rangeWithDots, ...range];
 
     if (currentPage + delta < totalPages - 1) {
-      rangeWithDots.push('...', totalPages);
+      rangeWithDots = [...rangeWithDots, '...', totalPages];
     } else {
-      rangeWithDots.push(totalPages);
+      rangeWithDots = [...rangeWithDots, totalPages];
     }
 
     return rangeWithDots;

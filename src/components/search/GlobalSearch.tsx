@@ -85,7 +85,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
 
   const performSearch = async (searchQuery: string) => {
     setIsLoading(true);
-    const searchResults: SearchResult[] = [];
+    let searchResults: SearchResult[] = [];
 
     try {
       const searchLower = searchQuery.toLowerCase();
@@ -140,7 +140,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
       const { data: challenges } = await challengeQuery;
 
       challenges?.forEach(challenge => {
-        searchResults.push({
+        searchResults = [...searchResults, {
           id: challenge.id,
           title: challenge.title_ar,
           description: challenge.description_ar,
@@ -152,7 +152,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
             status: challenge.status,
             sensitivity: challenge.sensitivity_level 
           }
-        });
+        }];
       });
 
       // Search events (all users can view events)

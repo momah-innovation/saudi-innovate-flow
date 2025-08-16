@@ -15,6 +15,16 @@ import {
 import { useUserDiscovery } from '@/hooks/useUserDiscovery';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
+interface User {
+  id: string;
+  display_name?: string;
+  avatar_url?: string;
+  email?: string;
+  role?: string;
+  department?: string;
+  is_online?: boolean;
+}
+
 interface UserMentionSelectorProps {
   onUserSelect: (user: any) => void;
   contextType?: string;
@@ -41,8 +51,8 @@ export const UserMentionSelector: React.FC<UserMentionSelectorProps> = ({
   } = useUserDiscovery();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
-  const [suggestedUsers, setSuggestedUsers] = useState<any[]>([]);
+  const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
+  const [suggestedUsers, setSuggestedUsers] = useState<User[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
   // Load online users
@@ -92,7 +102,7 @@ export const UserMentionSelector: React.FC<UserMentionSelectorProps> = ({
     return name.charAt(0).toUpperCase();
   };
 
-  const getDisplayUsers = (): any[] => {
+  const getDisplayUsers = (): User[] => {
     if (searchQuery.trim()) {
       return searchResults;
     }
