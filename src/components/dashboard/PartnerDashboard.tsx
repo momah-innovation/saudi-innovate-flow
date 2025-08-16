@@ -13,7 +13,7 @@ interface PartnerDashboardProps {
   canViewPartnerDashboard: boolean;
 }
 
-export function PartnerDashboard({ userProfile, canManageOpportunities, canViewPartnerDashboard }: PartnerDashboardProps) {
+export const PartnerDashboard = React.memo(function PartnerDashboard({ userProfile, canManageOpportunities, canViewPartnerDashboard }: PartnerDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -129,4 +129,4 @@ export function PartnerDashboard({ userProfile, canManageOpportunities, canViewP
       </div>
     </div>
   );
-}
+});

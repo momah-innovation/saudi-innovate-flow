@@ -25,7 +25,7 @@ interface OrganizationDashboardProps {
   canViewOrgAnalytics: boolean;
 }
 
-export function OrganizationDashboard({ userProfile, canManageOrganization, canManageEntities, canViewOrgAnalytics }: OrganizationDashboardProps) {
+export const OrganizationDashboard = React.memo(function OrganizationDashboard({ userProfile, canManageOrganization, canManageEntities, canViewOrgAnalytics }: OrganizationDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -226,4 +226,4 @@ export function OrganizationDashboard({ userProfile, canManageOrganization, canM
       </Tabs>
     </div>
   );
-}
+});

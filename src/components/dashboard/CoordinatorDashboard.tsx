@@ -25,7 +25,7 @@ interface CoordinatorDashboardProps {
   canViewAnalytics: boolean;
 }
 
-export function CoordinatorDashboard({ userProfile, canCoordinateExperts, canManageEvents, canViewAnalytics }: CoordinatorDashboardProps) {
+export const CoordinatorDashboard = React.memo(function CoordinatorDashboard({ userProfile, canCoordinateExperts, canManageEvents, canViewAnalytics }: CoordinatorDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -226,4 +226,4 @@ export function CoordinatorDashboard({ userProfile, canCoordinateExperts, canMan
       </Tabs>
     </div>
   );
-}
+});

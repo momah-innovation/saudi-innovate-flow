@@ -26,7 +26,7 @@ interface ManagerDashboardProps {
   canManageProjects: boolean;
 }
 
-export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics, canManageProjects }: ManagerDashboardProps) {
+export const ManagerDashboard = React.memo(function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics, canManageProjects }: ManagerDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -229,4 +229,4 @@ export function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics
       </Tabs>
     </div>
   );
-}
+});
