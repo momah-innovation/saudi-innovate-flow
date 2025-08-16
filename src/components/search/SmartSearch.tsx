@@ -118,7 +118,8 @@ export function SmartSearch({
             description: challenge.description_ar || '',
             relevance_score: 1.0
           }));
-          searchResults.push(...challengeResults);
+          // Use spread operator instead of push mutations
+          searchResults = [...searchResults, ...challengeResults];
         }
       }
 
@@ -138,7 +139,8 @@ export function SmartSearch({
             description: idea.description_ar || '',
             relevance_score: 1.0
           }));
-          searchResults.push(...ideaResults);
+          // Use spread operator instead of push mutations
+          searchResults = [...searchResults, ...ideaResults];
         }
       }
 

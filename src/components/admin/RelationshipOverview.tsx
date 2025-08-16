@@ -87,41 +87,37 @@ export function RelationshipOverview({
         `)
         .eq('partnership_status', 'active');
 
-      const relationships: RelationshipData[] = [];
-
-      // Process challenge-partner relationships
-      challengePartners?.forEach(cp => {
-        relationships.push({
-          id: cp.id,
-          source_entity_type: 'challenge',
-          source_entity_id: cp.challenge_id,
-          target_entity_type: 'partner',
-          target_entity_id: cp.partner_id,
-          relationship_type: cp.partnership_type || 'collaborator',
-          strength: 8, // Default strength
-          created_at: cp.created_at,
-          source_name: cp.challenges?.title_ar || cp.challenges?.title_en || 'Challenge',
-          target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
-        });
-      });
+      // Use immutable array building instead of mutations
+      const challengeRelationships = challengePartners?.map(cp => ({
+        id: cp.id,
+        source_entity_type: 'challenge' as const,
+        source_entity_id: cp.challenge_id,
+        target_entity_type: 'partner' as const,
+        target_entity_id: cp.partner_id,
+        relationship_type: cp.partnership_type || 'collaborator',
+        strength: 8, // Default strength
+        created_at: cp.created_at,
+        source_name: cp.challenges?.title_ar || cp.challenges?.title_en || 'Challenge',
+        target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
+      })) || [];
 
       // Process campaign-partner relationships
-      campaignPartners?.forEach(cp => {
-        relationships.push({
-          id: cp.id,
-          source_entity_type: 'campaign',
-          source_entity_id: cp.campaign_id,
-          target_entity_type: 'partner',
-          target_entity_id: cp.partner_id,
-          relationship_type: cp.partnership_role || 'supporter',
-          strength: 7, // Default strength
-          created_at: cp.created_at,
-          source_name: cp.campaigns?.title_ar || cp.campaigns?.title_en || 'Campaign',
-          target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
-        });
-      });
+      const campaignRelationships = campaignPartners?.map(cp => ({
+        id: cp.id,
+        source_entity_type: 'campaign' as const,
+        source_entity_id: cp.campaign_id,
+        target_entity_type: 'partner' as const,
+        target_entity_id: cp.partner_id,
+        relationship_type: cp.partnership_role || 'supporter',
+        strength: 7, // Default strength
+        created_at: cp.created_at,
+        source_name: cp.campaigns?.title_ar || cp.campaigns?.title_en || 'Campaign',
+        target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
+      })) || [];
       
-      setRelationships(relationships);
+      // Combine all relationships using spread operator
+      const allRelationships = [...challengeRelationships, ...campaignRelationships];
+      setRelationships(allRelationships);
     } catch (error) {
       logger.error('Error loading relationships', error);
       toast({

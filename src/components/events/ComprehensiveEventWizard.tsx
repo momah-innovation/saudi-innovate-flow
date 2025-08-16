@@ -147,14 +147,61 @@ export const ComprehensiveEventWizard = ({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
-  const [resources, setResources] = useState<any[]>([]);
+  // Enhanced state management with proper typing
+  interface Partner {
+    id: string;
+    name?: string;
+    name_ar?: string;
+    name_en?: string;
+    partner_type: string;
+    email?: string;
+  }
+
+  interface Stakeholder {
+    id: string;
+    name?: string;
+    name_ar?: string;
+    name_en?: string;
+    organization: string;
+    email: string;
+  }
+
+  interface Campaign {
+    id: string;
+    title_ar: string;
+    title_en?: string;
+    status: string;
+  }
+
+  interface Challenge {
+    id: string;
+    title_ar: string;
+    title_en?: string;
+    status: string;
+  }
+
+  interface Sector {
+    id: string;
+    name?: string;
+    name_ar: string;
+    name_en?: string;
+  }
+
+  interface EventResource {
+    id: string;
+    name: string;
+    type: string;
+    url?: string;
+  }
+
+  const [resources, setResources] = useState<EventResource[]>([]);
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
-  const [availablePartners, setAvailablePartners] = useState<any[]>([]);
-  const [availableStakeholders, setAvailableStakeholders] = useState<any[]>([]);
-  const [availableCampaigns, setAvailableCampaigns] = useState<any[]>([]);
-  const [availableChallenges, setAvailableChallenges] = useState<any[]>([]);
-  const [availableSectors, setAvailableSectors] = useState<any[]>([]);
+  const [availablePartners, setAvailablePartners] = useState<Partner[]>([]);
+  const [availableStakeholders, setAvailableStakeholders] = useState<Stakeholder[]>([]);
+  const [availableCampaigns, setAvailableCampaigns] = useState<Campaign[]>([]);
+  const [availableChallenges, setAvailableChallenges] = useState<Challenge[]>([]);
+  const [availableSectors, setAvailableSectors] = useState<Sector[]>([]);
 
   // Load initial data
   useEffect(() => {

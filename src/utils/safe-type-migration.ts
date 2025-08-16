@@ -2,6 +2,7 @@
  * Safe type migration utilities for gradual TypeScript improvement
  * without breaking existing functionality
  */
+import { logger } from '@/utils/logger';
 
 /**
  * Temporary bridge between any types and proper interfaces
@@ -29,7 +30,7 @@ export const createTypeSafeBridge = <T>() => {
         }
         return data as T;
       } catch (error) {
-        console.warn('Type casting failed, using fallback:', error);
+        logger.warn('Type casting failed, using fallback:', error);
         return fallback;
       }
     },

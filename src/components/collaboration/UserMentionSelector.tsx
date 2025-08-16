@@ -17,16 +17,17 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface User {
   id: string;
+  name?: string;
   display_name?: string;
-  avatar_url?: string;
   email?: string;
+  avatar_url?: string;
   role?: string;
   department?: string;
   is_online?: boolean;
 }
 
 interface UserMentionSelectorProps {
-  onUserSelect: (user: any) => void;
+  onUserSelect: (user: User) => void;
   contextType?: string;
   contextId?: string;
   placeholder?: string;
@@ -87,17 +88,17 @@ export const UserMentionSelector: React.FC<UserMentionSelectorProps> = ({
     return cleanup;
   }, [searchQuery]);
 
-  const handleUserSelect = (user: any) => {
+  const handleUserSelect = (user: User) => {
     onUserSelect(user);
     setSearchQuery('');
     setIsOpen(false);
   };
 
-  const getUserDisplayName = (user: any): string => {
+  const getUserDisplayName = (user: User): string => {
     return user.display_name || user.name || user.email || 'مستخدم';
   };
 
-  const getUserInitials = (user: any): string => {
+  const getUserInitials = (user: User): string => {
     const name = getUserDisplayName(user);
     return name.charAt(0).toUpperCase();
   };
