@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -26,7 +27,7 @@ import {
   Clock,
   User
  } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from '@/utils/unified-date-handler';
 import type { QuestionResponse } from "@/types";
 
 interface Challenge {
@@ -67,6 +68,12 @@ export function FocusQuestionDetailView({
 }: FocusQuestionDetailViewProps) {
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
+  
+  const errorHandler = createErrorHandler({
+    component: 'FocusQuestionDetailView',
+    showToast: true,
+    logError: true
+  });
   
   const [relatedData, setRelatedData] = useState({
     ideas: [],
@@ -162,11 +169,7 @@ export function FocusQuestionDetailView({
         analytics
       });
     } catch (error) {
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('focus_question_detail.load_related_data_failed', 'فشل في تحميل البيانات المرتبطة'),
-        variant: "destructive"
-      });
+      errorHandler.handleError(error, { operation: 'fetchRelatedData' }, t('focus_question_detail.load_related_data_failed', 'فشل في تحميل البيانات المرتبطة'));
     } finally {
       setLoading(false);
     }
@@ -286,11 +289,11 @@ export function FocusQuestionDetailView({
                   <div className="text-2xl font-bold text-primary">
                     <Clock className="w-6 h-6 mx-auto mb-1" />
                   </div>
-                  <div className="text-sm text-muted-foreground" dir="rtl">
-                    {relatedData.analytics.lastActivity 
-                      ? format(new Date(relatedData.analytics.lastActivity), 'dd/MM/yyyy')
-                      : 'لا يوجد نشاط'
-                    }
+                   <div className="text-sm text-muted-foreground" dir="rtl">
+                     {relatedData.analytics.lastActivity 
+                       ? formatDate(relatedData.analytics.lastActivity, 'dd/MM/yyyy')
+                       : 'لا يوجد نشاط'
+                     }
                   </div>
                 </div>
               </div>
@@ -326,7 +329,7 @@ export function FocusQuestionDetailView({
                     <h4 className="font-semibold mb-1 text-sm">تاريخ الإنشاء</h4>
                     <p className="text-sm flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {format(new Date(question.created_at), 'dd/MM/yyyy')}
+                      {formatDate(question.created_at, 'dd/MM/yyyy')}
                     </p>
                   </div>
                 </div>
@@ -357,12 +360,12 @@ export function FocusQuestionDetailView({
                     <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Calendar className="w-4 h-4" />
                       <span dir="rtl">تاريخ الإنشاء: </span>
-                      <span dir="ltr">{format(new Date(question.created_at), 'PPp')}</span>
+                      <span dir="ltr">{formatDate(question.created_at, 'PPp')}</span>
                     </div>
                     <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Activity className="w-4 h-4" />
                       <span dir="rtl">آخر تحديث: </span>
-                      <span dir="ltr">{format(new Date(question.updated_at), 'PPp')}</span>
+                      <span dir="ltr">{formatDate(question.updated_at, 'PPp')}</span>
                     </div>
                   </div>
                 </div>
@@ -398,7 +401,7 @@ export function FocusQuestionDetailView({
                           </div>
                           <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             <Calendar className="w-3 h-3" />
-                            <span dir="ltr">{format(new Date(idea.created_at), 'dd/MM/yyyy')}</span>
+                            <span dir="ltr">{formatDate(idea.created_at, 'dd/MM/yyyy')}</span>
                           </div>
                         </div>
                       </div>
@@ -432,7 +435,7 @@ export function FocusQuestionDetailView({
                         <div className="flex items-center gap-2">
                           <Badge variant="outline">5/5</Badge>
                           <span className="text-xs text-muted-foreground">
-                            {format(new Date(), 'dd/MM/yyyy')}
+                            {formatDate(new Date(), 'dd/MM/yyyy')}
                           </span>
                         </div>
                       </div>
@@ -482,7 +485,7 @@ export function FocusQuestionDetailView({
                       <div className={`flex items-center gap-4 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                           <Calendar className="w-3 h-3" />
-                          <span dir="ltr">{format(new Date(eventLink.events?.event_date), 'PPP')}</span>
+                          <span dir="ltr">{formatDate(eventLink.events?.event_date, 'PPP')}</span>
                         </div>
                         {eventLink.events?.format && (
                           <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>

@@ -22,6 +22,8 @@ import {
   Clock,
   AlertTriangle
 } from "lucide-react";
+import { dateHandler } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface AnalyticsData {
   overview: {
@@ -59,6 +61,12 @@ export function FocusQuestionAnalytics() {
   const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const { flexRow } = useRTLAwareClasses();
+  
+  const errorHandler = createErrorHandler({
+    component: 'FocusQuestionAnalytics',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     fetchAnalytics();
@@ -83,12 +91,7 @@ export function FocusQuestionAnalytics() {
       setAnalytics(processedAnalytics);
 
     } catch (error) {
-      // Failed to fetch focus question analytics
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('focus_question_analytics.load_analytics_failed', 'فشل في تحميل بيانات التحليلات'),
-        variant: "destructive"
-      });
+      errorHandler.handleError(error, { operation: 'fetchAnalytics' }, t('focus_question_analytics.load_analytics_failed', 'فشل في تحميل بيانات التحليلات'));
     } finally {
       setLoading(false);
     }
@@ -135,10 +138,10 @@ export function FocusQuestionAnalytics() {
 
     // Generate monthly trends data based on actual question data
     const monthlyTrends = Array.from({ length: 6 }, (_, i) => {
-      const date = new Date();
+      const date = dateHandler.parseDate(new Date()) || new Date();
       date.setMonth(date.getMonth() - (5 - i));
       const monthQuestions = questions.filter(q => {
-        const qDate = new Date(q.created_at || new Date());
+        const qDate = dateHandler.parseDate(q.created_at) || new Date();
         return qDate.getMonth() === date.getMonth() && qDate.getFullYear() === date.getFullYear();
       });
       

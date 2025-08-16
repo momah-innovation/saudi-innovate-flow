@@ -13,7 +13,7 @@ import {
   MoreHorizontal,
   Trash2
 } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from '@/utils/unified-date-handler';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -185,11 +185,11 @@ export function FocusQuestionCard({
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Calendar className="w-3 h-3" />
-                <span>تم الإنشاء: {format(new Date(question.created_at), 'dd/MM/yyyy')}</span>
+                <span>تم الإنشاء: {formatDate(question.created_at, 'dd/MM/yyyy')}</span>
               </div>
               {question.updated_at !== question.created_at && (
                 <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span>آخر تحديث: {format(new Date(question.updated_at), 'dd/MM/yyyy')}</span>
+                  <span>آخر تحديث: {formatDate(question.updated_at, 'dd/MM/yyyy')}</span>
                 </div>
               )}
             </div>

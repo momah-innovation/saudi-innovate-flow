@@ -4,7 +4,8 @@ import { MetricCard } from "@/components/ui/metric-card";
 import { ChartContainer } from "@/components/ui/chart";
 import { TrendingUp, TrendingDown, Users, Lightbulb, CheckCircle, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { isThisMonth, format, subMonths, isSameMonth } from "date-fns";
+import { isThisMonth, isSameMonth, subMonths } from "date-fns";
+import { formatDate, dateHandler } from '@/utils/unified-date-handler';
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { debugLog } from '@/utils/debugLogger';
@@ -95,10 +96,10 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
 
   // Growth calculations
   const currentMonthIdeas = ideas.filter(idea => 
-    isThisMonth(new Date(idea.created_at))
+    isThisMonth(dateHandler.parseDate(idea.created_at) || new Date())
   ).length;
   const previousMonthIdeas = ideas.filter(idea => 
-    isSameMonth(new Date(idea.created_at), subMonths(new Date(), 1))
+    isSameMonth(dateHandler.parseDate(idea.created_at) || new Date(), subMonths(new Date(), 1))
   ).length;
   const growthRate = previousMonthIdeas > 0 ? ((currentMonthIdeas - previousMonthIdeas) / previousMonthIdeas) * 100 : 0;
 
@@ -143,16 +144,16 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
 
   // Monthly trends
   const monthlyData = Array.from({ length: 12 }, (_, i) => {
-    const date = new Date();
+    const date = dateHandler.parseDate(new Date()) || new Date();
     date.setMonth(date.getMonth() - (11 - i));
     const monthIdeas = ideas.filter(idea => {
-      const ideaDate = new Date(idea.created_at);
+      const ideaDate = dateHandler.parseDate(idea.created_at) || new Date();
       return ideaDate.getMonth() === date.getMonth() && 
              ideaDate.getFullYear() === date.getFullYear();
     });
     
     return {
-      month: format(date, 'MMM'),
+      month: formatDate(date, 'MMM'),
       ideas: monthIdeas.length,
       implemented: monthIdeas.filter(idea => idea.status === 'implemented').length
     };

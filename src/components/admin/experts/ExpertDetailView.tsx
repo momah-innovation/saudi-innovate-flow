@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   User, 
   Star,
@@ -23,7 +24,7 @@ import {
   Users,
   CheckCircle
 } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from '@/utils/unified-date-handler';
 import type { ExpertDetailView, ExpertDetailViewProps } from "@/types/api";
 import type { BadgeVariant } from "@/types";
 
@@ -48,6 +49,12 @@ export function ExpertDetailView({
     }
   });
   const [loading, setLoading] = useState(false);
+  
+  const errorHandler = createErrorHandler({
+    component: 'ExpertDetailView',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     if (expert && isOpen) {
@@ -72,11 +79,7 @@ export function ExpertDetailView({
         }
       });
     } catch (error) {
-      logger.error('Failed to fetch expert related data', { 
-        component: 'ExpertDetailView', 
-        action: 'fetchRelatedData',
-        expertId: expert.id 
-      }, error as Error);
+      errorHandler.handleError(error, { operation: 'fetchRelatedData', metadata: { expertId: expert.id } });
     } finally {
       setLoading(false);
     }
@@ -299,7 +302,7 @@ export function ExpertDetailView({
                         <div className="flex-1">
                           <p className="font-medium">{t('expert.new_activity', 'نشاط جديد')}</p>
                           <p className="text-sm text-muted-foreground">
-                            {format(new Date(), 'dd/MM/yyyy')}
+                            {formatDate(new Date(), 'dd/MM/yyyy')}
                           </p>
                         </div>
                       </div>
