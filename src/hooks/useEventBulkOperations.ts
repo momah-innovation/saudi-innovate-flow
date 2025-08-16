@@ -112,13 +112,14 @@ export const useEventBulkOperations = () => {
           .single();
 
         if (originalEvent) {
-          // Create duplicate
+          // Create duplicate with proper field names
           const { data: newEvent, error } = await supabase
             .from('events')
             .insert([{
               ...originalEvent,
               id: undefined,
-              title: `${originalEvent.title} (Copy)`,
+              title_ar: `${originalEvent.title_ar} (نسخة)`,
+              title_en: originalEvent.title_en ? `${originalEvent.title_en} (Copy)` : undefined,
               created_at: new Date().toISOString()
             }])
             .select()
