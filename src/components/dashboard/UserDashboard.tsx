@@ -20,8 +20,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { queryBatcher } from '@/utils/queryBatcher';
 import { timeAsync } from '@/utils/performanceMonitor';
 import { useNavigate } from 'react-router-dom';
+import { navigationHandler } from '@/utils/unified-navigation';
 import { createDebouncedNavigate } from '@/utils/navigation-performance';
 import { toast } from 'sonner';
+import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 // Removed AppShell import - route provides AppShell wrapper
 import { DashboardHero } from './DashboardHero';
 import { AdminDashboard } from './AdminDashboardComponent';
@@ -88,6 +90,12 @@ export default React.memo(function UserDashboard() {
   const { t, language } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const navigate = useNavigate();
+  
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
+  
   const debouncedNavigate = useMemo(() => createDebouncedNavigate(navigate), [navigate]);
   
   // State hooks - always called in the same order
@@ -608,19 +616,19 @@ export default React.memo(function UserDashboard() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button onClick={() => navigate('/submit-idea')} className="w-full justify-start">
+                  <Button onClick={() => navigationHandler.navigateTo('/submit-idea')} className="w-full justify-start">
                     <Plus className="w-4 h-4 mr-2" />
                     {currentLanguage === 'ar' ? 'تقديم فكرة جديدة' : 'Submit New Idea'}
                   </Button>
-                  <Button onClick={() => navigate('/challenges')} variant="outline" className="w-full justify-start">
+                  <Button onClick={() => navigationHandler.navigateTo('/challenges')} variant="outline" className="w-full justify-start">
                     <Target className="w-4 h-4 mr-2" />
                     {currentLanguage === 'ar' ? 'تصفح التحديات' : 'Browse Challenges'}
                   </Button>
-                  <Button onClick={() => navigate('/events')} variant="outline" className="w-full justify-start">
+                  <Button onClick={() => navigationHandler.navigateTo('/events')} variant="outline" className="w-full justify-start">
                     <Calendar className="w-4 h-4 mr-2" />
                     {currentLanguage === 'ar' ? 'تصفح الفعاليات' : 'Browse Events'}
                   </Button>
-                  <Button onClick={() => navigate('/ideas')} variant="outline" className="w-full justify-start">
+                  <Button onClick={() => navigationHandler.navigateTo('/ideas')} variant="outline" className="w-full justify-start">
                     <Eye className="w-4 h-4 mr-2" />
                     {currentLanguage === 'ar' ? 'عرض أفكاري' : 'View My Ideas'}
                   </Button>
@@ -654,7 +662,7 @@ export default React.memo(function UserDashboard() {
                         <div className="flex items-center space-x-2">
                           {activity.status && getStatusBadge(activity.status)}
                           <span className="text-sm text-muted-foreground">
-                            {new Date(activity.date).toLocaleDateString(currentLanguage === 'ar' ? 'ar-SA' : 'en-US')}
+                            {isRTL ? formatDateArabic(activity.date, 'PPP') : formatDate(activity.date, 'PPP')}
                           </span>
                           <Button variant="ghost" size="sm">
                             <ChevronRight className="w-4 h-4" />
@@ -674,7 +682,7 @@ export default React.memo(function UserDashboard() {
                         ? 'ابدأ رحلة الابتكار بتقديم فكرتك الأولى'
                         : 'Start your innovation journey by submitting your first idea'}
                     </p>
-                    <Button onClick={() => navigate('/submit-idea')}>
+                    <Button onClick={() => navigationHandler.navigateTo('/submit-idea')}>
                       <Plus className="w-4 h-4 mr-2" />
                       {currentLanguage === 'ar' ? 'قدم فكرتك الأولى' : 'Submit Your First Idea'}
                     </Button>
@@ -713,7 +721,7 @@ export default React.memo(function UserDashboard() {
                               {achievement.points_earned} {currentLanguage === 'ar' ? 'نقطة' : 'points'}
                             </Badge>
                             <span className="text-xs text-muted-foreground">
-                              {new Date(achievement.earned_at).toLocaleDateString(currentLanguage === 'ar' ? 'ar-SA' : 'en-US')}
+                              {isRTL ? formatDateArabic(achievement.earned_at, 'PPP') : formatDate(achievement.earned_at, 'PPP')}
                             </span>
                           </div>
                         </div>
@@ -759,7 +767,7 @@ export default React.memo(function UserDashboard() {
                           <p className="font-medium">{activity.title}</p>
                           <p className="text-sm text-muted-foreground">{activity.description}</p>
                           <p className="text-xs text-muted-foreground mt-1">
-                            {new Date(activity.date).toLocaleDateString(currentLanguage === 'ar' ? 'ar-SA' : 'en-US')}
+                            {isRTL ? formatDateArabic(activity.date, 'PPP') : formatDate(activity.date, 'PPP')}
                           </p>
                         </div>
                         {activity.status && (

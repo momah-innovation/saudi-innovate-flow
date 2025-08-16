@@ -25,6 +25,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { getNotificationTypeMapping } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { formatRelativeTime } from '@/utils/unified-date-handler';
 import { logger } from '@/utils/logger';
 
 interface ChallengeNotification {
@@ -179,18 +180,7 @@ export const ChallengeNotificationCenter = ({
   };
 
   const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-    
-    if (diffInMinutes < 1) return isRTL ? 'الآن' : 'Now';
-    if (diffInMinutes < 60) return `${diffInMinutes}${isRTL ? ' د' : 'm'}`;
-    
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `${diffInHours}${isRTL ? ' س' : 'h'}`;
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays}${isRTL ? ' ي' : 'd'}`;
+    return formatRelativeTime(dateString);
   };
 
   const NotificationItem = ({ notification }: { notification: ChallengeNotification }) => (
