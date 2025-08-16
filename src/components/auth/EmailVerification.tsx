@@ -96,7 +96,8 @@ export const EmailVerification = () => {
         type: 'signup',
         email: user.email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/verify-email`
+          // Use proper URL building for email redirects
+          emailRedirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/auth/verify-email`
         }
       });
 

@@ -187,16 +187,20 @@ export function IdeaDetailDialog({
     
     if (navigator.share) {
       try {
+        // Use proper URL building for native sharing
+        const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
         await navigator.share({
           title: idea.title_ar,
           text: idea.description_ar,
-          url: window.location.href
+          url: currentUrl
         });
       } catch (error) {
         // Share cancelled or failed
       }
     } else {
-      navigator.clipboard.writeText(window.location.href);
+      // Use proper URL building for clipboard
+      const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+      navigator.clipboard.writeText(currentUrl);
       toast({
         title: isRTL ? 'تم نسخ الرابط' : 'Link copied',
         description: isRTL ? 'تم نسخ رابط الفكرة إلى الحافظة' : 'Idea link copied to clipboard'

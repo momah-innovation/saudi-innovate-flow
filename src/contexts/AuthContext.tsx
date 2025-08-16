@@ -300,7 +300,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (email: string, password: string, userData?: { name: string; name_ar?: string }) => {
     try {
-      const redirectUrl = `${window.location.origin}/auth/verify-email`;
+      // Use proper URL building for email verification redirects
+      const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+      const redirectUrl = `${baseUrl}/auth/verify-email`;
       
       const { error } = await supabase.auth.signUp({
         email,

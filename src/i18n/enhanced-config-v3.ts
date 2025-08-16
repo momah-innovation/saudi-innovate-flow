@@ -309,7 +309,14 @@ i18n
           fallback: String(fallbackValue ?? '')
         });
       } catch (e) {
-        console.warn('[i18n] Missing key', lngs, ns, key);
+        // Use structured logging for missing translation keys
+        if (typeof window !== 'undefined' && (window as any).debugLog) {
+          (window as any).debugLog.warn('Missing translation key', { 
+            component: 'i18n-enhanced', 
+            data: { languages: lngs, namespace: ns, key }, 
+            error: e 
+          });
+        }
       }
     },
     

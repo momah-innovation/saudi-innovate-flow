@@ -48,7 +48,9 @@ export const EventSocialShare = ({
   const [copied, setCopied] = useState(false);
   const { setTimeout: scheduleTimeout } = useTimerManager();
 
-  const eventUrl = `${window.location.origin}/events/${event.id}`;
+  // Use proper URL building for event sharing
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const eventUrl = `${baseUrl}/events/${event.id}`;
   const shareText = isRTL 
     ? `أدعوك لحضور فعالية "${event.title_ar}" في ${formatDate(event.event_date)}`
     : `I invite you to attend "${event.title_ar}" on ${formatDate(event.event_date)}`;

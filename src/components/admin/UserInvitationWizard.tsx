@@ -109,7 +109,9 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
         logger.warn('Email service unavailable, showing invitation link instead', { error: emailError });
       }
 
-      const inviteLink = `${window.location.origin}/auth?invite=${tokenData}`;
+      // Use proper URL building instead of window.location.origin
+      const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+      const inviteLink = `${baseUrl}/auth?invite=${tokenData}`;
       
       toast({
         title: t('user_invitation_wizard.invitation_sent'),

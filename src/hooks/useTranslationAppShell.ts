@@ -216,7 +216,9 @@ export const preloadCriticalTranslations = async () => {
     const prefetchNamespaces = Array.from(new Set(prefetch));
     if (prefetchNamespaces.length > 0) {
       setTimeout(() => {
-        preloadNamespaces(prefetchNamespaces).catch(console.warn);
+        preloadNamespaces(prefetchNamespaces).catch((error) => 
+          debugLog.warn('Failed to prefetch namespaces', { component: 'TranslationAppShell', data: { namespaces: prefetchNamespaces }, error })
+        );
       }, 100); // Small delay to not block critical loading
     }
     

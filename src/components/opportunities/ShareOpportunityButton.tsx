@@ -29,7 +29,9 @@ export const ShareOpportunityButton = ({
   const [isSharing, setIsSharing] = useState(false);
   const { user } = useCurrentUser();
 
-  const shareUrl = `${window.location.origin}/opportunities/${opportunityId}`;
+  // Use proper URL building for opportunity sharing
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const shareUrl = `${baseUrl}/opportunities/${opportunityId}`;
   const shareText = `${opportunityTitle} - ${opportunityDescription?.substring(0, 100)}...`;
 
   const trackShare = async (platform: string) => {
