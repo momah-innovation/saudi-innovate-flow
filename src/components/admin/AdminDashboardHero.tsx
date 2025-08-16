@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -25,7 +26,7 @@ interface AdminDashboardHeroProps {
   systemHealth: string;
 }
 
-export function AdminDashboardHero({
+export const AdminDashboardHero = React.memo(function AdminDashboardHero({
   totalUsers,
   activeUsers,
   storageUsed,
@@ -123,4 +124,4 @@ export function AdminDashboardHero({
       </Card>
     </div>
   );
-}
+});

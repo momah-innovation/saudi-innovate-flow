@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -24,7 +25,7 @@ interface AdminEvaluationsHeroProps {
   evaluationRate: number;
 }
 
-export function AdminEvaluationsHero({
+export const AdminEvaluationsHero = React.memo(function AdminEvaluationsHero({
   totalEvaluations,
   pendingEvaluations,
   completedEvaluations,
@@ -150,4 +151,4 @@ export function AdminEvaluationsHero({
       </Card>
     </div>
   );
-}
+});

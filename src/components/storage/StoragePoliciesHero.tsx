@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -24,7 +25,7 @@ interface StoragePoliciesHeroProps {
   criticalIssues: number;
 }
 
-export function StoragePoliciesHero({
+export const StoragePoliciesHero = React.memo(function StoragePoliciesHero({
   totalBuckets,
   publicBuckets,
   protectedBuckets,
@@ -138,4 +139,4 @@ export function StoragePoliciesHero({
       </Card>
     </div>
   );
-}
+});

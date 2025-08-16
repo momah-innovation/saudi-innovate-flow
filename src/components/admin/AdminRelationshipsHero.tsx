@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRTLAwareClasses } from '@/components/ui/rtl-aware';
@@ -23,7 +24,7 @@ interface AdminRelationshipsHeroProps {
   lastUpdate: string;
 }
 
-export function AdminRelationshipsHero({
+export const AdminRelationshipsHero = React.memo(function AdminRelationshipsHero({
   totalConnections,
   activeNodes,
   networkDensity,
@@ -144,4 +145,4 @@ export function AdminRelationshipsHero({
       </Card>
     </div>
   );
-}
+});

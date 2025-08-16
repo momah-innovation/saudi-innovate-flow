@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -24,7 +25,7 @@ interface StorageHeroProps {
   buckets: number;
 }
 
-export function StorageHero({
+export const StorageHero = React.memo(function StorageHero({
   totalFiles,
   totalSize,
   usedSpace,
@@ -131,4 +132,4 @@ export function StorageHero({
       </Card>
     </div>
   );
-}
+});
