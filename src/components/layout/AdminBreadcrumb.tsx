@@ -177,19 +177,19 @@ export function AdminBreadcrumb({ className, maxItems = 4 }: AdminBreadcrumbProp
   const generateBreadcrumbs = (): BreadcrumbConfig[] => {
     const path = location.pathname;
     const segments = path.split('/').filter(Boolean);
-    const breadcrumbs: BreadcrumbConfig[] = [];
+    let breadcrumbs: BreadcrumbConfig[] = [];
 
     // Always start with Admin Dashboard
-    breadcrumbs.push({
+    breadcrumbs = [...breadcrumbs, {
       label: 'Admin Dashboard',
       labelAr: 'لوحة التحكم الإدارية',
       path: '/admin/dashboard',
       icon: Home
-    });
+    }];
 
     // Check for exact route match first
     if (adminRouteConfig[path] && path !== '/admin/dashboard') {
-      breadcrumbs.push(adminRouteConfig[path]);
+      breadcrumbs = [...breadcrumbs, adminRouteConfig[path]];
       return breadcrumbs;
     }
 
@@ -200,11 +200,11 @@ export function AdminBreadcrumb({ className, maxItems = 4 }: AdminBreadcrumbProp
         // Add the parent route if it exists
         const parentPath = '/' + segments.slice(0, -1).join('/');
         if (adminRouteConfig[parentPath]) {
-          breadcrumbs.push(adminRouteConfig[parentPath]);
+          breadcrumbs = [...breadcrumbs, adminRouteConfig[parentPath]];
         }
         
         // Add the dynamic route
-        breadcrumbs.push(getConfig(match));
+        breadcrumbs = [...breadcrumbs, getConfig(match)];
         return breadcrumbs;
       }
     }
@@ -219,7 +219,7 @@ export function AdminBreadcrumb({ className, maxItems = 4 }: AdminBreadcrumbProp
       
       const config = adminRouteConfig[currentPath];
       if (config && currentPath !== '/admin/dashboard') {
-        breadcrumbs.push(config);
+        breadcrumbs = [...breadcrumbs, config];
       }
     }
 

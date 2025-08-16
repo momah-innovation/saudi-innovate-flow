@@ -106,18 +106,18 @@ export function FocusQuestionFilters({
   });
 
   const getActiveFilters = () => {
-    const filters = [];
+    let filters: Array<{ key: string; label: string }> = [];
     if (questionType !== 'all') {
       const typeLabel = typeOptions.find(opt => opt.value === questionType)?.label;
-      filters.push({ key: 'type', label: `النوع: ${typeLabel}` });
+      filters = [...filters, { key: 'type', label: `النوع: ${typeLabel}` }];
     }
     if (sensitivity !== 'all') {
       const sensitivityLabel = sensitivityOptions.find(opt => opt.value === sensitivity)?.label;
-      filters.push({ key: 'sensitivity', label: `الحساسية: ${sensitivityLabel}` });
+      filters = [...filters, { key: 'sensitivity', label: `الحساسية: ${sensitivityLabel}` }];
     }
     if (challengeId !== 'all') {
       const challengeLabel = challenges.find(c => c.id === challengeId)?.title_ar;
-      filters.push({ key: 'challenge', label: `التحدي: ${challengeLabel}` });
+      filters = [...filters, { key: 'challenge', label: `التحدي: ${challengeLabel}` }];
     }
     return filters;
   };

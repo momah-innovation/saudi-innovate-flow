@@ -36,8 +36,8 @@ interface Discussion {
   is_expert_comment: boolean;
   parent_comment_id?: string;
   profiles?: {
-    name: string;
-    name_ar: string;
+    name?: string;
+    name_ar?: string;
     profile_image_url?: string;
   } | null;
 }
@@ -69,7 +69,7 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setDiscussions((data as any[])?.filter(item => item.profiles) || []);
+      setDiscussions((data as any)?.filter((item: any) => item.profiles) || []);
     } catch (error) {
       logger.error('Error loading discussions', { challengeId }, error as Error);
     } finally {
