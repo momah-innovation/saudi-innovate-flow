@@ -160,13 +160,12 @@ export default function IdeaSubmissionWizard() {
 
   const loadChallengesAndQuestions = async () => {
     try {
-      const [challengesResponse, questionsResponse] = await Promise.all([
-        supabase.from('challenges').select('id, title_ar, description_ar, sector_id, priority_level').eq('status', 'active'),
-        supabase.from('focus_questions').select('id, question_text_ar, challenge_id')
-      ]);
-
-      if (challengesResponse.data) setChallenges(challengesResponse.data);
-      if (questionsResponse.data) setFocusQuestions(questionsResponse.data);
+      const { useIdeaSubmissionData } = await import('@/hooks/useIdeaSubmissionData');
+      const { loadChallengesAndQuestions: loadData } = useIdeaSubmissionData();
+      
+      const data = await loadData();
+      setChallenges(data.challenges);
+      setFocusQuestions(data.focusQuestions);
     } catch (error) {
       logger.error('Error loading challenges and questions', {}, error as Error);
       toast.error(isRTL ? 'خطأ في تحميل التحديات والأسئلة المحورية' : 'Error loading challenges and focus questions');

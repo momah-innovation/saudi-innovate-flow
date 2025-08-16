@@ -105,6 +105,9 @@ export default function Opportunities() {
     try {
       setLoading(true);
       
+      const { useOpportunityData } = await import('@/hooks/useOpportunityData');
+      const { loadMetadataForOpportunities } = useOpportunityData();
+      
       // Get the opportunities from the main table
       const { data: opportunitiesData, error } = await supabase
         .from('opportunities')
@@ -113,21 +116,8 @@ export default function Opportunities() {
 
       if (error) throw error;
 
-      // Get sector and department data separately if we have opportunities
-      let sectorsData = { data: [] };
-      let departmentsData = { data: [] };
-      
-      if (opportunitiesData && opportunitiesData.length > 0) {
-        const sectorIds = [...new Set(opportunitiesData.map(opp => opp.sector_id).filter(Boolean))];
-        const departmentIds = [...new Set(opportunitiesData.map(opp => opp.department_id).filter(Boolean))];
-        
-        if (sectorIds.length > 0) {
-          sectorsData = await supabase.from('sectors').select('id, name_ar, name').in('id', sectorIds);
-        }
-        if (departmentIds.length > 0) {
-          departmentsData = await supabase.from('departments').select('id, name_ar, name').in('id', departmentIds);
-        }
-      }
+      // Load metadata using the hook
+      const { sectors, departments } = await loadMetadataForOpportunities(opportunitiesData || []);
 
       const opportunitiesWithCounts = await Promise.all(
         (opportunitiesData || []).map(async (opp) => {
@@ -151,8 +141,8 @@ export default function Opportunities() {
             .single();
 
           // Manually attach sector and department data
-          const sector = sectorsData.data?.find(sector => sector.id === opp.sector_id) || null;
-          const department = departmentsData.data?.find(dept => dept.id === opp.department_id) || null;
+          const sector = sectors.find(s => s.id === opp.sector_id) || null;
+          const department = departments.find(d => d.id === opp.department_id) || null;
 
           return {
             ...opp,

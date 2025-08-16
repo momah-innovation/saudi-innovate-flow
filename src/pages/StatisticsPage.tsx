@@ -152,10 +152,14 @@ export default function StatisticsPage() {
   };
 
   const loadFilterOptions = async () => {
-    // Use consolidated hook for filter options
     try {
       setLoading(true);
-      // Filter options are now loaded via useStatisticsConsolidation hook
+      const { useStatisticsData } = await import('@/hooks/useStatisticsData');
+      const { loadFilterOptions: loadOptions } = useStatisticsData();
+      
+      const options = await loadOptions();
+      setDepartments(options.departments);
+      setSectors(options.sectors);
     } catch (error) {
       logger.error('Error loading filter options', {}, error as Error);
     } finally {
@@ -179,23 +183,10 @@ export default function StatisticsPage() {
   const loadStatisticsLegacy = async () => {
     try {
       setLoading(true);
-      // Placeholder for legacy implementation
-      setStats({
-        totalIdeas: 0,
-        totalChallenges: 0,
-        totalEvents: 0,
-        totalExperts: 0,
-        activeInnovators: 0,
-        totalPartners: 0,
-        totalDepartments: 0,
-        totalSectors: 0,
-        averageIdeaScore: 7.8,
-        successfulImplementations: 0,
-        ongoingProjects: 0,
-        totalParticipants: 0,
-        averageEventAttendance: 45,
-        platformGrowthRate: 12.5
-      });
+      const { useStatisticsData } = await import('@/hooks/useStatisticsData');
+      const { loadPlatformStats } = useStatisticsData();
+      
+      await loadPlatformStats({ timeRange, selectedDepartments, selectedSectors });
     } catch (error) {
       logger.error('Error loading statistics', {}, error as Error);
     } finally {
@@ -205,38 +196,10 @@ export default function StatisticsPage() {
 
   const loadTrendData = async () => {
     try {
-      const monthlyData: TrendData[] = [];
+      const { useStatisticsData } = await import('@/hooks/useStatisticsData');
+      const { loadTrendData: loadTrends } = useStatisticsData();
       
-      for (let i = 5; i >= 0; i--) {
-        const monthStart = subMonths(new Date(), i);
-        const monthEnd = subMonths(new Date(), i - 1);
-        
-        const [ideas, challenges, events, participants] = await Promise.all([
-          supabase.from('ideas').select('id', { count: 'exact', head: true })
-            .gte('created_at', monthStart.toISOString())
-            .lt('created_at', monthEnd.toISOString()),
-          supabase.from('challenges').select('id', { count: 'exact', head: true })
-            .gte('created_at', monthStart.toISOString())
-            .lt('created_at', monthEnd.toISOString()),
-          supabase.from('events').select('id', { count: 'exact', head: true })
-            .gte('event_date', format(monthStart, 'yyyy-MM-dd'))
-            .lt('event_date', format(monthEnd, 'yyyy-MM-dd')),
-          supabase.from('event_participants').select('id', { count: 'exact', head: true })
-            .gte('created_at', monthStart.toISOString())
-            .lt('created_at', monthEnd.toISOString())
-        ]);
-
-        monthlyData.push({
-          period: format(monthStart, 'MMM yyyy'),
-          ideas: ideas.count || 0,
-          challenges: challenges.count || 0,
-          events: events.count || 0,
-          participants: participants.count || 0,
-          timestamp: monthStart.toISOString()
-        });
-      }
-      
-      setTrendData(monthlyData);
+      await loadTrends(timeRange);
     } catch (error) {
       logger.error('Error loading trend data', {}, error as Error);
     }
@@ -244,34 +207,10 @@ export default function StatisticsPage() {
 
   const loadCategoryStats = async () => {
     try {
-      const { data: sectorsData } = await supabase
-        .from('sectors')
-        .select('id, name, name_ar');
-
-      const categoryCounts = await Promise.all(
-        (sectorsData || []).map(async (sector) => {
-          const { count } = await supabase
-            .from('challenges')
-            .select('id', { count: 'exact', head: true })
-            .eq('sector_id', sector.id);
-          
-          return {
-            name: isRTL ? sector.name_ar : sector.name,
-            count: count || 0
-          };
-        })
-      );
-
-      const totalCount = categoryCounts.reduce((sum, cat) => sum + cat.count, 0);
+      const { useStatisticsData } = await import('@/hooks/useStatisticsData');
+      const { loadCategoryStats: loadCategories } = useStatisticsData();
       
-      const categories: CategoryStats[] = categoryCounts.map((cat, index) => ({
-        ...cat,
-        percentage: totalCount > 0 ? Math.round((cat.count / totalCount) * 100) : 0,
-        color: COLORS[index % COLORS.length],
-        growth: Math.random() * 20 - 10
-      }));
-
-      setCategoryStats(categories.sort((a, b) => b.count - a.count));
+      await loadCategories();
     } catch (error) {
       logger.error('Error loading category stats', {}, error as Error);
     }

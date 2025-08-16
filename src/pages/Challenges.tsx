@@ -272,11 +272,10 @@ export default function Challenges() {
     }
 
     try {
-      await supabase.from('challenge_participants').insert({
-        challenge_id: challenge.id,
-        user_id: user.id,
-        participation_type: 'individual'
-      });
+      const { useChallengePageData } = await import('@/hooks/useChallengePageData');
+      const { joinChallenge: joinChallengeHook } = useChallengePageData();
+      
+      await joinChallengeHook(challenge.id, user.id, 'individual');
 
       toast({
         title: t('participation_success', 'Successfully Registered'),
@@ -304,21 +303,20 @@ export default function Challenges() {
     }
 
     try {
-      const isLiked = likedChallenges.has(challenge.id);
+      const { useChallengePageData } = await import('@/hooks/useChallengePageData');
+      const { toggleChallengeLike } = useChallengePageData();
       
-      if (isLiked) {
-        await supabase.from('challenge_likes').delete().eq('challenge_id', challenge.id).eq('user_id', user.id);
+      const isLiked = likedChallenges.has(challenge.id);
+      const result = await toggleChallengeLike(challenge.id, user.id, isLiked);
+      
+      if (result.isLiked) {
+        setLikedChallenges(prev => new Set([...prev, challenge.id]));
+      } else {
         setLikedChallenges(prev => {
           const newSet = new Set(prev);
           newSet.delete(challenge.id);
           return newSet;
         });
-      } else {
-        await supabase.from('challenge_likes').insert({
-          challenge_id: challenge.id,
-          user_id: user.id
-        });
-        setLikedChallenges(prev => new Set([...prev, challenge.id]));
       }
     } catch (error) {
       debugLog.error('Like error', { error });
