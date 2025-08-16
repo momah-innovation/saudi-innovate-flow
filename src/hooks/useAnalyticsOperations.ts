@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface AnalyticsEvent {
   event_type: string;
@@ -65,7 +66,7 @@ export const useAnalyticsOperations = () => {
 
       if (insertError) throw insertError;
     } catch (err) {
-      console.error('Failed to track analytics event:', err);
+      debugLog.error('Failed to track analytics event', { component: 'AnalyticsOperations' }, err);
       // Don't show toast for analytics errors to avoid UX disruption
     }
   }, []);

@@ -216,7 +216,7 @@ export const getMenuItemsByGroup = (items: MenuItem[]) => {
 // Helper function to filter menu items by user roles with comprehensive debugging
 export const filterMenuItemsByRoles = (items: MenuItem[], userRoles: string[]): MenuItem[] => {
   if (!Array.isArray(userRoles) || userRoles.length === 0) {
-    console.warn('🚨 No valid user roles provided to filterMenuItemsByRoles:', userRoles);
+    debugLog.warn('No valid user roles provided to filterMenuItemsByRoles', { component: 'NavigationMenu', data: { userRoles } });
     // Return basic navigation items that all users should see
     return items.filter(item => ['dashboard', 'workspace', 'settings'].includes(item.id));
   }
@@ -230,7 +230,7 @@ export const filterMenuItemsByRoles = (items: MenuItem[], userRoles: string[]): 
   });
   
   if (filtered.length === 0) {
-    console.error('🚨 No menu items passed role filter! Providing emergency fallback.');
+    debugLog.error('No menu items passed role filter! Providing emergency fallback', { component: 'NavigationMenu' });
     return items.filter(item => ['dashboard', 'workspace', 'settings'].includes(item.id));
   }
   

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * ✅ UNIFIED NAVIGATION HOOK
@@ -25,7 +26,8 @@ export const useNavigationHandler = () => {
         navigate(path);
       }
     } catch (error) {
-      console.error('Navigation error:', error);
+      // Use structured logging instead of console.error
+      debugLog.error('Navigation error', { component: 'NavigationHandler', action: 'navigateTo', path }, error);
       // Fallback to window.location for edge cases
       window.location.href = path;
     }
@@ -94,7 +96,7 @@ export const useUrlUtils = () => {
       await navigator.clipboard.writeText(window.location.href);
       return true;
     } catch (error) {
-      console.error('Failed to copy URL:', error);
+      debugLog.error('Failed to copy URL', { component: 'NavigationHandler', action: 'copyCurrentUrl' }, error);
       return false;
     }
   }, []);

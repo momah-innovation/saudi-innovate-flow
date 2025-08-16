@@ -16,7 +16,7 @@ export const useTranslationAppShell = () => {
   } catch (error) {
     // Handle case where hook is called outside Router context
     // This can happen during app initialization
-    console.warn('Translation AppShell: Router context not available yet');
+    debugLog.warn('Translation AppShell: Router context not available yet', { component: 'TranslationAppShell' });
     return;
   }
 
@@ -110,7 +110,7 @@ export const useTranslationAppShell = () => {
       
       preloadNamespaces(uniqueNamespaces).catch((error) => {
         // Silent error handling for production
-        console.warn('Translation preload warning:', error.message);
+        debugLog.warn('Translation preload warning', { component: 'TranslationAppShell', error: error.message });
       });
     }
   }, [location?.pathname]);
@@ -129,7 +129,7 @@ export const useTranslationPerformance = () => {
       const loadTime = endTime - startTime;
       
       if (loadTime > 1000) {
-        console.warn(`Translation loading took ${loadTime.toFixed(2)}ms - consider optimization`);
+        debugLog.warn(`Translation loading performance warning`, { component: 'TranslationAppShell', data: { loadTime } });
       }
     };
   }, []);
@@ -222,10 +222,10 @@ export const preloadCriticalTranslations = async () => {
     
     // Performance monitoring
     if (loadTime > 300) {
-      console.warn(`⚠️ Slow critical translation loading: ${loadTime.toFixed(1)}ms`);
+      debugLog.warn(`Slow critical translation loading`, { component: 'TranslationAppShell', data: { loadTime } });
     }
   } catch (error) {
-    console.error('❌ Failed to preload critical translations:', error);
+    debugLog.error('Failed to preload critical translations', { component: 'TranslationAppShell' }, error);
   }
 };
 

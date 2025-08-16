@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * ✅ TYPE SAFETY UTILITIES
@@ -224,12 +225,12 @@ export const useTypeSafeData = () => {
     try {
       const parsed = JSON.parse(jsonString);
       if (validator && !validator(parsed)) {
-        console.warn('Parsed JSON does not match expected type');
+        debugLog.warn('Parsed JSON does not match expected type', { component: 'TypeSafeData' });
         return null;
       }
       return parsed;
     } catch (error) {
-      console.error('Failed to parse JSON:', error);
+      debugLog.error('Failed to parse JSON', { component: 'TypeSafeData' }, error);
       return null;
     }
   }, []);

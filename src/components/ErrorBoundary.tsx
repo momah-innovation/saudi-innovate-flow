@@ -58,12 +58,12 @@ function ErrorFallback() {
       </p>
       <div className="flex gap-4">
         <Button 
-          onClick={() => navigationHandler.navigateTo(window.location.href)}
+          onClick={() => window.location.reload()}
           variant="outline"
         >
           {t('errors.try_again')}
         </Button>
-        <Button onClick={() => navigationHandler.navigateTo(window.location.href)}>
+        <Button onClick={() => window.location.reload()}>
           {t('error_boundary.refresh_page', 'Refresh Page')}
         </Button>
       </div>
