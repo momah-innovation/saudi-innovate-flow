@@ -99,8 +99,10 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
     }
   }, [debouncedNavigate, onOpenChange]);
   
-  // REMOVED: old state management - now using optimized handlers
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set([MENU_GROUPS.MAIN]));
+  // OPTIMIZED: State management for navigation groups
+  const [openGroups, setOpenGroups] = useState<Set<string>>(
+    () => new Set([MENU_GROUPS.MAIN])
+  );
   const [isMobile, setIsMobile] = useState(false);
 
   // Mobile detection
