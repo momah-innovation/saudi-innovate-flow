@@ -11,6 +11,7 @@ import {
   Sparkles, TrendingUp, Users, Target, Clock, 
   ArrowRight, Star, Lightbulb, BookOpen 
 } from 'lucide-react';
+// Using inline type instead of import for now
 
 interface Recommendation {
   id: string;
@@ -206,7 +207,7 @@ export function SmartRecommendations({
     }
   };
 
-  const getRecommendationType = (index: number, idea: any): string => {
+  const getRecommendationType = (index: number, idea: { overall_score?: number; like_count?: number; view_count?: number }): string => {
     if (idea.overall_score >= 9) return 'high_potential';
     if (idea.like_count > 50) return 'trending';
     if (idea.view_count > 200) return 'popular';
@@ -215,7 +216,7 @@ export function SmartRecommendations({
     return 'discovery';
   };
 
-  const calculateConfidenceScore = (idea: any, type: string): number => {
+  const calculateConfidenceScore = (idea: { overall_score?: number }, type: string): number => {
     let baseScore = idea.overall_score || 5;
     
     switch (type) {
@@ -228,7 +229,7 @@ export function SmartRecommendations({
     }
   };
 
-  const generateReasoning = (type: string, idea: any): string => {
+  const generateReasoning = (type: string, idea: { overall_score?: number; like_count?: number; view_count?: number }): string => {
     const reasons = {
       high_potential: isRTL ? 
         `فكرة عالية الجودة بنتيجة ${idea.overall_score}/10` :

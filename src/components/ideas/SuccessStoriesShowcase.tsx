@@ -13,17 +13,49 @@ import {
   Users, Target, Rocket, CheckCircle, Award
 } from 'lucide-react';
 
+interface TimelineStep {
+  phase: string;
+  title?: string;
+  description: string;
+  date: string;
+  duration?: string;
+  milestones?: string[];
+}
+
+interface ROIMetric {
+  cost_savings?: number;
+  revenue_increase?: number;
+  efficiency_gain?: number;
+  time_saved?: number;
+}
+
+interface ImpactArea {
+  area: string;
+  metrics: Record<string, number>;
+  description: string;
+}
+
+interface Testimonial {
+  name: string;
+  role: string;
+  position?: string;
+  company: string;
+  avatar?: string;
+  quote: string;
+  rating: number;
+}
+
 interface SuccessStory {
   id: string;
   idea_id: string;
   title: string;
   summary: string;
   detailed_story: string;
-  implementation_timeline: any;
-  roi_metrics: any;
-  impact_areas: any;
-  testimonials: any;
-  media_urls: any;
+  implementation_timeline: TimelineStep[];
+  roi_metrics: ROIMetric;
+  impact_areas: ImpactArea[];
+  testimonials: Testimonial[];
+  media_urls: string[];
   featured_image_url: string;
   status: string;
   published_at: string;
@@ -99,7 +131,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
     });
   };
 
-  const renderROIMetric = (metric: any) => {
+  const renderROIMetric = (metric: ROIMetric) => {
     if (!metric) return null;
     
     return (
@@ -132,7 +164,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
     );
   };
 
-  const renderTimelineStep = (step: any, index: number) => (
+  const renderTimelineStep = (step: TimelineStep, index: number) => (
     <div key={index} className="flex gap-4 pb-6">
       <div className="flex flex-col items-center">
         <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">
@@ -365,7 +397,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                       {isRTL ? 'شهادات وآراء' : 'Testimonials'}
                     </h3>
                     <div className="grid gap-4 md:grid-cols-2">
-                      {selectedStory.testimonials.map((testimonial: any, index: number) => (
+                      {selectedStory.testimonials.map((testimonial: Testimonial, index: number) => (
                         <Card key={index} className="p-4">
                           <div className="flex items-start gap-3">
                             <Avatar className="w-10 h-10">
@@ -376,7 +408,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                               <p className="text-sm italic mb-2">"{testimonial.quote}"</p>
                               <div className="text-xs text-muted-foreground">
                                 <div className="font-medium">{testimonial.name}</div>
-                                <div>{testimonial.position}</div>
+                                <div>{testimonial.position || testimonial.role}</div>
                               </div>
                             </div>
                           </div>
