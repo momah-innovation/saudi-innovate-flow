@@ -25,6 +25,7 @@ import {
   Image
 } from 'lucide-react';
 import { getOpportunityImageUrl } from '@/utils/storageUtils';
+import { OpportunityData } from '@/types/common';
 
 interface EditOpportunityDialogProps {
   opportunity: OpportunityData;
@@ -79,11 +80,11 @@ export const EditOpportunityDialog = ({
       // Pre-populate form with existing opportunity data
       setValue('title_ar', opportunity.title_ar || '');
       setValue('title_en', opportunity.title_en || '');
-      setValue('description_ar', opportunity.description_ar || '');
+      setValue('description_ar', opportunity.description_ar || opportunity.description || '');
       setValue('description_en', opportunity.description_en || '');
       setValue('opportunity_type', opportunity.opportunity_type || '');
       setValue('status', opportunity.status || '');
-      setValue('priority_level', opportunity.priority_level || '');
+      setValue('priority_level', opportunity.priority_level || 'medium');
       setValue('budget_min', opportunity.budget_min || 0);
       setValue('budget_max', opportunity.budget_max || 0);
       setValue('deadline', opportunity.deadline ? opportunity.deadline.split('T')[0] : '');

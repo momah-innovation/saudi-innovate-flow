@@ -79,10 +79,10 @@ export const DeleteOpportunityDialog = ({
             </p>
             <div className="p-3 bg-muted rounded-lg">
               <p className="font-medium">
-                {isRTL ? 'الفرصة:' : 'Opportunity:'} {opportunity?.title_ar || opportunity?.title_en}
+                {isRTL ? 'الفرصة:' : 'Opportunity:'} {opportunity?.title_ar || opportunity?.title_en || opportunity?.title}
               </p>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'النوع:' : 'Type:'} {opportunity?.opportunity_type}
+                {isRTL ? 'النوع:' : 'Type:'} {opportunity?.opportunity_type || opportunity?.type}
               </p>
             </div>
             <p className="text-sm text-destructive">

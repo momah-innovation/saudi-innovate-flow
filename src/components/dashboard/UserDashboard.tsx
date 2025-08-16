@@ -21,6 +21,7 @@ import { queryBatcher } from '@/utils/queryBatcher';
 import { timeAsync } from '@/utils/performanceMonitor';
 import { useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
+import { transformToDashboardProfile } from '@/types/common';
 // Removed navigation performance import - no longer using debounced navigate
 import { toast } from 'sonner';
 import { formatDate, formatDateArabic, dateHandler } from '@/utils/unified-date-handler';
@@ -123,6 +124,9 @@ export default React.memo(function UserDashboard() {
   
   // Derived values - safe to calculate after hooks
   const currentLanguage = language;
+  
+  // Transform userProfile to DashboardUserProfile
+  const dashboardProfile = useMemo(() => transformToDashboardProfile(userProfile), [userProfile]);
   
   // Memoized functions - must be after state hooks
   const getPrimaryRole = useCallback(getRoleFromHook, []);
@@ -338,7 +342,7 @@ export default React.memo(function UserDashboard() {
         {/* Expert Dashboard */}
         <div style={{ display: primaryRole === 'expert' ? 'block' : 'none' }}>
           <ExpertDashboard 
-            userProfile={userProfile}
+            userProfile={dashboardProfile}
             canEvaluateIdeas={permissions.canEvaluateIdeas}
             canAccessExpertTools={permissions.canAccessExpertTools}
           />
@@ -347,7 +351,7 @@ export default React.memo(function UserDashboard() {
         {/* Partner Dashboard */}
         <div style={{ display: primaryRole === 'partner' ? 'block' : 'none' }}>
           <PartnerDashboard 
-            userProfile={userProfile}
+            userProfile={dashboardProfile}
             canManageOpportunities={permissions.canManageOpportunities}
             canViewPartnerDashboard={permissions.canViewPartnerDashboard}
           />
@@ -356,7 +360,7 @@ export default React.memo(function UserDashboard() {
         {/* Manager Dashboard - for leadership roles */}
         <div style={{ display: ['team_lead', 'project_manager', 'department_head', 'sector_lead', 'innovation_manager'].includes(primaryRole) ? 'block' : 'none' }}>
           <ManagerDashboard 
-            userProfile={userProfile}
+            userProfile={dashboardProfile}
             canManageTeams={permissions.canManageTeams}
             canViewAnalytics={permissions.canViewAnalytics}
             canManageProjects={permissions.canManageTeams} // Using existing permission
@@ -366,7 +370,7 @@ export default React.memo(function UserDashboard() {
         {/* Coordinator Dashboard - for coordination roles */}
         <div style={{ display: ['expert_coordinator', 'campaign_manager', 'event_manager', 'stakeholder_manager'].includes(primaryRole) ? 'block' : 'none' }}>
           <CoordinatorDashboard 
-            userProfile={userProfile}
+            userProfile={dashboardProfile}
             canCoordinateExperts={permissions.canManageUsers}
             canManageEvents={permissions.canViewAnalytics}
             canViewAnalytics={permissions.canViewAnalytics}
@@ -376,7 +380,7 @@ export default React.memo(function UserDashboard() {
         {/* Analyst Dashboard - for data and analysis roles */}
         <div style={{ display: ['data_analyst', 'system_auditor'].includes(primaryRole) ? 'block' : 'none' }}>
           <AnalystDashboard 
-            userProfile={userProfile}
+            userProfile={dashboardProfile}
             canAccessAnalytics={permissions.canAccessAnalytics}
             canViewSystemData={permissions.canViewSystemData}
             canGenerateReports={permissions.canGenerateReports}
@@ -386,7 +390,7 @@ export default React.memo(function UserDashboard() {
         {/* Content Dashboard - for content and research roles */}
         <div style={{ display: ['content_manager', 'challenge_manager', 'research_lead'].includes(primaryRole) ? 'block' : 'none' }}>
           <ContentDashboard 
-            userProfile={userProfile}
+            userProfile={dashboardProfile}
             canManageContent={permissions.canManageContent}
             canManageChallenges={permissions.canManageChallenges}
             canResearch={permissions.canResearch}

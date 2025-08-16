@@ -19,6 +19,7 @@ import { OpportunityAnalyticsDialog } from '@/components/opportunities/Opportuni
 import { LikeOpportunityButton } from '@/components/opportunities/LikeOpportunityButton';
 import { ShareOpportunityDialog } from '@/components/opportunities/ShareOpportunityDialog';
 import { BookmarkOpportunityButton } from '@/components/opportunities/BookmarkOpportunityButton';
+import { transformToOpportunityData } from '@/types/common';
 
 interface Opportunity {
   id: string;
@@ -34,6 +35,7 @@ interface Opportunity {
   contact_person?: string;
   contact_email?: string;
   created_at: string;
+  updated_at: string;
   applications_count?: number;
   views_count?: number;
   likes_count?: number;
@@ -459,7 +461,7 @@ export default function OpportunitiesManagement() {
         {/* Edit Opportunity Dialog */}
         {selectedOpportunity && (
           <EditOpportunityDialog
-            opportunity={selectedOpportunity}
+            opportunity={transformToOpportunityData(selectedOpportunity)}
             open={showEditDialog}
             onOpenChange={setShowEditDialog}
             onSuccess={() => {
@@ -473,7 +475,7 @@ export default function OpportunitiesManagement() {
         {/* Delete Opportunity Dialog */}
         {selectedOpportunity && (
           <DeleteOpportunityDialog
-            opportunity={selectedOpportunity}
+            opportunity={transformToOpportunityData(selectedOpportunity)}
             open={showDeleteDialog}
             onOpenChange={setShowDeleteDialog}
             onSuccess={() => {

@@ -334,6 +334,39 @@ export interface DashboardUserProfile {
   name?: string; // Alternative to full_name for backward compatibility
 }
 
+// Helper function to transform UserProfile to DashboardUserProfile
+export function transformToDashboardProfile(userProfile: any): DashboardUserProfile | null {
+  if (!userProfile) return null;
+  
+  return {
+    id: userProfile.id,
+    user_id: userProfile.user_id || userProfile.id,
+    full_name: userProfile.full_name || userProfile.name || userProfile.display_name || null,
+    avatar_url: userProfile.avatar_url || null,
+    bio: userProfile.bio || null,
+    expertise: userProfile.expertise || [],
+    department: userProfile.department,
+    organization: userProfile.organization,
+    role: userProfile.role,
+    status: userProfile.status || 'active',
+    created_at: userProfile.created_at || new Date().toISOString(),
+    updated_at: userProfile.updated_at || new Date().toISOString(),
+    last_sign_in_at: userProfile.last_sign_in_at,
+    user_roles: userProfile.user_roles || [],
+    permissions: userProfile.permissions,
+    recent_activity: userProfile.recent_activity,
+    total_ideas: userProfile.total_ideas,
+    active_challenges: userProfile.active_challenges,
+    total_points: userProfile.total_points,
+    innovation_score: userProfile.innovation_score,
+    expertise_areas: userProfile.expertise_areas,
+    current_role: userProfile.current_role,
+    role_permissions: userProfile.role_permissions,
+    display_name: userProfile.display_name,
+    name: userProfile.name
+  };
+}
+
 export interface IdeaTemplateStructure {
   template_data: {
     sections: TemplateSection[];
@@ -423,7 +456,12 @@ export interface StoryTestimonial {
 export interface OpportunityData {
   id: string;
   title: string;
+  title_ar?: string; // For multilingual support
+  title_en?: string; // For multilingual support
   description: string;
+  description_ar?: string; // For multilingual support
+  description_en?: string; // For multilingual support
+  opportunity_type?: string; // For database compatibility
   type: 'internship' | 'job' | 'volunteer' | 'partnership' | 'collaboration';
   status: 'draft' | 'published' | 'filled' | 'expired' | 'cancelled';
   location?: string;
@@ -439,6 +477,82 @@ export interface OpportunityData {
   applications_count?: number;
   views_count?: number;
   partner_organization_id?: string;
+  // Additional fields for compatibility
+  priority_level?: string;
+  budget_min?: number;
+  budget_max?: number;
+  deadline?: string;
+}
+
+// Database Opportunity type (from Supabase)
+export interface Opportunity {
+  id: string;
+  title_ar: string;
+  title_en?: string;
+  description_ar?: string;
+  description_en?: string;
+  opportunity_type: string;
+  status: string;
+  location?: string;
+  remote_allowed?: boolean;
+  contact_person?: string;
+  contact_email?: string;
+  contact_phone?: string;
+  image_url?: string;
+  requirements?: OpportunityRequirements;
+  benefits?: OpportunityBenefits;
+  created_at: string;
+  updated_at: string;
+  applications_count?: number;
+  views_count?: number;
+  partner_organization_id?: string;
+  deadline?: string;
+  budget_min?: number;
+  budget_max?: number;
+  priority_level?: string;
+}
+
+// Helper function to transform Opportunity to OpportunityData
+export function transformToOpportunityData(opportunity: Opportunity): OpportunityData {
+  return {
+    id: opportunity.id,
+    title: opportunity.title_ar || opportunity.title_en || '',
+    title_ar: opportunity.title_ar,
+    title_en: opportunity.title_en,
+    description: opportunity.description_ar || opportunity.description_en || '',
+    description_ar: opportunity.description_ar,
+    description_en: opportunity.description_en,
+    opportunity_type: opportunity.opportunity_type,
+    type: mapOpportunityType(opportunity.opportunity_type),
+    status: opportunity.status as any,
+    location: opportunity.location,
+    remote_allowed: opportunity.remote_allowed || false,
+    contact_person: opportunity.contact_person || '',
+    contact_email: opportunity.contact_email || '',
+    contact_phone: opportunity.contact_phone,
+    image_url: opportunity.image_url,
+    requirements: opportunity.requirements || { skills: [], education_level: '' },
+    benefits: opportunity.benefits || { compensation: '', benefits: [] },
+    created_at: opportunity.created_at,
+    updated_at: opportunity.updated_at,
+    applications_count: opportunity.applications_count,
+    views_count: opportunity.views_count,
+    partner_organization_id: opportunity.partner_organization_id,
+    priority_level: opportunity.priority_level,
+    budget_min: opportunity.budget_min,
+    budget_max: opportunity.budget_max,
+    deadline: opportunity.deadline
+  };
+}
+
+function mapOpportunityType(dbType: string): 'internship' | 'job' | 'volunteer' | 'partnership' | 'collaboration' {
+  switch (dbType) {
+    case 'funding': return 'partnership';
+    case 'collaboration': return 'collaboration';
+    case 'sponsorship': return 'partnership';
+    case 'research': return 'collaboration';
+    default: return 'partnership';
+  }
 }
 
 export interface OpportunityRequirements {
