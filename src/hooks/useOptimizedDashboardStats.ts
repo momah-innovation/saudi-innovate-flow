@@ -71,7 +71,7 @@ export const useUserActivitySummary = (userId?: string) => {
           .from('user_activity_summary')
           .select('*')
           .eq('user_id', userId)
-          .single();
+          .maybeSingle();
           
         if (error && error.code !== 'PGRST116') { // Ignore "not found" errors
           throw error;
@@ -100,7 +100,7 @@ export const useNavigationCache = (userId?: string) => {
         .from('user_navigation_cache')
         .select('*')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
         
       if (error && error.code !== 'PGRST116') {
         throw error;

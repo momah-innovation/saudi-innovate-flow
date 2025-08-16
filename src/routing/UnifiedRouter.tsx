@@ -4,7 +4,7 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { debugLog } from '@/utils/debugLogger';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { navigationStateMachine } from '@/utils/NavigationStateMachine';
+
 import { TranslationAppShellProvider } from '@/components/TranslationAppShellProvider';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AppShell } from '@/components/layout/AppShell';
