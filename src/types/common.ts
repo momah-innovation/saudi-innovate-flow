@@ -3,6 +3,113 @@
  * Replaces 'any' types with proper TypeScript interfaces
  */
 
+// ✅ BASE ENTITY TYPES
+export interface BaseEntity {
+  id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// ✅ SYSTEM ORGANIZATIONAL TYPES
+export interface SystemSector extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  description?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface SystemDepartment extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  description?: string;
+  sector_id?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface SystemDomain extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  description?: string;
+  department_id?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface SystemPartner extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  description?: string;
+  organization_type: 'government' | 'private' | 'non_profit' | 'academic';
+  status: 'active' | 'inactive';
+}
+
+export interface SystemExpert extends BaseEntity {
+  user_id: string;
+  expertise_areas: string[];
+  certifications?: string[];
+  years_of_experience?: number;
+  availability_status: 'available' | 'busy' | 'unavailable';
+  rating?: number;
+}
+
+// ✅ ORGANIZATIONAL ENTITY TYPES
+export interface Entity extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  description?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface Deputy extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  entity_id: string;
+  description?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface Department extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  deputy_id?: string;
+  entity_id?: string;
+  description?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface Domain extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  department_id?: string;
+  description?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface SubDomain extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  domain_id: string;
+  description?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface Service extends BaseEntity {
+  name_ar: string;
+  name_en: string;
+  sub_domain_id?: string;
+  description?: string;
+  status: 'active' | 'inactive';
+}
+
+// ✅ ERROR TYPES
+export interface AppError extends Error {
+  code?: string | number;
+  status?: number;
+  statusCode?: number; // Alternative property name for compatibility
+  timestamp?: string; // For error tracking
+  details?: Record<string, unknown>;
+  context?: Record<string, unknown>;
+}
+
 // ✅ USER AND PROFILE TYPES
 export interface UserProfile {
   id: string;
