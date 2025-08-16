@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useSearchAnalytics } from '@/hooks/useSearchAnalytics';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -41,6 +42,7 @@ export function SmartSearch({
   showFilters = true 
 }: SmartSearchProps) {
   const { t, language } = useUnifiedTranslation();
+  const searchAnalytics = useSearchAnalytics();
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -157,16 +159,12 @@ export function SmartSearch({
       onResults(sortedResults);
 
       // Track search analytics
-      await supabase.from('analytics_events').insert({
-        event_type: 'search_performed',
-        event_category: 'user_interaction',
-        properties: {
-          query: searchQuery,
-          result_count: sortedResults.length,
-          search_types: selectedTypes,
-          language: language
-        }
-      });
+      await searchAnalytics.trackSearchPerformed(
+        searchQuery,
+        sortedResults.length,
+        selectedTypes,
+        language
+      );
 
     } catch (error) {
       logger.error('Smart search operation failed', { 

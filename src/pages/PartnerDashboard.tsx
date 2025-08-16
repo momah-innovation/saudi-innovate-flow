@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { usePartnerDashboardData } from '@/hooks/usePartnerDashboardData';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +11,6 @@ import {
   DollarSign, Award, Eye, Edit, Plus, Building, FileText
 } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { useAuth } from '@/contexts/AuthContext';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
@@ -69,6 +70,7 @@ interface ApplicationItem {
 
 export default function PartnerDashboard() {
   const { userProfile } = useAuth();
+  const partnerDashboardData = usePartnerDashboardData();
   const { t, isRTL } = useUnifiedTranslation();
   const { direction } = useDirection();
   const navigate = useNavigate();
@@ -171,23 +173,11 @@ export default function PartnerDashboard() {
       setApplications(transformedApplications);
 
       // For partnerships tab - get existing challenge/campaign/event partnerships
-      const [
-        challengePartnerships,
-        campaignPartnerships,
-        eventPartnershipsData
-      ] = await Promise.all([
-        supabase.from('challenge_partners').select(`
-          *,
-          challenges(title_ar, status)
-        `).eq('partner_id', userProfile?.id || ''),
-        supabase.from('campaign_partners').select(`
-          *,
-          campaigns(title_ar, status)
-        `).eq('partner_id', userProfile?.id || ''),
-        Promise.resolve({ data: [], error: null }) // Placeholder for event partnerships
-      ]);
-
-      setEventPartnerships(eventPartnershipsData.data || []);
+      const partnershipData = await partnerDashboardData.loadPartnershipData(userProfile?.id || '');
+      
+      const challengePartnerships = { data: partnershipData.challengePartnerships };
+      const campaignPartnerships = { data: partnershipData.campaignPartnerships };
+      const eventPartnershipsData = { data: [] };
 
       // Create partnerships list from existing data
       const partnershipsList: Partnership[] = [
