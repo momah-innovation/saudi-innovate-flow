@@ -1,7 +1,7 @@
 // Unified Route Management System - Single Source of Truth
 // Consolidates all routing logic and RBAC into one cohesive system
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { debugLog } from '@/utils/debugLogger';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
@@ -12,20 +12,15 @@ import { ALL_ROUTES } from './routes';
 import { UserRole } from '@/hooks/useRoleAccess';
 import { Loader2 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { useTranslationPrefetch } from '@/hooks/useTranslationPrefetch';
 
-// Direct imports - no lazy loading
+// CORE USER FLOWS - Direct imports (High usage 60%+)
 import LandingPage from '@/pages/LandingPage';
 import AuthPage from '@/pages/Auth';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import HelpPage from '@/pages/HelpPage';
 import NotFound from '@/pages/NotFound';
 import DesignSystem from '@/pages/DesignSystem';
-import WorkspaceDocumentation from '@/pages/WorkspaceDocumentation';
-import PartnersManagement from '@/pages/admin/PartnersManagement';
-import SectorsManagement from '@/pages/admin/SectorsManagement';
-import ExpertAssignmentManagement from '@/pages/admin/ExpertAssignmentManagement';
-import AdminEvaluations from '@/pages/admin/AdminEvaluations';
-import AdminRelationships from '@/pages/admin/AdminRelationships';
 import Challenges from '@/pages/Challenges';
 import ChallengeDetails from '@/pages/ChallengeDetails';
 import ChallengeIdeaSubmission from '@/pages/ChallengeIdeaSubmission';
@@ -35,6 +30,19 @@ import ProfileSetupPage from '@/pages/ProfileSetup';
 import SettingsPage from '@/pages/Settings';
 import EventsBrowse from '@/pages/EventsBrowse';
 import ChallengesBrowse from '@/pages/ChallengesBrowse';
+import CollaborationLandingPage from '@/pages/CollaborationLandingPage';
+import { CollaborativeIdeasPage } from '@/pages/CollaborativeBrowse';
+import { CollaborativeChallengesPage } from '@/pages/CollaborativeBrowse';
+import { CollaborativeEventsPage } from '@/pages/CollaborativeBrowse';
+import { CollaborativeOpportunitiesPage } from '@/pages/CollaborativeBrowse';
+
+// ADMIN MANAGEMENT - Direct imports (Medium usage 20-60%)
+import WorkspaceDocumentation from '@/pages/WorkspaceDocumentation';
+import PartnersManagement from '@/pages/admin/PartnersManagement';
+import SectorsManagement from '@/pages/admin/SectorsManagement';
+import ExpertAssignmentManagement from '@/pages/admin/ExpertAssignmentManagement';
+import AdminEvaluations from '@/pages/admin/AdminEvaluations';
+import AdminRelationships from '@/pages/admin/AdminRelationships';
 import AccessControlManagement from '@/pages/dashboard/AccessControlManagement';
 import UserManagement from '@/pages/admin/UserManagement';
 import ChallengesManagement from '@/pages/admin/ChallengesManagement';
@@ -54,22 +62,19 @@ import RelationshipOverview from '@/pages/admin/RelationshipOverview';
 import UserManagementPage from '@/pages/admin/UserManagementPage';
 import EvaluationManagement from '@/pages/admin/EvaluationManagement';
 import SystemSettings from '@/pages/admin/SystemSettings';
-import SystemAnalytics from '@/pages/admin/SystemAnalytics';
-import StorageManagement from '@/pages/admin/StorageManagement';
 import StoragePolicies from '@/pages/admin/StoragePolicies';
 import SecurityMonitor from '@/pages/admin/SecurityMonitor';
-import SecurityAdvanced from '@/pages/admin/SecurityAdvanced';
-import AccessControlAdvanced from '@/pages/admin/AccessControlAdvanced';
 import ElevationMonitor from '@/pages/admin/ElevationMonitor';
-import AnalyticsAdvanced from '@/pages/admin/AnalyticsAdvanced';
-import AIManagement from '@/pages/admin/AIManagement';
-import FileManagementAdvanced from '@/pages/admin/FileManagementAdvanced';
-import ChallengesAnalyticsAdvanced from '@/pages/admin/ChallengesAnalyticsAdvanced';
-import CollaborationLandingPage from '@/pages/CollaborationLandingPage';
-import { CollaborativeIdeasPage } from '@/pages/CollaborativeBrowse';
-import { CollaborativeChallengesPage } from '@/pages/CollaborativeBrowse';
-import { CollaborativeEventsPage } from '@/pages/CollaborativeBrowse';
-import { CollaborativeOpportunitiesPage } from '@/pages/CollaborativeBrowse';
+
+// HEAVY ADMIN PAGES - Lazy loaded (Low usage <15%)
+const SystemAnalytics = React.lazy(() => import('@/pages/admin/SystemAnalytics'));
+const StorageManagement = React.lazy(() => import('@/pages/admin/StorageManagement'));
+const SecurityAdvanced = React.lazy(() => import('@/pages/admin/SecurityAdvanced'));
+const AccessControlAdvanced = React.lazy(() => import('@/pages/admin/AccessControlAdvanced'));
+const AnalyticsAdvanced = React.lazy(() => import('@/pages/admin/AnalyticsAdvanced'));
+const AIManagement = React.lazy(() => import('@/pages/admin/AIManagement'));
+const FileManagementAdvanced = React.lazy(() => import('@/pages/admin/FileManagementAdvanced'));
+const ChallengesAnalyticsAdvanced = React.lazy(() => import('@/pages/admin/ChallengesAnalyticsAdvanced'));
 
 // Workspace Components
 import UserWorkspace from '@/pages/workspace/UserWorkspace';
@@ -89,10 +94,43 @@ const LoadingFallback = () => {
   );
 };
 
+// Admin page loading component
+const AdminPageLoader = () => {
+  return (
+    <div className="min-h-[400px] flex items-center justify-center">
+      <div className="text-center space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin mx-auto" />
+        <p className="text-sm text-muted-foreground">Loading admin panel...</p>
+      </div>
+    </div>
+  );
+};
+
+// Lazy loading wrapper for admin components
+const LazyAdminRoute = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<AdminPageLoader />}>
+    <ErrorBoundary fallback={
+      <div className="min-h-[400px] flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <p className="text-destructive">Failed to load admin page</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    }>
+      {children}
+    </ErrorBoundary>
+  </Suspense>
+);
+
 // Route configuration interface
 export interface UnifiedRouteConfig {
   path: string;
-  component: React.ComponentType;
+  component: React.ComponentType | (() => React.ReactElement);
   public?: boolean;
   requireAuth?: boolean;
   requireProfile?: boolean;
@@ -264,7 +302,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: '/admin/security-advanced',
-    component: SecurityAdvanced,
+    component: () => <LazyAdminRoute><SecurityAdvanced /></LazyAdminRoute>,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -272,7 +310,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: '/admin/access-control-advanced',
-    component: AccessControlAdvanced,
+    component: () => <LazyAdminRoute><AccessControlAdvanced /></LazyAdminRoute>,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -288,7 +326,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: '/admin/analytics-advanced',
-    component: AnalyticsAdvanced,
+    component: () => <LazyAdminRoute><AnalyticsAdvanced /></LazyAdminRoute>,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -296,7 +334,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: '/admin/ai-management',
-    component: AIManagement,
+    component: () => <LazyAdminRoute><AIManagement /></LazyAdminRoute>,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -304,7 +342,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: '/admin/file-management-advanced',
-    component: FileManagementAdvanced,
+    component: () => <LazyAdminRoute><FileManagementAdvanced /></LazyAdminRoute>,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -312,7 +350,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: '/admin/challenges-analytics-advanced',
-    component: ChallengesAnalyticsAdvanced,
+    component: () => <LazyAdminRoute><ChallengesAnalyticsAdvanced /></LazyAdminRoute>,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -496,7 +534,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: ALL_ROUTES.ADMIN_ANALYTICS,
-    component: SystemAnalytics,
+    component: () => <LazyAdminRoute><SystemAnalytics /></LazyAdminRoute>,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -504,7 +542,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   },
   {
     path: ALL_ROUTES.ADMIN_STORAGE,
-    component: StorageManagement,
+    component: () => <LazyAdminRoute><StorageManagement /></LazyAdminRoute>,
     requireAuth: true,
     requireProfile: true,
     requiredRole: ['admin', 'super_admin'],
@@ -599,6 +637,14 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
 // Performance-enhanced router component 
 function RouterWithPerformanceMonitoring() {
   const location = useLocation();
+
+  // Initialize translation prefetching
+  useTranslationPrefetch({
+    enabled: true,
+    preloadCoreNamespaces: true,
+    preloadRoleBasedNamespaces: true,
+    preloadNavigationNamespaces: true
+  });
 
   // Performance monitoring integration
   useEffect(() => {
