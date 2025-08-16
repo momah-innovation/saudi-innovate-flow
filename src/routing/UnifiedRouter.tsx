@@ -640,7 +640,7 @@ function RouterWithPerformanceMonitoring() {
 // Main unified router component with V3 translation system integration
 export const UnifiedRouter: React.FC = () => {
   return (
-    <ErrorBoundary fallback={<LoadingFallback />}>
+    <ErrorBoundary fallback={<div className="p-8 text-center">An error occurred. <button onClick={() => window.location.reload()} className="underline">Reload</button></div>}>
       <BrowserRouter>
         <TranslationAppShellProvider>
           <Suspense fallback={<LoadingFallback />}>
