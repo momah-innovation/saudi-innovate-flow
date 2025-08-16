@@ -169,21 +169,17 @@ export class FinalCleanupTracker {
   logProgress() {
     const report = this.generateProgressReport();
     
-    console.info(`
-🎯 FINAL CLEANUP PROGRESS REPORT
-===============================
-📊 Overall: ${report.overallProgress.completed}/${report.overallProgress.total} (${report.overallProgress.percentage}%)
-
-📝 By Category:
-• Storybook Docs: ${report.categories.storybook.completed}/${report.categories.storybook.total} ✓
-• Console Logs: ${report.categories.consoleLogs.completed}/${report.categories.consoleLogs.total} 🔄
-• Type Safety: ${report.categories.typeSafety.completed}/${report.categories.typeSafety.total} ⚡
-
-🔄 Next Tasks:
-${report.nextTasks.map(task => `   • ${task.description} (${task.file})`).join('\n')}
-
-🎯 Target: 100% Production Ready Platform
-    `);
+    // ✅ FIXED: Use structured logging instead of console.info
+    if (typeof window !== 'undefined' && (window as any).debugLog) {
+      (window as any).debugLog.log('Final Cleanup Progress', {
+        component: 'FinalCleanupTracker',
+        data: {
+          overallProgress: report.overallProgress,
+          categories: report.categories,
+          nextTasks: report.nextTasks
+        }
+      });
+    }
   }
 }
 

@@ -159,28 +159,12 @@ export const FINAL_COMPLETION_PROGRESS = {
 } as const;
 
 // 📊 PROGRESS LOGGER
-console.info(`
-🎯 TRANSLATION COMPLETION PROGRESS UPDATE
-========================================
-
-Current Phase: PHASE 4 - REMAINING COMPONENT FIXES
-Progress: 97% COMPLETE
-
-✅ COMPLETED:
-   • Database: 100% standardized (782+ translation keys)
-   • Components: 96% migrated (18/19 components)  
-   • Architecture: Global injection fully operational
-   • Language Support: Real-time Arabic ⟷ English switching
-
-🔄 IN PROGRESS:
-   • IdeasManagementList.tsx - FIXING toast messages
-   • IdeaWizard.tsx - FIXING step titles and labels
-   • OpportunityWizard.tsx - PENDING
-   • OrganizationalStructureManagement.tsx - PENDING
-
-⏳ REMAINING: ~3% (estimated 15-20 minutes)
-
-🚀 STATUS: NEARLY PRODUCTION READY!
-`);
+// ✅ FIXED: Use structured logging instead of console.info  
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Final Completion Progress', {
+    component: 'FinalCompletionTracker',
+    data: FINAL_COMPLETION_PROGRESS
+  });
+}
 
 export default FINAL_COMPLETION_PROGRESS;

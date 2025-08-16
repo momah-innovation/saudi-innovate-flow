@@ -278,18 +278,19 @@ class ComprehensiveFixTracker {
 
   logProgress() {
     const report = this.generateProgressReport();
-    console.info(`
-🔧 TYPE SAFETY FIX PROGRESS
-===========================
-📊 Overall: ${report.progress.completed}/${report.progress.total} (${report.progress.percentage}%)
-⏳ In Progress: ${report.progress.inProgress}
-📋 Pending: ${report.progress.pending}
-
-🎯 NEXT TASKS:
-${report.nextTasks.map(t => `• ${t.file}: ${t.description}`).join('\n')}
-
-⏰ ${report.estimatedTimeRemaining}
-`);
+    // ✅ FIXED: Use structured logging instead of console.info
+    if (typeof window !== 'undefined' && (window as any).debugLog) {
+      (window as any).debugLog.log('Type Safety Fix Progress', {
+        component: 'ComprehensiveFixTracker',
+        data: {
+          overall: `${report.progress.completed}/${report.progress.total} (${report.progress.percentage}%)`,
+          inProgress: report.progress.inProgress,
+          pending: report.progress.pending,
+          nextTasks: report.nextTasks,
+          estimatedTimeRemaining: report.estimatedTimeRemaining
+        }
+      });
+    }
   }
 }
 
@@ -303,26 +304,19 @@ comprehensiveFixTracker.markCompleted('admin-3'); // PartnerDetailView variant t
 comprehensiveFixTracker.markCompleted('events-1'); // ComprehensiveEventWizard - 6 any[] arrays fixed
 comprehensiveFixTracker.markCompleted('events-2'); // EventWizard - 7 any[] arrays fixed
 
-console.info(`
-🎯 PHASE 3 EVENTS SYSTEM COMPLETE! 
-=================================
-✅ Dashboard Components: 100% Complete (2/2)
-✅ Admin Components: 100% Complete (3/3)  
-✅ Events System: 100% Complete (2/2)
-
-🔧 PHASE 3 EVENTS FIXES:
-• ComprehensiveEventWizard: 6 any[] arrays → proper EventResource[], EventPartner[], etc.
-• EventWizard: 7 any[] arrays → proper EventCampaign[], EventChallenge[], etc.
-• Created comprehensive Events type system with 15+ interfaces
-
-📊 OVERALL PROGRESS: 
-• Critical fixes: 7/7 completed (100%)
-• High priority: 4 remaining (Hooks, Ideas)
-• Medium priority: 8 remaining 
-• Low priority: 3 remaining
-
-🚀 Events system now fully type-safe - major progress achieved!
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Phase 3 Events System Complete', {
+    component: 'ComprehensiveFixTracker',
+    data: {
+      dashboardComponents: '100% Complete (2/2)',
+      adminComponents: '100% Complete (3/3)',
+      eventsSystem: '100% Complete (2/2)',
+      overallProgress: 'Critical fixes: 7/7 completed (100%)',
+      remainingWork: 'High priority: 4 remaining (Hooks, Ideas)'
+    }
+  });
+}
 
 comprehensiveFixTracker.logProgress();
 

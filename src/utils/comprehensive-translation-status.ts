@@ -324,22 +324,23 @@ export const EXECUTION_CHECKLIST = {
   ]
 } as const;
 
-console.info(`
-🎯 TRANSLATION SYSTEM STATUS REPORT
-===================================
-
-✅ COMPLETED: 95% (Outstanding Progress!)
-📊 Translation Keys: 2,682 in database
-🔄 Components with Translation: 265 files
-🌐 Global Injection: ✅ Active from AppShell
-🗃️ Database Standardization: ✅ 100% English keys
-
-❌ REMAINING: 5% (Final Sprint Needed)
-📝 Components to fix: 7 components
-🔤 Missing translation keys: ~45 keys
-⏱️ Estimated completion: 2-3 hours
-
-🚀 STATUS: READY FOR FINAL COMPLETION PUSH!
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Translation System Status Report', {
+    component: 'TranslationStatus',
+    data: {
+      completed: '95% (Outstanding Progress!)',
+      translationKeys: '2,682 in database',
+      componentsWithTranslation: '265 files',
+      globalInjection: 'Active from AppShell',
+      databaseStandardization: '100% English keys',
+      remaining: '5% (Final Sprint Needed)',
+      componentsToFix: '7 components',
+      missingKeys: '~45 keys',
+      estimatedCompletion: '2-3 hours',
+      status: 'READY FOR FINAL COMPLETION PUSH!'
+    }
+  });
+}
 
 export default COMPREHENSIVE_TRANSLATION_STATUS;

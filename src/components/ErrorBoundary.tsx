@@ -60,29 +60,36 @@ function ErrorFallback() {
       </p>
       <div className="flex gap-4">
         <Button 
-          // ✅ FIXED: Use safe navigation reload with error boundary protection
+          // ✅ FIXED: Use navigation hook instead of window.location
           onClick={() => {
             try {
+              // Use React Router navigation instead of window.location.reload()
+              if (navigate) {
+                navigate(0); // This reloads the current route
+              }
+            } catch (navigationError) {
+              // Last resort fallback only if navigation fails
               if (typeof window !== 'undefined' && window.location) {
                 window.location.reload();
               }
-            } catch (reloadError) {
-              // Fallback to navigation if reload fails
-              if (navigate) navigate(0);
             }
           }}
           variant="outline"
         >
           {t('errors.try_again')}
         </Button>
-        {/* ✅ FIXED: Use safe navigation reload with error boundary protection */}
+        {/* ✅ FIXED: Use navigation hook instead of window.location */}
         <Button onClick={() => {
           try {
-            if (typeof window !== 'undefined' && window.location) {
-              window.location.reload();
+            // Use React Router navigation instead of window.location.reload()
+            if (navigate) {
+              navigate('/dashboard'); // Navigate to dashboard
             }
-          } catch (reloadError) {
-            if (navigate) navigate(0);
+          } catch (navigationError) {
+            // Last resort fallback only if navigation fails
+            if (typeof window !== 'undefined' && window.location) {
+              window.location.href = '/dashboard';
+            }
           }
         }}>
           {t('error_boundary.refresh_page', 'Refresh Page')}

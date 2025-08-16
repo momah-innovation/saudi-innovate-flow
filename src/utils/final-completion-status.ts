@@ -170,20 +170,12 @@ maintaining excellent performance and user experience.
 } as const;
 
 // Log the completion status
-console.info(`
-🎯 TRANSLATION SYSTEM MIGRATION: MISSION ACCOMPLISHED! 🎯
-
-📊 Final Statistics:
-   • Components Migrated: ${FINAL_TRANSLATION_COMPLETION_STATUS.completion_summary.total_components_migrated}
-   • Hardcoded Strings Eliminated: ${FINAL_TRANSLATION_COMPLETION_STATUS.completion_summary.total_hardcoded_strings_eliminated}
-   • Translation Keys Added: ${FINAL_TRANSLATION_COMPLETION_STATUS.completion_summary.total_translation_keys_added}
-   • Overall Completion: ${FINAL_TRANSLATION_COMPLETION_STATUS.overall_completion_percentage}%
-
-🏆 System Status: ${FINAL_TRANSLATION_COMPLETION_STATUS.mission_status}
-🚀 Production Ready: ${FINAL_TRANSLATION_COMPLETION_STATUS.deployment_status.production_ready ? 'YES' : 'NO'}
-⚡ Performance Impact: ${FINAL_TRANSLATION_COMPLETION_STATUS.deployment_status.performance_impact}
-
-The translation system is now complete and ready for production use!
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Final Completion Status', {
+    component: 'FinalCompletionStatus',
+    data: FINAL_TRANSLATION_COMPLETION_STATUS
+  });
+}
 
 export default FINAL_TRANSLATION_COMPLETION_STATUS;

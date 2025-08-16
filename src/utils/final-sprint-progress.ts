@@ -118,26 +118,12 @@ export const FINAL_SPRINT_UPDATE = {
   }
 } as const;
 
-console.info(`
-🎯 FINAL SPRINT UPDATE
-=====================
-
-✅ COMPLETED TODAY:
-   • OpportunityWizard.tsx (20 strings)
-   • OrganizationalStructureManagement.tsx (25 strings)
-   • PartnersManagement.tsx (4 strings)
-   • SectorsManagement.tsx (4 strings)
-
-📊 SESSION PROGRESS:
-   • Components: 4.5/5 completed (90%)
-   • Strings Fixed: 70+ 
-   • Translation Keys: 2720+
-   • Completion: 98%
-
-⏳ FINAL PUSH: 3 components remaining (~23 strings)
-🎯 ETA: 20-30 minutes to 100%
-
-🚀 STATUS: READY FOR FINAL COMPLETION!
-`);
+// ✅ FIXED: Use structured logging instead of console.info
+if (typeof window !== 'undefined' && (window as any).debugLog) {
+  (window as any).debugLog.log('Final Sprint Update', {
+    component: 'FinalSprintProgress',
+    data: FINAL_SPRINT_UPDATE
+  });
+}
 
 export default FINAL_SPRINT_UPDATE;
