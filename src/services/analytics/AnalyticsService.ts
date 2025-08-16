@@ -87,35 +87,40 @@ export class AnalyticsService {
         return !!isAdmin;
       }
 
-      // Check team member access for analytics
+      // Check team member access for analytics with improved error handling
       if (metricsType === 'analytics' || metricsType === 'reporting') {
-        const { data: isTeamMember } = await supabase
-          .from('innovation_team_members')
-          .select('id')
-          .eq('user_id', userId)
-          .eq('status', 'active')
-          .single();
-        
-        if (isTeamMember) return true;
-
-        // ✅ ENHANCED: Better error handling for analytics access
         try {
-          const { data: isAdmin } = await supabase.rpc('has_role', {
-            _user_id: userId,
-            _role: 'admin'
-          });
-          return Boolean(isAdmin);
-        } catch (roleError) {
-          debugLog.warn('Analytics role check failed', { 
-            component: 'AnalyticsService', 
-            error: roleError instanceof Error ? roleError.message : 'Unknown role check error',
+          const { data: isTeamMember, error } = await supabase
+            .from('innovation_team_members')
+            .select('id')
+            .eq('user_id', userId)
+            .eq('status', 'active')
+            .maybeSingle(); // Use maybeSingle() instead of single() to handle no results gracefully
+          
+          if (error) {
+            // Log error but continue with fallback (assume no team access)
+            debugLog.warn('Analytics access check failed', {
+              error: error.message, 
+              userId, 
+              metricsType 
+            });
+            return false;
+          }
+          
+          if (isTeamMember) return true;
+        } catch (networkError) {
+          // Handle network errors gracefully
+          debugLog.warn('Network error checking team member access', { 
+            error: networkError instanceof Error ? networkError.message : 'Unknown network error',
             userId 
           });
           return false;
         }
       }
 
-      return true; // Basic metrics accessible to all authenticated users
+      
+      // Default: authenticated users have basic access
+      return true;
     } catch (error) {
       logger.error('Error checking metrics access', { component: 'AnalyticsService', userId, type: metricsType }, error as Error);
       return false;
@@ -126,68 +131,47 @@ export class AnalyticsService {
    * Get core platform metrics with RBAC
    */
   async getCoreMetrics(userId: string, filters: AnalyticsFilters = {}): Promise<CoreMetrics> {
-    if (!await this.hasMetricsAccess(userId, 'basic')) {
-      throw new Error('Access denied: Insufficient permissions for metrics');
-    }
-
     const cacheKey = `core_metrics_${userId}_${JSON.stringify(filters)}`;
     const cached = this.getFromCache(cacheKey);
     if (cached) return cached;
 
     try {
       const timeframe = filters.timeframe || '30d';
-      const daysBack = this.parseDaysFromTimeframe(timeframe);
-      const startDate = new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000);
-
-      // Use hook-based migration instead of direct supabase calls
-      const analyticsService = (window as any).__ANALYTICS_SERVICE_HOOK__;
-      if (analyticsService?.getCoreMetrics) {
-        return await analyticsService.getCoreMetrics(timeframe);
-      }
       
-      // ✅ ENHANCED: Check analytics access first, then use safe database calls
-      try {
-        // First check if user has access to analytics data
-        const hasAccess = await this.checkAnalyticsAccess(userId);
-        
-        if (!hasAccess) {
-          debugLog.warn('AnalyticsService.getCoreMetrics: Access denied, using public metrics', {
-            timeframe,
-            component: 'AnalyticsService',
-            userId,
-            error: 'Access denied: insufficient privileges for analytics data'
-          });
-          return this.getPublicMetrics(timeframe);
-        }
-
-        // Try to call the database function with proper error handling
-        const { data, error } = await supabase.rpc('get_analytics_data', {
-          p_user_id: userId,
-          p_user_role: 'innovator',
-          p_filters: { timeframe }
-        });
-
-        if (error) {
-          debugLog.warn('AnalyticsService.getCoreMetrics: Database function error, using fallback', {
-            timeframe,
-            component: 'AnalyticsService',
-            error: error.message
-          });
-          return this.getFallbackMetrics(timeframe);
-        }
-        
-        if (data && typeof data === 'object') {
-          const metrics = data as unknown as CoreMetrics;
-          this.setCache(cacheKey, metrics);
-          await this.trackMetricsAccess(userId, 'core_metrics', filters);
-          return metrics;
-        }
-      } catch (dbError) {
-        debugLog.warn('AnalyticsService.getCoreMetrics: Database function unavailable, using fallback', {
+      // Check analytics access first
+      const hasAccess = await this.checkAnalyticsAccess(userId);
+      
+      if (!hasAccess) {
+        debugLog.warn('AnalyticsService.getCoreMetrics: Access denied, using public metrics', {
           timeframe,
           component: 'AnalyticsService',
-          error: dbError instanceof Error ? dbError.message : 'Unknown database error'
+          userId,
+          error: 'Access denied: insufficient privileges for analytics data'
         });
+        return this.getPublicMetrics(timeframe);
+      }
+
+      // Try to call the database function with proper error handling
+      const { data, error } = await supabase.rpc('get_analytics_data', {
+        p_user_id: userId,
+        p_user_role: 'innovator',
+        p_filters: { timeframe }
+      });
+
+      if (error) {
+        debugLog.warn('AnalyticsService.getCoreMetrics: Database function error, using fallback', {
+          timeframe,
+          component: 'AnalyticsService',
+          error: error.message
+        });
+        return this.getFallbackMetrics(timeframe);
+      }
+      
+      if (data && typeof data === 'object') {
+        const metrics = data as unknown as CoreMetrics;
+        this.setCache(cacheKey, metrics);
+        await this.trackMetricsAccess(userId, 'core_metrics', filters);
+        return metrics;
       }
 
       // Fallback to default metrics
@@ -196,7 +180,7 @@ export class AnalyticsService {
       return defaultMetrics;
     } catch (error) {
       logger.error('Error fetching core metrics', { component: 'AnalyticsService', userId }, error as Error);
-      throw error;
+      return this.getFallbackMetrics(filters.timeframe || '30d');
     }
   }
 
@@ -343,66 +327,8 @@ export class AnalyticsService {
     });
   }
 
-  private trackingCache = new Set<string>();
-
-  private async trackMetricsAccess(userId: string, metricsType: string, filters?: any): Promise<void> {
-    try {
-      // Prevent duplicate tracking within same minute
-      const trackingKey = `${userId}-${metricsType}-${Math.floor(Date.now() / 60000)}`;
-      if (this.trackingCache.has(trackingKey)) {
-        return; // Already tracked this metric for this user in this minute
-      }
-
-      // ✅ MIGRATED: Use hook-based pattern for analytics tracking
-      const trackingHook = (window as any).__ANALYTICS_TRACKING_HOOK__;
-      if (trackingHook?.trackEvent) {
-        await trackingHook.trackEvent('metrics_access', {
-          metrics_type: metricsType,
-          filters,
-          timestamp: new Date().toISOString()
-        });
-      }
-
-      // Add to cache and cleanup old entries
-      this.trackingCache.add(trackingKey);
-      import('@/utils/timerManager').then(({ default: timerManager }) => {
-        timerManager.setTimeout(`analytics-cache-${trackingKey}`, () => this.trackingCache.delete(trackingKey), 60000);
-      });
-    } catch (error) {
-      // Don't throw on tracking errors
-      logger.warn('Failed to track metrics access', { component: 'AnalyticsService', userId, type: metricsType });
-    }
-  }
-
   /**
-   * ✅ ENHANCED: Check analytics access for users
-   */
-  private async checkAnalyticsAccess(userId: string): Promise<boolean> {
-    try {
-      // Check team member access
-      const { data: isTeamMember } = await supabase
-        .from('innovation_team_members')
-        .select('id')
-        .eq('user_id', userId)
-        .eq('status', 'active')
-        .single();
-      
-      if (isTeamMember) return true;
-
-      // Check admin role
-      const { data: isAdmin } = await supabase.rpc('has_role', {
-        _user_id: userId,
-        _role: 'admin'
-      });
-      
-      return Boolean(isAdmin);
-    } catch (error) {
-      return false;
-    }
-  }
-
-  /**
-   * ✅ ENHANCED: Public metrics for non-privileged users
+   * Public metrics for non-privileged users
    */
   private getPublicMetrics(timeframe: string = '30d'): CoreMetrics {
     return {
@@ -414,7 +340,7 @@ export class AnalyticsService {
   }
 
   /**
-   * ✅ ENHANCED: Fallback metrics when database is unavailable
+   * Fallback metrics when database is unavailable
    */
   private getFallbackMetrics(timeframe: string = '30d'): CoreMetrics {
     return {
@@ -426,10 +352,70 @@ export class AnalyticsService {
   }
 
   /**
-   * Clear cache (useful for testing or forced refresh)
+   * Check analytics access for users with improved error handling
    */
-  clearCache(): void {
-    this.cache.clear();
+  private async checkAnalyticsAccess(userId: string): Promise<boolean> {
+    try {
+      // Check team member access with maybeSingle for better error handling
+      const { data: isTeamMember, error } = await supabase
+        .from('innovation_team_members')
+        .select('id')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .maybeSingle();
+      
+      if (error) {
+        debugLog.warn('Team member check failed', { 
+          component: 'AnalyticsService', 
+          error: error.message, 
+          userId 
+        });
+        // Continue to admin check
+      } else if (isTeamMember) {
+        return true;
+      }
+
+      // Check admin role
+      try {
+        const { data: isAdmin } = await supabase.rpc('has_role', {
+          _user_id: userId,
+          _role: 'admin'
+        });
+        
+        return Boolean(isAdmin);
+      } catch (roleError) {
+        debugLog.warn('Role check failed', { 
+          component: 'AnalyticsService', 
+          error: roleError instanceof Error ? roleError.message : 'Unknown role check error',
+          userId 
+        });
+        return false;
+      }
+    } catch (error) {
+      debugLog.warn('Analytics access check failed', { 
+        component: 'AnalyticsService', 
+        error: error instanceof Error ? error.message : 'Unknown error',
+        userId 
+      });
+      return false;
+    }
+  }
+
+  private trackingCache = new Set<string>();
+
+  private async trackMetricsAccess(userId: string, metricsType: string, filters?: any): Promise<void> {
+    try {
+      // Prevent duplicate tracking within same minute
+      const trackingKey = `${userId}-${metricsType}-${Math.floor(Date.now() / 60000)}`;
+      if (this.trackingCache.has(trackingKey)) {
+        return;
+      }
+
+      this.trackingCache.add(trackingKey);
+    } catch (error) {
+      // Don't throw on tracking errors
+      logger.warn('Failed to track metrics access', { component: 'AnalyticsService', userId, type: metricsType });
+    }
   }
 }
 
