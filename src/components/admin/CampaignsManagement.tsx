@@ -5,7 +5,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CampaignWizard } from './CampaignWizard';
-import { supabase } from '@/integrations/supabase/client';
+import { useCampaignManagement } from '@/hooks/useCampaignManagement';
 import { 
   Calendar, 
   Users, 
@@ -68,33 +68,17 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
   const statusConfig = getStatusConfig(t);
   const priorityConfig = getPriorityConfig(t);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showViewDialog, setShowViewDialog] = useState(false);
   const [campaignToDelete, setCampaignToDelete] = useState<Campaign | null>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  
+  // ✅ MIGRATED: Using centralized campaign management hook
+  const { loading, campaigns, loadCampaigns } = useCampaignManagement();
 
   useEffect(() => {
+    // ✅ MIGRATED: Using hook method
     loadCampaigns();
-  }, []);
-
-  const loadCampaigns = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('campaigns')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setCampaigns((data as Campaign[]) || []);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      setCampaigns([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [loadCampaigns]);
 
   const handleEdit = (campaign: Campaign) => {
     setSelectedCampaign(campaign);

@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { StandardPageLayout } from "@/components/layout/StandardPageLayout";
 import { ManagementCard } from "@/components/ui/management-card";
 import { ChallengeWizard } from "./ChallengeWizard";
@@ -12,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useChallengeList } from "@/hooks/useChallengeList";
 import { 
   Target, 
   Calendar, 
@@ -57,8 +57,6 @@ interface AdminChallenge {
 }
 
 export function AdminChallengeManagement() {
-  const [challenges, setChallenges] = useState<AdminChallenge[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [showWizard, setShowWizard] = useState(false);
@@ -67,56 +65,38 @@ export function AdminChallengeManagement() {
   const [selectedChallenge, setSelectedChallenge] = useState<AdminChallenge | null>(null);
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  
+  // ✅ MIGRATED: Using centralized challenge list hook
+  const {
+    loading,
+    error,
+    challenges,
+    loadChallenges,
+    deleteChallenge
+  } = useChallengeList();
 
   useEffect(() => {
-    fetchChallenges();
-  }, []);
-
-  const fetchChallenges = useCallback(async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('challenges')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      setChallenges(data || []);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      toast({
-        title: t('errors.validation_error'),
-        description: t('errors.load_failed'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
+    // ✅ MIGRATED: Using centralized hook method
+    loadChallenges();
+  }, [loadChallenges]);
 
   const handleDelete = useCallback(async (challengeId: string) => {
     try {
-      const { error } = await supabase
-        .from('challenges')
-        .delete()
-        .eq('id', challengeId);
-      
-      if (error) throw error;
-      
-      setChallenges(prev => prev.filter(c => c.id !== challengeId));
+      // ✅ MIGRATED: Using centralized hook method
+      await deleteChallenge(challengeId);
       toast({
         title: t('success', 'Success'),
         description: t('admin.challenges.delete_success', 'Challenge deleted successfully')
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      // Error already handled by hook
       toast({
         title: t('errors.validation_error'),
         description: t('errors.delete_failed'),
         variant: "destructive"
       });
     }
-  }, [setChallenges, toast]);
+  }, [deleteChallenge, toast]);
 
   const handleEdit = useCallback((challenge: AdminChallenge) => {
     setSelectedChallenge(challenge);
@@ -276,7 +256,7 @@ export function AdminChallengeManagement() {
           setSelectedChallenge(null);
         }}
         onSuccess={() => {
-          fetchChallenges();
+          loadChallenges();
           setShowWizard(false);
           setSelectedChallenge(null);
         }}
@@ -310,7 +290,7 @@ export function AdminChallengeManagement() {
             setSelectedChallenge(null);
           }}
           challenge={selectedChallenge}
-          onUpdate={fetchChallenges}
+          onUpdate={loadChallenges}
         />
       )}
 
