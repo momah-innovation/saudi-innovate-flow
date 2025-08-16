@@ -33,8 +33,7 @@ import {
   UserCheck
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -238,7 +237,7 @@ const ElevationMonitor: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="text-sm font-bold">
-                {format(new Date(mockSecurityMetrics.lastIncident), 'dd/MM/yyyy', { locale: isRTL ? ar : undefined })}
+                {dateHandler.formatDate(mockSecurityMetrics.lastIncident, 'dd/MM/yyyy')}
               </div>
               <p className="text-xs text-muted-foreground">آخر نشاط مشبوه</p>
             </CardContent>
@@ -284,9 +283,7 @@ const ElevationMonitor: React.FC = () => {
                             <TableCell>{log.email || 'غير محدد'}</TableCell>
                             <TableCell>{log.elevated_by || 'النظام'}</TableCell>
                             <TableCell>
-                              {format(new Date(log.elevated_at), 'dd/MM/yyyy HH:mm', { 
-                                locale: isRTL ? ar : undefined 
-                              })}
+                              {dateHandler.formatDate(log.elevated_at, 'dd/MM/yyyy HH:mm')}
                             </TableCell>
                             <TableCell>
                               <Button size="sm" variant="outline">

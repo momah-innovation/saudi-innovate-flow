@@ -23,7 +23,8 @@ import {
   Calendar, Award, Building, Globe, Star, PieChart as PieChartIcon,
   Filter, Download, RefreshCw, Eye, ArrowUpRight, ArrowDownRight
 } from 'lucide-react';
-import { format, subDays, subMonths, subYears } from 'date-fns';
+import { dateHandler } from '@/utils/unified-date-handler';
+import { subDays, subMonths, subYears, format } from 'date-fns';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
 

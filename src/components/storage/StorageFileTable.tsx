@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Eye, Download, Trash2, FileImage, FileText, Video, Music, Files } from 'lucide-react'
-import { format } from 'date-fns'
+import { dateHandler } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface StorageFile {
@@ -81,7 +81,7 @@ export function StorageFileTable({ files, onView, onDownload, onDelete }: Storag
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {file.created_at ? format(new Date(file.created_at), 'yyyy-MM-dd') : t('unspecified')}
+                  {file.created_at ? dateHandler.formatDate(file.created_at, 'yyyy-MM-dd') : t('unspecified')}
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-1">

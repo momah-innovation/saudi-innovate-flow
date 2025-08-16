@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CalendarIcon, Clock, ChevronDown } from 'lucide-react';
-import { format } from 'date-fns';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { cn } from '@/lib/utils';
 import { Button } from './button';
 import { Calendar } from './calendar';
@@ -59,9 +59,9 @@ export function DateTimePicker({
 
   const formatDateTime = (date: Date) => {
     if (showTime) {
-      return format(date, "PPP 'at' p");
+      return dateHandler.formatDate(date, "PPP 'at' p");
     }
-    return format(date, "PPP");
+    return dateHandler.formatDate(date, "PPP");
   };
 
   return (
@@ -168,10 +168,10 @@ export function DateRangePicker({
 
   const formatRange = () => {
     if (startDate && endDate) {
-      return `${format(startDate, "LLL dd")} - ${format(endDate, "LLL dd, y")}`;
+      return `${dateHandler.formatDate(startDate, "LLL dd")} - ${dateHandler.formatDate(endDate, "LLL dd, y")}`;
     }
     if (startDate) {
-      return `${format(startDate, "LLL dd, y")} - ${t('ui.date_picker.end_date')}`;
+      return `${dateHandler.formatDate(startDate, "LLL dd, y")} - ${t('ui.date_picker.end_date')}`;
     }
     return placeholder || t('ui.date_picker.pick_date_range');
   };

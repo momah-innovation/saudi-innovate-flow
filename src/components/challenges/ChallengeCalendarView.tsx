@@ -18,6 +18,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useDirection } from '@/components/ui/direction-provider';
 import { Challenge } from '@/hooks/useChallengesData';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, format } from 'date-fns';
 import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 

@@ -4,8 +4,8 @@ import { MetricCard } from "@/components/ui/metric-card";
 import { ChartContainer } from "@/components/ui/chart";
 import { TrendingUp, TrendingDown, Users, Lightbulb, CheckCircle, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { isThisMonth, isSameMonth, subMonths } from "date-fns";
-import { formatDate, dateHandler } from '@/utils/unified-date-handler';
+import { dateHandler } from '@/utils/unified-date-handler';
+import { isThisMonth, isSameMonth, subMonths } from 'date-fns';
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { debugLog } from '@/utils/debugLogger';
@@ -153,7 +153,7 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
     });
     
     return {
-      month: formatDate(date, 'MMM'),
+      month: dateHandler.formatDate(date, 'MMM'),
       ideas: monthIdeas.length,
       implemented: monthIdeas.filter(idea => idea.status === 'implemented').length
     };

@@ -14,7 +14,7 @@ import {
   Settings,
   ExternalLink
 } from 'lucide-react';
-import { format } from 'date-fns';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { getBucketUrlTemplate } from '@/utils/storageUtils';
 
@@ -91,7 +91,7 @@ export function BucketViewDialog({
                 <div className="flex justify-between items-center">
                   <span className="text-sm">{t('created')}</span>
                   <span className="text-xs text-muted-foreground">
-                    {format(new Date(bucket.created_at), 'MMM dd, yyyy')}
+                    {dateHandler.formatDate(bucket.created_at, 'MMM dd, yyyy')}
                   </span>
                 </div>
               </CardContent>
@@ -128,7 +128,7 @@ export function BucketViewDialog({
                     {t('last_modified')}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {bucket.updated_at ? format(new Date(bucket.updated_at), 'MMM dd') : t('unknown')}
+                    {bucket.updated_at ? dateHandler.formatDate(bucket.updated_at, 'MMM dd') : t('unknown')}
                   </span>
                 </div>
               </CardContent>

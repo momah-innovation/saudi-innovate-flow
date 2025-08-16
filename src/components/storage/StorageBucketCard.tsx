@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Database, Eye, Settings, Trash2, MoreVertical, FolderOpen } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { format } from 'date-fns'
+import { dateHandler } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface StorageBucket {
@@ -100,7 +100,7 @@ export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: Stor
           <div className="flex justify-between items-center">
             <span className="font-medium">{t('created_date')}</span>
             <span>
-              {format(new Date(bucket.created_at), 'yyyy-MM-dd')}
+              {dateHandler.formatDate(bucket.created_at, 'yyyy-MM-dd')}
             </span>
           </div>
         </div>

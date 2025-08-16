@@ -6,7 +6,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, Filter, X, Download } from 'lucide-react';
-import { format } from 'date-fns';
+import { dateHandler } from '@/utils/unified-date-handler';
 import { cn } from '@/lib/utils';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
@@ -87,11 +87,11 @@ export function StatisticsFilters({
                     {dateRange.from ? (
                       dateRange.to ? (
                         <>
-                          {format(dateRange.from, "LLL dd, y")} -{" "}
-                          {format(dateRange.to, "LLL dd, y")}
+                          {dateHandler.formatDate(dateRange.from, "LLL dd, y")} -{" "}
+                          {dateHandler.formatDate(dateRange.to, "LLL dd, y")}
                         </>
                       ) : (
-                        format(dateRange.from, "LLL dd, y")
+                        dateHandler.formatDate(dateRange.from, "LLL dd, y")
                       )
                     ) : (
                       <span>Pick a date range</span>
