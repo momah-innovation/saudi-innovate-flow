@@ -1,5 +1,6 @@
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { useDirection } from '@/components/ui/direction-provider';
+import { formatDateArabic } from '@/utils/unified-date-handler';
 
 interface Challenge {
   id: string;

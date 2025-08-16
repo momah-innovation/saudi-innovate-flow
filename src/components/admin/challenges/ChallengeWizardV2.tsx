@@ -11,8 +11,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon, X, Plus, Users, Target, Building, Zap, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { formatDateArabic, formatForAPI } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -80,6 +80,13 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
+  
+  // Initialize error handler
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeWizardV2',
+    showToast: true,
+    logError: true
+  });
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
     departments: [],
@@ -180,7 +187,10 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         focusQuestions: focusQuestionsRes.data || []
       });
     } catch (error) {
-      logger.error('خطأ في تحميل القوائم', { component: 'ChallengeWizardV2', action: 'loadSystemLists' }, error as Error);
+      errorHandler.handleError(error, 
+        { operation: 'loadSystemLists' },
+        'خطأ في تحميل القوائم النظامية'
+      );
     }
   };
 
@@ -326,12 +336,10 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
       onSuccess();
       onClose();
     } catch (error) {
-      logger.error('خطأ في حفظ التحدي', { component: 'ChallengeWizardV2', action: 'submitForm' }, error as Error);
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('errors.failed_to_save_challenge', 'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى.'),
-        variant: 'destructive'
-      });
+      errorHandler.handleError(error, 
+        { operation: 'submitForm', metadata: { challengeId: challenge?.id } },
+        'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى'
+      );
     } finally {
       setLoading(false);
     }
@@ -599,7 +607,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                          className="w-full justify-start font-normal text-right"
                        >
                          <CalendarIcon className="ml-2 h-4 w-4" />
-                         {startDate ? format(startDate, "PPP", { locale: ar }) : <span>{t('challenges.select_date', 'اختر التاريخ')}</span>}
+                         {startDate ? formatDateArabic(startDate.toISOString()) : <span>{t('challenges.select_date', 'اختر التاريخ')}</span>}
                        </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -622,7 +630,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                          className="w-full justify-start font-normal text-right"
                        >
                          <CalendarIcon className="ml-2 h-4 w-4" />
-                         {endDate ? format(endDate, "PPP", { locale: ar }) : <span>{t('challenges.select_end_date', 'اختر تاريخ النهاية')}</span>}
+                         {endDate ? formatDateArabic(endDate.toISOString()) : <span>{t('challenges.select_end_date', 'اختر تاريخ النهاية')}</span>}
                        </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -834,13 +842,13 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                   {startDate && (
                     <div>
                       <Label className="text-sm font-medium text-muted-foreground">تاريخ البداية</Label>
-                      <p className="font-medium">{format(startDate, "PPP")}</p>
+                      <p className="font-medium">{formatDateArabic(startDate.toISOString())}</p>
                     </div>
                   )}
                   {endDate && (
                     <div>
                       <Label className="text-sm font-medium text-muted-foreground">تاريخ النهاية</Label>
-                      <p className="font-medium">{format(endDate, "PPP")}</p>
+                      <p className="font-medium">{formatDateArabic(endDate.toISOString())}</p>
                     </div>
                   )}
                 </div>

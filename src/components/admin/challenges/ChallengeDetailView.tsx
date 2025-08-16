@@ -30,7 +30,8 @@ import {
   AlertCircle,
   Zap
 } from "lucide-react";
-import { format } from "date-fns";
+import { formatDateArabic, formatRelativeTime } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 import { Challenge, ChallengeDetailViewProps } from "@/types/api";
 
@@ -99,6 +100,13 @@ export function ChallengeDetailView({
 }: ChallengeDetailViewProps) {
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
+
+  // Initialize error handler
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeDetailView',
+    showToast: true,
+    logError: true
+  });
   
   const [relatedData, setRelatedData] = useState<{
     experts: RelatedExpert[];
@@ -197,7 +205,10 @@ export function ChallengeDetailView({
         analytics: null // Will be calculated
       });
     } catch (error) {
-      logger.error('Error fetching related data', { component: 'ChallengeDetailView', action: 'fetchRelatedData', data: { challengeId: challenge.id } }, error as Error);
+      errorHandler.handleError(error, 
+        { operation: 'fetchRelatedData', metadata: { challengeId: challenge.id } },
+        'خطأ في تحميل البيانات المرتبطة بالتحدي'
+      );
     } finally {
       setLoading(false);
     }
@@ -308,7 +319,7 @@ export function ChallengeDetailView({
                             <h4 className="font-semibold mb-1 text-sm">{t('challenges:detail.start_date', 'تاريخ البداية')}</h4>
                             <p className="text-sm flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
-                              {format(new Date(challenge.start_date), 'PPP')}
+                              {formatDateArabic(challenge.start_date)}
                             </p>
                           </div>
                         )}
@@ -317,7 +328,7 @@ export function ChallengeDetailView({
                             <h4 className="font-semibold mb-1 text-sm">{t('challenges:detail.end_date', 'تاريخ النهاية')}</h4>
                             <p className="text-sm flex items-center gap-1">
                               <Clock className="w-4 h-4" />
-                              {format(new Date(challenge.end_date), 'PPP')}
+                              {formatDateArabic(challenge.end_date)}
                             </p>
                           </div>
                         )}
@@ -496,9 +507,9 @@ export function ChallengeDetailView({
                             <Calendar className="w-4 h-4 text-muted-foreground" />
                             <div className="flex-1">
                               <p className="font-medium">{event.title_ar}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {format(new Date(event.event_date), 'PPP')}
-                              </p>
+                               <p className="text-sm text-muted-foreground">
+                                 {formatDateArabic(event.event_date)}
+                               </p>
                             </div>
                             <Badge variant="outline">{event.status}</Badge>
                           </div>
@@ -676,7 +687,7 @@ export function ChallengeDetailView({
         <div className="p-6 pt-4 border-t">
           <div className="flex justify-between items-center">
             <div className="text-sm text-muted-foreground">
-              {t('challenges:detail.last_updated', 'آخر تحديث')}: {format(new Date(challenge.updated_at), 'PPp')}
+              {t('challenges:detail.last_updated', 'آخر تحديث')}: {formatDateArabic(challenge.updated_at)}
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={onClose}>

@@ -20,6 +20,9 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { navigationHandler } from '@/utils/unified-navigation';
+import { formatRelativeTime } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface Notification {
   id: string;
@@ -37,6 +40,18 @@ export const NotificationCenter = memo(function NotificationCenter() {
   const navigate = useNavigate();
   const { notificationFetchLimit } = useSystemSettings();
   const { t, isRTL } = useUnifiedTranslation();
+
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
+
+  // Initialize error handler
+  const errorHandler = createErrorHandler({
+    component: 'NotificationCenter',
+    showToast: true,
+    logError: true
+  });
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -93,11 +108,10 @@ export const NotificationCenter = memo(function NotificationCenter() {
         type: item.type as 'info' | 'success' | 'warning' | 'error'
       })));
     } catch (error) {
-      logger.error('Failed to fetch notifications', { 
-        component: 'NotificationCenter', 
-        action: 'fetchNotifications',
-        userId: user.id 
-      }, error as Error);
+      errorHandler.handleError(error, 
+        { operation: 'fetchNotifications', userId: user.id },
+        'فشل في تحميل الإشعارات'
+      );
     } finally {
       setLoading(false);
     }
@@ -118,11 +132,10 @@ export const NotificationCenter = memo(function NotificationCenter() {
         )
       );
     } catch (error) {
-      logger.error('Failed to mark notification as read', { 
-        component: 'NotificationCenter', 
-        action: 'markAsRead',
-        notificationId 
-      }, error as Error);
+      errorHandler.handleError(error, 
+        { operation: 'markAsRead', metadata: { notificationId } },
+        'فشل في تحديث حالة الإشعار'
+      );
     }
   };
 
@@ -142,11 +155,10 @@ export const NotificationCenter = memo(function NotificationCenter() {
         prev.map(notif => ({ ...notif, is_read: true }))
       );
     } catch (error) {
-      logger.error('Failed to mark all notifications as read', { 
-        component: 'NotificationCenter', 
-        action: 'markAllAsRead',
-        userId: user.id 
-      }, error as Error);
+      errorHandler.handleError(error, 
+        { operation: 'markAllAsRead', userId: user.id },
+        'فشل في تحديث جميع الإشعارات'
+      );
     }
   };
 
@@ -161,11 +173,10 @@ export const NotificationCenter = memo(function NotificationCenter() {
 
       setNotifications(prev => prev.filter(notif => notif.id !== notificationId));
     } catch (error) {
-      logger.error('Failed to delete notification', { 
-        component: 'NotificationCenter', 
-        action: 'deleteNotification',
-        notificationId 
-      }, error as Error);
+      errorHandler.handleError(error, 
+        { operation: 'deleteNotification', metadata: { notificationId } },
+        'فشل في حذف الإشعار'
+      );
     }
   };
 
@@ -201,33 +212,23 @@ export const NotificationCenter = memo(function NotificationCenter() {
         // If it's a role request notification for the requester, go to their profile
         // If it's for an admin, go to admin users page
         if (requester_id === user?.id) {
-          navigate(`/profile/${user.id}`);
+          navigationHandler.navigateTo(`/profile/${user.id}`);
         } else {
-          navigate('/admin/users');
+          navigationHandler.navigateTo('/admin/users');
         }
         setIsOpen(false);
       } else if (challenge_id) {
-        navigate(`/challenges/${challenge_id}`);
+        navigationHandler.navigateTo(`/challenges/${challenge_id}`);
         setIsOpen(false);
       } else if (expert_assignment_id) {
-        navigate('/expert-assignments');
+        navigationHandler.navigateTo('/expert-assignments');
         setIsOpen(false);
       }
     }
   };
 
   const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return `${diffInDays}d ago`;
-    
-    return date.toLocaleDateString();
+    return formatRelativeTime(dateString);
   };
 
   const unreadCount = notifications.filter(n => !n.is_read).length;

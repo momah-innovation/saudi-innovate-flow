@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
-import { formatDateArabic } from '@/utils/unified-date-handler';
+import { formatDateArabic, formatRelativeTime } from '@/utils/unified-date-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -74,6 +75,14 @@ export const ChallengePage: React.FC = () => {
   React.useEffect(() => {
     navigationHandler.setNavigate(navigate);
   }, [navigate]);
+
+  // Initialize error handler
+  const errorHandler = createErrorHandler({
+    component: 'ChallengePage',
+    showToast: true,
+    logError: true
+  });
+
   const { user } = useAuth();
   const { toast } = useToast();
   
@@ -119,12 +128,10 @@ export const ChallengePage: React.FC = () => {
       if (error) throw error;
       setChallenge(data as any);
     } catch (error) {
-      logger.error('Error loading challenge', { challengeId }, error as Error);
-      toast({
-        title: 'خطأ في تحميل التحدي',
-        description: 'حدث خطأ أثناء تحميل بيانات التحدي',
-        variant: 'destructive'
-      });
+      errorHandler.handleError(error, 
+        { operation: 'loadChallenge', metadata: { challengeId } },
+        'خطأ في تحميل التحدي. حدث خطأ أثناء تحميل بيانات التحدي'
+      );
     } finally {
       setLoading(false);
     }
@@ -136,7 +143,10 @@ export const ChallengePage: React.FC = () => {
         setStats(prev => ({ ...prev, ...challengeStats }));
       }
     } catch (error) {
-      logger.error('Error loading challenge stats', { challengeId }, error as Error);
+      errorHandler.handleError(error, 
+        { operation: 'loadChallengeStats', metadata: { challengeId } },
+        'خطأ في تحميل إحصائيات التحدي'
+      );
     }
   };
 
@@ -184,12 +194,10 @@ export const ChallengePage: React.FC = () => {
       // Reload stats
       loadChallengeStats();
     } catch (error) {
-      logger.error('Error joining challenge', { challengeId }, error as Error);
-      toast({
-        title: 'خطأ في الانضمام',
-        description: 'حدث خطأ أثناء الانضمام للتحدي',
-        variant: 'destructive'
-      });
+      errorHandler.handleError(error, 
+        { operation: 'joinChallenge', metadata: { challengeId } },
+        'خطأ في الانضمام. حدث خطأ أثناء الانضمام للتحدي'
+      );
     }
   };
 

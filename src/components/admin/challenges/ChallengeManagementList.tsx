@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ManagementCard } from "@/components/ui/management-card";
@@ -34,7 +34,9 @@ import {
   List,
   Grid3x3
 } from "lucide-react";
-import { format } from "date-fns";
+import { formatDateArabic } from '@/utils/unified-date-handler';
+import { navigationHandler } from '@/utils/unified-navigation';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import type { BadgeVariant, DatabaseChallenge } from "@/types";
@@ -72,6 +74,19 @@ interface Challenge {
 
 export function ChallengeManagementList() {
   const navigate = useNavigate();
+
+  // Initialize navigation handler
+  React.useEffect(() => {
+    navigationHandler.setNavigate(navigate);
+  }, [navigate]);
+
+  // Initialize error handler
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeManagementList',
+    showToast: true,
+    logError: true
+  });
+
   // Data is provided by optimized hook below
   // const [challenges, setChallenges] = useState<Challenge[]>([]);
   // const [loading, setLoading] = useState(true);
@@ -111,12 +126,10 @@ export function ChallengeManagementList() {
         description: t('challenge_management.delete_success_description')
       });
     } catch (error) {
-      logger.error('Error deleting challenge', { component: 'ChallengeManagementList', action: 'handleDelete', data: { challengeId } }, error as Error);
-      toast({
-        title: t('challenge_management.delete_error_title'),
-        description: t('challenge_management.delete_error_description'),
-        variant: "destructive"
-      });
+      errorHandler.handleError(error, 
+        { operation: 'handleDelete', metadata: { challengeId } },
+        'خطأ في حذف التحدي. حدث خطأ أثناء محاولة حذف التحدي'
+      );
     }
   };
 
@@ -127,7 +140,7 @@ export function ChallengeManagementList() {
 
   const handleView = (challenge: any) => {
     // Navigate to full page view instead of dialog
-    navigate(`/admin/challenges/${challenge.id}`);
+    navigationHandler.navigateTo(`/admin/challenges/${challenge.id}`);
   };
 
   const getStatusColor = (status: string) => {
@@ -319,16 +332,16 @@ export function ChallengeManagementList() {
                   }
                 ]}
                 metadata={[
-                  ...(challenge.start_date ? [{ 
-                    icon: <Calendar className="h-4 w-4" />, 
-                    label: t('challenges.start_date_label', 'تاريخ البداية'), 
-                    value: format(new Date(challenge.start_date), 'PPP') 
-                  }] : []),
-                  ...(challenge.end_date ? [{ 
-                    icon: <Clock className="h-4 w-4" />, 
-                    label: t('challenges.end_date_label', 'تاريخ النهاية'), 
-                    value: format(new Date(challenge.end_date), 'PPP') 
-                  }] : []),
+                   ...(challenge.start_date ? [{ 
+                     icon: <Calendar className="h-4 w-4" />, 
+                     label: t('challenges.start_date_label', 'تاريخ البداية'), 
+                     value: formatDateArabic(challenge.start_date)
+                   }] : []),
+                   ...(challenge.end_date ? [{ 
+                     icon: <Clock className="h-4 w-4" />, 
+                     label: t('challenges.end_date_label', 'تاريخ النهاية'), 
+                     value: formatDateArabic(challenge.end_date)
+                   }] : []),
                   ...(challenge.estimated_budget ? [{ 
                     icon: <DollarSign className="h-4 w-4" />, 
                     label: t('challenges.budget_label', 'الميزانية'), 
