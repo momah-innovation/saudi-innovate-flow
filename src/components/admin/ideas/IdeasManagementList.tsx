@@ -57,7 +57,8 @@ import {
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { EmptyState } from "@/components/ui/empty-state";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { format } from "date-fns";
+import { createErrorHandler } from "@/utils/unified-error-handler";
+import { dateHandler } from "@/utils/unified-date-handler";
 import { ManagementListProps } from "@/types";
 
 // Enhanced Admin Idea interface with full data for management
@@ -130,6 +131,12 @@ export function IdeasManagementList({
   onView,
   onRefresh 
 }: IdeasManagementListProps) {
+  
+  const errorHandler = createErrorHandler({
+    component: 'IdeasManagementList',
+    showToast: true,
+    logError: true
+  });
   const [ideas, setIdeas] = useState<IdeaListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIdea, setSelectedIdea] = useState<IdeaListItem | null>(null);
@@ -544,7 +551,7 @@ export function IdeasManagementList({
                  {
                    icon: <Calendar className="w-4 h-4" />,
                    label: 'تاريخ الإنشاء',
-                   value: new Date(idea.created_at).toLocaleDateString('ar-SA')
+                   value: dateHandler.formatDate(idea.created_at)
                  }
                  ]}
                  interactionButtons={

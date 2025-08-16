@@ -11,7 +11,8 @@ import { logger } from "@/utils/logger";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare, Send, Reply, Edit, Trash, Flag } from "lucide-react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { format } from "date-fns";
+import { createErrorHandler } from "@/utils/unified-error-handler";
+import { dateHandler } from "@/utils/unified-date-handler";
 
 interface Comment {
   id: string;
@@ -45,6 +46,12 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
   const { user } = useCurrentUser();
+  
+  const errorHandler = createErrorHandler({
+    component: 'IdeaCommentsPanel',
+    showToast: true,
+    logError: true
+  });
   
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
@@ -224,7 +231,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
           <div className="flex items-center gap-2 mb-1">
             <span className="font-medium text-sm">{comment.author?.name || 'مستخدم'}</span>
             <span className="text-xs text-muted-foreground">
-              {format(new Date(comment.created_at), 'dd/MM/yyyy HH:mm')}
+              {dateHandler.formatRelative(comment.created_at)}
             </span>
             {comment.is_internal && (
               <Badge variant="secondary" className="text-xs">داخلي</Badge>

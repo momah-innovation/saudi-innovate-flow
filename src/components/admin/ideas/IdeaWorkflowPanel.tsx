@@ -22,7 +22,8 @@ import {
   Activity,
   ArrowRight
 } from "lucide-react";
-import { format } from "date-fns";
+import { createErrorHandler } from "@/utils/unified-error-handler";
+import { dateHandler } from "@/utils/unified-date-handler";
 
 interface WorkflowState {
   id: string;
@@ -74,6 +75,12 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
   const { toast } = useToast();
   const { t, isRTL, getTranslation } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
+  
+  const errorHandler = createErrorHandler({
+    component: 'IdeaWorkflowPanel',
+    showToast: true,
+    logError: true
+  });
   
   const [workflowStates, setWorkflowStates] = useState<WorkflowState[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
@@ -417,7 +424,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
                             {getStatusInfo(state.to_status).label}
                           </span>
                           <span className="text-xs text-muted-foreground">
-                            {format(new Date(state.created_at), 'dd/MM/yyyy HH:mm')}
+                            {dateHandler.formatDate(state.created_at)}
                           </span>
                         </div>
                         {state.reason && (
@@ -536,12 +543,12 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
                         {assignment.due_date && (
                           <span className="text-sm text-muted-foreground">
                             <Calendar className="w-4 h-4 inline ml-1" />
-                            {format(new Date(assignment.due_date), 'dd/MM/yyyy')}
+                            {dateHandler.formatDate(assignment.due_date)}
                           </span>
                         )}
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        تم إنشاؤه في {format(new Date(assignment.created_at), 'dd/MM/yyyy')}
+                        تم إنشاؤه في {dateHandler.formatDate(assignment.created_at)}
                       </p>
                     </div>
                   ))}
@@ -607,13 +614,13 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
                           {milestone.achieved_date && (
                             <span>
                               <CheckCircle className="w-3 h-3 inline ml-1" />
-                              مكتمل في {format(new Date(milestone.achieved_date), 'dd/MM/yyyy')}
+                              مكتمل في {dateHandler.formatDate(milestone.achieved_date)}
                             </span>
                           )}
                           {milestone.target_date && (
                             <span>
                               <Clock className="w-3 h-3 inline ml-1" />
-                              الهدف: {format(new Date(milestone.target_date), 'dd/MM/yyyy')}
+                              الهدف: {dateHandler.formatDate(milestone.target_date)}
                             </span>
                           )}
                         </div>

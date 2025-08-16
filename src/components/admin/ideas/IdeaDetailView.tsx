@@ -26,7 +26,8 @@ import {
   CheckCircle,
   AlertCircle
 } from "lucide-react";
-import { format } from "date-fns";
+import { createErrorHandler } from "@/utils/unified-error-handler";
+import { dateHandler } from "@/utils/unified-date-handler";
 import type { IdeaDetailView, IdeaDetailViewProps } from "@/types/api";
 
 export function IdeaDetailView({ 
@@ -38,6 +39,12 @@ export function IdeaDetailView({
 }: IdeaDetailViewProps) {
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
+  
+  const errorHandler = createErrorHandler({
+    component: 'IdeaDetailView',
+    showToast: true,
+    logError: true
+  });
   
   const [relatedData, setRelatedData] = useState({
     evaluations: [],
@@ -280,7 +287,7 @@ export function IdeaDetailView({
                     <h4 className="font-semibold mb-1 text-sm">تاريخ الإرسال</h4>
                     <p className="text-sm flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {format(new Date(idea.created_at), 'dd/MM/yyyy')}
+                      {dateHandler.formatDate(idea.created_at)}
                     </p>
                   </div>
                 </div>
@@ -313,12 +320,12 @@ export function IdeaDetailView({
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
                       <span dir="rtl">تاريخ الإرسال: </span>
-                      <span dir="ltr">{format(new Date(idea.created_at), 'PPp')}</span>
+                      <span dir="ltr">{dateHandler.formatDate(idea.created_at)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Activity className="w-4 h-4" />
                       <span dir="rtl">آخر تحديث: </span>
-                      <span dir="ltr">{format(new Date(idea.updated_at), 'PPp')}</span>
+                      <span dir="ltr">{dateHandler.formatDate(idea.updated_at)}</span>
                     </div>
                   </div>
                 </div>
@@ -409,7 +416,7 @@ export function IdeaDetailView({
                           </span>
                         </div>
                         <span className="text-xs text-muted-foreground">
-                          {format(new Date(evaluation.evaluation_date), 'dd/MM/yyyy')}
+                          {dateHandler.formatDate(evaluation.evaluation_date)}
                         </span>
                       </div>
                       
