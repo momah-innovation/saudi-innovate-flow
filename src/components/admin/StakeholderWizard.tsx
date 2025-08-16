@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useStakeholderManagement } from "@/hooks/useStakeholderManagement";
 import { MultiStepForm } from "@/components/ui/multi-step-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,6 +42,7 @@ export function StakeholderWizard({
 }: StakeholderWizardProps) {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const { createStakeholder, updateStakeholder } = useStakeholderManagement();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -185,12 +186,7 @@ export function StakeholderWizard({
 
       if (stakeholder?.id) {
         // Update existing stakeholder
-        const { error } = await supabase
-          .from("stakeholders")
-          .update(stakeholderData)
-          .eq("id", stakeholder.id);
-
-        if (error) throw error;
+        await updateStakeholder(stakeholder.id, stakeholderData);
 
         toast({
           title: t('stakeholder_wizard.success'),
@@ -198,11 +194,7 @@ export function StakeholderWizard({
         });
       } else {
         // Create new stakeholder
-        const { error } = await supabase
-          .from("stakeholders")
-          .insert([stakeholderData]);
-
-        if (error) throw error;
+        await createStakeholder(stakeholderData);
 
         toast({
           title: t('stakeholder_wizard.success'),

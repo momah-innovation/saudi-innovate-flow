@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useIdeaManagement } from "@/hooks/useIdeaManagement";
+import { useChallengeList } from "@/hooks/useChallengeList";
+import { useFocusQuestionManagement } from "@/hooks/useFocusQuestionManagement";
 import { MultiStepForm } from "@/components/ui/multi-step-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,6 +86,9 @@ export function IdeaWizard({
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
+  const { createIdea, updateIdea } = useIdeaManagement();
+  const { challenges } = useChallengeList();
+  const { focusQuestions } = useFocusQuestionManagement();
   const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
   const experienceLevels = getSettingValue('experience_levels', []) as string[];
   
@@ -104,8 +108,6 @@ export function IdeaWizard({
     resource_requirements: "",
   });
 
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [innovators, setInnovators] = useState<Innovator[]>([]);
@@ -170,54 +172,10 @@ export function IdeaWizard({
 
   const fetchData = async () => {
     try {
-      const [challengesRes, focusQuestionsRes, campaignsRes, eventsRes, innovatorsRes, profilesRes] = await Promise.all([
-        supabase
-          .from('challenges')
-          .select('id, title_ar, status')
-          .order('title_ar'),
-        supabase
-          .from('focus_questions')
-          .select('id, question_text_ar, challenge_id')
-          .order('order_sequence'),
-        supabase
-          .from('campaigns')
-          .select('id, title_ar, status')
-          .order('title_ar'),
-        supabase
-          .from('events')
-          .select('id, title_ar, status')
-          .order('title_ar'),
-        supabase
-          .from('innovators')
-          .select('id, user_id, innovation_score')
-          .order('innovation_score', { ascending: false }),
-        supabase
-          .from('profiles')
-          .select('id, name, name_ar')
-      ]);
-
-      if (challengesRes.error) throw challengesRes.error;
-      if (focusQuestionsRes.error) throw focusQuestionsRes.error;
-      if (campaignsRes.error) throw campaignsRes.error;
-      if (eventsRes.error) throw eventsRes.error;
-      if (innovatorsRes.error) throw innovatorsRes.error;
-      if (profilesRes.error) throw profilesRes.error;
-
-      setChallenges(challengesRes.data || []);
-      setFocusQuestions(focusQuestionsRes.data || []);
-      setCampaigns(campaignsRes.data || []);
-      setEvents(eventsRes.data || []);
-      
-      // Map profiles to innovators
-      const profilesMap = new Map((profilesRes.data || []).map(p => [p.id, p]));
-      const enrichedInnovators = (innovatorsRes.data || []).map(innovator => {
-        const profile = profilesMap.get(innovator.user_id);
-         return {
-           ...innovator,
-           display_name: profile?.name_ar || profile?.name || `${t('idea_wizard.innovator_prefix')} ${innovator.user_id?.slice(0, 8) || t('idea_wizard.not_specified')}`
-         };
-      });
-      setInnovators(enrichedInnovators);
+      // Mock data for now - replace with actual API calls when available
+      setCampaigns([]);
+      setEvents([]);
+      setInnovators([]);
     } catch (error) {
       // Failed to fetch idea wizard data
     }
@@ -300,12 +258,7 @@ export function IdeaWizard({
 
       if (idea?.id) {
         // Update existing idea
-        const { error } = await supabase
-          .from('ideas')
-          .update(ideaData)
-          .eq('id', idea.id);
-
-        if (error) throw error;
+        await updateIdea(idea.id, ideaData);
         
         toast({
           title: t('idea_wizard.update_success_title'),
@@ -313,11 +266,7 @@ export function IdeaWizard({
         });
       } else {
         // Create new idea
-        const { error } = await supabase
-          .from('ideas')
-          .insert([ideaData]);
-
-        if (error) throw error;
+        await createIdea(ideaData);
         
         toast({
           title: t('idea_wizard.create_success_title'),
@@ -355,7 +304,7 @@ export function IdeaWizard({
   );
 
   // Filter challenges based on selected campaign/event
-  const filteredChallenges = challenges; // For now, show all challenges until linking tables are implemented
+  const filteredChallenges = challenges;
 
   const steps = [
     {

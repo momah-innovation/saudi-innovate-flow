@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+import { useTeamManagement } from '@/hooks/useTeamManagement';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -55,82 +55,20 @@ export function TeamManagementContent({
   const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(true);
-  const [innovationTeams, setInnovationTeams] = useState<InnovationTeam[]>([]);
+  const { teams, loading, teamMembers, deleteTeam } = useTeamManagement();
   const [editingTeam, setEditingTeam] = useState<InnovationTeam | null>(null);
-  const [teamsData, setTeamsData] = useState<{
-    teams: InnovationTeam[];
+  
+  const teamsData = {
+    teams,
     metrics: {
-      totalTeams: number;
-      activeTeams: number;
-      totalMembers: number;
-      activeProjects: number;
-    };
-  }>({
-    teams: [],
-    metrics: {
-      totalTeams: 0,
-      activeTeams: 0,
-      totalMembers: 0,
-      activeProjects: 0
-    }
-  });
-
-  useEffect(() => {
-    fetchTeamsData();
-  }, []);
-
-  const fetchTeamsData = async () => {
-    try {
-      setLoading(true);
-
-      // Fetch from innovation_team_members table for team-related data
-      const { data: teamMembersData, error: teamMembersError } = await supabase
-        .from('innovation_team_members')
-        .select(`
-          user_id,
-          status,
-          created_at,
-          profiles!inner(display_name, full_name_ar)
-        `)
-        .eq('status', 'active');
-
-      if (teamMembersError) {
-        debugLog.error('Error fetching team members', { component: 'TeamManagementContent' }, teamMembersError);
-      }
-
-      // Calculate metrics from real data
-      const totalMembers = teamMembersData?.length || 0;
-      const activeMembers = teamMembersData?.filter(member => member.status === 'active').length || 0;
-
-      // For now, set empty teams array until we have proper innovation_teams table
-      const emptyTeams: InnovationTeam[] = [];
-
-      const metrics = {
-        totalTeams: 0,
-        activeTeams: 0,
-        totalMembers,
-        activeProjects: 0
-      };
-
-      setTeamsData({
-        teams: emptyTeams,
-        metrics
-      });
-
-      setInnovationTeams(emptyTeams);
-
-    } catch (error) {
-      errorHandler.handleError(error, 'TeamManagementContent.fetchTeamsData');
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('team_management.load_teams_failed', 'فشل في تحميل بيانات فرق الابتكار.'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+      totalTeams: teams.length,
+      activeTeams: teams.filter(t => t.status === 'active').length,
+      totalMembers: teamMembers.length,
+      activeProjects: teams.reduce((sum, team) => sum + team.active_projects, 0)
     }
   };
+
+  // Data is now managed by the hook
 
   const handleEditTeam = (team: InnovationTeam) => {
     setEditingTeam(team);
@@ -139,13 +77,11 @@ export function TeamManagementContent({
 
   const handleRemoveTeam = async (teamId: string) => {
     try {
-      // In a real implementation, you would update the team status
+      await deleteTeam(teamId);
       toast({
         title: t('common.success', 'نجح'),
         description: t('team_management.team_removed_success', 'تم إزالة فريق الابتكار بنجاح.'),
       });
-
-      fetchTeamsData();
     } catch (error) {
       logger.error('Error removing team', { component: 'TeamManagementContent', action: 'handleRemoveTeam', data: { teamId } }, error as Error);
       toast({
@@ -293,20 +229,20 @@ export function TeamManagementContent({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className={`grid gap-4 ${
-            viewMode === 'grid' ? 'grid-cols-1 lg:grid-cols-3' :
-            viewMode === 'cards' ? 'grid-cols-1 lg:grid-cols-2' :
-            'grid-cols-1'
-          }`}>
-            {innovationTeams
-              .filter((team: InnovationTeam) => 
-                !searchTerm || 
-                team.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                team.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                team.leader_name?.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map(renderTeamCard)}
-          </div>
+           <div className={`grid gap-4 ${
+             viewMode === 'grid' ? 'grid-cols-1 lg:grid-cols-3' :
+             viewMode === 'cards' ? 'grid-cols-1 lg:grid-cols-2' :
+             'grid-cols-1'
+           }`}>
+             {teams
+               .filter((team: InnovationTeam) => 
+                 !searchTerm || 
+                 team.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                 team.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                 team.leader_name?.toLowerCase().includes(searchTerm.toLowerCase())
+               )
+               .map(renderTeamCard)}
+           </div>
         </CardContent>
       </Card>
     </div>

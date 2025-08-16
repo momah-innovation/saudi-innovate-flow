@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useState } from 'react';
+import { useStakeholderManagement } from '@/hooks/useStakeholderManagement';
 import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -13,8 +13,6 @@ import {
   Target,
   Activity
 } from 'lucide-react';
-import { debugLog } from '@/utils/debugLogger';
-import { currentTimestamp } from '@/utils/unified-date-handler';
 
 interface StakeholdersManagementProps {
   viewMode: 'cards' | 'list' | 'grid';
@@ -23,91 +21,42 @@ interface StakeholdersManagementProps {
   onAddDialogChange: (open: boolean) => void;
 }
 
-interface StakeholderData {
-  id: string;
-  name: string;
-  organization: string;
-  position: string;
-  email: string;
-  phone: string;
-  stakeholder_type: string;
-  influence_level: string;
-  interest_level: string;
-  engagement_status: string;
-  notes: string;
-  projects_count: number;
-  last_interaction: string;
-}
+// Using StakeholderItem interface from useStakeholderManagement
 
 export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: StakeholdersManagementProps) {
   const { t } = useUnifiedTranslation();
   const { getStatusLabel } = useStatusTranslations();
-  const [selectedStakeholder, setSelectedStakeholder] = useState<StakeholderData | null>(null);
+  const { stakeholders, loading, deleteStakeholder } = useStakeholderManagement();
+  const [selectedStakeholder, setSelectedStakeholder] = useState<any>(null);
   const [showViewDialog, setShowViewDialog] = useState(false);
-  const [stakeholderToDelete, setStakeholderToDelete] = useState<StakeholderData | null>(null);
+  const [stakeholderToDelete, setStakeholderToDelete] = useState<any>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [stakeholders, setStakeholders] = useState<StakeholderData[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchStakeholders();
-  }, []);
-
-  const fetchStakeholders = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch from stakeholders table when available
-      const { data, error } = await supabase
-        .from('stakeholders')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        debugLog.error('Error fetching stakeholders', { component: 'StakeholdersManagement' }, error);
-        setStakeholders([]);
-        return;
-      }
-
-      // Transform data to match interface
-      const transformedStakeholders = (data || []).map(item => ({
-        id: item.id,
-        name: item.name || 'غير محدد',
-        organization: item.organization || 'غير محدد',
-        position: item.position || 'غير محدد',
-        email: item.email || '',
-        phone: item.phone || '',
-        stakeholder_type: item.stakeholder_type || 'غير محدد',
-        influence_level: item.influence_level || 'متوسط',
-        interest_level: item.interest_level || 'متوسط',
-        engagement_status: item.engagement_status || 'pending',
-        notes: item.notes || '',
-        projects_count: 0,
-        last_interaction: item.updated_at || currentTimestamp()
-      }));
-
-      setStakeholders(transformedStakeholders);
-    } catch (error) {
-      debugLog.error('Error in fetchStakeholders', { component: 'StakeholdersManagement' }, error);
-      setStakeholders([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleEdit = (stakeholder: StakeholderData) => {
+  const handleEdit = (stakeholder: any) => {
     setSelectedStakeholder(stakeholder);
     onAddDialogChange(true);
   };
 
-  const handleView = (stakeholder: StakeholderData) => {
+  const handleView = (stakeholder: any) => {
     setSelectedStakeholder(stakeholder);
     setShowViewDialog(true);
   };
 
-  const handleDelete = (stakeholder: StakeholderData) => {
+  const handleDelete = (stakeholder: any) => {
     setStakeholderToDelete(stakeholder);
     setShowDeleteConfirmation(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (stakeholderToDelete) {
+      try {
+        await deleteStakeholder(stakeholderToDelete.id);
+        setShowDeleteConfirmation(false);
+        setStakeholderToDelete(null);
+      } catch (error) {
+        // Error handled by hook
+      }
+    }
   };
 
   const filteredStakeholders = stakeholders.filter(stakeholder =>
