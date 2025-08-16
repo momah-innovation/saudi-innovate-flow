@@ -32,6 +32,7 @@ import { useAdminAnalytics } from '@/hooks/useAnalytics';
 import { AdminAnalyticsWrapper } from '@/components/analytics/ProtectedAnalyticsWrapper';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 
 interface AdminMetricCardProps {
   title: string;
@@ -138,10 +139,7 @@ export function MigratedAdminDashboard() {
         errorMessage: null
       };
     } catch (calculationError) {
-      logger.error('Error calculating admin metrics', { 
-        component: 'MigratedAdminDashboard',
-        error: calculationError 
-      });
+      errorHandler.handleError(calculationError, 'MigratedAdminDashboard.calculateAdminMetrics');
       
       return {
         systemHealth: 0,

@@ -9,7 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
-import { logger } from "@/utils/error-handler";
+import { errorHandler } from "@/utils/error-handler";
+import { logger } from '@/utils/logger';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Team } from "@/types";
@@ -204,7 +205,7 @@ export function TeamWizard({
       onSave();
       onClose();
     } catch (error: unknown) {
-      logger.error('Failed to save team', error);
+      errorHandler.handleError(error, 'TeamWizard.handleSubmit');
       
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       if (errorMessage.includes('duplicate')) {

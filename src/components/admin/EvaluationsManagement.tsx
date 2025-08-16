@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Eye, Edit, Filter, Search, FileCheck, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { logger } from "@/utils/error-handler";
+import { errorHandler } from "@/utils/error-handler";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { formatDate } from '@/utils/unified-date-handler';
 import { AdminEvaluationsHero } from "@/components/admin/AdminEvaluationsHero";
@@ -145,7 +145,7 @@ export function EvaluationsManagement({
       }
 
     } catch (error) {
-      logger.error("Error fetching evaluations", error);
+      errorHandler.handleError(error, 'EvaluationsManagement.fetchEvaluations');
       toast({
         title: t('error.title'),
         description: t('error.fetch_evaluations_failed'),

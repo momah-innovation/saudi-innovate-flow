@@ -56,15 +56,15 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
   }
 
   const formatTimeAgo = (dateString: string): string => {
-    const date = dateHandler.parseDate(dateString);
+    const parsedDate = dateHandler.parseDate(dateString);
     const now = new Date();
-    const diffInHours = date ? Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60)) : 0;
+    const diffInHours = parsedDate ? Math.floor((now.getTime() - parsedDate.getTime()) / (1000 * 60 * 60)) : 0;
     
     if (diffInHours < 1) return t("storage.just_now")
     if (diffInHours < 24) return t("storage.h_ago", { hours: diffInHours })
     const diffInDays = Math.floor(diffInHours / 24)
     if (diffInDays < 7) return t("storage.d_ago", { days: diffInDays })
-    return formatDate(date)
+    return parsedDate ? formatDate(parsedDate) : dateString
   }
 
   if (loading) {

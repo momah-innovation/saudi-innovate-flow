@@ -27,7 +27,7 @@ import {
   Clock,
   User
  } from "lucide-react";
-import { formatDate } from '@/utils/unified-date-handler';
+import { formatDate, dateHandler } from '@/utils/unified-date-handler';
 import type { QuestionResponse } from "@/types";
 
 interface Challenge {
@@ -435,7 +435,7 @@ export function FocusQuestionDetailView({
                         <div className="flex items-center gap-2">
                           <Badge variant="outline">5/5</Badge>
                           <span className="text-xs text-muted-foreground">
-                            {formatDate(new Date(), 'dd/MM/yyyy')}
+                            {dateHandler.formatDate(dateHandler.now(), 'dd/MM/yyyy')}
                           </span>
                         </div>
                       </div>

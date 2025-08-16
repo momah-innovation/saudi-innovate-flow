@@ -24,7 +24,7 @@ import {
   Users,
   CheckCircle
 } from "lucide-react";
-import { formatDate } from '@/utils/unified-date-handler';
+import { formatDate, dateHandler } from '@/utils/unified-date-handler';
 import type { ExpertDetailView, ExpertDetailViewProps } from "@/types/api";
 import type { BadgeVariant } from "@/types";
 
@@ -302,7 +302,7 @@ export function ExpertDetailView({
                         <div className="flex-1">
                           <p className="font-medium">{t('expert.new_activity', 'نشاط جديد')}</p>
                           <p className="text-sm text-muted-foreground">
-                            {formatDate(new Date(), 'dd/MM/yyyy')}
+                            {dateHandler.formatDate(dateHandler.now(), 'dd/MM/yyyy')}
                           </p>
                         </div>
                       </div>

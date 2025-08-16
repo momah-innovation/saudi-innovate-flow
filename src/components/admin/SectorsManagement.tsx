@@ -10,7 +10,8 @@ import { Plus, Edit, Trash2, Building, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatDate, currentTimestamp } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from "@/utils/error-handler";
+import { errorHandler } from "@/utils/error-handler";
+import { logger } from '@/utils/logger';
 
 interface Sector {
   id: string;
@@ -70,7 +71,7 @@ export function SectorsManagement() {
       if (error) throw error;
       setSectors(data || []);
     } catch (error) {
-      logger.error("Error fetching sectors", error);
+      errorHandler.handleError(error, 'SectorsManagement.fetchSectors');
     }
   };
 

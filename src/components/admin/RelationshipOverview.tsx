@@ -20,7 +20,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/error-handler';
-import { formatDate } from '@/utils/unified-date-handler';
+import { formatDate, dateHandler } from '@/utils/unified-date-handler';
 
 interface RelationshipData {
   id: string;
@@ -276,7 +276,7 @@ export function RelationshipOverview({
         weakConnections={weakConnections}
         orphanedEntities={orphanedEntities}
         networkHealth={networkHealth}
-        lastUpdate={formatDate(new Date())}
+        lastUpdate={dateHandler.formatDate(dateHandler.now())}
       />
 
       <ViewLayouts viewMode={viewMode}>

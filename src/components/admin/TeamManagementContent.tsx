@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 import { debugLog } from '@/utils/debugLogger';
 import {
   DropdownMenu,
@@ -120,7 +121,7 @@ export function TeamManagementContent({
       setInnovationTeams(emptyTeams);
 
     } catch (error) {
-      logger.error('Error fetching teams data', { component: 'TeamManagementContent', action: 'fetchTeamsData' }, error as Error);
+      errorHandler.handleError(error, 'TeamManagementContent.fetchTeamsData');
       toast({
         title: t('common.error', 'خطأ'),
         description: t('team_management.load_teams_failed', 'فشل في تحميل بيانات فرق الابتكار.'),

@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Trash2, Plus, Download, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import type { TranslationPair, TranslationMergeResult } from '@/types/translation';
 
@@ -151,7 +152,7 @@ const TranslationManagement = () => {
       const uniqueCategories = [...new Set((data || []).map(t => t.category))];
       setCategories(uniqueCategories);
     } catch (error) {
-      logger.error('Error fetching translations', { component: 'TranslationManagement', action: 'fetchTranslations' }, error as Error);
+      errorHandler.handleError(error, 'TranslationManagement.fetchTranslations');
       toast({
         title: 'Error',
         description: "Failed to load translations from database",

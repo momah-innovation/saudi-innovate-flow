@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { errorHandler } from '@/utils/error-handler';
 import { TeamMemberWizard } from './TeamMemberWizard';
 import { CoreTeamCard, CoreTeamMemberData, CoreTeamCardAction } from '@/components/ui/core-team-card';
 import { CoreTeamDetailDialog } from '@/components/ui/core-team-detail-dialog';
@@ -178,7 +179,7 @@ export function InnovationTeamsContent({
       });
 
     } catch (error) {
-      logger.error('Error fetching core team data', { component: 'InnovationTeamsContent', action: 'fetchCoreTeamData' }, error as Error);
+      errorHandler.handleError(error, 'InnovationTeamsContent.fetchCoreTeamData');
       toast({
         title: t('common.error'),
         description: t('errors.failed_to_load_core_team_data'),

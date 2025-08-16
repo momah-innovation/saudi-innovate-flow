@@ -12,6 +12,7 @@ import { currentTimestamp } from '@/utils/unified-date-handler';
 import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useToast } from '@/hooks/use-toast';
 // Enhanced event management with proper types
+import { errorHandler } from '@/utils/error-handler';
 import { logger } from '@/utils/logger';
 import { 
   Calendar, 
@@ -94,7 +95,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
       setEvents(eventsWithCounts);
     } catch (error) {
-      logger.error('Error loading events', { component: 'EventsManagement', action: 'loadEvents' }, error as Error);
+      errorHandler.handleError(error, 'EventsManagement.loadEvents');
       toast({
         title: t('events.load_error_title'),
         description: t('events.load_error_description'),

@@ -119,7 +119,7 @@ export const LiveEngagementMonitor: React.FC = () => {
 
       setLiveData({
         metrics,
-        lastUpdate: dateHandler.parseDate(new Date()) || new Date(),
+        lastUpdate: new Date(),
         isLive: isRealTimeEnabled && !isError,
         connectionStatus: isError ? 'disconnected' : isLoading ? 'connecting' : 'connected'
       });
