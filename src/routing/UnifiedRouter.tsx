@@ -13,6 +13,10 @@ import { UserRole } from '@/hooks/useRoleAccess';
 import { Loader2 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { useTranslationPrefetch } from '@/hooks/useTranslationPrefetch';
+import { useNavigationPreload } from '@/hooks/useNavigationPreload';
+import { useDataPrefetching } from '@/hooks/useDataPrefetching';
+import { useIntelligentPrefetch } from '@/hooks/useIntelligentPrefetch';
+import { useAdvancedCacheWarming } from '@/hooks/useAdvancedCacheWarming';
 
 // CORE USER FLOWS - Direct imports (High usage 60%+)
 import LandingPage from '@/pages/LandingPage';
@@ -638,12 +642,24 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
 function RouterWithPerformanceMonitoring() {
   const location = useLocation();
 
-  // Initialize translation prefetching
-  useTranslationPrefetch({
-    enabled: true,
-    preloadCoreNamespaces: true,
-    preloadRoleBasedNamespaces: true,
-    preloadNavigationNamespaces: true
+  // Phase 2: Translation Optimization
+  useTranslationPrefetch({ enabled: true, aggressive: false });
+  useNavigationPreload({ enabled: true, preloadDelay: 100 });
+
+  // Phase 3: Data Prefetching Architecture  
+  useDataPrefetching({ 
+    enabled: true, 
+    aggressive: false, 
+    userBehaviorTracking: true 
+  });
+  
+  useIntelligentPrefetch();
+  
+  useAdvancedCacheWarming({ 
+    enabled: true, 
+    aggressiveMode: false,
+    backgroundOnly: true,
+    maxConcurrentRequests: 3
   });
 
   // Performance monitoring integration
