@@ -375,38 +375,28 @@ export class AnalyticsService {
   }
 
   /**
-   * ✅ ENHANCED: Check analytics access for users with better error handling
+   * ✅ ENHANCED: Check analytics access for users
    */
   private async checkAnalyticsAccess(userId: string): Promise<boolean> {
     try {
-      // For now, return false to prevent network errors
-      // This will use public metrics instead
-      return false;
-      
-      // TODO: Re-enable when database schema is properly set up
       // Check team member access
-      // const { data: isTeamMember } = await supabase
-      //   .from('innovation_team_members')
-      //   .select('id')
-      //   .eq('user_id', userId)
-      //   .eq('status', 'active')
-      //   .single();
-      // 
-      // if (isTeamMember) return true;
+      const { data: isTeamMember } = await supabase
+        .from('innovation_team_members')
+        .select('id')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .single();
+      
+      if (isTeamMember) return true;
 
       // Check admin role
-      // const { data: isAdmin } = await supabase.rpc('has_role', {
-      //   _user_id: userId,
-      //   _role: 'admin'
-      // });
-      // 
-      // return Boolean(isAdmin);
-    } catch (error) {
-      debugLog.warn('Analytics access check failed', { 
-        component: 'AnalyticsService', 
-        error: error instanceof Error ? error.message : 'Unknown error',
-        userId 
+      const { data: isAdmin } = await supabase.rpc('has_role', {
+        _user_id: userId,
+        _role: 'admin'
       });
+      
+      return Boolean(isAdmin);
+    } catch (error) {
       return false;
     }
   }

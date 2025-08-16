@@ -120,12 +120,7 @@ export default React.memo(function UserDashboard() {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedIdea, setSelectedIdea] = useState<{
-    id: string;
-    title: string;
-    description: string;
-    status: string;
-  } | null>(null);
+  const [selectedIdea, setSelectedIdea] = useState<any>(null);
   
   // Derived values - safe to calculate after hooks
   const currentLanguage = language;
