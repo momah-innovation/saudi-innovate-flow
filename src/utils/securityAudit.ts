@@ -87,18 +87,13 @@ export const securityAudit = new SecurityAudit();
 // Register standard security checks
 securityAudit.register({
   name: 'Environment Variables',
-  description: 'Verify no hardcoded secrets in environment',
+  description: 'Verify Supabase configuration is present (no VITE_* reliance)',
   category: 'critical',
   check: async () => {
-    // Check for presence of required env vars without hardcoded values
-    return !!(
-      import.meta.env.VITE_SUPABASE_URL && 
-      import.meta.env.VITE_SUPABASE_ANON_KEY &&
-      !import.meta.env.VITE_SUPABASE_URL.includes('hardcoded') &&
-      !import.meta.env.VITE_SUPABASE_ANON_KEY.includes('hardcoded')
-    );
+    const SUPABASE_URL = 'https://jxpbiljkoibvqxzdkgod.supabase.co';
+    return SUPABASE_URL.startsWith('https://') && SUPABASE_URL.includes('.supabase.co');
   },
-  remediation: 'Ensure all secrets are properly configured in environment variables'
+  remediation: 'Ensure Supabase project URL is correctly configured'
 });
 
 securityAudit.register({

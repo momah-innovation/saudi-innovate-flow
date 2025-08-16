@@ -5,9 +5,8 @@
  * and file operations without hardcoded URLs.
  */
 
-// Get Supabase URL from environment, same as client.ts
-const nodeEnv = (globalThis as any)?.process?.env || {};
-const SUPABASE_URL = (import.meta as any)?.env?.VITE_SUPABASE_URL ?? nodeEnv.SUPABASE_URL ?? 'https://jxpbiljkoibvqxzdkgod.supabase.co';
+// Lovable: avoid VITE_* envs; use bundled project URL
+const SUPABASE_URL = 'https://jxpbiljkoibvqxzdkgod.supabase.co';
 
 /**
  * Generate public storage URL for a file
