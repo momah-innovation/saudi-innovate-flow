@@ -107,8 +107,8 @@ export const useLogflareAnalytics = () => {
       metadata: {
         ...metadata,
         user_agent: navigator.userAgent,
-        // Use proper URL building for analytics tracking
-        url: typeof window !== 'undefined' ? window.location.href : '',
+        // ✅ FIXED: Use safe URL building for analytics tracking
+        url: typeof window !== 'undefined' && window.location ? window.location.href : '',
         timestamp: Date.now(),
       },
     };

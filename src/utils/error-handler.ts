@@ -89,7 +89,7 @@ export class AppErrorHandler {
       ...error,
       context,
       userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'server',
-      url: typeof window !== 'undefined' ? window.location.href : 'server'
+      url: typeof window !== 'undefined' && window.location ? window.location.href : 'server'
     };
 
     // Use centralized logger instead of console.error

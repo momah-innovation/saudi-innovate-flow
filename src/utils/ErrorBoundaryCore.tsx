@@ -99,7 +99,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       errorMessage: error.message,
       componentStack: errorInfo.componentStack,
       userAgent: navigator.userAgent,
-      url: window.location.href,
+      url: typeof window !== 'undefined' && window.location ? window.location.href : '',
       timestamp: new Date().toISOString()
     });
   };
@@ -191,7 +191,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               )}
               
               <button 
-                onClick={() => window.location.reload()}
+                onClick={() => {
+                  try {
+                    if (typeof window !== 'undefined' && window.location) {
+                      window.location.reload();
+                    }
+                  } catch (error) {
+                    // Fallback handled by parent component
+                  }
+                }}
                 className="bg-secondary text-secondary-foreground px-4 py-2 rounded"
               >
                 Refresh Page

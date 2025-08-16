@@ -42,8 +42,8 @@ export const useEnhancedViewTracking = ({
             behaviorMetadata: {
               timestamp: Date.now(),
               userAgent: navigator.userAgent,
-              // Use proper URL building for analytics tracking
-              pageUrl: typeof window !== 'undefined' ? window.location.href : ''
+              // ✅ FIXED: Use safe URL building for analytics tracking
+              pageUrl: typeof window !== 'undefined' && window.location ? window.location.href : ''
             }
           }
         }
@@ -73,8 +73,8 @@ export const useEnhancedViewTracking = ({
             timeSpentSeconds,
             stepMetadata: {
               timestamp: Date.now(),
-              // Use proper URL building for analytics tracking
-              pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+              // ✅ FIXED: Use safe URL building for analytics tracking
+              pageUrl: typeof window !== 'undefined' && window.location ? window.location.href : '',
               referrer: document.referrer
             }
           }
@@ -116,12 +116,12 @@ export const useEnhancedViewTracking = ({
             action: 'view',
             metadata: {
               ...locationInfo,
-              // Use proper URL building for analytics tracking
-              pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+              // ✅ FIXED: Use safe URL building for analytics tracking
+              pageUrl: typeof window !== 'undefined' && window.location ? window.location.href : '',
               referrer: document.referrer,
-              utmSource: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_source') : null,
-              utmMedium: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_medium') : null,
-              utmCampaign: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_campaign') : null
+              utmSource: typeof window !== 'undefined' && window.location ? new URLSearchParams(window.location.search).get('utm_source') : null,
+              utmMedium: typeof window !== 'undefined' && window.location ? new URLSearchParams(window.location.search).get('utm_medium') : null,
+              utmCampaign: typeof window !== 'undefined' && window.location ? new URLSearchParams(window.location.search).get('utm_campaign') : null
             }
           }
         });
