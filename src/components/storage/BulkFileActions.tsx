@@ -31,6 +31,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 import { BulkFileActionsProps, TeamMember } from '@/types/storage';
 import { useStorageOperations } from '@/hooks/useStorageOperations';
+import { supabase } from '@/integrations/supabase/client';
 
 export function BulkFileActions({
   selectedFiles,
@@ -46,6 +47,7 @@ export function BulkFileActions({
   const [targetBucket, setTargetBucket] = useState('');
   const [assigneeId, setAssigneeId] = useState('');
   const [assignmentNotes, setAssignmentNotes] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
   const { bulkDeleteFiles, moveFiles, loading } = useStorageOperations();
   
   // This would come from useOrganizationalData hook

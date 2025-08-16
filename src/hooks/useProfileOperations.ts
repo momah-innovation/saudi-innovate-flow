@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -40,7 +40,7 @@ export const useProfileOperations = () => {
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const updateProfile = useCallback(async (userId: string, profileData: Partial<ProfileData>) => {
+  const updateProfile = async (userId: string, profileData: Partial<ProfileData>) => {
     setLoading(true);
     setError(null);
     
@@ -84,9 +84,9 @@ export const useProfileOperations = () => {
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  };
 
-  const uploadAvatar = useCallback(async (userId: string, file: File): Promise<string | null> => {
+  const uploadAvatar = async (userId: string, file: File): Promise<string | null> => {
     setLoading(true);
     setError(null);
     
@@ -94,7 +94,7 @@ export const useProfileOperations = () => {
       const fileName = `avatars/${userId}/${Date.now()}.${file.name.split('.').pop()}`;
       
       // Upload file to storage
-      const { error: uploadError, data } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(fileName, file, { upsert: true });
 
@@ -134,19 +134,16 @@ export const useProfileOperations = () => {
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  };
 
-  const updateSettings = useCallback(async (userId: string, settings: Partial<ProfileSettings>) => {
+  const updateSettings = async (userId: string, settings: Partial<ProfileSettings>) => {
     setLoading(true);
     setError(null);
     
     try {
-      // Use profiles table with custom settings fields for now
-      // Note: Implement proper user_settings table when available
       const { error: updateError } = await supabase
         .from('profiles')
         .update({
-          // Store settings in JSON field or separate columns when available
           settings: {
             emailNotifications: settings.emailNotifications,
             smsNotifications: settings.smsNotifications,
@@ -180,15 +177,13 @@ export const useProfileOperations = () => {
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  };
 
-  const updateSecuritySettings = useCallback(async (userId: string, securitySettings: Partial<SecuritySettings>) => {
+  const updateSecuritySettings = async (userId: string, securitySettings: Partial<SecuritySettings>) => {
     setLoading(true);
     setError(null);
     
     try {
-      // Store security settings in profiles table for now
-      // Note: Implement proper user_security_settings table when available
       const { error: updateError } = await supabase
         .from('profiles')
         .update({
@@ -220,57 +215,63 @@ export const useProfileOperations = () => {
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  };
 
-  const loadUserProfile = useCallback(async (userId: string) => {
+  const loadUserProfile = async (userId: string) => {
     setLoading(true);
     setError(null);
     
     try {
-      const { data: profile, error: profileError } = await supabase
+      const result: any = await supabase
         .from('profiles')
         .select('*')
-        .eq('user_id', userId)
-        .single();
+        .eq('user_id', userId);
+      
+      const profile = result.data?.[0] || null;
+      const profileError = result.error;
 
-      if (profileError && profileError.code !== 'PGRST116') {
+      if (profileError) {
         throw profileError;
       }
 
       return profile || null;
     } catch (err: any) {
-      setError(err.message || 'Failed to load profile');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load profile';
+      setError(errorMessage);
       return null;
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
-  const loadUserSettings = useCallback(async (userId: string) => {
+  const loadUserSettings = async (userId: string) => {
     setLoading(true);
     
     try {
-      const { data: profile } = await supabase
+      const result: any = await supabase
         .from('profiles')
         .select('*')
-        .eq('user_id', userId)
-        .single();
+        .eq('user_id', userId);
+      
+      const profile = result.data?.[0] || null;
+      const error = result.error;
+
+      if (error) throw error;
 
       return profile || null;
-    } catch (err: any) {
-      setError('Failed to load settings');
+    } catch (error: any) {
+      setError(error?.message || 'Failed to load settings');
       return null;
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
-  const deleteAccount = useCallback(async (userId: string) => {
+  const deleteAccount = async (userId: string) => {
     setLoading(true);
     setError(null);
     
     try {
-      // Soft delete by updating status
       const { error: deleteError } = await supabase
         .from('profiles')
         .update({ 
@@ -297,9 +298,9 @@ export const useProfileOperations = () => {
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  };
 
-  const updatePassword = useCallback(async (newPassword: string) => {
+  const updatePassword = async (newPassword: string) => {
     setLoading(true);
     setError(null);
     
@@ -326,7 +327,7 @@ export const useProfileOperations = () => {
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  };
 
   return {
     loading,

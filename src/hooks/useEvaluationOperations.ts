@@ -26,10 +26,11 @@ export interface EvaluationData {
   implementation_complexity: number;
   innovation_level: number;
   market_potential: number;
-  overall_score: number;
-  recommendation: string;
+  overall_score?: number;
+  recommendation?: string;
   strengths: string;
   weaknesses: string;
+  suggestions?: string;
   evaluation_date: string;
   created_at: string;
   updated_at?: string;
