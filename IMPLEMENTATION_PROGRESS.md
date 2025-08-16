@@ -223,6 +223,11 @@
 
 ## Technical Achievements This Session
 
+### AppShell Fixes ✅
+- Prevented double AppShell rendering via nesting context (no duplicate headers/sidebars)
+- Unified sidebar state using SidebarPersistence across app
+- Kept AppShell as single source of layout truth via UnifiedRouter with withAppShell
+
 ### Navigation Pattern Completion ✅
 - **98% of navigation patterns** implemented (54/55 files complete)
 - **All major dashboards** unified with navigation handler

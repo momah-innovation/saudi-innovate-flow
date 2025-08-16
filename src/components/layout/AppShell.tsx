@@ -113,6 +113,9 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// Prevent double AppShell by detecting nesting
+const AppShellNestingContext = createContext<boolean>(false);
+
 /**
  * AppShell - Root layout component providing unified app context
  * Features:
@@ -134,6 +137,12 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   
   // Sidebar state from persistence context (keeps state consistent app-wide)
   const { isOpen: sidebarOpen, setIsOpen } = useSidebarPersistence();
+
+  // Detect nested AppShell and avoid double wrapping
+  const isNested = useContext(AppShellNestingContext);
+  if (isNested) {
+    return <>{children}</>;
+  }
   
   const setSidebarOpen = (open: boolean | ((prev: boolean) => boolean)) => {
     const newValue = typeof open === 'function' ? (open as (prev: boolean) => boolean)(sidebarOpen) : open;
@@ -232,62 +241,64 @@ export function AppShell({ children, enableCollaboration, collaborationContext }
   };
   
   const content = (
-    <AppShellErrorBoundary onError={handleError}>
-      <TranslationProvider>
-        <AnalyticsProvider options={{ includeRoleSpecific: true, autoRefresh: true }}>
-          <AppContext.Provider value={appContextValue}>
-            <div className={cn(
-              "min-h-screen flex w-full bg-background transition-all duration-300",
-              direction.isRTL && "flex-row-reverse"
-            )}>
-              {/* Navigation Sidebar Overlay */}
-              <EnhancedNavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
-              
-              {/* Main Content Area */}
-              <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                {/* Global Header */}
-                <SystemHeader onSidebarToggle={() => {
-                  debugLog.debug('Sidebar toggle function called from header', {
-                    timestamp: Date.now(),
-                    currentSidebarState: sidebarOpen
-                  });
-                  setSidebarOpen(prev => {
-                    const newState = !prev;
-                    debugLog.debug('Sidebar toggle executed', {
-                      timestamp: Date.now(),
-                      prev,
-                      newState
-                    });
-                    performance.mark('sidebar-toggle-end');
-                    try {
-                      performance.measure('sidebar-toggle-duration', 'sidebar-toggle-start', 'sidebar-toggle-end');
-                      const measure = performance.getEntriesByName('sidebar-toggle-duration')[0];
-                      debugLog.performance('sidebar-toggle', measure.duration, {
-                        startTime: measure.startTime
-                      });
-                    } catch (e) {
-                      debugLog.warn('Performance measurement failed', { error: e });
-                    }
-                    return newState;
-                  });
-                }} />
+    <AppShellNestingContext.Provider value={true}>
+      <AppShellErrorBoundary onError={handleError}>
+        <TranslationProvider>
+          <AnalyticsProvider options={{ includeRoleSpecific: true, autoRefresh: true }}>
+            <AppContext.Provider value={appContextValue}>
+              <div className={cn(
+                "min-h-screen flex w-full bg-background transition-all duration-300",
+                direction.isRTL && "flex-row-reverse"
+              )}>
+                {/* Navigation Sidebar Overlay */}
+                <EnhancedNavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
                 
-                {/* Page Content with Loading */}
-                <main className="flex-1 overflow-auto overscroll-behavior-contain">
-                  <Suspense fallback={
-                    <div className="flex items-center justify-center min-h-[50vh] px-4">
-                      <LoadingSpinner />
-                    </div>
-                  }>
-                    {children}
-                  </Suspense>
-                </main>
+                {/* Main Content Area */}
+                <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+                  {/* Global Header */}
+                  <SystemHeader onSidebarToggle={() => {
+                    debugLog.debug('Sidebar toggle function called from header', {
+                      timestamp: Date.now(),
+                      currentSidebarState: sidebarOpen
+                    });
+                    setSidebarOpen(prev => {
+                      const newState = !prev;
+                      debugLog.debug('Sidebar toggle executed', {
+                        timestamp: Date.now(),
+                        prev,
+                        newState
+                      });
+                      performance.mark('sidebar-toggle-end');
+                      try {
+                        performance.measure('sidebar-toggle-duration', 'sidebar-toggle-start', 'sidebar-toggle-end');
+                        const measure = performance.getEntriesByName('sidebar-toggle-duration')[0];
+                        debugLog.performance('sidebar-toggle', measure.duration, {
+                          startTime: measure.startTime
+                        });
+                      } catch (e) {
+                        debugLog.warn('Performance measurement failed', { error: e });
+                      }
+                      return newState;
+                    });
+                  }} />
+                  
+                  {/* Page Content with Loading */}
+                  <main className="flex-1 overflow-auto overscroll-behavior-contain">
+                    <Suspense fallback={
+                      <div className="flex items-center justify-center min-h-[50vh] px-4">
+                        <LoadingSpinner />
+                      </div>
+                    }>
+                      {children}
+                    </Suspense>
+                  </main>
+                </div>
               </div>
-            </div>
-          </AppContext.Provider>
-        </AnalyticsProvider>
-      </TranslationProvider>
-    </AppShellErrorBoundary>
+            </AppContext.Provider>
+          </AnalyticsProvider>
+        </TranslationProvider>
+      </AppShellErrorBoundary>
+    </AppShellNestingContext.Provider>
   );
 
   // Wrap with collaboration if enabled
