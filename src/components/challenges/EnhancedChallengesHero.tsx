@@ -67,9 +67,10 @@ export const EnhancedChallengesHero = ({
   // Removed useTimerManager to prevent hook violations
 
   React.useEffect(() => {
+    // Reduced frequency from 3s to 8s to improve performance
     const intervalId = setInterval(() => {
       setCurrentStat((prev) => (prev + 1) % stats.length);
-    }, 3000);
+    }, 8000);
     return () => clearInterval(intervalId);
   }, [stats.length]);
 
@@ -147,8 +148,8 @@ export const EnhancedChallengesHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-300",
+                      isActive && "bg-white/10 border-white/20 scale-[1.02]"
                     )}
                   >
                     <CardContent className="p-4 text-center">

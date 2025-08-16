@@ -34,7 +34,7 @@ interface EnhancedNavigationSidebarProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNavigationSidebarProps) {
+export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNavigationSidebarProps) {
   // Use individual hooks instead of useAppContext to avoid state conflicts
   const { userProfile } = useAuth();
   const { isRTL } = useDirection();
@@ -235,7 +235,7 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
         )}
       </button>
     );
-  }, [t, isRTL, handleItemClick, isActiveItem]);
+  }, [t, isRTL, handleNavigation, isActiveItem]);
 
   // Render group section
   const renderGroup = useCallback((groupId: string, items: MenuItem[]) => {
@@ -285,8 +285,8 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
     );
   }, [openGroups, toggleGroup, t, isRTL, isActiveItem, renderMenuItem, searchFilteredItems]);
 
-  // Sidebar content
-  const sidebarContent = (
+  // Memoize sidebar content to prevent unnecessary re-renders
+  const sidebarContent = React.useMemo(() => (
     <>
       {/* Overlay for mobile */}
       {open && isMobile && (
@@ -303,8 +303,9 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
           'flex flex-col overflow-hidden z-50',
           isRTL ? 'right-0' : 'left-0',
           'w-80 max-w-[80vw] lg:w-72',
-          // Simple visibility toggle without transforms
-          open ? 'block' : 'hidden'
+          // Optimized visibility toggle with will-change for performance
+          open ? 'block' : 'hidden',
+          'will-change-[transform]'
         )}
       >
         {/* Header */}
@@ -410,7 +411,7 @@ export function EnhancedNavigationSidebar({ open, onOpenChange }: EnhancedNaviga
         </div>
       </div>
     </>
-  );
+  ), [open, isMobile, handleOverlayClick, isRTL, t, user, userProfile, userRoles, searchQuery, searchFilteredItems, renderGroup, filteredMenuItems]);
 
   return createPortal(sidebarContent, document.body);
-}
+});
