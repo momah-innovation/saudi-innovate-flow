@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ChallengeExpert } from '@/types/admin';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -73,7 +74,7 @@ export const ChallengeExpertPanel: React.FC<ChallengeExpertPanelProps> = ({
         .eq('status', 'active');
 
       if (error) throw error;
-      setExperts((data as any[])?.filter(item => item.expert?.profiles) || []);
+      setExperts((data as ChallengeExpert[])?.filter(item => item.expert?.profiles) || []);
     } catch (error) {
       logger.error('Error loading experts', { challengeId }, error as Error);
     } finally {

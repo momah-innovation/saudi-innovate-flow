@@ -305,7 +305,7 @@ export function ExpertAssignmentManagement() {
     }
 
     try {
-      const assignments = [];
+      const assignments: any[] = [];
       for (const challengeId of bulkSelectedChallenges) {
         for (const expertId of bulkSelectedExperts) {
           assignments.push({
@@ -313,7 +313,7 @@ export function ExpertAssignmentManagement() {
             expert_id: expertId,
             role_type: selectedRole,
             status: 'active',
-            notes: assignmentNotes || null
+            notes: assignmentNotes || undefined
           });
         }
       }

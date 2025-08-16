@@ -17,6 +17,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+import { ChallengeSubmission } from '@/types/admin';
 import {
   Users,
   Calendar,
@@ -89,7 +90,7 @@ export function ChallengeViewDialog({
     navigationHandler.setNavigate(navigate);
   }, [navigate]);
   
-  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | 'winners' | 'top-rated' | 'recent'>('all');
   const [isParticipating, setIsParticipating] = useState(false);

@@ -30,8 +30,8 @@ export const ChallengeCollaborationSidebar: React.FC<ChallengeCollaborationSideb
   isParticipant,
   userTeam
 }) => {
-  const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
-  const [recentActivity, setRecentActivity] = useState<any[]>([]);
+  const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
+  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
 
   return (
     <div className="space-y-6">

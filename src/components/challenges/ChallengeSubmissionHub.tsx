@@ -4,6 +4,7 @@ import { navigationHandler } from '@/utils/unified-navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ChallengeSubmission } from '@/types/admin';
 import { Progress } from '@/components/ui/progress';
 import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
 import { useAuth } from '@/contexts/AuthContext';

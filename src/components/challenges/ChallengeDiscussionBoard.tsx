@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ChallengeDiscussion } from '@/types/admin';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -69,7 +70,7 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setDiscussions((data as any[])?.filter(item => item.profiles) || []);
+      setDiscussions((data as ChallengeDiscussion[])?.filter(item => item.profiles) || []);
     } catch (error) {
       logger.error('Error loading discussions', { challengeId }, error as Error);
     } finally {

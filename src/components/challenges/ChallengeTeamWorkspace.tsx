@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChallengeTeam } from '@/types/admin';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,7 +20,7 @@ interface ChallengeTeamWorkspaceProps {
 export const ChallengeTeamWorkspace: React.FC<ChallengeTeamWorkspaceProps> = ({
   challengeId
 }) => {
-  const [teams] = useState<any[]>([]);
+  const [teams] = useState<ChallengeTeam[]>([]);
 
   return (
     <div className="space-y-6">
