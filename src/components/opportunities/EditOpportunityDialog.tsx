@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useOpportunityOperations } from '@/hooks/useOpportunityOperations';
 import { 
   Building2, 
   DollarSign, 
@@ -60,10 +61,10 @@ export const EditOpportunityDialog = ({
   const { isRTL } = useDirection();
   const { t } = useUnifiedTranslation();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { updateOpportunity, uploadOpportunityImage, loading } = useOpportunityOperations();
 
   const {
     register,
@@ -159,7 +160,6 @@ export const EditOpportunityDialog = ({
   };
 
   const onSubmit = async (data: OpportunityFormData) => {
-    setLoading(true);
     try {
       const { error } = await supabase
         .from('opportunities')
@@ -223,8 +223,6 @@ export const EditOpportunityDialog = ({
         description: error.message || (isRTL ? 'حدث خطأ أثناء تحديث الفرصة' : 'An error occurred while updating the opportunity'),
         variant: 'destructive',
       });
-    } finally {
-      setLoading(false);
     }
   };
 

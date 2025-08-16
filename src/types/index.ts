@@ -275,40 +275,8 @@ export interface Domain extends Department {}
 export interface SubDomain extends Department {}
 export interface Service extends Department {}
 
-// Form data interfaces - matching actual component usage (not extending base types)
-export interface CampaignFormData {
-  // Optional base fields for forms
-  id?: string;
-  title?: string;
-  description?: string;
-  created_at?: string;
-  updated_at?: string;
-  // Form-specific fields
-  title_ar: string;
-  title_en?: string;
-  description_ar: string;
-  description_en?: string;
-  status: string;
-  theme?: string;
-  success_metrics?: string; // String, not array - based on actual usage
-  start_date?: string;
-  end_date?: string;
-  registration_deadline?: string;
-  target_participants?: number | null;
-  target_ideas?: number | null;
-  budget?: number | null;
-  campaign_manager_id?: string;
-  sector_id?: string;
-  deputy_id?: string;
-  department_id?: string;
-  challenge_id?: string;
-  sector_ids?: string[];
-  deputy_ids?: string[];
-  department_ids?: string[];
-  challenge_ids?: string[];
-  partner_ids?: string[];
-  stakeholder_ids?: string[];
-}
+// Form data interfaces - using hook interface to avoid conflicts
+export type { CampaignFormData } from '@/hooks/useCampaignManagement';
 export interface IdeaFormData {
   // Optional base fields for forms
   id?: string;

@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { OrganizationalProfileForm } from './OrganizationalProfileForm';
+import { useProfileOperations } from '@/hooks/useProfileOperations';
+import { logger } from '@/utils/logger';
 
 interface ProfileSettings {
   emailNotifications: boolean;
@@ -34,8 +36,12 @@ export const ProfileManager: React.FC = () => {
   const { toast } = useToast();
   const { t, language } = useUnifiedTranslation();
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [avatarUploading, setAvatarUploading] = useState(false);
+  const { 
+    updateProfile, 
+    uploadAvatar, 
+    loading 
+  } = useProfileOperations();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -69,38 +75,16 @@ export const ProfileManager: React.FC = () => {
   }, [userProfile]);
 
   const handleSaveProfile = async () => {
-    const errorHandler = createErrorHandler({
-      component: 'ProfileManager',
-      showToast: true,
-      logError: true
-    });
+    if (!userProfile?.id) return;
 
-    setLoading(true);
     try {
-      const updateData = formData;
-
-      const { error } = await supabase
-        .from('profiles')
-        .update(updateData)
-        .eq('id', userProfile?.id);
-
-      if (error) throw error;
-
-      // Refresh user profile data
+      await updateProfile(userProfile.id, formData);
       setIsEditing(false);
-      
-      toast({
-        title: t('profile_saved'),
-        description: t('profile_updated_successfully'),
-      });
-    } catch (error: any) {
-      toast({
-        title: t('profile_save_error'),
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      logger.error('Error saving profile', { 
+        component: 'ProfileManager', 
+        action: 'handleSaveProfile' 
+      }, error as Error);
     }
   };
 
@@ -110,41 +94,12 @@ export const ProfileManager: React.FC = () => {
 
     setAvatarUploading(true);
     try {
-      // Upload to avatars bucket
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${userProfile.id}/avatar.${fileExt}`;
-      
-      const { error: uploadError } = await supabase.storage
-        .from('avatars-public')
-        .upload(fileName, file, { upsert: true });
-
-      if (uploadError) throw uploadError;
-
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('avatars-public')
-        .getPublicUrl(fileName);
-
-      // Update profile with new avatar URL
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ profile_image_url: urlData.publicUrl })
-        .eq('id', userProfile.id);
-
-      if (updateError) throw updateError;
-
-      // Refresh user profile data
-
-      toast({
-        title: t('avatar_updated'),
-        description: t('avatar_uploaded_successfully'),
-      });
-    } catch (error: any) {
-      toast({
-        title: t('avatar_upload_error'),
-        description: error.message,
-        variant: "destructive",
-      });
+      await uploadAvatar(userProfile.id, file);
+    } catch (error) {
+      logger.error('Error uploading avatar', { 
+        component: 'ProfileManager', 
+        action: 'handleAvatarUpload' 
+      }, error as Error);
     } finally {
       setAvatarUploading(false);
     }

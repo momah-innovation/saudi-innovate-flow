@@ -4,6 +4,7 @@ import { queryBatcher } from '@/utils/queryBatcher';
 import { useToast } from '@/hooks/use-toast';
 
 export interface CampaignFormData {
+  id?: string;
   title_ar: string;
   title_en?: string;
   description_ar?: string;

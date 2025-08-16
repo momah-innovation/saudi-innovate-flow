@@ -54,9 +54,10 @@ import {
   X
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { supabase } from '@/integrations/supabase/client';
+import { useStorageOperations } from '@/hooks/useStorageOperations';
 
 export function StorageManagementPage() {
   const { toast } = useToast();
@@ -65,6 +66,10 @@ export function StorageManagementPage() {
   const { uploadFiles, isUploading, getFileUrl: getUploaderFileUrl } = useFileUploader();
   const { analytics, loading: analyticsLoading, refreshAnalytics } = useStorageAnalytics();
   const { quotas, loading: quotasLoading, refreshQuotas } = useStorageQuotas();
+  const { 
+    bulkDeleteFiles, 
+    loading: storageOpsLoading 
+  } = useStorageOperations();
   const { uploadConfigs = {}, globalSettings = {
     autoCleanupEnabled: false,
     defaultCleanupDays: 7,
