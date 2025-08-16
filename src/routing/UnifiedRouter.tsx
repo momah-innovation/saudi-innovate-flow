@@ -235,6 +235,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     component: CollaborativeOpportunitiesPage,
     requireAuth: true,
     requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
     withAppShell: true,
   },
 
@@ -292,6 +293,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     component: CollaborationLandingPage,
     requireAuth: true,
     requireProfile: true,
+    requiredRole: ['admin', 'super_admin'],
     withAppShell: true,
   },
 

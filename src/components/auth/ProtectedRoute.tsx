@@ -100,15 +100,15 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={redirectTo || ALL_ROUTES.AUTH} state={{ from: location }} replace />;
   }
 
-  // Progressive profile requirement - reduced from 80% to 40% for better UX
-  if (requireProfile && user && (!userProfile || userProfile.profile_completion_percentage < 40)) {
+  // Progressive profile requirement - reduced to 20% for better UX
+  if (requireProfile && user && (!userProfile || userProfile.profile_completion_percentage < 20)) {
     debugLog.debug('ProtectedRoute: Redirecting to profile setup - incomplete profile', {
       component: 'ProtectedRoute',
       action: 'redirectToProfileSetup',
       data: {
         hasProfile: !!userProfile,
         completion: userProfile?.profile_completion_percentage,
-        newRequirement: 40 // Updated from 80%
+        newRequirement: 20 // Updated to 20% for better UX
       }
     });
     return <Navigate to={ALL_ROUTES.PROFILE_SETUP} replace />;
