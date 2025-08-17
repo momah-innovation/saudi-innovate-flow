@@ -303,6 +303,50 @@ interface WorkspacePermissions {
   canManageWorkspaceSettings: boolean;
 }
 
+// Multi-Role Navigation Hook
+export const useWorkspaceNavigation = () => {
+  const { userRoles, hasAnyRole } = useRoleAccess();
+  const [currentWorkspace, setCurrentWorkspace] = useState<WorkspaceType>('user');
+  const { t } = useUnifiedTranslation();
+  
+  const availableWorkspaces = useMemo(() => {
+    const workspaces: WorkspaceType[] = ['user']; // Everyone gets user workspace
+    
+    if (hasAnyRole(['expert', 'evaluator', 'consultant'])) workspaces.push('expert');
+    if (hasAnyRole(['manager', 'team_lead', 'project_manager'])) workspaces.push('manager');
+    if (hasAnyRole(['coordinator', 'event_coordinator'])) workspaces.push('coordinator');
+    if (hasAnyRole(['analyst', 'data_analyst', 'business_analyst'])) workspaces.push('analyst');
+    if (hasAnyRole(['content_manager', 'challenge_manager', 'research_lead'])) workspaces.push('content');
+    if (hasAnyRole(['organization_admin', 'entity_manager', 'deputy_manager'])) workspaces.push('organization');
+    if (hasAnyRole(['partner', 'external_partner'])) workspaces.push('partner');
+    if (hasAnyRole(['admin', 'super_admin'])) workspaces.push('admin');
+    
+    return workspaces;
+  }, [userRoles, hasAnyRole]);
+  
+  const sidebarConfig = useMemo(() => ({
+    workspaceSwitcher: availableWorkspaces.map(ws => ({
+      type: ws,
+      label: t(`workspace.${ws}.title`),
+      description: t(`workspace.${ws}.description`),
+      isActive: ws === currentWorkspace,
+      onClick: () => setCurrentWorkspace(ws)
+    })),
+    
+    currentNavigation: getWorkspaceSpecificNavigation(currentWorkspace, userRoles),
+    
+    crossWorkspaceActions: getCrossWorkspaceQuickActions(availableWorkspaces, userRoles)
+  }), [availableWorkspaces, currentWorkspace, userRoles, t]);
+  
+  return {
+    currentWorkspace,
+    setCurrentWorkspace,
+    availableWorkspaces,
+    sidebarConfig,
+    canSwitchTo: (workspace: WorkspaceType) => availableWorkspaces.includes(workspace)
+  };
+};
+
 export const useWorkspacePermissions = (): WorkspacePermissions => {
   const { user } = useAuth();
   const { 
