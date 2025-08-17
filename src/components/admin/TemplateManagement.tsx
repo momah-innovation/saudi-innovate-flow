@@ -8,11 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useTemplateData } from '@/hooks/useTemplateData';
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable, Column } from '@/components/ui/data-table';
 
 import { Template, TemplateCategory, TemplateVersion } from '@/hooks/useTemplateData';
+import { format } from 'date-fns';
 import { 
-  FileText, 
+  FileText, Edit2,
   Plus, 
   Edit, 
   Copy, 
@@ -65,6 +66,8 @@ const TemplateManagement: React.FC = () => {
 
   const templateColumns = [
     {
+      key: 'name',
+      title: 'Name',
       accessorKey: 'name',
       header: 'Name',
       cell: ({ row }) => (
@@ -75,30 +78,17 @@ const TemplateManagement: React.FC = () => {
       )
     },
     {
-      accessorKey: 'type',
-      header: 'Type',
-      cell: ({ row }) => (
-        <Badge variant="outline">{row.getValue('type')}</Badge>
-      )
-    },
-    {
+      key: 'category',
+      title: 'Category',
       accessorKey: 'category',
       header: 'Category',
       cell: ({ row }) => (
-        <span className="text-sm">{row.getValue('category')}</span>
+        <Badge variant="outline">{row.getValue('category')}</Badge>
       )
     },
     {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => {
-        const status = row.getValue('status') as string;
-        const variant = status === 'active' ? 'default' : 
-                      status === 'draft' ? 'secondary' : 'outline';
-        return <Badge variant={variant}>{status}</Badge>;
-      }
-    },
-    {
+      key: 'version',
+      title: 'Version',
       accessorKey: 'version',
       header: 'Version',
       cell: ({ row }) => (
@@ -108,50 +98,53 @@ const TemplateManagement: React.FC = () => {
       )
     },
     {
-      accessorKey: 'usage_count',
-      header: 'Usage',
+      key: 'status',
+      title: 'Status',
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ row }) => {
+        const status = row.getValue('status') as string;
+        return (
+          <Badge variant={status === 'published' ? 'default' : 'secondary'}>
+            {status}
+          </Badge>
+        );
+      }
+    },
+    {
+      key: 'last_modified',
+      title: 'Last Modified',
+      accessorKey: 'last_modified',
+      header: 'Last Modified',
       cell: ({ row }) => (
-        <span className="text-sm">{row.getValue('usage_count')}</span>
+        <span className="text-sm text-muted-foreground">
+          {format(new Date(row.getValue('last_modified')), 'PPp')}
+        </span>
       )
     },
     {
+      key: 'actions',
+      title: 'Actions',
       id: 'actions',
       header: 'Actions',
       cell: ({ row }) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center space-x-2">
           <Button
-            variant="ghost"
+            variant="outline"
+            size="sm"
+            onClick={() => setIsEditDialogOpen(true)}
+          >
+            <Edit2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
             size="sm"
             onClick={() => setSelectedTemplate(row.original)}
           >
             <Eye className="h-4 w-4" />
           </Button>
           <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setSelectedTemplate(row.original);
-              setIsEditDialogOpen(true);
-            }}
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => duplicateTemplate(row.original.id, `${row.original.name} (Copy)`)}
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => getTemplateVersions(row.original.id)}
-          >
-            <History className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => deleteTemplate(row.original.id)}
           >
@@ -164,6 +157,8 @@ const TemplateManagement: React.FC = () => {
 
   const categoryColumns = [
     {
+      key: 'name',
+      title: 'Category',
       accessorKey: 'name',
       header: 'Category',
       cell: ({ row }) => (
@@ -174,6 +169,8 @@ const TemplateManagement: React.FC = () => {
       )
     },
     {
+      key: 'template_count',
+      title: 'Templates',
       accessorKey: 'template_count',
       header: 'Templates',
       cell: ({ row }) => (
@@ -184,6 +181,8 @@ const TemplateManagement: React.FC = () => {
 
   const versionColumns = [
     {
+      key: 'version',
+      title: 'Version',
       accessorKey: 'version',
       header: 'Version',
       cell: ({ row }) => (
@@ -193,26 +192,23 @@ const TemplateManagement: React.FC = () => {
       )
     },
     {
-      accessorKey: 'created_by',
-      header: 'Created By',
+      key: 'author',
+      title: 'Author',
+      accessorKey: 'author',
+      header: 'Author',
       cell: ({ row }) => (
-        <span className="text-sm">{row.getValue('created_by')}</span>
+        <span className="text-sm">{row.getValue('author')}</span>
       )
     },
     {
+      key: 'created_at',
+      title: 'Created',
       accessorKey: 'created_at',
       header: 'Created',
       cell: ({ row }) => (
-        <span className="text-sm">
-          {new Date(row.getValue('created_at')).toLocaleDateString()}
+        <span className="text-sm text-muted-foreground">
+          {format(new Date(row.getValue('created_at')), 'PPp')}
         </span>
-      )
-    },
-    {
-      accessorKey: 'changelog',
-      header: 'Changelog',
-      cell: ({ row }) => (
-        <span className="text-sm">{row.getValue('changelog') || '-'}</span>
       )
     }
   ];

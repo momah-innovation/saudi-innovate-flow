@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useAuditData } from '@/hooks/useAuditData';
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable, Column } from '@/components/ui/data-table';
 
 import { AuditEvent, ComplianceReport, AuditConfiguration } from '@/hooks/useAuditData';
 import { Shield, Download, Search, Settings, FileCheck, AlertTriangle } from 'lucide-react';
@@ -35,64 +35,22 @@ const AuditManagement: React.FC = () => {
 
   const filteredEvents = searchAuditEvents(searchQuery);
 
-  const auditEventColumns = [
+  const auditEventColumns: Column<AuditEvent>[] = [
     {
-      accessorKey: 'timestamp',
-      header: 'Timestamp',
-      cell: ({ row }) => (
-        <span className="text-sm">
-          {new Date(row.getValue('timestamp')).toLocaleString()}
-        </span>
-      )
+      key: 'timestamp',
+      title: 'Timestamp',
+      render: (value) => new Date(value).toLocaleString()
     },
-    {
-      accessorKey: 'user_name',
-      header: 'User',
-      cell: ({ row }) => (
-        <span className="font-medium">{row.getValue('user_name')}</span>
-      )
-    },
-    {
-      accessorKey: 'action',
-      header: 'Action',
-      cell: ({ row }) => (
-        <code className="bg-muted px-2 py-1 rounded text-sm">
-          {row.getValue('action')}
-        </code>
-      )
-    },
-    {
-      accessorKey: 'resource_type',
-      header: 'Resource',
-      cell: ({ row }) => (
-        <span className="text-sm">{row.getValue('resource_type')}</span>
-      )
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => {
-        const status = row.getValue('status') as string;
-        const variant = status === 'success' ? 'default' : 
-                      status === 'failed' ? 'destructive' : 'secondary';
-        return <Badge variant={variant}>{status}</Badge>;
-      }
-    },
-    {
-      accessorKey: 'severity',
-      header: 'Severity',
-      cell: ({ row }) => {
-        const severity = row.getValue('severity') as string;
-        const variant = severity === 'critical' ? 'destructive' :
-                      severity === 'high' ? 'destructive' :
-                      severity === 'medium' ? 'secondary' : 'default';
-        return <Badge variant={variant}>{severity}</Badge>;
-      }
-    }
+    { key: 'user_id', title: 'User' },
+    { key: 'action', title: 'Action' },
+    { key: 'resource_type', title: 'Resource Type' },
+    { key: 'status', title: 'Status' }
   ];
 
   const complianceReportColumns = [
     {
+      key: 'name',
+      title: 'Report Name',
       accessorKey: 'name',
       header: 'Report Name',
       cell: ({ row }) => (
@@ -100,40 +58,49 @@ const AuditManagement: React.FC = () => {
       )
     },
     {
+      key: 'type',
+      title: 'Type',
       accessorKey: 'type',
       header: 'Type',
       cell: ({ row }) => (
-        <Badge variant="outline">{(row.getValue('type') as string).toUpperCase()}</Badge>
+        <Badge variant="outline">{row.getValue('type')}</Badge>
       )
     },
     {
-      accessorKey: 'period_start',
+      key: 'period',
+      title: 'Period',
+      accessorKey: 'period',
       header: 'Period',
       cell: ({ row }) => (
-        <span className="text-sm">
-          {row.getValue('period_start')} - {row.original.period_end}
-        </span>
+        <span className="text-sm">{row.getValue('period')}</span>
       )
     },
     {
+      key: 'status',
+      title: 'Status',
       accessorKey: 'status',
       header: 'Status',
       cell: ({ row }) => {
         const status = row.getValue('status') as string;
-        const variant = status === 'completed' ? 'default' :
-                      status === 'failed' ? 'destructive' : 'secondary';
-        return <Badge variant={variant}>{status}</Badge>;
+        return (
+          <Badge variant={status === 'completed' ? 'default' : 'secondary'}>
+            {status}
+          </Badge>
+        );
       }
     },
     {
+      key: 'compliance_score',
+      title: 'Score',
       accessorKey: 'compliance_score',
-      header: 'Score',
-      cell: ({ row }) => {
-        const score = row.getValue('compliance_score') as number;
-        return score > 0 ? `${score}%` : '-';
-      }
+      header: 'Compliance Score',
+      cell: ({ row }) => (
+        <span className="font-medium">{row.getValue('compliance_score')}%</span>
+      )
     },
     {
+      key: 'violations',
+      title: 'Violations',
       accessorKey: 'violations',
       header: 'Violations',
       cell: ({ row }) => {
@@ -147,6 +114,8 @@ const AuditManagement: React.FC = () => {
 
   const auditConfigColumns = [
     {
+      key: 'category',
+      title: 'Category',
       accessorKey: 'category',
       header: 'Category',
       cell: ({ row }) => (
@@ -154,48 +123,18 @@ const AuditManagement: React.FC = () => {
       )
     },
     {
+      key: 'enabled',
+      title: 'Status',
       accessorKey: 'enabled',
-      header: 'Enabled',
-      cell: ({ row }) => (
-        <Switch
-          checked={row.getValue('enabled')}
-          onCheckedChange={(checked) => 
-            updateAuditConfig(row.original.id, { enabled: checked })
-          }
-        />
-      )
-    },
-    {
-      accessorKey: 'retention_days',
-      header: 'Retention (Days)',
-      cell: ({ row }) => (
-        <span className="text-sm">{row.getValue('retention_days')}</span>
-      )
-    },
-    {
-      accessorKey: 'compliance_tags',
-      header: 'Compliance Tags',
-      cell: ({ row }) => (
-        <div className="flex gap-1 flex-wrap">
-          {(row.getValue('compliance_tags') as string[]).map(tag => (
-            <Badge key={tag} variant="outline" className="text-xs">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      )
-    },
-    {
-      accessorKey: 'auto_archive',
-      header: 'Auto Archive',
-      cell: ({ row }) => (
-        <Switch
-          checked={row.getValue('auto_archive')}
-          onCheckedChange={(checked) => 
-            updateAuditConfig(row.original.id, { auto_archive: checked })
-          }
-        />
-      )
+      header: 'Status',
+      cell: ({ row }) => {
+        const enabled = row.getValue('enabled') as boolean;
+        return (
+          <Badge variant={enabled ? 'default' : 'secondary'}>
+            {enabled ? 'Enabled' : 'Disabled'}
+          </Badge>
+        );
+      }
     }
   ];
 
