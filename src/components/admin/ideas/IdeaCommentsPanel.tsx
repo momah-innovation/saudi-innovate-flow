@@ -59,7 +59,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
   const [replyContent, setReplyContent] = useState("");
   const [isInternal, setIsInternal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const handleError = createErrorHandler({ component: 'IdeaCommentsPanel' });
 
   useEffect(() => {
     if (isOpen && ideaId) {

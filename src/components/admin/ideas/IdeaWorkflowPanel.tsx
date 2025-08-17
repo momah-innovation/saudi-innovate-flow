@@ -95,6 +95,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
   const [priority, setPriority] = useState("medium");
   
   const [loading, setLoading] = useState(false);
+  const handleError = createErrorHandler({ component: 'IdeaWorkflowPanel' });
   const [activeTab, setActiveTab] = useState("workflow");
 
   // Status options from settings

@@ -8,6 +8,8 @@ import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useStatusTranslations } from "@/utils/statusMappings";
 import { logger } from "@/utils/logger";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { supabase } from "@/integrations/supabase/client";
 import { Trash2, FileEdit, Tag, Users, Archive, AlertTriangle } from "lucide-react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -46,7 +48,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
   const [statusReason, setStatusReason] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [assigneeId, setAssigneeId] = useState("");
-  const [loading, setLoading] = useState(false);
+  const loadingManager = useUnifiedLoading({ component: 'BulkActionsPanel' });
+  const handleError = createErrorHandler({ component: 'BulkActionsPanel' });
 
   const [availableTags, setAvailableTags] = useState<IdeaTag[]>([]);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
@@ -60,159 +63,151 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
   const handleBulkStatusChange = async () => {
     if (!newStatus || selectedItems.length === 0) return;
     
-    setLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('idea-workflow-manager', {
-        body: {
-          action: 'bulk_status_change',
-          data: {
-            ideaIds: selectedItems,
-            newStatus: newStatus,
-            reason: statusReason
+    await loadingManager.withLoading('statusChange', async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('idea-workflow-manager', {
+          body: {
+            action: 'bulk_status_change',
+            data: {
+              ideaIds: selectedItems,
+              newStatus: newStatus,
+              reason: statusReason
+            }
           }
-        }
-      });
+        });
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: t('bulk_actions.update_success', 'نجح التحديث'),
-        description: t('bulk_actions.ideas_updated_success', `تم تحديث حالة ${selectedItems.length} فكرة بنجاح`),
-      });
+        toast({
+          title: t('bulk_actions.update_success', 'نجح التحديث'),
+          description: t('bulk_actions.ideas_updated_success', `تم تحديث حالة ${selectedItems.length} فكرة بنجاح`),
+        });
 
-      setShowStatusDialog(false);
-      setNewStatus("");
-      setStatusReason("");
-      onItemsUpdate();
-      onClearSelection();
-    } catch (error) {
-      logger.error('Error updating status', { component: 'BulkActionsPanel', action: 'handleBulkStatusChange', data: { selectedItems, newStatus } }, error as Error);
-      toast({
-        title: "خطأ",
-        description: t('errors.failed_to_update_ideas_status', 'فشل في تحديث حالة الأفكار'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+        setShowStatusDialog(false);
+        setNewStatus("");
+        setStatusReason("");
+        onItemsUpdate();
+        onClearSelection();
+      } catch (error) {
+        handleError.handleError('Bulk status change failed', { 
+          component: 'BulkActionsPanel', 
+          operation: 'statusChange' 
+        });
+        throw error;
+      }
+    });
   };
 
   const handleBulkDelete = async () => {
     if (selectedItems.length === 0) return;
     
-    setLoading(true);
-    try {
-      const { error } = await supabase
-        .from('ideas')
-        .delete()
-        .in('id', selectedItems);
+    await loadingManager.withLoading('delete', async () => {
+      try {
+        const { error } = await supabase
+          .from('ideas')
+          .delete()
+          .in('id', selectedItems);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: t('bulk_actions.delete_success', 'نجح الحذف'),
-        description: t('bulk_actions.ideas_deleted_success', `تم حذف ${selectedItems.length} فكرة بنجاح`),
-      });
+        toast({
+          title: t('bulk_actions.delete_success', 'نجح الحذف'),
+          description: t('bulk_actions.ideas_deleted_success', `تم حذف ${selectedItems.length} فكرة بنجاح`),
+        });
 
-      setShowDeleteDialog(false);
-      onItemsUpdate();
-      onClearSelection();
-    } catch (error) {
-      logger.error('Error deleting ideas', { component: 'BulkActionsPanel', action: 'handleBulkDelete', data: { selectedItems } }, error as Error);
-      toast({
-        title: "خطأ",
-        description: t('errors.failed_to_delete_ideas', 'فشل في حذف الأفكار'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+        setShowDeleteDialog(false);
+        onItemsUpdate();
+        onClearSelection();
+      } catch (error) {
+        handleError.handleError('Bulk delete failed', { 
+          component: 'BulkActionsPanel', 
+          operation: 'delete' 
+        });
+        throw error;
+      }
+    });
   };
 
   const handleBulkTagging = async () => {
     if (selectedTags.length === 0 || selectedItems.length === 0) return;
     
-    setLoading(true);
-    try {
-      // Get current user
-      if (!user) throw new Error('Not authenticated');
-      
-      // Create tag links using immutable array building
-      const tagLinks = selectedItems.flatMap(ideaId =>
-        selectedTags.map(tagId => ({
-          idea_id: ideaId,
-          tag_id: tagId,
-          added_by: user?.id
-        }))
-      );
+    await loadingManager.withLoading('tagging', async () => {
+      try {
+        // Get current user
+        if (!user) throw new Error('Not authenticated');
+        
+        // Create tag links using immutable array building
+        const tagLinks = selectedItems.flatMap(ideaId =>
+          selectedTags.map(tagId => ({
+            idea_id: ideaId,
+            tag_id: tagId,
+            added_by: user?.id
+          }))
+        );
 
-      const { error } = await supabase
-        .from('idea_tag_links')
-        .insert(tagLinks);
+        const { error } = await supabase
+          .from('idea_tag_links')
+          .insert(tagLinks);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: "نجح إضافة العلامات",
-        description: `تم إضافة العلامات لـ ${selectedItems.length} فكرة بنجاح`,
-      });
+        toast({
+          title: "نجح إضافة العلامات",
+          description: `تم إضافة العلامات لـ ${selectedItems.length} فكرة بنجاح`,
+        });
 
-      setShowTagDialog(false);
-      setSelectedTags([]);
-      onItemsUpdate();
-      onClearSelection();
-    } catch (error) {
-      logger.error('Error adding tags', { component: 'BulkActionsPanel', action: 'handleBulkTagging', data: { selectedItems, selectedTags } }, error as Error);
-      toast({
-        title: "خطأ",
-        description: t('errors.failed_to_add_tags', 'فشل في إضافة العلامات'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+        setShowTagDialog(false);
+        setSelectedTags([]);
+        onItemsUpdate();
+        onClearSelection();
+      } catch (error) {
+        handleError.handleError('Bulk tagging failed', { 
+          component: 'BulkActionsPanel', 
+          operation: 'tagging' 
+        });
+        throw error;
+      }
+    });
   };
 
   const handleBulkAssignment = async () => {
     if (!assigneeId || selectedItems.length === 0) return;
     
-    setLoading(true);
-    try {
-      if (!user) throw new Error('Not authenticated');
-      
-      const assignments = selectedItems.map(ideaId => ({
-        idea_id: ideaId,
-        assigned_to: assigneeId,
-        assigned_by: user?.id,
-        assignment_type: 'reviewer',
-        status: 'pending'
-      }));
+    await loadingManager.withLoading('assignment', async () => {
+      try {
+        if (!user) throw new Error('Not authenticated');
+        
+        const assignments = selectedItems.map(ideaId => ({
+          idea_id: ideaId,
+          assigned_to: assigneeId,
+          assigned_by: user?.id,
+          assignment_type: 'reviewer',
+          status: 'pending'
+        }));
 
-      const { error } = await supabase
-        .from('idea_assignments')
-        .insert(assignments);
+        const { error } = await supabase
+          .from('idea_assignments')
+          .insert(assignments);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: t('bulk_actions.assignment_success', 'نجح التكليف'),
-        description: t('bulk_actions.reviewer_assigned_success', `تم تكليف المراجع لـ ${selectedItems.length} فكرة بنجاح`),
-      });
+        toast({
+          title: t('bulk_actions.assignment_success', 'نجح التكليف'),
+          description: t('bulk_actions.reviewer_assigned_success', `تم تكليف المراجع لـ ${selectedItems.length} فكرة بنجاح`),
+        });
 
-      setShowAssignDialog(false);
-      setAssigneeId("");
-      onItemsUpdate();
-      onClearSelection();
-    } catch (error) {
-      logger.error('Error assigning ideas', { component: 'BulkActionsPanel', action: 'handleBulkAssignment', data: { selectedItems, assigneeId } }, error as Error);
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('bulk_actions.assignment_failed', 'فشل في تكليف المراجع'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+        setShowAssignDialog(false);
+        setAssigneeId("");
+        onItemsUpdate();
+        onClearSelection();
+      } catch (error) {
+        handleError.handleError('Bulk assignment failed', { 
+          component: 'BulkActionsPanel', 
+          operation: 'assignment' 
+        });
+        throw error;
+      }
+    });
   };
 
   // Load tags and team members when dialogs open
@@ -346,8 +341,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
             <Button variant="outline" onClick={() => setShowStatusDialog(false)}>
               إلغاء
             </Button>
-            <Button onClick={handleBulkStatusChange} disabled={!newStatus || loading}>
-              {loading ? 'جارٍ التحديث...' : 'تحديث الحالة'}
+            <Button onClick={handleBulkStatusChange} disabled={!newStatus || loadingManager.isLoading('statusChange')}>
+              {loadingManager.isLoading('statusChange') ? 'جارٍ التحديث...' : 'تحديث الحالة'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -391,8 +386,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
             <Button variant="outline" onClick={() => setShowTagDialog(false)}>
               إلغاء
             </Button>
-            <Button onClick={handleBulkTagging} disabled={selectedTags.length === 0 || loading}>
-              {loading ? 'جارٍ الإضافة...' : 'إضافة العلامات'}
+            <Button onClick={handleBulkTagging} disabled={selectedTags.length === 0 || loadingManager.isLoading('tagging')}>
+              {loadingManager.isLoading('tagging') ? 'جارٍ الإضافة...' : 'إضافة العلامات'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -430,8 +425,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
             <Button variant="outline" onClick={() => setShowAssignDialog(false)}>
               إلغاء
             </Button>
-            <Button onClick={handleBulkAssignment} disabled={!assigneeId || loading}>
-              {loading ? 'جارٍ التكليف...' : 'تكليف المراجع'}
+            <Button onClick={handleBulkAssignment} disabled={!assigneeId || loadingManager.isLoading('assignment')}>
+              {loadingManager.isLoading('assignment') ? 'جارٍ التكليف...' : 'تكليف المراجع'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -454,8 +449,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
             <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
               إلغاء
             </Button>
-            <Button variant="destructive" onClick={handleBulkDelete} disabled={loading}>
-              {loading ? 'جارٍ الحذف...' : 'حذف'}
+            <Button variant="destructive" onClick={handleBulkDelete} disabled={loadingManager.isLoading('delete')}>
+              {loadingManager.isLoading('delete') ? 'جارٍ الحذف...' : 'حذف'}
             </Button>
           </DialogFooter>
         </DialogContent>
