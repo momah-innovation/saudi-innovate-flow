@@ -14,7 +14,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { IdeaFormData, SystemLists } from "@/types";
 import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
-import { createErrorHandler } from "@/utils/unified-error-handler";
+import { createErrorHandler } from "@/utils/errorHandler";
 
 interface Challenge {
   id: string;
@@ -178,14 +178,15 @@ export function IdeaWizard({
   }, [idea, isOpen]);
 
   const fetchData = async () => {
-    try {
+    await withLoading('fetchData', async () => {
       // Mock data for now - replace with actual API calls when available
       setCampaigns([]);
       setEvents([]);
       setInnovators([]);
-    } catch (error) {
-      // Failed to fetch idea wizard data
-    }
+    }, {
+      errorMessage: t('idea_wizard.fetch_data_error', 'Failed to load wizard data'),
+      logContext: { action: 'fetch_wizard_data' }
+    });
   };
 
   const validateBasicInfo = () => {
@@ -244,10 +245,10 @@ export function IdeaWizard({
     return Object.keys(newErrors).length === 0;
   };
 
-  const errorHandler = createErrorHandler({
+  const { handleError } = createErrorHandler({
     component: 'IdeaWizard',
     showToast: false,
-    logError: true
+    logErrors: true
   });
 
   const handleSave = async () => {

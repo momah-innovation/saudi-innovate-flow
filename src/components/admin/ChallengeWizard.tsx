@@ -20,7 +20,9 @@ import { dateHandler } from '@/utils/unified-date-handler';
 import { useToast } from '@/hooks/use-toast';
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { useChallengeManagement } from "@/hooks/useChallengeManagement";
+import { createErrorHandler } from "@/utils/errorHandler";
 import { ChallengeFormSchema } from '@/schemas/validation';
 import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service, Partner, Expert } from "@/types";
 
@@ -79,6 +81,19 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
   const challengePriorityLevels = getSettingValue('priority_levels', []) as string[];
   const challengeSensitivityLevels = getSettingValue('sensitivity_levels', []) as string[];
   
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'ChallengeWizard',
+    showToast: true,
+    logErrors: true,
+    timeout: 20000
+  });
+  
+  const { handleError } = createErrorHandler({
+    component: 'ChallengeWizard',
+    showToast: true,
+    logErrors: true
+  });
+  
   // ✅ MIGRATED: Using centralized challenge management hook
   const {
     loading,
@@ -128,8 +143,15 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
 
   useEffect(() => {
     if (isOpen) {
-      // ✅ MIGRATED: Using centralized hook method
-      loadChallengeOptions();
+      const initializeOptions = async () => {
+        await withLoading('loadOptions', loadChallengeOptions, {
+          errorMessage: t('challenge.load_options_error', 'Failed to load challenge options'),
+          logContext: { action: 'load_challenge_options' }
+        });
+      };
+      
+      initializeOptions();
+      
       if (challenge) {
         setFormData({
           ...challenge,
@@ -140,7 +162,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
         resetForm();
       }
     }
-  }, [isOpen, challenge, loadChallengeOptions]);
+  }, [isOpen, challenge, loadChallengeOptions, withLoading, t]);
 
   // ✅ MIGRATED: Removed direct supabase queries - now using centralized hook
 
@@ -215,7 +237,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
   };
 
   const handleComplete = async () => {
-    try {
+    await withLoading('submitChallenge', async () => {
       const challengeData = {
         ...formData,
         estimated_budget: Number(formData.estimated_budget) || 0,
@@ -241,9 +263,10 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
 
       onSuccess();
       onClose();
-    } catch (error) {
-      // Error already handled by hook
-    }
+    }, {
+      errorMessage: challenge?.id ? t('admin.challenges.update_error') : t('admin.challenges.create_error'),
+      logContext: { isEditing: !!challenge?.id, challengeData: formData }
+    });
   };
 
   const steps = [

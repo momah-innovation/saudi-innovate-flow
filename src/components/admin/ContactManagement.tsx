@@ -31,6 +31,8 @@ import {
   Star
 } from 'lucide-react';
 import { useContactData, type Contact, type ContactInteraction } from '@/hooks/useContactData';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/errorHandler';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 
@@ -54,6 +56,19 @@ const ContactManagement = () => {
     searchContacts,
     refresh
   } = useContactData();
+
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'ContactManagement',
+    showToast: true,
+    logErrors: true,
+    timeout: 15000
+  });
+  
+  const { handleError } = createErrorHandler({
+    component: 'ContactManagement',
+    showToast: true,
+    logErrors: true
+  });
 
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -190,27 +205,39 @@ const ContactManagement = () => {
       return;
     }
 
-    await addContact({
-      first_name: newContact.first_name,
-      last_name: newContact.last_name,
-      email: newContact.email,
-      phone: newContact.phone,
-      company: newContact.company,
-      position: newContact.position,
-      type: newContact.type || 'customer',
-      status: newContact.status || 'active',
-      tags: newContact.tags || [],
-      notes: newContact.notes
-    });
+    await withLoading('addContact', async () => {
+      await addContact({
+        first_name: newContact.first_name,
+        last_name: newContact.last_name,
+        email: newContact.email,
+        phone: newContact.phone,
+        company: newContact.company,
+        position: newContact.position,
+        type: newContact.type || 'customer',
+        status: newContact.status || 'active',
+        tags: newContact.tags || [],
+        notes: newContact.notes
+      });
 
-    setIsAddDialogOpen(false);
-    setNewContact({ type: 'customer', status: 'active', tags: [] });
+      setIsAddDialogOpen(false);
+      setNewContact({ type: 'customer', status: 'active', tags: [] });
+    }, {
+      successMessage: 'Contact added successfully',
+      errorMessage: 'Failed to add contact',
+      logContext: { contactName: `${newContact.first_name} ${newContact.last_name}` }
+    });
   };
 
-  const handleFileImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      importContacts(file);
+      await withLoading('importContacts', async () => {
+        await importContacts(file);
+      }, {
+        successMessage: 'Contacts imported successfully',
+        errorMessage: 'Failed to import contacts',
+        logContext: { fileName: file.name, fileSize: file.size }
+      });
     }
   };
 
@@ -241,9 +268,22 @@ const ContactManagement = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => exportContacts()}>
+          <Button 
+            variant="outline" 
+            onClick={() => withLoading('exportContacts', async () => {
+              await new Promise<void>((resolve) => {
+                exportContacts();
+                resolve();
+              });
+            }, {
+              successMessage: 'Contacts exported successfully',
+              errorMessage: 'Failed to export contacts',
+              logContext: { action: 'export_contacts' }
+            })}
+            disabled={isLoading('exportContacts')}
+          >
             <Download className="h-4 w-4 mr-2" />
-            Export
+            {isLoading('exportContacts') ? 'Exporting...' : 'Export'}
           </Button>
           <input
             type="file"
@@ -357,7 +397,9 @@ const ContactManagement = () => {
                   <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
                     Cancel
                   </Button>
-                  <Button onClick={handleAddContact}>Add Contact</Button>
+                  <Button onClick={handleAddContact} disabled={isLoading('addContact')}>
+                    {isLoading('addContact') ? 'Adding...' : 'Add Contact'}
+                  </Button>
                 </div>
               </div>
             </DialogContent>
@@ -476,12 +518,17 @@ const ContactManagement = () => {
             {selectedContacts.length > 0 && (
               <Button 
                 variant="destructive" 
-                onClick={() => {
-                  bulkDeleteContacts(selectedContacts);
+                onClick={() => withLoading('bulkDelete', async () => {
+                  await bulkDeleteContacts(selectedContacts);
                   setSelectedContacts([]);
-                }}
+                }, {
+                  successMessage: `${selectedContacts.length} contacts deleted successfully`,
+                  errorMessage: 'Failed to delete selected contacts',
+                  logContext: { contactCount: selectedContacts.length }
+                })}
+                disabled={isLoading('bulkDelete')}
               >
-                Delete Selected ({selectedContacts.length})
+                {isLoading('bulkDelete') ? 'Deleting...' : `Delete Selected (${selectedContacts.length})`}
               </Button>
             )}
           </div>

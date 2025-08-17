@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Eye, Edit, Filter, Search, FileCheck, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { errorHandler } from "@/utils/error-handler";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/errorHandler";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { formatDate } from '@/utils/unified-date-handler';
 import { AdminEvaluationsHero } from "@/components/admin/AdminEvaluationsHero";
@@ -80,6 +81,19 @@ export function EvaluationsManagement({
     loadEvaluations 
   } = useEvaluationManagement();
   
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'EvaluationsManagement',
+    showToast: true,
+    logErrors: true,
+    timeout: 15000
+  });
+  
+  const { handleError } = createErrorHandler({
+    component: 'EvaluationsManagement',
+    showToast: true,
+    logErrors: true
+  });
+  
   const [ideas, setIdeas] = useState<{ [key: string]: Idea }>({});
   const [profiles, setProfiles] = useState<{ [key: string]: Profile }>({});
   const [selectedEvaluation, setSelectedEvaluation] = useState<Evaluation | null>(null);
@@ -100,8 +114,17 @@ export function EvaluationsManagement({
   const evaluations: Evaluation[] = hookEvaluations || [];
 
   useEffect(() => {
-    // Hook automatically loads data, no manual fetching needed
-  }, []);
+    const initializeEvaluations = async () => {
+      await withLoading('initialize', async () => {
+        // Hook automatically loads data, no manual fetching needed
+      }, {
+        errorMessage: t('evaluations.initialize_error', 'Failed to initialize evaluations'),
+        logContext: { action: 'initialize_evaluations' }
+      });
+    };
+    
+    initializeEvaluations();
+  }, [withLoading, t]);
 
   const getOverallScore = (evaluation: Evaluation) => {
     const scores = [
