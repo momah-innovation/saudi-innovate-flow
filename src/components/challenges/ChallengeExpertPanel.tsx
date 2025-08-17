@@ -14,7 +14,8 @@ import {
   Mail
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 
@@ -49,13 +50,26 @@ export const ChallengeExpertPanel: React.FC<ChallengeExpertPanelProps> = ({
   const { isRTL } = useDirection();
   const [experts, setExperts] = useState<Expert[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'ChallengeExpertPanel',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeExpertPanel',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     loadExperts();
   }, [challengeId]);
 
   const loadExperts = async () => {
-    try {
+    setLoading(true);
+    const result = await unifiedLoading.withLoading('loadExperts', async () => {
       const { data, error } = await supabase
         .from('challenge_experts')
         .select(`
@@ -72,12 +86,15 @@ export const ChallengeExpertPanel: React.FC<ChallengeExpertPanelProps> = ({
         .eq('status', 'active');
 
       if (error) throw error;
-      setExperts((data as any[])?.filter(item => item.expert?.profiles) || []);
-    } catch (error) {
-      logger.error('Error loading experts', { challengeId }, error as Error);
-    } finally {
-      setLoading(false);
+      return (data as any[])?.filter(item => item.expert?.profiles) || [];
+    }, {
+      errorMessage: 'فشل في تحميل الخبراء'
+    });
+    
+    if (result) {
+      setExperts(result);
     }
+    setLoading(false);
   };
 
   const getRoleTypeLabel = (roleType: string) => {

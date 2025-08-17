@@ -19,7 +19,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { formatRelativeTime } from '@/utils/unified-date-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface ChallengeDiscussionBoardProps {
   challengeId: string;
@@ -50,7 +51,18 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'ChallengeDiscussionBoard',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeDiscussionBoard',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     loadDiscussions();
@@ -58,7 +70,8 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
   }, [challengeId]);
 
   const loadDiscussions = async () => {
-    try {
+    setLoading(true);
+    const result = await unifiedLoading.withLoading('loadDiscussions', async () => {
       const { data, error } = await supabase
         .from('challenge_comments')
         .select(`
@@ -69,12 +82,15 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setDiscussions((data as any)?.filter((item: any) => item.profiles) || []);
-    } catch (error) {
-      logger.error('Error loading discussions', { challengeId }, error as Error);
-    } finally {
-      setLoading(false);
+      return (data as any)?.filter((item: any) => item.profiles) || [];
+    }, {
+      errorMessage: 'فشل في تحميل النقاشات'
+    });
+    
+    if (result) {
+      setDiscussions(result);
     }
+    setLoading(false);
   };
 
   const setupRealtimeSubscription = () => {
@@ -103,8 +119,7 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
   const handleSubmitComment = async () => {
     if (!user || !newComment.trim()) return;
 
-    setSubmitting(true);
-    try {
+    const result = await unifiedLoading.withLoading('submitComment', async () => {
       const { error } = await supabase
         .from('challenge_comments')
         .insert({
@@ -115,21 +130,14 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
         });
 
       if (error) throw error;
+      return true;
+    }, {
+      successMessage: 'تم نشر تعليقك بنجاح',
+      errorMessage: 'حدث خطأ أثناء نشر التعليق'
+    });
 
+    if (result) {
       setNewComment('');
-      toast({
-        title: 'تم إضافة التعليق',
-        description: 'تم نشر تعليقك بنجاح'
-      });
-    } catch (error) {
-      logger.error('Error submitting comment', { challengeId }, error as Error);
-      toast({
-        title: 'خطأ في إضافة التعليق',
-        description: 'حدث خطأ أثناء نشر التعليق',
-        variant: 'destructive'
-      });
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -181,10 +189,10 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
             </div>
             <Button 
               onClick={handleSubmitComment} 
-              disabled={!newComment.trim() || submitting}
+              disabled={!newComment.trim() || unifiedLoading.isLoading('submitComment')}
               size="sm"
             >
-              {submitting ? (
+              {unifiedLoading.isLoading('submitComment') ? (
                 'جاري النشر...'
               ) : (
                 <>

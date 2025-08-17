@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   FileText, 
   Plus, 
@@ -42,6 +44,19 @@ export const ChallengeSubmissionHub: React.FC<ChallengeSubmissionHubProps> = ({
   React.useEffect(() => {
     navigationHandler.setNavigate(navigate);
   }, [navigate]);
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'ChallengeSubmissionHub',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeSubmissionHub',
+    showToast: true,
+    logError: true
+  });
+  
   const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
   const [userSubmission, setUserSubmission] = useState<ChallengeSubmission | null>(null);
 
