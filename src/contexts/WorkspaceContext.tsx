@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Workspace, WorkspaceMember, UserWorkspaceContext, WorkspaceType } from '@/types/workspace';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWorkspaceRealtime } from '@/hooks/useWorkspaceRealtime';
+import { useWorkspaceChat } from '@/hooks/useWorkspaceChat';
+import { useWorkspaceDocuments } from '@/hooks/useWorkspaceDocuments';
+import type { Workspace, WorkspaceMember, UserWorkspaceContext, WorkspaceType } from '@/types/workspace';
 
 interface WorkspaceContextType {
   // Current workspace state
@@ -35,6 +38,11 @@ interface WorkspaceContextType {
   hasWorkspaceAccess: (workspaceType: WorkspaceType, requiredRoles?: string[]) => boolean;
   getWorkspacesByType: (workspaceType: WorkspaceType) => Workspace[];
   getCurrentUserRole: () => string | null;
+  
+  // Real-time features
+  realtime: ReturnType<typeof useWorkspaceRealtime>;
+  chat: ReturnType<typeof useWorkspaceChat>;
+  documents: ReturnType<typeof useWorkspaceDocuments>;
 }
 
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
@@ -59,6 +67,22 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
   const [userWorkspaces, setUserWorkspaces] = useState<Workspace[]>([]);
   const [loading, setLoading] = useState(true);
   const [membersLoading, setMembersLoading] = useState(false);
+
+  // Initialize real-time hooks
+  const realtime = useWorkspaceRealtime({ 
+    workspaceId: currentWorkspace?.id || '', 
+    enabled: !!currentWorkspace 
+  });
+  
+  const chat = useWorkspaceChat({ 
+    workspaceId: currentWorkspace?.id || '', 
+    enabled: !!currentWorkspace 
+  });
+  
+  const documents = useWorkspaceDocuments({ 
+    workspaceId: currentWorkspace?.id || '', 
+    enabled: !!currentWorkspace 
+  });
 
   // Fetch user's workspaces and build context
   const refreshWorkspaces = async () => {
@@ -390,7 +414,10 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
     removeMember,
     hasWorkspaceAccess,
     getWorkspacesByType,
-    getCurrentUserRole
+    getCurrentUserRole,
+    realtime,
+    chat,
+    documents,
   };
 
   return (
