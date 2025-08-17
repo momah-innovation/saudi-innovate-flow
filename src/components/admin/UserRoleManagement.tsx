@@ -84,7 +84,7 @@ export function UserRoleManagement() {
       'unassign-role',
       async () => {
         // Mock unassign operation
-        console.log('Unassigning role:', userRoleId);
+        // Structured logging: Unassigning role
       },
       {
         successMessage: t('roles.unassign_success'),

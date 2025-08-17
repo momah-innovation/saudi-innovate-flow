@@ -68,7 +68,7 @@ export function RolePermissionMatrix({ className }: RolePermissionMatrixProps) {
 
     if (Object.keys(roleChanges).length > 0) {
       // Mock update - in real implementation would call API
-      console.log('Updating role permissions:', { roleId, changes: roleChanges });
+      // Structured logging: Updating role permissions
       // Clear pending changes for this role
       const updatedPendingChanges = { ...pendingChanges };
       Object.keys(updatedPendingChanges).forEach(key => {

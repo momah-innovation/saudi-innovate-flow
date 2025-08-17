@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useScheduleData, ScheduleEvent, Calendar, Resource } from '@/hooks/useScheduleData';
 import { DataTable, Column } from '@/components/ui/data-table';
+import { debugLog } from '@/utils/debugLogger';
 import { 
   Calendar as CalendarIcon, 
   Clock, 
@@ -87,7 +88,7 @@ function ScheduleManagement() {
         status: 'scheduled'
       });
     } catch (error) {
-      console.error('Failed to create event:', error);
+      debugLog.error('Failed to create event', { operation: 'event_creation', error });
     }
   };
 
@@ -101,7 +102,7 @@ function ScheduleManagement() {
         owner_id: 'current_user'
       });
     } catch (error) {
-      console.error('Failed to create calendar:', error);
+      debugLog.error('Failed to create calendar', { operation: 'calendar_creation', error });
     }
   };
 

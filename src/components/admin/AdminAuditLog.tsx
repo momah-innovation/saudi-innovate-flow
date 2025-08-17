@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { debugLog } from '@/utils/debugLogger';
 // Using existing analytics hook for mock audit log data
 import { 
   Search, 
@@ -170,7 +171,8 @@ export function AdminAuditLog({ className }: AdminAuditLogProps) {
       a.click();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Export error:', error);
+      // Use structured logging for export errors
+      debugLog.error('Export error', { operation: 'audit_export', error });
     }
   };
 

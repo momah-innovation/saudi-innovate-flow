@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { debugLog } from '@/utils/debugLogger';
 // Using existing analytics hook for mock configuration data
 import { 
   Settings, 
@@ -46,7 +47,7 @@ export function SystemConfigurationPanel({ className }: SystemConfigurationPanel
 
   // Mock update and refresh functions
   const updateConfig = async (changes: any) => {
-    console.log('Updating config:', changes);
+    debugLog.log('Updating config', { operation: 'config_update', changes });
   };
   const refresh = async () => {
     window.location.reload();
@@ -67,7 +68,7 @@ export function SystemConfigurationPanel({ className }: SystemConfigurationPanel
       setPendingChanges({});
       setHasUnsavedChanges(false);
     } catch (error) {
-      console.error('Error saving config:', error);
+      debugLog.error('Error saving config', { operation: 'config_save', error });
     }
   };
 
@@ -75,7 +76,7 @@ export function SystemConfigurationPanel({ className }: SystemConfigurationPanel
     try {
       await refresh();
     } catch (error) {
-      console.error('Error refreshing config:', error);
+      debugLog.error('Error refreshing config', { operation: 'config_refresh', error });
     }
   };
 
