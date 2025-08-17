@@ -98,7 +98,7 @@ export function ReportingManagement() {
         value ? new Date(value).toLocaleDateString() : t('reports.manual'),
     },
     {
-      key: 'actions',
+      key: 'id' as keyof Report,
       title: t('common.actions'),
       render: (_, item: Report) => (
         <div className="flex gap-2">

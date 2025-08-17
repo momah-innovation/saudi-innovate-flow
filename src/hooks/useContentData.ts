@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { createErrorHandler } from '@/utils/errorHandler';
 
 interface ContentItem {
@@ -103,7 +103,7 @@ export const useContentData = () => {
       setContent(mockContent);
       setCategories(mockCategories);
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'refreshContent' });
+      errorHandler.handleError(error as Error, 'refreshContent');
       toast({
         title: 'خطأ في جلب المحتوى',
         description: 'حدث خطأ أثناء جلب بيانات المحتوى',
@@ -138,7 +138,7 @@ export const useContentData = () => {
       });
       return newContent;
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'createContent' });
+      errorHandler.handleError(error as Error, 'createContent');
       throw error;
     }
   }, [errorHandler, toast]);
@@ -153,7 +153,7 @@ export const useContentData = () => {
         description: 'تم تحديث المحتوى بنجاح',
       });
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'updateContent' });
+      errorHandler.handleError(error as Error, 'updateContent');
       throw error;
     }
   }, [errorHandler, toast]);
@@ -166,7 +166,7 @@ export const useContentData = () => {
         description: 'تم حذف المحتوى بنجاح',
       });
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'deleteContent' });
+      errorHandler.handleError(error as Error, 'deleteContent');
       throw error;
     }
   }, [errorHandler, toast]);
@@ -179,7 +179,7 @@ export const useContentData = () => {
         description: 'تم نشر المحتوى بنجاح',
       });
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'publishContent' });
+      errorHandler.handleError(error as Error, 'publishContent');
       throw error;
     }
   }, [updateContent, errorHandler, toast]);

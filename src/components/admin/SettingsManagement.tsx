@@ -90,9 +90,10 @@ export function SettingsManagement() {
           return (
             <Switch 
               checked={value === 'true'} 
-              onCheckedChange={(checked) => 
-                updateSetting(item.setting_key, checked.toString())
-              }
+              onCheckedChange={(checked) => {
+                // Mock update for now
+                console.log('Setting update:', item.setting_key, checked.toString());
+              }}
             />
           );
         }

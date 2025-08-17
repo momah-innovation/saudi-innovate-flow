@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { createErrorHandler } from '@/utils/errorHandler';
 
 interface Report {
@@ -126,7 +126,7 @@ export const useReportingData = () => {
       setReports(mockReports);
       setTemplates(mockTemplates);
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'refreshReports' });
+      errorHandler.handleError(error as Error, 'refreshReports');
       toast({
         title: 'خطأ في جلب التقارير',
         description: 'حدث خطأ أثناء جلب بيانات التقارير',
@@ -159,7 +159,7 @@ export const useReportingData = () => {
       });
       return newReport;
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'createReport' });
+      errorHandler.handleError(error as Error, 'createReport');
       throw error;
     }
   }, [errorHandler, toast]);
@@ -174,7 +174,7 @@ export const useReportingData = () => {
         description: 'تم تحديث التقرير بنجاح',
       });
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'updateReport' });
+      errorHandler.handleError(error as Error, 'updateReport');
       throw error;
     }
   }, [errorHandler, toast]);
@@ -187,7 +187,7 @@ export const useReportingData = () => {
         description: 'تم حذف التقرير بنجاح',
       });
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'deleteReport' });
+      errorHandler.handleError(error as Error, 'deleteReport');
       throw error;
     }
   }, [errorHandler, toast]);
@@ -210,7 +210,7 @@ export const useReportingData = () => {
         description: 'بدأ إنشاء التقرير، ستحصل على إشعار عند الانتهاء',
       });
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'runReport' });
+      errorHandler.handleError(error as Error, 'runReport');
       throw error;
     }
   }, [updateReport, errorHandler, toast]);
@@ -228,7 +228,7 @@ export const useReportingData = () => {
         description: 'بدأ تحميل التقرير',
       });
     } catch (error) {
-      errorHandler.handleError(error as Error, { operation: 'downloadReport' });
+      errorHandler.handleError(error as Error, 'downloadReport');
       throw error;
     }
   }, [reports, errorHandler, toast]);

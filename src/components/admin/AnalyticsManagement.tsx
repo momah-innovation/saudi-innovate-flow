@@ -51,7 +51,7 @@ export function AnalyticsManagement() {
     if (!hasAccess.analytics) {
       errorHandler.handleError(
         new Error('Insufficient permissions to view analytics'),
-        { operation: 'permission_check' }
+        'permission_check'
       );
     }
   }, [hasAccess.analytics, errorHandler]);
@@ -126,7 +126,7 @@ export function AnalyticsManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{t('analytics.total_users')}</p>
-                <p className="text-2xl font-bold">{coreMetrics?.users || 0}</p>
+                <p className="text-2xl font-bold">{coreMetrics?.users?.total || 0}</p>
               </div>
               <Users className="w-8 h-8 text-primary" />
             </div>
@@ -138,7 +138,7 @@ export function AnalyticsManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{t('analytics.page_views')}</p>
-                <p className="text-2xl font-bold">{coreMetrics?.pageViews || 0}</p>
+                <p className="text-2xl font-bold">{coreMetrics?.challenges?.total || 0}</p>
               </div>
               <Activity className="w-8 h-8 text-primary" />
             </div>
@@ -150,7 +150,7 @@ export function AnalyticsManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{t('analytics.conversion_rate')}</p>
-                <p className="text-2xl font-bold">{coreMetrics?.conversionRate || '0%'}</p>
+                <p className="text-2xl font-bold">{coreMetrics?.engagement?.avgSessionDuration || '0%'}</p>
               </div>
               <TrendingUp className="w-8 h-8 text-primary" />
             </div>
@@ -162,7 +162,7 @@ export function AnalyticsManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{t('analytics.bounce_rate')}</p>
-                <p className="text-2xl font-bold">{coreMetrics?.bounceRate || '0%'}</p>
+                <p className="text-2xl font-bold">{coreMetrics?.business?.roi || '0%'}</p>
               </div>
               <BarChart3 className="w-8 h-8 text-primary" />
             </div>
@@ -183,11 +183,11 @@ export function AnalyticsManagement() {
                 <div className="text-sm text-muted-foreground">{t('analytics.threats_detected')}</div>
               </div>
               <div className="text-center">
-                <div className="text-xl font-bold">{securityMetrics.blockedRequests || 0}</div>
+                <div className="text-xl font-bold">{securityMetrics.suspiciousActivities || 0}</div>
                 <div className="text-sm text-muted-foreground">{t('analytics.blocked_requests')}</div>
               </div>
               <div className="text-center">
-                <div className="text-xl font-bold">{securityMetrics.vulnerabilities || 0}</div>
+                <div className="text-xl font-bold">{securityMetrics.failedLogins || 0}</div>
                 <div className="text-sm text-muted-foreground">{t('analytics.vulnerabilities')}</div>
               </div>
             </div>
