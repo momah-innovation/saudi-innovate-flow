@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable, type Column } from '@/components/ui/data-table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { useContactData, type Contact, type ContactInteraction } from '@/hooks/useContactData';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { ColumnDef } from '@tanstack/react-table';
+
 
 const ContactManagement = () => {
   const {
@@ -80,7 +80,7 @@ const ContactManagement = () => {
   ];
 
   // Table columns
-  const columns: ColumnDef<Contact>[] = [
+  const columns = [
     {
       id: 'select',
       header: ({ table }) => (

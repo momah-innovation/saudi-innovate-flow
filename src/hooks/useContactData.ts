@@ -393,6 +393,13 @@ export function useContactData() {
     }
   }, []);
 
+  // Filters state
+  const [filters, setFilters] = useState<{
+    search?: string;
+    type?: Contact['type'];
+    status?: Contact['status'];
+  }>({});
+
   return {
     // Data
     contacts,
@@ -401,7 +408,7 @@ export function useContactData() {
     loading,
     stats: getContactStats(),
     error: null,
-    filters: {},
+    filters,
     
     // Contact operations
     createContact,
@@ -414,7 +421,7 @@ export function useContactData() {
       }
     },
     setSelectedContact,
-    setFilters: () => {}, // Mock implementation
+    setFilters,
     
     // Interaction operations
     createInteraction,
