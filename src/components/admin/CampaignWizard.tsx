@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { currentTimestamp, dateHandler } from '@/utils/unified-date-handler';
-import { createErrorHandler } from '@/utils/unified-error-handler';
+import { createErrorHandler } from '@/utils/errorHandler';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { useCampaignManagement } from "@/hooks/useCampaignManagement";
 import { CampaignFormData, SystemLists } from "@/types";
 
@@ -56,6 +57,19 @@ export function CampaignWizard({
   const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
   const campaignThemeOptions = getSettingValue('campaign_theme_options', []) as string[];
   const [currentStep, setCurrentStep] = useState(0);
+  
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'CampaignWizard',
+    showToast: true,
+    logErrors: true,
+    timeout: 20000
+  });
+  
+  const { handleError } = createErrorHandler({
+    component: 'CampaignWizard',
+    showToast: true,
+    logErrors: true
+  });
   
   // ✅ MIGRATED: Using centralized campaign management hook
   const {
@@ -135,16 +149,17 @@ export function CampaignWizard({
   const loadCampaignData = async () => {
     if (!editingCampaign?.id) return;
 
-    try {
+    await withLoading('loadCampaign', async () => {
       // ✅ MIGRATED: Using centralized hook method
       const links = await loadCampaignLinks(editingCampaign.id);
       setFormData({
         ...editingCampaign,
         ...links
       });
-    } catch (error) {
-      // Failed to load campaign data
-    }
+    }, {
+      errorMessage: t('campaign.load_error', 'Failed to load campaign data'),
+      logContext: { campaignId: editingCampaign.id }
+    });
   };
 
   const resetForm = () => {
@@ -228,7 +243,7 @@ export function CampaignWizard({
       return;
     }
 
-    try {
+    await withLoading('submitCampaign', async () => {
       // ✅ MIGRATED: Using centralized hook methods
       if (editingCampaign?.id) {
         await updateCampaign(editingCampaign.id, formData);
@@ -243,9 +258,10 @@ export function CampaignWizard({
 
       onSuccess();
       onOpenChange(false);
-    } catch (error) {
-      // Error already handled by hook
-    }
+    }, {
+      errorMessage: editingCampaign ? t('dialog.update_error') : t('dialog.create_error'),
+      logContext: { isEditing: !!editingCampaign, campaignData: formData }
+    });
   };
 
   const renderStepContent = () => {

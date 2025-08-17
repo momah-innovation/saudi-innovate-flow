@@ -10,7 +10,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { currentTimestamp } from '@/utils/unified-date-handler';
 import { getAvatarUrl } from '@/utils/storageUtils';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
-import { createErrorHandler } from '@/utils/unified-error-handler';
+import { createErrorHandler } from '@/utils/errorHandler';
 
 // Avatar mapping for the existing users
 const AVATAR_MAPPING = [
@@ -48,7 +48,11 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
     showToast: true,
     logErrors: true
   });
-  const errorHandler = createErrorHandler({ component: 'BulkAvatarUploader' });
+  const { handleError } = createErrorHandler({ 
+    component: 'BulkAvatarUploader',
+    showToast: true,
+    logErrors: true
+  });
   
   // ✅ MIGRATED: Using centralized storage operations hook
   const { uploadFile, getPublicUrl } = useStorageOperations();
@@ -87,6 +91,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 500));
           
         } catch (error) {
+          handleError(error as Error, 'upload_avatar_mapping');
           setResults(prev => ({ ...prev, failed: [...prev.failed, mapping.fileName] }));
           completed++;
           setProgress((completed / AVATAR_MAPPING.length) * 100);

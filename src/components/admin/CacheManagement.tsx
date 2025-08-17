@@ -8,6 +8,7 @@ import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useCacheData } from '@/hooks/useCacheData';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/errorHandler';
 import { DataTable, Column } from '@/components/ui/data-table';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
@@ -66,15 +67,29 @@ export function CacheManagement() {
     preloadCache
   } = useCacheData();
   
-  const loadingManager = useUnifiedLoading({
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'CacheManagement',
+    showToast: true,
+    logErrors: true,
+    timeout: 15000
+  });
+  
+  const { handleError } = createErrorHandler({
     component: 'CacheManagement',
     showToast: true,
     logErrors: true
   });
 
   useEffect(() => {
-    refreshCacheData();
-  }, [refreshCacheData]);
+    const initializeCache = async () => {
+      await withLoading('initialize', refreshCacheData, {
+        errorMessage: t('cache.initialize_error', 'Failed to initialize cache data'),
+        logContext: { action: 'initialize' }
+      });
+    };
+    
+    initializeCache();
+  }, [refreshCacheData, withLoading, t]);
 
   const entryColumns: Column<CacheEntry>[] = [
     {
@@ -141,7 +156,12 @@ export function CacheManagement() {
           <Button 
             size="sm" 
             variant="destructive"
-            onClick={() => clearCacheEntry(item.id)}
+            onClick={() => withLoading('clearEntry', async () => clearCacheEntry(item.id), {
+              successMessage: t('cache.entry_cleared', 'Cache entry cleared'),
+              errorMessage: t('cache.clear_entry_error', 'Failed to clear cache entry'),
+              logContext: { entryId: item.id, key: item.key }
+            })}
+            disabled={isLoading('clearEntry')}
           >
             <Trash2 className="w-4 h-4" />
           </Button>
@@ -286,39 +306,59 @@ export function CacheManagement() {
           <CardContent>
             <div className="space-y-3">
               <Button 
-                onClick={refreshCacheData} 
+                onClick={() => withLoading('refresh', refreshCacheData, {
+                  successMessage: t('cache.refresh_success', 'Cache data refreshed'),
+                  errorMessage: t('cache.refresh_error', 'Failed to refresh cache data'),
+                  logContext: { action: 'refresh_stats' }
+                })} 
                 className="w-full" 
                 variant="outline"
+                disabled={isLoading('refresh')}
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                {t('cache.refresh_stats')}
+                <RefreshCw className={`w-4 h-4 mr-2 ${isLoading('refresh') ? 'animate-spin' : ''}`} />
+                {isLoading('refresh') ? t('cache.refreshing', 'Refreshing...') : t('cache.refresh_stats')}
               </Button>
               
               <Button 
-                onClick={() => clearCacheByTag('user')} 
+                onClick={() => withLoading('clearUserCache', async () => clearCacheByTag('user'), {
+                  successMessage: t('cache.user_cache_cleared', 'User cache cleared'),
+                  errorMessage: t('cache.clear_user_cache_error', 'Failed to clear user cache'),
+                  logContext: { tag: 'user' }
+                })} 
                 className="w-full" 
                 variant="outline"
+                disabled={isLoading('clearUserCache')}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                {t('cache.clear_user_cache')}
+                {isLoading('clearUserCache') ? t('cache.clearing', 'Clearing...') : t('cache.clear_user_cache')}
               </Button>
               
               <Button 
-                onClick={() => preloadCache(['popular_challenges', 'recent_events'])} 
+                onClick={() => withLoading('preloadCache', async () => preloadCache(['popular_challenges', 'recent_events']), {
+                  successMessage: t('cache.preload_success', 'Cache preloaded successfully'),
+                  errorMessage: t('cache.preload_error', 'Failed to preload cache'),
+                  logContext: { keys: ['popular_challenges', 'recent_events'] }
+                })} 
                 className="w-full" 
                 variant="outline"
+                disabled={isLoading('preloadCache')}
               >
                 <Zap className="w-4 h-4 mr-2" />
-                {t('cache.preload_common')}
+                {isLoading('preloadCache') ? t('cache.preloading', 'Preloading...') : t('cache.preload_common')}
               </Button>
               
               <Button 
-                onClick={flushAllCache} 
+                onClick={() => withLoading('flushAll', flushAllCache, {
+                  successMessage: t('cache.flush_all_success', 'All caches flushed successfully'),
+                  errorMessage: t('cache.flush_all_error', 'Failed to flush all caches'),
+                  logContext: { action: 'flush_all' }
+                })} 
                 className="w-full" 
                 variant="destructive"
+                disabled={isLoading('flushAll')}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                {t('cache.flush_all')}
+                {isLoading('flushAll') ? t('cache.flushing', 'Flushing...') : t('cache.flush_all')}
               </Button>
             </div>
           </CardContent>
@@ -331,9 +371,17 @@ export function CacheManagement() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold">{t('cache.cache_entries')}</h3>
-        <Button onClick={refreshCacheData} variant="outline">
-          <RefreshCw className="w-4 h-4 mr-2" />
-          {t('common.refresh')}
+        <Button 
+          onClick={() => withLoading('refreshEntries', refreshCacheData, {
+            successMessage: t('cache.entries_refreshed', 'Cache entries refreshed'),
+            errorMessage: t('cache.refresh_entries_error', 'Failed to refresh cache entries'),
+            logContext: { view: 'entries' }
+          })} 
+          variant="outline"
+          disabled={isLoading('refreshEntries')}
+        >
+          <RefreshCw className={`w-4 h-4 mr-2 ${isLoading('refreshEntries') ? 'animate-spin' : ''}`} />
+          {isLoading('refreshEntries') ? t('common.refreshing', 'Refreshing...') : t('common.refresh')}
         </Button>
       </div>
       
