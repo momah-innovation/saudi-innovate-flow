@@ -22,6 +22,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 import { createErrorHandler } from '@/utils/unified-error-handler';
 import { dateHandler } from '@/utils/unified-date-handler';
@@ -50,24 +51,23 @@ export const ChallengeRecommendations = ({
 }: ChallengeRecommendationsProps) => {
   const { isRTL } = useDirection();
   const { user } = useAuth();
+  const { t } = useUnifiedTranslation();
   const [recommendations, setRecommendations] = useState<Challenge[]>([]);
   const [personalizedChallenges, setPersonalizedChallenges] = useState<Challenge[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const errorHandler = createErrorHandler({
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
     component: 'ChallengeRecommendations',
     showToast: true,
-    logError: true
+    logErrors: true
   });
+  const errorHandler = createErrorHandler({ component: 'ChallengeRecommendations' });
 
   useEffect(() => {
     loadRecommendations();
   }, [user]);
 
   const loadRecommendations = async () => {
-    try {
-      setLoading(true);
-      
+    return withLoading('loadRecommendations', async () => {
       // Get trending challenges
       const { data: trending, error } = await supabase
         .from('challenges')
@@ -111,14 +111,11 @@ export const ChallengeRecommendations = ({
           setPersonalizedChallenges(personalizedWithCounts);
         }
       }
-    } catch (error) {
-      errorHandler.handleError(error, 
-        { operation: 'loadRecommendations', userId: user?.id },
-        'Failed to load recommendations'
-      );
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: t('error.load_recommendations'),
+      logContext: { userId: user?.id }
+    });
   };
 
   const formatPrize = (amount: number) => {
@@ -149,7 +146,7 @@ export const ChallengeRecommendations = ({
     return <IconComponent className={`w-4 h-4 ${colorClass}`} />;
   };
 
-  if (loading) {
+  if (isLoading()) {
     return (
       <div className={`space-y-6 ${className}`}>
         {[...Array(2)].map((_, i) => (

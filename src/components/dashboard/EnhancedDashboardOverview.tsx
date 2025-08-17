@@ -12,10 +12,11 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 import { dateHandler } from '@/utils/unified-date-handler';
-import { errorHandler } from '@/utils/error-handler';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";
 import { useOptimizedDashboardCounts, useOptimizedTeamCounts } from '@/hooks/useOptimizedDashboardCounts';
@@ -84,8 +85,14 @@ export const EnhancedDashboardOverview = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [trends, setTrends] = useState<Trend[]>([]);
-const [loading, setLoading] = useState(true);
-const [selectedTrend, setSelectedTrend] = useState<Trend | null>(null);
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'EnhancedDashboardOverview',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'EnhancedDashboardOverview' });
+  const [selectedTrend, setSelectedTrend] = useState<Trend | null>(null);
 
 // Optimized cached counts
 const { data: countsData } = useOptimizedDashboardCounts();
@@ -112,19 +119,17 @@ const { data: teamCount } = useOptimizedTeamCounts();
   }, [userProfile]);
 
   const loadDashboardData = async () => {
-    try {
-      setLoading(true);
-await Promise.all([
-  loadAchievements(),
-  loadNotifications(),
-  loadTrends()
-]);
-    } catch (error) {
-      errorHandler.handleError(error, 'EnhancedDashboardOverview.loadDashboardData');
-      toast.error('خطأ في تحميل بيانات لوحة القيادة');
-    } finally {
-      setLoading(false);
-    }
+    return withLoading('loadDashboard', async () => {
+      await Promise.all([
+        loadAchievements(),
+        loadNotifications(),
+        loadTrends()
+      ]);
+      return true;
+    }, {
+      errorMessage: t('error.load_dashboard_data'),
+      logContext: { userId: userProfile?.id }
+    });
   };
 
   // Sync stats from cached optimized counts
@@ -290,7 +295,7 @@ await Promise.all([
     { title: "معدل النجاح", titleEn: "Success Rate", value: `${stats.successRate.toFixed(0)}%`, change: "+5% تحسن" }
   ];
 
-  if (loading) {
+  if (isLoading()) {
     return <div className="flex justify-center items-center p-8">
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
     </div>;

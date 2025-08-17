@@ -23,6 +23,7 @@ import { RTLAware, useRTLAwareClasses } from '@/components/ui/rtl-aware';
 import { supabase } from '@/integrations/supabase/client';
 import { getStatusMapping, getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { createErrorHandler } from '@/utils/unified-error-handler';
 import { dateHandler } from '@/utils/unified-date-handler';
 
@@ -51,14 +52,15 @@ export const ChallengeAnalyticsDashboard = ({
   const { flexRow } = useRTLAwareClasses();
   const { data: commonCounts, isLoading: countsLoading } = { data: { totalParticipants: 0 }, isLoading: false }; // useCommonCounts();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
 
-  const errorHandler = createErrorHandler({
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
     component: 'ChallengeAnalyticsDashboard',
     showToast: true,
-    logError: true
+    logErrors: true
   });
+  const errorHandler = createErrorHandler({ component: 'ChallengeAnalyticsDashboard' });
 
   useEffect(() => {
     if (commonCounts && !countsLoading) {
@@ -67,9 +69,7 @@ export const ChallengeAnalyticsDashboard = ({
   }, [commonCounts, countsLoading]);
 
   const loadAnalytics = async () => {
-    try {
-      setLoading(true);
-      
+    return withLoading('loadAnalytics', async () => {
       // Get basic challenge statistics
       const { data: challenges, error } = await supabase
         .from('challenges')
@@ -155,17 +155,14 @@ export const ChallengeAnalyticsDashboard = ({
         topChallenges
       });
 
-    } catch (error) {
-      errorHandler.handleError(error,
-        { operation: 'loadAnalytics' },
-        'Failed to load analytics data'
-      );
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: t('error.load_analytics_data'),
+      logContext: { source: 'challenge_analytics' }
+    });
   };
 
-  if (loading || !analytics || countsLoading) {
+  if (isLoading() || !analytics || countsLoading) {
     return (
       <div className={className}>
         <Card>

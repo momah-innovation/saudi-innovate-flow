@@ -26,7 +26,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { getActivityTypeMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { formatDate, formatRelativeTime } from '@/utils/unified-date-handler';
 
 interface Challenge {
@@ -66,7 +67,14 @@ export const ChallengeActivityHub = ({
   const [activities, setActivities] = useState<ChallengeActivity[]>([]);
   const [participants, setParticipants] = useState<unknown[]>([]);
   const [submissions, setSubmissions] = useState<unknown[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'ChallengeActivityHub',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'ChallengeActivityHub' });
 
   useEffect(() => {
     if (challenge) {
@@ -75,9 +83,7 @@ export const ChallengeActivityHub = ({
   }, [challenge]);
 
   const loadCollaborationData = async () => {
-    try {
-      setLoading(true);
-      
+    return withLoading('loadData', async () => {
       // Load participants
       const { data: participantsData } = await supabase
         .from('challenge_participants')
@@ -144,16 +150,11 @@ export const ChallengeActivityHub = ({
       ];
 
       setActivities(mockActivities);
-      
-    } catch (error) {
-      logger.error('Error loading collaboration data', { 
-        component: 'ChallengeActivityHub', 
-        action: 'loadCollaborationData',
-        data: { challengeId: challenge.id }
-      }, error as Error);
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: t('error.load_collaboration_data'),
+      logContext: { challengeId: challenge.id }
+    });
   };
 
   const getActivityIcon = (type: string) => {
@@ -271,7 +272,7 @@ export const ChallengeActivityHub = ({
     );
   };
 
-  if (loading) {
+  if (isLoading()) {
     return (
       <Card className={className}>
         <CardContent className="p-6">

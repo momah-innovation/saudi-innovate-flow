@@ -17,7 +17,8 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { getPriorityMapping, getCategoryMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
 
 interface TrendingChallenge {
@@ -44,17 +45,23 @@ export const ChallengeTrendingWidget = ({
   className = "" 
 }: ChallengeTrendingWidgetProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [trendingChallenges, setTrendingChallenges] = useState<TrendingChallenge[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'ChallengeTrendingWidget',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'ChallengeTrendingWidget' });
 
   useEffect(() => {
     loadTrendingChallenges();
   }, []);
 
   const loadTrendingChallenges = async () => {
-    try {
-      setLoading(true);
-      
+    return withLoading('loadTrending', async () => {
       // Get challenges with high participation and recent activity
       const { data: challenges, error } = await supabase
         .from('challenges')
@@ -89,15 +96,11 @@ export const ChallengeTrendingWidget = ({
       });
 
       setTrendingChallenges(sorted);
-      
-    } catch (error) {
-      logger.error('Error loading trending challenges', { 
-        component: 'ChallengeTrendingWidget', 
-        action: 'loadTrendingChallenges'
-      }, error as Error);
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: t('error.load_trending_challenges'),
+      logContext: { component: 'ChallengeTrendingWidget' }
+    });
   };
 
   const formatPrize = (amount: number) => {
@@ -127,7 +130,7 @@ export const ChallengeTrendingWidget = ({
     return <IconComponent className="w-4 h-4" />;
   };
 
-  if (loading) {
+  if (isLoading()) {
     return (
       <Card className={className}>
         <CardHeader>

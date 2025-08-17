@@ -7,7 +7,8 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import {
   BarChart3,
   Users,
@@ -40,18 +41,24 @@ interface EventAnalyticsDashboardProps {
 
 export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [analyticsData, setAnalyticsData] = useState<EventAnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'EventAnalyticsDashboard',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'EventAnalyticsDashboard' });
 
   useEffect(() => {
     loadAnalyticsData();
   }, []);
 
   const loadAnalyticsData = async () => {
-    try {
-      setLoading(true);
-
+    return withLoading('loadAnalytics', async () => {
       // Get all events data
       const { data: events, error: eventsError } = await supabase
         .from('events')
@@ -170,17 +177,14 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
         registrationTrends
       });
 
-    } catch (error) {
-      logger.error('Error loading analytics data', { 
-        component: 'EventAnalyticsDashboard', 
-        action: 'loadAnalyticsData'
-      }, error as Error);
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: t('error.load_analytics_data'),
+      logContext: { component: 'EventAnalyticsDashboard' }
+    });
   };
 
-  if (loading) {
+  if (isLoading()) {
     return (
       <Card className={className}>
         <CardHeader>
