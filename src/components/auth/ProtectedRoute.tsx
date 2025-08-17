@@ -10,6 +10,7 @@ import { debugLog } from '@/utils/debugLogger';
 import { UserRole } from '@/hooks/useRoleAccess';
 import { validateServerAuth, validateRole } from '@/utils/serverAuth';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -32,6 +33,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { user, userProfile, hasRole, loading, session } = useAuth();
   const location = useLocation();
   const { t } = useUnifiedTranslation();
+
+  // ✅ MIGRATED: Added error handling for protected routes
+  const errorHandler = createErrorHandler({
+    component: 'ProtectedRoute',
+    showToast: false, // Don't show toasts for auth redirects
+    logError: true
+  });
 
   // Server-side validation for enhanced security
   useEffect(() => {

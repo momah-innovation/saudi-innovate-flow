@@ -10,6 +10,8 @@ import { Mail, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 export const EmailVerification = () => {
   const { setTimeout: scheduleTimeout } = useTimerManager();
@@ -20,6 +22,19 @@ export const EmailVerification = () => {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
+  
+  // ✅ MIGRATED: Added unified loading and error handling
+  const loadingManager = useUnifiedLoading({
+    component: 'EmailVerification',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'EmailVerification',
+    showToast: true,
+    logError: true
+  });
   
   // Initialize navigation handler
   React.useEffect(() => {

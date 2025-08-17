@@ -36,6 +36,8 @@ import { TestProfileCalculation } from '@/components/admin/TestProfileCalculatio
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface UserRole {
   role: string;
@@ -77,6 +79,19 @@ export const ProfileSetup = () => {
   const { toast } = useToast();
   const { user, userProfile, updateProfile } = useAuth();
   const navigate = useNavigate();
+  
+  // ✅ MIGRATED: Added unified loading and error handling
+  const loadingManager = useUnifiedLoading({
+    component: 'ProfileSetup',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'ProfileSetup',
+    showToast: true,
+    logError: true
+  });
   
   // Initialize navigation handler
   React.useEffect(() => {
@@ -235,39 +250,22 @@ export const ProfileSetup = () => {
   const handleSubmit = async () => {
     if (!validateStep(currentStep)) return;
     
-    setIsLoading(true);
-    try {
-      const { error } = await updateProfile(profileData);
-      
-      if (error) {
-        toast({
-          title: "خطأ في حفظ البيانات",
-          description: error.message || "حدث خطأ غير متوقع",
-          variant: "destructive"
-        });
-        return;
+    await loadingManager.withLoading(
+      'save-profile',
+      async () => {
+        // ✅ MIGRATED: Using structured error handling for profile save
+        const { error } = await updateProfile(profileData);
+        
+        if (error) throw error;
+
+        navigate('/dashboard');
+      },
+      {
+        successMessage: t('profile.save_success', 'تم إكمال الملف الشخصي بنجاح'),
+        errorMessage: t('profile.save_error', 'خطأ في حفظ البيانات'),
+        logContext: { operation: 'saveProfile', profileData: { ...profileData, phone: '***' } }
       }
-
-      toast({
-        title: "تم إكمال الملف الشخصي",
-        description: "مرحباً بك في منصة رواد للابتكار",
-      });
-
-      navigate('/dashboard');
-    } catch (error: unknown) {
-      const err = error as Error;
-      logger.error('Error saving profile data', { 
-        component: 'ProfileSetup', 
-        action: 'saveProfile' 
-      }, err);
-      toast({
-        title: "خطأ في حفظ البيانات",
-        description: err.message || "حدث خطأ غير متوقع",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    );
   };
 
   const renderStepContent = () => {
