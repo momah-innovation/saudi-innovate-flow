@@ -23,6 +23,8 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAIService } from '@/hooks/useAIService';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { logger } from '@/utils/logger';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 
@@ -56,7 +58,6 @@ const ENTITY_TYPES = [
 export const SmartSearchPanel: React.FC = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<SearchFilter>({
     entityTypes: [],
     dateRange: 'all',
@@ -68,6 +69,13 @@ export const SmartSearchPanel: React.FC = () => {
   const { toast } = useToast();
   const { user } = useCurrentUser();
   const aiService = useAIService();
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'SmartSearchPanel',
+    showToast: true,
+    logErrors: true
+  });
 
   useEffect(() => {
     loadSearchHistory();
@@ -122,48 +130,48 @@ export const SmartSearchPanel: React.FC = () => {
   const performSearch = async () => {
     if (!query.trim()) return;
 
-    try {
-      setLoading(true);
-      saveSearchToHistory(query);
+    const result = await withLoading(
+      'search',
+      async () => {
+        saveSearchToHistory(query);
 
-      const searchResults = await aiService.semanticSearch(
-        query,
-        filters.entityTypes,
-        20
-      );
+        const searchResults = await aiService.semanticSearch(
+          query,
+          filters.entityTypes,
+          20
+        );
 
-      // Transform and filter results based on user preferences
-      const processedResults = searchResults
-        .filter(result => result.relevanceScore >= filters.minRelevance)
-        .sort((a, b) => {
-          switch (filters.sortBy) {
-            case 'date':
-              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-            case 'popularity':
-              return (b.popularityScore || 0) - (a.popularityScore || 0);
-            default:
-              return b.relevanceScore - a.relevanceScore;
-          }
-        });
+        // Transform and filter results based on user preferences
+        const processedResults = searchResults
+          .filter(result => result.relevanceScore >= filters.minRelevance)
+          .sort((a, b) => {
+            switch (filters.sortBy) {
+              case 'date':
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+              case 'popularity':
+                return (b.popularityScore || 0) - (a.popularityScore || 0);
+              default:
+                return b.relevanceScore - a.relevanceScore;
+            }
+          });
 
-      setResults(processedResults);
+        if (processedResults.length === 0) {
+          toast({
+            title: 'لا توجد نتائج',
+            description: 'لم يتم العثور على نتائج مطابقة لبحثك',
+            variant: 'destructive',
+          });
+        }
 
-      if (processedResults.length === 0) {
-        toast({
-          title: 'لا توجد نتائج',
-          description: 'لم يتم العثور على نتائج مطابقة لبحثك',
-          variant: 'destructive',
-        });
+        return processedResults;
+      },
+      {
+        errorMessage: 'فشل في تنفيذ البحث، يرجى المحاولة مرة أخرى'
       }
-    } catch (error) {
-      logger.error('Error performing search', { component: 'SmartSearchPanel', action: 'performSearch', query }, error as Error);
-      toast({
-        title: 'خطأ في البحث',
-        description: 'فشل في تنفيذ البحث، يرجى المحاولة مرة أخرى',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
+    );
+
+    if (result) {
+      setResults(result);
     }
   };
 
@@ -232,8 +240,8 @@ export const SmartSearchPanel: React.FC = () => {
                 className="pl-10"
               />
             </div>
-            <Button onClick={performSearch} disabled={loading}>
-              {loading ? (
+            <Button onClick={performSearch} disabled={isLoading()}>
+              {isLoading() ? (
                 <Brain className="h-4 w-4 animate-pulse" />
               ) : (
                 <Search className="h-4 w-4" />
@@ -376,7 +384,7 @@ export const SmartSearchPanel: React.FC = () => {
 
         {/* Results */}
         <div className="lg:col-span-3 space-y-4">
-          {loading ? (
+          {isLoading() ? (
             <div className="text-center py-12">
               <Brain className="h-12 w-12 animate-pulse mx-auto mb-4 text-blue-500" />
               <p className="text-lg font-medium">جاري البحث الذكي...</p>

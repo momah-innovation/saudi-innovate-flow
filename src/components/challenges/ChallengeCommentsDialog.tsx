@@ -16,6 +16,8 @@ import {
   ThumbsUp, MoreHorizontal, Edit3, Trash2, Star
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -41,7 +43,13 @@ export function ChallengeCommentsDialog({
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  // ✅ MIGRATED: Using unified loading and error handling  
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'ChallengeCommentsDialog',
+    showToast: true,
+    logErrors: true
+  });
 
   useEffect(() => {
     if (open && challenge) {
@@ -50,31 +58,32 @@ export function ChallengeCommentsDialog({
   }, [open, challenge]);
 
   const fetchComments = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('challenge_comments')
-        .select(`
-          *,
-          profiles:user_id (
-            id,
-            display_name,
-            avatar_url
-          )
-        `)
-        .eq('challenge_id', challenge.id)
-        .order('created_at', { ascending: true });
+    const result = await withLoading(
+      'fetch-comments',
+      async () => {
+        const { data, error } = await supabase
+          .from('challenge_comments')
+          .select(`
+            *,
+            profiles:user_id (
+              id,
+              display_name,
+              avatar_url
+            )
+          `)
+          .eq('challenge_id', challenge.id)
+          .order('created_at', { ascending: true });
 
-      if (error) throw error;
-      setComments((data || []) as Comment[]);
-    } catch (error) {
-      toast({
-        title: t('error', 'Error'),
-        description: t('challenges.comments.load_failed', 'Failed to load comments'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+        if (error) throw error;
+        return (data || []) as Comment[];
+      },
+      {
+        errorMessage: 'Failed to load comments'
+      }
+    );
+    
+    if (result) {
+      setComments(result);
     }
   };
 
@@ -347,7 +356,7 @@ export function ChallengeCommentsDialog({
         {/* Comments List */}
         <ScrollArea className="flex-1 px-1">
           <div className="space-y-6">
-            {loading ? (
+            {isLoading() ? (
               <div className="text-center py-8">
                 <div className={cn("animate-spin rounded-full h-8 w-8 border-b-2 mx-auto", challengesPageConfig.ui.colors.stats.blue.replace('text-', 'border-'))}></div>
                 <p className={cn("mt-2", challengesPageConfig.ui.colors.text.muted)}>جاري تحميل التعليقات...</p>

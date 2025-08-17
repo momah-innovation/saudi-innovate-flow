@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useOrganizationalHierarchy } from '@/hooks/useOrganizationalHierarchy';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -43,8 +45,14 @@ export function ChallengeForm({ challenge, onSuccess, onCancel }: ChallengeFormP
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { sectors, deputies, departments, domains, subDomains, services } = useOrganizationalHierarchy();
-  const [loading, setLoading] = useState(false);
   const { user } = useCurrentUser();
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'ChallengeForm',
+    showToast: true,
+    logErrors: true
+  });
 
   const form = useForm<ChallengeFormData>({
     resolver: zodResolver(challengeSchema),
@@ -66,57 +74,57 @@ export function ChallengeForm({ challenge, onSuccess, onCancel }: ChallengeFormP
   });
 
   const handleSubmit = async (data: ChallengeFormData) => {
-    setLoading(true);
-    try {
-      if (challenge?.id) {
-        const { error } = await supabase
-          .from('challenges')
-          .update(data)
-          .eq('id', challenge.id);
-        
-        if (error) throw error;
-        
-        toast({
-          title: t('challenges.updated'),
-          description: t('challenges.update_success')
-        });
-      } else {
-        const { error } = await supabase
-          .from('challenges')
-          .insert({ 
-            title_ar: data.title_ar,
-            description_ar: data.description_ar,
-            title_en: data.title_en || null,
-            description_en: data.description_en || null,
-            sector_id: data.sector_id || null,
-            deputy_id: data.deputy_id || null,
-            department_id: data.department_id || null,
-            domain_id: data.domain_id || null,
-            sub_domain_id: data.sub_domain_id || null,
-            service_id: data.service_id || null,
-            priority_level: data.priority_level,
-            sensitivity_level: data.sensitivity_level,
-            challenge_type: data.challenge_type || null,
-            created_by: user?.id
+    const result = await withLoading(
+      'submit',
+      async () => {
+        if (challenge?.id) {
+          const { error } = await supabase
+            .from('challenges')
+            .update(data)
+            .eq('id', challenge.id);
+          
+          if (error) throw error;
+          
+          toast({
+            title: t('challenges.updated'),
+            description: t('challenges.update_success')
           });
-        
-        if (error) throw error;
-        
-        toast({
-          title: t('challenges.created'),
-          description: t('challenges.create_success')
-        });
+        } else {
+          const { error } = await supabase
+            .from('challenges')
+            .insert({ 
+              title_ar: data.title_ar,
+              description_ar: data.description_ar,
+              title_en: data.title_en || null,
+              description_en: data.description_en || null,
+              sector_id: data.sector_id || null,
+              deputy_id: data.deputy_id || null,
+              department_id: data.department_id || null,
+              domain_id: data.domain_id || null,
+              sub_domain_id: data.sub_domain_id || null,
+              service_id: data.service_id || null,
+              priority_level: data.priority_level,
+              sensitivity_level: data.sensitivity_level,
+              challenge_type: data.challenge_type || null,
+              created_by: user?.id
+            });
+          
+          if (error) throw error;
+          
+          toast({
+            title: t('challenges.created'),
+            description: t('challenges.create_success')
+          });
+        }
+        return true;
+      },
+      {
+        errorMessage: 'An unexpected error occurred'
       }
-      
+    );
+    
+    if (result) {
       onSuccess();
-    } catch (error: Error | unknown) {
-      toast({
-        title: t('error'),
-        description: error instanceof Error ? error.message : 'An unexpected error occurred',
-        variant: 'destructive'
-      });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -222,8 +230,8 @@ export function ChallengeForm({ challenge, onSuccess, onCancel }: ChallengeFormP
             <Button type="button" variant="outline" onClick={onCancel}>
               {t('cancel')}
             </Button>
-            <Button type="submit" disabled={loading}>
-              {loading ? t('saving') : challenge ? t('update') : t('create')}
+            <Button type="submit" disabled={isLoading()}>
+              {isLoading() ? t('saving') : challenge ? t('update') : t('create')}
             </Button>
           </div>
         </form>

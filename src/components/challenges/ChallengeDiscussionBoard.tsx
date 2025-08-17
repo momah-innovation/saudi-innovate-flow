@@ -50,10 +50,9 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
   const { toast } = useToast();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [newComment, setNewComment] = useState('');
-  const [loading, setLoading] = useState(true);
   
-  // Unified loading and error handling
-  const unifiedLoading = useUnifiedLoading({
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
     component: 'ChallengeDiscussionBoard',
     showToast: true,
     logErrors: true
@@ -70,8 +69,7 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
   }, [challengeId]);
 
   const loadDiscussions = async () => {
-    setLoading(true);
-    const result = await unifiedLoading.withLoading('loadDiscussions', async () => {
+    const result = await withLoading('loadDiscussions', async () => {
       const { data, error } = await supabase
         .from('challenge_comments')
         .select(`
@@ -90,7 +88,6 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
     if (result) {
       setDiscussions(result);
     }
-    setLoading(false);
   };
 
   const setupRealtimeSubscription = () => {
@@ -119,7 +116,7 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
   const handleSubmitComment = async () => {
     if (!user || !newComment.trim()) return;
 
-    const result = await unifiedLoading.withLoading('submitComment', async () => {
+    const result = await withLoading('submitComment', async () => {
       const { error } = await supabase
         .from('challenge_comments')
         .insert({
@@ -153,7 +150,7 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
     return formatRelativeTime(dateString);
   };
 
-  if (loading) {
+  if (isLoading()) {
     return (
       <Card>
         <CardContent className="pt-6">
@@ -189,10 +186,10 @@ export const ChallengeDiscussionBoard: React.FC<ChallengeDiscussionBoardProps> =
             </div>
             <Button 
               onClick={handleSubmitComment} 
-              disabled={!newComment.trim() || unifiedLoading.isLoading('submitComment')}
+              disabled={!newComment.trim() || isLoading('submitComment')}
               size="sm"
             >
-              {unifiedLoading.isLoading('submitComment') ? (
+              {isLoading('submitComment') ? (
                 'جاري النشر...'
               ) : (
                 <>
