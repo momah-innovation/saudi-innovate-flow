@@ -64,153 +64,21 @@ const TemplateManagement: React.FC = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const templateColumns = [
-    {
-      key: 'name',
-      title: 'Name',
-      accessorKey: 'name',
-      header: 'Name',
-      cell: ({ row }) => (
-        <div>
-          <span className="font-medium">{row.getValue('name')}</span>
-          <p className="text-sm text-muted-foreground">{row.original.description}</p>
-        </div>
-      )
-    },
-    {
-      key: 'category',
-      title: 'Category',
-      accessorKey: 'category',
-      header: 'Category',
-      cell: ({ row }) => (
-        <Badge variant="outline">{row.getValue('category')}</Badge>
-      )
-    },
-    {
-      key: 'version',
-      title: 'Version',
-      accessorKey: 'version',
-      header: 'Version',
-      cell: ({ row }) => (
-        <code className="bg-muted px-2 py-1 rounded text-sm">
-          v{row.getValue('version')}
-        </code>
-      )
-    },
-    {
-      key: 'status',
-      title: 'Status',
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => {
-        const status = row.getValue('status') as string;
-        return (
-          <Badge variant={status === 'published' ? 'default' : 'secondary'}>
-            {status}
-          </Badge>
-        );
-      }
-    },
-    {
-      key: 'last_modified',
-      title: 'Last Modified',
-      accessorKey: 'last_modified',
-      header: 'Last Modified',
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground">
-          {format(new Date(row.getValue('last_modified')), 'PPp')}
-        </span>
-      )
-    },
-    {
-      key: 'actions',
-      title: 'Actions',
-      id: 'actions',
-      header: 'Actions',
-      cell: ({ row }) => (
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsEditDialogOpen(true)}
-          >
-            <Edit2 className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setSelectedTemplate(row.original)}
-          >
-            <Eye className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => deleteTemplate(row.original.id)}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      )
-    }
+  const templateColumns: Column<Template>[] = [
+    { key: 'name', title: 'Name' },
+    { key: 'category', title: 'Category' },
+    { key: 'version', title: 'Version' },
+    { key: 'status', title: 'Status' }
   ];
 
-  const categoryColumns = [
-    {
-      key: 'name',
-      title: 'Category',
-      accessorKey: 'name',
-      header: 'Category',
-      cell: ({ row }) => (
-        <div>
-          <span className="font-medium">{row.getValue('name')}</span>
-          <p className="text-sm text-muted-foreground">{row.original.description}</p>
-        </div>
-      )
-    },
-    {
-      key: 'template_count',
-      title: 'Templates',
-      accessorKey: 'template_count',
-      header: 'Templates',
-      cell: ({ row }) => (
-        <Badge variant="secondary">{row.getValue('template_count')}</Badge>
-      )
-    }
+  const categoryColumns: Column<TemplateCategory>[] = [
+    { key: 'name', title: 'Category' },
+    { key: 'description', title: 'Description' }
   ];
 
-  const versionColumns = [
-    {
-      key: 'version',
-      title: 'Version',
-      accessorKey: 'version',
-      header: 'Version',
-      cell: ({ row }) => (
-        <code className="bg-muted px-2 py-1 rounded text-sm">
-          v{row.getValue('version')}
-        </code>
-      )
-    },
-    {
-      key: 'author',
-      title: 'Author',
-      accessorKey: 'author',
-      header: 'Author',
-      cell: ({ row }) => (
-        <span className="text-sm">{row.getValue('author')}</span>
-      )
-    },
-    {
-      key: 'created_at',
-      title: 'Created',
-      accessorKey: 'created_at',
-      header: 'Created',
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground">
-          {format(new Date(row.getValue('created_at')), 'PPp')}
-        </span>
-      )
-    }
+  const versionColumns: Column<TemplateVersion>[] = [
+    { key: 'version', title: 'Version' },
+    { key: 'created_at', title: 'Created' }
   ];
 
   const renderPreview = () => {

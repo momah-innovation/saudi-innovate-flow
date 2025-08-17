@@ -47,95 +47,16 @@ const AuditManagement: React.FC = () => {
     { key: 'status', title: 'Status' }
   ];
 
-  const complianceReportColumns = [
-    {
-      key: 'name',
-      title: 'Report Name',
-      accessorKey: 'name',
-      header: 'Report Name',
-      cell: ({ row }) => (
-        <span className="font-medium">{row.getValue('name')}</span>
-      )
-    },
-    {
-      key: 'type',
-      title: 'Type',
-      accessorKey: 'type',
-      header: 'Type',
-      cell: ({ row }) => (
-        <Badge variant="outline">{row.getValue('type')}</Badge>
-      )
-    },
-    {
-      key: 'period',
-      title: 'Period',
-      accessorKey: 'period',
-      header: 'Period',
-      cell: ({ row }) => (
-        <span className="text-sm">{row.getValue('period')}</span>
-      )
-    },
-    {
-      key: 'status',
-      title: 'Status',
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => {
-        const status = row.getValue('status') as string;
-        return (
-          <Badge variant={status === 'completed' ? 'default' : 'secondary'}>
-            {status}
-          </Badge>
-        );
-      }
-    },
-    {
-      key: 'compliance_score',
-      title: 'Score',
-      accessorKey: 'compliance_score',
-      header: 'Compliance Score',
-      cell: ({ row }) => (
-        <span className="font-medium">{row.getValue('compliance_score')}%</span>
-      )
-    },
-    {
-      key: 'violations',
-      title: 'Violations',
-      accessorKey: 'violations',
-      header: 'Violations',
-      cell: ({ row }) => {
-        const violations = row.getValue('violations') as number;
-        return violations > 0 ? 
-          <span className="text-destructive font-medium">{violations}</span> :
-          <span className="text-muted-foreground">0</span>;
-      }
-    }
+  const complianceReportColumns: Column<ComplianceReport>[] = [
+    { key: 'name', title: 'Report Name' },
+    { key: 'type', title: 'Type' },
+    { key: 'status', title: 'Status' },
+    { key: 'compliance_score', title: 'Score' }
   ];
 
-  const auditConfigColumns = [
-    {
-      key: 'category',
-      title: 'Category',
-      accessorKey: 'category',
-      header: 'Category',
-      cell: ({ row }) => (
-        <span className="font-medium">{row.getValue('category')}</span>
-      )
-    },
-    {
-      key: 'enabled',
-      title: 'Status',
-      accessorKey: 'enabled',
-      header: 'Status',
-      cell: ({ row }) => {
-        const enabled = row.getValue('enabled') as boolean;
-        return (
-          <Badge variant={enabled ? 'default' : 'secondary'}>
-            {enabled ? 'Enabled' : 'Disabled'}
-          </Badge>
-        );
-      }
-    }
+  const auditConfigColumns: Column<AuditConfiguration>[] = [
+    { key: 'category', title: 'Category' },
+    { key: 'enabled', title: 'Status' }
   ];
 
   const handleGenerateReport = async () => {
