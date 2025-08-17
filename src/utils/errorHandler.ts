@@ -1,4 +1,5 @@
 import { logger } from './logger';
+import { debugLog } from './debugLogger';
 
 interface ErrorHandlerOptions {
   component: string;
@@ -15,7 +16,7 @@ export const createErrorHandler = (options: ErrorHandlerOptions) => {
       }, error);
     }
     
-    console.error(`[${options.component}] Error in ${action}:`, error);
+    debugLog.error(`Error in ${action}`, { component: options.component }, error as Error);
   };
 
   return {

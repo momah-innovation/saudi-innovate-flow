@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Calendar, DollarSign, Users, Target, AlertTriangle, Clock } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { useToast } from '@/hooks/use-toast';
 import { debugLog } from '@/utils/debugLogger';
 import { formatDate } from '@/utils/unified-date-handler';
@@ -50,7 +51,13 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
   const { t, getDynamicText } = useUnifiedTranslation();
   const { toast } = useToast();
   const [data, setData] = useState<AssignmentDetailData | null>(null);
-  const [loading, setLoading] = useState(false);
+  
+  // ✅ MIGRATED: Added unified loading management
+  const loadingManager = useUnifiedLoading({
+    component: 'AssignmentDetailView',
+    showToast: true,
+    logErrors: true
+  });
   
   const errorHandler = createErrorHandler({
     component: 'AssignmentDetailView',
@@ -67,8 +74,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
   const fetchAssignmentData = async () => {
     if (!assignment) return;
 
-    setLoading(true);
-    try {
+    await loadingManager.withLoading('fetchData', async () => {
       // Note: This component handles multiple entity types. In a full migration,
       // we would create dedicated hooks for challenges, campaigns, and events.
       // For now, keeping existing functionality to ensure safety.
@@ -79,11 +85,10 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
         status: assignment.status,
         created_at: new Date().toISOString()
       });
-    } catch (error) {
-      errorHandler.handleError(error, { operation: 'fetchAssignmentData' }, t('failedToFetchData'));
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('failedToFetchData'),
+      logContext: { assignment_type: assignment.assignment_type }
+    });
   };
 
   const getTypeIcon = (type: string) => {
@@ -280,7 +285,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
       maxWidth="4xl"
       actions={actions}
     >
-      {loading ? (
+      {loadingManager.isLoading('fetchData') ? (
         <div className="flex items-center justify-center py-8">
           <div className="text-muted-foreground">{t('loading')}...</div>
         </div>

@@ -3,6 +3,7 @@
  * without breaking existing functionality
  */
 import { logger } from '@/utils/logger';
+import { debugLog } from '@/utils/debugLogger';
 
 /**
  * Temporary bridge between any types and proper interfaces
@@ -80,13 +81,13 @@ export const migrationTracker = {
   logMigration: (component: string, fromType: string, toType: string) => {
     // In development, log migrations for tracking
     if (process.env.NODE_ENV === 'development') {
-      console.log(`🔄 Type Migration: ${component} | ${fromType} → ${toType}`);
+      debugLog.debug('Type Migration', { component, migration: `${fromType} → ${toType}` });
     }
   },
 
   markAsTypeSafe: (component: string) => {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`✅ Type Safe: ${component}`);
+      debugLog.debug('Component marked as type safe', { component });
     }
   }
 };
