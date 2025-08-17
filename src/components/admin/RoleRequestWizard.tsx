@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserPlus, Send } from "lucide-react";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/logger";
 import { dateHandler, formatForAPI } from '@/utils/unified-date-handler';
@@ -71,7 +72,13 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
   const [selectedRole, setSelectedRole] = useState("");
   const [reason, setReason] = useState("");
   const [justification, setJustification] = useState("");
-  const [loading, setLoading] = useState(false);
+  
+  // ✅ MIGRATED: Added unified loading and error handling
+  const loadingManager = useUnifiedLoading({
+    component: 'RoleRequestWizard',
+    showToast: true,
+    logErrors: true
+  });
   
   const errorHandler = createErrorHandler({
     component: 'RoleRequestWizard',
@@ -93,9 +100,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
       return;
     }
 
-    try {
-      setLoading(true);
-
+    await loadingManager.withLoading('submitRequest', async () => {
       // Check if user already has this role
       const { data: existingRoles, error: rolesError } = await supabase
         .from('user_roles')
@@ -194,11 +199,10 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
       setJustification("");
       onOpenChange(false);
       onRequestSubmitted?.();
-    } catch (error) {
-      errorHandler.handleError(error, { operation: 'handleSubmitRequest' }, t('roleRequest.submitError'));
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('roleRequest.submitError'),
+      logContext: { selectedRole, reason: reason.substring(0, 50) }
+    });
   };
 
   return (
@@ -306,15 +310,15 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
             <Button
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={loading}
+              disabled={loadingManager.isLoading('submitRequest')}
             >
               Cancel
             </Button>
             <Button
               onClick={handleSubmitRequest}
-              disabled={loading || !selectedRole || !reason || !justification || availableRoles.length === 0}
+              disabled={loadingManager.isLoading('submitRequest') || !selectedRole || !reason || !justification || availableRoles.length === 0}
             >
-              {loading && <Send className="h-4 w-4 animate-spin mr-2" />}
+              {loadingManager.isLoading('submitRequest') && <Send className="h-4 w-4 animate-spin mr-2" />}
               Submit Request
             </Button>
           </div>

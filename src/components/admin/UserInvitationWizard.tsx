@@ -28,7 +28,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { availableUserRoles } = useSystemLists();
-  const [loading, setLoading] = useState(false);
+  // ✅ MIGRATED: Already using unified loading, removing manual loading state
   
   const loadingManager = useUnifiedLoading({
     component: 'UserInvitationWizard',
@@ -79,9 +79,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
       return;
     }
 
-    try {
-      setLoading(true);
-
+    await loadingManager.withLoading('sendInvitation', async () => {
       // Generate invitation token
       const { data: tokenData, error: tokenError } = await supabase
         .rpc('generate_invitation_token');
@@ -147,18 +145,10 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
 
       onOpenChange(false);
       onInvitationSent?.();
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      toast({
-        title: "Error",
-        description: errorMessage.includes('duplicate') 
-          ? "An invitation for this email already exists." 
-          : "Failed to send invitation. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('user_invitation_wizard.invitation_error', 'Failed to send invitation. Please try again.'),
+      logContext: { email: formData.email, roles: formData.initial_roles }
+    });
   };
 
   return (
@@ -284,15 +274,15 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
             <Button
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={loading}
+              disabled={loadingManager.isLoading('sendInvitation')}
             >
               Cancel
             </Button>
             <Button
               onClick={handleSendInvitation}
-              disabled={loading || !formData.email || !formData.name}
+              disabled={loadingManager.isLoading('sendInvitation') || !formData.email || !formData.name}
             >
-              {loading && <Send className="h-4 w-4 animate-spin mr-2" />}
+              {loadingManager.isLoading('sendInvitation') && <Send className="h-4 w-4 animate-spin mr-2" />}
               Send Invitation
             </Button>
           </div>
