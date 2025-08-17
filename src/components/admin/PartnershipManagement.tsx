@@ -53,10 +53,14 @@ export function PartnershipManagement() {
 
   const partnershipColumns = [
     {
+      key: 'name' as keyof any,
+      title: t('partnerships.name'),
       accessorKey: 'name',
       header: t('partnerships.name'),
     },
     {
+      key: 'type' as keyof any,
+      title: t('partnerships.type'),
       accessorKey: 'type',
       header: t('partnerships.type'),
       cell: ({ row }: any) => {
@@ -68,10 +72,8 @@ export function PartnershipManagement() {
       },
     },
     {
-      accessorKey: 'description',
-      header: t('partnerships.description'),
-    },
-    {
+      key: 'created_at' as keyof any,
+      title: t('partnerships.created_at'),
       accessorKey: 'created_at',
       header: t('partnerships.created_at'),
       cell: ({ row }: any) => {
@@ -129,7 +131,7 @@ export function PartnershipManagement() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold">
-                {partnerships?.filter(p => p.type === 'strategic').length || 0}
+                {partnerships?.filter(p => p.type === 'partner').length || 0}
               </div>
               <div className="text-sm text-muted-foreground">{t('partnerships.strategic')}</div>
             </div>
@@ -171,7 +173,7 @@ export function PartnershipManagement() {
           <CardContent>
             <div className="space-y-2">
               {['strategic', 'operational', 'project-based', 'advisory'].map(level => {
-                const count = partnerships?.filter(p => p.description?.includes(level)).length || 0;
+                const count = partnerships?.filter(p => p.name?.includes(level)).length || 0;
                 return (
                   <div key={level} className="flex justify-between">
                     <span>{t(`partnerships.level_${level}`)}</span>

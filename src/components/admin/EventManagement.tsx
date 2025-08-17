@@ -39,7 +39,7 @@ export function EventManagement() {
     updateEvent: updateAdminEvent,
     deleteEvent: deleteAdminEvent,
     refreshEvents
-  } = useAdminEvents();
+  } = useEvents();
   
   const loadingManager = useUnifiedLoading({
     component: 'EventManagement',
@@ -53,18 +53,26 @@ export function EventManagement() {
 
   const columns = [
     {
+      key: 'title_ar' as keyof any,
+      title: t('events.title'),
       accessorKey: 'title_ar',
       header: t('events.title'),
     },
     {
+      key: 'event_type' as keyof any,
+      title: t('events.type'),
       accessorKey: 'event_type',
       header: t('events.type'),
     },
     {
+      key: 'status' as keyof any,
+      title: t('events.status'),
       accessorKey: 'status',
       header: t('events.status'),
     },
     {
+      key: 'start_date' as keyof any,
+      title: t('events.start_date'),
       accessorKey: 'start_date',
       header: t('events.start_date'),
       cell: ({ row }: any) => {
@@ -72,6 +80,8 @@ export function EventManagement() {
       },
     },
     {
+      key: 'capacity' as keyof any,
+      title: t('events.capacity'),
       accessorKey: 'capacity',
       header: t('events.capacity'),
     },

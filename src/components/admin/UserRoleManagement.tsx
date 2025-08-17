@@ -96,10 +96,14 @@ export function UserRoleManagement() {
 
   const userRoleColumns = [
     {
+      key: 'user_email' as keyof any,
+      title: t('users.email'),
       accessorKey: 'user.email',
       header: t('users.email'),
     },
     {
+      key: 'user_name' as keyof any,
+      title: t('users.name'),
       accessorKey: 'user.full_name',
       header: t('users.name'),
       cell: ({ row }: any) => {
@@ -107,6 +111,8 @@ export function UserRoleManagement() {
       },
     },
     {
+      key: 'role_name' as keyof any,
+      title: t('roles.role'),
       accessorKey: 'role.name',
       header: t('roles.role'),
       cell: ({ row }: any) => {
@@ -118,6 +124,8 @@ export function UserRoleManagement() {
       },
     },
     {
+      key: 'assigned_at' as keyof any,
+      title: t('roles.assigned_at'),
       accessorKey: 'assigned_at',
       header: t('roles.assigned_at'),
       cell: ({ row }: any) => {
@@ -127,6 +135,8 @@ export function UserRoleManagement() {
       },
     },
     {
+      key: 'actions' as keyof any,
+      title: t('common.actions'),
       id: 'actions',
       header: t('common.actions'),
       cell: ({ row }: any) => {

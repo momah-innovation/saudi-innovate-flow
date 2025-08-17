@@ -43,7 +43,7 @@ export function ChallengeManagement() {
     updateChallenge,
     deleteChallenge,
     refreshChallenges
-  } = useAdminChallenges();
+  } = useChallenges();
   
   const loadingManager = useUnifiedLoading({
     component: 'ChallengeManagement',
