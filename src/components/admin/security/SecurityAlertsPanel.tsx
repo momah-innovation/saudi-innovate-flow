@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { debugLog } from '@/utils/debugLogger';
 import { 
@@ -27,17 +29,26 @@ interface SecurityAlertsPanelProps {
 }
 
 const SecurityAlertsPanel: React.FC<SecurityAlertsPanelProps> = ({ className }) => {
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'SecurityAlertsPanel',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'SecurityAlertsPanel',
+    showToast: true,
+    logError: true
+  });
+  
   const [alerts, setAlerts] = useState<SecurityAlert[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchSecurityAlerts();
   }, []);
 
-  const fetchSecurityAlerts = async () => {
-    try {
-      setLoading(true);
-      
+  const fetchSecurityAlerts = () => {
+    return withLoading('fetch-alerts', async () => {
       // Fetch from security_audit_log table for recent security events
       const { data, error } = await supabase
         .from('security_audit_log')
@@ -63,12 +74,11 @@ const SecurityAlertsPanel: React.FC<SecurityAlertsPanelProps> = ({ className }) 
       }));
 
       setAlerts(transformedAlerts);
-    } catch (error) {
-      debugLog.error('Error in fetchSecurityAlerts:', { component: 'SecurityAlertsPanel' }, error);
-      setAlerts([]);
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: "فشل في تحميل تنبيهات الأمان",
+      logContext: { action: 'fetch_security_alerts' }
+    });
   };
 
   const getAlertTitle = (actionType: string): string => {
@@ -158,7 +168,7 @@ const SecurityAlertsPanel: React.FC<SecurityAlertsPanelProps> = ({ className }) 
     }
   };
 
-  if (loading) {
+  if (isLoading('fetch-alerts')) {
     return (
       <Card className={className}>
         <CardHeader>

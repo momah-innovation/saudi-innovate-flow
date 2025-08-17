@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 import { logger } from "@/utils/logger";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ViewLayouts } from "@/components/ui/view-layouts";
@@ -84,8 +86,19 @@ export function OpportunityManagementList({
   onView,
   onRefresh 
 }: OpportunityManagementListProps) {
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'OpportunityManagementList',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'OpportunityManagementList',
+    showToast: true,
+    logError: true
+  });
+  
   const [opportunities, setOpportunities] = useState<OpportunityListItem[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedOpportunity, setSelectedOpportunity] = useState<OpportunityListItem | null>(null);
   const [showWizard, setShowWizard] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState("");
@@ -96,10 +109,8 @@ export function OpportunityManagementList({
     fetchOpportunities();
   }, [filters, searchTerm]);
 
-  const fetchOpportunities = async () => {
-    try {
-      setLoading(true);
-      
+  const fetchOpportunities = () => {
+    return withLoading('fetch-opportunities', async () => {
       // Fetch from opportunities table - remove department relation for now
       const { data, error } = await supabase
         .from('opportunities')
@@ -140,12 +151,11 @@ export function OpportunityManagementList({
       }));
 
       setOpportunities(transformedOpportunities);
-    } catch (error) {
-      debugLog.error('Error in fetchOpportunities:', { component: 'OpportunityManagementList' }, error);
-      setOpportunities([]);
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: "فشل في تحميل الفرص",
+      logContext: { action: 'fetch_opportunities' }
+    });
   };
 
   const filteredOpportunities = opportunities.filter(opportunity =>
@@ -268,7 +278,7 @@ export function OpportunityManagementList({
     />
   );
 
-  if (loading) {
+  if (isLoading('fetch-opportunities')) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, i) => (

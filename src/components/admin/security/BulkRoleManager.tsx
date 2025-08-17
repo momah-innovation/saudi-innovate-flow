@@ -28,6 +28,8 @@ import {
   UserCheck
 } from 'lucide-react';
 import { useUserRoles, useRoleManagement } from '@/hooks/admin/useRoleManagement';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { debugLog } from '@/utils/debugLogger';
 
@@ -44,23 +46,32 @@ interface UserData {
 
 
 const BulkRoleManager: React.FC<BulkRoleManagerProps> = ({ className }) => {
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'BulkRoleManager',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'BulkRoleManager',
+    showToast: true,
+    logError: true
+  });
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [users, setUsers] = useState<UserData[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  const { data: userRoles, isLoading } = useUserRoles({});
+  const { data: userRoles, isLoading: isLoadingRoles } = useUserRoles({});
   const { assignRole, revokeRole, isAssigning, isRevoking } = useRoleManagement();
 
   useEffect(() => {
     loadUsers();
   }, []);
 
-  const loadUsers = async () => {
-    try {
-      setLoading(true);
-      
+  const loadUsers = () => {
+    return withLoading('load-users', async () => {
       // Fetch users with their current roles
       const { data: profiles } = await supabase
         .from('profiles')
@@ -80,11 +91,11 @@ const BulkRoleManager: React.FC<BulkRoleManagerProps> = ({ className }) => {
       })) || [];
 
       setUsers(usersData);
-    } catch (error) {
-      debugLog.error('Error loading users:', { component: 'BulkRoleManager' }, error);
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: "فشل في تحميل المستخدمين",
+      logContext: { action: 'load_users' }
+    });
   };
 
   const filteredUsers = users.filter(user =>
@@ -137,7 +148,7 @@ const BulkRoleManager: React.FC<BulkRoleManagerProps> = ({ className }) => {
     }
   };
 
-  if (isLoading || loading) {
+  if (isLoadingRoles || isLoading('load-users')) {
     return (
       <Card className={className}>
         <CardHeader>

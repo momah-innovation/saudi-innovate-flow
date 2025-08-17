@@ -6,6 +6,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 import { 
@@ -37,6 +39,18 @@ export function PartnerDetailView({
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
   
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'PartnerDetailView',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'PartnerDetailView',
+    showToast: true,
+    logError: true
+  });
+  
   const [relatedData, setRelatedData] = useState({
     active_collaborations: [],
     partnership_history: [],
@@ -46,7 +60,6 @@ export function PartnerDetailView({
       average_rating: 0
     }
   });
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (partner && isOpen) {
@@ -54,11 +67,10 @@ export function PartnerDetailView({
     }
   }, [partner, isOpen]);
 
-  const fetchRelatedData = async () => {
+  const fetchRelatedData = () => {
     if (!partner) return;
     
-    const [loading, setLoading] = useState(false);
-    try {
+    return withLoading('fetch-partner-data', async () => {
       // Mock data for now - replace with actual API calls
       setRelatedData({
         active_collaborations: partner.active_collaborations || [],
@@ -69,15 +81,11 @@ export function PartnerDetailView({
           average_rating: 0
         }
       });
-    } catch (error) {
-      logger.error('Failed to fetch partner related data', { 
-        component: 'PartnerDetailView', 
-        action: 'fetchRelatedData',
-        partnerId: partner.id 
-      }, error as Error);
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: "فشل في تحميل بيانات الشريك",
+      logContext: { partnerId: partner.id, action: 'fetch_related_data' }
+    });
   };
 
   const getPartnershipStatusColor = (status: string): 'default' | 'secondary' | 'destructive' | 'outline' => {
