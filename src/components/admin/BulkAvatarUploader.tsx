@@ -9,7 +9,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { currentTimestamp } from '@/utils/unified-date-handler';
 import { getAvatarUrl } from '@/utils/storageUtils';
-import { errorHandler } from '@/utils/error-handler';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 // Avatar mapping for the existing users
 const AVATAR_MAPPING = [
@@ -33,7 +34,6 @@ interface BulkAvatarUploaderProps {
 
 export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
   const { t } = useUnifiedTranslation();
-  const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [results, setResults] = useState<{
     success: string[];
@@ -42,12 +42,19 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
   }>({ success: [], failed: [], total: 0 });
   const { setTimeout: scheduleTimeout } = useTimerManager();
   
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'BulkAvatarUploader',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'BulkAvatarUploader' });
+  
   // ✅ MIGRATED: Using centralized storage operations hook
   const { uploadFile, getPublicUrl } = useStorageOperations();
 
-  const uploadAvatarsFromPublic = async () => {
-    try {
-      setUploading(true);
+  const uploadAvatarsFromPublic = () => {
+    return withLoading('upload-avatars', async () => {
       setProgress(0);
       setResults({ success: [], failed: [], total: AVATAR_MAPPING.length });
 
@@ -67,7 +74,6 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
             const error = null; // Placeholder - implement with proper hook
 
             if (error) {
-              const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
               setResults(prev => ({ ...prev, failed: [...prev.failed, `${userName} (${mapping.fileName})`] }));
             } else {
               setResults(prev => ({ ...prev, success: [...prev.success, `${userName} (${mapping.fileName})`] }));
@@ -81,7 +87,6 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 500));
           
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
           setResults(prev => ({ ...prev, failed: [...prev.failed, mapping.fileName] }));
           completed++;
           setProgress((completed / AVATAR_MAPPING.length) * 100);
@@ -93,21 +98,13 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
         total: AVATAR_MAPPING.length
       }));
 
-      if (results.failed.length === 0) {
-        errorHandler.handleError(new Error(t('toast.avatar_updated')), 'BulkAvatarUploader-success');
-      } else {
-        errorHandler.handleError(new Error(t('avatars_update_partial_success', { 
-          success: results.success.length, 
-          failed: results.failed.length 
-        })), 'BulkAvatarUploader-partial');
-      }
-
       onComplete?.();
-    } catch (error) {
-      errorHandler.handleError(error, 'BulkAvatarUploader-upload');
-    } finally {
-      setUploading(false);
-    }
+      return true;
+    }, {
+      successMessage: results.failed.length === 0 ? t('toast.avatar_updated') : undefined,
+      errorMessage: t('avatars_update_error'),
+      logContext: { mappingCount: AVATAR_MAPPING.length }
+    });
   };
 
   return (
@@ -133,7 +130,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           </AlertDescription>
         </Alert>
 
-        {!uploading && results.total === 0 && (
+        {!isLoading('upload-avatars') && results.total === 0 && (
           <div className="space-y-4">
             <h3 className="font-medium">{t('avatar_assignments')}:</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto">
@@ -151,7 +148,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           </div>
         )}
 
-        {uploading && (
+        {isLoading('upload-avatars') && (
           <div className="space-y-4">
             <Progress value={progress} className="w-full" />
             <p className="text-sm text-center text-muted-foreground">
@@ -160,7 +157,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           </div>
         )}
 
-        {results.total > 0 && !uploading && (
+        {results.total > 0 && !isLoading('upload-avatars') && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center p-4 status-success rounded-lg">
@@ -193,12 +190,12 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
 
         <Button
           onClick={uploadAvatarsFromPublic}
-          disabled={uploading}
+          disabled={isLoading('upload-avatars')}
           className="w-full"
           size="lg"
         >
           <Upload className="h-4 w-4 me-2" />
-          {uploading ? t('uploading_avatars') : t('start_bulk_upload')}
+          {isLoading('upload-avatars') ? t('uploading_avatars') : t('start_bulk_upload')}
         </Button>
 
         <Alert>

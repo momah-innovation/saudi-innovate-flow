@@ -9,11 +9,9 @@ import { AdminEventsHero } from '@/components/events/AdminEventsHero';
 import { AdminEventCard } from '@/components/events/AdminEventCard';
 import { useEventOperations } from '@/hooks/useEventOperations';
 import { currentTimestamp } from '@/utils/unified-date-handler';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useToast } from '@/hooks/use-toast';
-// Enhanced event management with proper types
-import { errorHandler } from '@/utils/error-handler';
-import { logger } from '@/utils/logger';
 import { 
   Calendar, 
   Clock,
@@ -60,6 +58,14 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [viewEvent, setViewEvent] = useState<EventData | null>(null);
   
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'EventsManagement',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'EventsManagement' });
+  
   // ✅ MIGRATED: Using centralized event operations hook
   const { events, loading, error, loadEvents, createEvent, updateEvent, deleteEvent } = useEventOperations();
 
@@ -86,52 +92,34 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
   };
 
   const handleEdit = (event: EventData) => {
-    logger.info('Editing event', { component: 'EventsManagement', action: 'handleEdit', data: { eventId: event.id } });
     setSelectedEvent(event);
     onAddDialogChange(true);
   };
 
   const handleView = (event: EventData) => {
-    logger.info('Viewing event', { component: 'EventsManagement', action: 'handleView', data: { eventId: event.id } });
     setViewEvent(event);
   };
 
-  const handleDelete = async (event: EventData) => {
-    try {
-      logger.info('Deleting event', { component: 'EventsManagement', action: 'handleDelete', data: { eventId: event.id } });
-      // ✅ MIGRATED: Using hook method
+  const handleDelete = (event: EventData) => {
+    return withLoading('delete-event', async () => {
       await deleteEvent(event.id);
-
-      toast({
-        title: t('events.delete_success_title'),
-        description: t('events.delete_success_description', { title: event.title_ar }),
-      });
-    } catch (error) {
-      logger.error('Error deleting event', { component: 'EventsManagement', action: 'handleDelete' }, error as Error);
-      toast({
-        title: t('events.delete_error_title'),
-        variant: 'destructive'
-      });
-    }
+      return true;
+    }, {
+      successMessage: t('events.delete_success_description', { title: event.title_ar }),
+      errorMessage: t('events.delete_error_title'),
+      logContext: { eventId: event.id, action: 'delete' }
+    });
   };
 
-  const handleStatusChange = async (event: EventData, newStatus: string) => {
-    try {
-      logger.info('Changing event status', { component: 'EventsManagement', action: 'handleStatusChange', data: { eventId: event.id, newStatus } });
-      // ✅ MIGRATED: Using hook method
+  const handleStatusChange = (event: EventData, newStatus: string) => {
+    return withLoading('update-status', async () => {
       await updateEvent(event.id, { status: newStatus });
-
-      toast({
-        title: t('events.status_update_success_title'),
-        description: t('events.status_update_success_description', { status: newStatus }),
-      });
-    } catch (error) {
-      logger.error('Error updating event status', { component: 'EventsManagement', action: 'handleStatusChange' }, error as Error);
-      toast({
-        title: t('events.status_update_error_title'),
-        variant: 'destructive'
-      });
-    }
+      return true;
+    }, {
+      successMessage: t('events.status_update_success_description', { status: newStatus }),
+      errorMessage: t('events.status_update_error_title'),
+      logContext: { eventId: event.id, newStatus, action: 'status_change' }
+    });
   };
 
   // Filter events based on search term

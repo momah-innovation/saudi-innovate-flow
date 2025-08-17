@@ -14,6 +14,8 @@ import { Plus, Edit, Trash2, Building2, Phone, Mail, Search, X } from "lucide-re
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface Partner {
   id: string;
@@ -58,6 +60,14 @@ export function PartnersManagement() {
   const { t } = useUnifiedTranslation();
   const { partnerStatusOptions, partnerTypeOptions } = useSystemLists();
 
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading: isUnifiedLoading, withLoading } = useUnifiedLoading({
+    component: 'PartnersManagement',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'PartnersManagement' });
+
   const [formData, setFormData] = useState({
     name: "",
     name_ar: "",
@@ -78,35 +88,25 @@ export function PartnersManagement() {
     loadPartners();
   }, [loadPartners]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    try {
+    return withLoading('save-partner', async () => {
       if (editingPartner) {
         await updatePartner(editingPartner.id, formData);
-        toast({
-          title: t('success.title'),
-          description: t('success.partner_updated'),
-        });
       } else {
         await createPartner(formData);
-        toast({
-          title: t('success.title'),
-          description: t('success.partner_created'),
-        });
       }
 
       setIsDialogOpen(false);
       setEditingPartner(null);
       resetForm();
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      toast({
-        title: t('error.title'),
-        description: t('error.save_partner_failed'),
-        variant: "destructive",
-      });
-    }
+      return true;
+    }, {
+      successMessage: editingPartner ? t('success.partner_updated') : t('success.partner_created'),
+      errorMessage: t('error.save_partner_failed'),
+      logContext: { partnerId: editingPartner?.id, action: editingPartner ? 'update' : 'create' }
+    });
   };
 
   const handleEdit = (partner: Partner) => {
@@ -150,24 +150,17 @@ export function PartnersManagement() {
     setStatusFilter("all");
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     if (!confirm(t('partners.delete_confirmation'))) return;
 
-    try {
+    return withLoading('delete-partner', async () => {
       await deletePartner(id);
-      
-      toast({
-        title: t('success.title'),
-        description: t('success.partner_deleted'),
-      });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      toast({
-        title: t('error.title'),
-        description: t('error.delete_partner_failed'),
-        variant: "destructive",
-      });
-    }
+      return true;
+    }, {
+      successMessage: t('success.partner_deleted'),
+      errorMessage: t('error.delete_partner_failed'),
+      logContext: { partnerId: id, action: 'delete' }
+    });
   };
 
   const resetForm = () => {

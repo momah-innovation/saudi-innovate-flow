@@ -10,8 +10,8 @@ import { Plus, Edit, Trash2, Building, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatDate, currentTimestamp } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { errorHandler } from "@/utils/error-handler";
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface Sector {
   id: string;
@@ -46,6 +46,14 @@ export function SectorsManagement() {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
 
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading: isUnifiedLoading, withLoading } = useUnifiedLoading({
+    component: 'SectorsManagement',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'SectorsManagement' });
+
   const [formData, setFormData] = useState({
     name: "",
     name_ar: "",
@@ -73,40 +81,33 @@ export function SectorsManagement() {
     return formData.name.trim().length > 0;
   };
 
-  const handleSaveSector = async () => {
+  const handleSaveSector = () => {
     if (!isFormValid()) return;
 
-    try {
+    return withLoading('save-sector', async () => {
+      const sectorData = {
+        name: formData.name,
+        name_ar: formData.name_ar,
+        description: formData.description,
+        description_ar: formData.description_ar,
+        vision_2030_alignment: formData.vision_2030_alignment
+      };
+
       if (editingSector) {
-        await updateSector(editingSector.id, {
-          name: formData.name,
-          name_ar: formData.name_ar,
-          description: formData.description,
-          description_ar: formData.description_ar,
-          vision_2030_alignment: formData.vision_2030_alignment
-        });
-        
-        toast({
-          title: t('sectors.update_success'),
-          description: t('sectors.update_success_description')
-        });
+        await updateSector(editingSector.id, sectorData);
       } else {
         await createSector(formData);
-        
-        toast({
-          title: t('sectors.create_success'),
-          description: t('sectors.create_success_description')
-        });
       }
 
       resetForm();
-    } catch (error) {
-      toast({
-        title: t('sectors.save_error'),
-        description: t('sectors.save_error_description'),
-        variant: 'destructive'
-      });
-    }
+      setIsDialogOpen(false);
+      setEditingSector(null);
+      return true;
+    }, {
+      successMessage: editingSector ? t('sectors.update_success_description') : t('sectors.create_success_description'),
+      errorMessage: t('sectors.save_error_description'),
+      logContext: { sectorId: editingSector?.id, action: editingSector ? 'update' : 'create' }
+    });
   };
 
   const handleEdit = (sector: Sector) => {
@@ -121,21 +122,15 @@ export function SectorsManagement() {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = async (sectorId: string) => {
-    try {
+  const handleDelete = (sectorId: string) => {
+    return withLoading('delete-sector', async () => {
       await deleteSector(sectorId);
-
-      toast({
-        title: t('sectors.success_title'),
-        description: t('sectors.deleted_successfully')
-      });
-    } catch (error) {
-      toast({
-        title: t('sectors.error_title'),
-        description: t('sectors.failed_to_delete'),
-        variant: "destructive",
-      });
-    }
+      return true;
+    }, {
+      successMessage: t('sectors.deleted_successfully'),
+      errorMessage: t('sectors.failed_to_delete'),
+      logContext: { sectorId, action: 'delete' }
+    });
   };
 
   const resetForm = () => {

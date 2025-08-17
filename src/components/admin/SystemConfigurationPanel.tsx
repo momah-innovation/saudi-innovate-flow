@@ -10,8 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { debugLog } from '@/utils/debugLogger';
-// Using existing analytics hook for mock configuration data
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   Settings, 
   Save, 
@@ -35,7 +35,6 @@ interface SystemConfigurationPanelProps {
 export function SystemConfigurationPanel({ className }: SystemConfigurationPanelProps) {
   const { t, language } = useUnifiedTranslation();
   const analytics = useAnalytics();
-  const loading = analytics.isLoading || false;
   const config = { 
     app_name: 'Innovation Platform',
     app_version: '1.0.0',
@@ -45,9 +44,20 @@ export function SystemConfigurationPanel({ className }: SystemConfigurationPanel
   const [pendingChanges, setPendingChanges] = useState<Record<string, any>>({});
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'SystemConfigurationPanel',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'SystemConfigurationPanel' });
+
+  const loading = analytics.isLoading || isLoading();
+
   // Mock update and refresh functions
   const updateConfig = async (changes: any) => {
-    debugLog.log('Updating config', { operation: 'config_update', changes });
+    // Mock config update
+    return Promise.resolve();
   };
   const refresh = async () => {
     window.location.reload();
@@ -61,23 +71,30 @@ export function SystemConfigurationPanel({ className }: SystemConfigurationPanel
     setHasUnsavedChanges(true);
   };
 
-  const handleSaveChanges = async () => {
+  const handleSaveChanges = () => {
     if (Object.keys(pendingChanges).length === 0) return;
-    try {
+    
+    return withLoading('save-config', async () => {
       await updateConfig(pendingChanges);
       setPendingChanges({});
       setHasUnsavedChanges(false);
-    } catch (error) {
-      debugLog.error('Error saving config', { operation: 'config_save', error });
-    }
+      return true;
+    }, {
+      successMessage: t('config.save_success'),
+      errorMessage: t('config.save_error'),
+      logContext: { changesCount: Object.keys(pendingChanges).length }
+    });
   };
 
-  const handleRefresh = async () => {
-    try {
+  const handleRefresh = () => {
+    return withLoading('refresh-config', async () => {
       await refresh();
-    } catch (error) {
-      debugLog.error('Error refreshing config', { operation: 'config_refresh', error });
-    }
+      return true;
+    }, {
+      successMessage: t('config.refresh_success'),
+      errorMessage: t('config.refresh_error'),
+      logContext: { action: 'refresh' }
+    });
   };
 
   const getCurrentValue = (key: string) => {
@@ -123,7 +140,7 @@ export function SystemConfigurationPanel({ className }: SystemConfigurationPanel
             onClick={handleRefresh}
             disabled={loading}
           >
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading('refresh-config') ? 'animate-spin' : ''}`} />
             {language === 'ar' ? 'تحديث' : 'Refresh'}
           </Button>
           <Button 
