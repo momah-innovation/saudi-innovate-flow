@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Calendar, DollarSign, Users, Target, AlertTriangle, Clock } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
-import { logger } from '@/utils/error-handler';
+import { debugLog } from '@/utils/debugLogger';
 import { formatDate } from '@/utils/unified-date-handler';
 import { navigationHandler } from '@/utils/unified-navigation';
 import { createErrorHandler } from '@/utils/unified-error-handler';
@@ -72,7 +72,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
       // Note: This component handles multiple entity types. In a full migration,
       // we would create dedicated hooks for challenges, campaigns, and events.
       // For now, keeping existing functionality to ensure safety.
-      console.warn('AssignmentDetailView: Direct entity queries should be migrated to dedicated hooks');
+      debugLog.log('AssignmentDetailView: Direct entity queries should be migrated to dedicated hooks', { assignment_type: assignment.assignment_type });
       setData({
         id: assignment.assignment_id,
         title_ar: `${assignment.assignment_type} - ${assignment.assignment_id}`,

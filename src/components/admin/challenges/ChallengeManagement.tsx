@@ -10,6 +10,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
 import { useChallengesData } from '@/hooks/useChallengesData';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { debugLog } from '@/utils/debugLogger';
 
 interface Challenge {
   id: string;
@@ -44,17 +45,17 @@ export function ChallengeManagement() {
 
   // Mock CRUD operations until hooks are fully implemented
   const createChallenge = async (data: any) => {
-    console.log('Create challenge:', data);
+    debugLog.log('Create challenge', { data });
     await refetch();
   };
 
   const updateChallenge = async (id: string, data: any) => {
-    console.log('Update challenge:', id, data);
+    debugLog.log('Update challenge', { challenge_id: id, data });
     await refetch();
   };
 
   const deleteChallenge = async (id: string) => {
-    console.log('Delete challenge:', id);
+    debugLog.log('Delete challenge', { challenge_id: id });
     await refetch();
   };
 

@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { debugLog } from '@/utils/debugLogger';
 
 interface SettingItem {
   id: string;
@@ -92,7 +93,7 @@ export function SettingsManagement() {
               checked={value === 'true'} 
               onCheckedChange={(checked) => {
                 // Mock update for now
-                console.log('Setting update:', item.setting_key, checked.toString());
+                debugLog.log('Setting update', { setting_key: item.setting_key, new_value: checked.toString() });
               }}
             />
           );
