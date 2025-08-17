@@ -8732,6 +8732,7 @@ export type Database = {
           id: string
           is_deleted: boolean | null
           is_edited: boolean | null
+          is_pinned: boolean | null
           is_private: boolean | null
           mentions: Json | null
           message_type: string | null
@@ -8751,6 +8752,7 @@ export type Database = {
           id?: string
           is_deleted?: boolean | null
           is_edited?: boolean | null
+          is_pinned?: boolean | null
           is_private?: boolean | null
           mentions?: Json | null
           message_type?: string | null
@@ -8770,6 +8772,7 @@ export type Database = {
           id?: string
           is_deleted?: boolean | null
           is_edited?: boolean | null
+          is_pinned?: boolean | null
           is_private?: boolean | null
           mentions?: Json | null
           message_type?: string | null
@@ -9731,10 +9734,12 @@ export type Database = {
       workspace_files: {
         Row: {
           access_level: string | null
+          collaboration_settings: Json | null
           created_at: string | null
           deleted_at: string | null
           deleted_by: string | null
           description: string | null
+          file_category: string | null
           file_path: string
           file_size: number
           filename: string
@@ -9759,10 +9764,12 @@ export type Database = {
         }
         Insert: {
           access_level?: string | null
+          collaboration_settings?: Json | null
           created_at?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           description?: string | null
+          file_category?: string | null
           file_path: string
           file_size: number
           filename: string
@@ -9787,10 +9794,12 @@ export type Database = {
         }
         Update: {
           access_level?: string | null
+          collaboration_settings?: Json | null
           created_at?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           description?: string | null
+          file_category?: string | null
           file_path?: string
           file_size?: number
           filename?: string
@@ -10228,6 +10237,7 @@ export type Database = {
           deputy_id: string | null
           description: string | null
           description_ar: string | null
+          features: Json | null
           features_enabled: Json | null
           id: string
           innovation_team_id: string | null
@@ -10242,6 +10252,7 @@ export type Database = {
           sector_id: string | null
           settings: Json | null
           status: Database["public"]["Enums"]["workspace_status"] | null
+          subscription_tier: string | null
           tags: string[] | null
           updated_at: string | null
           workspace_type: Database["public"]["Enums"]["workspace_type"]
@@ -10255,6 +10266,7 @@ export type Database = {
           deputy_id?: string | null
           description?: string | null
           description_ar?: string | null
+          features?: Json | null
           features_enabled?: Json | null
           id?: string
           innovation_team_id?: string | null
@@ -10271,6 +10283,7 @@ export type Database = {
           sector_id?: string | null
           settings?: Json | null
           status?: Database["public"]["Enums"]["workspace_status"] | null
+          subscription_tier?: string | null
           tags?: string[] | null
           updated_at?: string | null
           workspace_type: Database["public"]["Enums"]["workspace_type"]
@@ -10284,6 +10297,7 @@ export type Database = {
           deputy_id?: string | null
           description?: string | null
           description_ar?: string | null
+          features?: Json | null
           features_enabled?: Json | null
           id?: string
           innovation_team_id?: string | null
@@ -10300,6 +10314,7 @@ export type Database = {
           sector_id?: string | null
           settings?: Json | null
           status?: Database["public"]["Enums"]["workspace_status"] | null
+          subscription_tier?: string | null
           tags?: string[] | null
           updated_at?: string | null
           workspace_type?: Database["public"]["Enums"]["workspace_type"]
@@ -10848,6 +10863,14 @@ export type Database = {
         Args: { user_uuid: string; workspace_uuid: string }
         Returns: boolean
       }
+      has_workspace_permission: {
+        Args: {
+          required_permission?: string
+          user_uuid: string
+          workspace_uuid: string
+        }
+        Returns: boolean
+      }
       increment_access_count: {
         Args: { file_record_id: string }
         Returns: undefined
@@ -10876,6 +10899,17 @@ export type Database = {
               p_resource_type: string
               p_risk_level?: string
             }
+        Returns: string
+      }
+      log_workspace_activity: {
+        Args: {
+          activity_data?: Json
+          activity_type: string
+          entity_id?: string
+          entity_type?: string
+          user_uuid: string
+          workspace_uuid: string
+        }
         Returns: string
       }
       manage_storage_quotas: {
