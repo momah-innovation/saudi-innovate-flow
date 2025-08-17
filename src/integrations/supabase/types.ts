@@ -2258,6 +2258,96 @@ export type Database = {
         }
         Relationships: []
       }
+      document_operations: {
+        Row: {
+          document_id: string
+          id: string
+          operation_data: Json | null
+          operation_type: string
+          timestamp: string
+          user_id: string
+        }
+        Insert: {
+          document_id: string
+          id?: string
+          operation_data?: Json | null
+          operation_type: string
+          timestamp?: string
+          user_id: string
+        }
+        Update: {
+          document_id?: string
+          id?: string
+          operation_data?: Json | null
+          operation_type?: string
+          timestamp?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      document_sessions: {
+        Row: {
+          cursor_position: Json | null
+          document_id: string
+          id: string
+          is_active: boolean | null
+          session_end: string | null
+          session_start: string
+          user_id: string
+        }
+        Insert: {
+          cursor_position?: Json | null
+          document_id: string
+          id?: string
+          is_active?: boolean | null
+          session_end?: string | null
+          session_start?: string
+          user_id: string
+        }
+        Update: {
+          cursor_position?: Json | null
+          document_id?: string
+          id?: string
+          is_active?: boolean | null
+          session_end?: string | null
+          session_start?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      document_shares: {
+        Row: {
+          created_at: string
+          document_id: string
+          expires_at: string | null
+          id: string
+          permission_level: string | null
+          shared_by: string
+          shared_with: string | null
+          shared_with_email: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_id: string
+          expires_at?: string | null
+          id?: string
+          permission_level?: string | null
+          shared_by: string
+          shared_with?: string | null
+          shared_with_email?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_id?: string
+          expires_at?: string | null
+          id?: string
+          permission_level?: string | null
+          shared_by?: string
+          shared_with?: string | null
+          shared_with_email?: string | null
+        }
+        Relationships: []
+      }
       domains: {
         Row: {
           created_at: string | null
@@ -5851,6 +5941,51 @@ export type Database = {
           },
         ]
       }
+      message_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          message_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          message_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          message_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      message_read_status: {
+        Row: {
+          id: string
+          message_id: string
+          read_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          message_id: string
+          read_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          message_id?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -8603,6 +8738,7 @@ export type Database = {
           parent_message_id: string | null
           reactions: Json | null
           sender_id: string
+          team_id: string | null
           thread_id: string | null
           workspace_id: string
         }
@@ -8621,6 +8757,7 @@ export type Database = {
           parent_message_id?: string | null
           reactions?: Json | null
           sender_id: string
+          team_id?: string | null
           thread_id?: string | null
           workspace_id: string
         }
@@ -8639,6 +8776,7 @@ export type Database = {
           parent_message_id?: string | null
           reactions?: Json | null
           sender_id?: string
+          team_id?: string | null
           thread_id?: string | null
           workspace_id?: string
         }
@@ -8699,6 +8837,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      team_members: {
+        Row: {
+          id: string
+          joined_at: string
+          role: string | null
+          status: string | null
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          role?: string | null
+          status?: string | null
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          role?: string | null
+          status?: string | null
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       team_performance_metrics: {
         Row: {
@@ -10019,6 +10184,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      workspace_teams: {
+        Row: {
+          color: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: []
       }
       workspaces: {
         Row: {
