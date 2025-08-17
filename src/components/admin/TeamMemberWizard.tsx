@@ -70,7 +70,7 @@ export function TeamMemberWizard({
   const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
   const [currentStep, setCurrentStep] = useState(0);
   
-  // ✅ MIGRATED: Added unified loading and error handling
+  // ✅ MIGRATED: Using unified loading and error handling
   const loadingManager = useUnifiedLoading({
     component: 'TeamMemberWizard',
     showToast: true,

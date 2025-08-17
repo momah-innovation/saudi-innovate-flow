@@ -39,7 +39,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
   const { t } = useUnifiedTranslation(); 
   const { getSettingValue } = useSettingsManager();
   
-  // Unified loading and error handling
+  // ✅ MIGRATED: Using unified loading and error handling
   const unifiedLoading = useUnifiedLoading({
     component: 'StorageQuotaManager',
     showToast: true,
