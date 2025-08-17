@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
-import { useChallenges } from '@/hooks/useChallenges';
+import { useAdminChallenges } from '@/hooks/useAdminChallenges';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 
 interface Challenge {
@@ -43,7 +43,7 @@ export function ChallengeManagement() {
     updateChallenge,
     deleteChallenge,
     refreshChallenges
-  } = useChallenges();
+  } = useAdminChallenges();
   
   const loadingManager = useUnifiedLoading({
     component: 'ChallengeManagement',

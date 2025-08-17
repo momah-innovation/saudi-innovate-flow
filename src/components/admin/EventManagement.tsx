@@ -6,7 +6,7 @@ import { Calendar, BarChart3, Settings, Plus } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useEvents } from '@/hooks/useEvents';
+import { useAdminEvents } from '@/hooks/useAdminEvents';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { DataTable } from '@/components/ui/data-table';
 
@@ -39,7 +39,7 @@ export function EventManagement() {
     updateEvent: updateAdminEvent,
     deleteEvent: deleteAdminEvent,
     refreshEvents
-  } = useEvents();
+  } = useAdminEvents();
   
   const loadingManager = useUnifiedLoading({
     component: 'EventManagement',
@@ -53,26 +53,18 @@ export function EventManagement() {
 
   const columns = [
     {
-      key: 'title_ar',
-      title: t('events.title'),
       accessorKey: 'title_ar',
       header: t('events.title'),
     },
     {
-      key: 'event_type',
-      title: t('events.type'),
       accessorKey: 'event_type',
       header: t('events.type'),
     },
     {
-      key: 'status',
-      title: t('events.status'),
       accessorKey: 'status',
       header: t('events.status'),
     },
     {
-      key: 'start_date',
-      title: t('events.start_date'),
       accessorKey: 'start_date',
       header: t('events.start_date'),
       cell: ({ row }: any) => {
@@ -80,8 +72,6 @@ export function EventManagement() {
       },
     },
     {
-      key: 'capacity',
-      title: t('events.capacity'),
       accessorKey: 'capacity',
       header: t('events.capacity'),
     },

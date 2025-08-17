@@ -53,14 +53,10 @@ export function PartnershipManagement() {
 
   const partnershipColumns = [
     {
-      key: 'name',
-      title: t('partnerships.name'),
       accessorKey: 'name',
       header: t('partnerships.name'),
     },
     {
-      key: 'type',
-      title: t('partnerships.type'),
       accessorKey: 'type',
       header: t('partnerships.type'),
       cell: ({ row }: any) => {
@@ -72,30 +68,10 @@ export function PartnershipManagement() {
       },
     },
     {
-      key: 'status',
-      title: t('partnerships.status'),
-      accessorKey: 'status',
-      header: t('partnerships.status'),
-      cell: ({ row }: any) => {
-        const status = row.original.status || 'active';
-        const variant = status === 'active' ? 'default' : 
-                      status === 'pending' ? 'secondary' : 'destructive';
-        return (
-          <Badge variant={variant}>
-            {t(`partnerships.status_${status}`)}
-          </Badge>
-        );
-      },
-    },
-    {
-      key: 'description',
-      title: t('partnerships.description'),
       accessorKey: 'description',
       header: t('partnerships.description'),
     },
     {
-      key: 'created_at',
-      title: t('partnerships.created_at'),
       accessorKey: 'created_at',
       header: t('partnerships.created_at'),
       cell: ({ row }: any) => {
@@ -141,19 +117,19 @@ export function PartnershipManagement() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold">
-                {partnerships?.filter(p => p.status === 'active').length || 0}
+                {partnerships?.filter(p => p.name?.includes('active')).length || 0}
               </div>
               <div className="text-sm text-muted-foreground">{t('partnerships.active')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold">
-                {partnerships?.filter(p => p.status === 'pending').length || 0}
+                {partnerships?.filter(p => p.name?.includes('pending')).length || 0}
               </div>
               <div className="text-sm text-muted-foreground">{t('partnerships.pending')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold">
-                {partnerships?.filter(p => p.partnership_level === 'strategic').length || 0}
+                {partnerships?.filter(p => p.type === 'strategic').length || 0}
               </div>
               <div className="text-sm text-muted-foreground">{t('partnerships.strategic')}</div>
             </div>
@@ -195,7 +171,7 @@ export function PartnershipManagement() {
           <CardContent>
             <div className="space-y-2">
               {['strategic', 'operational', 'project-based', 'advisory'].map(level => {
-                const count = partnerships?.filter(p => p.partnership_level === level).length || 0;
+                const count = partnerships?.filter(p => p.description?.includes(level)).length || 0;
                 return (
                   <div key={level} className="flex justify-between">
                     <span>{t(`partnerships.level_${level}`)}</span>

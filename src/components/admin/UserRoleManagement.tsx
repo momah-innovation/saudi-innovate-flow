@@ -96,14 +96,10 @@ export function UserRoleManagement() {
 
   const userRoleColumns = [
     {
-      key: 'user_email',
-      title: t('users.email'),
       accessorKey: 'user.email',
       header: t('users.email'),
     },
     {
-      key: 'user_name',
-      title: t('users.name'),
       accessorKey: 'user.full_name',
       header: t('users.name'),
       cell: ({ row }: any) => {
@@ -111,8 +107,6 @@ export function UserRoleManagement() {
       },
     },
     {
-      key: 'role_name',
-      title: t('roles.role'),
       accessorKey: 'role.name',
       header: t('roles.role'),
       cell: ({ row }: any) => {
@@ -124,8 +118,6 @@ export function UserRoleManagement() {
       },
     },
     {
-      key: 'assigned_at',
-      title: t('roles.assigned_at'),
       accessorKey: 'assigned_at',
       header: t('roles.assigned_at'),
       cell: ({ row }: any) => {
@@ -135,8 +127,6 @@ export function UserRoleManagement() {
       },
     },
     {
-      key: 'actions',
-      title: t('common.actions'),
       id: 'actions',
       header: t('common.actions'),
       cell: ({ row }: any) => {
@@ -158,20 +148,14 @@ export function UserRoleManagement() {
 
   const roleColumns = [
     {
-      key: 'name',
-      title: t('roles.name'),
       accessorKey: 'name',
       header: t('roles.name'),
     },
     {
-      key: 'description',
-      title: t('roles.description'),
       accessorKey: 'description',
       header: t('roles.description'),
     },
     {
-      key: 'permissions_count',
-      title: t('roles.permissions_count'),
       accessorKey: 'permissions_count',
       header: t('roles.permissions_count'),
       cell: ({ row }: any) => {
@@ -179,13 +163,11 @@ export function UserRoleManagement() {
       },
     },
     {
-      key: 'users_count',
-      title: t('roles.users_count'),
       accessorKey: 'users_count',
       header: t('roles.users_count'),
       cell: ({ row }: any) => {
         const roleId = row.original.id;
-        const count = userRoles?.filter(ur => ur.role?.id === roleId).length || 0;
+        const count = userRoles?.filter(ur => ur.role?.name === row.original.name).length || 0;
         return count;
       },
     },
