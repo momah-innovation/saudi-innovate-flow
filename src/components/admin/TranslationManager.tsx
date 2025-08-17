@@ -7,11 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { Download, Search, Plus, Edit2, Trash2, FileText, AlertTriangle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
 
 interface SystemTranslation {
   id: string;
@@ -39,6 +40,18 @@ export const TranslationManager: React.FC = () => {
   
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'TranslationManager',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'TranslationManager',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     loadTranslations();
@@ -50,24 +63,22 @@ export const TranslationManager: React.FC = () => {
 
   const loadTranslations = async () => {
     setIsLoading(true);
-    try {
+    const result = await unifiedLoading.withLoading('loadTranslations', async () => {
       const { data, error } = await supabase
         .from('system_translations')
         .select('*')
         .order('translation_key');
 
       if (error) throw error;
-      setTranslations(data || []);
-    } catch (error) {
-      logger.error('Error loading translations', { component: 'TranslationManager', action: 'loadTranslations' }, error as Error);
-      toast({
-        title: t('error'),
-        description: t('translations.loadError', 'Failed to load translations'),
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      return data || [];
+    }, {
+      errorMessage: t('translations.loadError', 'Failed to load translations')
+    });
+    
+    if (result) {
+      setTranslations(result);
     }
+    setIsLoading(false);
   };
 
   const filterTranslations = () => {
@@ -89,7 +100,7 @@ export const TranslationManager: React.FC = () => {
   };
 
   const downloadTranslationsJSON = async (language: 'en' | 'ar') => {
-    try {
+    await unifiedLoading.withLoading(`download_${language}`, async () => {
       const { data: translations, error } = await supabase
         .from('system_translations')
         .select(`translation_key, text_${language}, category`);
@@ -131,23 +142,14 @@ export const TranslationManager: React.FC = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-
-      toast({
-        title: t('success'),
-        description: t('translations.downloadSuccess', `${language.toUpperCase()} translations downloaded successfully`),
-      });
-    } catch (error) {
-      logger.error('Translation download error', { component: 'TranslationManager', action: 'downloadTranslationsJSON', language }, error as Error);
-      toast({
-        title: t('error'),
-        description: t('translations.downloadError', `Failed to download ${language.toUpperCase()} translations`),
-        variant: "destructive",
-      });
-    }
+    }, {
+      successMessage: t('translations.downloadSuccess', `${language.toUpperCase()} translations downloaded successfully`),
+      errorMessage: t('translations.downloadError', `Failed to download ${language.toUpperCase()} translations`)
+    });
   };
 
   const saveTranslation = async (translationData: Partial<SystemTranslation>) => {
-    try {
+    const result = await unifiedLoading.withLoading('saveTranslation', async () => {
       if (editingTranslation) {
         const { error } = await supabase
           .from('system_translations')
@@ -155,7 +157,7 @@ export const TranslationManager: React.FC = () => {
           .eq('id', editingTranslation.id);
         
         if (error) throw error;
-        toast({ title: t('success'), description: t('translations.updateSuccess') });
+        return 'updated';
       } else {
         // Ensure required fields are present for insert
         const insertData = {
@@ -170,42 +172,38 @@ export const TranslationManager: React.FC = () => {
           .insert([insertData]);
         
         if (error) throw error;
-        toast({ title: t('success'), description: t('translations.createSuccess') });
+        return 'created';
       }
-      
+    }, {
+      successMessage: editingTranslation ? t('translations.updateSuccess') : t('translations.createSuccess'),
+      errorMessage: t('translations.saveError', 'Failed to save translation')
+    });
+    
+    if (result) {
       await loadTranslations();
       setIsDialogOpen(false);
       setEditingTranslation(null);
-    } catch (error) {
-      logger.error('Error saving translation', { component: 'TranslationManager', action: 'saveTranslation' }, error as Error);
-      toast({
-        title: t('error'),
-        description: t('translations.saveError', 'Failed to save translation'),
-        variant: "destructive",
-      });
     }
   };
 
   const deleteTranslation = async (id: string) => {
     if (!confirm(t('translations.delete_confirm', 'Are you sure you want to delete this translation?'))) return;
     
-    try {
+    const result = await unifiedLoading.withLoading(`delete_${id}`, async () => {
       const { error } = await supabase
         .from('system_translations')
         .delete()
         .eq('id', id);
       
       if (error) throw error;
-      
+      return true;
+    }, {
+      successMessage: t('translations.deleteSuccess'),
+      errorMessage: t('translations.deleteError', 'Failed to delete translation')
+    });
+    
+    if (result) {
       await loadTranslations();
-      toast({ title: t('success'), description: t('translations.deleteSuccess') });
-    } catch (error) {
-      logger.error('Error deleting translation', { component: 'TranslationManager', action: 'deleteTranslation' }, error as Error);
-      toast({
-        title: t('error'),
-        description: t('translations.deleteError', 'Failed to delete translation'),
-        variant: "destructive",
-      });
     }
   };
 
@@ -238,6 +236,7 @@ export const TranslationManager: React.FC = () => {
             <div className="flex gap-3">
               <Button 
                 onClick={() => downloadTranslationsJSON('en')}
+                disabled={unifiedLoading.isLoading('download_en')}
                 variant="outline"
                 className="flex items-center gap-2"
               >
@@ -246,6 +245,7 @@ export const TranslationManager: React.FC = () => {
               </Button>
               <Button 
                 onClick={() => downloadTranslationsJSON('ar')}
+                disabled={unifiedLoading.isLoading('download_ar')}
                 variant="outline"
                 className="flex items-center gap-2"
               >
@@ -263,7 +263,14 @@ export const TranslationManager: React.FC = () => {
           <CardTitle className="flex items-center justify-between">
             {t('translations.bilingual_management', 'Bilingual Translation Management')}
             <div className="flex gap-2">
-              <Button onClick={loadTranslations} disabled={isLoading} variant="outline">
+              <Button 
+                onClick={() => unifiedLoading.withLoading('refresh', async () => loadTranslations(), {
+                  successMessage: t('translations.refreshed'),
+                  errorMessage: t('translations.refresh_failed')
+                })}
+                disabled={unifiedLoading.isLoading('refresh') || isLoading} 
+                variant="outline"
+              >
                 {t('common.refresh', 'Refresh')}
               </Button>
             </div>

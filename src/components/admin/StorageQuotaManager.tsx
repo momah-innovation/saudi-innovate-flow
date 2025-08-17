@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { useStorageQuotas, StorageQuota } from '@/hooks/useStorageQuotas'
 import { useToast } from '@/hooks/use-toast'
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading'
+import { createErrorHandler } from '@/utils/unified-error-handler'
 import { 
   Dialog, 
   DialogContent, 
@@ -36,11 +38,23 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
   const { toast } = useToast()
   const { t } = useUnifiedTranslation(); 
   const { getSettingValue } = useSettingsManager();
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'StorageQuotaManager',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'StorageQuotaManager',
+    showToast: true,
+    logError: true
+  });
+  
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedBucket, setSelectedBucket] = useState('')
   const [quotaSize, setQuotaSize] = useState('')
   const [quotaUnit, setQuotaUnit] = useState('MB')
-  const [actionLoading, setActionLoading] = useState<string | null>(null)
 
   // Get list of buckets without quotas for the dropdown
   const bucketsWithoutQuotas = [
@@ -93,77 +107,53 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
       return
     }
 
-    setActionLoading('set')
-    
     const multiplier = quotaUnit === 'GB' ? 1024 * 1024 * 1024 : 1024 * 1024
     const quotaBytes = parseInt(quotaSize) * multiplier
 
-    const result = await setQuota(selectedBucket, quotaBytes)
+    const result = await unifiedLoading.withLoading('setQuota', 
+      () => setQuota(selectedBucket, quotaBytes),
+      {
+        successMessage: t('storage.quota.set_success_desc', `Successfully set ${quotaSize} ${quotaUnit} quota for ${selectedBucket}`, { quotaSize, quotaUnit, selectedBucket }),
+        errorMessage: t('storage.quota.set_failed')
+      }
+    );
     
-    if (result.success) {
-      toast({
-        title: t('storage.quota.set_success'),
-        description: t('storage.quota.set_success_desc', `Successfully set ${quotaSize} ${quotaUnit} quota for ${selectedBucket}`, { quotaSize, quotaUnit, selectedBucket })
-      })
+    if (result) {
       setIsDialogOpen(false)
       setSelectedBucket('')
       setQuotaSize('')
-    } else {
-      toast({
-        title: t('error'),
-        description: result.error,
-        variant: 'destructive'
-      })
     }
-    
-    setActionLoading(null)
   }
 
   const handleRemoveQuota = async (bucketName: string) => {
-    setActionLoading(bucketName)
-    
-    const result = await removeQuota(bucketName)
-    
-    if (result.success) {
-      toast({
-        title: t('storage.quota.removed'),
-        description: t('storage.quota.removed_desc', `Successfully removed quota for ${bucketName}`, { bucketName })
-      })
-    } else {
-      toast({
-        title: t('error'),
-        description: result.error,
-        variant: 'destructive'
-      })
-    }
-    
-    setActionLoading(null)
+    await unifiedLoading.withLoading(`remove_${bucketName}`, 
+      () => removeQuota(bucketName),
+      {
+        successMessage: t('storage.quota.removed_desc', `Successfully removed quota for ${bucketName}`, { bucketName }),
+        errorMessage: t('storage.quota.remove_failed')
+      }
+    );
   }
 
   const handleAutoSetup = async () => {
-    setActionLoading('auto-setup')
+    const result = await unifiedLoading.withLoading('autoSetup', 
+      () => autoSetupQuotas(),
+      {
+        successMessage: t('storage.quota.auto_setup_complete'),
+        errorMessage: t('storage.quota.auto_setup_failed')
+      }
+    );
     
-    const result = await autoSetupQuotas()
-    
-    if (result.success) {
+    if (result?.data) {
       interface AutoSetupData {
         buckets_configured?: number;
       }
-      
-      const data = result.data as AutoSetupData
+      const data = result.data as AutoSetupData;
       toast({
         title: t('storage.quota.auto_setup_complete'),
         description: t('storage.quota.auto_setup_desc', `Successfully configured 5GB quotas for ${data?.buckets_configured || 0} buckets`, { count: data?.buckets_configured || 0 })
-      })
-    } else {
-      toast({
-        title: t('storage.quota.auto_setup_failed'),
-        description: result.error,
-        variant: 'destructive'
-      })
+      });
     }
-    
-    setActionLoading(null)
   }
 
   if (loading) {
@@ -201,10 +191,13 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
             <Button 
               variant="outline" 
               size="sm" 
-              onClick={refreshQuotas}
-              disabled={loading}
+              onClick={() => unifiedLoading.withLoading('refresh', async () => refreshQuotas(), {
+                successMessage: t('storage.quotas_refreshed'),
+                errorMessage: t('storage.refresh_failed')
+              })}
+              disabled={unifiedLoading.isLoading('refresh') || loading}
             >
-              <RefreshCw className="h-4 w-4" />
+              <RefreshCw className={`h-4 w-4 ${unifiedLoading.isLoading('refresh') ? 'animate-spin' : ''}`} />
             </Button>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
@@ -259,10 +252,10 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
                   </div>
                   <Button 
                     onClick={handleSetQuota} 
-                    disabled={actionLoading === 'set'}
+                    disabled={unifiedLoading.isLoading('setQuota')}
                     className="w-full"
                   >
-                    {actionLoading === 'set' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
+                    {unifiedLoading.isLoading('setQuota') && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
                     {t('storage.quota.set')}
                   </Button>
                 </div>
@@ -286,10 +279,10 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
             </div>
             <Button 
               onClick={handleAutoSetup} 
-              disabled={actionLoading === 'auto-setup'}
+              disabled={unifiedLoading.isLoading('autoSetup')}
               variant="outline"
             >
-              {actionLoading === 'auto-setup' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
+              {unifiedLoading.isLoading('autoSetup') && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
               {t('storage.quota.auto_setup', 'Auto Setup (5GB Default)')}
             </Button>
           </div>
@@ -307,9 +300,9 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
                       variant="ghost"
                       size="sm"
                       onClick={() => handleRemoveQuota(quota.bucket_name)}
-                      disabled={actionLoading === quota.bucket_name}
+                      disabled={unifiedLoading.isLoading(`remove_${quota.bucket_name}`)}
                     >
-                      {actionLoading === quota.bucket_name ? (
+                      {unifiedLoading.isLoading(`remove_${quota.bucket_name}`) ? (
                         <RefreshCw className="h-4 w-4 animate-spin" />
                       ) : (
                         <Trash2 className="h-4 w-4" />

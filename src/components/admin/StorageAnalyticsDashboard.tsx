@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { useStorageAnalytics } from '@/hooks/useStorageAnalytics'
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading'
+import { createErrorHandler } from '@/utils/unified-error-handler'
 import { formatDate, dateHandler } from '@/utils/unified-date-handler';
 import { 
   BarChart, 
@@ -44,6 +46,19 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
   const { t } = useUnifiedTranslation()
   const { mr } = useRTLAwareClasses()
   const { getSettingValue } = useSettingsManager();
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'StorageAnalyticsDashboard',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'StorageAnalyticsDashboard',
+    showToast: true,
+    logError: true
+  });
+  
   const CHART_COLORS = getSettingValue('chart_colors', []) as string[];
   const fileSizeUnits = getSettingValue('file_size_units', []) as string[];
 
@@ -83,8 +98,15 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         <Card>
           <CardContent className="p-6">
             <p className="text-destructive">{t("storage.error_loading_analytics")} {error}</p>
-            <Button onClick={refreshAnalytics} className="mt-4">
-              <RefreshCw className={`h-4 w-4 ${mr('2')}`} />
+            <Button 
+              onClick={() => unifiedLoading.withLoading('refresh', async () => refreshAnalytics(), {
+                successMessage: t("storage.analytics_refreshed"),
+                errorMessage: t("storage.refresh_failed")
+              })}
+              disabled={unifiedLoading.isLoading('refresh')}
+              className="mt-4"
+            >
+              <RefreshCw className={`h-4 w-4 ${mr('2')} ${unifiedLoading.isLoading('refresh') ? 'animate-spin' : ''}`} />
               {t("storage.retry")}
             </Button>
           </CardContent>
@@ -103,8 +125,15 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
             {t("storage.comprehensive_overview")}
           </p>
         </div>
-        <Button onClick={refreshAnalytics} variant="outline">
-          <RefreshCw className={`h-4 w-4 ${mr('2')}`} />
+        <Button 
+          onClick={() => unifiedLoading.withLoading('refresh', async () => refreshAnalytics(), {
+            successMessage: t("storage.analytics_refreshed"),
+            errorMessage: t("storage.refresh_failed")
+          })}
+          disabled={unifiedLoading.isLoading('refresh')}
+          variant="outline"
+        >
+          <RefreshCw className={`h-4 w-4 ${mr('2')} ${unifiedLoading.isLoading('refresh') ? 'animate-spin' : ''}`} />
           {t("common.refresh")}
         </Button>
       </div>
