@@ -3,9 +3,32 @@
 
 ## 📋 **Project Overview**
 
-**Objective**: Design and implement a comprehensive workspace interface system that provides role-based collaborative environments with real-time features, secure access controls, and optimized user experiences.
+**Objective**: Design and implement a comprehensive workspace interface system that provides role-based collaborative environments with real-time features, secure access controls, optimized user experiences, and full integration with existing platform capabilities including i18n V3, RTL/LTR support, edge functions, and collaboration systems.
 
-**Scope**: 8 distinct workspace types with specialized functionality, real-time collaboration, and seamless integration with existing platform components.
+**Scope**: 8 distinct workspace types with specialized functionality, real-time collaboration, edge function processing, file storage integration, comprehensive translation support, and seamless integration with existing platform components.
+
+## 🌐 **System Integration Requirements**
+
+### **Existing Platform Integration**
+- **Translation System**: Full V3 i18n integration with `useUnifiedTranslation` hook
+- **RTL/LTR Support**: Complete Arabic/English directional support using `rtl-utils`
+- **Real-time Features**: Integration with existing collaboration infrastructure
+- **Edge Functions**: Custom workspace processing and analytics
+- **File Storage**: Workspace-specific storage buckets and policies
+- **Collaboration**: Enhanced workspace-aware collaboration features
+- **Authentication**: Seamless integration with existing role-based access
+
+### **Technical Stack Integration**
+```typescript
+// Core system integrations
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useDirection } from '@/contexts/DirectionProvider';
+import { getDirectionalClasses, formatNumber } from '@/lib/rtl-utils';
+import { useCollaboration } from '@/contexts/CollaborationContext';
+import { useRealTimeCollaboration } from '@/hooks/useRealTimeCollaboration';
+import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
+import { useNavigationHandler } from '@/hooks/useNavigationHandler';
+```
 
 ---
 
@@ -28,16 +51,48 @@
 
 ## 🔧 **Technical Implementation Requirements**
 
-### **1. Core Workspace Interface Pattern**
+### **1. Enhanced Workspace Interface Pattern**
 
 ```typescript
-// Standard workspace component structure
+// Enhanced workspace component structure with full system integration
 interface WorkspaceProps {
   workspaceType: WorkspaceType;
   userId?: string;
   entityId?: string;
   permissions: WorkspacePermissions;
   collaborationConfig: CollaborationConfig;
+  translationConfig: TranslationConfig;
+  rtlConfig: RTLConfig;
+  edgeFunctionConfig: EdgeFunctionConfig;
+  storageConfig: StorageConfig;
+}
+
+interface TranslationConfig {
+  enableDynamicTranslations: boolean;
+  fallbackLanguage: 'ar' | 'en';
+  namespace: string;
+  useSystemTranslations: boolean;
+}
+
+interface RTLConfig {
+  direction: 'ltr' | 'rtl';
+  useArabicNumerals: boolean;
+  dateFormat: 'hijri' | 'gregorian';
+  textAlignment: 'auto' | 'start' | 'end';
+}
+
+interface EdgeFunctionConfig {
+  enableWorkspaceAnalytics: boolean;
+  enableCustomProcessing: boolean;
+  analyticsEndpoint: string;
+  processingFunctions: string[];
+}
+
+interface StorageConfig {
+  bucketPrefix: string;
+  maxFileSize: number;
+  allowedTypes: string[];
+  enableVersioning: boolean;
 }
 
 interface WorkspacePermissions {
@@ -115,11 +170,43 @@ const userWorkspaceCollaboration: CollaborationConfig = {
 };
 ```
 
-#### **Real-Time Features**
-- **User Presence**: Show online status for networking
-- **Live Notifications**: Real-time updates on challenges and opportunities
-- **Activity Feed**: Public activity sharing (opt-in)
-- **Collaboration**: Limited to public forums and general discussions
+#### **Real-Time Features Integration**
+```typescript
+// UserWorkspace real-time configuration
+const userRealTimeConfig = {
+  presence: {
+    enabled: true,
+    scope: 'global',
+    showLocation: false,
+    showActivity: true
+  },
+  notifications: {
+    enabledChannels: ['challenges', 'opportunities', 'achievements'],
+    realTimeUpdates: true,
+    pushNotifications: false
+  },
+  collaboration: {
+    allowedFeatures: ['comments', 'likes', 'shares'],
+    moderationLevel: 'basic',
+    privacyLevel: 'public'
+  }
+};
+```
+
+#### **Translation & RTL Support**
+```typescript
+// UserWorkspace i18n configuration
+const userI18nConfig = {
+  dynamicContent: ['ideas', 'challenges', 'achievements'],
+  fallbackStrategy: 'system_default',
+  cacheStrategy: 'localStorage',
+  rtlOptimization: {
+    iconRotation: true,
+    layoutAdjustment: true,
+    numberFormat: 'arabic_optional'
+  }
+};
+```
 
 #### **Data Sources & Queries**
 ```sql
@@ -166,11 +253,43 @@ const expertWorkspaceCollaboration: CollaborationConfig = {
 };
 ```
 
-#### **Real-Time Features**
-- **Expert Presence**: Availability status for consultations
-- **Secure Messaging**: Private communication with innovators
-- **Live Evaluation**: Real-time collaborative evaluation sessions
-- **Document Sharing**: Secure document collaboration for reviews
+#### **Edge Function Integration**
+```typescript
+// Expert-specific edge functions
+const expertEdgeFunctions = {
+  evaluationProcessing: 'workspace-expert-evaluation',
+  consultationScheduling: 'workspace-expert-scheduling',
+  knowledgeBaseSync: 'workspace-expert-knowledge',
+  secureMessaging: 'workspace-expert-messaging'
+};
+
+// Real-time evaluation session
+const liveEvaluationConfig = {
+  sessionType: 'expert_evaluation',
+  securityLevel: 'high',
+  encryptionEnabled: true,
+  auditLogging: true,
+  collaborativeFeatures: ['shared_scoring', 'live_comments', 'document_annotation']
+};
+```
+
+#### **File Storage Integration**
+```typescript
+// Expert workspace storage configuration
+const expertStorageConfig = {
+  buckets: {
+    evaluations: 'expert-evaluations-private',
+    consultations: 'expert-consultations-private',
+    knowledge: 'expert-knowledge-shared'
+  },
+  policies: {
+    retention: '7_years',
+    encryption: 'aes256',
+    access: 'expert_only',
+    versioning: true
+  }
+};
+```
 
 ### **3. ManagerWorkspace - Team Leadership Hub**
 

@@ -15,8 +15,20 @@ This guide provides detailed step-by-step instructions for implementing the comp
 - [ ] **Collaboration Context**: Real-time collaboration infrastructure available
 - [ ] **Design System**: Semantic tokens and styling framework ready
 - [ ] **TypeScript Configuration**: Type definitions for workspace interfaces
+- [ ] **Translation System**: V3 i18n configuration with `useUnifiedTranslation` hook
+- [ ] **RTL/LTR Support**: Direction provider and rtl-utils integration
+- [ ] **Edge Functions**: Supabase edge function environment configured
+- [ ] **File Storage**: Storage buckets and policies configured
+- [ ] **Real-time Infrastructure**: WebSocket and presence systems ready
 
-### **Required Dependencies**
+### **System Integration Verification**
+- [ ] **Existing Hooks**: All current hooks (`useAuth`, `useRoleAccess`, etc.) functional
+- [ ] **Collaboration System**: `CollaborationContext` and real-time features working
+- [ ] **Navigation System**: `useNavigationHandler` and routing configured
+- [ ] **Translation Infrastructure**: System translations and dynamic content support
+- [ ] **Direction Support**: RTL/LTR utilities and CSS classes available
+
+### **Required Dependencies** (Already Available)
 ```json
 {
   "@tanstack/react-query": "^5.56.2",
@@ -24,8 +36,21 @@ This guide provides detailed step-by-step instructions for implementing the comp
   "lucide-react": "^0.462.0",
   "date-fns": "^3.6.0",
   "recharts": "^3.1.0",
-  "react-router-dom": "^6.26.2"
+  "react-router-dom": "^6.26.2",
+  "i18next": "^25.3.2",
+  "react-i18next": "^15.6.1",
+  "tailwindcss-rtl": "^0.9.0",
+  "next-themes": "^0.3.0"
 }
+```
+
+### **Edge Functions Setup**
+```bash
+# Verify edge functions are deployable
+supabase functions list
+supabase functions deploy --verify-jwt=false workspace-analytics
+supabase functions deploy --verify-jwt=false workspace-collaboration
+supabase functions deploy --verify-jwt=false workspace-ai-assistant
 ```
 
 ---
@@ -38,12 +63,21 @@ Create the enhanced workspace layout that supports all workspace types:
 
 ```typescript
 // src/components/workspace/EnhancedWorkspaceLayout.tsx
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useDirection } from '@/contexts/DirectionProvider';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { 
+  getResponsiveClasses, 
+  getNavigationClasses, 
+  getCardClasses,
+  formatNumber,
+  formatDate
+} from '@/lib/rtl-utils';
+import { cn } from '@/lib/utils';
 
 interface EnhancedWorkspaceLayoutProps {
   title: string;
@@ -99,7 +133,27 @@ export const EnhancedWorkspaceLayout: React.FC<EnhancedWorkspaceLayoutProps> = (
   entityId,
   realTimeConfig
 }) => {
-  const { t, isRTL } = useUnifiedTranslation();
+  const { t, isRTL, currentLanguage } = useUnifiedTranslation();
+  const { direction } = useDirection();
+  
+  // RTL-optimized layout classes
+  const layoutClasses = useMemo(() => ({
+    container: getResponsiveClasses(isRTL).container,
+    navigation: getNavigationClasses(isRTL).menu,
+    cards: getCardClasses(isRTL).card,
+    flex: isRTL ? 'flex-row-reverse' : 'flex-row'
+  }), [isRTL]);
+  
+  // Format numbers and dates for current locale
+  const formatWorkspaceValue = useCallback((value: any) => {
+    if (typeof value === 'number') {
+      return formatNumber(value, isRTL, { useArabicNumerals: true });
+    }
+    if (value instanceof Date) {
+      return formatDate(value, isRTL, { dateStyle: 'medium' });
+    }
+    return value;
+  }, [isRTL]);
 
   // Workspace-specific styling
   const getWorkspaceTheme = (type: string) => {

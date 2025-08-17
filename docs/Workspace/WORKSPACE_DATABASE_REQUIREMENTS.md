@@ -15,6 +15,112 @@
 
 ## 🆕 **New Workspace-Specific Tables**
 
+### **Prerequisites: Edge Functions Setup**
+```sql
+-- Create edge function secrets if not exists
+-- These will be managed through Supabase dashboard secrets
+-- OPENAI_API_KEY (for AI assistant functionality)
+-- Required for workspace AI features and analytics processing
+```
+
+### **Storage Buckets for Workspaces**
+```sql
+-- Create workspace-specific storage buckets
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types) VALUES 
+  ('workspace-user-files', 'User Workspace Files', false, 10485760, ARRAY['image/*', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']),
+  ('workspace-expert-docs', 'Expert Documents', false, 52428800, NULL),
+  ('workspace-manager-reports', 'Manager Reports', false, 104857600, NULL),
+  ('workspace-org-assets', 'Organization Assets', false, 524288000, NULL),
+  ('workspace-shared-public', 'Shared Public Files', true, 10485760, ARRAY['image/*', 'video/*']),
+  ('workspace-temp-uploads', 'Temporary Uploads', false, 52428800, NULL);
+
+-- Storage RLS policies for workspace access
+CREATE POLICY "Workspace user files access" ON storage.objects
+FOR ALL USING (
+  bucket_id = 'workspace-user-files' AND 
+  auth.uid()::text = (storage.foldername(name))[1]
+);
+
+CREATE POLICY "Workspace expert docs access" ON storage.objects
+FOR ALL USING (
+  bucket_id = 'workspace-expert-docs' AND (
+    auth.uid()::text = (storage.foldername(name))[1] OR
+    auth.uid() IN (
+      SELECT user_id FROM user_roles 
+      WHERE role IN ('expert', 'evaluator', 'consultant', 'admin') AND is_active = true
+    )
+  )
+);
+
+CREATE POLICY "Workspace manager reports access" ON storage.objects
+FOR ALL USING (
+  bucket_id = 'workspace-manager-reports' AND (
+    auth.uid()::text = (storage.foldername(name))[1] OR
+    auth.uid() IN (
+      SELECT user_id FROM user_roles 
+      WHERE role IN ('manager', 'team_lead', 'admin') AND is_active = true
+    )
+  )
+);
+
+CREATE POLICY "Workspace org assets access" ON storage.objects
+FOR ALL USING (
+  bucket_id = 'workspace-org-assets' AND 
+  auth.uid() IN (
+    SELECT user_id FROM user_roles 
+    WHERE role IN ('organization_admin', 'admin', 'super_admin') AND is_active = true
+  )
+);
+
+CREATE POLICY "Workspace shared public access" ON storage.objects
+FOR SELECT USING (bucket_id = 'workspace-shared-public');
+
+CREATE POLICY "Workspace temp uploads access" ON storage.objects
+FOR ALL USING (
+  bucket_id = 'workspace-temp-uploads' AND 
+  auth.uid()::text = (storage.foldername(name))[1]
+);
+```
+
+### **Translation Tables Enhancement**
+```sql
+-- Add workspace-specific translation entries
+INSERT INTO system_translations (translation_key, language_code, translation_text, category) VALUES
+-- User Workspace
+('workspace.user.title', 'ar', 'مساحة العمل الشخصية', 'workspace'),
+('workspace.user.title', 'en', 'Personal Workspace', 'workspace'),
+('workspace.user.description', 'ar', 'إدارة أفكارك ومشاركتك في التحديات', 'workspace'),
+('workspace.user.description', 'en', 'Manage your ideas and challenge participation', 'workspace'),
+
+-- Expert Workspace
+('workspace.expert.title', 'ar', 'مساحة عمل الخبير', 'workspace'),
+('workspace.expert.title', 'en', 'Expert Workspace', 'workspace'),
+('workspace.expert.description', 'ar', 'تقييم الأفكار وتقديم الاستشارات', 'workspace'),
+('workspace.expert.description', 'en', 'Evaluate ideas and provide consultations', 'workspace'),
+
+-- Manager Workspace
+('workspace.manager.title', 'ar', 'مساحة عمل المدير', 'workspace'),
+('workspace.manager.title', 'en', 'Manager Workspace', 'workspace'),
+('workspace.manager.description', 'ar', 'إدارة الفرق والمشاريع والمهام', 'workspace'),
+('workspace.manager.description', 'en', 'Manage teams, projects, and tasks', 'workspace'),
+
+-- Organization Workspace
+('workspace.organization.title', 'ar', 'مساحة العمل التنظيمية', 'workspace'),
+('workspace.organization.title', 'en', 'Organization Workspace', 'workspace'),
+('workspace.organization.description', 'ar', 'الإشراف الاستراتيجي وإدارة السياسات', 'workspace'),
+('workspace.organization.description', 'en', 'Strategic oversight and policy management', 'workspace'),
+
+-- Common workspace terms
+('workspace.quickActions', 'ar', 'الإجراءات السريعة', 'workspace'),
+('workspace.quickActions', 'en', 'Quick Actions', 'workspace'),
+('workspace.analytics', 'ar', 'التحليلات', 'workspace'),
+('workspace.analytics', 'en', 'Analytics', 'workspace'),
+('workspace.collaboration', 'ar', 'التعاون', 'workspace'),
+('workspace.collaboration', 'en', 'Collaboration', 'workspace'),
+('workspace.settings', 'ar', 'الإعدادات', 'workspace'),
+('workspace.settings', 'en', 'Settings', 'workspace');
+```
+
 ### **1. Team Management Tables**
 
 #### **`teams`** - Team Structure Management

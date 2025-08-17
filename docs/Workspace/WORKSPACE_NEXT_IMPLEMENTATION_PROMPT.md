@@ -16,7 +16,25 @@
 **Priority**: CRITICAL | **Estimated Time**: 5-7 days
 
 #### **Database Migrations Required**
-1. **Team Management Tables**
+1. **Storage Buckets Setup**
+   ```sql
+   -- Execute storage setup:
+   - workspace-user-files bucket
+   - workspace-expert-docs bucket
+   - workspace-manager-reports bucket
+   - workspace-org-assets bucket
+   - Storage RLS policies
+   ```
+
+2. **Translation System Enhancement**
+   ```sql
+   -- Execute translation setup:
+   - Workspace-specific translation entries
+   - System translations for all workspace types
+   - RTL/LTR content support
+   ```
+
+3. **Team Management Tables**
    ```sql
    -- Execute migrations for:
    - public.teams
@@ -24,26 +42,50 @@
    - public.task_assignments
    ```
 
-2. **Workspace Activity Tracking**
+4. **Workspace Activity Tracking**
    ```sql
    -- Execute migrations for:
    - public.workspace_activities
    - public.workspace_sessions
    - public.workspace_metrics
+   - public.workspace_user_behavior
    ```
 
-3. **Collaboration Infrastructure**
+5. **Collaboration Infrastructure**
    ```sql
    -- Execute migrations for:
    - public.workspace_collaborations
    - public.collaboration_messages
+   - public.workspace_live_presence
+   - public.workspace_notifications
+   ```
+
+6. **File Management System**
+   ```sql
+   -- Execute migrations for:
+   - public.workspace_files
+   - public.workspace_file_versions
+   - Enhanced ai_usage_tracking
+   ```
+
+7. **Security & Analytics**
+   ```sql
+   -- Execute migrations for:
+   - public.workspace_access_audit
+   - public.workspace_performance_metrics
+   - Database functions for analytics
    ```
 
 #### **Immediate Actions**
-- [ ] **Run Database Migrations**: Execute all workspace-related schema changes
-- [ ] **Verify RLS Policies**: Test all 220+ security policies
+- [ ] **Configure Edge Function Secrets**: Set up OPENAI_API_KEY and other required secrets
+- [ ] **Deploy Edge Functions**: Deploy workspace-analytics, workspace-collaboration, workspace-ai-assistant
+- [ ] **Run Database Migrations**: Execute all 15+ workspace-related schema changes
+- [ ] **Setup Storage Buckets**: Create and configure workspace storage buckets
+- [ ] **Verify Translation System**: Test i18n V3 integration and RTL support
+- [ ] **Verify RLS Policies**: Test all 250+ security policies
 - [ ] **Create Initial Indexes**: Implement performance optimization indexes
 - [ ] **Test Data Isolation**: Validate workspace access controls
+- [ ] **Test Real-time Features**: Verify WebSocket subscriptions and presence tracking
 
 ### **Phase 2: Core Infrastructure (Week 1-2)**
 **Priority**: HIGH | **Estimated Time**: 7-10 days
@@ -68,16 +110,27 @@
 ```typescript
 // New Components
 src/components/workspace/EnhancedWorkspaceLayout.tsx
+src/components/workspace/RTLWorkspaceCard.tsx
 src/components/collaboration/EnhancedCollaborationWidget.tsx
 src/hooks/useEnhancedWorkspaceData.ts
+src/hooks/useWorkspaceTranslations.ts
+src/hooks/useWorkspaceStorage.ts
 src/middleware/workspaceAccessMiddleware.ts
 src/utils/workspaceDataIsolation.ts
 
 // Enhanced Existing
-src/hooks/useWorkspacePermissions.ts (expand)
-src/pages/workspace/UserWorkspace.tsx (enhance)
-src/pages/workspace/ExpertWorkspace.tsx (enhance)
-src/contexts/CollaborationContext.tsx (extend)
+src/hooks/useWorkspacePermissions.ts (expand with 8 workspace types)
+src/pages/workspace/UserWorkspace.tsx (enhance with RTL/i18n)
+src/pages/workspace/ExpertWorkspace.tsx (enhance with edge functions)
+src/pages/workspace/ManagerWorkspace.tsx (enhance with file storage)
+src/pages/workspace/OrganizationWorkspace.tsx (enhance with analytics)
+src/contexts/CollaborationContext.tsx (extend with workspace context)
+
+// Edge Functions
+supabase/functions/workspace-analytics/index.ts
+supabase/functions/workspace-collaboration/index.ts
+supabase/functions/workspace-ai-assistant/index.ts
+supabase/functions/workspace-data-processor/index.ts
 ```
 
 ### **Phase 3: Individual Workspace Implementation (Week 2-4)**
@@ -112,10 +165,20 @@ src/contexts/CollaborationContext.tsx (extend)
 lucide-react: ^0.462.0
 date-fns: ^3.6.0
 recharts: ^3.1.0
+i18next: ^25.3.2
+react-i18next: ^15.6.1
+tailwindcss-rtl: ^0.9.0
 
 # Development setup
 npm install  # Ensure all deps are current
 npm run dev  # Start development server
+
+# Edge Functions setup
+supabase functions list
+supabase secrets set OPENAI_API_KEY=your_openai_key
+supabase functions deploy workspace-analytics
+supabase functions deploy workspace-collaboration  
+supabase functions deploy workspace-ai-assistant
 ```
 
 ### **Database Preparation**
@@ -147,22 +210,35 @@ RESET role;
 ## 📊 **SUCCESS METRICS & VALIDATION**
 
 ### **Phase 1 Success Criteria**
-- [ ] **Database Migration**: All 15 new tables created successfully
-- [ ] **RLS Policies**: 220+ policies active and tested
+- [ ] **Database Migration**: All 18+ new tables created successfully
+- [ ] **Storage Buckets**: All workspace storage buckets configured
+- [ ] **Edge Functions**: All 4 edge functions deployed and functional
+- [ ] **RLS Policies**: 250+ policies active and tested
+- [ ] **Translation System**: V3 i18n working with workspace content
+- [ ] **RTL Support**: Arabic/English direction switching functional
 - [ ] **Performance**: Query response time <200ms
 - [ ] **Security**: Zero access control violations
+- [ ] **Real-time**: WebSocket subscriptions working
 
 ### **Phase 2 Success Criteria**
-- [ ] **Components**: All core components rendering correctly
+- [ ] **Components**: All core components rendering correctly with RTL support
 - [ ] **Data Flow**: Real-time updates working with <100ms latency
-- [ ] **Permissions**: Role-based access control functioning
+- [ ] **Permissions**: Role-based access control functioning across 8 workspace types
+- [ ] **File Storage**: Workspace file upload/download working
+- [ ] **Edge Functions**: Analytics and collaboration processing functional
+- [ ] **Translation**: Dynamic content translation working
 - [ ] **Testing**: Unit tests passing for core functionality
 
 ### **Phase 3 Success Criteria**
 - [ ] **All 8 Workspaces**: Functional and accessible by appropriate roles
-- [ ] **Real-time Collaboration**: Working across all workspace types
+- [ ] **Real-time Collaboration**: Working across all workspace types with context awareness
+- [ ] **AI Integration**: Workspace AI assistant functional for all workspace types
+- [ ] **File Management**: Complete file lifecycle management working
+- [ ] **Analytics**: Comprehensive workspace analytics and reporting functional
 - [ ] **Performance**: <2s load times for all workspaces
 - [ ] **Mobile**: Responsive design working on all devices
+- [ ] **Accessibility**: WCAG 2.1 AA compliance achieved
+- [ ] **Security**: All access controls and audit logging functional
 
 ---
 
