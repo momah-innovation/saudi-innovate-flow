@@ -10,9 +10,10 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { ViewLayouts } from "@/components/ui/view-layouts";
-import { logger } from "@/utils/logger";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 
 import { 
   HelpCircle, 
@@ -47,7 +48,18 @@ interface FocusQuestion {
 
 export function FocusQuestionManagementList() {
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
-  const [loading, setLoading] = useState(true);
+  const loadingManager = useUnifiedLoading({
+    component: 'FocusQuestionManagementList',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'FocusQuestionManagementList',
+    showToast: true,
+    logError: true
+  });
+
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [sensitivityFilter, setSensitivityFilter] = useState<string>("all");
@@ -66,8 +78,7 @@ export function FocusQuestionManagementList() {
   }, []);
 
   const fetchFocusQuestions = async () => {
-    try {
-      setLoading(true);
+    await loadingManager.withLoading('fetchFocusQuestions', async () => {
       const { data, error } = await supabase
         .from('focus_questions')
         .select(`
@@ -78,20 +89,14 @@ export function FocusQuestionManagementList() {
       
       if (error) throw error;
       setFocusQuestions(data || []);
-    } catch (error) {
-      logger.error('Error fetching focus questions', { component: 'FocusQuestionManagementList', action: 'fetchFocusQuestions' }, error as Error);
-      toast({
-        title: t('error'),
-        description: t('focusQuestions.loadError', 'Failed to load focus questions'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('focusQuestions.loadError', 'Failed to load focus questions'),
+      logContext: {}
+    });
   };
 
   const handleDelete = async (questionId: string) => {
-    try {
+    const result = await loadingManager.withLoading('deleteQuestion', async () => {
       const { error } = await supabase
         .from('focus_questions')
         .delete()
@@ -100,18 +105,12 @@ export function FocusQuestionManagementList() {
       if (error) throw error;
       
       setFocusQuestions(prev => prev.filter(q => q.id !== questionId));
-      toast({
-        title: "تم بنجاح",
-        description: "تم حذف السؤال المحوري بنجاح"
-      });
-    } catch (error) {
-      logger.error('Error deleting focus question', { component: 'FocusQuestionManagementList', action: 'handleDelete' }, error as Error);
-      toast({
-        title: t('error'),
-        description: t('focusQuestions.deleteError', 'Failed to delete focus question'),
-        variant: "destructive"
-      });
-    }
+      return true;
+    }, {
+      successMessage: "تم حذف السؤال المحوري بنجاح",
+      errorMessage: t('focusQuestions.deleteError', 'Failed to delete focus question'),
+      logContext: { questionId }
+    });
   };
 
   const handleEdit = (question: FocusQuestion) => {
@@ -261,7 +260,7 @@ export function FocusQuestionManagementList() {
         </div>
 
         {/* Content */}
-        {loading ? (
+        {loadingManager.isLoading('fetchFocusQuestions') ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="animate-pulse bg-card rounded-lg h-64" />

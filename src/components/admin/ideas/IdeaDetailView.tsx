@@ -6,8 +6,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { supabase } from "@/integrations/supabase/client";
-import { logger } from "@/utils/logger";
 import { 
   Lightbulb, 
   Target, 
@@ -55,7 +55,11 @@ export function IdeaDetailView({
       evaluationStatus: 'pending'
     }
   });
-  const [loading, setLoading] = useState(false);
+  const loadingManager = useUnifiedLoading({
+    component: 'IdeaDetailView',
+    showToast: false,
+    logErrors: true
+  });
   
   // Collapsible sections state
   const [openSections, setOpenSections] = useState({
@@ -74,8 +78,7 @@ export function IdeaDetailView({
   const fetchRelatedData = async () => {
     if (!idea) return;
     
-    setLoading(true);
-    try {
+    await loadingManager.withLoading('fetchRelatedData', async () => {
       const [evaluationsRes] = await Promise.all([
         supabase
           .from('idea_evaluations')
@@ -113,16 +116,10 @@ export function IdeaDetailView({
         evaluations,
         analytics
       });
-    } catch (error) {
-      logger.error('Error fetching related data', { component: 'IdeaDetailView', action: 'fetchRelatedData', ideaId: idea.id }, error as Error);
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('idea_detail.load_related_data_failed', 'فشل في تحميل البيانات المرتبطة'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('idea_detail.load_related_data_failed', 'فشل في تحميل البيانات المرتبطة'),
+      logContext: { ideaId: idea.id }
+    });
   };
 
   const getStatusLabel = (status: string) => {

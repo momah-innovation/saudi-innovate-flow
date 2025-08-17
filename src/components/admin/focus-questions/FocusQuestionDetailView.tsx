@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
 import { createErrorHandler } from '@/utils/unified-error-handler';
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -87,7 +88,11 @@ export function FocusQuestionDetailView({
       lastActivity: null
     }
   });
-  const [loading, setLoading] = useState(false);
+  const loadingManager = useUnifiedLoading({
+    component: 'FocusQuestionDetailView',
+    showToast: false,
+    logErrors: true
+  });
   
   // Collapsible sections state
   const [openSections, setOpenSections] = useState({
@@ -107,8 +112,7 @@ export function FocusQuestionDetailView({
   const fetchRelatedData = async () => {
     if (!question) return;
     
-    setLoading(true);
-    try {
+    await loadingManager.withLoading('fetchRelatedData', async () => {
       const [
         ideasRes,
         eventsRes
@@ -168,11 +172,10 @@ export function FocusQuestionDetailView({
         submissions: [],
         analytics
       });
-    } catch (error) {
-      errorHandler.handleError(error, { operation: 'fetchRelatedData' }, t('focus_question_detail.load_related_data_failed', 'فشل في تحميل البيانات المرتبطة'));
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('focus_question_detail.load_related_data_failed', 'فشل في تحميل البيانات المرتبطة'),
+      logContext: { questionId: question.id }
+    });
   };
 
   const getTypeLabel = (type: string) => {

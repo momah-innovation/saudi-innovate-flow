@@ -55,7 +55,7 @@ interface AnalyticsData {
 
 export function FocusQuestionAnalytics() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Removed manual loading state - using unified loading manager instead
   const [timeRange, setTimeRange] = useState("all");
   const { toast } = useToast();
   const { timeRangeOptions } = useSystemLists();
@@ -195,7 +195,7 @@ export function FocusQuestionAnalytics() {
     return labels[type as keyof typeof labels] || type;
   };
 
-  if (loading) {
+  if (loadingManager.isLoading('fetch-analytics')) {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
