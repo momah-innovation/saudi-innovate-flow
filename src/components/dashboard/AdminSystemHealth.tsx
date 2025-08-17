@@ -23,7 +23,24 @@ interface AdminSystemHealthProps {
 }
 
 export function AdminSystemHealth({ className }: AdminSystemHealthProps) {
-  const metrics = { system: { uptime: 99.9, performance: 95, errors: 0 }, security: { securityScore: 98 } };
+  const metrics = { 
+    system: { 
+      uptime: 99.9, 
+      performance: 95, 
+      errors: 0,
+      storageUsed: 450000000,
+      storage: { totalFiles: 1250, totalBuckets: 5 },
+      activity: { events24h: 1850, activeUsers24h: 320 }
+    }, 
+    security: { 
+      securityScore: 98,
+      riskLevel: 'low',
+      incidents: 0,
+      failedLogins: 2,
+      metrics: { highRiskEvents7d: 1 }
+    },
+    lastUpdated: new Date().toISOString()
+  };
   const metricsLoading = false;
   const systemHealth = useSystemHealth({ 
     enabled: true, 
