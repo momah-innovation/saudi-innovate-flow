@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { createErrorHandler } from "@/utils/unified-error-handler";
 import { dateHandler } from "@/utils/unified-date-handler";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 
 interface WorkflowState {
   id: string;
@@ -94,8 +95,12 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("medium");
   
-  const [loading, setLoading] = useState(false);
-  const handleError = createErrorHandler({ component: 'IdeaWorkflowPanel' });
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'IdeaWorkflowPanel',
+    showToast: true,
+    logErrors: true
+  });
   const [activeTab, setActiveTab] = useState("workflow");
 
   // Status options from settings
@@ -127,9 +132,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
     }
   }, [ideaId]);
 
-  const fetchWorkflowData = async () => {
-    setLoading(true);
-    try {
+  const fetchWorkflowData = () => {
+    return withLoading('fetch-workflow-data', async () => {
       const { data, error } = await supabase.functions.invoke('idea-workflow-manager', {
         body: {
           action: 'get_workflow_state',
@@ -143,16 +147,11 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       setWorkflowStates(workflowStates || []);
       setAssignments(assignments || []);
       setMilestones(milestones || []);
-    } catch (error) {
-      logger.error('Error fetching workflow data', { component: 'IdeaWorkflowPanel', action: 'fetchWorkflowData', data: { ideaId } }, error as Error);
-          toast({
-            title: t('common.error', 'خطأ'),
-            description: t('idea_workflow.load_workflow_data_failed', 'فشل في تحميل بيانات سير العمل'),
-            variant: "destructive"
-          });
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: t('idea_workflow.load_workflow_data_failed', 'فشل في تحميل بيانات سير العمل'),
+      logContext: { ideaId, action: 'fetch_workflow_data' }
+    });
   };
 
   const fetchTeamMembers = async () => {
@@ -174,8 +173,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
   const handleStatusChange = async () => {
     if (!newStatus) return;
     
-    setLoading(true);
-    try {
+    return withLoading('change-status', async () => {
       const { data, error } = await supabase.functions.invoke('idea-workflow-manager', {
         body: {
           action: 'change_status',
@@ -187,32 +185,22 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
 
       if (error) throw error;
 
-      toast({
-        title: t('workflow.status_changed_title', 'تم تغيير الحالة'),
-        description: data.message || t('workflow.status_changed_success', 'تم تغيير حالة الفكرة بنجاح')
-      });
-
       setNewStatus("");
       setStatusReason("");
       await fetchWorkflowData();
       onStatusChange();
-    } catch (error) {
-      logger.error('Error changing status', { component: 'IdeaWorkflowPanel', action: 'handleStatusChange', data: { ideaId, newStatus } }, error as Error);
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('workflow.status_change_error', 'فشل في تغيير حالة الفكرة'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      successMessage: t('workflow.status_changed_success', 'تم تغيير حالة الفكرة بنجاح'),
+      errorMessage: t('workflow.status_change_error', 'فشل في تغيير حالة الفكرة'),
+      logContext: { ideaId, newStatus, action: 'change_status' }
+    });
   };
 
   const handleAssignment = async () => {
     if (!assigneeId) return;
     
-    setLoading(true);
-    try {
+    return withLoading('create-assignment', async () => {
       const { data, error } = await supabase.functions.invoke('idea-workflow-manager', {
         body: {
           action: 'assign_for_review',
@@ -226,31 +214,21 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
 
       if (error) throw error;
 
-      toast({
-        title: t('idea_workflow.assignment_success', 'تم التكليف'),
-        description: data.message || t('idea_workflow.reviewer_assigned_success', 'تم تكليف المراجع بنجاح')
-      });
-
       setAssigneeId("");
       setDueDate("");
       setPriority("medium");
       setAssignmentType("reviewer");
       await fetchWorkflowData();
-    } catch (error) {
-      logger.error('Error creating assignment', { component: 'IdeaWorkflowPanel', action: 'handleAssignment', data: { ideaId, assigneeId } }, error as Error);
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('idea_workflow.assignment_failed', 'فشل في تكليف المراجع'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      successMessage: t('idea_workflow.reviewer_assigned_success', 'تم تكليف المراجع بنجاح'),
+      errorMessage: t('idea_workflow.assignment_failed', 'فشل في تكليف المراجع'),
+      logContext: { ideaId, assigneeId, action: 'create_assignment' }
+    });
   };
 
   const createMilestones = async () => {
-    setLoading(true);
-    try {
+    return withLoading('create-milestones', async () => {
       const { data, error } = await supabase.functions.invoke('idea-workflow-manager', {
         body: {
           action: 'create_milestones',
@@ -260,22 +238,13 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
 
       if (error) throw error;
 
-      toast({
-        title: t('idea_workflow.milestones_created', 'تم إنشاء المعالم'),
-        description: data.message || t('idea_workflow.milestones_created_success', 'تم إنشاء معالم دورة الحياة بنجاح')
-      });
-
       await fetchWorkflowData();
-    } catch (error) {
-      logger.error('Error creating milestones', { component: 'IdeaWorkflowPanel', action: 'createMilestones', data: { ideaId } }, error as Error);
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('idea_workflow.milestones_creation_failed', 'فشل في إنشاء المعالم'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      successMessage: t('idea_workflow.milestones_created_success', 'تم إنشاء معالم دورة الحياة بنجاح'),
+      errorMessage: t('idea_workflow.milestones_creation_failed', 'فشل في إنشاء المعالم'),
+      logContext: { ideaId, action: 'create_milestones' }
+    });
   };
 
   const getStatusInfo = (status: string) => {
@@ -399,8 +368,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
                 />
               </div>
 
-              <Button onClick={handleStatusChange} disabled={!newStatus || loading}>
-                {loading ? 'جارٍ التحديث...' : 'تغيير الحالة'}
+              <Button onClick={handleStatusChange} disabled={!newStatus || isLoading('change-status')}>
+                {isLoading('change-status') ? 'جارٍ التحديث...' : 'تغيير الحالة'}
               </Button>
             </CardContent>
           </Card>
@@ -513,8 +482,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
                 </div>
               </div>
 
-              <Button onClick={handleAssignment} disabled={!assigneeId || loading}>
-                {loading ? 'جارٍ التكليف...' : 'إنشاء تكليف'}
+              <Button onClick={handleAssignment} disabled={!assigneeId || isLoading('create-assignment')}>
+                {isLoading('create-assignment') ? 'جارٍ التكليف...' : 'إنشاء تكليف'}
               </Button>
             </CardContent>
           </Card>
@@ -568,8 +537,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
               <CardContent className="text-center py-8">
                 <Target className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground mb-4">لم يتم إنشاء معالم دورة الحياة بعد</p>
-                <Button onClick={createMilestones} disabled={loading}>
-                  {loading ? 'جارٍ الإنشاء...' : 'إنشاء معالم دورة الحياة'}
+                <Button onClick={createMilestones} disabled={isLoading('create-milestones')}>
+                  {isLoading('create-milestones') ? 'جارٍ الإنشاء...' : 'إنشاء معالم دورة الحياة'}
                 </Button>
               </CardContent>
             </Card>

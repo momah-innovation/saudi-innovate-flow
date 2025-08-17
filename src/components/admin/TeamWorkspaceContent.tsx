@@ -132,7 +132,7 @@ export function TeamWorkspaceContent({
   });
   const errorHandler = createErrorHandler({ component: 'TeamWorkspaceContent' });
   
-  const [loading, setLoading] = useState(true);
+  // ✅ MIGRATED: Removed duplicate loading state - using unified loading
   const [selectedMember, setSelectedMember] = useState<TeamMemberData | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
   const [showQuickActions, setShowQuickActions] = useState(false);
@@ -243,7 +243,6 @@ export function TeamWorkspaceContent({
         }
       });
       
-      setLoading(false);
       return true;
     }, {
       errorMessage: "Failed to load team workspace data.",
@@ -1046,7 +1045,7 @@ export function TeamWorkspaceContent({
     </div>
   );
 
-  if (loading) {
+  if (isLoading()) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">

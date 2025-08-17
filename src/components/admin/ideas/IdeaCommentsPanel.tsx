@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { logger } from "@/utils/logger";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare, Send, Reply, Edit, Trash, Flag } from "lucide-react";
@@ -58,9 +59,12 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
   const [isInternal, setIsInternal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const handleError = createErrorHandler({ component: 'IdeaCommentsPanel' });
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'IdeaCommentsPanel',
+    showToast: true,
+    logErrors: true
+  });
 
   useEffect(() => {
     if (isOpen && ideaId) {
@@ -68,9 +72,8 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
     }
   }, [isOpen, ideaId]);
 
-  const fetchComments = async () => {
-    setLoading(true);
-    try {
+  const fetchComments = () => {
+    return withLoading('fetch-comments', async () => {
       const { data, error } = await supabase
         .from('idea_comments')
         .select(`
@@ -127,23 +130,17 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
       });
 
       setComments(rootComments);
-    } catch (error) {
-      logger.error('Error fetching comments', { component: 'IdeaCommentsPanel', action: 'fetchComments', data: { ideaId } }, error as Error);
-      toast({
-        title: "خطأ",
-        description: t('errors.failed_to_load_comments', 'فشل في تحميل التعليقات'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: t('errors.failed_to_load_comments', 'فشل في تحميل التعليقات'),
+      logContext: { ideaId, action: 'fetch_comments' }
+    });
   };
 
   const handleSubmitComment = async () => {
     if (!newComment.trim()) return;
 
-    setSubmitting(true);
-    try {
+    return withLoading('submit-comment', async () => {
       if (!user) throw new Error('غير مصرح للمستخدم');
 
       const { error } = await supabase
@@ -161,28 +158,18 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
       setNewComment("");
       setIsInternal(false);
       await fetchComments();
-      
-      toast({
-        title: "تم إضافة التعليق",
-        description: "تم إضافة تعليقك بنجاح"
-      });
-    } catch (error) {
-      logger.error('Error submitting comment', { component: 'IdeaCommentsPanel', action: 'handleSubmitComment', data: { ideaId } }, error as Error);
-      toast({
-        title: "خطأ",
-        description: t('errors.failed_to_add_comment', 'فشل في إضافة التعليق'),
-        variant: "destructive"
-      });
-    } finally {
-      setSubmitting(false);
-    }
+      return true;
+    }, {
+      successMessage: "تم إضافة تعليقك بنجاح",
+      errorMessage: t('errors.failed_to_add_comment', 'فشل في إضافة التعليق'),
+      logContext: { ideaId, action: 'submit_comment' }
+    });
   };
 
   const handleSubmitReply = async (parentId: string) => {
     if (!replyContent.trim()) return;
 
-    setSubmitting(true);
-    try {
+    return withLoading('submit-reply', async () => {
       if (!user) throw new Error('غير مصرح للمستخدم');
 
       const { error } = await supabase
@@ -201,21 +188,12 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
       setReplyContent("");
       setReplyingTo(null);
       await fetchComments();
-      
-      toast({
-        title: "تم إضافة الرد",
-        description: "تم إضافة ردك بنجاح"
-      });
-    } catch (error) {
-      logger.error('Error submitting reply', { component: 'IdeaCommentsPanel', action: 'handleSubmitReply', data: { ideaId, parentId } }, error as Error);
-      toast({
-        title: "خطأ",
-        description: "فشل في إضافة الرد",
-        variant: "destructive"
-      });
-    } finally {
-      setSubmitting(false);
-    }
+      return true;
+    }, {
+      successMessage: "تم إضافة ردك بنجاح",
+      errorMessage: "فشل في إضافة الرد",
+      logContext: { ideaId, parentId, action: 'submit_reply' }
+    });
   };
 
   const renderComment = (comment: Comment, level: number = 0) => (
@@ -271,7 +249,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
                 <Button
                   size="sm"
                   onClick={() => handleSubmitReply(comment.id)}
-                  disabled={!replyContent.trim() || submitting}
+                  disabled={!replyContent.trim() || isLoading('submit-reply')}
                 >
                   <Send className="w-4 h-4 ml-1" />
                   إرسال الرد
@@ -337,7 +315,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
             
             <Button
               onClick={handleSubmitComment}
-              disabled={!newComment.trim() || submitting}
+              disabled={!newComment.trim() || isLoading('submit-comment')}
               className="gap-2"
             >
               <Send className="w-4 h-4" />
@@ -350,7 +328,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
         
         {/* Comments list */}
         <div className="space-y-4">
-          {loading ? (
+          {isLoading('fetch-comments') ? (
             <div className="text-center py-8">
               <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto"></div>
               <p className="text-sm text-muted-foreground mt-2">جارٍ تحميل التعليقات...</p>

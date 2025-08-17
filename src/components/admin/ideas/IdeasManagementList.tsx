@@ -59,6 +59,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { createErrorHandler } from "@/utils/unified-error-handler";
 import { dateHandler } from "@/utils/unified-date-handler";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { ManagementListProps } from "@/types";
 
 // Enhanced Admin Idea interface with full data for management
@@ -132,13 +133,18 @@ export function IdeasManagementList({
   onRefresh 
 }: IdeasManagementListProps) {
   
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'IdeasManagementList',
+    showToast: true,
+    logErrors: true
+  });
   const errorHandler = createErrorHandler({
     component: 'IdeasManagementList',
     showToast: true,
     logError: true
   });
   const [ideas, setIdeas] = useState<IdeaListItem[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedIdea, setSelectedIdea] = useState<IdeaListItem | null>(null);
   const [showDetailView, setShowDetailView] = useState(false);
   const [showWizard, setShowWizard] = useState(false);
@@ -171,9 +177,8 @@ export function IdeasManagementList({
     fetchIdeas();
   }, []);
 
-  const fetchIdeas = async () => {
-    try {
-      setLoading(true);
+  const fetchIdeas = () => {
+    return withLoading('fetch-ideas', async () => {
       const { data, error } = await supabase
         .from('ideas')
         .select(`
@@ -184,16 +189,11 @@ export function IdeasManagementList({
       if (error) throw error;
       
       setIdeas(data || []);
-    } catch (error) {
-      logger.error('Error fetching ideas', { component: 'IdeasManagementList', action: 'fetchIdeas' }, error as Error);
-      toast({
-        title: t('error.validation_error'),
-        description: t('error.load_failed'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: t('error.load_failed'),
+      logContext: { action: 'fetch_ideas' }
+    });
   };
 
   // Admin-specific actions
@@ -505,7 +505,7 @@ export function IdeasManagementList({
         />
 
         {/* Content */}
-        {loading ? (
+        {isLoading('fetch-ideas') ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="animate-pulse bg-card rounded-lg h-64" />
