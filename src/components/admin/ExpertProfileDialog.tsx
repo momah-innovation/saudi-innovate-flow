@@ -7,8 +7,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { User, Mail, Phone, Building, MapPin, Calendar, Award, Star, Clock, ExternalLink } from "lucide-react";
 import { useExpertProfiles } from "@/hooks/useExpertProfiles";
-import { logger } from "@/utils/error-handler";
-import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Expert {
   id: string;
@@ -58,7 +59,14 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
   }
   
   const [activeAssignments, setActiveAssignments] = useState<AssignmentData[]>([]);
-  const [loading, setLoading] = useState(false);
+  
+  // ✅ MIGRATED: Added unified loading and error handling
+  const loadingManager = useUnifiedLoading({
+    component: 'ExpertProfileDialog',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'ExpertProfileDialog' });
 
   useEffect(() => {
     if (open && expertId) {
@@ -69,9 +77,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
   const fetchExpertDetails = async () => {
     if (!expertId) return;
     
-    try {
-      setLoading(true);
-      
+    await loadingManager.withLoading('fetchDetails', async () => {
       // Find expert in the loaded experts data
       const foundExpert = experts.find(e => e.id === expertId);
       if (foundExpert) {
@@ -99,11 +105,10 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
       // Mock active assignments for now - in a full migration, 
       // this would use a dedicated useExpertAssignments hook
       setActiveAssignments([]);
-    } catch (error) {
-      logger.error('Error fetching expert details', error);
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('failed_to_fetch_expert_details'),
+      logContext: { expertId }
+    });
   };
 
   const getStatusColor = (status: string) => {
@@ -136,7 +141,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
           <DialogHeader>
             <DialogTitle>{t('expert_profile.title')}</DialogTitle>
           </DialogHeader>
-          {(loading || expertsLoading) ? (
+          {(loadingManager.isLoading('fetchDetails') || expertsLoading) ? (
             <div className="flex items-center justify-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>

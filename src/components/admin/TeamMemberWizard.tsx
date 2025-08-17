@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { 
   Users, 
@@ -67,7 +69,14 @@ export function TeamMemberWizard({
   const { t } = useUnifiedTranslation();
   const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
   const [currentStep, setCurrentStep] = useState(0);
-  const [loading, setLoading] = useState(false);
+  
+  // ✅ MIGRATED: Added unified loading and error handling
+  const loadingManager = useUnifiedLoading({
+    component: 'TeamMemberWizard',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'TeamMemberWizard' });
 
   // Form data
   const [formData, setFormData] = useState<TeamMemberData>({
@@ -288,8 +297,7 @@ export function TeamMemberWizard({
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-    try {
+    await loadingManager.withLoading('submitMember', async () => {
       const memberData = {
         user_id: formData.user_id,
         cic_role: formData.cic_role,
@@ -330,16 +338,10 @@ export function TeamMemberWizard({
       onSuccess();
       onOpenChange(false);
       resetForm();
-    } catch (error) {
-      // Failed to save team member
-      toast({
-        title: "خطأ",
-        description: t('errors.failed_to_save_team_member', 'فشل في حفظ بيانات عضو الفريق'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('errors.failed_to_save_team_member', 'فشل في حفظ بيانات عضو الفريق'),
+      logContext: { memberData: formData, editingMember: !!editingMember }
+    });
   };
 
   const steps = [
@@ -610,9 +612,9 @@ export function TeamMemberWizard({
             </Button>
             <Button 
               onClick={handleNext}
-              disabled={loading}
+              disabled={loadingManager.isLoading('submitMember')}
             >
-              {loading ? (
+              {loadingManager.isLoading('submitMember') ? (
                 t('team_member_wizard.saving', 'جاري الحفظ...')
               ) : currentStep === steps.length - 1 ? (
                 editingMember ? t('team_member_wizard.update_member', 'تحديث العضو') : t('team_member_wizard.add_member', 'إضافة العضو')
