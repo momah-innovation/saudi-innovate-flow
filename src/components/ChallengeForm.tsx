@@ -12,8 +12,9 @@ import { FileUploader } from '@/components/ui/file-uploader';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
-import { createErrorHandler } from '@/utils/unified-error-handler';
+import { createErrorHandler } from '@/utils/errorHandler';
 import { Calendar, MapPin, DollarSign, Clock, Target, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -50,11 +51,17 @@ export function ChallengeForm({
   const { t, language, isRTL, getTranslation } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
   
-  // Error handler for this component
-  const errorHandler = createErrorHandler({
+  const { isLoading: loadingState, withLoading } = useUnifiedLoading({
     component: 'ChallengeForm',
     showToast: true,
-    logError: true
+    logErrors: true,
+    timeout: 15000
+  });
+  
+  const { handleError } = createErrorHandler({
+    component: 'ChallengeForm',
+    showToast: true,
+    logErrors: true
   });
   
   const [formData, setFormData] = useState({
@@ -77,9 +84,16 @@ export function ChallengeForm({
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    
+    await withLoading('submit', async () => {
+      onSubmit(formData);
+    }, {
+      successMessage: t('challenge_form.submit_success', mode === 'create' ? 'Challenge created successfully' : 'Challenge updated successfully'),
+      errorMessage: t('challenge_form.submit_error', 'Failed to save challenge'),
+      logContext: { mode, challengeData: formData }
+    });
   };
 
   // Get challenge types from database settings
@@ -317,10 +331,10 @@ export function ChallengeForm({
               <div className="flex items-center gap-4 pt-6 border-t">
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || loadingState('submit')}
                   className="flex-1 md:flex-none md:px-8"
                 >
-                  {isLoading ? (
+                  {(isLoading || loadingState('submit')) ? (
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                       {t('challenge_form.saving')}
@@ -334,7 +348,7 @@ export function ChallengeForm({
                   type="button"
                   variant="outline"
                   onClick={onCancel}
-                  disabled={isLoading}
+                  disabled={isLoading || loadingState('submit')}
                   className="flex-1 md:flex-none md:px-8"
                 >
                   {t('challenge_form.cancel')}

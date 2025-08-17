@@ -8,7 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useAuditData } from '@/hooks/useAuditData';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { DataTable, Column } from '@/components/ui/data-table';
+import { createErrorHandler } from '@/utils/errorHandler';
 
 import { AuditEvent, ComplianceReport, AuditConfiguration } from '@/hooks/useAuditData';
 import { Shield, Download, Search, Settings, FileCheck, AlertTriangle } from 'lucide-react';
@@ -26,6 +28,19 @@ const AuditManagement: React.FC = () => {
     exportAuditLog,
     searchAuditEvents
   } = useAuditData();
+  
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'AuditManagement',
+    showToast: true,
+    logErrors: true,
+    timeout: 15000
+  });
+  
+  const { handleError } = createErrorHandler({
+    component: 'AuditManagement',
+    showToast: true,
+    logErrors: true
+  });
 
   const [searchQuery, setSearchQuery] = useState('');
   const [reportType, setReportType] = useState<'gdpr' | 'hipaa' | 'sox' | 'pci' | 'custom'>('gdpr');
@@ -61,13 +76,25 @@ const AuditManagement: React.FC = () => {
 
   const handleGenerateReport = async () => {
     if (startDate && endDate) {
-      await generateComplianceReport(reportType, startDate, endDate);
+      await withLoading('generateReport', async () => {
+        await generateComplianceReport(reportType, startDate, endDate);
+      }, {
+        successMessage: 'Compliance report generated successfully',
+        errorMessage: 'Failed to generate compliance report',
+        logContext: { reportType, startDate, endDate }
+      });
     }
   };
 
   const handleExportLog = async () => {
     if (startDate && endDate) {
-      await exportAuditLog(startDate, endDate, exportFormat);
+      await withLoading('exportLog', async () => {
+        await exportAuditLog(startDate, endDate, exportFormat);
+      }, {
+        successMessage: 'Audit log exported successfully',
+        errorMessage: 'Failed to export audit log',
+        logContext: { startDate, endDate, exportFormat }
+      });
     }
   };
 
@@ -93,9 +120,12 @@ const AuditManagement: React.FC = () => {
             Monitor audit trails, compliance reports, and security events
           </p>
         </div>
-        <Button onClick={refreshAuditData} disabled={loading}>
+        <Button 
+          onClick={() => withLoading('refresh', refreshAuditData)} 
+          disabled={loading || isLoading('refresh')}
+        >
           <Shield className="mr-2 h-4 w-4" />
-          Refresh Data
+          {isLoading('refresh') ? 'Refreshing...' : 'Refresh Data'}
         </Button>
       </div>
 
@@ -149,9 +179,12 @@ const AuditManagement: React.FC = () => {
                       <SelectItem value="pdf">PDF</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button onClick={handleExportLog} disabled={!startDate || !endDate || loading}>
+                  <Button 
+                    onClick={handleExportLog} 
+                    disabled={!startDate || !endDate || loading || isLoading('exportLog')}
+                  >
                     <Download className="mr-2 h-4 w-4" />
-                    Export
+                    {isLoading('exportLog') ? 'Exporting...' : 'Export'}
                   </Button>
                 </div>
               </div>
@@ -216,10 +249,10 @@ const AuditManagement: React.FC = () => {
                     <Label>&nbsp;</Label>
                     <Button 
                       onClick={handleGenerateReport} 
-                      disabled={!startDate || !endDate || loading}
+                      disabled={!startDate || !endDate || loading || isLoading('generateReport')}
                       className="w-full"
                     >
-                      Generate Report
+                      {isLoading('generateReport') ? 'Generating...' : 'Generate Report'}
                     </Button>
                   </div>
                 </div>

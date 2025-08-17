@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { formatDate, formatDateArabic } from '@/utils/unified-date-handler';
-import { createErrorHandler } from '@/utils/unified-error-handler';
+import { createErrorHandler } from '@/utils/errorHandler';
 // TagSelector will be implemented in next phase
 import { 
   Search, 
@@ -58,11 +59,17 @@ export function AdvancedSearch({
   const { t, language, isRTL } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
   
-  // Error handler for this component
-  const errorHandler = createErrorHandler({
+  const { isLoading, withLoading } = useUnifiedLoading({
     component: 'AdvancedSearch',
     showToast: true,
-    logError: true
+    logErrors: true,
+    timeout: 10000
+  });
+  
+  const { handleError } = createErrorHandler({
+    component: 'AdvancedSearch',
+    showToast: true,
+    logErrors: true
   });
   
   const [filters, setFilters] = useState<SearchFilters>({
@@ -98,8 +105,14 @@ export function AdvancedSearch({
     }));
   };
 
-  const handleSearch = () => {
-    onSearch(filters);
+  const handleSearch = async () => {
+    await withLoading('search', async () => {
+      onSearch(filters);
+    }, {
+      successMessage: t('advanced_search.search_success', 'Search completed'),
+      errorMessage: t('advanced_search.search_error', 'Search failed'),
+      logContext: { filters, searchType }
+    });
   };
 
   const handleReset = () => {
@@ -351,10 +364,14 @@ export function AdvancedSearch({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3 pt-4 border-t">
-          <Button onClick={handleSearch} className="flex-1 md:flex-none">
-            <Search className="h-4 w-4 mr-2" />
-            {t('advanced_search.search')}
-          </Button>
+            <Button 
+              onClick={handleSearch} 
+              className="flex-1 md:flex-none"
+              disabled={isLoading('search')}
+            >
+              <Search className="h-4 w-4 mr-2" />
+              {isLoading('search') ? t('advanced_search.searching', 'Searching...') : t('advanced_search.search')}
+            </Button>
           
           {getActiveFiltersCount() > 0 && (
             <Button variant="outline" onClick={handleReset}>

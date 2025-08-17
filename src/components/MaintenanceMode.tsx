@@ -3,6 +3,8 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/errorHandler';
 import { AlertTriangle, Wrench, Clock } from 'lucide-react';
 
 interface MaintenanceModeProps {
@@ -89,13 +91,30 @@ export function MaintenanceMode({
 export function useMaintenanceMode() {
   const [isMaintenanceMode, setIsMaintenanceMode] = React.useState(false);
   
+  const { withLoading } = useUnifiedLoading({
+    component: 'MaintenanceMode',
+    showToast: false,
+    logErrors: true,
+    timeout: 5000
+  });
+  
+  const { handleError } = createErrorHandler({
+    component: 'MaintenanceMode',
+    showToast: false,
+    logErrors: true
+  });
+  
   React.useEffect(() => {
     // Check if maintenance mode is enabled
-    const checkMaintenanceMode = () => {
-      const envMaintenanceMode = process.env.MAINTENANCE_MODE === "true";
-      const localStorageMaintenanceMode = localStorage.getItem('maintenance_mode') === 'true';
-      
-      setIsMaintenanceMode(envMaintenanceMode || localStorageMaintenanceMode);
+    const checkMaintenanceMode = async () => {
+      try {
+        const envMaintenanceMode = process.env.MAINTENANCE_MODE === "true";
+        const localStorageMaintenanceMode = localStorage.getItem('maintenance_mode') === 'true';
+        
+        setIsMaintenanceMode(envMaintenanceMode || localStorageMaintenanceMode);
+      } catch (error) {
+        handleError(error as Error, 'check_maintenance_mode');
+      }
     };
     
     checkMaintenanceMode();
@@ -104,17 +123,25 @@ export function useMaintenanceMode() {
     const intervalId = setInterval(checkMaintenanceMode, 30000); // Every 30 seconds
     
     return () => clearInterval(intervalId);
-  }, []);
+  }, [handleError]);
   
   return {
     isMaintenanceMode,
-    enableMaintenanceMode: () => {
-      localStorage.setItem('maintenance_mode', 'true');
-      setIsMaintenanceMode(true);
+    enableMaintenanceMode: async () => {
+      await withLoading('enable', async () => {
+        localStorage.setItem('maintenance_mode', 'true');
+        setIsMaintenanceMode(true);
+      }, {
+        logContext: { action: 'enable_maintenance' }
+      });
     },
-    disableMaintenanceMode: () => {
-      localStorage.removeItem('maintenance_mode');
-      setIsMaintenanceMode(false);
+    disableMaintenanceMode: async () => {
+      await withLoading('disable', async () => {
+        localStorage.removeItem('maintenance_mode');
+        setIsMaintenanceMode(false);
+      }, {
+        logContext: { action: 'disable_maintenance' }
+      });
     }
   };
 }
