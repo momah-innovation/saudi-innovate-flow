@@ -27,7 +27,8 @@ import {
 } from 'lucide-react';
 import { formatDateArabic } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { CreateProjectDialog } from './team-workspace/CreateProjectDialog';
 import { InviteMemberDialog } from './team-workspace/InviteMemberDialog';
 import { TaskAssignmentDialog } from './team-workspace/TaskAssignmentDialog';
@@ -122,6 +123,15 @@ export function TeamWorkspaceContent({
   const { user } = useAuth();
   const { toast } = useToast();
   const { metrics } = useAdminDashboardMetrics();
+  
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'TeamWorkspaceContent',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'TeamWorkspaceContent' });
+  
   const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState<TeamMemberData | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
@@ -155,10 +165,8 @@ export function TeamWorkspaceContent({
     }
   }, [user]);
 
-  const fetchTeamWorkspaceData = async () => {
-    try {
-      setLoading(true);
-
+  const fetchTeamWorkspaceData = () => {
+    return withLoading('fetch-data', async () => {
       // Fetch team assignments
       const { data: assignments } = await supabase
         .from('team_assignments')
@@ -234,38 +242,29 @@ export function TeamWorkspaceContent({
           deadlinesMet: 92
         }
       });
-
-    } catch (error) {
-      logger.error('Error fetching team workspace data', { component: 'TeamWorkspaceContent', action: 'fetchTeamWorkspaceData' }, error as Error);
-      toast({
-        title: "Error",
-        description: "Failed to load team workspace data.",
-        variant: "destructive",
-      });
-    } finally {
+      
       setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: "Failed to load team workspace data.",
+      logContext: { userId: user?.id, action: 'fetch_workspace_data' }
+    });
   };
 
-  const createQuickTask = async () => {
+  const createQuickTask = () => {
     if (!newTaskTitle || !newTaskAssignee) return;
     
-    try {
+    return withLoading('create-task', async () => {
       // This would create a new task/assignment
-      toast({
-        title: t('workspace.task_created', 'تم إنشاء المهمة'),
-        description: `تم تكليف ${newTaskAssignee} بمهمة: ${newTaskTitle}`,
-      });
       setNewTaskTitle('');
       setNewTaskAssignee('');
       setShowQuickActions(false);
-    } catch (error) {
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('workspace.task_creation_failed', 'فشل في إنشاء المهمة'),
-        variant: "destructive",
-      });
-    }
+      return true;
+    }, {
+      successMessage: `تم تكليف ${newTaskAssignee} بمهمة: ${newTaskTitle}`,
+      errorMessage: t('workspace.task_creation_failed', 'فشل في إنشاء المهمة'),
+      logContext: { taskTitle: newTaskTitle, assignee: newTaskAssignee, action: 'create_quick_task' }
+    });
   };
 
   const QuickActionsPanel = () => (

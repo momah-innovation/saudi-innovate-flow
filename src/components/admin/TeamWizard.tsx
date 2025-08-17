@@ -9,8 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
-import { errorHandler } from "@/utils/error-handler";
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Team } from "@/types";
@@ -64,7 +64,14 @@ export function TeamWizard({
   const [departments, setDepartments] = useState<DepartmentData[]>([]);
   const [managers, setManagers] = useState<ManagerData[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(false);
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'TeamWizard',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'TeamWizard' });
 
   // Team type options from settings
   const teamTypeOptionsData = getSettingValue('team_type_options', []) as string[];
@@ -166,11 +173,10 @@ export function TeamWizard({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = async () => {
-    setIsLoading(true);
-    setErrors({});
-    
-    try {
+  const handleSave = () => {
+    return withLoading('save-team', async () => {
+      setErrors({});
+      
       const teamData = {
         name: formData.name.trim(),
         description: formData.description?.trim(),
@@ -186,42 +192,20 @@ export function TeamWizard({
 
       if (team?.id) {
         // Update existing team - placeholder until teams table is created
-        logger.info('Update team data', teamData);
-        
-        toast({
-          title: t('team.update_success'),
-          description: t('team.update_success_description'),
-        });
+        console.log('Update team data', teamData);
       } else {
         // Create new team - placeholder until teams table is created  
-        logger.info('Create team data', teamData);
-        
-        toast({
-          title: t('team_wizard.create_success'),
-          description: t('team_wizard.create_success_description'),
-        });
+        console.log('Create team data', teamData);
       }
 
       onSave();
       onClose();
-    } catch (error: unknown) {
-      errorHandler.handleError(error, 'TeamWizard.handleSubmit');
-      
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      if (errorMessage.includes('duplicate')) {
-        setErrors({ name: t('team_wizard.duplicate_name_error') });
-      } else if (errorMessage.includes('constraint')) {
-        setErrors({ general: t('team_wizard.constraint_error') });
-      } else {
-        toast({
-          title: t('team_wizard.error'),
-          description: errorMessage || t('team_wizard.save_failed'),
-          variant: "destructive",
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
+      return true;
+    }, {
+      successMessage: team?.id ? t('team.update_success_description') : t('team_wizard.create_success_description'),
+      errorMessage: t('team_wizard.save_failed'),
+      logContext: { teamId: team?.id, action: team?.id ? 'update' : 'create' }
+    });
   };
 
   const steps = [

@@ -9,7 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { Building, User, Mail, Phone, Users, Target } from "lucide-react";
-import { logger } from "@/utils/logger";
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface Stakeholder {
   id?: string;
@@ -60,7 +61,14 @@ export function StakeholderWizard({
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'StakeholderWizard',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'StakeholderWizard' });
 
   const { partnerTypeOptions, generalStatusOptions } = useSystemLists();
 
@@ -161,14 +169,12 @@ export function StakeholderWizard({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (): Promise<boolean> => {
+  const handleSubmit = (): Promise<boolean> => {
     if (!validateStep(0) || !validateStep(1)) {
-      return false;
+      return Promise.resolve(false);
     }
 
-    setIsSubmitting(true);
-
-    try {
+    return withLoading('save-stakeholder', async () => {
       const stakeholderData = {
         name: formData.name.trim(),
         name_ar: formData.name_ar?.trim() || null,
@@ -187,35 +193,19 @@ export function StakeholderWizard({
       if (stakeholder?.id) {
         // Update existing stakeholder
         await updateStakeholder(stakeholder.id, stakeholderData);
-
-        toast({
-          title: t('stakeholder_wizard.success'),
-          description: t('stakeholder_wizard.stakeholder_updated'),
-        });
       } else {
         // Create new stakeholder
         await createStakeholder(stakeholderData);
-
-        toast({
-          title: t('stakeholder_wizard.success'),
-          description: t('stakeholder_wizard.stakeholder_created'),
-        });
       }
 
       onSave();
       onClose();
       return true;
-    } catch (error) {
-      logger.error('Error saving stakeholder', { component: 'StakeholderWizard', action: 'handleSubmit' }, error as Error);
-      toast({
-        title: t('stakeholder_wizard.error'),
-        description: t('stakeholder_wizard.save_failed'),
-        variant: "destructive",
-      });
-      return false;
-    } finally {
-      setIsSubmitting(false);
-    }
+    }, {
+      successMessage: stakeholder?.id ? t('stakeholder_wizard.stakeholder_updated') : t('stakeholder_wizard.stakeholder_created'),
+      errorMessage: t('stakeholder_wizard.save_failed'),
+      logContext: { stakeholderId: stakeholder?.id, action: stakeholder?.id ? 'update' : 'create' }
+    });
   };
 
   const handleComplete = async () => {

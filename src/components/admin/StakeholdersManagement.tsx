@@ -13,6 +13,8 @@ import {
   Target,
   Activity
 } from 'lucide-react';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface StakeholdersManagementProps {
   viewMode: 'cards' | 'list' | 'grid';
@@ -32,6 +34,14 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
   const [stakeholderToDelete, setStakeholderToDelete] = useState<any>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'StakeholdersManagement',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'StakeholdersManagement' });
+
   const handleEdit = (stakeholder: any) => {
     setSelectedStakeholder(stakeholder);
     onAddDialogChange(true);
@@ -47,16 +57,19 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
     setShowDeleteConfirmation(true);
   };
 
-  const handleConfirmDelete = async () => {
-    if (stakeholderToDelete) {
-      try {
-        await deleteStakeholder(stakeholderToDelete.id);
-        setShowDeleteConfirmation(false);
-        setStakeholderToDelete(null);
-      } catch (error) {
-        // Error handled by hook
-      }
-    }
+  const handleConfirmDelete = () => {
+    if (!stakeholderToDelete) return;
+    
+    return withLoading('delete-stakeholder', async () => {
+      await deleteStakeholder(stakeholderToDelete.id);
+      setShowDeleteConfirmation(false);
+      setStakeholderToDelete(null);
+      return true;
+    }, {
+      successMessage: t('stakeholder.delete_success', 'تم حذف أصحاب المصلحة بنجاح'),
+      errorMessage: t('stakeholder.delete_failed', 'فشل في حذف أصحاب المصلحة'),
+      logContext: { stakeholderId: stakeholderToDelete.id, action: 'delete' }
+    });
   };
 
   const filteredStakeholders = stakeholders.filter(stakeholder =>
