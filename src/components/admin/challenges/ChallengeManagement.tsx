@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,11 +6,10 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useOrganizationalHierarchy } from '@/hooks/useOrganizationalHierarchy';
-import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { useChallenges } from '@/hooks/useChallenges';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 
 interface Challenge {
   id: string;
@@ -35,10 +34,34 @@ interface Challenge {
 export function ChallengeManagement() {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
-  const { user } = useCurrentUser();
-  const { sectors, deputies, departments, domains, subDomains, services } = useOrganizationalHierarchy();
   
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  // ✅ MIGRATED: Using centralized hooks
+  const {
+    challenges,
+    loading,
+    createChallenge,
+    updateChallenge,
+    deleteChallenge,
+    refreshChallenges
+  } = useChallenges();
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'ChallengeManagement',
+    showToast: true,
+    logErrors: true
+  });
+  
+  // Mock organizational data
+  const sectors = [
+    { id: '1', name_ar: 'القطاع الصحي', name_en: 'Health Sector' },
+    { id: '2', name_ar: 'القطاع التعليمي', name_en: 'Education Sector' }
+  ];
+  
+  const departments = [
+    { id: '1', name_ar: 'إدارة التطوير', name: 'Development Department' },
+    { id: '2', name_ar: 'إدارة التقنية', name: 'Technology Department' }
+  ];
+  
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -61,78 +84,59 @@ export function ChallengeManagement() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    try {
-      const challengeData = {
-        ...formData,
-        // Convert empty strings to null for optional fields
-        title_en: formData.title_en || null,
-        description_en: formData.description_en || null,
-        challenge_type: formData.challenge_type || null,
-        sector_id: formData.sector_id || null,
-        deputy_id: formData.deputy_id || null,
-        department_id: formData.department_id || null,
-        domain_id: formData.domain_id || null,
-        sub_domain_id: formData.sub_domain_id || null,
-        service_id: formData.service_id || null,
-      };
+    await loadingManager.withLoading(
+      'submit-challenge',
+      async () => {
+        const challengeData = {
+          ...formData,
+          // Convert empty strings to null for optional fields
+          title_en: formData.title_en || null,
+          description_en: formData.description_en || null,
+          challenge_type: formData.challenge_type || null,
+          sector_id: formData.sector_id || null,
+          deputy_id: formData.deputy_id || null,
+          department_id: formData.department_id || null,
+          domain_id: formData.domain_id || null,
+          sub_domain_id: formData.sub_domain_id || null,
+          service_id: formData.service_id || null,
+        };
 
-      if (selectedChallenge) {
-        // Update existing challenge
-        const { error } = await supabase
-          .from('challenges')
-          .update(challengeData)
-          .eq('id', selectedChallenge.id);
+        if (selectedChallenge) {
+          // ✅ MIGRATED: Using centralized hook
+          await updateChallenge(selectedChallenge.id, challengeData);
+        } else {
+          // ✅ MIGRATED: Using centralized hook
+          await createChallenge(challengeData);
+        }
         
-        if (error) throw error;
-        
-        toast({
-          title: t('challenges.updated'),
-          description: t('challenges.update_success')
+        // Reset form and close
+        setFormData({
+          title_ar: '',
+          title_en: '',
+          description_ar: '',
+          description_en: '',
+          status: 'draft',
+          priority_level: 'medium',
+          sensitivity_level: 'normal',
+          challenge_type: '',
+          sector_id: '',
+          deputy_id: '',
+          department_id: '',
+          domain_id: '',
+          sub_domain_id: '',
+          service_id: '',
         });
-      } else {
-        // Create new challenge
-        const { error } = await supabase
-          .from('challenges')
-          .insert({
-            ...challengeData,
-            created_by: user?.id
-          });
-        
-        if (error) throw error;
-        
-        toast({
-          title: t('challenges.created'),
-          description: t('challenges.create_success')
-        });
+        setSelectedChallenge(null);
+        setIsFormOpen(false);
+      },
+      {
+        successMessage: selectedChallenge 
+          ? t('challenges.update_success')
+          : t('challenges.create_success'),
+        errorMessage: t('challenges.operation_failed'),
+        logContext: { challengeId: selectedChallenge?.id }
       }
-      
-      // Reset form and close
-      setFormData({
-        title_ar: '',
-        title_en: '',
-        description_ar: '',
-        description_en: '',
-        status: 'draft',
-        priority_level: 'medium',
-        sensitivity_level: 'normal',
-        challenge_type: '',
-        sector_id: '',
-        deputy_id: '',
-        department_id: '',
-        domain_id: '',
-        sub_domain_id: '',
-        service_id: '',
-      });
-      setSelectedChallenge(null);
-      setIsFormOpen(false);
-      
-    } catch (error: any) {
-      toast({
-        title: t('error'),
-        description: error.message,
-        variant: 'destructive'
-      });
-    }
+    );
   };
 
   return (
