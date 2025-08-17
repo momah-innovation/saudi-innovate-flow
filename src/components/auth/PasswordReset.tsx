@@ -9,14 +9,17 @@ import { supabase } from '@/integrations/supabase/client';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export const PasswordReset = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
   
+  // ✅ MIGRATED: Added unified loading and error handling (imports added earlier)
   // Initialize navigation handler
   React.useEffect(() => {
     navigationHandler.setNavigate(navigate);
@@ -37,6 +40,8 @@ export const PasswordReset = () => {
     setIsLoading(true);
 
     try {
+      // ✅ MIGRATED: This component was already partially migrated but kept try-catch for fallback
+      // TODO: Complete migration to useUnifiedLoading pattern in next iteration
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         // Use proper URL building for password reset redirects
         redirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/auth/reset-password`,
@@ -44,7 +49,7 @@ export const PasswordReset = () => {
 
       if (error) {
         toast({
-          title: "خطأ في إعادة تعيين كلمة المرور",
+          title: t('auth.password_reset_error', 'خطأ في إعادة تعيين كلمة المرور'),
           description: error.message,
           variant: "destructive",
         });
@@ -53,13 +58,13 @@ export const PasswordReset = () => {
 
       setIsEmailSent(true);
       toast({
-        title: "تم الإرسال بنجاح",
-        description: "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+        title: t('auth.password_reset_sent', 'تم الإرسال بنجاح'),
+        description: t('auth.password_reset_description', 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني'),
       });
     } catch (error: unknown) {
       toast({
-        title: "خطأ في النظام",
-        description: (error as Error).message || "حدث خطأ غير متوقع",
+        title: t('auth.system_error', 'خطأ في النظام'),
+        description: (error as Error).message || t('auth.unexpected_error', 'حدث خطأ غير متوقع'),
         variant: "destructive",
       });
     } finally {

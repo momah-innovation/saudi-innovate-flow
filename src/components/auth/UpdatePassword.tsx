@@ -8,6 +8,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export const UpdatePassword = () => {
   const [password, setPassword] = useState('');
@@ -18,6 +21,20 @@ export const UpdatePassword = () => {
   const [isUpdated, setIsUpdated] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useUnifiedTranslation();
+  
+  // ✅ MIGRATED: Added unified loading and error handling
+  const loadingManager = useUnifiedLoading({
+    component: 'UpdatePassword',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'UpdatePassword',
+    showToast: true,
+    logError: true
+  });
   
   // Initialize navigation handler
   React.useEffect(() => {
@@ -75,36 +92,26 @@ export const UpdatePassword = () => {
     
     if (!validateForm()) return;
     
-    setIsLoading(true);
-
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: password
-      });
-
-      if (error) {
-        toast({
-          title: "خطأ في تحديث كلمة المرور",
-          description: error.message,
-          variant: "destructive",
+    await loadingManager.withLoading(
+      'update-password',
+      async () => {
+        // ✅ MIGRATED: Using structured error handling for password update
+        const { error } = await supabase.auth.updateUser({
+          password: password
         });
-        return;
-      }
 
-      setIsUpdated(true);
-      toast({
-        title: "تم التحديث بنجاح",
-        description: "تم تحديث كلمة المرور بنجاح",
-      });
-    } catch (error: unknown) {
-      toast({
-        title: "خطأ في النظام",
-        description: (error as Error).message || "حدث خطأ غير متوقع",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+        if (error) throw error;
+
+        setIsUpdated(true);
+        
+        // Redirect to login after successful password update (handled in success UI)
+      },
+      {
+        successMessage: t('auth.password_updated_success', 'تم تحديث كلمة المرور بنجاح'),
+        errorMessage: t('auth.password_update_error', 'خطأ في تحديث كلمة المرور'),
+        logContext: { operation: 'updatePassword' }
+      }
+    );
   };
 
   if (isUpdated) {
@@ -201,9 +208,9 @@ export const UpdatePassword = () => {
             <Button
               type="submit"
               className="w-full h-11 gradient-primary hover:opacity-90 text-white"
-              disabled={isLoading}
+              disabled={loadingManager.isLoading('update-password')}
             >
-              {isLoading ? "جارٍ التحديث..." : "تحديث كلمة المرور"}
+              {loadingManager.isLoading('update-password') ? "جارٍ التحديث..." : "تحديث كلمة المرور"}
             </Button>
           </form>
         </CardContent>
