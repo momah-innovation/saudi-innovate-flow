@@ -14,6 +14,8 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { cn } from '@/lib/utils';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
@@ -39,7 +41,13 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
   const { isRTL } = useDirection();
   const { user } = useAuth();
   const [recommendations, setRecommendations] = useState<RecommendedEvent[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'EventRecommendations',
+    showToast: true,
+    logErrors: true
+  });
 
   useEffect(() => {
     if (user) {
@@ -50,65 +58,65 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
   const loadRecommendations = async () => {
     if (!user) return;
     
-    try {
-      setLoading(true);
-      
-      // Get user's recommended events
-      const { data: recommended, error } = await supabase
-        .from('event_recommendations')
-        .select(`
-          recommendation_score,
-          reason,
-          events!fk_event_recommendations_event_id(
-            id,
-            title_ar,
-            description_ar,
-            event_date,
-            event_type,
-            registered_participants,
-            image_url
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('recommendation_score', { ascending: false })
-        .limit(6);
-
-      if (error) throw error;
-
-      // If no personalized recommendations, get trending events
-      if (!recommended || recommended.length === 0) {
-        const { data: trending, error: trendingError } = await supabase
-          .from('events')
-          .select('*')
-          .gte('event_date', new Date().toISOString())
-          .order('registered_participants', { ascending: false })
+    const result = await withLoading(
+      'load-recommendations',
+      async () => {
+        // Get user's recommended events
+        const { data: recommended, error } = await supabase
+          .from('event_recommendations')
+          .select(`
+            recommendation_score,
+            reason,
+            events!fk_event_recommendations_event_id(
+              id,
+              title_ar,
+              description_ar,
+              event_date,
+              event_type,
+              registered_participants,
+              image_url
+            )
+          `)
+          .eq('user_id', user.id)
+          .order('recommendation_score', { ascending: false })
           .limit(6);
 
-        if (trendingError) throw trendingError;
+        if (error) throw error;
 
-        const trendingRecommendations = trending?.map(event => ({
-          ...event,
-          recommendation_score: 0.8,
-          reason: isRTL ? 'فعالية رائجة' : 'Trending Event'
-        })) || [];
+        // If no personalized recommendations, get trending events
+        if (!recommended || recommended.length === 0) {
+          const { data: trending, error: trendingError } = await supabase
+            .from('events')
+            .select('*')
+            .gte('event_date', new Date().toISOString())
+            .order('registered_participants', { ascending: false })
+            .limit(6);
 
-        setRecommendations(trendingRecommendations);
-      } else {
-        const formattedRecommendations = recommended.map(item => ({
-          ...(item.events as any),
-          recommendation_score: item.recommendation_score,
-          reason: item.reason
-        }));
-        setRecommendations(formattedRecommendations);
+          if (trendingError) throw trendingError;
+
+          const trendingRecommendations = trending?.map(event => ({
+            ...event,
+            recommendation_score: 0.8,
+            reason: isRTL ? 'فعالية رائجة' : 'Trending Event'
+          })) || [];
+
+          return trendingRecommendations;
+        } else {
+          const formattedRecommendations = recommended.map(item => ({
+            ...(item.events as any),
+            recommendation_score: item.recommendation_score,
+            reason: item.reason
+          }));
+          return formattedRecommendations;
+        }
+      },
+      {
+        errorMessage: 'Failed to load event recommendations'
       }
-    } catch (error) {
-      logger.error('Error loading recommendations', { 
-        component: 'EventRecommendations', 
-        action: 'loadRecommendations',
-        userId: user?.id
-      }, error as Error);
-    } finally {
-      setLoading(false);
+    );
+
+    if (result) {
+      setRecommendations(result);
     }
   };
 
@@ -126,7 +134,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
     return 'text-primary';
   };
 
-  if (loading) {
+  if (isLoading()) {
     return (
       <div className={`space-y-4 ${className}`}>
         <div className="flex items-center gap-2 mb-4">

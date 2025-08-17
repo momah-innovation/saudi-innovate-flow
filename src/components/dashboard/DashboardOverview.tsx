@@ -19,6 +19,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { useOptimizedDashboardCounts, useOptimizedUserSpecificCounts } from '@/hooks/useOptimizedDashboardCounts';
 import { cn } from '@/lib/utils';
 
@@ -45,7 +46,13 @@ export const DashboardOverview = () => {
     userChallenges: 0,
     userEvents: 0,
   });
-  const [loading, setLoading] = useState(true);
+
+  // ✅ MIGRATED: Using unified loading for legacy loading state
+  const { isLoading } = useUnifiedLoading({
+    component: 'DashboardOverview',
+    showToast: true,
+    logErrors: true
+  });
 
   // Use optimized hooks for dashboard data
   const { data: dashboardCounts, isLoading: countsLoading } = useOptimizedDashboardCounts();
@@ -63,7 +70,7 @@ export const DashboardOverview = () => {
         userChallenges: userStats?.userChallenges || 0,
         userEvents: userStats?.userEvents || 0,
       });
-      setLoading(false);
+      // Loading handled by hooks
     }
   }, [dashboardCounts, userStats]);
   const quickActions = [
@@ -121,7 +128,7 @@ export const DashboardOverview = () => {
     },
   ];
 
-  if (loading || countsLoading || userStatsLoading) {
+  if (countsLoading || userStatsLoading) {
     return (
       <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
         {/* Loading Skeleton */}

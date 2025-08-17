@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
@@ -51,7 +53,13 @@ export const ChallengeExpertAssignmentWizard = ({
   const [experts, setExperts] = useState<Expert[]>([]);
   const [selectedExperts, setSelectedExperts] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'ChallengeExpertAssignmentWizard',
+    showToast: true,
+    logErrors: true
+  });
 
   useEffect(() => {
     if (open) {
@@ -105,48 +113,43 @@ export const ChallengeExpertAssignmentWizard = ({
       return;
     }
 
-    setLoading(true);
+    const result = await withLoading(
+      'assign-experts',
+      async () => {
+        const assignments = selectedExperts.map(expertId => {
+          const expert = experts.find(e => e.id === expertId);
+          return {
+            challenge_id: challenge.id,
+            expert_id: expert?.user_id,
+            role_type: 'evaluator',
+            status: 'active'
+          };
+        });
 
-    try {
-      const assignments = selectedExperts.map(expertId => {
-        const expert = experts.find(e => e.id === expertId);
-        return {
-          challenge_id: challenge.id,
-          expert_id: expert?.user_id,
-          role_type: 'evaluator',
-          status: 'active'
-        };
-      });
+        const { error } = await supabase
+          .from('challenge_experts')
+          .insert(assignments);
 
-      const { error } = await supabase
-        .from('challenge_experts')
-        .insert(assignments);
+        if (error) throw error;
 
-      if (error) throw error;
+        toast({
+          title: isRTL ? 'تم التعيين بنجاح' : 'Assignment Successful',
+          description: isRTL ? 
+            `تم تعيين ${selectedExperts.length} خبير للتحدي` : 
+            `Successfully assigned ${selectedExperts.length} expert(s) to the challenge`,
+        });
 
-      toast({
-        title: isRTL ? 'تم التعيين بنجاح' : 'Assignment Successful',
-        description: isRTL ? 
-          `تم تعيين ${selectedExperts.length} خبير للتحدي` : 
-          `Successfully assigned ${selectedExperts.length} expert(s) to the challenge`,
-      });
+        return true;
+      },
+      {
+        errorMessage: isRTL ? 'فشل في تعيين الخبراء' : 'Failed to assign experts'
+      }
+    );
 
+    if (result) {
       onAssignmentComplete?.();
       onOpenChange(false);
       setSelectedExperts([]);
-    } catch (error) {
-      logger.error('Error assigning experts', { 
-        component: 'ChallengeExpertAssignmentWizard', 
-        action: 'handleAssignExperts',
-        data: { challengeId: challenge.id, selectedExperts }
-      }, error as Error);
-      toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تعيين الخبراء' : 'Failed to assign experts',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -251,14 +254,14 @@ export const ChallengeExpertAssignmentWizard = ({
             </Button>
             <Button 
               onClick={handleAssignExperts}
-              disabled={loading || selectedExperts.length === 0}
+              disabled={isLoading('assign-experts') || selectedExperts.length === 0}
               className={cn(
                 challengesPageConfig.ui.gradients.button,
                 challengesPageConfig.ui.gradients.buttonHover,
                 challengesPageConfig.ui.effects.hoverScale
               )}
             >
-              {loading ? (
+              {isLoading('assign-experts') ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                   {isRTL ? 'جاري التعيين...' : 'Assigning...'}
