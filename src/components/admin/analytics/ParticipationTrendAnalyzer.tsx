@@ -19,11 +19,11 @@ export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnal
   const { t } = useUnifiedTranslation();
   const [selectedMetric, setSelectedMetric] = useState("participants");
   const [trendData, setTrendData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
   
   const { user } = useAuth();
   
-  const loadingManager = useUnifiedLoading({
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
     component: 'ParticipationTrendAnalyzer',
     showToast: true,
     logErrors: true
@@ -42,9 +42,7 @@ export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnal
   const loadParticipationData = async () => {
     if (!user?.id) return;
     
-    setError(null);
-    
-    const result = await loadingManager.withLoading(
+    const result = await withLoading(
       'load-participation-data',
       async () => {
         const data = await challengeAnalyticsService.getParticipationTrends(user.id, timeRange);
@@ -75,7 +73,7 @@ export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnal
     retentionRate: 78.4
   };
 
-  if (loadingManager.hasAnyLoading) {
+  if (isLoading()) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>

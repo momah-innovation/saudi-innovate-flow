@@ -20,11 +20,11 @@ export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsPr
   const { t } = useUnifiedTranslation();
   const [selectedView, setSelectedView] = useState("duration");
   const [viewingData, setViewingData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
   
   const { user } = useAuth();
   
-  const loadingManager = useUnifiedLoading({
+  // ✅ MIGRATED: Using unified loading and error handling  
+  const { isLoading, withLoading } = useUnifiedLoading({
     component: 'ViewingSessionAnalytics',
     showToast: true,
     logErrors: true
@@ -43,9 +43,7 @@ export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsPr
   const loadAnalyticsData = async () => {
     if (!user?.id) return;
     
-    setError(null);
-    
-    const result = await loadingManager.withLoading(
+    const result = await withLoading(
       'load-analytics-data',
       async () => {
         const data = await challengeAnalyticsService.getViewingSessionAnalytics(user.id, timeRange);
@@ -86,7 +84,7 @@ export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsPr
   const pageViews = viewingData?.pageViews || [];
   const userJourney = viewingData?.userJourney || [];
 
-  if (loadingManager.hasAnyLoading) {
+  if (isLoading()) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
