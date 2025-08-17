@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { Eye, EyeOff, Mail, Lock, User, Shield, Building2, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
@@ -25,7 +27,6 @@ export const Auth = () => {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<AuthFormData>({
     email: '',
     password: '',
@@ -37,6 +38,14 @@ export const Auth = () => {
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  // Initialize unified loading and error handling
+  const loadingManager = useUnifiedLoading({ 
+    component: 'Auth',
+    showToast: true,
+    logErrors: true 
+  });
+  const errorHandler = createErrorHandler({ component: 'Auth' });
   
   // Initialize navigation handler
   React.useEffect(() => {
@@ -94,10 +103,8 @@ export const Auth = () => {
     e.preventDefault();
     
     if (!validateForm()) return;
-    
-    setIsLoading(true);
 
-    try {
+    const operation = async () => {
       if (activeTab === 'login') {
         const { error } = await signIn(formData.email, formData.password);
         if (!error) {
@@ -109,15 +116,19 @@ export const Auth = () => {
           name: formData.fullName!
         });
       }
-    } catch (error: unknown) {
-      toast({
-        title: t('auth.operation_error'),
-        description: (error as Error).message || t('auth.unexpected_error'),
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    };
+
+    await loadingManager.withLoading(
+      'auth_submit',
+      operation,
+      {
+        errorMessage: t('auth.operation_error'),
+        logContext: { 
+          action: activeTab,
+          email: formData.email 
+        }
+      }
+    );
   };
 
   const SecurityBadges = () => (
@@ -299,9 +310,9 @@ export const Auth = () => {
               <Button
                 type="submit"
                 className="w-full h-11 gradient-primary hover:opacity-90 text-primary-foreground"
-                disabled={isLoading}
+                disabled={loadingManager.isLoading('auth_submit')}
               >
-                {isLoading ? t('auth.loading') : activeTab === 'login' ? t('auth.login') : t('auth.create_account_button')}
+                {loadingManager.isLoading('auth_submit') ? t('auth.loading') : activeTab === 'login' ? t('auth.login') : t('auth.create_account_button')}
               </Button>
 
               {activeTab === 'login' && (

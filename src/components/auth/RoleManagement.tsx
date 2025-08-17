@@ -15,6 +15,8 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   Shield, 
   Users, 
@@ -158,6 +160,14 @@ interface RoleManagementProps {
 
 export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) => {
   const { t } = useUnifiedTranslation();
+  
+  // Initialize unified loading and error handling
+  const loadingManager = useUnifiedLoading({ 
+    component: 'RoleManagement',
+    showToast: true,
+    logErrors: true 
+  });
+  const errorHandler = createErrorHandler({ component: 'RoleManagement' });
 
   // Dynamic role hierarchy with translations
   const ROLE_HIERARCHY = {
@@ -220,25 +230,25 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
   const { toast } = useToast();
 
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
-    try {
+    const operation = async () => {
       // API call would go here
       setUsers(prev => prev.map(user => 
         user.id === userId ? { ...user, role: newRole } : user
       ));
       
       onRoleUpdate?.(userId, newRole);
-      
-      toast({
-        title: t('roles.update.success.title', 'Role Updated'),
-        description: t('roles.update.success.description', 'User role has been successfully updated'),
-      });
-    } catch (error) {
-      toast({
-        title: t('roles.update.error.title', 'Update Error'),
-        description: t('roles.update.error.description', 'An error occurred while updating user role'),
-        variant: "destructive"
-      });
-    }
+      return { success: true };
+    };
+
+    const result = await loadingManager.withLoading(
+      'role_update',
+      operation,
+      {
+        successMessage: t('roles.update.success.description', 'User role has been successfully updated'),
+        errorMessage: t('roles.update.error.description', 'An error occurred while updating user role'),
+        logContext: { userId, newRole }
+      }
+    );
   };
 
   const filteredUsers = users.filter(user => {

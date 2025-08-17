@@ -7,6 +7,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { Shield, UserPlus, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { Database } from '@/integrations/supabase/types';
@@ -31,10 +33,17 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
   const { userProfile, hasRole } = useAuth();
   const { toast } = useToast();
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [newRole, setNewRole] = useState('');
   const [justification, setJustification] = useState('');
   const [expirationDays, setExpirationDays] = useState('30');
+  
+  // Initialize unified loading and error handling
+  const loadingManager = useUnifiedLoading({ 
+    component: 'RoleManager',
+    showToast: true,
+    logErrors: true 
+  });
+  const errorHandler = createErrorHandler({ component: 'RoleManager' });
 
   const availableRoles: AppRole[] = [
     'innovator', 'expert', 'partner', 'stakeholder', 'mentor', 'admin', 'super_admin', 
@@ -99,7 +108,7 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
   const fetchUserRoles = async () => {
     if (!userId) return;
 
-    try {
+    const operation = async () => {
       const { data, error } = await supabase
         .from('user_roles')
         .select('*')
@@ -108,13 +117,17 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
 
       if (error) throw error;
       setUserRoles(data || []);
-    } catch (error: unknown) {
-      toast({
-        title: "خطأ في تحميل الأدوار",
-        description: (error as Error).message,
-        variant: "destructive",
-      });
-    }
+      return data;
+    };
+
+    await loadingManager.withLoading(
+      'fetch_roles',
+      operation,
+      {
+        errorMessage: 'خطأ في تحميل الأدوار',
+        logContext: { userId }
+      }
+    );
   };
 
   const assignRole = async () => {
@@ -127,8 +140,7 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
       return;
     }
 
-    setIsLoading(true);
-    try {
+    const operation = async () => {
       const expiresAt = expirationDays !== 'never' ? 
         new Date(Date.now() + parseInt(expirationDays) * 24 * 60 * 60 * 1000).toISOString() : 
         null;
@@ -142,30 +154,27 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
 
       if (error) throw error;
 
-      toast({
-        title: "تم تعيين الدور بنجاح",
-        description: `تم تعيين دور ${roleDescriptions[newRole]} للمستخدم`,
-      });
-
       setNewRole('');
       setJustification('');
       setExpirationDays('30');
       await fetchUserRoles();
       onRoleChange?.();
-    } catch (error: unknown) {
-      toast({
-        title: "خطأ في تعيين الدور",
-        description: (error as Error).message,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+      return { success: true };
+    };
+
+    await loadingManager.withLoading(
+      'assign_role',
+      operation,
+      {
+        successMessage: `تم تعيين دور ${roleDescriptions[newRole]} للمستخدم`,
+        errorMessage: 'خطأ في تعيين الدور',
+        logContext: { userId, newRole, expirationDays }
+      }
+    );
   };
 
   const revokeRole = async (roleId: string) => {
-    setIsLoading(true);
-    try {
+    const operation = async () => {
       const { error } = await supabase
         .from('user_roles')
         .update({ is_active: false })
@@ -173,22 +182,20 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
 
       if (error) throw error;
 
-      toast({
-        title: "تم إلغاء الدور بنجاح",
-        description: "تم إلغاء الدور من المستخدم",
-      });
-
       await fetchUserRoles();
       onRoleChange?.();
-    } catch (error: unknown) {
-      toast({
-        title: "خطأ في إلغاء الدور",
-        description: (error as Error).message,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+      return { success: true };
+    };
+
+    await loadingManager.withLoading(
+      'revoke_role',
+      operation,
+      {
+        successMessage: 'تم إلغاء الدور بنجاح',
+        errorMessage: 'خطأ في إلغاء الدور',
+        logContext: { roleId, userId }
+      }
+    );
   };
 
   const getRoleBadgeVariant = (role: AppRole, isActive: boolean) => {
@@ -272,7 +279,7 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
                       size="sm"
                       variant="outline"
                       onClick={() => revokeRole(userRole.id)}
-                      disabled={isLoading}
+                      disabled={loadingManager.isLoading('revoke_role')}
                       className="hover:bg-destructive hover:text-destructive-foreground"
                     >
                       إلغاء
@@ -343,10 +350,10 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
 
             <Button
               onClick={assignRole}
-              disabled={isLoading || !newRole || !justification.trim()}
+              disabled={loadingManager.isLoading('assign_role') || !newRole || !justification.trim()}
               className="w-full"
             >
-              {isLoading ? "جارٍ التعيين..." : "تعيين الدور"}
+              {loadingManager.isLoading('assign_role') ? "جارٍ التعيين..." : "تعيين الدور"}
             </Button>
           </CardContent>
         </Card>
