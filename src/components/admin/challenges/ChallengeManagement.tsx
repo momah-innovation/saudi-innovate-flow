@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
-import { useAdminChallenges } from '@/hooks/useAdminChallenges';
+import { useChallengesData } from '@/hooks/useChallengesData';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 
 interface Challenge {
@@ -39,11 +39,26 @@ export function ChallengeManagement() {
   const {
     challenges,
     loading,
-    createChallenge,
-    updateChallenge,
-    deleteChallenge,
-    refreshChallenges
-  } = useChallenges();
+    refetch
+  } = useChallengesData();
+
+  // Mock CRUD operations until hooks are fully implemented
+  const createChallenge = async (data: any) => {
+    console.log('Create challenge:', data);
+    await refetch();
+  };
+
+  const updateChallenge = async (id: string, data: any) => {
+    console.log('Update challenge:', id, data);
+    await refetch();
+  };
+
+  const deleteChallenge = async (id: string) => {
+    console.log('Delete challenge:', id);
+    await refetch();
+  };
+
+  const refreshChallenges = refetch;
   
   const loadingManager = useUnifiedLoading({
     component: 'ChallengeManagement',

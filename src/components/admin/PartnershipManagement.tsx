@@ -6,10 +6,10 @@ import { Handshake, BarChart3, Settings, Plus, Building, Users } from 'lucide-re
 import { PageLayout } from '@/components/layout/PageLayout';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useRelationshipData } from '@/hooks/useRelationshipData';
+import { useRelationshipData, RelationshipItem } from '@/hooks/useRelationshipData';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 // ✅ MIGRATED: Using unified error handling pattern
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable, Column } from '@/components/ui/data-table';
 import { Badge } from '@/components/ui/badge';
 
 interface Partnership {
@@ -51,34 +51,24 @@ export function PartnershipManagement() {
     loadRelationships();
   }, [loadRelationships]);
 
-  const partnershipColumns = [
+  const partnershipColumns: Column<RelationshipItem>[] = [
     {
-      key: 'name' as keyof any,
+      key: 'name',
       title: t('partnerships.name'),
-      accessorKey: 'name',
-      header: t('partnerships.name'),
     },
     {
-      key: 'type' as keyof any,
+      key: 'type',
       title: t('partnerships.type'),
-      accessorKey: 'type',
-      header: t('partnerships.type'),
-      cell: ({ row }: any) => {
-        return (
-          <Badge variant="outline">
-            {row.original.type}
-          </Badge>
-        );
-      },
+      render: (value: string) => (
+        <Badge variant="outline">
+          {value}
+        </Badge>
+      ),
     },
     {
-      key: 'created_at' as keyof any,
+      key: 'created_at',
       title: t('partnerships.created_at'),
-      accessorKey: 'created_at',
-      header: t('partnerships.created_at'),
-      cell: ({ row }: any) => {
-        return new Date(row.original.created_at).toLocaleDateString();
-      },
+      render: (value: string) => new Date(value).toLocaleDateString(),
     },
   ];
 
@@ -96,7 +86,7 @@ export function PartnershipManagement() {
         columns={partnershipColumns}
         data={partnerships || []}
         loading={loading}
-        searchPlaceholder={t('partnerships.search_placeholder')}
+        searchable={true}
       />
     </div>
   );

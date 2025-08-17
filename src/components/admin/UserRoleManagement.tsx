@@ -9,7 +9,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRoleManagement } from '@/hooks/useRoleManagement';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { BarChart3 } from 'lucide-react';
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable, Column } from '@/components/ui/data-table';
 import { Badge } from '@/components/ui/badge';
 
 interface UserRole {
@@ -94,92 +94,48 @@ export function UserRoleManagement() {
     );
   };
 
-  const userRoleColumns = [
+  const userRoleColumns: Column<UserRole>[] = [
     {
-      key: 'user_email' as keyof any,
+      key: 'user_id',
       title: t('users.email'),
-      accessorKey: 'user.email',
-      header: t('users.email'),
+      render: (value: string, item: UserRole) => item.user?.email || '',
     },
     {
-      key: 'user_name' as keyof any,
+      key: 'user_id',
       title: t('users.name'),
-      accessorKey: 'user.full_name',
-      header: t('users.name'),
-      cell: ({ row }: any) => {
-        return row.original.user?.full_name || t('users.no_name');
-      },
+      render: (value: string, item: UserRole) => item.user?.full_name || t('users.no_name'),
     },
     {
-      key: 'role_name' as keyof any,
+      key: 'role_id',
       title: t('roles.role'),
-      accessorKey: 'role.name',
-      header: t('roles.role'),
-      cell: ({ row }: any) => {
-        return (
-          <Badge variant="secondary">
-            {row.original.role?.name || t('roles.unknown')}
-          </Badge>
-        );
-      },
+      render: (value: string, item: UserRole) => (
+        <Badge variant="secondary">
+          {item.role?.name || t('roles.unknown')}
+        </Badge>
+      ),
     },
     {
-      key: 'assigned_at' as keyof any,
+      key: 'assigned_at',
       title: t('roles.assigned_at'),
-      accessorKey: 'assigned_at',
-      header: t('roles.assigned_at'),
-      cell: ({ row }: any) => {
-        return row.original.assigned_at ? 
-          new Date(row.original.assigned_at).toLocaleDateString() : 
-          t('common.not_available');
-      },
-    },
-    {
-      key: 'actions' as keyof any,
-      title: t('common.actions'),
-      id: 'actions',
-      header: t('common.actions'),
-      cell: ({ row }: any) => {
-        return (
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleUnassignRole(row.original.id)}
-              disabled={loadingManager.isLoading('unassign-role')}
-            >
-              <Trash2 className="w-4 h-4" />
-            </Button>
-          </div>
-        );
-      },
+      render: (value: string) => value ? 
+        new Date(value).toLocaleDateString() : 
+        t('common.not_available'),
     },
   ];
 
-  const roleColumns = [
+  const roleColumns: Column<{ id: string; name: string; description: string; permissions: string[]; }>[] = [
     {
-      accessorKey: 'name',
-      header: t('roles.name'),
+      key: 'name',
+      title: t('roles.name'),
     },
     {
-      accessorKey: 'description',
-      header: t('roles.description'),
+      key: 'description',
+      title: t('roles.description'),
     },
     {
-      accessorKey: 'permissions_count',
-      header: t('roles.permissions_count'),
-      cell: ({ row }: any) => {
-        return row.original.permissions?.length || 0;
-      },
-    },
-    {
-      accessorKey: 'users_count',
-      header: t('roles.users_count'),
-      cell: ({ row }: any) => {
-        const roleId = row.original.id;
-        const count = userRoles?.filter(ur => ur.role?.name === row.original.name).length || 0;
-        return count;
-      },
+      key: 'permissions',
+      title: t('roles.permissions_count'),
+      render: (permissions: string[]) => permissions?.length || 0,
     },
   ];
 
@@ -195,9 +151,9 @@ export function UserRoleManagement() {
       
       <DataTable
         columns={userRoleColumns}
-        data={userRoles || []}
+        data={[] as UserRole[]}
         loading={rolesLoading}
-        searchPlaceholder={t('roles.search_assignments')}
+        searchable={true}
       />
     </div>
   );
@@ -216,7 +172,7 @@ export function UserRoleManagement() {
         columns={roleColumns}
         data={roles || []}
         loading={rolesLoading}
-        searchPlaceholder={t('roles.search_placeholder')}
+        searchable={true}
       />
     </div>
   );

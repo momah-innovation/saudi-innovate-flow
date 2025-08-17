@@ -6,9 +6,9 @@ import { Calendar, BarChart3, Settings, Plus } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { AdminBreadcrumb } from '@/components/layout/AdminBreadcrumb';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useAdminEvents } from '@/hooks/useAdminEvents';
+import { useEventsData } from '@/hooks/useEventsData';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable, Column } from '@/components/ui/data-table';
 
 interface Event {
   id: string;
@@ -39,7 +39,7 @@ export function EventManagement() {
     updateEvent: updateAdminEvent,
     deleteEvent: deleteAdminEvent,
     refreshEvents
-  } = useEvents();
+  } = useEventsData();
   
   const loadingManager = useUnifiedLoading({
     component: 'EventManagement',
@@ -51,39 +51,27 @@ export function EventManagement() {
     refreshEvents();
   }, [refreshEvents]);
 
-  const columns = [
+  const columns: Column<Event>[] = [
     {
-      key: 'title_ar' as keyof any,
+      key: 'title_ar',
       title: t('events.title'),
-      accessorKey: 'title_ar',
-      header: t('events.title'),
     },
     {
-      key: 'event_type' as keyof any,
+      key: 'event_type',
       title: t('events.type'),
-      accessorKey: 'event_type',
-      header: t('events.type'),
     },
     {
-      key: 'status' as keyof any,
+      key: 'status',
       title: t('events.status'),
-      accessorKey: 'status',
-      header: t('events.status'),
     },
     {
-      key: 'start_date' as keyof any,
+      key: 'start_date',
       title: t('events.start_date'),
-      accessorKey: 'start_date',
-      header: t('events.start_date'),
-      cell: ({ row }: any) => {
-        return new Date(row.original.start_date).toLocaleDateString();
-      },
+      render: (value: string) => new Date(value).toLocaleDateString(),
     },
     {
-      key: 'capacity' as keyof any,
+      key: 'capacity',
       title: t('events.capacity'),
-      accessorKey: 'capacity',
-      header: t('events.capacity'),
     },
   ];
 
