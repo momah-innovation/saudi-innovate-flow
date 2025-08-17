@@ -202,7 +202,7 @@ export function useScheduleData() {
       setLoading(true);
       setEvents(prev => prev.filter(event => event.id !== id));
     } catch (error) {
-      errorHandler.handleError(error, 'useScheduleData', 'deleteEvent');
+      console.error('Error deleting event:', error);
       throw error;
     } finally {
       setLoading(false);
@@ -223,7 +223,7 @@ export function useScheduleData() {
       setCalendars(prev => [...prev, newCalendar]);
       return newCalendar;
     } catch (error) {
-      errorHandler.handleError(error, 'useScheduleData', 'createCalendar');
+      console.error('Error creating calendar:', error);
       throw error;
     } finally {
       setLoading(false);
@@ -254,7 +254,7 @@ export function useScheduleData() {
 
       return { success: true, bookingId: Date.now().toString() };
     } catch (error) {
-      errorHandler.handleError(error, 'useScheduleData', 'bookResource');
+      console.error('Error booking resource:', error);
       throw error;
     } finally {
       setLoading(false);
