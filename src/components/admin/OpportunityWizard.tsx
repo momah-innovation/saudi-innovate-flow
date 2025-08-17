@@ -9,10 +9,11 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
-import { logger } from "@/utils/error-handler";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Opportunity } from "@/types";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 
 export interface OpportunityFormData {
   title: string;
@@ -85,7 +86,12 @@ export function OpportunityWizard({
   
   const [departments, setDepartments] = useState<DepartmentData[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'OpportunityWizard',
+    showToast: true,
+    logErrors: true,
+    timeout: 30000
+  });
 
   // Opportunity type options from settings
   const opportunityTypeOptionsData = getSettingValue('opportunity_type_options', []) as string[];
@@ -191,12 +197,16 @@ export function OpportunityWizard({
     return Object.keys(newErrors).length === 0;
   };
 
+  const errorHandler = createErrorHandler({
+    component: 'OpportunityWizard',
+    showToast: false,
+    logError: true
+  });
+
   const handleSave = async () => {
-    setIsLoading(true);
     setErrors({});
     
-    try {
-      // Convert formData to match hook interface
+    const result = await withLoading('save', async () => {
       const opportunityData = {
         ...formData,
         title_ar: formData.title,
@@ -207,26 +217,19 @@ export function OpportunityWizard({
 
       if (opportunity) {
         await updateOpportunity(opportunity.id, opportunityData);
+        return 'update';
       } else {
         await createOpportunity(opportunityData);
+        return 'create';
       }
+    }, {
+      successMessage: opportunity ? t('opportunity.save_success_description') : t('opportunity.save_success_description'),
+      errorMessage: opportunity ? t('opportunity_wizard.save_error_description') : t('opportunity_wizard.save_error_description'),
+      logContext: { opportunityId: opportunity?.id, type: formData.type }
+    });
 
-      toast({
-        title: t('opportunity.save_success'),
-        description: t('opportunity.save_success_description'),
-      });
-
+    if (result) {
       onSave();
-    } catch (error) {
-      logger.error('Failed to save opportunity', error);
-      
-      toast({
-        title: t('opportunity_wizard.save_error_title'),
-        description: error instanceof Error ? error.message : t('opportunity_wizard.save_error_description'),
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
     }
   };
 

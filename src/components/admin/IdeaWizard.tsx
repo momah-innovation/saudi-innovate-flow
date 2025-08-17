@@ -13,6 +13,8 @@ import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { IdeaFormData, SystemLists } from "@/types";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 
 interface Challenge {
   id: string;
@@ -112,7 +114,12 @@ export function IdeaWizard({
   const [events, setEvents] = useState<Event[]>([]);
   const [innovators, setInnovators] = useState<Innovator[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'IdeaWizard',
+    showToast: true,
+    logErrors: true,
+    timeout: 30000
+  });
 
   // Status options from system lists
   const statusOptions = generalStatusOptions.map(status => ({ 
@@ -237,17 +244,22 @@ export function IdeaWizard({
     return Object.keys(newErrors).length === 0;
   };
 
+  const errorHandler = createErrorHandler({
+    component: 'IdeaWizard',
+    showToast: false,
+    logError: true
+  });
+
   const handleSave = async () => {
-    setIsLoading(true);
     setErrors({});
     
-    try {
+    const result = await withLoading('save', async () => {
       const ideaData = {
         title_ar: formData.title_ar.trim(),
         description_ar: formData.description_ar.trim(),
         status: formData.status,
         maturity_level: formData.maturity_level,
-        innovator_id: formData.innovator_id, // Now correctly references innovators.id
+        innovator_id: formData.innovator_id,
         challenge_id: formData.challenge_id && formData.challenge_id.trim() !== "" ? formData.challenge_id : null,
         focus_question_id: formData.focus_question_id && formData.focus_question_id.trim() !== "" ? formData.focus_question_id : null,
         solution_approach: formData.solution_approach.trim() || null,
@@ -257,44 +269,21 @@ export function IdeaWizard({
       };
 
       if (idea?.id) {
-        // Update existing idea
         await updateIdea(idea.id, ideaData);
-        
-        toast({
-          title: t('idea_wizard.update_success_title'),
-          description: t('idea_wizard.update_success_description'),
-        });
+        return 'update';
       } else {
-        // Create new idea
         await createIdea(ideaData);
-        
-        toast({
-          title: t('idea_wizard.create_success_title'),
-          description: t('idea_wizard.create_success_description'),
-        });
+        return 'create';
       }
+    }, {
+      successMessage: idea?.id ? t('idea_wizard.update_success_description') : t('idea_wizard.create_success_description'),
+      errorMessage: idea?.id ? t('idea_wizard.save_error_description') : t('idea_wizard.save_error_description'),
+      logContext: { ideaId: idea?.id, status: formData.status, maturityLevel: formData.maturity_level }
+    });
 
+    if (result) {
       onSave();
       onClose();
-    } catch (error: Error | unknown) {
-      // Failed to save idea - show error to user
-      
-      // Handle specific database errors
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      
-      if (errorMessage.includes('duplicate')) {
-        setErrors({ title_ar: t('idea_wizard.duplicate_title_error') });
-      } else if (errorMessage.includes('constraint')) {
-        setErrors({ general: t('idea_wizard.constraint_error') });
-      } else {
-        toast({
-          title: t('idea_wizard.save_error_title'),
-          description: errorMessage || t('idea_wizard.save_error_description'),
-          variant: "destructive",
-        });
-      }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -693,7 +682,7 @@ export function IdeaWizard({
       onClose={() => {
         onClose();
         setErrors({});
-        setIsLoading(false);
+        
       }}
       title={idea ? t('idea_wizard.edit_title') : t('idea_wizard.create_title')}
       steps={steps}

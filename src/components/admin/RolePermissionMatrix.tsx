@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRoleManagement } from '@/hooks/useRoleManagement';
-// Mock data for roles since the proper interface isn't available
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   Shield, 
   Users, 
@@ -28,6 +29,18 @@ interface RolePermissionMatrixProps {
 export function RolePermissionMatrix({ className }: RolePermissionMatrixProps) {
   const { t, language } = useUnifiedTranslation();
   const { userRoles, loading: rolesLoading } = useRoleManagement();
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'RolePermissionMatrix',
+    showToast: true,
+    logErrors: true,
+    timeout: 15000
+  });
+  
+  const errorHandler = createErrorHandler({
+    component: 'RolePermissionMatrix',
+    showToast: true,
+    logError: true
+  });
   
   // Mock roles data with proper interface
   const roles = [
@@ -42,7 +55,7 @@ export function RolePermissionMatrix({ className }: RolePermissionMatrixProps) {
   const [editingRole, setEditingRole] = useState<string | null>(null);
   const [pendingChanges, setPendingChanges] = useState<Record<string, boolean>>({});
 
-  const isLoading = rolesLoading || permissionsLoading;
+  const isComponentLoading = rolesLoading || permissionsLoading || isLoading();
 
   const filteredRoles = roles?.filter(role => 
     role.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -67,16 +80,26 @@ export function RolePermissionMatrix({ className }: RolePermissionMatrixProps) {
       }, {} as Record<string, boolean>);
 
     if (Object.keys(roleChanges).length > 0) {
-      // Mock update - in real implementation would call API
-      // Structured logging: Updating role permissions
-      // Clear pending changes for this role
-      const updatedPendingChanges = { ...pendingChanges };
-      Object.keys(updatedPendingChanges).forEach(key => {
-        if (key.startsWith(roleId)) {
-          delete updatedPendingChanges[key];
-        }
+      const result = await withLoading('savePermissions', async () => {
+        // Mock update - in real implementation would call API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return roleChanges;
+      }, {
+        successMessage: t('permissions.save_success', 'Permissions updated successfully'),
+        errorMessage: t('permissions.save_failed', 'Failed to update permissions'),
+        logContext: { roleId, changesCount: Object.keys(roleChanges).length }
       });
-      setPendingChanges(updatedPendingChanges);
+
+      if (result) {
+        // Clear pending changes for this role
+        const updatedPendingChanges = { ...pendingChanges };
+        Object.keys(updatedPendingChanges).forEach(key => {
+          if (key.startsWith(roleId)) {
+            delete updatedPendingChanges[key];
+          }
+        });
+        setPendingChanges(updatedPendingChanges);
+      }
     }
     setEditingRole(null);
   };
@@ -102,7 +125,7 @@ export function RolePermissionMatrix({ className }: RolePermissionMatrixProps) {
     return Object.keys(pendingChanges).some(key => key.startsWith(roleId));
   };
 
-  if (isLoading) {
+  if (isComponentLoading) {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-muted rounded w-48 animate-pulse"></div>
@@ -192,7 +215,7 @@ export function RolePermissionMatrix({ className }: RolePermissionMatrixProps) {
                         variant="default"
                         size="sm"
                         onClick={() => handleSaveChanges(role.id)}
-                        disabled={!hasChanges(role.id)}
+                        disabled={!hasChanges(role.id) || isLoading('savePermissions')}
                       >
                         <Save className="w-4 h-4" />
                       </Button>

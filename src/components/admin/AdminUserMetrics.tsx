@@ -5,7 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAnalytics } from '@/hooks/useAnalytics';
-// Using existing hooks with proper interfaces
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   Users, 
   UserPlus, 
@@ -27,13 +28,32 @@ export function AdminUserMetrics({ className }: AdminUserMetricsProps) {
   const analyticsLoading = analytics.isLoading || false;
   const userLoading = false;
   
-  const isLoading = analyticsLoading || userLoading;
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'AdminUserMetrics',
+    showToast: true,
+    logErrors: true,
+    timeout: 15000
+  });
+  
+  const errorHandler = createErrorHandler({
+    component: 'AdminUserMetrics',
+    showToast: true,
+    logError: true
+  });
+  
+  const isComponentLoading = analyticsLoading || userLoading || isLoading();
 
   const handleRefresh = async () => {
-    window.location.reload();
+    await withLoading('refresh', async () => {
+      window.location.reload();
+    }, {
+      successMessage: t('metrics.refresh_success', 'Metrics refreshed successfully'),
+      errorMessage: t('metrics.refresh_failed', 'Failed to refresh metrics'),
+      logContext: { action: 'manual_refresh' }
+    });
   };
 
-  if (isLoading) {
+  if (isComponentLoading) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {[...Array(6)].map((_, i) => (
@@ -73,9 +93,9 @@ export function AdminUserMetrics({ className }: AdminUserMetricsProps) {
           variant="outline" 
           size="sm" 
           onClick={handleRefresh}
-          disabled={isLoading}
+          disabled={isComponentLoading || isLoading('refresh')}
         >
-          <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 mr-2 ${isLoading('refresh') ? 'animate-spin' : ''}`} />
           {language === 'ar' ? 'تحديث' : 'Refresh'}
         </Button>
       </div>

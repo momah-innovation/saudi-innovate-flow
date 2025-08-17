@@ -11,7 +11,8 @@ import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { logger } from "@/utils/error-handler";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 
 interface Challenge {
   id: string;
@@ -61,7 +62,12 @@ export function AdminFocusQuestionWizard({
 
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'AdminFocusQuestionWizard',
+    showToast: true,
+    logErrors: true,
+    timeout: 30000
+  });
 
   const { getSettingValue } = useSettingsManager();
 
@@ -106,7 +112,7 @@ export function AdminFocusQuestionWizard({
       // TODO: Use useChallengeList hook when available
       setChallenges([]);
     } catch (error) {
-      logger.error('Error fetching challenges', error);
+      errorHandler.handleError(error, { operation: 'fetchChallenges' });
     }
   };
 
@@ -138,11 +144,16 @@ export function AdminFocusQuestionWizard({
     return Object.keys(newErrors).length === 0;
   };
 
+  const errorHandler = createErrorHandler({
+    component: 'AdminFocusQuestionWizard',
+    showToast: false, // We handle toast manually for better UX
+    logError: true
+  });
+
   const handleSave = async () => {
-    setIsLoading(true);
     setErrors({});
     
-    try {
+    const result = await withLoading('save', async () => {
       const questionData = {
         question_text_ar: formData.question_text_ar.trim(),
         question_text_en: formData.question_text_en?.trim() || null,
@@ -153,41 +164,24 @@ export function AdminFocusQuestionWizard({
       };
 
       if (question?.id) {
-        // Update existing question
         await updateFocusQuestion(question.id, questionData);
-        
-        toast({
-          title: t('success.update_success'),
-          description: t('success.question_updated'),
-        });
+        return 'update';
       } else {
-        // Create new question
         await createFocusQuestion(questionData);
-        
-        toast({
-          title: t('success.create_success'),
-          description: t('success.question_created'),
-        });
+        return 'create';
       }
+    }, {
+      successMessage: question?.id ? t('success.question_updated') : t('success.question_created'),
+      errorMessage: question?.id ? t('error.update_failed') : t('error.create_failed'),
+      logContext: { questionId: question?.id, hasChallenge: !!formData.challenge_id }
+    });
 
-      onSave();
-      onClose();
-    } catch (error: unknown) {
-      // Handle specific database errors using toast notifications
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      if (errorMessage.includes('duplicate')) {
-        setErrors({ question_text_ar: t('error.duplicate_error') });
-      } else if (errorMessage.includes('constraint')) {
-        setErrors({ general: t('error.constraint_error') });
-      } else {
-        toast({
-          title: t('error.validation_error'),
-          description: errorMessage || t('error.save_failed'),
-          variant: "destructive",
-        });
+    if (result) {
+      // Handle specific database errors
+      if (result === 'update' || result === 'create') {
+        onSave();
+        onClose();
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -370,7 +364,7 @@ export function AdminFocusQuestionWizard({
       onClose={() => {
         onClose();
         setErrors({});
-        setIsLoading(false);
+        
       }}
       title={question ? t('admin.focus_questions.edit_title') : t('admin.focus_questions.add_title')}
       steps={steps}
