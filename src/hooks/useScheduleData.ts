@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface ScheduleEvent {
   id: string;
@@ -173,7 +174,7 @@ export function useScheduleData() {
       setEvents(prev => [...prev, newEvent]);
       return newEvent;
     } catch (error) {
-      console.error('Error creating event:', error);
+      debugLog.error('Error creating event', { operation: 'createEvent' }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -190,7 +191,7 @@ export function useScheduleData() {
           : event
       ));
     } catch (error) {
-      console.error('Error updating event:', error);
+      debugLog.error('Error updating event', { operation: 'updateEvent', eventId: id }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -202,7 +203,7 @@ export function useScheduleData() {
       setLoading(true);
       setEvents(prev => prev.filter(event => event.id !== id));
     } catch (error) {
-      console.error('Error deleting event:', error);
+      debugLog.error('Error deleting event', { operation: 'deleteEvent', eventId: id }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -223,7 +224,7 @@ export function useScheduleData() {
       setCalendars(prev => [...prev, newCalendar]);
       return newCalendar;
     } catch (error) {
-      console.error('Error creating calendar:', error);
+      debugLog.error('Error creating calendar', { operation: 'createCalendar' }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -254,7 +255,7 @@ export function useScheduleData() {
 
       return { success: true, bookingId: Date.now().toString() };
     } catch (error) {
-      console.error('Error booking resource:', error);
+      debugLog.error('Error booking resource', { operation: 'bookResource', resourceId }, error as Error);
       throw error;
     } finally {
       setLoading(false);

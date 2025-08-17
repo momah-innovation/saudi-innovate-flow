@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { createErrorHandler } from '@/utils/errorHandler';
+import { debugLog } from '@/utils/debugLogger';
 
 // Audit trail interfaces
 export interface AuditEvent {
@@ -276,7 +277,11 @@ export const useAuditData = (): UseAuditDataReturn => {
         return eventDate >= new Date(startDate) && eventDate <= new Date(endDate);
       });
       
-      console.log(`Exported ${exportData.length} audit events in ${format} format`);
+      debugLog.debug('Exported audit events', { 
+        operation: 'exportAuditData', 
+        count: exportData.length, 
+        format 
+      });
     } catch (err) {
       errorHandler.handleError(err as Error, 'export audit log');
     } finally {

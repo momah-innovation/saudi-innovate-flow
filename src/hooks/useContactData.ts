@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from '@/hooks/use-toast';
+import { debugLog } from '@/utils/debugLogger';
 
 export interface Contact {
   id: string;
@@ -189,7 +190,7 @@ export function useContactData() {
       setContacts(prev => [...prev, newContact]);
       return newContact;
     } catch (error) {
-      console.error('Error creating contact:', error);
+      debugLog.error('Error creating contact', { operation: 'createContact' }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -206,7 +207,7 @@ export function useContactData() {
           : contact
       ));
     } catch (error) {
-      console.error('Error updating contact:', error);
+      debugLog.error('Error updating contact', { operation: 'updateContact', contactId: id }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -220,7 +221,7 @@ export function useContactData() {
       // Also remove related interactions
       setInteractions(prev => prev.filter(interaction => interaction.contact_id !== id));
     } catch (error) {
-      console.error('Error deleting contact:', error);
+      debugLog.error('Error deleting contact', { operation: 'deleteContact', contactId: id }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -249,7 +250,7 @@ export function useContactData() {
 
       return newInteraction;
     } catch (error) {
-      console.error('Error creating interaction:', error);
+      debugLog.error('Error creating interaction', { operation: 'createInteraction' }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -266,7 +267,7 @@ export function useContactData() {
           : interaction
       ));
     } catch (error) {
-      console.error('Error updating interaction:', error);
+      debugLog.error('Error updating interaction', { operation: 'updateInteraction', interactionId: id }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -278,7 +279,7 @@ export function useContactData() {
       setLoading(true);
       setInteractions(prev => prev.filter(interaction => interaction.id !== id));
     } catch (error) {
-      console.error('Error deleting interaction:', error);
+      debugLog.error('Error deleting interaction', { operation: 'deleteInteraction', interactionId: id }, error as Error);
       throw error;
     } finally {
       setLoading(false);
@@ -356,7 +357,7 @@ export function useContactData() {
 
   const exportContacts = useCallback((format: 'csv' | 'excel' = 'csv') => {
     // Mock export functionality
-    console.log(`Exporting ${contacts.length} contacts as ${format}`);
+    debugLog.debug('Exporting contacts', { operation: 'exportContacts', count: contacts.length, format });
     
     if (format === 'csv') {
       const csvHeaders = 'First Name,Last Name,Email,Phone,Company,Position,Type,Status,Tags';
@@ -379,14 +380,14 @@ export function useContactData() {
     try {
       setLoading(true);
       // Mock import functionality
-      console.log('Importing contacts from file:', file.name);
+      debugLog.debug('Importing contacts from file', { operation: 'importContacts', fileName: file.name });
       
       // In a real implementation, you would parse the file
       // and create contacts from the data
       
       return { success: true, imported: 0, errors: [] };
     } catch (error) {
-      console.error('Error importing contacts:', error);
+      debugLog.error('Error importing contacts', { operation: 'importContacts', fileName: file.name }, error as Error);
       throw error;
     } finally {
       setLoading(false);
