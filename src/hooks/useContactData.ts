@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { toast } from '@/hooks/use-toast';
 
 export interface Contact {
   id: string;
@@ -398,17 +399,28 @@ export function useContactData() {
     interactions,
     selectedContact,
     loading,
-
+    stats: getContactStats(),
+    error: null,
+    filters: {},
+    
     // Contact operations
     createContact,
     updateContact,
     deleteContact,
+    addContact: createContact,
+    bulkDeleteContacts: async (ids: string[]) => {
+      for (const id of ids) {
+        await deleteContact(id);
+      }
+    },
     setSelectedContact,
+    setFilters: () => {}, // Mock implementation
     
     // Interaction operations
     createInteraction,
     updateInteraction,
     deleteInteraction,
+    addInteraction: createInteraction,
     getContactInteractions,
     
     // Search and filter
@@ -422,6 +434,7 @@ export function useContactData() {
     
     // Import/Export
     exportContacts,
-    importContacts
+    importContacts,
+    refresh: async () => {}
   };
 }
