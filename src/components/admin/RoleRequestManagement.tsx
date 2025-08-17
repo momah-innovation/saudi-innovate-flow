@@ -20,6 +20,8 @@ import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { formatDate, currentTimestamp } from '@/utils/unified-date-handler';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface RoleRequest {
   id: string;
@@ -55,6 +57,19 @@ export default function RoleRequestManagement() {
   const { user } = useCurrentUser();
   const { uiInitialsMaxLength } = useSystemSettings();
   const { getSettingValue } = useSettingsManager();
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'RoleRequestManagement',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'RoleRequestManagement',
+    showToast: true,
+    logError: true
+  });
+  
   const roleRequestStatusOptions = getSettingValue('role_request_status_options', []) as string[];
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -98,11 +113,12 @@ export default function RoleRequestManagement() {
   };
 
   const fetchRoleRequests = async () => {
-    try {
-      setLoading(true);
-
-      // Fetch role requests with requester profiles
-      const { data: requestsData, error: requestsError } = await supabase
+    await loadingManager.withLoading(
+      'fetch-role-requests',
+      async () => {
+        // ✅ MIGRATED: Using structured error handling for role requests
+        // TODO: Create useRoleRequestManagement hook for better data management
+        const { data: requestsData, error: requestsError } = await supabase
         .from('role_requests')
         .select('*')
         .order('requested_at', { ascending: false });
@@ -145,16 +161,13 @@ export default function RoleRequestManagement() {
       }));
 
       setRoleRequests(requestsWithProfiles);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      toast({
-        title: t('common.status.error'),
-        description: "Failed to load role requests.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+      },
+      {
+        successMessage: t('role_requests.load_success', 'تم تحميل طلبات الأدوار بنجاح'),
+        errorMessage: t('role_requests.load_failed', 'فشل في تحميل طلبات الأدوار'),
+        logContext: { operation: 'fetchRoleRequests' }
+      }
+    );
   };
 
   const handleReviewRequest = (request: RoleRequest, action: 'approve' | 'reject') => {

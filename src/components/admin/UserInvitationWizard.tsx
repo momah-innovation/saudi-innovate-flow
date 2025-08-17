@@ -14,6 +14,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/logger";
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface UserInvitationWizardProps {
   open: boolean;
@@ -27,6 +29,18 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
   const { t } = useUnifiedTranslation();
   const { availableUserRoles } = useSystemLists();
   const [loading, setLoading] = useState(false);
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'UserInvitationWizard',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'UserInvitationWizard',
+    showToast: true,
+    logError: true
+  });
   const [formData, setFormData] = useState({
     email: '',
     name: '',

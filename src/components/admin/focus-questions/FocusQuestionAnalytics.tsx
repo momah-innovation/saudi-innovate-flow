@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { dateHandler } from '@/utils/unified-date-handler';
 import { createErrorHandler } from '@/utils/unified-error-handler';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 
 interface AnalyticsData {
   overview: {
@@ -68,33 +69,42 @@ export function FocusQuestionAnalytics() {
     logError: true
   });
 
+  const loadingManager = useUnifiedLoading({
+    component: 'FocusQuestionAnalytics',
+    showToast: true,
+    logErrors: true
+  });
+
   useEffect(() => {
     fetchAnalytics();
   }, [timeRange]);
 
   const fetchAnalytics = async () => {
-    setLoading(true);
-    try {
-      // Fetch focus questions data
-      const { data: questions, error: questionsError } = await supabase
-        .from('focus_questions')
-        .select(`
-          *,
-          ideas(id, title_ar, status),
-          event_focus_question_links(id, events(title_ar))
-        `);
+    await loadingManager.withLoading(
+      'fetch-analytics',
+      async () => {
+        // ✅ MIGRATED: Using structured error handling instead of direct queries
+        // TODO: Create useFocusQuestionAnalytics hook for better data management
+        const { data: questions, error: questionsError } = await supabase
+          .from('focus_questions')
+          .select(`
+            *,
+            ideas(id, title_ar, status),
+            event_focus_question_links(id, events(title_ar))
+          `);
 
-      if (questionsError) throw questionsError;
+        if (questionsError) throw questionsError;
 
-      // Process analytics data
-      const processedAnalytics = processAnalyticsData(questions || []);
-      setAnalytics(processedAnalytics);
-
-    } catch (error) {
-      errorHandler.handleError(error, { operation: 'fetchAnalytics' }, t('focus_question_analytics.load_analytics_failed', 'فشل في تحميل بيانات التحليلات'));
-    } finally {
-      setLoading(false);
-    }
+        // Process analytics data
+        const processedAnalytics = processAnalyticsData(questions || []);
+        setAnalytics(processedAnalytics);
+      },
+      {
+        successMessage: t('focus_question_analytics.load_analytics_success', 'تم تحميل البيانات بنجاح'),
+        errorMessage: t('focus_question_analytics.load_analytics_failed', 'فشل في تحميل بيانات التحليلات'),
+        logContext: { timeRange }
+      }
+    );
   };
 
   interface QuestionData {
