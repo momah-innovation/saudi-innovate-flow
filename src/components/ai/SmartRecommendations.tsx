@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, TrendingUp, Users, Lightbulb, ArrowRight } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
 
@@ -31,24 +33,31 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   context = 'dashboard',
   limit = 5,
 }) => {
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'SmartRecommendations',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'SmartRecommendations',
+    showToast: true,
+    logError: true
+  });
+  
   const { setTimeout: scheduleTimeout } = useTimerManager();
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-  const [loading, setLoading] = useState(true);
   const { isFeatureEnabled } = useAIFeatures();
   const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     if (isFeatureEnabled('smart_partner_matching')) {
       loadRecommendations();
-    } else {
-      setLoading(false);
     }
   }, [userId, context]);
 
-  const loadRecommendations = async () => {
-    try {
-      setLoading(true);
-      
+  const loadRecommendations = () => {
+    return withLoading('load-recommendations', async () => {
       // In real implementation, this would call an AI service
       // For now, we'll generate mock recommendations based on user context
       await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 1500));
@@ -102,11 +111,11 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
       ].slice(0, limit);
 
       setRecommendations(mockRecommendations);
-    } catch (error) {
-      logger.error('Error loading recommendations', { component: 'SmartRecommendations', action: 'loadRecommendations' }, error as Error);
-    } finally {
-      setLoading(false);
-    }
+      return true;
+    }, {
+      errorMessage: "فشل في تحميل التوصيات الذكية",
+      logContext: { userId, context, limit, action: 'load_recommendations' }
+    });
   };
 
   const getTypeIcon = (type: string) => {
@@ -175,7 +184,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {loading ? (
+        {isLoading('load-recommendations') ? (
           <div className="space-y-4">
             {Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="animate-pulse">

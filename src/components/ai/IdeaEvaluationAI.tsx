@@ -8,6 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Brain, Lightbulb, Star, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useToast } from '@/hooks/use-toast';
 
 interface IdeaEvaluationProps {
@@ -40,9 +42,20 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
   ideaDescription,
   onEvaluationComplete,
 }) => {
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'IdeaEvaluationAI',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'IdeaEvaluationAI',
+    showToast: true,
+    logError: true
+  });
+  
   const [evaluation, setEvaluation] = useState<AIEvaluation | null>(null);
   const { setTimeout: scheduleTimeout } = useTimerManager();
-  const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState('');
   const { isFeatureEnabled, getFeatureConfig } = useAIFeatures();
   const { t } = useUnifiedTranslation();
@@ -58,8 +71,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
       return;
     }
 
-    setLoading(true);
-    try {
+    return withLoading('evaluate-idea', async () => {
       // Simulate AI evaluation - in real implementation, this would call an Edge Function
       await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 3000));
       
@@ -97,20 +109,12 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
 
       setEvaluation(mockEvaluation);
       onEvaluationComplete?.(mockEvaluation);
-      
-      toast({
-        title: t('idea_evaluation_ai.evaluation_complete'),
-        description: t('idea_evaluation_ai.evaluation_success'),
-      });
-    } catch (error) {
-      toast({
-        title: t('idea_evaluation_ai.evaluation_error'),
-        description: t('idea_evaluation_ai.evaluation_failed'),
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
+      return mockEvaluation;
+    }, {
+      successMessage: t('idea_evaluation_ai.evaluation_success'),
+      errorMessage: t('idea_evaluation_ai.evaluation_failed'),
+      logContext: { ideaId, ideaTitle: ideaTitle.substring(0, 50), action: 'evaluate_idea' }
+    });
   };
 
   const getScoreColor = (score: number) => {
@@ -164,8 +168,8 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
         <CardContent>
           {!evaluation ? (
             <div className="text-center py-8">
-              <Button onClick={handleEvaluate} disabled={loading} className="mb-4">
-                {loading ? (
+              <Button onClick={handleEvaluate} disabled={isLoading('evaluate-idea')} className="mb-4">
+                {isLoading('evaluate-idea') ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                     {t('idea_evaluation_ai.evaluating')}

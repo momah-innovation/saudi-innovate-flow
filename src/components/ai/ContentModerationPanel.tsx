@@ -48,19 +48,8 @@ interface ModerationLog {
 }
 
 export const ContentModerationPanel: React.FC = () => {
-  const [logs, setLogs] = useState<ModerationLog[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [testContent, setTestContent] = useState('');
-  const [testResult, setTestResult] = useState<ModerationResult | null>(null);
-  const [testing, setTesting] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'flagged' | 'pending'>('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const { toast } = useToast();
-  const { t } = useUnifiedTranslation();
-  const aiService = useAIService();
-  
-  // Unified loading and error handling
-  const unifiedLoading = useUnifiedLoading({
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
     component: 'ContentModerationPanel',
     showToast: true,
     logErrors: true
@@ -70,14 +59,23 @@ export const ContentModerationPanel: React.FC = () => {
     showToast: true,
     logError: true
   });
+  
+  const [logs, setLogs] = useState<ModerationLog[]>([]);
+  const [testContent, setTestContent] = useState('');
+  const [testResult, setTestResult] = useState<ModerationResult | null>(null);
+  const [testing, setTesting] = useState(false);
+  const [filter, setFilter] = useState<'all' | 'flagged' | 'pending'>('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
+  const aiService = useAIService();
 
   useEffect(() => {
     fetchModerationLogs();
   }, [filter]);
 
-  const fetchModerationLogs = async () => {
-    setLoading(true);
-    const result = await unifiedLoading.withLoading('fetchLogs', async () => {
+  const fetchModerationLogs = () => {
+    return withLoading('fetchLogs', async () => {
       let query = supabase
         .from('content_moderation_logs')
         .select('*')
@@ -93,59 +91,55 @@ export const ContentModerationPanel: React.FC = () => {
       const { data, error } = await query;
       if (error) throw error;
 
-      return (data || []).map(item => ({
+      const transformedLogs = (data || []).map(item => ({
         ...item,
         moderation_result: (item.moderation_result as unknown) as ModerationResult,
         status: item.status as 'pending' | 'approved' | 'rejected' | 'requires_review'
       }));
+
+      setLogs(transformedLogs);
+      return true;
     }, {
-      errorMessage: t('content_moderation.failed_load_logs')
+      errorMessage: t('content_moderation.failed_load_logs'),
+      logContext: { filter, action: 'fetch_logs' }
     });
-    
-    if (result) {
-      setLogs(result);
-    }
-    setLoading(false);
   };
 
   const testContentModeration = async () => {
     if (!testContent.trim()) return;
 
-    const result = await unifiedLoading.withLoading('testContent', async () => {
+    return withLoading('testContent', async () => {
       const moderationResult = await aiService.moderateContent(
         testContent,
         'test_content'
       );
+      setTestResult(moderationResult);
       return moderationResult;
     }, {
       successMessage: t('content_moderation.content_tested_success'),
-      errorMessage: t('content_moderation.failed_test_content')
+      errorMessage: t('content_moderation.failed_test_content'),
+      logContext: { testContentLength: testContent.length, action: 'test_content' }
     });
-    
-    if (result) {
-      setTestResult(result);
-    }
   };
 
   const updateLogStatus = async (logId: string, newStatus: string) => {
-    const result = await unifiedLoading.withLoading('updateStatus', async () => {
+    return withLoading('updateStatus', async () => {
       const { error } = await supabase
         .from('content_moderation_logs')
         .update({ status: newStatus })
         .eq('id', logId);
 
       if (error) throw error;
-      return true;
-    }, {
-      successMessage: t('content_moderation.content_status_updated'),
-      errorMessage: t('content_moderation.failed_update_status')
-    });
-
-    if (result) {
+      
       setLogs(logs.map(log => 
         log.id === logId ? { ...log, status: newStatus as ModerationLog['status'] } : log
       ));
-    }
+      return true;
+    }, {
+      successMessage: t('content_moderation.content_status_updated'),
+      errorMessage: t('content_moderation.failed_update_status'),
+      logContext: { logId, newStatus, action: 'update_log_status' }
+    });
   };
 
   const getStatusIcon = (status: string, flagged: boolean) => {
@@ -309,7 +303,7 @@ export const ContentModerationPanel: React.FC = () => {
 
           {/* Logs List */}
           <div className="space-y-4">
-            {loading ? (
+            {isLoading('fetchLogs') ? (
               <div className="text-center py-8">
                 <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
                 <p>{t('content_moderation.loading_logs')}</p>
@@ -415,10 +409,10 @@ export const ContentModerationPanel: React.FC = () => {
               
               <Button 
                 onClick={testContentModeration}
-                disabled={unifiedLoading.isLoading('testContent') || !testContent.trim()}
+                disabled={isLoading('testContent') || !testContent.trim()}
                 className="w-full"
               >
-                {unifiedLoading.isLoading('testContent') ? (
+                {isLoading('testContent') ? (
                   <>
                     <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                     {t('content_moderation.testing')}
