@@ -5798,6 +5798,59 @@ export type Database = {
           },
         ]
       }
+      meeting_participants: {
+        Row: {
+          attendance_duration: number | null
+          created_at: string | null
+          id: string
+          invitation_sent_at: string | null
+          joined_at: string | null
+          left_at: string | null
+          meeting_id: string
+          reminder_sent: boolean | null
+          response: string | null
+          role: string | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          attendance_duration?: number | null
+          created_at?: string | null
+          id?: string
+          invitation_sent_at?: string | null
+          joined_at?: string | null
+          left_at?: string | null
+          meeting_id: string
+          reminder_sent?: boolean | null
+          response?: string | null
+          role?: string | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          attendance_duration?: number | null
+          created_at?: string | null
+          id?: string
+          invitation_sent_at?: string | null
+          joined_at?: string | null
+          left_at?: string | null
+          meeting_id?: string
+          reminder_sent?: boolean | null
+          response?: string | null
+          role?: string | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meeting_participants_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_meetings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
@@ -7085,6 +7138,96 @@ export type Database = {
         }
         Relationships: []
       }
+      project_tasks: {
+        Row: {
+          actual_hours: number | null
+          assigned_by: string | null
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string | null
+          description: string | null
+          description_ar: string | null
+          due_date: string | null
+          estimated_hours: number | null
+          id: string
+          metadata: Json | null
+          order_index: number | null
+          parent_task_id: string | null
+          priority: string | null
+          progress: number | null
+          project_id: string
+          started_at: string | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          title_ar: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          actual_hours?: number | null
+          assigned_by?: string | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          metadata?: Json | null
+          order_index?: number | null
+          parent_task_id?: string | null
+          priority?: string | null
+          progress?: number | null
+          project_id: string
+          started_at?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          title_ar?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          actual_hours?: number | null
+          assigned_by?: string | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          metadata?: Json | null
+          order_index?: number | null
+          parent_task_id?: string | null
+          priority?: string | null
+          progress?: number | null
+          project_id?: string
+          started_at?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          title_ar?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_tasks_parent_task_id_fkey"
+            columns: ["parent_task_id"]
+            isOneToOne: false
+            referencedRelation: "project_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       public_statistics: {
         Row: {
           created_at: string | null
@@ -8185,6 +8328,65 @@ export type Database = {
         }
         Relationships: []
       }
+      task_assignments: {
+        Row: {
+          accepted_at: string | null
+          actual_hours: number | null
+          assigned_by: string
+          assignee_id: string
+          assignment_notes: string | null
+          completion_notes: string | null
+          created_at: string | null
+          estimated_hours: number | null
+          id: string
+          role: string | null
+          started_at: string | null
+          status: string | null
+          task_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          actual_hours?: number | null
+          assigned_by: string
+          assignee_id: string
+          assignment_notes?: string | null
+          completion_notes?: string | null
+          created_at?: string | null
+          estimated_hours?: number | null
+          id?: string
+          role?: string | null
+          started_at?: string | null
+          status?: string | null
+          task_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          actual_hours?: number | null
+          assigned_by?: string
+          assignee_id?: string
+          assignment_notes?: string | null
+          completion_notes?: string | null
+          created_at?: string | null
+          estimated_hours?: number | null
+          id?: string
+          role?: string | null
+          started_at?: string | null
+          status?: string | null
+          task_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_assignments_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "project_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_activities: {
         Row: {
           activity_date: string | null
@@ -8381,6 +8583,78 @@ export type Database = {
             columns: ["team_member_id"]
             isOneToOne: false
             referencedRelation: "innovation_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_chat_messages: {
+        Row: {
+          attachments: Json | null
+          channel_name: string | null
+          content: string
+          created_at: string | null
+          edited_at: string | null
+          id: string
+          is_deleted: boolean | null
+          is_edited: boolean | null
+          is_private: boolean | null
+          mentions: Json | null
+          message_type: string | null
+          parent_message_id: string | null
+          reactions: Json | null
+          sender_id: string
+          thread_id: string | null
+          workspace_id: string
+        }
+        Insert: {
+          attachments?: Json | null
+          channel_name?: string | null
+          content: string
+          created_at?: string | null
+          edited_at?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          is_edited?: boolean | null
+          is_private?: boolean | null
+          mentions?: Json | null
+          message_type?: string | null
+          parent_message_id?: string | null
+          reactions?: Json | null
+          sender_id: string
+          thread_id?: string | null
+          workspace_id: string
+        }
+        Update: {
+          attachments?: Json | null
+          channel_name?: string | null
+          content?: string
+          created_at?: string | null
+          edited_at?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          is_edited?: boolean | null
+          is_private?: boolean | null
+          mentions?: Json | null
+          message_type?: string | null
+          parent_message_id?: string | null
+          reactions?: Json | null
+          sender_id?: string
+          thread_id?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_chat_messages_parent_message_id_fkey"
+            columns: ["parent_message_id"]
+            isOneToOne: false
+            referencedRelation: "team_chat_messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_chat_messages_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
             referencedColumns: ["id"]
           },
         ]
@@ -9144,6 +9418,711 @@ export type Database = {
           },
         ]
       }
+      workspace_activity_feed: {
+        Row: {
+          action_type: string
+          activity_title: string
+          activity_title_ar: string | null
+          actor_id: string | null
+          aggregation_key: string | null
+          created_at: string | null
+          description: string | null
+          description_ar: string | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          is_aggregated: boolean | null
+          metadata: Json | null
+          visibility_scope: string | null
+          workspace_id: string
+        }
+        Insert: {
+          action_type: string
+          activity_title: string
+          activity_title_ar?: string | null
+          actor_id?: string | null
+          aggregation_key?: string | null
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          is_aggregated?: boolean | null
+          metadata?: Json | null
+          visibility_scope?: string | null
+          workspace_id: string
+        }
+        Update: {
+          action_type?: string
+          activity_title?: string
+          activity_title_ar?: string | null
+          actor_id?: string | null
+          aggregation_key?: string | null
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          is_aggregated?: boolean | null
+          metadata?: Json | null
+          visibility_scope?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_activity_feed_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_analytics: {
+        Row: {
+          active_members_count: number | null
+          average_task_completion_time: number | null
+          avg_session_duration: number | null
+          calculation_date: string | null
+          collaboration_score: number | null
+          daily_active_users: number | null
+          engagement_score: number | null
+          id: string
+          last_updated: string | null
+          meeting_attendance_rate: number | null
+          meeting_count: number | null
+          member_count: number | null
+          message_count: number | null
+          monthly_active_users: number | null
+          productivity_score: number | null
+          project_completion_rate: number | null
+          project_count: number | null
+          task_count: number | null
+          total_messages_today: number | null
+          total_tasks_completed: number | null
+          weekly_active_users: number | null
+          workspace_id: string
+        }
+        Insert: {
+          active_members_count?: number | null
+          average_task_completion_time?: number | null
+          avg_session_duration?: number | null
+          calculation_date?: string | null
+          collaboration_score?: number | null
+          daily_active_users?: number | null
+          engagement_score?: number | null
+          id?: string
+          last_updated?: string | null
+          meeting_attendance_rate?: number | null
+          meeting_count?: number | null
+          member_count?: number | null
+          message_count?: number | null
+          monthly_active_users?: number | null
+          productivity_score?: number | null
+          project_completion_rate?: number | null
+          project_count?: number | null
+          task_count?: number | null
+          total_messages_today?: number | null
+          total_tasks_completed?: number | null
+          weekly_active_users?: number | null
+          workspace_id: string
+        }
+        Update: {
+          active_members_count?: number | null
+          average_task_completion_time?: number | null
+          avg_session_duration?: number | null
+          calculation_date?: string | null
+          collaboration_score?: number | null
+          daily_active_users?: number | null
+          engagement_score?: number | null
+          id?: string
+          last_updated?: string | null
+          meeting_attendance_rate?: number | null
+          meeting_count?: number | null
+          member_count?: number | null
+          message_count?: number | null
+          monthly_active_users?: number | null
+          productivity_score?: number | null
+          project_completion_rate?: number | null
+          project_count?: number | null
+          task_count?: number | null
+          total_messages_today?: number | null
+          total_tasks_completed?: number | null
+          weekly_active_users?: number | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_analytics_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_files: {
+        Row: {
+          access_level: string | null
+          created_at: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          description: string | null
+          file_path: string
+          file_size: number
+          filename: string
+          folder_path: string | null
+          id: string
+          is_current_version: boolean | null
+          is_deleted: boolean | null
+          metadata: Json | null
+          mime_type: string
+          original_filename: string
+          parent_file_id: string | null
+          permissions: Json | null
+          preview_url: string | null
+          status: string | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          updated_at: string | null
+          upload_session_id: string | null
+          uploaded_by: string
+          version_number: number | null
+          workspace_id: string
+        }
+        Insert: {
+          access_level?: string | null
+          created_at?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string | null
+          file_path: string
+          file_size: number
+          filename: string
+          folder_path?: string | null
+          id?: string
+          is_current_version?: boolean | null
+          is_deleted?: boolean | null
+          metadata?: Json | null
+          mime_type: string
+          original_filename: string
+          parent_file_id?: string | null
+          permissions?: Json | null
+          preview_url?: string | null
+          status?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          upload_session_id?: string | null
+          uploaded_by: string
+          version_number?: number | null
+          workspace_id: string
+        }
+        Update: {
+          access_level?: string | null
+          created_at?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string | null
+          file_path?: string
+          file_size?: number
+          filename?: string
+          folder_path?: string | null
+          id?: string
+          is_current_version?: boolean | null
+          is_deleted?: boolean | null
+          metadata?: Json | null
+          mime_type?: string
+          original_filename?: string
+          parent_file_id?: string | null
+          permissions?: Json | null
+          preview_url?: string | null
+          status?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          upload_session_id?: string | null
+          uploaded_by?: string
+          version_number?: number | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_files_parent_file_id_fkey"
+            columns: ["parent_file_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_files_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_invitations: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          created_at: string | null
+          email: string
+          expires_at: string | null
+          id: string
+          invitation_token: string
+          invited_by: string
+          permissions: Json | null
+          personal_message: string | null
+          role: string
+          status: string | null
+          workspace_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string | null
+          email: string
+          expires_at?: string | null
+          id?: string
+          invitation_token?: string
+          invited_by: string
+          permissions?: Json | null
+          personal_message?: string | null
+          role?: string
+          status?: string | null
+          workspace_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string | null
+          email?: string
+          expires_at?: string | null
+          id?: string
+          invitation_token?: string
+          invited_by?: string
+          permissions?: Json | null
+          personal_message?: string | null
+          role?: string
+          status?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_invitations_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_meetings: {
+        Row: {
+          agenda: Json | null
+          attachments: Json | null
+          created_at: string | null
+          description: string | null
+          description_ar: string | null
+          end_time: string
+          id: string
+          is_recurring: boolean | null
+          location: string | null
+          max_participants: number | null
+          meeting_notes: string | null
+          meeting_password: string | null
+          meeting_type: string | null
+          organizer_id: string
+          recording_url: string | null
+          recurrence_pattern: Json | null
+          start_time: string
+          status: string | null
+          timezone: string | null
+          title: string
+          title_ar: string | null
+          updated_at: string | null
+          virtual_link: string | null
+          workspace_id: string
+        }
+        Insert: {
+          agenda?: Json | null
+          attachments?: Json | null
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          end_time: string
+          id?: string
+          is_recurring?: boolean | null
+          location?: string | null
+          max_participants?: number | null
+          meeting_notes?: string | null
+          meeting_password?: string | null
+          meeting_type?: string | null
+          organizer_id: string
+          recording_url?: string | null
+          recurrence_pattern?: Json | null
+          start_time: string
+          status?: string | null
+          timezone?: string | null
+          title: string
+          title_ar?: string | null
+          updated_at?: string | null
+          virtual_link?: string | null
+          workspace_id: string
+        }
+        Update: {
+          agenda?: Json | null
+          attachments?: Json | null
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          end_time?: string
+          id?: string
+          is_recurring?: boolean | null
+          location?: string | null
+          max_participants?: number | null
+          meeting_notes?: string | null
+          meeting_password?: string | null
+          meeting_type?: string | null
+          organizer_id?: string
+          recording_url?: string | null
+          recurrence_pattern?: Json | null
+          start_time?: string
+          status?: string | null
+          timezone?: string | null
+          title?: string
+          title_ar?: string | null
+          updated_at?: string | null
+          virtual_link?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_meetings_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_members: {
+        Row: {
+          access_level: string | null
+          created_at: string | null
+          id: string
+          invited_by: string | null
+          joined_at: string | null
+          last_active_at: string | null
+          notification_preferences: Json | null
+          permissions: Json | null
+          role: string
+          status: string | null
+          updated_at: string | null
+          user_id: string
+          workspace_id: string
+          workspace_settings: Json | null
+        }
+        Insert: {
+          access_level?: string | null
+          created_at?: string | null
+          id?: string
+          invited_by?: string | null
+          joined_at?: string | null
+          last_active_at?: string | null
+          notification_preferences?: Json | null
+          permissions?: Json | null
+          role?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+          workspace_id: string
+          workspace_settings?: Json | null
+        }
+        Update: {
+          access_level?: string | null
+          created_at?: string | null
+          id?: string
+          invited_by?: string | null
+          joined_at?: string | null
+          last_active_at?: string | null
+          notification_preferences?: Json | null
+          permissions?: Json | null
+          role?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+          workspace_id?: string
+          workspace_settings?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_members_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_projects: {
+        Row: {
+          actual_hours: number | null
+          budget: number | null
+          created_at: string | null
+          deadline: string | null
+          description: string | null
+          description_ar: string | null
+          end_date: string | null
+          estimated_hours: number | null
+          id: string
+          metadata: Json | null
+          priority: string | null
+          progress: number | null
+          project_manager_id: string | null
+          start_date: string | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          title_ar: string | null
+          updated_at: string | null
+          workspace_id: string
+        }
+        Insert: {
+          actual_hours?: number | null
+          budget?: number | null
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          description_ar?: string | null
+          end_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          metadata?: Json | null
+          priority?: string | null
+          progress?: number | null
+          project_manager_id?: string | null
+          start_date?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          title_ar?: string | null
+          updated_at?: string | null
+          workspace_id: string
+        }
+        Update: {
+          actual_hours?: number | null
+          budget?: number | null
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          description_ar?: string | null
+          end_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          metadata?: Json | null
+          priority?: string | null
+          progress?: number | null
+          project_manager_id?: string | null
+          start_date?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          title_ar?: string | null
+          updated_at?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_projects_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_settings: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          custom_branding: Json | null
+          data_retention_days: number | null
+          date_format: string | null
+          default_member_permissions: Json | null
+          email_notifications: Json | null
+          features_enabled: Json | null
+          guest_access_enabled: boolean | null
+          id: string
+          integrations: Json | null
+          language: string | null
+          notification_settings: Json | null
+          public_join_enabled: boolean | null
+          security_settings: Json | null
+          theme_settings: Json | null
+          timezone: string | null
+          updated_at: string | null
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          custom_branding?: Json | null
+          data_retention_days?: number | null
+          date_format?: string | null
+          default_member_permissions?: Json | null
+          email_notifications?: Json | null
+          features_enabled?: Json | null
+          guest_access_enabled?: boolean | null
+          id?: string
+          integrations?: Json | null
+          language?: string | null
+          notification_settings?: Json | null
+          public_join_enabled?: boolean | null
+          security_settings?: Json | null
+          theme_settings?: Json | null
+          timezone?: string | null
+          updated_at?: string | null
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          custom_branding?: Json | null
+          data_retention_days?: number | null
+          date_format?: string | null
+          default_member_permissions?: Json | null
+          email_notifications?: Json | null
+          features_enabled?: Json | null
+          guest_access_enabled?: boolean | null
+          id?: string
+          integrations?: Json | null
+          language?: string | null
+          notification_settings?: Json | null
+          public_join_enabled?: boolean | null
+          security_settings?: Json | null
+          theme_settings?: Json | null
+          timezone?: string | null
+          updated_at?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_settings_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: true
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspaces: {
+        Row: {
+          access_rules: Json | null
+          avatar_url: string | null
+          banner_url: string | null
+          created_at: string | null
+          department_id: string | null
+          deputy_id: string | null
+          description: string | null
+          description_ar: string | null
+          features_enabled: Json | null
+          id: string
+          innovation_team_id: string | null
+          last_activity_at: string | null
+          metadata: Json | null
+          name: string
+          name_ar: string | null
+          organization_id: string | null
+          owner_id: string | null
+          parent_workspace_id: string | null
+          privacy_level: Database["public"]["Enums"]["workspace_privacy"] | null
+          sector_id: string | null
+          settings: Json | null
+          status: Database["public"]["Enums"]["workspace_status"] | null
+          tags: string[] | null
+          updated_at: string | null
+          workspace_type: Database["public"]["Enums"]["workspace_type"]
+        }
+        Insert: {
+          access_rules?: Json | null
+          avatar_url?: string | null
+          banner_url?: string | null
+          created_at?: string | null
+          department_id?: string | null
+          deputy_id?: string | null
+          description?: string | null
+          description_ar?: string | null
+          features_enabled?: Json | null
+          id?: string
+          innovation_team_id?: string | null
+          last_activity_at?: string | null
+          metadata?: Json | null
+          name: string
+          name_ar?: string | null
+          organization_id?: string | null
+          owner_id?: string | null
+          parent_workspace_id?: string | null
+          privacy_level?:
+            | Database["public"]["Enums"]["workspace_privacy"]
+            | null
+          sector_id?: string | null
+          settings?: Json | null
+          status?: Database["public"]["Enums"]["workspace_status"] | null
+          tags?: string[] | null
+          updated_at?: string | null
+          workspace_type: Database["public"]["Enums"]["workspace_type"]
+        }
+        Update: {
+          access_rules?: Json | null
+          avatar_url?: string | null
+          banner_url?: string | null
+          created_at?: string | null
+          department_id?: string | null
+          deputy_id?: string | null
+          description?: string | null
+          description_ar?: string | null
+          features_enabled?: Json | null
+          id?: string
+          innovation_team_id?: string | null
+          last_activity_at?: string | null
+          metadata?: Json | null
+          name?: string
+          name_ar?: string | null
+          organization_id?: string | null
+          owner_id?: string | null
+          parent_workspace_id?: string | null
+          privacy_level?:
+            | Database["public"]["Enums"]["workspace_privacy"]
+            | null
+          sector_id?: string | null
+          settings?: Json | null
+          status?: Database["public"]["Enums"]["workspace_status"] | null
+          tags?: string[] | null
+          updated_at?: string | null
+          workspace_type?: Database["public"]["Enums"]["workspace_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspaces_innovation_team_id_fkey"
+            columns: ["innovation_team_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspaces_parent_workspace_id_fkey"
+            columns: ["parent_workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       admin_dashboard_metrics_view: {
@@ -9667,6 +10646,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_workspace_access: {
+        Args: { user_uuid: string; workspace_uuid: string }
+        Returns: boolean
+      }
       increment_access_count: {
         Args: { file_record_id: string }
         Returns: undefined
@@ -9878,6 +10861,17 @@ export type Database = {
         | "partner"
         | "stakeholder"
       role_hierarchy_level: "1" | "2" | "3" | "4" | "5"
+      workspace_privacy: "public" | "private" | "restricted" | "confidential"
+      workspace_status: "active" | "inactive" | "suspended" | "archived"
+      workspace_type:
+        | "user"
+        | "expert"
+        | "organization"
+        | "team"
+        | "project"
+        | "admin"
+        | "partner"
+        | "stakeholder"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -10046,6 +11040,18 @@ export const Constants = {
         "stakeholder",
       ],
       role_hierarchy_level: ["1", "2", "3", "4", "5"],
+      workspace_privacy: ["public", "private", "restricted", "confidential"],
+      workspace_status: ["active", "inactive", "suspended", "archived"],
+      workspace_type: [
+        "user",
+        "expert",
+        "organization",
+        "team",
+        "project",
+        "admin",
+        "partner",
+        "stakeholder",
+      ],
     },
   },
 } as const
