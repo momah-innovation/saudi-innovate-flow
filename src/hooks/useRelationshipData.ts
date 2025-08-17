@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/utils/logger';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 export interface RelationshipItem {
   id: string;
@@ -28,6 +28,8 @@ export interface RelationshipConnection {
 }
 
 export const useRelationshipData = () => {
+  const errorHandler = createErrorHandler({ component: 'useRelationshipData' });
+
   const {
     data: relationships = [],
     isLoading: loading,
@@ -37,8 +39,6 @@ export const useRelationshipData = () => {
   } = useQuery({
     queryKey: ['relationships-data'],
     queryFn: async () => {
-      logger.info('Fetching relationship data', { component: 'useRelationshipData' });
-      
       // For now, return mock data. In a full implementation, this would fetch from
       // multiple tables and aggregate relationship data
       const mockData: RelationshipItem[] = [
@@ -58,11 +58,6 @@ export const useRelationshipData = () => {
         }
       ];
       
-      logger.info('Relationship data fetched successfully', { 
-        component: 'useRelationshipData',
-        count: mockData.length
-      });
-      
       return mockData;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -76,15 +71,8 @@ export const useRelationshipData = () => {
   } = useQuery({
     queryKey: ['relationship-connections'],
     queryFn: async () => {
-      logger.info('Fetching relationship connections', { component: 'useRelationshipData' });
-      
       // Mock connections data
       const mockConnections: RelationshipConnection[] = [];
-      
-      logger.info('Relationship connections fetched successfully', { 
-        component: 'useRelationshipData',
-        count: mockConnections.length
-      });
       
       return mockConnections;
     },
@@ -93,80 +81,72 @@ export const useRelationshipData = () => {
   });
 
   const createRelationship = useCallback(async (relationshipData: Partial<RelationshipItem>): Promise<RelationshipItem> => {
-    logger.info('Creating relationship', { component: 'useRelationshipData' });
-    
-    // In a full implementation, this would create entries in the appropriate tables
-    // based on the relationship type (partners, stakeholders, etc.)
-    const newRelationship: RelationshipItem = {
-      id: Math.random().toString(36).substring(2),
-      type: relationshipData.type || 'partner',
-      name: relationshipData.name || 'New Relationship',
-      organization: relationshipData.organization,
-      relationship_status: relationshipData.relationship_status || 'active',
-      contact_info: relationshipData.contact_info || {},
-      metadata: relationshipData.metadata || {},
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
-    
-    logger.info('Relationship created successfully', { component: 'useRelationshipData' });
-    
-    // Refetch the list after creation
-    await loadRelationships();
-    return newRelationship;
-  }, [loadRelationships]);
+    return errorHandler.withErrorHandling(async () => {
+      // In a full implementation, this would create entries in the appropriate tables
+      // based on the relationship type (partners, stakeholders, etc.)
+      const newRelationship: RelationshipItem = {
+        id: Math.random().toString(36).substring(2),
+        type: relationshipData.type || 'partner',
+        name: relationshipData.name || 'New Relationship',
+        organization: relationshipData.organization,
+        relationship_status: relationshipData.relationship_status || 'active',
+        contact_info: relationshipData.contact_info || {},
+        metadata: relationshipData.metadata || {},
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      
+      // Refetch the list after creation
+      await loadRelationships();
+      return newRelationship;
+    }, { operation: 'create_relationship' }) || {} as RelationshipItem;
+  }, [loadRelationships, errorHandler]);
 
   const updateRelationship = useCallback(async (relationshipId: string, relationshipData: Partial<RelationshipItem>): Promise<RelationshipItem> => {
-    logger.info('Updating relationship', { component: 'useRelationshipData', relationshipId });
-    
-    // Mock update - in a real implementation, this would update the appropriate table
-    const updatedRelationship: RelationshipItem = {
-      id: relationshipId,
-      type: relationshipData.type || 'partner',
-      name: relationshipData.name || 'Updated Relationship',
-      organization: relationshipData.organization,
-      relationship_status: relationshipData.relationship_status || 'active',
-      contact_info: relationshipData.contact_info || {},
-      metadata: relationshipData.metadata || {},
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
-    
-    logger.info('Relationship updated successfully', { component: 'useRelationshipData', relationshipId });
-    
-    // Refetch the list after update
-    await loadRelationships();
-    return updatedRelationship;
-  }, [loadRelationships]);
+    return errorHandler.withErrorHandling(async () => {
+      // Mock update - in a real implementation, this would update the appropriate table
+      const updatedRelationship: RelationshipItem = {
+        id: relationshipId,
+        type: relationshipData.type || 'partner',
+        name: relationshipData.name || 'Updated Relationship',
+        organization: relationshipData.organization,
+        relationship_status: relationshipData.relationship_status || 'active',
+        contact_info: relationshipData.contact_info || {},
+        metadata: relationshipData.metadata || {},
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      
+      // Refetch the list after update
+      await loadRelationships();
+      return updatedRelationship;
+    }, { operation: 'update_relationship' }) || {} as RelationshipItem;
+  }, [loadRelationships, errorHandler]);
 
   const deleteRelationship = useCallback(async (relationshipId: string): Promise<void> => {
-    logger.info('Deleting relationship', { component: 'useRelationshipData', relationshipId });
-    
-    // Mock deletion - in a real implementation, this would delete from the appropriate table
-    
-    logger.info('Relationship deleted successfully', { component: 'useRelationshipData', relationshipId });
-    
-    // Refetch the list after deletion
-    await loadRelationships();
-  }, [loadRelationships]);
+    await errorHandler.withErrorHandling(async () => {
+      // Mock deletion - in a real implementation, this would delete from the appropriate table
+      
+      // Refetch the list after deletion
+      await loadRelationships();
+    }, { operation: 'delete_relationship' });
+  }, [loadRelationships, errorHandler]);
 
   const createConnection = useCallback(async (connectionData: Partial<RelationshipConnection>): Promise<RelationshipConnection> => {
-    logger.info('Creating relationship connection', { component: 'useRelationshipData' });
-    
-    const newConnection: RelationshipConnection = {
-      id: Math.random().toString(36).substring(2),
-      from_entity_id: connectionData.from_entity_id || '',
-      to_entity_id: connectionData.to_entity_id || '',
-      connection_type: connectionData.connection_type || 'collaboration',
-      strength: connectionData.strength || 5,
-      created_at: new Date().toISOString()
-    };
-    
-    logger.info('Relationship connection created successfully', { component: 'useRelationshipData' });
-    
-    await loadConnections();
-    return newConnection;
-  }, [loadConnections]);
+    return errorHandler.withErrorHandling(async () => {
+      const newConnection: RelationshipConnection = {
+        id: Math.random().toString(36).substring(2),
+        from_entity_id: connectionData.from_entity_id || '',
+        to_entity_id: connectionData.to_entity_id || '',
+        connection_type: connectionData.connection_type || 'collaboration',
+        strength: connectionData.strength || 5,
+        created_at: new Date().toISOString()
+      };
+      
+      await loadConnections();
+      return newConnection;
+    }, { operation: 'create_connection' }) || {} as RelationshipConnection;
+  }, [loadConnections, errorHandler]);
 
   return {
     relationships,
