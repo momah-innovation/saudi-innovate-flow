@@ -145,7 +145,7 @@ export function useWorkspaceRealtime({ workspaceId, enabled = true }: UseWorkspa
           .limit(20);
 
         if (activitiesData) {
-          setActivities(activitiesData);
+          setActivities(activitiesData as unknown as WorkspaceActivity[]);
         }
 
         // Fetch online members
@@ -159,7 +159,7 @@ export function useWorkspaceRealtime({ workspaceId, enabled = true }: UseWorkspa
           .eq('status', 'active');
 
         if (membersData) {
-          setOnlineMembers(membersData);
+          setOnlineMembers(membersData as unknown as WorkspaceMember[]);
         }
 
         // Initialize real-time channel

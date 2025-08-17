@@ -56,16 +56,16 @@ export function useWorkspaceChat({ workspaceId, teamId, enabled = true }: UseWor
       if (error) throw error;
 
       // If it's a thread reply, update the thread
-      if (parentMessageId) {
+      if (parentMessageId && data) {
         setThreads(prev => ({
           ...prev,
           [parentMessageId]: {
             ...prev[parentMessageId],
-            messages: [...(prev[parentMessageId]?.messages || []), data],
+            messages: [...(prev[parentMessageId]?.messages || []), data as unknown as TeamChatMessage],
           }
         }));
-      } else {
-        setMessages(prev => [data, ...prev]);
+      } else if (data) {
+        setMessages(prev => [data as unknown as TeamChatMessage, ...prev]);
       }
 
       return data;
@@ -163,7 +163,7 @@ export function useWorkspaceChat({ workspaceId, teamId, enabled = true }: UseWor
         [parentMessageId]: {
           id: parentMessageId,
           parent_message_id: parentMessageId,
-          messages: data || [],
+          messages: (data || []) as unknown as TeamChatMessage[],
           unread_count: 0,
         }
       }));
@@ -223,7 +223,7 @@ export function useWorkspaceChat({ workspaceId, teamId, enabled = true }: UseWor
         const { data, error } = await query;
 
         if (error) throw error;
-        setMessages(data || []);
+        setMessages((data || []) as unknown as TeamChatMessage[]);
       } catch (error) {
         console.error('Failed to load messages:', error);
       } finally {
