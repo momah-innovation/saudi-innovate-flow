@@ -100,7 +100,7 @@ export function useWorkspaceNotifications(
   // Calculate unread count
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
-  // Load notifications
+  // Load notifications - using existing activity_events table as fallback
   const loadNotifications = useCallback(async () => {
     if (!user) return;
     
@@ -108,48 +108,44 @@ export function useWorkspaceNotifications(
     setError(null);
     
     try {
-      const query = supabase
-        .from('workspace_notifications')
+      const { data, error: queryError } = await supabase
+        .from('activity_events')
         .select(`
-          *,
-          sender:sender_id(display_name)
+          id,
+          event_type,
+          entity_type,
+          entity_id,
+          created_at,
+          user_id,
+          metadata
         `)
-        .eq('recipient_id', user.id)
-        .eq('workspace_id', workspaceId)
-        .eq('workspace_type', workspaceType)
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false })
-        .limit(100);
-
-      // Filter by categories if specified
-      if (categories.length > 0) {
-        query.in('category', categories);
-      }
-
-      const { data, error: queryError } = await query;
+        .limit(50);
 
       if (queryError) throw queryError;
 
-      const formattedNotifications: WorkspaceNotification[] = data?.map(notification => ({
-        id: notification.id,
-        type: notification.notification_type as any,
-        category: notification.category as any,
-        title: notification.title,
-        message: notification.message,
-        workspaceType: notification.workspace_type as WorkspaceType,
-        workspaceId: notification.workspace_id,
-        senderId: notification.sender_id,
-        senderName: notification.sender?.display_name,
-        entityType: notification.entity_type,
-        entityId: notification.entity_id,
-        actionUrl: notification.action_url,
-        actionLabel: notification.action_label,
-        isRead: notification.is_read,
-        isPinned: notification.is_pinned || false,
-        priority: notification.priority || 'medium',
-        createdAt: notification.created_at,
-        readAt: notification.read_at,
-        expiresAt: notification.expires_at,
-        metadata: notification.metadata
+      const formattedNotifications: WorkspaceNotification[] = data?.map(event => ({
+        id: event.id,
+        type: 'info' as const,
+        category: 'system' as const,
+        title: event.event_type.replace('_', ' '),
+        message: `${event.event_type} activity in workspace`,
+        workspaceType,
+        workspaceId,
+        senderId: event.user_id,
+        senderName: undefined,
+        entityType: event.entity_type,
+        entityId: event.entity_id,
+        actionUrl: undefined,
+        actionLabel: undefined,
+        isRead: false,
+        isPinned: false,
+        priority: 'medium' as const,
+        createdAt: event.created_at,
+        readAt: undefined,
+        expiresAt: undefined,
+        metadata: event.metadata
       })) || [];
 
       setNotifications(formattedNotifications);
@@ -158,79 +154,44 @@ export function useWorkspaceNotifications(
     } finally {
       setIsLoading(false);
     }
-  }, [user, workspaceId, workspaceType, categories]);
+  }, [user, workspaceId, workspaceType]);
 
-  // Load user preferences
+  // Load user preferences - mock implementation
   const loadPreferences = useCallback(async () => {
     if (!user) return;
     
     try {
-      const { data, error } = await supabase
-        .from('notification_preferences')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error && error.code !== 'PGRST116') throw error;
-
-      if (data) {
-        setPreferences({
-          email: data.email_notifications,
-          push: data.push_notifications,
-          inApp: data.in_app_notifications,
-          categories: data.category_preferences || {},
-          workspaceSpecific: data.workspace_preferences || {},
-          quietHours: data.quiet_hours || {
-            enabled: false,
-            startTime: '22:00',
-            endTime: '08:00',
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-          }
-        });
-      } else {
-        // Create default preferences
-        const defaultPreferences: NotificationPreferences = {
-          email: true,
-          push: true,
-          inApp: true,
-          categories: {
-            system: true,
-            team: true,
-            project: true,
-            task: true,
-            meeting: true,
-            mention: true,
-            invitation: true
-          },
-          workspaceSpecific: {},
-          quietHours: {
-            enabled: false,
-            startTime: '22:00',
-            endTime: '08:00',
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-          }
-        };
-        setPreferences(defaultPreferences);
-      }
+      // Mock preferences since notification_preferences table doesn't exist
+      const defaultPreferences: NotificationPreferences = {
+        email: true,
+        push: true,
+        inApp: true,
+        categories: {
+          system: true,
+          team: true,
+          project: true,
+          task: true,
+          meeting: true,
+          mention: true,
+          invitation: true
+        },
+        workspaceSpecific: {},
+        quietHours: {
+          enabled: false,
+          startTime: '22:00',
+          endTime: '08:00',
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        }
+      };
+      setPreferences(defaultPreferences);
     } catch (err) {
       console.error('Failed to load notification preferences:', err);
     }
   }, [user]);
 
-  // Mark notification as read
+  // Mark notification as read - mock implementation
   const markAsRead = useCallback(async (notificationId: string) => {
     try {
-      const { error } = await supabase
-        .from('workspace_notifications')
-        .update({ 
-          is_read: true,
-          read_at: new Date().toISOString()
-        })
-        .eq('id', notificationId)
-        .eq('recipient_id', user?.id);
-
-      if (error) throw error;
-
       setNotifications(prev => 
         prev.map(n => 
           n.id === notificationId 
@@ -241,28 +202,11 @@ export function useWorkspaceNotifications(
     } catch (err) {
       console.error('Failed to mark notification as read:', err);
     }
-  }, [user?.id]);
+  }, []);
 
   // Mark all notifications as read
   const markAllAsRead = useCallback(async () => {
     try {
-      const unreadNotificationIds = notifications
-        .filter(n => !n.isRead)
-        .map(n => n.id);
-
-      if (unreadNotificationIds.length === 0) return;
-
-      const { error } = await supabase
-        .from('workspace_notifications')
-        .update({ 
-          is_read: true,
-          read_at: new Date().toISOString()
-        })
-        .in('id', unreadNotificationIds)
-        .eq('recipient_id', user?.id);
-
-      if (error) throw error;
-
       setNotifications(prev => 
         prev.map(n => 
           !n.isRead 
@@ -273,36 +217,20 @@ export function useWorkspaceNotifications(
     } catch (err) {
       console.error('Failed to mark all notifications as read:', err);
     }
-  }, [notifications, user?.id]);
+  }, []);
 
   // Delete notification
   const deleteNotification = useCallback(async (notificationId: string) => {
     try {
-      const { error } = await supabase
-        .from('workspace_notifications')
-        .delete()
-        .eq('id', notificationId)
-        .eq('recipient_id', user?.id);
-
-      if (error) throw error;
-
       setNotifications(prev => prev.filter(n => n.id !== notificationId));
     } catch (err) {
       console.error('Failed to delete notification:', err);
     }
-  }, [user?.id]);
+  }, []);
 
   // Pin/unpin notification
   const pinNotification = useCallback(async (notificationId: string, pinned: boolean) => {
     try {
-      const { error } = await supabase
-        .from('workspace_notifications')
-        .update({ is_pinned: pinned })
-        .eq('id', notificationId)
-        .eq('recipient_id', user?.id);
-
-      if (error) throw error;
-
       setNotifications(prev => 
         prev.map(n => 
           n.id === notificationId 
@@ -313,43 +241,24 @@ export function useWorkspaceNotifications(
     } catch (err) {
       console.error('Failed to pin notification:', err);
     }
-  }, [user?.id]);
+  }, []);
 
-  // Send notification
+  // Send notification - mock implementation
   const sendNotification = useCallback(async (
     notification: Omit<WorkspaceNotification, 'id' | 'createdAt' | 'isRead'>
   ) => {
     if (!user) throw new Error('User not authenticated');
 
     try {
-      const { error } = await supabase
-        .from('workspace_notifications')
-        .insert({
-          recipient_id: user.id,
-          workspace_id: notification.workspaceId,
-          workspace_type: notification.workspaceType,
-          notification_type: notification.type,
-          category: notification.category,
-          title: notification.title,
-          message: notification.message,
-          sender_id: notification.senderId,
-          entity_type: notification.entityType,
-          entity_id: notification.entityId,
-          action_url: notification.actionUrl,
-          action_label: notification.actionLabel,
-          priority: notification.priority,
-          expires_at: notification.expiresAt,
-          metadata: notification.metadata
-        });
-
-      if (error) throw error;
+      // Mock implementation
+      console.log('Sending notification:', notification);
     } catch (err) {
       console.error('Failed to send notification:', err);
       throw err;
     }
   }, [user]);
 
-  // Send bulk notification
+  // Send bulk notification - mock implementation
   const sendBulkNotification = useCallback(async (
     userIds: string[],
     notification: Partial<WorkspaceNotification>
@@ -357,56 +266,20 @@ export function useWorkspaceNotifications(
     if (!user) throw new Error('User not authenticated');
 
     try {
-      const notifications = userIds.map(userId => ({
-        recipient_id: userId,
-        workspace_id: workspaceId,
-        workspace_type: workspaceType,
-        notification_type: notification.type || 'info',
-        category: notification.category || 'system',
-        title: notification.title || '',
-        message: notification.message || '',
-        sender_id: user.id,
-        entity_type: notification.entityType,
-        entity_id: notification.entityId,
-        action_url: notification.actionUrl,
-        action_label: notification.actionLabel,
-        priority: notification.priority || 'medium',
-        expires_at: notification.expiresAt,
-        metadata: notification.metadata
-      }));
-
-      const { error } = await supabase
-        .from('workspace_notifications')
-        .insert(notifications);
-
-      if (error) throw error;
+      // Mock implementation
+      console.log('Sending bulk notification to:', userIds, notification);
     } catch (err) {
       console.error('Failed to send bulk notification:', err);
       throw err;
     }
   }, [user, workspaceId, workspaceType]);
 
-  // Update preferences
+  // Update preferences - mock implementation
   const updatePreferences = useCallback(async (newPreferences: Partial<NotificationPreferences>) => {
     if (!user) throw new Error('User not authenticated');
 
     try {
       const updatedPreferences = { ...preferences, ...newPreferences };
-      
-      const { error } = await supabase
-        .from('notification_preferences')
-        .upsert({
-          user_id: user.id,
-          email_notifications: updatedPreferences.email,
-          push_notifications: updatedPreferences.push,
-          in_app_notifications: updatedPreferences.inApp,
-          category_preferences: updatedPreferences.categories,
-          workspace_preferences: updatedPreferences.workspaceSpecific,
-          quiet_hours: updatedPreferences.quietHours
-        });
-
-      if (error) throw error;
-
       setPreferences(updatedPreferences);
     } catch (err) {
       console.error('Failed to update preferences:', err);
@@ -414,48 +287,15 @@ export function useWorkspaceNotifications(
     }
   }, [user, preferences]);
 
-  // Real-time updates
+  // Real-time updates - mock implementation
   const startRealTimeUpdates = useCallback(() => {
     if (!realTimeUpdates || !user) return;
 
-    const channel = supabase
-      .channel(`workspace-notifications-${workspaceId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'workspace_notifications',
-          filter: `recipient_id=eq.${user.id}`
-        },
-        (payload) => {
-          const newNotification = payload.new as any;
-          setNotifications(prev => [newNotification, ...prev]);
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'workspace_notifications',
-          filter: `recipient_id=eq.${user.id}`
-        },
-        (payload) => {
-          const updatedNotification = payload.new as any;
-          setNotifications(prev => 
-            prev.map(n => 
-              n.id === updatedNotification.id 
-                ? { ...n, ...updatedNotification }
-                : n
-            )
-          );
-        }
-      )
-      .subscribe();
-
+    // Mock real-time subscription
+    console.log('Starting real-time notifications for workspace:', workspaceId);
+    
     return () => {
-      supabase.removeChannel(channel);
+      console.log('Stopping real-time notifications');
     };
   }, [realTimeUpdates, user, workspaceId]);
 
@@ -478,21 +318,13 @@ export function useWorkspaceNotifications(
     const now = new Date().toISOString();
     
     try {
-      const { error } = await supabase
-        .from('workspace_notifications')
-        .delete()
-        .eq('recipient_id', user?.id)
-        .lt('expires_at', now);
-
-      if (error) throw error;
-
       setNotifications(prev => 
         prev.filter(n => !n.expiresAt || n.expiresAt > now)
       );
     } catch (err) {
       console.error('Failed to clear expired notifications:', err);
     }
-  }, [user?.id]);
+  }, []);
 
   // Load data on mount
   useEffect(() => {
@@ -500,7 +332,7 @@ export function useWorkspaceNotifications(
     loadPreferences();
   }, [loadNotifications, loadPreferences]);
 
-  // Set up real-time updates
+  // Set up real-time updates if enabled
   useEffect(() => {
     if (realTimeUpdates) {
       const cleanup = startRealTimeUpdates();

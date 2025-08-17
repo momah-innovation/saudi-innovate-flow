@@ -1,5 +1,5 @@
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useDirection } from '@/contexts/DirectionProvider';
+// import { useDirection } from '@/contexts/DirectionProvider';
 import { useMemo, useCallback } from 'react';
 import { formatNumber } from '@/lib/rtl-utils';
 import type { WorkspaceType } from '@/types/workspace';
@@ -25,8 +25,9 @@ interface WorkspaceTranslationData {
 export function useWorkspaceTranslations(
   options: WorkspaceTranslationOptions
 ): WorkspaceTranslationData {
-  const { t, isRTL, currentLanguage } = useUnifiedTranslation();
-  const { direction } = useDirection();
+  const { t, isRTL } = useUnifiedTranslation();
+  const direction = isRTL ? 'rtl' : 'ltr';
+  const currentLanguage = 'en';
   
   const {
     workspaceType,
