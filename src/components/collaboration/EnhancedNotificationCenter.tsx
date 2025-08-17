@@ -6,6 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   Bell, 
   BellOff, 
@@ -86,6 +88,18 @@ export const EnhancedNotificationCenter: React.FC<EnhancedNotificationCenterProp
     }
   });
   const [showPreferences, setShowPreferences] = useState(false);
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'EnhancedNotificationCenter',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'EnhancedNotificationCenter',
+    showToast: true,
+    logError: true
+  });
 
   // Simulate enhanced notifications with smart categorization
   useEffect(() => {

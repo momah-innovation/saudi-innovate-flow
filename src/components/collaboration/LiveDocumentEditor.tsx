@@ -16,6 +16,8 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { debugLog } from '@/utils/debugLogger';
 import { UserPresence } from './UserPresence';
 // import type { LiveDocument } from '@/types/collaboration';
@@ -46,6 +48,18 @@ export const LiveDocumentEditor: React.FC<LiveDocumentEditorProps> = ({
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [activeEditors, setActiveEditors] = useState<any[]>([]);
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'LiveDocumentEditor',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'LiveDocumentEditor',
+    showToast: true,
+    logError: true
+  });
 
   // Simulate active editors (in real implementation, this would come from live_documents.current_editors)
   useEffect(() => {
@@ -65,14 +79,16 @@ export const LiveDocumentEditor: React.FC<LiveDocumentEditorProps> = ({
   }, [onlineUsers, documentType, entityId]);
 
   const handleSave = async () => {
-    try {
+    await unifiedLoading.withLoading('saveDocument', async () => {
       const parsedContent = JSON.parse(content);
       onSave?.(title, parsedContent);
       setLastSaved(new Date());
       setIsEditing(false);
-    } catch (error) {
-      debugLog.error('Invalid JSON content:', error);
-    }
+      return true;
+    }, {
+      successMessage: 'تم حفظ المستند بنجاح',
+      errorMessage: 'فشل في حفظ المستند - تحقق من صحة JSON'
+    });
   };
 
   const handleContentChange = (newContent: string) => {
@@ -132,7 +148,7 @@ export const LiveDocumentEditor: React.FC<LiveDocumentEditorProps> = ({
               <Button 
                 size="sm" 
                 onClick={handleSave}
-                disabled={!isEditing}
+                disabled={!isEditing || unifiedLoading.isLoading('saveDocument')}
                 variant={isEditing ? "default" : "outline"}
               >
                 <Save className="w-4 h-4 ml-2" />

@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { useCollaboration } from '@/contexts/CollaborationContext';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 // import type { ActivityEvent } from '@/types/collaboration';
 
 const activityIcons = {
@@ -57,6 +59,18 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
   const { t } = useUnifiedTranslation();
   const [selectedEntityType, setSelectedEntityType] = useState<string>('all');
   const [selectedEventType, setSelectedEventType] = useState<string>('all');
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'ActivityFeed',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'ActivityFeed',
+    showToast: true,
+    logError: true
+  });
 
   // Get activities based on scope
   const getActivities = (): any[] => {
