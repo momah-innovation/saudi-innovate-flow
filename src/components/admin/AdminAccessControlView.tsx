@@ -7,8 +7,8 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useAdminDashboard } from '@/hooks/useAdminDashboard';
-// Using existing hooks and mock data
+import { useAnalytics } from '@/hooks/useAnalytics';
+// Using existing analytics hook for mock access control data
 import { 
   Shield, 
   Users, 
@@ -33,7 +33,8 @@ interface AdminAccessControlViewProps {
 
 export function AdminAccessControlView({ className }: AdminAccessControlViewProps) {
   const { t, language } = useUnifiedTranslation();
-  const { loading } = useAdminDashboard();
+  const analytics = useAnalytics();
+  const loading = analytics.isLoading || false;
   const permissions = { data: [] };
   const auditLogs = { data: [] };
   

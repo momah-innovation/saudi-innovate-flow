@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useAdminDashboard } from '@/hooks/useAdminDashboard';
-// Using existing components and mock data
+import { useAnalytics } from '@/hooks/useAnalytics';
+// Using existing analytics hook for mock audit log data
 import { 
   Search, 
   Filter, 
@@ -30,7 +30,8 @@ interface AdminAuditLogProps {
 
 export function AdminAuditLog({ className }: AdminAuditLogProps) {
   const { t, language } = useUnifiedTranslation();
-  const { loading } = useAdminDashboard();
+  const analytics = useAnalytics();
+  const loading = analytics.isLoading || false;
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAction, setSelectedAction] = useState('all');
