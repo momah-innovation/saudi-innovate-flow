@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
-import { errorHandler } from '@/utils/error-handler';
+import { createErrorHandler } from '@/utils/errorHandler';
 import { debugLog } from '@/utils/debugLogger';
 import {
   DropdownMenu,
