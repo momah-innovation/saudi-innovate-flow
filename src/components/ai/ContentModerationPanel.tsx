@@ -21,7 +21,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAIService } from '@/hooks/useAIService';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface ModerationResult {
   flagged: boolean;
@@ -57,14 +58,26 @@ export const ContentModerationPanel: React.FC = () => {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const aiService = useAIService();
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'ContentModerationPanel',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'ContentModerationPanel',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     fetchModerationLogs();
   }, [filter]);
 
   const fetchModerationLogs = async () => {
-    try {
-      setLoading(true);
+    setLoading(true);
+    const result = await unifiedLoading.withLoading('fetchLogs', async () => {
       let query = supabase
         .from('content_moderation_logs')
         .select('*')
@@ -80,74 +93,58 @@ export const ContentModerationPanel: React.FC = () => {
       const { data, error } = await query;
       if (error) throw error;
 
-      setLogs((data || []).map(item => ({
+      return (data || []).map(item => ({
         ...item,
         moderation_result: (item.moderation_result as unknown) as ModerationResult,
         status: item.status as 'pending' | 'approved' | 'rejected' | 'requires_review'
-      })));
-    } catch (error) {
-      logger.error('Error fetching moderation logs', { component: 'ContentModerationPanel', action: 'fetchModerationLogs' }, error as Error);
-      toast({
-        title: t('content_moderation.error'),
-        description: t('content_moderation.failed_load_logs'),
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
+      }));
+    }, {
+      errorMessage: t('content_moderation.failed_load_logs')
+    });
+    
+    if (result) {
+      setLogs(result);
     }
+    setLoading(false);
   };
 
   const testContentModeration = async () => {
     if (!testContent.trim()) return;
 
-    try {
-      setTesting(true);
-      const result = await aiService.moderateContent(
+    const result = await unifiedLoading.withLoading('testContent', async () => {
+      const moderationResult = await aiService.moderateContent(
         testContent,
         'test_content'
       );
+      return moderationResult;
+    }, {
+      successMessage: t('content_moderation.content_tested_success'),
+      errorMessage: t('content_moderation.failed_test_content')
+    });
+    
+    if (result) {
       setTestResult(result);
-      
-      toast({
-        title: t('content_moderation.test_completed'),
-        description: t('content_moderation.content_tested_success'),
-      });
-    } catch (error) {
-      logger.error('Error testing content moderation', { component: 'ContentModerationPanel', action: 'testContentModeration' }, error as Error);
-      toast({
-        title: t('content_moderation.error'),
-        description: t('content_moderation.failed_test_content'),
-        variant: 'destructive',
-      });
-    } finally {
-      setTesting(false);
     }
   };
 
   const updateLogStatus = async (logId: string, newStatus: string) => {
-    try {
+    const result = await unifiedLoading.withLoading('updateStatus', async () => {
       const { error } = await supabase
         .from('content_moderation_logs')
         .update({ status: newStatus })
         .eq('id', logId);
 
       if (error) throw error;
+      return true;
+    }, {
+      successMessage: t('content_moderation.content_status_updated'),
+      errorMessage: t('content_moderation.failed_update_status')
+    });
 
+    if (result) {
       setLogs(logs.map(log => 
         log.id === logId ? { ...log, status: newStatus as ModerationLog['status'] } : log
       ));
-
-      toast({
-        title: t('content_moderation.status_updated'),
-        description: t('content_moderation.content_status_updated'),
-      });
-    } catch (error) {
-      logger.error('Error updating log status', { component: 'ContentModerationPanel', action: 'updateLogStatus', data: { logId, newStatus } }, error as Error);
-      toast({
-        title: t('content_moderation.error'),
-        description: t('content_moderation.failed_update_status'),
-        variant: 'destructive',
-      });
     }
   };
 
@@ -418,10 +415,10 @@ export const ContentModerationPanel: React.FC = () => {
               
               <Button 
                 onClick={testContentModeration}
-                disabled={testing || !testContent.trim()}
+                disabled={unifiedLoading.isLoading('testContent') || !testContent.trim()}
                 className="w-full"
               >
-                {testing ? (
+                {unifiedLoading.isLoading('testContent') ? (
                   <>
                     <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                     {t('content_moderation.testing')}

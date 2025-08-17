@@ -22,7 +22,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAIService } from '@/hooks/useAIService';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 interface TagData {
   tag: string;
@@ -65,6 +66,18 @@ export const AutomatedTaggingPanel: React.FC = () => {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const aiService = useAIService();
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'AutomatedTaggingPanel',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'AutomatedTaggingPanel',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     fetchTagSuggestions();
@@ -72,8 +85,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
   }, [entityType]);
 
   const fetchTagSuggestions = async () => {
-    try {
-      setLoading(true);
+    setLoading(true);
+    const result = await unifiedLoading.withLoading('fetchSuggestions', async () => {
       let query = supabase
         .from('ai_tag_suggestions')
         .select('*')
@@ -87,23 +100,21 @@ export const AutomatedTaggingPanel: React.FC = () => {
       const { data, error } = await query;
       if (error) throw error;
 
-      setSuggestions((data || []).map(item => ({
+      return (data || []).map(item => ({
         ...item,
         suggested_tags: Array.isArray(item.suggested_tags) ? 
           item.suggested_tags.map((tag: string | { tag: string }) => typeof tag === 'string' ? { tag } : tag) : [],
         confidence_scores: typeof item.confidence_scores === 'object' && item.confidence_scores !== null ? 
           item.confidence_scores as Record<string, number> : {}
-      })));
-    } catch (error) {
-      logger.error('Error fetching tag suggestions', { component: 'AutomatedTaggingPanel', action: 'fetchTagSuggestions' }, error as Error);
-      toast({
-        title: t('automated_tagging.error', 'Error'),
-        description: t('automated_tagging.failed_load_suggestions', 'Failed to load suggestions'),
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
+      }));
+    }, {
+      errorMessage: t('automated_tagging.failed_load_suggestions', 'Failed to load suggestions')
+    });
+    
+    if (result) {
+      setSuggestions(result);
     }
+    setLoading(false);
   };
 
   const fetchStats = async () => {
@@ -126,36 +137,27 @@ export const AutomatedTaggingPanel: React.FC = () => {
         });
       }
     } catch (error) {
-      logger.error('Error fetching stats', { component: 'AutomatedTaggingPanel', action: 'fetchStats' }, error as Error);
+      errorHandler.handleError(error, { operation: 'fetchStats' });
     }
   };
 
   const generateTagsForEntity = async (entityId: string, entityType: string, content: string) => {
-    try {
-      setProcessing(true);
+    const result = await unifiedLoading.withLoading('generateTags', async () => {
       await aiService.suggestTags(entityId, entityType, content);
-      
-      toast({
-        title: t('automated_tagging.tags_generated', 'Tags generated'),
-        description: t('automated_tagging.tags_generated_success', 'Tags generated successfully'),
-      });
+      return true;
+    }, {
+      successMessage: t('automated_tagging.tags_generated_success', 'Tags generated successfully'),
+      errorMessage: t('automated_tagging.failed_generate_tags', 'Failed to generate tags')
+    });
 
+    if (result) {
       fetchTagSuggestions();
       fetchStats();
-    } catch (error) {
-      logger.error('Error generating tags', { component: 'AutomatedTaggingPanel', action: 'generateTagsForEntity' }, error as Error);
-      toast({
-        title: t('automated_tagging.error', 'Error'),
-        description: t('automated_tagging.failed_generate_tags', 'Failed to generate tags'),
-        variant: 'destructive',
-      });
-    } finally {
-      setProcessing(false);
     }
   };
 
   const approveSuggestion = async (suggestionId: string, tags: string[]) => {
-    try {
+    const result = await unifiedLoading.withLoading('approveSuggestion', async () => {
       // Update suggestion status
       const { error: updateError } = await supabase
         .from('ai_tag_suggestions')
@@ -169,55 +171,45 @@ export const AutomatedTaggingPanel: React.FC = () => {
       if (suggestion) {
         // Here you would add logic to apply tags to the actual entity
         // This depends on your tag system implementation
-        logger.info('Applying tags to entity', { component: 'AutomatedTaggingPanel', action: 'approveSuggestion', data: { entityId: suggestion.entity_id, tags } });
+        errorHandler.handleError({ message: 'Applying tags to entity' }, { 
+          operation: 'approveSuggestion', 
+          metadata: { entityId: suggestion.entity_id, tags } 
+        });
       }
 
+      return true;
+    }, {
+      successMessage: t('automated_tagging.tags_applied_success', 'Tags applied successfully'),
+      errorMessage: t('automated_tagging.failed_apply_tags', 'Failed to apply tags')
+    });
+
+    if (result) {
       setSuggestions(suggestions.map(s => 
         s.id === suggestionId ? { ...s, status: 'approved' as const } : s
       ));
-
-      toast({
-        title: t('automated_tagging.approved_success', 'Approved successfully'),
-        description: t('automated_tagging.tags_applied_success', 'Tags applied successfully'),
-      });
-
       fetchStats();
-    } catch (error) {
-      logger.error('Error approving suggestion', { component: 'AutomatedTaggingPanel', action: 'approveSuggestion' }, error as Error);
-      toast({
-        title: t('automated_tagging.error', 'Error'),
-        description: t('automated_tagging.failed_apply_tags', 'Failed to apply tags'),
-        variant: 'destructive',
-      });
     }
   };
 
   const rejectSuggestion = async (suggestionId: string) => {
-    try {
+    const result = await unifiedLoading.withLoading('rejectSuggestion', async () => {
       const { error } = await supabase
         .from('ai_tag_suggestions')
         .update({ status: 'rejected' })
         .eq('id', suggestionId);
 
       if (error) throw error;
+      return true;
+    }, {
+      successMessage: t('automated_tagging.suggestion_rejected'),
+      errorMessage: t('automated_tagging.failed_reject_suggestion', 'Failed to reject suggestion')
+    });
 
+    if (result) {
       setSuggestions(suggestions.map(s => 
         s.id === suggestionId ? { ...s, status: 'rejected' as const } : s
       ));
-
-      toast({
-        title: t('automated_tagging.rejected_success'),
-        description: t('automated_tagging.suggestion_rejected'),
-      });
-
       fetchStats();
-    } catch (error) {
-      logger.error('Error rejecting suggestion', { component: 'AutomatedTaggingPanel', action: 'rejectSuggestion' }, error as Error);
-      toast({
-        title: t('automated_tagging.error', 'Error'),
-        description: t('automated_tagging.failed_reject_suggestion', 'Failed to reject suggestion'),
-        variant: 'destructive',
-      });
     }
   };
 
@@ -227,36 +219,23 @@ export const AutomatedTaggingPanel: React.FC = () => {
   );
 
   const runBulkTagging = async () => {
-    try {
-      setProcessing(true);
-      
+    const result = await unifiedLoading.withLoading('bulkTagging', async () => {
       // This would fetch entities that need tagging and process them
       // For now, we'll simulate the process
-      toast({
-        title: t('automated_tagging.process_started'),
-        description: t('automated_tagging.bulk_tagging_started'),
-      });
-
+      
       // Simulate processing delay with managed timer
       const { setTimeout: scheduleTimeout } = useTimerManager();
       await new Promise(resolve => scheduleTimeout(() => resolve(undefined), 3000));
+      
+      return true;
+    }, {
+      successMessage: t('automated_tagging.bulk_tagging_completed'),
+      errorMessage: t('automated_tagging.failed_bulk_tagging', 'Failed to run bulk tagging')
+    });
 
-      toast({
-        title: t('automated_tagging.process_completed'),
-        description: t('automated_tagging.bulk_tagging_completed'),
-      });
-
+    if (result) {
       fetchTagSuggestions();
       fetchStats();
-    } catch (error) {
-      logger.error('Error running bulk tagging', { component: 'AutomatedTaggingPanel', action: 'runBulkTagging' }, error as Error);
-      toast({
-        title: t('automated_tagging.error', 'Error'),
-        description: t('automated_tagging.failed_bulk_tagging', 'Failed to run bulk tagging'),
-        variant: 'destructive',
-      });
-    } finally {
-      setProcessing(false);
     }
   };
 
@@ -518,11 +497,11 @@ export const AutomatedTaggingPanel: React.FC = () => {
 
               <Button 
                 onClick={runBulkTagging}
-                disabled={processing}
+                disabled={unifiedLoading.isLoading('bulkTagging')}
                 className="w-full"
                 size="lg"
               >
-                {processing ? (
+                {unifiedLoading.isLoading('bulkTagging') ? (
                   <>
                     <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                     جاري المعالجة...
@@ -535,7 +514,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                 )}
               </Button>
 
-              {processing && (
+              {unifiedLoading.isLoading('bulkTagging') && (
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>جاري المعالجة...</span>

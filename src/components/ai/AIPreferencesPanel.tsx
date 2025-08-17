@@ -9,12 +9,25 @@ import { Bot, Brain, Lightbulb, Users, MessageSquare, Settings } from 'lucide-re
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 
 export const AIPreferencesPanel: React.FC = () => {
   const { features, preferences, loading, updatePreferences, isFeatureEnabled } = useAIFeatures();
   const { isRTL } = useDirection();
   const { t } = useUnifiedTranslation();
+  
+  // Unified loading and error handling
+  const unifiedLoading = useUnifiedLoading({
+    component: 'AIPreferencesPanel',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({
+    component: 'AIPreferencesPanel',
+    showToast: true,
+    logError: true
+  });
 
   if (loading || !preferences) {
     return (
@@ -36,9 +49,14 @@ export const AIPreferencesPanel: React.FC = () => {
     );
   }
 
-  const handlePreferenceChange = (key: keyof typeof preferences, value: string | boolean) => {
-    logger.info('AI preference changed', { component: 'AIPreferencesPanel', action: 'handlePreferenceChange', data: { key, value } });
-    updatePreferences({ [key]: value });
+  const handlePreferenceChange = async (key: keyof typeof preferences, value: string | boolean) => {
+    await unifiedLoading.withLoading('updatePreference', 
+      () => updatePreferences({ [key]: value }),
+      {
+        successMessage: t('ai_preferences.preference_updated'),
+        errorMessage: t('ai_preferences.preference_update_failed')
+      }
+    );
   };
 
   const featureIcons = {
