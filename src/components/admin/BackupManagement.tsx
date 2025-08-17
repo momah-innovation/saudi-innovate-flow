@@ -108,7 +108,6 @@ export function BackupManagement() {
               <Switch 
                 checked={schedule.enabled} 
                 onCheckedChange={() => {}} 
-                size="sm"
               />
               <span className="text-sm">
                 {schedule.frequency} at {schedule.time}
