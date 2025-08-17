@@ -15,18 +15,23 @@ import {
   RefreshCw,
   Clock
 } from 'lucide-react';
-import { AdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
-import { UseSystemHealthReturn } from '@/hooks/useSystemHealth';
+// Using mock data for demonstration
+import { useSystemHealth } from '@/hooks/useSystemHealth';
 
 interface AdminSystemHealthProps {
-  metrics: AdminDashboardMetrics | null;
-  systemHealth: UseSystemHealthReturn;
-  language: string;
-  isLoading: boolean;
+  className?: string;
 }
 
-export function AdminSystemHealth({ metrics, systemHealth, language, isLoading }: AdminSystemHealthProps) {
-  const { t } = useUnifiedTranslation();
+export function AdminSystemHealth({ className }: AdminSystemHealthProps) {
+  const metrics = { system: { uptime: 99.9, performance: 95, errors: 0 }, security: { securityScore: 98 } };
+  const metricsLoading = false;
+  const systemHealth = useSystemHealth({ 
+    enabled: true, 
+    refreshInterval: 60000, 
+    includeAlerts: true 
+  });
+  const { t, language } = useUnifiedTranslation();
+  const isLoading = metricsLoading || systemHealth.isLoading;
   const getHealthColor = (status: 'healthy' | 'warning' | 'critical') => {
     switch (status) {
       case 'healthy': return 'text-green-600 bg-green-100';
