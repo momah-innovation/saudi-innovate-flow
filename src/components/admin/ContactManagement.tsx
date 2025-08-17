@@ -79,47 +79,30 @@ const ContactManagement = () => {
     { value: 'blocked', label: 'Blocked', color: 'bg-red-100 text-red-800' }
   ];
 
-  // Table columns
+  // Table columns - using DataTable format
   const columns = [
     {
-      id: 'select',
-      header: ({ table }) => (
+      key: 'select' as keyof Contact,
+      title: '',
+      render: (_, contact) => (
         <input
           type="checkbox"
-          checked={table.getIsAllPageRowsSelected()}
+          checked={selectedContacts.includes(contact.id)}
           onChange={(e) => {
-            table.toggleAllPageRowsSelected(e.target.checked);
             if (e.target.checked) {
-              setSelectedContacts(contacts.map(c => c.id));
+              setSelectedContacts([...selectedContacts, contact.id]);
             } else {
-              setSelectedContacts([]);
+              setSelectedContacts(selectedContacts.filter(id => id !== contact.id));
             }
           }}
           className="rounded border border-input"
         />
       ),
-      cell: ({ row }) => (
-        <input
-          type="checkbox"
-          checked={selectedContacts.includes(row.original.id)}
-          onChange={(e) => {
-            if (e.target.checked) {
-              setSelectedContacts([...selectedContacts, row.original.id]);
-            } else {
-              setSelectedContacts(selectedContacts.filter(id => id !== row.original.id));
-            }
-          }}
-          className="rounded border border-input"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
     },
     {
-      accessorKey: 'name',
-      header: 'Contact',
-      cell: ({ row }) => {
-        const contact = row.original;
+      key: 'first_name' as keyof Contact,
+      title: 'Contact',
+      render: (_, contact) => {
         const fullName = `${contact.first_name} ${contact.last_name}`;
         return (
           <div className="flex items-center gap-3">
@@ -137,23 +120,20 @@ const ContactManagement = () => {
       }
     },
     {
-      accessorKey: 'company',
-      header: 'Company',
-      cell: ({ row }) => {
-        const contact = row.original;
-        return (
-          <div>
-            <div className="font-medium">{contact.company || 'N/A'}</div>
-            <div className="text-sm text-muted-foreground">{contact.position || ''}</div>
-          </div>
-        );
-      }
+      key: 'company' as keyof Contact,
+      title: 'Company',
+      render: (_, contact) => (
+        <div>
+          <div className="font-medium">{contact.company || 'N/A'}</div>
+          <div className="text-sm text-muted-foreground">{contact.position || ''}</div>
+        </div>
+      )
     },
     {
-      accessorKey: 'type',
-      header: 'Type',
-      cell: ({ row }) => {
-        const type = contactTypes.find(t => t.value === row.original.type);
+      key: 'type' as keyof Contact,
+      title: 'Type',
+      render: (_, contact) => {
+        const type = contactTypes.find(t => t.value === contact.type);
         return (
           <Badge variant="secondary" className={type?.color}>
             {type?.label}
@@ -162,10 +142,10 @@ const ContactManagement = () => {
       }
     },
     {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => {
-        const status = statusOptions.find(s => s.value === row.original.status);
+      key: 'status' as keyof Contact,
+      title: 'Status',
+      render: (_, contact) => {
+        const status = statusOptions.find(s => s.value === contact.status);
         return (
           <Badge variant="outline" className={status?.color}>
             {status?.label}
@@ -174,10 +154,10 @@ const ContactManagement = () => {
       }
     },
     {
-      accessorKey: 'last_contact_date',
-      header: 'Last Contact',
-      cell: ({ row }) => {
-        const date = row.original.last_contact_date;
+      key: 'last_contact_date' as keyof Contact,
+      title: 'Last Contact',
+      render: (_, contact) => {
+        const date = contact.last_contact_date;
         return (
           <div className="text-sm">
             {date ? new Date(date).toLocaleDateString() : 'Never'}
@@ -186,51 +166,21 @@ const ContactManagement = () => {
       }
     },
     {
-      accessorKey: 'tags',
-      header: 'Tags',
-      cell: ({ row }) => (
+      key: 'tags' as keyof Contact,
+      title: 'Tags',
+      render: (_, contact) => (
         <div className="flex flex-wrap gap-1">
-          {row.original.tags.slice(0, 2).map(tag => (
+          {contact.tags.slice(0, 2).map(tag => (
             <Badge key={tag} variant="outline" className="text-xs">
               {tag}
             </Badge>
           ))}
-          {row.original.tags.length > 2 && (
+          {contact.tags.length > 2 && (
             <Badge variant="outline" className="text-xs">
-              +{row.original.tags.length - 2}
+              +{contact.tags.length - 2}
             </Badge>
           )}
         </div>
-      )
-    },
-    {
-      id: 'actions',
-      header: 'Actions',
-      cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setViewingContact(row.original)}>
-              <Eye className="h-4 w-4 mr-2" />
-              View Details
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Edit className="h-4 w-4 mr-2" />
-              Edit Contact
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              onClick={() => deleteContact(row.original.id)}
-              className="text-destructive"
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       )
     }
   ];
@@ -536,10 +486,56 @@ const ContactManagement = () => {
             )}
           </div>
 
-          <DataTable 
-            columns={columns}
+          <DataTable
             data={contacts}
+            columns={columns}
+            selectedItems={selectedContacts}
+            onSelectItem={(id, selected) => {
+              if (selected) {
+                setSelectedContacts([...selectedContacts, id]);
+              } else {
+                setSelectedContacts(selectedContacts.filter(item => item !== id));
+              }
+            }}
+            onSelectAll={(selected) => {
+              if (selected) {
+                setSelectedContacts(contacts.map(c => c.id));
+              } else {
+                setSelectedContacts([]);
+              }
+            }}
             loading={loading}
+            emptyMessage="No contacts found"
+            searchable
+            searchTerm={filters.search || ''}
+            onSearchChange={(term) => setFilters({ ...filters, search: term })}
+            actions={(contact) => (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setViewingContact(contact)}>
+                    <Eye className="h-4 w-4 mr-2" />
+                    View Details
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit Contact
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => deleteContact(contact.id)}
+                    className="text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+            idField="id"
           />
         </CardContent>
       </Card>
