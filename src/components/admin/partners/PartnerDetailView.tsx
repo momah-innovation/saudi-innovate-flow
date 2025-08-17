@@ -57,7 +57,7 @@ export function PartnerDetailView({
   const fetchRelatedData = async () => {
     if (!partner) return;
     
-    setLoading(true);
+    const [loading, setLoading] = useState(false);
     try {
       // Mock data for now - replace with actual API calls
       setRelatedData({
