@@ -31,62 +31,83 @@ Comprehensive documentation for dashboard components, RBAC implementation, and r
 
 ### 🎯 Core Dashboard Components
 
-#### Main Dashboard Router
+#### Main Dashboard Component
 **Location**: `src/components/dashboard/UserDashboard.tsx`
 
 ```typescript
-import { UserDashboard } from '@/components/dashboard/UserDashboard';
+// Main dashboard component - exports default component
+export default React.memo(function UserDashboard() {
+  const { userProfile } = useAuth();
+  const { permissions, getPrimaryRole, canAccess } = useRoleAccess();
+  const { data: unifiedData } = useUnifiedDashboardData();
 
-// Main dashboard component with role-based routing
-const DashboardRouter = () => {
-  const { user, profile } = useAuth();
-  const { primaryRole } = useRolePermissions();
-
-  if (!user || !profile) {
-    return <DashboardSkeleton />;
+  // Role-based dashboard rendering
+  const primaryRole = useMemo(() => getPrimaryRole(), [getPrimaryRole]);
+  
+  // Render appropriate dashboard based on role
+  if (primaryRole === 'admin' || primaryRole === 'super_admin') {
+    return <AdminDashboard 
+      userProfile={userProfile} 
+      canManageUsers={canAccess('manage_users')}
+      canManageSystem={canAccess('system_admin')}
+      canViewAnalytics={canAccess('view_analytics')}
+    />;
+  }
+  
+  if (primaryRole === 'expert' || primaryRole === 'evaluator') {
+    return <ExpertDashboard 
+      userProfile={userProfile}
+      canEvaluateIdeas={canAccess('evaluate_ideas')}
+      canAccessExpertTools={canAccess('expert_tools')}
+    />;
+  }
+  
+  if (primaryRole === 'partner' || primaryRole === 'stakeholder') {
+    return <PartnerDashboard 
+      userProfile={userProfile}
+      canManageOpportunities={canAccess('manage_opportunities')}
+      canViewPartnerDashboard={canAccess('partner_dashboard')}
+    />;
   }
 
-  // Route to appropriate dashboard based on primary role
-  switch (primaryRole) {
-    case 'admin':
-    case 'super_admin':
-      return <AdminDashboard userProfile={profile} />;
-    
-    case 'innovator':
-      return <InnovatorDashboard userProfile={profile} />;
-    
-    case 'expert':
-    case 'evaluator':
-      return <ExpertDashboard userProfile={profile} />;
-    
-    case 'partner':
-    case 'stakeholder':
-      return <PartnerDashboard userProfile={profile} />;
-    
-    default:
-      return <UserDashboard userProfile={profile} />;
-  }
-};
+  // Default user dashboard
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      <DashboardHero 
+        userProfile={userProfile}
+        unifiedData={unifiedData}
+        onNavigate={(path) => navigate(path)}
+      />
+      <DashboardOverview />
+    </div>
+  );
+});
 ```
 
 ## 👑 Role-Based Dashboard Interfaces
 
 ### 🔧 Admin Dashboard
 
-**Location**: `src/components/dashboard/AdminDashboard.tsx`
+**Location**: `src/components/dashboard/AdminDashboardComponent.tsx`
 
 #### System Management Interface
 ```typescript
-import { useAdminDashboard } from '@/hooks/useAdminDashboard';
+interface AdminDashboardProps {
+  userProfile: DashboardUserProfile;
+  canManageUsers: boolean;
+  canManageSystem: boolean;
+  canViewAnalytics: boolean;
+}
 
-const AdminDashboard = ({ userProfile }: { userProfile: UserProfile }) => {
-  const {
-    systemMetrics,
-    userStatistics,
-    challengeOverview,
-    securityAlerts,
-    recentActivity
-  } = useAdminDashboard();
+export const AdminDashboard = React.memo(function AdminDashboard({ 
+  userProfile, 
+  canManageUsers, 
+  canManageSystem, 
+  canViewAnalytics 
+}: AdminDashboardProps) {
+  const { t, language } = useUnifiedTranslation();
+  const navigate = useNavigate();
+  const { data: unifiedData } = useUnifiedDashboardData('admin');
 
   return (
     <div className="space-y-6">
@@ -219,17 +240,11 @@ const AdminQuickActions = () => {
 
 #### Innovation-Focused Interface
 ```typescript
-import { useInnovatorDashboard } from '@/hooks/useInnovatorDashboard';
-
-const InnovatorDashboard = ({ userProfile }: { userProfile: UserProfile }) => {
-  const {
-    mySubmissions,
-    activeChallenges,
-    recommendedChallenges,
-    innovationScore,
-    achievements,
-    collaborationOpportunities
-  } = useInnovatorDashboard(userProfile.id);
+export const InnovatorDashboard = () => {
+  const { t } = useUnifiedTranslation();
+  const navigate = useNavigate();
+  const { data: unifiedData } = useUnifiedDashboardData('innovator');
+  const { userProfile } = useAuth();
 
   return (
     <div className="space-y-6">
@@ -298,16 +313,20 @@ const InnovatorDashboard = ({ userProfile }: { userProfile: UserProfile }) => {
 
 #### Evaluation & Review Interface
 ```typescript
-import { useExpertDashboard } from '@/hooks/useExpertDashboard';
+interface ExpertDashboardProps {
+  userProfile: DashboardUserProfile;
+  canEvaluateIdeas: boolean;
+  canAccessExpertTools: boolean;
+}
 
-const ExpertDashboard = ({ userProfile }: { userProfile: UserProfile }) => {
-  const {
-    pendingEvaluations,
-    completedEvaluations,
-    expertiseAreas,
-    evaluationMetrics,
-    mentorshipOpportunities
-  } = useExpertDashboard(userProfile.id);
+export const ExpertDashboard = React.memo(function ExpertDashboard({ 
+  userProfile, 
+  canEvaluateIdeas, 
+  canAccessExpertTools 
+}: ExpertDashboardProps) {
+  const { t, language } = useUnifiedTranslation();
+  const navigate = useNavigate();
+  const { data: unifiedData } = useUnifiedDashboardData('expert');
 
   return (
     <div className="space-y-6">
@@ -382,16 +401,20 @@ const ExpertDashboard = ({ userProfile }: { userProfile: UserProfile }) => {
 
 #### Collaboration & Opportunity Interface
 ```typescript
-import { usePartnerDashboard } from '@/hooks/usePartnerDashboard';
+interface PartnerDashboardProps {
+  userProfile: DashboardUserProfile;
+  canManageOpportunities: boolean;
+  canViewPartnerDashboard: boolean;
+}
 
-const PartnerDashboard = ({ userProfile }: { userProfile: UserProfile }) => {
-  const {
-    partnershipOpportunities,
-    activeCollaborations,
-    investmentOverview,
-    innovationPipeline,
-    partnerMetrics
-  } = usePartnerDashboard(userProfile.id);
+export const PartnerDashboard = React.memo(function PartnerDashboard({ 
+  userProfile, 
+  canManageOpportunities, 
+  canViewPartnerDashboard 
+}: PartnerDashboardProps) {
+  const { t, language } = useUnifiedTranslation();
+  const navigate = useNavigate();
+  const { data: unifiedData } = useUnifiedDashboardData('partner');
 
   return (
     <div className="space-y-6">
