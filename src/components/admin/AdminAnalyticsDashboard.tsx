@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useAnalytics } from '@/hooks/useAnalytics';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -30,11 +31,16 @@ interface AdminAnalyticsDashboardProps {
 
 export function AdminAnalyticsDashboard({ className }: AdminAnalyticsDashboardProps) {
   const { t, language } = useUnifiedTranslation();
-  const analytics = useAnalytics();
-  const loading = analytics.isLoading || false;
-  
   const [selectedTimeframe, setSelectedTimeframe] = useState('30d');
   const [selectedMetric, setSelectedMetric] = useState('overview');
+
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'AdminAnalyticsDashboard',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'AdminAnalyticsDashboard' });
 
   // Mock analytics data with comprehensive metrics
   const analyticsData = {
@@ -104,18 +110,25 @@ export function AdminAnalyticsDashboard({ className }: AdminAnalyticsDashboardPr
   };
 
   const handleExport = () => {
-    // Mock export functionality
-    const csvContent = 'Metric,Value,Period\nTotal Users,1248,30d\nActive Users,856,30d\nEngagement Rate,65.2%,30d';
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'analytics-report.csv';
-    a.click();
-    window.URL.revokeObjectURL(url);
+    return withLoading('export', async () => {
+      // Mock export functionality
+      const csvContent = 'Metric,Value,Period\nTotal Users,1248,30d\nActive Users,856,30d\nEngagement Rate,65.2%,30d';
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'analytics-report.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      return true;
+    }, {
+      successMessage: t('success.export_completed'),
+      errorMessage: t('error.export_failed'),
+      logContext: { timeframe: selectedTimeframe, metric: selectedMetric }
+    });
   };
 
-  if (loading) {
+  if (isLoading('refresh')) {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-muted rounded w-48 animate-pulse"></div>
@@ -159,12 +172,22 @@ export function AdminAnalyticsDashboard({ className }: AdminAnalyticsDashboardPr
               <SelectItem value="1y">{language === 'ar' ? 'سنة' : '1 Year'}</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" size="sm" onClick={handleExport}>
-            <Download className="w-4 h-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleExport}
+            disabled={isLoading('export')}
+          >
+            <Download className={`w-4 h-4 mr-2 ${isLoading('export') ? 'animate-spin' : ''}`} />
             {language === 'ar' ? 'تصدير' : 'Export'}
           </Button>
-          <Button variant="outline" size="sm">
-            <RefreshCw className="w-4 h-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => withLoading('refresh', async () => window.location.reload())}
+            disabled={isLoading('refresh')}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading('refresh') ? 'animate-spin' : ''}`} />
             {language === 'ar' ? 'تحديث' : 'Refresh'}
           </Button>
         </div>

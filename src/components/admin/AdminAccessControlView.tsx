@@ -7,7 +7,8 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useAnalytics } from '@/hooks/useAnalytics';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 // Using existing analytics hook for mock access control data
 import { 
   Shield, 
@@ -33,16 +34,17 @@ interface AdminAccessControlViewProps {
 
 export function AdminAccessControlView({ className }: AdminAccessControlViewProps) {
   const { t, language } = useUnifiedTranslation();
-  const analytics = useAnalytics();
-  const loading = analytics.isLoading || false;
-  const permissions = { data: [] };
-  const auditLogs = { data: [] };
-  
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('all');
   const [showSensitiveData, setShowSensitiveData] = useState(false);
 
-  const isLoading = loading;
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'AdminAccessControlView',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'AdminAccessControlView' });
 
   // Mock data for access control
   const accessRules = [
@@ -127,8 +129,13 @@ export function AdminAccessControlView({ className }: AdminAccessControlViewProp
             {language === 'ar' ? 'إدارة صلاحيات الوصول والأمان' : 'Manage access permissions and security policies'}
           </p>
         </div>
-        <Button variant="outline" size="sm">
-          <RefreshCw className="w-4 h-4 mr-2" />
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => withLoading('refresh', async () => window.location.reload())}
+          disabled={isLoading('refresh')}
+        >
+          <RefreshCw className={`w-4 h-4 mr-2 ${isLoading('refresh') ? 'animate-spin' : ''}`} />
           {language === 'ar' ? 'تحديث' : 'Refresh'}
         </Button>
       </div>

@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useAnalytics } from '@/hooks/useAnalytics';
-import { debugLog } from '@/utils/debugLogger';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 // Using existing analytics hook for mock audit log data
 import { 
   Search, 
@@ -31,15 +31,18 @@ interface AdminAuditLogProps {
 
 export function AdminAuditLog({ className }: AdminAuditLogProps) {
   const { t, language } = useUnifiedTranslation();
-  const analytics = useAnalytics();
-  const loading = analytics.isLoading || false;
-  
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAction, setSelectedAction] = useState('all');
   const [selectedSeverity, setSelectedSeverity] = useState('all');
   const [dateRange, setDateRange] = useState<any>(null);
 
-  const refresh = () => window.location.reload();
+  // ✅ MIGRATED: Using unified loading and error handling
+  const { isLoading, withLoading } = useUnifiedLoading({
+    component: 'AdminAuditLog',
+    showToast: true,
+    logErrors: true
+  });
+  const errorHandler = createErrorHandler({ component: 'AdminAuditLog' });
 
   // Mock audit log data
   const mockAuditLogs = [
@@ -155,8 +158,7 @@ export function AdminAuditLog({ className }: AdminAuditLogProps) {
   };
 
   const handleExport = async () => {
-    try {
-      // Mock export functionality
+    return withLoading('export', async () => {
       const csvContent = filteredLogs.map(log => 
         `${log.timestamp},${log.user},${log.action},${log.resource},${log.severity},${log.status},"${log.details}"`
       ).join('\n');
@@ -170,13 +172,15 @@ export function AdminAuditLog({ className }: AdminAuditLogProps) {
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
-    } catch (error) {
-      // Use structured logging for export errors
-      debugLog.error('Export error', { operation: 'audit_export', error });
-    }
+      return true;
+    }, {
+      successMessage: t('success.export_completed'),
+      errorMessage: t('error.export_failed'),
+      logContext: { operation: 'audit_export', logCount: filteredLogs.length }
+    });
   };
 
-  if (loading) {
+  if (isLoading('refresh')) {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-muted rounded w-48 animate-pulse"></div>
@@ -205,12 +209,22 @@ export function AdminAuditLog({ className }: AdminAuditLogProps) {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleExport}>
-            <Download className="w-4 h-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleExport}
+            disabled={isLoading('export')}
+          >
+            <Download className={`w-4 h-4 mr-2 ${isLoading('export') ? 'animate-spin' : ''}`} />
             {language === 'ar' ? 'تصدير' : 'Export'}
           </Button>
-          <Button variant="outline" size="sm" onClick={refresh}>
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => withLoading('refresh', async () => window.location.reload())}
+            disabled={isLoading('refresh')}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading('refresh') ? 'animate-spin' : ''}`} />
             {language === 'ar' ? 'تحديث' : 'Refresh'}
           </Button>
         </div>
