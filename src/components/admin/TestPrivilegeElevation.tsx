@@ -4,10 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { logger } from '@/utils/logger';
 
 export function TestPrivilegeElevation() {
-  const [loading, setLoading] = useState(false);
+  const loadingManager = useUnifiedLoading({ component: 'TestPrivilegeElevation' });
+  const handleError = createErrorHandler({ component: 'TestPrivilegeElevation' });
   interface TestResult {
     success?: boolean;
     message?: string;
@@ -20,31 +23,30 @@ export function TestPrivilegeElevation() {
   const { t } = useUnifiedTranslation();
 
   const testElevation = async () => {
-    setLoading(true);
-    setResult(null);
-    
-    try {
-      // Calling elevate-user-privileges function
+    await loadingManager.withLoading('test', async () => {
+      setResult(null);
       
-      const { data, error } = await supabase.functions.invoke('elevate-user-privileges', {
-        body: { test: true }
-      });
-      
-      if (error) {
-        logger.error('Function error', { component: 'TestPrivilegeElevation', action: 'testElevation' }, error as Error);
+      try {
+        // Calling elevate-user-privileges function
+        const { data, error } = await supabase.functions.invoke('elevate-user-privileges', {
+          body: { test: true }
+        });
+        
+        if (error) {
+          handleError.handleError('Function error', { component: 'TestPrivilegeElevation', operation: 'test' });
+          setResult({ error: error.message, details: error });
+          return;
+        }
+        
+        // Function executed successfully
+        setResult(data);
+      } catch (err: unknown) {
+        const error = err as Error;
+        handleError.handleError('Request error', { component: 'TestPrivilegeElevation', operation: 'test' });
         setResult({ error: error.message, details: error });
-        return;
+        throw error;
       }
-      
-      // Function executed successfully
-      setResult(data);
-    } catch (err: unknown) {
-      const error = err as Error;
-      logger.error('Request error', { component: 'TestPrivilegeElevation', action: 'testElevation' }, error);
-      setResult({ error: error.message, details: error });
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return (
@@ -55,10 +57,10 @@ export function TestPrivilegeElevation() {
       <CardContent className="space-y-4">
         <Button 
           onClick={testElevation} 
-          disabled={loading}
+          disabled={loadingManager.isLoading('test')}
           className="w-full"
         >
-          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {loadingManager.isLoading('test') && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {t('admin.callElevateFunction', 'Call Elevate Privileges Function')}
         </Button>
         

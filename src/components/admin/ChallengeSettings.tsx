@@ -16,6 +16,7 @@ import { SensitivityBadge } from '@/components/ui/SensitivityBadge';
 import { useToast } from "@/hooks/use-toast";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useChallengeManagement } from "@/hooks/useChallengeManagement";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/error-handler";
@@ -54,7 +55,8 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
   const { getSettingValue } = useSettingsManager();
   const { updateChallenge } = useChallengeManagement();
   const challengeSensitivityLevels = getSettingValue('sensitivity_levels', []) as string[];
-  const [loading, setLoading] = useState(false);
+  const loadingManager = useUnifiedLoading({ component: 'ChallengeSettings' });
+  const handleError = createErrorHandler({ component: 'ChallengeSettings' });
   
   // System settings
   const [systemSettings, setSystemSettings] = useState({
@@ -105,54 +107,53 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
   };
 
   const handleSave = async () => {
-    setLoading(true);
-    try {
-      // ✅ MIGRATED: Using centralized hook method
-      await updateChallenge(challenge.id, {
-        sensitivity_level: settings.visibility,
-        // Add other fields as needed
-      });
+    await loadingManager.withLoading('save', async () => {
+      try {
+        // ✅ MIGRATED: Using centralized hook method
+        await updateChallenge(challenge.id, {
+          sensitivity_level: settings.visibility,
+          // Add other fields as needed
+        });
 
-      toast({
-        title: t('challenge_settings.settings_updated'),
-        description: t('challenge_settings.settings_updated_description'),
-      });
-      
-      onUpdate();
-      onClose();
-    } catch (error) {
-      logger.error('Error updating challenge settings', error);
-    } finally {
-      setLoading(false);
-    }
+        toast({
+          title: t('challenge_settings.settings_updated'),
+          description: t('challenge_settings.settings_updated_description'),
+        });
+        
+        onUpdate();
+        onClose();
+      } catch (error) {
+        handleError.handleError('Challenge settings update failed', { component: 'ChallengeSettings', operation: 'save' });
+        throw error;
+      }
+    });
   };
 
   const handleArchiveChallenge = async () => {
-    try {
-      setLoading(true);
-      
-      // ✅ MIGRATED: Using centralized hook method
-      await updateChallenge(challenge.id, { 
-        status: 'archived'
-      });
+    await loadingManager.withLoading('archive', async () => {
+      try {
+        // ✅ MIGRATED: Using centralized hook method
+        await updateChallenge(challenge.id, { 
+          status: 'archived'
+        });
 
-      toast({
-        title: t('admin.challenges.settings.archived_success_title'),
-        description: t('admin.challenges.settings.archived_success_description'),
-      });
+        toast({
+          title: t('admin.challenges.settings.archived_success_title'),
+          description: t('admin.challenges.settings.archived_success_description'),
+        });
 
-      onUpdate();
-      onClose();
-    } catch (error) {
-      logger.error('Error archiving challenge', error);
-      toast({
-        title: t('challenge_settings.error'),
-        description: t('challenge_settings.error_archive_description'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+        onUpdate();
+        onClose();
+      } catch (error) {
+        handleError.handleError('Challenge archive failed', { component: 'ChallengeSettings', operation: 'archive' });
+        toast({
+          title: t('challenge_settings.error'),
+          description: t('challenge_settings.error_archive_description'),
+          variant: "destructive",
+        });
+        throw error;
+      }
+    });
   };
 
   return (
@@ -418,7 +419,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                     <Button
                       variant="destructive"
                       onClick={handleArchiveChallenge}
-                      disabled={loading}
+                      disabled={loadingManager.isLoading('archive')}
                       className="w-full"
                     >
                       <Archive className="h-4 w-4 mr-2" />
@@ -434,8 +435,15 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
             <Button variant="outline" onClick={onClose}>
               {t('challenge_settings.cancel')}
             </Button>
-            <Button onClick={handleSave} disabled={loading}>
-              {loading ? t('common.status.saving') : t('challenge_settings.save')}
+            <Button onClick={handleSave} disabled={loadingManager.isLoading('save')} className="w-full">
+              {loadingManager.isLoading('save') ? (
+                <>
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-foreground" />
+                  {t('challenge_settings.saving')}
+                </>
+              ) : (
+                t('challenge_settings.save_settings')
+              )}
             </Button>
           </div>
         </div>

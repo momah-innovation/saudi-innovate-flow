@@ -13,8 +13,10 @@ import { Calendar, Clock, Plus, Search, Users, UserCheck, Target, AlertCircle, C
 import { useExpertAssignment } from '@/hooks/useExpertAssignment';
 import { useToast } from '@/hooks/use-toast';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { formatDate } from '@/utils/unified-date-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { ExpertProfileDialog } from './ExpertProfileDialog';
 
 interface Expert {
@@ -64,6 +66,8 @@ export function ExpertAssignmentManagement() {
   const { getSettingValue } = useSettingsManager();
   const assignmentStatusOptions = getSettingValue('assignment_status_options', []) as string[];
   const expertRoleTypes = getSettingValue('expert_role_types', []) as string[];
+  const loadingManager = useUnifiedLoading({ component: 'ExpertAssignmentManagement' });
+  const handleError = createErrorHandler({ component: 'ExpertAssignmentManagement' });
   const [activeTab, setActiveTab] = useState("assignments");
   const [maxWorkload, setMaxWorkload] = useState(5);
   const [profileTextareaRows, setProfileTextareaRows] = useState(4);
@@ -76,7 +80,6 @@ export function ExpertAssignmentManagement() {
   // State management
   const [experts, setExperts] = useState<Expert[]>([]);
   const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [loading, setLoading] = useState(true);
   
   // Dialog states
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false);
@@ -127,9 +130,9 @@ export function ExpertAssignmentManagement() {
   } = useExpertAssignment();
 
   const fetchData = async () => {
-    setLoading(true);
-    await loadAssignments();
-    setLoading(false);
+    await loadingManager.withLoading('fetchData', async () => {
+      await loadAssignments();
+    });
   };
 
   // Mock data for experts and challenges since hooks don't exist yet
@@ -367,7 +370,7 @@ export function ExpertAssignmentManagement() {
     setIsExpertProfileDialogOpen(true);
   };
 
-  if (loading) {
+  if (loadingManager.isLoading('fetchData')) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
