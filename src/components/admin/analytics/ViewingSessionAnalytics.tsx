@@ -4,6 +4,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ScatterChart, Scatter } from "recharts";
 import { Clock, Eye, MousePointer, Users, TrendingUp, Download } from "lucide-react";
 import { challengeAnalyticsService } from '@/services/analytics/ChallengeAnalyticsService';
@@ -18,10 +20,21 @@ export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsPr
   const { t } = useUnifiedTranslation();
   const [selectedView, setSelectedView] = useState("duration");
   const [viewingData, setViewingData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
   const { user } = useAuth();
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'ViewingSessionAnalytics',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'ViewingSessionAnalytics',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     loadAnalyticsData();
@@ -30,16 +43,23 @@ export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsPr
   const loadAnalyticsData = async () => {
     if (!user?.id) return;
     
-    setIsLoading(true);
     setError(null);
     
-    try {
-      const data = await challengeAnalyticsService.getViewingSessionAnalytics(user.id, timeRange);
-      setViewingData(data);
-    } catch (err) {
-      setError('Failed to load viewing session analytics');
-    } finally {
-      setIsLoading(false);
+    const result = await loadingManager.withLoading(
+      'load-analytics-data',
+      async () => {
+        const data = await challengeAnalyticsService.getViewingSessionAnalytics(user.id, timeRange);
+        return data;
+      },
+      {
+        successMessage: t('viewing_session.loaded_successfully'),
+        errorMessage: t('viewing_session.load_failed'),
+        logContext: { operation: 'loadAnalyticsData', timeRange }
+      }
+    );
+
+    if (result) {
+      setViewingData(result);
     }
   };
 
@@ -66,7 +86,7 @@ export function ViewingSessionAnalytics({ timeRange }: ViewingSessionAnalyticsPr
   const pageViews = viewingData?.pageViews || [];
   const userJourney = viewingData?.userJourney || [];
 
-  if (isLoading) {
+  if (loadingManager.hasAnyLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>

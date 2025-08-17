@@ -34,7 +34,6 @@ export const TranslationManager: React.FC = () => {
   const [filteredTranslations, setFilteredTranslations] = useState<SystemTranslation[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [editingTranslation, setEditingTranslation] = useState<SystemTranslation | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
@@ -62,7 +61,6 @@ export const TranslationManager: React.FC = () => {
   }, [translations, selectedCategory, searchTerm]);
 
   const loadTranslations = async () => {
-    setIsLoading(true);
     const result = await unifiedLoading.withLoading('loadTranslations', async () => {
       const { data, error } = await supabase
         .from('system_translations')
@@ -78,7 +76,6 @@ export const TranslationManager: React.FC = () => {
     if (result) {
       setTranslations(result);
     }
-    setIsLoading(false);
   };
 
   const filterTranslations = () => {
@@ -268,7 +265,7 @@ export const TranslationManager: React.FC = () => {
                   successMessage: t('translations.refreshed'),
                   errorMessage: t('translations.refresh_failed')
                 })}
-                disabled={unifiedLoading.isLoading('refresh') || isLoading} 
+                disabled={unifiedLoading.hasAnyLoading} 
                 variant="outline"
               >
                 {t('common.refresh', 'Refresh')}
@@ -359,7 +356,7 @@ export const TranslationManager: React.FC = () => {
             ))}
           </div>
 
-          {filteredTranslations.length === 0 && !isLoading && (
+          {filteredTranslations.length === 0 && !unifiedLoading.hasAnyLoading && (
             <div className="text-center py-8 text-muted-foreground">
               {t('translations.no_translations_found', 'No translations found')}
             </div>

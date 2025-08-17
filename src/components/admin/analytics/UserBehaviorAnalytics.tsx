@@ -30,6 +30,8 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { challengeAnalyticsService } from '@/services/analytics/ChallengeAnalyticsService';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { AnalyticsErrorBoundary } from '@/components/analytics/AnalyticsErrorBoundary';
 
 interface UserBehaviorAnalyticsProps {
@@ -40,10 +42,21 @@ const UserBehaviorAnalytics: React.FC<UserBehaviorAnalyticsProps> = ({ className
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d');
   const [searchTerm, setSearchTerm] = useState('');
   const [behaviorData, setBehaviorData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
   const { user } = useAuth();
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'UserBehaviorAnalytics',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'UserBehaviorAnalytics',
+    showToast: true,
+    logError: true
+  });
   useEffect(() => {
     loadUserBehaviorData();
   }, [timeRange, user?.id]);
@@ -51,16 +64,23 @@ const UserBehaviorAnalytics: React.FC<UserBehaviorAnalyticsProps> = ({ className
   const loadUserBehaviorData = async () => {
     if (!user?.id) return;
     
-    setIsLoading(true);
     setError(null);
     
-    try {
-      const data = await challengeAnalyticsService.getUserBehaviorAnalytics(user.id, timeRange);
-      setBehaviorData(data);
-    } catch (err) {
-      setError('Failed to load user behavior analytics');
-    } finally {
-      setIsLoading(false);
+    const result = await loadingManager.withLoading(
+      'load-user-behavior-data',
+      async () => {
+        const data = await challengeAnalyticsService.getUserBehaviorAnalytics(user.id, timeRange);
+        return data;
+      },
+      {
+        successMessage: 'User behavior data loaded successfully',
+        errorMessage: 'Failed to load user behavior data',
+        logContext: { operation: 'loadUserBehaviorData', timeRange }
+      }
+    );
+
+    if (result) {
+      setBehaviorData(result);
     }
   };
 
@@ -72,7 +92,7 @@ const UserBehaviorAnalytics: React.FC<UserBehaviorAnalyticsProps> = ({ className
     page.page.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (isLoading) {
+  if (loadingManager.hasAnyLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>

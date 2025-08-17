@@ -20,9 +20,10 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAdminDashboardMetrics } from '@/hooks/useAdminDashboardMetrics';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { debugLog } from '@/utils/debugLogger';
 
 interface AIFeature {
@@ -42,72 +43,84 @@ interface AIFeatureTogglePanelProps {
 
 const AIFeatureTogglePanel: React.FC<AIFeatureTogglePanelProps> = ({ className }) => {
   const { t } = useUnifiedTranslation();
-  const { toast } = useToast();
   const { metrics } = useAdminDashboardMetrics();
   const [features, setFeatures] = useState<AIFeature[]>([]);
-  const [loading, setLoading] = useState(true);
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'AIFeatureTogglePanel',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'AIFeatureTogglePanel',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     loadAIFeatures();
   }, []);
 
   const loadAIFeatures = async () => {
-    try {
-      setLoading(true);
-      
-      // Generate features based on system metrics
-      const challengeCount = metrics?.challenges?.total || 0;
-      const userCount = metrics?.users?.total || 0;
-      
-      const aiFeatures: AIFeature[] = [
-        {
-          id: 'challenge_assist',
-          name: 'مساعد التحديات',
-          nameEn: 'Challenge Assistant',
-          description: 'مساعدة ذكية في إنشاء وتحسين التحديات',
-          enabled: true,
-          usageCount: challengeCount * 2 + Math.floor(Math.random() * 500),
-          costThisMonth: Math.floor((challengeCount * 2) * 0.15),
-          tier: 'premium'
-        },
-        {
-          id: 'idea_evaluation',
-          name: 'تقييم الأفكار',
-          nameEn: 'Idea Evaluation',
-          description: 'تحليل وتقييم الأفكار المقترحة تلقائياً',
-          enabled: true,
-          usageCount: userCount + Math.floor(Math.random() * 300),
-          costThisMonth: Math.floor(userCount * 0.12),
-          tier: 'basic'
-        },
-        {
-          id: 'smart_matching',
-          name: 'المطابقة الذكية',
-          nameEn: 'Smart Matching',
-          description: 'ربط المستخدمين بالفرص المناسبة',
-          enabled: false,
-          usageCount: 0,
-          costThisMonth: 0,
-          tier: 'premium'
-        },
-        {
-          id: 'content_generation',
-          name: 'توليد المحتوى',
-          nameEn: 'Content Generation',
-          description: 'إنشاء محتوى تلقائي للحملات والتحديات',
-          enabled: true,
-          usageCount: Math.floor((challengeCount + userCount) * 1.5),
-          costThisMonth: Math.floor((challengeCount + userCount) * 0.22),
-          tier: 'enterprise'
-        }
-      ];
+    await loadingManager.withLoading(
+      'load-ai-features',
+      async () => {
+        // Generate features based on system metrics
+        const challengeCount = metrics?.challenges?.total || 0;
+        const userCount = metrics?.users?.total || 0;
+        
+        const aiFeatures: AIFeature[] = [
+          {
+            id: 'challenge_assist',
+            name: 'مساعد التحديات',
+            nameEn: 'Challenge Assistant',
+            description: 'مساعدة ذكية في إنشاء وتحسين التحديات',
+            enabled: true,
+            usageCount: challengeCount * 2 + Math.floor(Math.random() * 500),
+            costThisMonth: Math.floor((challengeCount * 2) * 0.15),
+            tier: 'premium'
+          },
+          {
+            id: 'idea_evaluation',
+            name: 'تقييم الأفكار',
+            nameEn: 'Idea Evaluation',
+            description: 'تحليل وتقييم الأفكار المقترحة تلقائياً',
+            enabled: true,
+            usageCount: userCount + Math.floor(Math.random() * 300),
+            costThisMonth: Math.floor(userCount * 0.12),
+            tier: 'basic'
+          },
+          {
+            id: 'smart_matching',
+            name: 'المطابقة الذكية',
+            nameEn: 'Smart Matching',
+            description: 'ربط المستخدمين بالفرص المناسبة',
+            enabled: false,
+            usageCount: 0,
+            costThisMonth: 0,
+            tier: 'premium'
+          },
+          {
+            id: 'content_generation',
+            name: 'توليد المحتوى',
+            nameEn: 'Content Generation',
+            description: 'إنشاء محتوى تلقائي للحملات والتحديات',
+            enabled: true,
+            usageCount: Math.floor((challengeCount + userCount) * 1.5),
+            costThisMonth: Math.floor((challengeCount + userCount) * 0.22),
+            tier: 'enterprise'
+          }
+        ];
 
-      setFeatures(aiFeatures);
-    } catch (error) {
-      debugLog.error('Error loading AI features:', { component: 'AIFeatureTogglePanel' }, error);
-    } finally {
-      setLoading(false);
-    }
+        setFeatures(aiFeatures);
+      },
+      {
+        successMessage: t('ai_features.loaded_successfully'),
+        errorMessage: t('ai_features.load_failed'),
+        logContext: { operation: 'loadAIFeatures' }
+      }
+    );
   };
 
   const toggleFeature = (featureId: string) => {
@@ -130,7 +143,7 @@ const AIFeatureTogglePanel: React.FC<AIFeatureTogglePanelProps> = ({ className }
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {loading ? (
+        {loadingManager.hasAnyLoading ? (
           <div className="space-y-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="animate-pulse p-4 border rounded-lg">

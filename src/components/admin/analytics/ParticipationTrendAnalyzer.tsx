@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
 import { TrendingUp, TrendingDown, Users, Calendar, Target, Award } from "lucide-react";
 import { challengeAnalyticsService } from '@/services/analytics/ChallengeAnalyticsService';
@@ -17,10 +19,21 @@ export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnal
   const { t } = useUnifiedTranslation();
   const [selectedMetric, setSelectedMetric] = useState("participants");
   const [trendData, setTrendData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
   const { user } = useAuth();
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'ParticipationTrendAnalyzer',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'ParticipationTrendAnalyzer',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     loadParticipationData();
@@ -29,16 +42,23 @@ export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnal
   const loadParticipationData = async () => {
     if (!user?.id) return;
     
-    setIsLoading(true);
     setError(null);
     
-    try {
-      const data = await challengeAnalyticsService.getParticipationTrends(user.id, timeRange);
-      setTrendData(data);
-    } catch (err) {
-      setError('Failed to load participation trends');
-    } finally {
-      setIsLoading(false);
+    const result = await loadingManager.withLoading(
+      'load-participation-data',
+      async () => {
+        const data = await challengeAnalyticsService.getParticipationTrends(user.id, timeRange);
+        return data;
+      },
+      {
+        successMessage: t('participation_trends.loaded_successfully'),
+        errorMessage: t('participation_trends.load_failed'),
+        logContext: { operation: 'loadParticipationData', timeRange }
+      }
+    );
+
+    if (result) {
+      setTrendData(result);
     }
   };
 
@@ -55,7 +75,7 @@ export function ParticipationTrendAnalyzer({ timeRange }: ParticipationTrendAnal
     retentionRate: 78.4
   };
 
-  if (isLoading) {
+  if (loadingManager.hasAnyLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
