@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -13,8 +12,8 @@ import {
   Clock, CheckCircle, AlertTriangle
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/logger';
-import { errorHandler } from '@/utils/error-handler';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { TeamMemberWizard } from './TeamMemberWizard';
 import { CoreTeamCard, CoreTeamMemberData, CoreTeamCardAction } from '@/components/ui/core-team-card';
 import { CoreTeamDetailDialog } from '@/components/ui/core-team-detail-dialog';
@@ -86,8 +85,18 @@ export function InnovationTeamsContent({
 }: InnovationTeamsContentProps) {
   const { t } = useUnifiedTranslation();
   const { user } = useAuth();
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(true);
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'InnovationTeamsContent',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'InnovationTeamsContent',
+    showToast: true,
+    logError: true
+  });
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
@@ -114,76 +123,72 @@ export function InnovationTeamsContent({
   }, []);
 
   const fetchCoreTeamData = async () => {
-    try {
-      setLoading(true);
-
-      // Mock data for now - will be replaced with useTeamManagement hook
-      const mockMembers = [
-        {
-          id: '1',
-          user_id: 'user-1',
-          status: 'active' as const,
-          cic_role: 'مطور أول',
-          specialization: ['تطوير التطبيقات', 'الذكاء الاصطناعي'],
-          bio: 'خبير في تطوير التطبيقات المبتكرة',
-          location: 'الرياض',
-          current_workload: 75,
-          capacity: 100,
-          efficiency_rating: 4.8,
-          performance_score: 92,
-          availability_status: 'available' as const,
-          skills: ['React', 'TypeScript', 'AI'],
-          certifications: ['AWS Certified', 'React Professional'],
-          experience_years: 8,
-          ideas_submitted: 15,
-          ideas_approved: 12,
-          innovation_score: 85,
-          collaboration_score: 90,
-          join_date: '2023-01-15',
-          last_active: '2024-01-16T10:00:00Z',
-          created_at: '2023-01-15T09:00:00Z',
-          updated_at: '2024-01-16T10:00:00Z',
-          max_concurrent_projects: 3,
-          performance_rating: 4.8,
-          contact_email: 'ahmed@example.com',
-          department: 'قسم التكنولوجيا',
-          profiles: {
-            id: 'user-1',
-            name: 'أحمد محمد',
-            name_ar: 'أحمد محمد',
-            email: 'ahmed@example.com',
-            profile_image_url: '',
+    await loadingManager.withLoading(
+      'fetch-core-team-data',
+      async () => {
+        // Mock data for now - will be replaced with useTeamManagement hook
+        const mockMembers = [
+          {
+            id: '1',
+            user_id: 'user-1',
+            status: 'active' as const,
+            cic_role: 'مطور أول',
+            specialization: ['تطوير التطبيقات', 'الذكاء الاصطناعي'],
+            bio: 'خبير في تطوير التطبيقات المبتكرة',
+            location: 'الرياض',
+            current_workload: 75,
+            capacity: 100,
+            efficiency_rating: 4.8,
+            performance_score: 92,
+            availability_status: 'available' as const,
+            skills: ['React', 'TypeScript', 'AI'],
+            certifications: ['AWS Certified', 'React Professional'],
+            experience_years: 8,
+            ideas_submitted: 15,
+            ideas_approved: 12,
+            innovation_score: 85,
+            collaboration_score: 90,
+            join_date: '2023-01-15',
+            last_active: '2024-01-16T10:00:00Z',
+            created_at: '2023-01-15T09:00:00Z',
+            updated_at: '2024-01-16T10:00:00Z',
+            max_concurrent_projects: 3,
+            performance_rating: 4.8,
+            contact_email: 'ahmed@example.com',
             department: 'قسم التكنولوجيا',
-            position: 'مطور أول',
-            role: 'team_member'
-          },
-          team_assignments: [
-            { id: '1', team_member_id: '1', status: 'active', workload_percentage: 40 },
-            { id: '2', team_member_id: '1', status: 'active', workload_percentage: 35 }
-          ]
-        }
-      ];
+            profiles: {
+              id: 'user-1',
+              name: 'أحمد محمد',
+              name_ar: 'أحمد محمد',
+              email: 'ahmed@example.com',
+              profile_image_url: '',
+              department: 'قسم التكنولوجيا',
+              position: 'مطور أول',
+              role: 'team_member'
+            },
+            team_assignments: [
+              { id: '1', team_member_id: '1', status: 'active', workload_percentage: 40 },
+              { id: '2', team_member_id: '1', status: 'active', workload_percentage: 35 }
+            ]
+          }
+        ];
 
-      setCoreTeamData({
-        members: mockMembers,
-        metrics: {
-          totalMembers: mockMembers.length,
-          activeMembers: mockMembers.filter(m => m.status === 'active').length,
-          avgWorkload: 75,
-          totalAssignments: 2
-        }
-      });
-
-    } catch (error) {
-      errorHandler.handleError(error, 'InnovationTeamsContent.fetchCoreTeamData');
-      toast({
-        title: t('common.error'),
-        description: t('errors.failed_to_load_core_team_data'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+        setCoreTeamData({
+          members: mockMembers,
+          metrics: {
+            totalMembers: mockMembers.length,
+            activeMembers: mockMembers.filter(m => m.status === 'active').length,
+            avgWorkload: 75,
+            totalAssignments: 2
+          }
+        });
+      },
+      {
+        successMessage: t('innovation_teams.core_team_loaded_success'),
+        errorMessage: t('errors.failed_to_load_core_team_data'),
+        logContext: { operation: 'fetchCoreTeamData' }
+      }
+    );
   };
 
   const handleEditMember = (member: TeamMember) => {
@@ -192,22 +197,20 @@ export function InnovationTeamsContent({
   };
 
   const handleRemoveMember = async (memberId: string) => {
-    try {
-      // Mock removal - will be replaced with useTeamManagement hook
-      toast({
-        title: t('common.success'),
-        description: t('innovation_teams.member_removed_success'),
-      });
-
-      fetchCoreTeamData();
-    } catch (error) {
-      logger.error('Error removing team member', { component: 'InnovationTeamsContent', action: 'handleRemoveMember', data: { memberId } }, error as Error);
-      toast({
-        title: t('common.error'),
-        description: t('innovation_teams.member_removal_failed'),
-        variant: "destructive",
-      });
-    }
+    await loadingManager.withLoading(
+      'remove-team-member',
+      async () => {
+        // Mock removal - will be replaced with useTeamManagement hook
+        throw new Error('Team member removal functionality coming soon');
+        
+        await fetchCoreTeamData();
+      },
+      {
+        successMessage: t('innovation_teams.member_removed_success'),
+        errorMessage: t('innovation_teams.member_removal_failed'),
+        logContext: { operation: 'handleRemoveMember', memberId }
+      }
+    );
   };
 
   const handleViewMember = (member: TeamMember) => {
@@ -374,7 +377,7 @@ export function InnovationTeamsContent({
     </div>
   );
 
-  if (loading) {
+  if (loadingManager.hasAnyLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">

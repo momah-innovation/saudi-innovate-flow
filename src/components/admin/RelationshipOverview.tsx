@@ -17,9 +17,9 @@ import {
 import { AdminRelationshipsHero } from '@/components/admin/AdminRelationshipsHero';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { logger } from '@/utils/error-handler';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import { formatDate, dateHandler } from '@/utils/unified-date-handler';
 
 interface RelationshipData {
@@ -45,89 +45,96 @@ export function RelationshipOverview({
   searchTerm = ''
 }: RelationshipOverviewProps) {
   const [relationships, setRelationships] = useState<RelationshipData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'RelationshipOverview',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'RelationshipOverview',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     loadRelationships();
   }, []);
 
   const loadRelationships = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch challenge-partner relationships
-      const { data: challengePartners } = await supabase
-        .from('challenge_partners')
-        .select(`
-          id,
-          challenge_id,
-          partner_id,
-          partnership_type,
-          status,
-          created_at,
-          challenges!challenge_partners_challenge_id_fkey(title_ar, title_en),
-          partners!challenge_partners_partner_id_fkey(name_ar, name_en)
-        `)
-        .eq('status', 'active');
+    await loadingManager.withLoading(
+      'load-relationships',
+      async () => {
+        // Fetch challenge-partner relationships
+        const { data: challengePartners } = await supabase
+          .from('challenge_partners')
+          .select(`
+            id,
+            challenge_id,
+            partner_id,
+            partnership_type,
+            status,
+            created_at,
+            challenges!challenge_partners_challenge_id_fkey(title_ar, title_en),
+            partners!challenge_partners_partner_id_fkey(name_ar, name_en)
+          `)
+          .eq('status', 'active');
 
-      // Fetch campaign-partner relationships  
-      const { data: campaignPartners } = await supabase
-        .from('campaign_partners')
-        .select(`
-          id,
-          campaign_id,
-          partner_id,
-          partnership_role,
-          partnership_status,
-          created_at,
-          campaigns!campaign_partners_campaign_id_fkey(title_ar, title_en),
-          partners!campaign_partners_partner_id_fkey(name_ar, name_en)
-        `)
-        .eq('partnership_status', 'active');
+        // Fetch campaign-partner relationships  
+        const { data: campaignPartners } = await supabase
+          .from('campaign_partners')
+          .select(`
+            id,
+            campaign_id,
+            partner_id,
+            partnership_role,
+            partnership_status,
+            created_at,
+            campaigns!campaign_partners_campaign_id_fkey(title_ar, title_en),
+            partners!campaign_partners_partner_id_fkey(name_ar, name_en)
+          `)
+          .eq('partnership_status', 'active');
 
-      // Use immutable array building instead of mutations
-      const challengeRelationships = challengePartners?.map(cp => ({
-        id: cp.id,
-        source_entity_type: 'challenge' as const,
-        source_entity_id: cp.challenge_id,
-        target_entity_type: 'partner' as const,
-        target_entity_id: cp.partner_id,
-        relationship_type: cp.partnership_type || 'collaborator',
-        strength: 8, // Default strength
-        created_at: cp.created_at,
-        source_name: cp.challenges?.title_ar || cp.challenges?.title_en || 'Challenge',
-        target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
-      })) || [];
+        // Use immutable array building instead of mutations
+        const challengeRelationships = challengePartners?.map(cp => ({
+          id: cp.id,
+          source_entity_type: 'challenge' as const,
+          source_entity_id: cp.challenge_id,
+          target_entity_type: 'partner' as const,
+          target_entity_id: cp.partner_id,
+          relationship_type: cp.partnership_type || 'collaborator',
+          strength: 8, // Default strength
+          created_at: cp.created_at,
+          source_name: cp.challenges?.title_ar || cp.challenges?.title_en || 'Challenge',
+          target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
+        })) || [];
 
-      // Process campaign-partner relationships
-      const campaignRelationships = campaignPartners?.map(cp => ({
-        id: cp.id,
-        source_entity_type: 'campaign' as const,
-        source_entity_id: cp.campaign_id,
-        target_entity_type: 'partner' as const,
-        target_entity_id: cp.partner_id,
-        relationship_type: cp.partnership_role || 'supporter',
-        strength: 7, // Default strength
-        created_at: cp.created_at,
-        source_name: cp.campaigns?.title_ar || cp.campaigns?.title_en || 'Campaign',
-        target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
-      })) || [];
-      
-      // Combine all relationships using spread operator
-      const allRelationships = [...challengeRelationships, ...campaignRelationships];
-      setRelationships(allRelationships);
-    } catch (error) {
-      logger.error('Error loading relationships', error);
-      toast({
-        title: 'Error loading relationships',
-        description: 'Failed to fetch relationship data',
-        variant: 'destructive'
-      });
-    } finally {
-      setLoading(false);
-    }
+        // Process campaign-partner relationships
+        const campaignRelationships = campaignPartners?.map(cp => ({
+          id: cp.id,
+          source_entity_type: 'campaign' as const,
+          source_entity_id: cp.campaign_id,
+          target_entity_type: 'partner' as const,
+          target_entity_id: cp.partner_id,
+          relationship_type: cp.partnership_role || 'supporter',
+          strength: 7, // Default strength
+          created_at: cp.created_at,
+          source_name: cp.campaigns?.title_ar || cp.campaigns?.title_en || 'Campaign',
+          target_name: cp.partners?.name_ar || cp.partners?.name_en || 'Partner'
+        })) || [];
+        
+        // Combine all relationships using spread operator
+        const allRelationships = [...challengeRelationships, ...campaignRelationships];
+        setRelationships(allRelationships);
+      },
+      {
+        successMessage: t('relationships.loaded_successfully'),
+        errorMessage: t('relationships.load_failed'),
+        logContext: { operation: 'loadRelationships' }
+      }
+    );
   };
 
   const filteredRelationships = relationships.filter(rel =>
@@ -276,12 +283,12 @@ export function RelationshipOverview({
       />
 
       <ViewLayouts viewMode={viewMode}>
-        {loading ? [
+        {loadingManager.hasAnyLoading ? [
           <div key="loading" className="text-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Loading relationships...</p>
           </div>
-        ] : filteredRelationships.length > 0 ? 
+        ] : filteredRelationships.length > 0 ?
           filteredRelationships.map((relationship) => (
             <RelationshipCard key={relationship.id} relationship={relationship} />
           )) : [

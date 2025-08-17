@@ -72,7 +72,6 @@ export default function RoleRequestManagement() {
   
   const roleRequestStatusOptions = getSettingValue('role_request_status_options', []) as string[];
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<RoleRequest | null>(null);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
@@ -264,7 +263,7 @@ export default function RoleRequestManagement() {
 
   const uniqueRoles = [...new Set(roleRequests.map(req => req.requested_role))];
 
-  if (loading) {
+  if (loadingManager.hasAnyLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">

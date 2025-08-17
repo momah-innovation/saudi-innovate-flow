@@ -7,12 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
 import { Trash2, Plus, Download, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
-import { errorHandler } from '@/utils/error-handler';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
+import { createErrorHandler } from '@/utils/unified-error-handler';
 import type { TranslationPair, TranslationMergeResult } from '@/types/translation';
 
 interface SystemTranslation {
@@ -25,8 +26,20 @@ interface SystemTranslation {
 
 const TranslationManagement = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
   const { t } = useUnifiedTranslation();
+  const { toast } = useToast();
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'TranslationManagement',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'TranslationManagement',
+    showToast: true,
+    logError: true
+  });
 
   // Generate and download JSON file from database translations merged with existing static translations
   const downloadTranslationsJSON = async (language: 'en' | 'ar') => {
@@ -121,7 +134,6 @@ const TranslationManagement = () => {
 
   const [translations, setTranslations] = useState<SystemTranslation[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
@@ -137,30 +149,28 @@ const TranslationManagement = () => {
   }, []);
 
   const fetchTranslations = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('system_translations')
-        .select('*')
-        .order('category, translation_key');
+    await loadingManager.withLoading(
+      'fetch-translations',
+      async () => {
+        const { data, error } = await supabase
+          .from('system_translations')
+          .select('*')
+          .order('category, translation_key');
 
-      if (error) throw error;
+        if (error) throw error;
 
-      setTranslations(data || []);
-      
-      // Extract unique categories
-      const uniqueCategories = [...new Set((data || []).map(t => t.category))];
-      setCategories(uniqueCategories);
-    } catch (error) {
-      errorHandler.handleError(error, 'TranslationManagement.fetchTranslations');
-      toast({
-        title: 'Error',
-        description: "Failed to load translations from database",
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+        setTranslations(data || []);
+        
+        // Extract unique categories
+        const uniqueCategories = [...new Set((data || []).map(t => t.category))];
+        setCategories(uniqueCategories);
+      },
+      {
+        successMessage: t('translations.loaded_successfully'),
+        errorMessage: t('translations.load_failed'),
+        logContext: { operation: 'fetchTranslations' }
+      }
+    );
   };
 
   const handleAddTranslation = async () => {
@@ -225,7 +235,7 @@ const TranslationManagement = () => {
     return matchesSearch && matchesCategory;
   });
 
-  if (loading) {
+  if (loadingManager.hasAnyLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-lg">Loading translations...</div>
@@ -428,7 +438,7 @@ const TranslationManagement = () => {
               ))}
             </div>
 
-            {filteredPairs.length === 0 && !loading && (
+            {filteredPairs.length === 0 && !loadingManager.hasAnyLoading && (
               <div className="text-center py-8 text-muted-foreground">
                 No translations found
               </div>
