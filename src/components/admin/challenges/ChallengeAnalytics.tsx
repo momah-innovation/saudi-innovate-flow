@@ -4,11 +4,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useStatusTranslations } from "@/utils/statusMappings";
-import { logger } from "@/utils/logger";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
+import { createErrorHandler } from "@/utils/unified-error-handler";
 import { challengeAnalyticsService } from '@/services/analytics/ChallengeAnalyticsService';
 import { useAuth } from '@/contexts/AuthContext';
 import { AnalyticsErrorBoundary } from '@/components/analytics/AnalyticsErrorBoundary';
@@ -72,11 +72,21 @@ interface AnalyticsData {
 export function ChallengeAnalytics() {
   const { t } = useUnifiedTranslation();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("all");
-  const { toast } = useToast();
   const { timeRangeOptions } = useSystemLists();
   const { user } = useAuth();
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'ChallengeAnalytics',
+    showToast: true,
+    logErrors: true
+  });
+
+  const errorHandler = createErrorHandler({
+    component: 'ChallengeAnalytics',
+    showToast: true,
+    logError: true
+  });
 
   useEffect(() => {
     fetchAnalytics();
@@ -85,20 +95,14 @@ export function ChallengeAnalytics() {
   const fetchAnalytics = async () => {
     if (!user?.id) return;
     
-    setLoading(true);
-    try {
+    const result = await loadingManager.withLoading('fetchAnalytics', async () => {
       const analyticsData = await challengeAnalyticsService.getChallengeAnalytics(user.id, { timeframe: timeRange });
       setAnalytics(analyticsData);
-    } catch (error) {
-      logger.error('Error fetching analytics', { component: 'ChallengeAnalytics', action: 'fetchAnalytics' }, error as Error);
-      toast({
-        title: t('common.error', 'خطأ'),
-        description: t('challenge_analytics.load_analytics_failed', 'فشل في تحميل بيانات التحليلات'),
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
+      return analyticsData;
+    }, {
+      errorMessage: t('challenge_analytics.load_analytics_failed', 'فشل في تحميل بيانات التحليلات'),
+      logContext: { userId: user.id, timeRange }
+    });
   };
 
   const processAnalyticsData = (challenges: Challenge[]): AnalyticsData => {
@@ -176,7 +180,7 @@ export function ChallengeAnalytics() {
     return translatePriority(priority as any);
   };
 
-  if (loading) {
+  if (loadingManager.isLoading('fetchAnalytics')) {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

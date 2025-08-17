@@ -192,10 +192,10 @@ export function TeamWizard({
 
       if (team?.id) {
         // Update existing team - placeholder until teams table is created
-        console.log('Update team data', teamData);
+        // Team update logic will be implemented when teams table is created
       } else {
         // Create new team - placeholder until teams table is created  
-        console.log('Create team data', teamData);
+        // Team creation logic will be implemented when teams table is created
       }
 
       onSave();

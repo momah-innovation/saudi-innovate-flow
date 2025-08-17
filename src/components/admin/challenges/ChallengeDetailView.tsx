@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { logger } from "@/utils/logger";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -130,7 +130,11 @@ export function ChallengeDetailView({
     implementation: null,
     analytics: null
   });
-  const [loading, setLoading] = useState(false);
+  const loadingManager = useUnifiedLoading({
+    component: 'ChallengeDetailView',
+    showToast: false,
+    logErrors: true
+  });
 
   useEffect(() => {
     if (challenge && isOpen) {
@@ -141,8 +145,7 @@ export function ChallengeDetailView({
   const fetchRelatedData = async () => {
     if (!challenge) return;
     
-    setLoading(true);
-    try {
+    await loadingManager.withLoading('fetchRelatedData', async () => {
       const [
         expertsRes,
         partnersRes,
@@ -202,16 +205,12 @@ export function ChallengeDetailView({
         events: eventsRes.data || [],
         ideas: ideasRes.data || [],
         implementation: implementationRes.data,
-        analytics: null // Will be calculated
+        analytics: null
       });
-    } catch (error) {
-      errorHandler.handleError(error, 
-        { operation: 'fetchRelatedData', metadata: { challengeId: challenge.id } },
-        'خطأ في تحميل البيانات المرتبطة بالتحدي'
-      );
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: 'خطأ في تحميل البيانات المرتبطة بالتحدي',
+      logContext: { challengeId: challenge.id }
+    });
   };
 
   const getStatusColor = (status: string) => {

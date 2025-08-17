@@ -17,6 +17,7 @@ import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { useChallengeManagement } from "@/hooks/useChallengeManagement";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { useRolePermissions } from "@/hooks/useRolePermissions";
@@ -95,7 +96,12 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
   const { canManageChallenges } = useRolePermissions();
   
   const [currentStep, setCurrentStep] = useState(0);
-  const [loading, setLoading] = useState(false);
+  
+  const loadingManager = useUnifiedLoading({
+    component: 'ChallengeWizardV2',
+    showToast: true,
+    logErrors: true
+  });
 
   const [formData, setFormData] = useState<ChallengeFormData>({
     title_ar: '',
@@ -265,8 +271,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
   };
 
   const handleComplete = async () => {
-    setLoading(true);
-    try {
+    const result = await loadingManager.withLoading('submitForm', async () => {
       const challengeData = {
         ...formData,
         start_date: startDate ? startDate.toISOString().split('T')[0] : null,
@@ -282,11 +287,6 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
           .eq('id', challenge.id);
 
         if (error) throw error;
-
-        toast({
-          title: t('challenge_wizard.update_success', 'تم التحديث بنجاح'),
-          description: t('challenge_wizard.challenge_updated_success', 'تم تحديث التحدي بنجاح')
-        });
       } else {
         const { data, error } = await supabase
           .from('challenges')
@@ -297,7 +297,6 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         if (error) throw error;
 
         // Add related entities
-        // Use challengeManagement hook for expert and partner linking
         if (selectedExperts.length > 0 && data) {
           await challengeManagement.linkExperts(data.id, selectedExperts);
         }
@@ -305,22 +304,20 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         if (selectedPartners.length > 0 && data) {
           await challengeManagement.linkPartners(data.id, selectedPartners);
         }
-
-        toast({
-          title: t('challenge_wizard.creation_success', 'تم الإنشاء بنجاح'),
-          description: t('challenge_wizard.challenge_created_success', 'تم إنشاء التحدي بنجاح')
-        });
+        
+        return data;
       }
+    }, {
+      successMessage: challenge?.id 
+        ? t('challenge_wizard.challenge_updated_success', 'تم تحديث التحدي بنجاح')
+        : t('challenge_wizard.challenge_created_success', 'تم إنشاء التحدي بنجاح'),
+      errorMessage: 'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى',
+      logContext: { challengeId: challenge?.id, isUpdate: !!challenge?.id }
+    });
 
+    if (result) {
       onSuccess();
       onClose();
-    } catch (error) {
-      errorHandler.handleError(error, 
-        { operation: 'submitForm', metadata: { challengeId: challenge?.id } },
-        'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى'
-      );
-    } finally {
-      setLoading(false);
     }
   };
 

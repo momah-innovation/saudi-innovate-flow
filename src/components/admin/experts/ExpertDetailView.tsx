@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { supabase } from "@/integrations/supabase/client";
-import { logger } from "@/utils/logger";
 import { createErrorHandler } from '@/utils/unified-error-handler';
 import { 
   User, 
@@ -48,7 +48,11 @@ export function ExpertDetailView({
       utilization_percentage: 0
     }
   });
-  const [loading, setLoading] = useState(false);
+  const loadingManager = useUnifiedLoading({
+    component: 'ExpertDetailView',
+    showToast: false,
+    logErrors: true
+  });
   
   const errorHandler = createErrorHandler({
     component: 'ExpertDetailView',
@@ -65,8 +69,7 @@ export function ExpertDetailView({
   const fetchRelatedData = async () => {
     if (!expert) return;
     
-    setLoading(true);
-    try {
+    await loadingManager.withLoading('fetchRelatedData', async () => {
       // Mock data for now - replace with actual API calls
       setRelatedData({
         assignments: [],
@@ -78,11 +81,10 @@ export function ExpertDetailView({
           utilization_percentage: expert.workload_info?.utilization_percentage || 0
         }
       });
-    } catch (error) {
-      errorHandler.handleError(error, { operation: 'fetchRelatedData', metadata: { expertId: expert.id } });
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: 'خطأ في تحميل بيانات الخبير',
+      logContext: { expertId: expert.id }
+    });
   };
 
   const getAvailabilityColor = (status: string) => {

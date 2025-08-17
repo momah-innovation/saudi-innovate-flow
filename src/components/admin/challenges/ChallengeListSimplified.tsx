@@ -4,7 +4,7 @@ import { ChallengeWizardV2 } from "./ChallengeWizardV2";
 import { ChallengeDetailView } from "./ChallengeDetailView";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { logger } from "@/utils/logger";
+import { useUnifiedLoading } from "@/hooks/useUnifiedLoading";
 import { useDataTable } from "@/hooks/useDataTable";
 import { DataTable, Column } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
@@ -56,7 +56,6 @@ interface Challenge {
 
 export function ChallengeListSimplified() {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showWizard, setShowWizard] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
@@ -64,6 +63,12 @@ export function ChallengeListSimplified() {
   const { t, isRTL } = useUnifiedTranslation();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
   
+  const loadingManager = useUnifiedLoading({
+    component: 'ChallengeListSimplified',
+    showToast: true,
+    logErrors: true
+  });
+
   const errorHandler = createErrorHandler({
     component: 'ChallengeListSimplified',
     showToast: true,
@@ -90,8 +95,7 @@ export function ChallengeListSimplified() {
   }, []);
 
   const fetchChallenges = async () => {
-    try {
-      setLoading(true);
+    await loadingManager.withLoading('fetchChallenges', async () => {
       const { data, error } = await supabase
         .from('challenges')
         .select('*')
@@ -99,11 +103,10 @@ export function ChallengeListSimplified() {
       
       if (error) throw error;
       setChallenges(data || []);
-    } catch (error) {
-      errorHandler.handleError(error, { operation: 'fetchChallenges' }, t('error.fetch_challenges'));
-    } finally {
-      setLoading(false);
-    }
+    }, {
+      errorMessage: t('error.fetch_challenges'),
+      logContext: {}
+    });
   };
 
   const handleDelete = async (challengeId: string) => {
@@ -260,7 +263,7 @@ export function ChallengeListSimplified() {
     }
   ];
 
-  if (loading) {
+  if (loadingManager.isLoading('fetchChallenges')) {
     return (
       <div className="space-y-4">
         <div className="animate-pulse h-8 bg-muted rounded w-1/3" />
