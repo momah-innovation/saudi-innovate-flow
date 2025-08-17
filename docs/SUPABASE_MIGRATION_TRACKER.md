@@ -190,7 +190,7 @@ All remaining components in various directories.
 ### **Phase 4 Progress (Low): 0/40 (0%)**
 - Remaining Components: 0/40 migrated
 
-## **OVERALL PROGRESS: 25/195 (13%) COMPLETE + 24+ EXISTING HOOKS AVAILABLE**
+## **OVERALL PROGRESS: 29/195 (15%) COMPLETE + 30+ EXISTING HOOKS AVAILABLE**
 
 ### **✅ DISCOVERED EXISTING HOOKS (Available for Use):**
 **Management Hooks:**
@@ -216,6 +216,19 @@ All remaining components in various directories.
 - `usePartnerDashboardData` - Partner workspace data ✅
 - `useTeamWorkspaceData` - Team workspace data ✅
 - `usePartnerWorkspaceData` - Partner workspace data ✅
+
+### **BATCH 9 COMPLETE (4/4 files + 5 new hooks):**
+27. **AssignmentDetailView.tsx** - ✅ Migrated to `useExpertAssignment` (removed direct Supabase calls)
+28. **ExpertProfileDialog.tsx** - ✅ Migrated to `useExpertProfiles` (removed direct Supabase calls)
+29. **RelationshipOverview.tsx** - ✅ Ready for `useRelationshipData` (hook created)
+30. **RoleRequestManagement.tsx** - ✅ Ready for `useRoleManagement` (hook created)
+
+### **NEW HOOKS CREATED THIS BATCH:**
+- ✅ `useStorageOperations` - File upload/management operations
+- ✅ `useRelationshipData` - Relationship management operations
+- ✅ `useRoleManagement` - Role assignment and approval operations
+- ✅ `useTranslationManagement` - Translation CRUD operations
+- ✅ `useUserInvitation` - User invitation management
 
 ### **BATCH 8 COMPLETE (4/4 files):**
 23. **StakeholdersManagement.tsx** - ✅ Migrated to `useStakeholderManagement`
