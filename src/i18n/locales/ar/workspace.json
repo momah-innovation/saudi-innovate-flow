@@ -59,6 +59,10 @@
       },
       "actions": {
         "new_idea": "فكرة جديدة",
+        "new_idea_desc": "ابدأ بإنشاء فكرة مبتكرة جديدة",
+        "join_challenge": "انضم لتحدي",
+        "join_challenge_desc": "شارك في التحديات المتاحة",
+        "browse_challenges": "تصفح التحديات",
         "create_idea": "إنشاء فكرة جديدة",
         "manage_ideas": "إدارة الأفكار"
       },
@@ -87,7 +91,9 @@
       "recent_ideas": "الأفكار الحديثة",
       "participated_challenges": "التحديات المشاركة",
       "browse_challenges": "تصفح التحديات",
-      "quick_actions": "الإجراءات السريعة"
+      "quick_actions": "الإجراءات السريعة",
+      "no_ideas": "لا توجد أفكار بعد. ابدأ بإنشاء فكرتك الأولى!",
+      "no_challenges": "لا توجد تحديات نشطة متاحة"
     },
     "expert": {
       "title": "مساحة الخبراء",

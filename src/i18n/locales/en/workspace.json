@@ -59,6 +59,10 @@
       },
       "actions": {
         "new_idea": "New Idea",
+        "new_idea_desc": "Start creating a new innovative idea",
+        "join_challenge": "Join Challenge",
+        "join_challenge_desc": "Participate in available challenges",
+        "browse_challenges": "Browse Challenges",
         "create_idea": "Create New Idea",
         "manage_ideas": "Manage Ideas"
       },
@@ -87,7 +91,9 @@
       "recent_ideas": "Recent Ideas",
       "participated_challenges": "Participated Challenges",
       "browse_challenges": "Browse Challenges",
-      "quick_actions": "Quick Actions"
+      "quick_actions": "Quick Actions",
+      "no_ideas": "No ideas yet. Start by creating your first idea!",
+      "no_challenges": "No active challenges available"
     },
     "expert": {
       "title": "Expert Workspace",

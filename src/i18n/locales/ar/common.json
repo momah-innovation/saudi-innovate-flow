@@ -33,7 +33,12 @@
     "error": "خطأ",
     "success": "نجح",
     "warning": "تحذير",
-    "info": "معلومات"
+    "info": "معلومات",
+    "active": "نشط",
+    "published": "منشور",
+    "draft": "مسودة",
+    "completed": "مكتمل",
+    "pending": "معلق"
   },
   "form": {
     "required": "هذا الحقل مطلوب",
@@ -220,6 +225,14 @@
   "system": {
     "title": "منظومة الابتكار"
   },
+  "collaboration": {
+    "activity_feed": "خلاصة الأنشطة",
+    "no_activities": "لا توجد أنشطة بعد"
+  },
+  "view": "عرض",
+  "apply": "تقديم",
+  "manage": "إدارة",
+  "locale": "ar-SA",
   "search_placeholder": "البحث...",
   "validation": {
     "validation_error": "خطأ في التحقق",

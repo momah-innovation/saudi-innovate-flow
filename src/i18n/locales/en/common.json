@@ -32,7 +32,12 @@
     "error": "Error",
     "success": "Success",
     "warning": "Warning",
-    "info": "Information"
+    "info": "Information",
+    "active": "Active",
+    "published": "Published",
+    "draft": "Draft",
+    "completed": "Completed",
+    "pending": "Pending"
   },
   "form": {
     "required": "This field is required",
@@ -142,6 +147,14 @@
   "all": "All",
   "createNew": "Create New",
   "breadcrumbNavigation": "Breadcrumb Navigation",
+  "collaboration": {
+    "activity_feed": "Activity Feed",
+    "no_activities": "No activities yet"
+  },
+  "view": "View",
+  "apply": "Apply",
+  "manage": "Manage",
+  "locale": "en-US",
   "focusQuestionTypes": {
     "general": "General",
     "technical": "Technical",
