@@ -246,7 +246,16 @@
       "my_applications": "طلباتي",
       "applied": "تم التقديم",
       "no_applications": "لا توجد طلبات",
-      "quick_actions": "الإجراءات السريعة"
+      "quick_actions": "الإجراءات السريعة",
+      "tabs": {
+        "overview": "نظرة عامة",
+        "projects": "المشاريع",
+        "communication": "التواصل", 
+        "contracts": "العقود"
+      },
+      "partner_info": {
+        "title": "معلومات الشريك"
+      }
     },
     "title": "مساحات العمل",
     "type": "النوع",
@@ -356,6 +365,109 @@
       "invite_members": "دعوة أعضاء",
       "online_members": "الأعضاء المتصلون",
       "more": "المزيد"
+    },
+    "roles": {
+      "senior_developer": "مطور أول",
+      "ui_ux_designer": "مصمم واجهات",
+      "project_coordinator": "منسق مشاريع",
+      "quality_analyst": "محلل جودة"
+    },
+    "tasks": {
+      "ai_integration_module": "وحدة تكامل الذكاء الاصطناعي",
+      "user_interface_redesign": "إعادة تصميم واجهة المستخدم",
+      "milestone_planning": "تخطيط المراحل",
+      "quality_assessment": "تقييم الجودة",
+      "code_review_approval": "موافقة مراجعة الكود",
+      "resource_allocation_review": "مراجعة توزيع الموارد",
+      "stakeholder_presentation": "عرض أصحاب المصلحة",
+      "assigned_to": "مُعيّن إلى",
+      "due_date": "تاريخ الاستحقاق"
+    },
+    "projects": {
+      "digital_transformation_initiative": "مبادرة التحول الرقمي",
+      "customer_portal_enhancement": "تطوير بوابة العملاء",
+      "mobile_app_development": "تطوير تطبيق الهاتف المحمول",
+      "active_projects": "المشاريع النشطة",
+      "description": "إدارة وتتبع جميع المشاريع النشطة",
+      "team_size": "حجم الفريق",
+      "budget": "الميزانية",
+      "due_date": "تاريخ الاستحقاق",
+      "milestones": "المراحل",
+      "progress": "التقدم",
+      "sar": "ريال"
+    },
+    "resources": {
+      "development_team": "فريق التطوير",
+      "design_team": "فريق التصميم",
+      "qa_team": "فريق ضمان الجودة",
+      "project_management": "إدارة المشاريع",
+      "allocation_overview": "نظرة عامة على توزيع الموارد",
+      "description": "مراقبة استخدام الموارد والقدرة",
+      "capacity": "السعة",
+      "utilization": "الاستخدام",
+      "team_workload": "عبء العمل للفريق",
+      "overall_utilization": "الاستخدام الإجمالي",
+      "budget_tracking": "تتبع الميزانية",
+      "allocated_budget": "الميزانية المخصصة",
+      "spent_budget": "الميزانية المُنفقة",
+      "budget_utilized": "من الميزانية مُستخدمة"
+    },
+    "deadlines": {
+      "phase_two_delivery": "تسليم المرحلة الثانية",
+      "user_testing_completion": "إكمال اختبار المستخدم",
+      "stakeholder_review": "مراجعة أصحاب المصلحة",
+      "days_left": "أيام متبقية"
+    },
+    "priority": {
+      "high": "عالي",
+      "medium": "متوسط",
+      "low": "منخفض",
+      "critical": "حرج"
+    },
+    "project_status": {
+      "on_track": "في المسار الصحيح",
+      "at_risk": "معرض للخطر",
+      "delayed": "متأخر",
+      "completed": "مكتمل"
+    },
+    "status": {
+      "active": "نشط",
+      "on_leave": "في إجازة",
+      "pending": "معلق",
+      "completed": "مكتمل"
+    },
+    "analytics": {
+      "team_performance": "أداء الفريق",
+      "overall_performance": "الأداء الإجمالي",
+      "completed_tasks": "المهام المكتملة",
+      "this_month": "هذا الشهر",
+      "project_delivery": "تسليم المشاريع",
+      "on_time_delivery": "التسليم في الوقت المحدد",
+      "monthly_trends": "الاتجاهات الشهرية",
+      "productivity_trend": "اتجاه الإنتاجية",
+      "quality_score": "نقاط الجودة"
+    },
+    "tabs": {
+      "dashboard": "لوحة التحكم",
+      "achievements": "الإنجازات",
+      "team_dashboard": "لوحة الفريق",
+      "strategic_dashboard": "اللوحة الاستراتيجية",
+      "analytics": "التحليلات",
+      "projects": "المشاريع",
+      "resources": "الموارد",
+      "performance": "الأداء"
+    },
+    "actions": {
+      "generate_report": "إنشاء تقرير",
+      "manage_policies": "إدارة السياسات",
+      "notifications": "الإشعارات",
+      "add_team_member": "إضافة عضو فريق",
+      "create_project": "إنشاء مشروع",
+      "review": "مراجعة",
+      "approve": "موافقة",
+      "view_details": "عرض التفاصيل",
+      "manage_team": "إدارة الفريق",
+      "update_status": "تحديث الحالة"
     },
     "common": {
       "loading": "جاري تحميل مساحة العمل...",

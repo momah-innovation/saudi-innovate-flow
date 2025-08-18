@@ -246,7 +246,16 @@
       "my_applications": "My Applications",
       "applied": "Applied",
       "no_applications": "No applications",
-      "quick_actions": "Quick Actions"
+      "quick_actions": "Quick Actions",
+      "tabs": {
+        "overview": "Overview",
+        "projects": "Projects", 
+        "communication": "Communication",
+        "contracts": "Contracts"
+      },
+      "partner_info": {
+        "title": "Partner Information"
+      }
     },
     "title": "Workspaces",
     "type": "Type",
@@ -356,6 +365,109 @@
       "invite_members": "Invite Members",
       "online_members": "Online Members",
       "more": "more"
+    },
+    "roles": {
+      "senior_developer": "Senior Developer",
+      "ui_ux_designer": "UI/UX Designer", 
+      "project_coordinator": "Project Coordinator",
+      "quality_analyst": "Quality Analyst"
+    },
+    "tasks": {
+      "ai_integration_module": "AI Integration Module",
+      "user_interface_redesign": "User Interface Redesign",
+      "milestone_planning": "Milestone Planning",
+      "quality_assessment": "Quality Assessment",
+      "code_review_approval": "Code Review Approval",
+      "resource_allocation_review": "Resource Allocation Review",
+      "stakeholder_presentation": "Stakeholder Presentation",
+      "assigned_to": "Assigned to",
+      "due_date": "Due Date"
+    },
+    "projects": {
+      "digital_transformation_initiative": "Digital Transformation Initiative",
+      "customer_portal_enhancement": "Customer Portal Enhancement", 
+      "mobile_app_development": "Mobile App Development",
+      "active_projects": "Active Projects",
+      "description": "Manage and track all active projects",
+      "team_size": "Team Size",
+      "budget": "Budget",
+      "due_date": "Due Date",
+      "milestones": "Milestones",
+      "progress": "Progress",
+      "sar": "SAR"
+    },
+    "resources": {
+      "development_team": "Development Team",
+      "design_team": "Design Team",
+      "qa_team": "QA Team", 
+      "project_management": "Project Management",
+      "allocation_overview": "Resource Allocation Overview",
+      "description": "Monitor resource utilization and capacity",
+      "capacity": "capacity",
+      "utilization": "utilization",
+      "team_workload": "Team Workload",
+      "overall_utilization": "Overall Utilization",
+      "budget_tracking": "Budget Tracking",
+      "allocated_budget": "Allocated Budget",
+      "spent_budget": "Spent Budget",
+      "budget_utilized": "budget utilized"
+    },
+    "deadlines": {
+      "phase_two_delivery": "Phase Two Delivery",
+      "user_testing_completion": "User Testing Completion",
+      "stakeholder_review": "Stakeholder Review",
+      "days_left": "days left"
+    },
+    "priority": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "critical": "Critical"
+    },
+    "project_status": {
+      "on_track": "On Track",
+      "at_risk": "At Risk", 
+      "delayed": "Delayed",
+      "completed": "Completed"
+    },
+    "status": {
+      "active": "Active",
+      "on_leave": "On Leave",
+      "pending": "Pending",
+      "completed": "Completed"
+    },
+    "analytics": {
+      "team_performance": "Team Performance",
+      "overall_performance": "Overall Performance",
+      "completed_tasks": "Completed Tasks",
+      "this_month": "This Month",
+      "project_delivery": "Project Delivery",
+      "on_time_delivery": "On-Time Delivery",
+      "monthly_trends": "Monthly Trends",
+      "productivity_trend": "Productivity Trend",
+      "quality_score": "Quality Score"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "achievements": "Achievements",
+      "team_dashboard": "Team Dashboard",
+      "strategic_dashboard": "Strategic Dashboard", 
+      "analytics": "Analytics",
+      "projects": "Projects",
+      "resources": "Resources",
+      "performance": "Performance"
+    },
+    "actions": {
+      "generate_report": "Generate Report",
+      "manage_policies": "Manage Policies",
+      "notifications": "Notifications",
+      "add_team_member": "Add Team Member",
+      "create_project": "Create Project",
+      "review": "Review",
+      "approve": "Approve",
+      "view_details": "View Details",
+      "manage_team": "Manage Team",
+      "update_status": "Update Status"
     },
     "common": {
       "loading": "Loading workspace...",

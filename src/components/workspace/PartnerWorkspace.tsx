@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
 import { 
   HandHeart, 
   Building, 
@@ -31,6 +32,12 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
   partnerId = 'partner-1'
 }) => {
   const [activeTab, setActiveTab] = useState('overview');
+  
+  const { tw } = useWorkspaceTranslations({
+    workspaceType: 'partner',
+    dynamicContent: true,
+    fallbackStrategy: 'english'
+  });
 
   // Mock partner data
   const partnerData = {
@@ -117,10 +124,10 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
         <div className="lg:col-span-2">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
-              <TabsTrigger value="projects">المشاريع</TabsTrigger>
-              <TabsTrigger value="communication">التواصل</TabsTrigger>
-              <TabsTrigger value="contracts">العقود</TabsTrigger>
+              <TabsTrigger value="overview">{tw('tabs.overview')}</TabsTrigger>
+              <TabsTrigger value="projects">{tw('tabs.projects')}</TabsTrigger>
+              <TabsTrigger value="communication">{tw('tabs.communication')}</TabsTrigger>
+              <TabsTrigger value="contracts">{tw('tabs.contracts')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
@@ -128,7 +135,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Building className="h-5 w-5" />
-                    معلومات الشريك
+                    {tw('partner_info.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
