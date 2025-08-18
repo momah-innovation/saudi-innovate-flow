@@ -670,64 +670,36 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
 function RouterWithPerformanceMonitoring() {
   const location = useLocation();
 
-  // Phase 2: Translation Optimization
-  useTranslationPrefetch({ 
-    enabled: true, 
-    preloadCoreNamespaces: true,
-    preloadRoleBasedNamespaces: true,
-    preloadNavigationNamespaces: true
-  });
-  useNavigationPreload({ 
-    enabled: true, 
-    preloadTranslations: true,
-    preloadData: true,
-    debounceMs: 100 
-  });
-
-  // Phase 3: Data Prefetching Architecture  
-  useDataPrefetching({ 
-    enabled: true, 
-    aggressive: false, 
-    userBehaviorTracking: true 
-  });
-  
-  useIntelligentPrefetch();
-  
-  useAdvancedCacheWarming({ 
-    enabled: true, 
-    aggressiveMode: false,
-    backgroundOnly: true,
-    maxConcurrentRequests: 3
-  });
-
-  // Performance monitoring integration
+  // Simplified performance monitoring - remove heavy hooks causing freezing
   useEffect(() => {
     const currentPath = location.pathname;
+    console.log(`[ROUTER] Navigating to: ${currentPath}`);
     
-    // Import performance utilities dynamically to avoid circular dependencies
-    import('@/utils/NavigationStateMachine').then(({ navigationStateMachine }) => {
-      navigationStateMachine.startNavigation(currentPath);
-      
-      const timer = setTimeout(() => {
-        navigationStateMachine.completeNavigation(currentPath, 100);
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    });
+    // Basic navigation timing
+    const startTime = performance.now();
+    
+    const timer = setTimeout(() => {
+      const loadTime = performance.now() - startTime;
+      console.log(`[ROUTER] Route loaded in ${loadTime.toFixed(2)}ms: ${currentPath}`);
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   return (
-    <Routes>
-      {UNIFIED_ROUTES.map((routeConfig) => (
-        <Route
-          key={routeConfig.path}
-          path={routeConfig.path}
-          element={<RouteRenderer config={routeConfig} />}
-        />
-      ))}
-      {/* Catch-all route */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <TranslationAppShellProvider>
+      <Routes>
+        {UNIFIED_ROUTES.map((routeConfig) => (
+          <Route
+            key={routeConfig.path}
+            path={routeConfig.path}
+            element={<RouteRenderer config={routeConfig} />}
+          />
+        ))}
+        {/* Catch-all route */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </TranslationAppShellProvider>
   );
 }
 
@@ -736,9 +708,7 @@ export const UnifiedRouter: React.FC = () => {
   return (
     <ErrorBoundary fallback={<div className="p-8 text-center">An error occurred. <button onClick={() => {try{if(typeof window!=='undefined'&&window.location)window.location.reload()}catch{window.location.href='/'}}} className="underline">Reload</button></div>}>
       <BrowserRouter>
-        <TranslationAppShellProvider>
-          <RouterWithPerformanceMonitoring />
-        </TranslationAppShellProvider>
+        <RouterWithPerformanceMonitoring />
       </BrowserRouter>
     </ErrorBoundary>
   );
