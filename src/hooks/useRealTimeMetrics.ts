@@ -127,7 +127,7 @@ export const useRealTimeMetrics = (
     }, refreshInterval);
 
     return clearTimer;
-  }, [enabled, refreshInterval, fetchRealTimeStats]);
+  }, [enabled, refreshInterval]);
 
   // Handle visibility change to pause/resume updates
   useEffect(() => {

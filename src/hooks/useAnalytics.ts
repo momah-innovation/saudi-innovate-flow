@@ -58,15 +58,15 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
 // Stabilize filters and permissions to avoid re-renders
-const stableFilters = useMemo(() => filters, [JSON.stringify(filters)]);
-const primaryRole = useMemo(() => getPrimaryRole(), [getPrimaryRole, user?.id]);
+const stableFilters = useMemo(() => filters, [filters.timeframe, filters.userRole, filters.department, filters.sector]);
+const primaryRole = useMemo(() => getPrimaryRole(), [getPrimaryRole]);
 
 // Check access permissions (memoized to prevent infinite loops)
 const hasAccess = useMemo(() => ({
   core: !!user,
-  security: canAccess('canViewAnalytics'), // Using existing permission
+  security: canAccess('canViewAnalytics'),
   analytics: canAccess('canViewAnalytics') || canAccess('canManageSystem')
-}), [user?.id, canAccess]);
+}), [user?.id, userProfile?.user_roles]);
 
   const fetchMetrics = useCallback(async () => {
     if (!user?.id) {
