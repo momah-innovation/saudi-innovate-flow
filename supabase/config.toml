@@ -118,3 +118,18 @@ verify_jwt = false
 
 [functions.campaign-workflow-manager]
 verify_jwt = false
+
+[functions.workspace-notifications]
+verify_jwt = true
+
+[functions.workspace-ai-assistant]
+verify_jwt = true
+
+[functions.workspace-collaboration]
+verify_jwt = true
+
+[functions.workspace-file-processing]
+verify_jwt = true
+
+[functions.workspace-analytics]
+verify_jwt = true

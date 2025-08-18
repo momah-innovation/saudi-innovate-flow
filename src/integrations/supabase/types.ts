@@ -9731,6 +9731,41 @@ export type Database = {
           },
         ]
       }
+      workspace_analytics_cache: {
+        Row: {
+          analytics_data: Json
+          created_at: string | null
+          id: string
+          last_updated: string | null
+          workspace_id: string | null
+          workspace_type: string
+        }
+        Insert: {
+          analytics_data?: Json
+          created_at?: string | null
+          id?: string
+          last_updated?: string | null
+          workspace_id?: string | null
+          workspace_type: string
+        }
+        Update: {
+          analytics_data?: Json
+          created_at?: string | null
+          id?: string
+          last_updated?: string | null
+          workspace_id?: string | null
+          workspace_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_analytics_cache_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workspace_files: {
         Row: {
           access_level: string | null
@@ -11030,6 +11065,14 @@ export type Database = {
       }
       update_weekly_capacity: {
         Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      update_workspace_analytics_cache: {
+        Args: {
+          p_analytics_data: Json
+          p_workspace_id: string
+          p_workspace_type: string
+        }
         Returns: undefined
       }
       user_can_perform_action: {
