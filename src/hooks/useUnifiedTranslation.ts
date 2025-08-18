@@ -79,7 +79,7 @@ export function useUnifiedTranslation() {
           const potentialNamespace = parts[0];
           
           // Check if the first part is a known namespace
-          if (['landing', 'common', 'navigation', 'dashboard', 'auth', 'errors', 'challenges', 'campaigns', 'admin', 'users', 'settings'].includes(potentialNamespace)) {
+          if (['landing', 'common', 'navigation', 'dashboard', 'workspace', 'auth', 'errors', 'challenges', 'campaigns', 'admin', 'users', 'settings'].includes(potentialNamespace)) {
             const actualKey = parts.slice(1).join('.');
             i18nextResult = i18nextT(actualKey, { 
               ...interpolationOptions, 

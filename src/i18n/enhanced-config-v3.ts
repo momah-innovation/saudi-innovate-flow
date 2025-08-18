@@ -32,6 +32,10 @@ import arAuth from './locales/ar/auth.json';
 import enErrors from './locales/en/errors.json';
 import arErrors from './locales/ar/errors.json';
 
+// Workspace translations
+import enWorkspace from './locales/en/workspace.json';
+import arWorkspace from './locales/ar/workspace.json';
+
 // Base static resources - these are loaded immediately
 const staticResources = {
   en: { 
@@ -41,7 +45,8 @@ const staticResources = {
     dashboard: enDashboard,
     admin: enAdmin,
     auth: enAuth,
-    errors: enErrors
+    errors: enErrors,
+    workspace: enWorkspace
   },
   ar: { 
     landing: arLanding,
@@ -50,7 +55,8 @@ const staticResources = {
     dashboard: arDashboard,
     admin: arAdmin,
     auth: arAuth,
-    errors: arErrors
+    errors: arErrors,
+    workspace: arWorkspace
   }
 };
 
@@ -266,7 +272,7 @@ i18n
     
     // Default namespaces that should be loaded immediately - using dot notation
     defaultNS: 'common',
-    ns: ['common', 'landing', 'navigation', 'dashboard', 'admin', 'auth', 'errors', 'validation', 'system-lists'],
+    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists'],
     
     // Configure for flat namespace structure (dot notation)
     nsSeparator: '.',
