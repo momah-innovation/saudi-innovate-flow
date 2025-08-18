@@ -34,7 +34,8 @@
         "no_ideas": "No ideas yet. Start by creating your first idea!",
         "no_challenges": "No active challenges available",
         "no_submissions": "No submissions yet"
-      }
+      },
+      "quick_actions": "Quick Actions"
     },
     "expert": {
       "title": "Expert Workspace",
@@ -44,17 +45,37 @@
         "assigned_challenges": "Assigned Challenges",
         "completed": "Completed"
       },
+      "header": {
+        "expert_dashboard": "Expert Dashboard",
+        "evaluation_consultation_hub": "Evaluation & Consultation Hub"
+      },
       "actions": {
         "start_evaluation": "Start Evaluation",
         "evaluate_ideas": "Evaluate Ideas",
         "evaluate_ideas_desc": "Review and evaluate submitted ideas",
         "review_submissions": "Review Submissions",
-        "review_submissions_desc": "Review challenge submissions and provide feedback"
+        "review_submissions_desc": "Review challenge submissions and provide feedback",
+        "schedule_consultation": "Schedule Consultation"
       },
       "metrics": {
         "pending_evaluations": "Pending Evaluations",
         "completed_evaluations": "Completed Evaluations",
         "assigned_challenges": "Assigned Challenges"
+      },
+      "stats": {
+        "total_evaluations": "Total Evaluations"
+      },
+      "tabs": {
+        "evaluation_queue": "Evaluation Queue",
+        "consultations": "Consultations"
+      },
+      "queue": {
+        "pending_evaluations": "Pending Evaluations",
+        "no_pending_evaluations": "No pending evaluations"
+      },
+      "consultations": {
+        "schedule": "Schedule",
+        "no_upcoming": "No upcoming consultations"
       },
       "sections": {
         "pending_evaluations": "Pending Evaluations",
@@ -74,7 +95,19 @@
       "messages": {
         "no_evaluations": "No pending evaluations",
         "no_challenges": "No assigned challenges"
-      }
+      },
+      "pending_evaluations": "Pending Evaluations",
+      "assigned_challenges": "Assigned Challenges",
+      "completed_evaluations": "Completed Evaluations",
+      "pending": "Pending",
+      "completed": "Completed",
+      "in_progress": "In Progress",
+      "evaluate": "Evaluate",
+      "status": "Status",
+      "submitted": "Submitted",
+      "no_evaluations": "No pending evaluations",
+      "no_challenges": "No assigned challenges",
+      "quick_actions": "Quick Actions"
     },
     "admin": {
       "title": "Admin Workspace",
@@ -118,7 +151,18 @@
       },
       "messages": {
         "no_users": "No users found"
-      }
+      },
+      "system_health": "System Health",
+      "uptime": "Uptime",
+      "response_time": "Response Time",
+      "active_users": "Active Users",
+      "healthy": "Healthy",
+      "optimal": "Optimal",
+      "normal": "Normal",
+      "recent_users": "Recent Users",
+      "manage_all": "Manage All",
+      "no_users": "No users found",
+      "quick_actions": "Quick Actions"
     },
     "team": {
       "title": "Team Workspace",
@@ -137,7 +181,11 @@
         "active_projects": "Active Projects",
         "team_members": "Team Members",
         "pending_tasks": "Pending Tasks"
-      }
+      },
+      "active_projects": "Active Projects",
+      "team_members": "Team Members",
+      "pending_tasks": "Pending Tasks",
+      "quick_actions": "Quick Actions"
     },
     "organization": {
       "title": "Organization Workspace",
@@ -157,7 +205,11 @@
         "active_challenges": "Active Challenges",
         "total_submissions": "Total Submissions",
         "team_size": "Team Size"
-      }
+      },
+      "active_challenges": "Active Challenges",
+      "total_submissions": "Total Submissions",
+      "team_size": "Team Size",
+      "quick_actions": "Quick Actions"
     },
     "partner": {
       "title": "Partner Workspace",
@@ -165,17 +217,36 @@
       "nav": {
         "partnerships": "Partnerships",
         "opportunities": "Opportunities",
-        "collaboration": "Collaboration"
+        "collaboration": "Collaboration",
+        "applications": "Applications"
       },
       "actions": {
         "new_partnership": "New Partnership",
-        "explore_opportunities": "Explore Opportunities"
+        "explore_opportunities": "Explore Opportunities",
+        "browse_opportunities": "Browse Opportunities",
+        "browse_opportunities_desc": "Explore available opportunities",
+        "create_opportunity": "Create Opportunity",
+        "create_opportunity_desc": "Post a new opportunity"
       },
       "metrics": {
         "active_partnerships": "Active Partnerships",
         "collaboration_projects": "Collaboration Projects",
-        "opportunities": "Opportunities"
-      }
+        "opportunities": "Opportunities",
+        "available_opportunities": "Available Opportunities",
+        "pending_applications": "Pending Applications",
+        "accepted_applications": "Accepted Applications"
+      },
+      "available_opportunities": "Available Opportunities",
+      "view_all": "View All",
+      "deadline": "Deadline",
+      "no_opportunities": "No opportunities available",
+      "active_partnerships": "Active Partnerships",
+      "status": "Status",
+      "no_partnerships": "No partnerships",
+      "my_applications": "My Applications",
+      "applied": "Applied",
+      "no_applications": "No applications",
+      "quick_actions": "Quick Actions"
     },
     "common": {
       "loading": "Loading workspace...",

@@ -34,7 +34,8 @@
         "no_ideas": "لا توجد أفكار بعد. ابدأ بإنشاء فكرتك الأولى!",
         "no_challenges": "لا توجد تحديات نشطة متاحة",
         "no_submissions": "لا توجد مشاركات بعد"
-      }
+      },
+      "quick_actions": "الإجراءات السريعة"
     },
     "expert": {
       "title": "مساحة الخبراء",
@@ -44,17 +45,37 @@
         "assigned_challenges": "التحديات المُعيّنة",
         "completed": "مُكتملة"
       },
+      "header": {
+        "expert_dashboard": "لوحة الخبراء",
+        "evaluation_consultation_hub": "مركز التقييم والاستشارات"
+      },
       "actions": {
         "start_evaluation": "بدء التقييم",
         "evaluate_ideas": "تقييم الأفكار",
         "evaluate_ideas_desc": "مراجعة وتقييم الأفكار المُقدمة",
         "review_submissions": "مراجعة المشاركات",
-        "review_submissions_desc": "مراجعة مشاركات التحديات وتقديم التغذية الراجعة"
+        "review_submissions_desc": "مراجعة مشاركات التحديات وتقديم التغذية الراجعة",
+        "schedule_consultation": "جدولة استشارة"
       },
       "metrics": {
         "pending_evaluations": "التقييمات المعلقة",
         "completed_evaluations": "التقييمات المكتملة",
         "assigned_challenges": "التحديات المُعيّنة"
+      },
+      "stats": {
+        "total_evaluations": "إجمالي التقييمات"
+      },
+      "tabs": {
+        "evaluation_queue": "قائمة التقييمات",
+        "consultations": "الاستشارات"
+      },
+      "queue": {
+        "pending_evaluations": "التقييمات المعلقة",
+        "no_pending_evaluations": "لا توجد تقييمات معلقة"
+      },
+      "consultations": {
+        "schedule": "الجدولة",
+        "no_upcoming": "لا توجد استشارات قادمة"
       },
       "sections": {
         "pending_evaluations": "التقييمات المعلقة",
@@ -74,7 +95,19 @@
       "messages": {
         "no_evaluations": "لا توجد تقييمات معلقة",
         "no_challenges": "لا توجد تحديات مُعيّنة"
-      }
+      },
+      "pending_evaluations": "التقييمات المعلقة",
+      "assigned_challenges": "التحديات المُعيّنة",
+      "completed_evaluations": "التقييمات المكتملة",
+      "pending": "معلق",
+      "completed": "مكتمل",
+      "in_progress": "قيد التنفيذ",
+      "evaluate": "تقييم",
+      "status": "الحالة",
+      "submitted": "مُرسلة",
+      "no_evaluations": "لا توجد تقييمات معلقة",
+      "no_challenges": "لا توجد تحديات مُعيّنة",
+      "quick_actions": "الإجراءات السريعة"
     },
     "admin": {
       "title": "مساحة إدارة النظام",
@@ -118,7 +151,18 @@
       },
       "messages": {
         "no_users": "لم يتم العثور على مستخدمين"
-      }
+      },
+      "system_health": "صحة النظام",
+      "uptime": "وقت التشغيل",
+      "response_time": "وقت الاستجابة",
+      "active_users": "المستخدمون النشطون",
+      "healthy": "سليم",
+      "optimal": "مثالي",
+      "normal": "طبيعي",
+      "recent_users": "المستخدمون الجدد",
+      "manage_all": "إدارة الكل",
+      "no_users": "لم يتم العثور على مستخدمين",
+      "quick_actions": "الإجراءات السريعة"
     },
     "team": {
       "title": "مساحة الفريق",
@@ -137,7 +181,11 @@
         "active_projects": "المشاريع النشطة",
         "team_members": "أعضاء الفريق",
         "pending_tasks": "المهام المعلقة"
-      }
+      },
+      "active_projects": "المشاريع النشطة",
+      "team_members": "أعضاء الفريق",
+      "pending_tasks": "المهام المعلقة",
+      "quick_actions": "الإجراءات السريعة"
     },
     "organization": {
       "title": "مساحة المؤسسة",
@@ -157,7 +205,11 @@
         "active_challenges": "التحديات النشطة",
         "total_submissions": "إجمالي المشاركات",
         "team_size": "حجم الفريق"
-      }
+      },
+      "active_challenges": "التحديات النشطة",
+      "total_submissions": "إجمالي المشاركات",
+      "team_size": "حجم الفريق",
+      "quick_actions": "الإجراءات السريعة"
     },
     "partner": {
       "title": "مساحة الشركاء",
@@ -165,17 +217,36 @@
       "nav": {
         "partnerships": "الشراكات",
         "opportunities": "الفرص",
-        "collaboration": "التعاون"
+        "collaboration": "التعاون",
+        "applications": "الطلبات"
       },
       "actions": {
         "new_partnership": "شراكة جديدة",
-        "explore_opportunities": "استكشاف الفرص"
+        "explore_opportunities": "استكشاف الفرص",
+        "browse_opportunities": "استعراض الفرص",
+        "browse_opportunities_desc": "استكشاف الفرص المتاحة",
+        "create_opportunity": "إنشاء فرصة",
+        "create_opportunity_desc": "نشر فرصة جديدة"
       },
       "metrics": {
         "active_partnerships": "الشراكات النشطة",
         "collaboration_projects": "مشاريع التعاون",
-        "opportunities": "الفرص"
-      }
+        "opportunities": "الفرص",
+        "available_opportunities": "الفرص المتاحة",
+        "pending_applications": "الطلبات المعلقة",
+        "accepted_applications": "الطلبات المقبولة"
+      },
+      "available_opportunities": "الفرص المتاحة",
+      "view_all": "عرض الكل",
+      "deadline": "الموعد النهائي",
+      "no_opportunities": "لا توجد فرص متاحة",
+      "active_partnerships": "الشراكات النشطة",
+      "status": "الحالة",
+      "no_partnerships": "لا توجد شراكات",
+      "my_applications": "طلباتي",
+      "applied": "تم التقديم",
+      "no_applications": "لا توجد طلبات",
+      "quick_actions": "الإجراءات السريعة"
     },
     "common": {
       "loading": "جاري تحميل مساحة العمل...",
