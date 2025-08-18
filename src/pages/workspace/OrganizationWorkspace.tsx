@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { ALL_ROUTES } from '@/routing/routes';
 
 export default function OrganizationWorkspace() {
-  const { t } = useUnifiedTranslation();
+  const { t, getDynamicText } = useUnifiedTranslation();
   const { user, userProfile } = useAuth();
   const navigate = useNavigate();
   const permissions = useWorkspacePermissions();
@@ -170,14 +170,14 @@ export default function OrganizationWorkspace() {
                     {workspaceData.challenges.slice(0, 5).map((challenge) => (
                       <div key={challenge.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
-                          <h4 className="font-medium">{challenge.title_ar}</h4>
+                          <h4 className="font-medium">{getDynamicText(challenge.title_ar, (challenge as any).title_en)}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.org.created')}: {new Date(challenge.created_at || '').toLocaleDateString('ar')}
+                            {t('workspace.org.created')}: {new Date(challenge.created_at || '').toLocaleDateString(t('locale'))}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant={challenge.status === 'active' ? 'success' : 'secondary'}>
-                            {challenge.status}
+                            {t(`status.${challenge.status}`) || challenge.status}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('common.manage')}
@@ -212,14 +212,14 @@ export default function OrganizationWorkspace() {
                     {workspaceData.submissions.slice(0, 5).map((submission) => (
                       <div key={submission.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
-                          <h4 className="font-medium">{submission.title_ar}</h4>
+                          <h4 className="font-medium">{getDynamicText(submission.title_ar, (submission as any).title_en)}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.org.challenge')}: {submission.challenges?.title_ar}
+                            {t('workspace.org.challenge')}: {getDynamicText(submission.challenges?.title_ar, (submission.challenges as any)?.title_en)}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant={submission.status === 'submitted' ? 'success' : 'secondary'}>
-                            {submission.status}
+                            {t(`status.${submission.status}`) || submission.status}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('common.review')}

@@ -84,6 +84,9 @@
         "no_challenges": "لا توجد تحديات نشطة متاحة",
         "no_submissions": "لا توجد مشاركات بعد"
       },
+      "recent_ideas": "الأفكار الحديثة",
+      "participated_challenges": "التحديات المشاركة",
+      "browse_challenges": "تصفح التحديات",
       "quick_actions": "الإجراءات السريعة"
     },
     "expert": {
@@ -251,14 +254,21 @@
         "manage_team_desc": "إدارة فريق المؤسسة"
       },
       "metrics": {
-        "active_challenges": "التحديات النشطة",
-        "total_submissions": "إجمالي المشاركات",
-        "team_size": "حجم الفريق"
-      },
       "active_challenges": "التحديات النشطة",
       "total_submissions": "إجمالي المشاركات",
       "team_size": "حجم الفريق",
-      "quick_actions": "الإجراءات السريعة"
+      "completed_challenges": "التحديات المكتملة"
+    },
+    "active_challenges": "التحديات النشطة",
+    "new_challenge": "تحدي جديد",
+    "created": "تم الإنشاء",
+    "challenge": "التحدي",
+    "recent_submissions": "المشاركات الحديثة",
+    "no_challenges": "لا توجد تحديات بعد. أنشئ أول تحدي لك!",
+    "no_submissions": "لا توجد مشاركات بعد",
+    "total_submissions": "إجمالي المشاركات",
+    "team_size": "حجم الفريق",
+    "quick_actions": "الإجراءات السريعة"
     },
     "partner": {
       "title": "مساحة الشركاء",

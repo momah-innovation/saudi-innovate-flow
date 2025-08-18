@@ -70,7 +70,7 @@ export function WorkspaceQuickActions({
                 onClick={action.onClick}
                 disabled={action.disabled}
               >
-                إجراء
+                {action.title}
               </Button>
             </div>
           );

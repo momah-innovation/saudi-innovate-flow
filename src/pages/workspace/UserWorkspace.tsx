@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { ALL_ROUTES } from '@/routing/routes';
 
 export default function UserWorkspace() {
-  const { t } = useUnifiedTranslation();
+  const { t, getDynamicText } = useUnifiedTranslation();
   const { user, userProfile } = useAuth();
   const navigate = useNavigate();
   const permissions = useWorkspacePermissions();
@@ -156,9 +156,9 @@ export default function UserWorkspace() {
                     {workspaceData.ideas.slice(0, 5).map((idea) => (
                       <div key={idea.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
-                          <h4 className="font-medium">{idea.title_ar}</h4>
+                          <h4 className="font-medium">{getDynamicText(idea.title_ar, idea.title_en)}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('common.status')}: {idea.status}
+                            {t('common.status')}: {t(`status.${idea.status}`) || idea.status}
                           </p>
                         </div>
                         <Button variant="ghost" size="sm">
@@ -193,9 +193,9 @@ export default function UserWorkspace() {
                     {workspaceData.participatedChallenges.map((participation) => (
                       <div key={participation.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
-                          <h4 className="font-medium">{participation.challenges?.title_ar}</h4>
+<h4 className="font-medium">{getDynamicText(participation.challenges?.title_ar, (participation.challenges as any)?.title_en)}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('common.status')}: {participation.challenges?.status}
+                            {t('common.status')}: {t(`status.${participation.challenges?.status}`) || participation.challenges?.status}
                           </p>
                         </div>
                         <Button variant="ghost" size="sm">

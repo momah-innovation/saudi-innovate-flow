@@ -84,6 +84,9 @@
         "no_challenges": "No active challenges available",
         "no_submissions": "No submissions yet"
       },
+      "recent_ideas": "Recent Ideas",
+      "participated_challenges": "Participated Challenges",
+      "browse_challenges": "Browse Challenges",
       "quick_actions": "Quick Actions"
     },
     "expert": {
@@ -251,14 +254,21 @@
         "manage_team_desc": "Manage organization team"
       },
       "metrics": {
-        "active_challenges": "Active Challenges",
-        "total_submissions": "Total Submissions",
-        "team_size": "Team Size"
-      },
       "active_challenges": "Active Challenges",
       "total_submissions": "Total Submissions",
       "team_size": "Team Size",
-      "quick_actions": "Quick Actions"
+      "completed_challenges": "Completed Challenges"
+    },
+    "active_challenges": "Active Challenges",
+    "new_challenge": "New Challenge",
+    "created": "Created",
+    "challenge": "Challenge",
+    "recent_submissions": "Recent Submissions",
+    "no_challenges": "No challenges yet. Create your first challenge!",
+    "no_submissions": "No submissions yet",
+    "total_submissions": "Total Submissions",
+    "team_size": "Team Size",
+    "quick_actions": "Quick Actions"
     },
     "partner": {
       "title": "Partner Workspace",

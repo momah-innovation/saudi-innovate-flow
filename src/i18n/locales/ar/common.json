@@ -96,7 +96,22 @@
     "drop_files_here": "إفلات الملفات هنا",
     "click_to_upload": "انقر للرفع أو السحب والإفلات",
     "click_to_browse": "أو انقر لتصفح الملفات",
-    "click_to_add_annotation": "انقر في أي مكان لإضافة تعليق توضيحي"
+    "click_to_add_annotation": "انقر في أي مكان لإضافة تعليق توضيحي",
+    "manage": "إدارة",
+    "review": "مراجعة"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "معلق",
+    "completed": "مكتمل", 
+    "in_progress": "قيد التنفيذ",
+    "draft": "مسودة",
+    "submitted": "مُرسل",
+    "under_review": "قيد المراجعة",
+    "approved": "موافق عليه",
+    "rejected": "مرفوض",
+    "cancelled": "ملغي"
   },
   "placeholders": {
     "search": "بحث...",
