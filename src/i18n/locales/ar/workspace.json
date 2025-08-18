@@ -701,5 +701,46 @@
     "sample_file_2": "عرض تقديمي.pptx", 
     "sample_file_3": "صورة المخطط.png"
   },
+  "general": {
+    "nav": {
+      "dashboard": "لوحة التحكم",
+      "files": "الملفات", 
+      "messages": "الرسائل",
+      "members": "الأعضاء",
+      "settings": "الإعدادات"
+    },
+    "metrics": {
+      "online_members": "الأعضاء المتصلون",
+      "files_shared": "الملفات المشتركة",
+      "active_projects": "المشاريع النشطة"
+    },
+    "actions": {
+      "new_document": "مستند جديد",
+      "invite_members": "دعوة أعضاء"
+    },
+    "breadcrumbs": {
+      "workspaces": "مساحات العمل",
+      "workspace_type": "مساحة عمل {type}"
+    },
+    "title": "مساحة عمل {type}",
+    "description": "إدارة مساحة عمل {type}",
+    "sidebar": {
+      "online_now": "متصل الآن ({count})",
+      "more_members": "و {count} آخرين",
+      "recent_activity": "النشاط الأخير",
+      "user_joined": "انضم مستخدم إلى مساحة العمل",
+      "file_uploaded": "تم رفع ملف",
+      "meeting_scheduled": "تم جدولة اجتماع",
+      "quick_actions": "إجراءات سريعة"
+    },
+    "content": {
+      "workspace_overview": "نظرة عامة على مساحة العمل",
+      "files_documents": "الملفات والمستندات", 
+      "team_members": "أعضاء الفريق",
+      "messages_chat": "الرسائل والدردشة",
+      "workspace_settings": "إعدادات مساحة العمل",
+      "placeholder": "سيتم عرض محتوى {view} هنا"
+    }
+  },
   "locale": "ar-SA"
 }

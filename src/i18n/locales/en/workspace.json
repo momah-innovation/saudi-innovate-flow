@@ -701,5 +701,46 @@
     "sample_file_2": "Presentation.pptx",
     "sample_file_3": "Diagram Image.png"
   },
+  "general": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "files": "Files", 
+      "messages": "Messages",
+      "members": "Members",
+      "settings": "Settings"
+    },
+    "metrics": {
+      "online_members": "Online Members",
+      "files_shared": "Files Shared",
+      "active_projects": "Active Projects"
+    },
+    "actions": {
+      "new_document": "New Document",
+      "invite_members": "Invite Members"
+    },
+    "breadcrumbs": {
+      "workspaces": "Workspaces",
+      "workspace_type": "{type} Workspace"
+    },
+    "title": "{type} Workspace",
+    "description": "Manage your {type} workspace",
+    "sidebar": {
+      "online_now": "Online Now ({count})",
+      "more_members": "and {count} more",
+      "recent_activity": "Recent Activity",
+      "user_joined": "User joined the workspace",
+      "file_uploaded": "File uploaded",
+      "meeting_scheduled": "Meeting scheduled",
+      "quick_actions": "Quick Actions"
+    },
+    "content": {
+      "workspace_overview": "Workspace Overview",
+      "files_documents": "Files & Documents", 
+      "team_members": "Team Members",
+      "messages_chat": "Messages & Chat",
+      "workspace_settings": "Workspace Settings",
+      "placeholder": "Content for {view} will be displayed here"
+    }
+  },
   "locale": "en-US"
 }
