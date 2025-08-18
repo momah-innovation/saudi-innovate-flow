@@ -258,7 +258,6 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     requireProfile: true,
     withAppShell: true,
   },
-  // Workspace routes
   {
     path: ALL_ROUTES.WORKSPACE_USER,
     component: UserWorkspace,
