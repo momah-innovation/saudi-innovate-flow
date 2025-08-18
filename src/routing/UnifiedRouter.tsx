@@ -87,6 +87,7 @@ import OrganizationWorkspace from '@/pages/workspace/OrganizationWorkspace';
 import PartnerWorkspace from '@/pages/workspace/PartnerWorkspace';
 import AdminWorkspace from '@/pages/workspace/AdminWorkspace';
 import TeamWorkspace from '@/pages/workspace/TeamWorkspace';
+import WorkspacePage from '@/pages/WorkspacePage';
 import { MigratedAdminDashboard } from '@/components/admin/MigratedAdminDashboard';
 
 // Loading component
@@ -242,6 +243,21 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
 
+  // Workspace routes
+  {
+    path: '/workspace',
+    component: WorkspacePage,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
+  {
+    path: '/workspace/:type',
+    component: WorkspacePage,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
   // Workspace routes
   {
     path: ALL_ROUTES.WORKSPACE_USER,
