@@ -248,14 +248,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     path: '/workspace',
     component: WorkspacePage,
     requireAuth: true,
-    requireProfile: true,
+    requireProfile: false,
     withAppShell: true,
   },
   {
     path: '/workspace/:type',
     component: WorkspacePage,
     requireAuth: true,
-    requireProfile: true,
+    requireProfile: false,
     withAppShell: true,
   },
   {
@@ -263,7 +263,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     path: '/workspace/:type/*',
     component: WorkspacePage,
     requireAuth: true,
-    requireProfile: true,
+    requireProfile: false,
     withAppShell: true,
   },
   {
