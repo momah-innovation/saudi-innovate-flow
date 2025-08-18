@@ -25,7 +25,7 @@ export default function OrganizationWorkspace() {
   const navigationItems = [
     {
       id: 'challenges',
-      label: t('workspace.org.nav.challenges'),
+      label: t('workspace.organization.nav.challenges'),
       icon: Target,
       count: workspaceData?.stats?.activeChallenges || 0,
       active: true,
@@ -33,7 +33,7 @@ export default function OrganizationWorkspace() {
     },
     {
       id: 'submissions',
-      label: t('workspace.org.nav.submissions'),
+      label: t('workspace.organization.nav.submissions'),
       icon: FileText,
       count: workspaceData?.stats?.totalSubmissions || 0,
       active: false,
@@ -41,7 +41,7 @@ export default function OrganizationWorkspace() {
     },
     {
       id: 'team',
-      label: t('workspace.org.nav.team'),
+      label: t('workspace.organization.nav.team'),
       icon: Users,
       count: workspaceData?.stats?.teamSize || 0,
       active: false,
@@ -52,16 +52,16 @@ export default function OrganizationWorkspace() {
   const quickActions = [
     {
       id: 'create-challenge',
-      title: t('workspace.org.actions.create_challenge'),
-      description: t('workspace.org.actions.create_challenge_desc'),
+      title: t('workspace.organization.actions.create_challenge'),
+      description: t('workspace.organization.actions.create_challenge_desc'),
       icon: Plus,
       onClick: () => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create'),
       variant: 'default' as const
     },
     {
       id: 'manage-team',
-      title: t('workspace.org.actions.manage_team'),
-      description: t('workspace.org.actions.manage_team_desc'),
+      title: t('workspace.organization.actions.manage_team'),
+      description: t('workspace.organization.actions.manage_team_desc'),
       icon: Settings,
       onClick: () => navigate(ALL_ROUTES.ADMIN_TEAMS),
       variant: 'outline' as const
@@ -70,22 +70,22 @@ export default function OrganizationWorkspace() {
 
   const stats = [
     {
-      label: t('workspace.org.metrics.active_challenges'),
+      label: t('workspace.organization.metrics.active_challenges'),
       value: workspaceData?.stats?.activeChallenges || 0,
       icon: Target
     },
     {
-      label: t('workspace.org.metrics.total_submissions'),
+      label: t('workspace.organization.metrics.total_submissions'),
       value: workspaceData?.stats?.totalSubmissions || 0,
       icon: FileText
     },
     {
-      label: t('workspace.org.metrics.team_members'),
+      label: t('workspace.organization.metrics.team_size'),
       value: workspaceData?.stats?.teamSize || 0,
       icon: Users
     },
     {
-      label: t('workspace.org.metrics.completed_challenges'),
+      label: t('workspace.organization.metrics.completed_challenges'),
       value: workspaceData?.stats?.completedChallenges || 0,
       icon: Building
     }
@@ -93,22 +93,22 @@ export default function OrganizationWorkspace() {
 
   const metrics = [
     {
-      title: t('workspace.org.metrics.active_challenges'),
+      title: t('workspace.organization.metrics.active_challenges'),
       value: workspaceData?.stats?.activeChallenges || 0,
       icon: Target
     },
     {
-      title: t('workspace.org.metrics.total_submissions'),
+      title: t('workspace.organization.metrics.total_submissions'),
       value: workspaceData?.stats?.totalSubmissions || 0,
       icon: FileText
     },
     {
-      title: t('workspace.org.metrics.team_members'),
+      title: t('workspace.organization.metrics.team_size'),
       value: workspaceData?.stats?.teamSize || 0,
       icon: Users
     },
     {
-      title: t('workspace.org.metrics.completed_challenges'),
+      title: t('workspace.organization.metrics.completed_challenges'),
       value: workspaceData?.stats?.completedChallenges || 0,
       icon: Building
     }
@@ -117,8 +117,8 @@ export default function OrganizationWorkspace() {
   if (isLoading) {
     return (
       <WorkspaceLayout
-        title={t('workspace.org.title')}
-        description={t('workspace.org.description')}
+        title={t('workspace.organization.title')}
+        description={t('workspace.organization.description')}
         userRole={userProfile?.roles?.[0] || 'admin'}
       >
         <div className="animate-pulse space-y-6">
@@ -131,13 +131,13 @@ export default function OrganizationWorkspace() {
 
   return (
     <WorkspaceLayout
-      title={t('workspace.org.title')}
-      description={t('workspace.org.description')}
+      title={t('workspace.organization.title')}
+      description={t('workspace.organization.description')}
       userRole={userProfile?.roles?.[0] || 'admin'}
       stats={stats}
       quickActions={[
         {
-          label: t('workspace.org.actions.create_challenge'),
+          label: t('workspace.organization.actions.create_challenge'),
           onClick: () => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create'),
           icon: Plus
         }
@@ -154,13 +154,13 @@ export default function OrganizationWorkspace() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  {t('workspace.org.active_challenges')}
+                  {t('workspace.organization.active_challenges')}
                   <Button 
                     size="sm" 
                     onClick={() => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create')}
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    {t('workspace.org.new_challenge')}
+                    {t('workspace.organization.new_challenge')}
                   </Button>
                 </CardTitle>
               </CardHeader>
@@ -172,7 +172,7 @@ export default function OrganizationWorkspace() {
                         <div>
                           <h4 className="font-medium">{getDynamicText(challenge.title_ar, (challenge as any).title_en)}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.org.created')}: {new Date(challenge.created_at || '').toLocaleDateString(t('locale'))}
+                            {t('workspace.organization.created')}: {new Date(challenge.created_at || '').toLocaleDateString(t('locale'))}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -189,12 +189,12 @@ export default function OrganizationWorkspace() {
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
                     <Target className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.org.no_challenges')}</p>
+                    <p>{t('workspace.organization.no_challenges')}</p>
                     <Button 
                       className="mt-4" 
                       onClick={() => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create')}
                     >
-                      {t('workspace.org.actions.create_challenge')}
+                      {t('workspace.organization.actions.create_challenge')}
                     </Button>
                   </div>
                 )}
@@ -204,7 +204,7 @@ export default function OrganizationWorkspace() {
             {/* Recent Submissions */}
             <Card>
               <CardHeader>
-                <CardTitle>{t('workspace.org.recent_submissions')}</CardTitle>
+                <CardTitle>{t('workspace.organization.recent_submissions')}</CardTitle>
               </CardHeader>
               <CardContent>
                 {workspaceData?.submissions?.length > 0 ? (
@@ -214,7 +214,7 @@ export default function OrganizationWorkspace() {
                         <div>
                           <h4 className="font-medium">{getDynamicText(submission.title_ar, (submission as any).title_en)}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.org.challenge')}: {getDynamicText(submission.challenges?.title_ar, (submission.challenges as any)?.title_en)}
+                            {t('workspace.organization.challenge')}: {getDynamicText(submission.challenges?.title_ar, (submission.challenges as any)?.title_en)}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -231,7 +231,7 @@ export default function OrganizationWorkspace() {
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
                     <FileText className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.org.no_submissions')}</p>
+                    <p>{t('workspace.organization.no_submissions')}</p>
                   </div>
                 )}
               </CardContent>
@@ -242,7 +242,7 @@ export default function OrganizationWorkspace() {
           <div className="space-y-6">
             {/* Quick Actions */}
             <WorkspaceQuickActions
-              title={t('workspace.org.quick_actions')}
+              title={t('workspace.organization.quick_actions')}
               actions={quickActions}
             />
 

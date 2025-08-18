@@ -91,21 +91,20 @@ export function useUnifiedTranslation() {
         const tried: string[] = [];
         const isValid = (val: any) => typeof val === 'string' && val.trim() !== '' && !tried.includes(val) && !val.includes('.');
 
-        // Special-case mapping: workspace namespace keys
-        const workspaceLikePrefixes = ['workspace_selection', 'workspace_types', 'workspace.'];
-        if (workspaceLikePrefixes.some((p) => resolvedKey.startsWith(p))) {
-          // 1) Try full key inside workspace namespace
+        // Special handling for workspace keys - they all use ':' as namespace separator
+        if (resolvedKey.startsWith('workspace.')) {
+          // For workspace.user.title, etc - use workspace namespace with ':' separator
           tried.push(resolvedKey);
           const r1 = i18nextT(resolvedKey, { ...interpolationOptions, ns: 'workspace' }) as string;
           if (isValid(r1)) return r1;
 
-          // 2) Strip leading "workspace." and try inside workspace namespace
+          // Strip leading "workspace." and try inside workspace namespace
           const stripped = resolvedKey.replace(/^workspace\./, '');
           tried.push(stripped);
           const r2 = i18nextT(stripped, { ...interpolationOptions, ns: 'workspace' }) as string;
           if (isValid(r2)) return r2;
 
-          // 3) Map org -> organization and try again
+          // Map org -> organization and try again
           const orgFixed = resolvedKey.replace(/^workspace\.org\./, 'workspace.organization.');
           if (orgFixed !== resolvedKey) {
             tried.push(orgFixed);
