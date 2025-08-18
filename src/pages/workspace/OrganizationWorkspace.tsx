@@ -4,6 +4,7 @@ import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { useOrganizationWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -143,6 +144,7 @@ export default function OrganizationWorkspace() {
         }
       ]}
     >
+      <WorkspaceBreadcrumb className="mb-6" />
       <div className="space-y-6">
         {/* Navigation */}
         <WorkspaceNavigation items={navigationItems} />
@@ -171,9 +173,9 @@ export default function OrganizationWorkspace() {
                       <div key={challenge.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <h4 className="font-medium">{getDynamicText(challenge.title_ar, (challenge as any).title_en)}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('workspace.organization.created')}: {new Date(challenge.created_at || '').toLocaleDateString(t('locale'))}
-                          </p>
+                           <p className="text-sm text-muted-foreground">
+                             {t('workspace.organization.created')}: {new Date(challenge.created_at || '').toLocaleDateString(t('common.locale'))}
+                           </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant={challenge.status === 'active' ? 'success' : 'secondary'}>
