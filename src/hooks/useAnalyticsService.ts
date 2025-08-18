@@ -88,6 +88,20 @@ export function useAnalyticsService(): {
       if (!user?.id) throw new Error('User not authenticated');
 
       try {
+        // Only admins can access security metrics; check before calling RPC
+        const { data: isAdmin } = await supabase.rpc('has_role', {
+          _user_id: user.id,
+          _role: 'admin'
+        });
+
+        if (!isAdmin) {
+          debugLog.warn('Security metrics fallback used', {
+            component: 'useAnalyticsService',
+            error: 'Access denied: admin privileges required for security analytics'
+          });
+          return getDefaultSecurityMetrics();
+        }
+
         const { data, error } = await supabase.rpc('get_security_analytics', {
           p_user_id: user.id
         });
@@ -121,13 +135,21 @@ export function useAnalyticsService(): {
       if (!user?.id) throw new Error('User not authenticated');
 
       try {
-        // Check if user has analytics access first
-        const { data: hasRoleAccess } = await supabase.rpc('has_role', {
+        // Determine access level: admin or team member
+        const { data: isAdmin } = await supabase.rpc('has_role', {
           _user_id: user.id,
           _role: 'admin'
         });
 
-        if (!hasRoleAccess) {
+        let isTeamMember = false;
+        if (!isAdmin) {
+          const { data: teamMember } = await supabase.rpc('is_team_member', {
+            user_uuid: user.id
+          });
+          isTeamMember = Boolean(teamMember);
+        }
+
+        if (!isAdmin && !isTeamMember) {
           debugLog.warn('Role-based metrics fallback used', {
             component: 'useAnalyticsService',
             error: 'Access denied: insufficient privileges for role-specific analytics'
@@ -135,9 +157,11 @@ export function useAnalyticsService(): {
           return getDefaultRoleMetrics();
         }
 
+        const userRoleParam = isAdmin ? 'admin' : 'team_member';
+
         const { data, error } = await supabase.rpc('get_role_specific_analytics', {
           p_user_id: user.id,
-          p_user_role: 'innovator',
+          p_user_role: userRoleParam,
           p_filters: {}
         });
 
