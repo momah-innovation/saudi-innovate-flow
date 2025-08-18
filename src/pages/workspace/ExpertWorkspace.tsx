@@ -175,7 +175,7 @@ export default function ExpertWorkspace() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant={evaluation.evaluation_date ? 'success' : 'secondary'}>
-                            {evaluation.evaluation_date ? t('common.completed') : t('common.pending')}
+                            {evaluation.evaluation_date ? t('status.completed') : t('status.pending')}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('workspace.expert.evaluate')}
@@ -206,7 +206,7 @@ export default function ExpertWorkspace() {
                         <div>
                           <h4 className="font-medium">{assignment.challenges?.title_ar}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.expert.status')}: {assignment.challenges?.status}
+                            {t('common.status_label')}: {assignment.challenges?.status?.startsWith('status.') ? t(assignment.challenges.status) : t(`status.${assignment.challenges?.status}`) || assignment.challenges?.status}
                           </p>
                         </div>
                         <Button variant="ghost" size="sm">
