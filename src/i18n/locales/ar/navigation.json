@@ -43,6 +43,7 @@
     "learn_more": "تعرف على المزيد"
   },
   "breadcrumbs": {
+    "workspaces": "مساحات العمل",
     "admin_dashboard": "لوحة التحكم الإدارية",
     "organizational_structure": "الهيكل التنظيمي",
     "evaluation_management": "إدارة التقييم",
@@ -67,7 +68,14 @@
     "analytics_advanced": "التحليلات المتقدمة",
     "ai_management": "إدارة الذكاء الاصطناعي",
     "file_management_advanced": "إدارة الملفات المتقدمة",
-    "challenges_analytics_advanced": "تحليلات التحديات المتقدمة"
+    "challenges_analytics_advanced": "تحليلات التحديات المتقدمة",
+    "ideas": "الأفكار",
+    "challenges": "التحديات",
+    "evaluations": "التقييمات",
+    "bookmarks": "المفضلة",
+    "projects": "المشاريع",
+    "collaboration": "التعاون",
+    "analytics": "التحليلات"
   },
   "groups": {
     "main": "الرئيسي",

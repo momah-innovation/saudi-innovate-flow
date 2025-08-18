@@ -43,6 +43,7 @@
     "learn_more": "Learn More"
   },
   "breadcrumbs": {
+    "workspaces": "Workspaces",
     "admin_dashboard": "Admin Dashboard",
     "organizational_structure": "Organizational Structure",
     "evaluation_management": "Evaluation Management",
@@ -67,7 +68,14 @@
     "analytics_advanced": "Analytics Advanced",
     "ai_management": "AI Management",
     "file_management_advanced": "File Management Advanced",
-    "challenges_analytics_advanced": "Challenges Analytics Advanced"
+    "challenges_analytics_advanced": "Challenges Analytics Advanced",
+    "ideas": "Ideas",
+    "challenges": "Challenges",
+    "evaluations": "Evaluations",
+    "bookmarks": "Bookmarks",
+    "projects": "Projects",
+    "collaboration": "Collaboration",
+    "analytics": "Analytics"
   },
   "groups": {
     "main": "Main",

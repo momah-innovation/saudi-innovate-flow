@@ -1,0 +1,193 @@
+{
+  "workspace": {
+    "user": {
+      "title": "Personal Workspace",
+      "description": "Manage your ideas and personal projects",
+      "nav": {
+        "ideas": "My Ideas",
+        "challenges": "Challenges",
+        "bookmarks": "Bookmarks"
+      },
+      "actions": {
+        "new_idea": "New Idea",
+        "create_idea": "Create New Idea",
+        "manage_ideas": "Manage Ideas"
+      },
+      "metrics": {
+        "total_ideas": "Total Ideas",
+        "active_challenges": "Active Challenges",
+        "saved_items": "Saved Items",
+        "submissions": "Submissions"
+      },
+      "sections": {
+        "recent_ideas": "Recent Ideas",
+        "idea_insights": "Idea Insights",
+        "quick_actions": "Quick Actions"
+      },
+      "status": {
+        "draft": "Draft",
+        "submitted": "Submitted",
+        "under_review": "Under Review",
+        "approved": "Approved"
+      },
+      "messages": {
+        "no_ideas": "No ideas yet. Start by creating your first idea!",
+        "no_challenges": "No active challenges available",
+        "no_submissions": "No submissions yet"
+      }
+    },
+    "expert": {
+      "title": "Expert Workspace",
+      "description": "Evaluate and guide innovative ideas",
+      "nav": {
+        "evaluations": "Evaluations",
+        "assigned_challenges": "Assigned Challenges",
+        "completed": "Completed"
+      },
+      "actions": {
+        "start_evaluation": "Start Evaluation",
+        "evaluate_ideas": "Evaluate Ideas",
+        "evaluate_ideas_desc": "Review and evaluate submitted ideas",
+        "review_submissions": "Review Submissions",
+        "review_submissions_desc": "Review challenge submissions and provide feedback"
+      },
+      "metrics": {
+        "pending_evaluations": "Pending Evaluations",
+        "completed_evaluations": "Completed Evaluations",
+        "assigned_challenges": "Assigned Challenges"
+      },
+      "sections": {
+        "pending_evaluations": "Pending Evaluations",
+        "assigned_challenges": "Assigned Challenges",
+        "quick_actions": "Quick Actions"
+      },
+      "status": {
+        "pending": "Pending",
+        "completed": "Completed",
+        "in_progress": "In Progress"
+      },
+      "labels": {
+        "submitted": "Submitted",
+        "evaluate": "Evaluate",
+        "status": "Status"
+      },
+      "messages": {
+        "no_evaluations": "No pending evaluations",
+        "no_challenges": "No assigned challenges"
+      }
+    },
+    "admin": {
+      "title": "Admin Workspace",
+      "description": "System administration and management",
+      "nav": {
+        "users": "Users",
+        "system": "System",
+        "analytics": "Analytics"
+      },
+      "actions": {
+        "add_user": "Add User",
+        "add_user_desc": "Add new user to the system",
+        "system_settings": "System Settings",
+        "system_settings_desc": "Configure system settings",
+        "backup_data": "Backup Data",
+        "backup_data_desc": "Create system backup",
+        "manage_system": "Manage System"
+      },
+      "metrics": {
+        "total_users": "Total Users",
+        "total_challenges": "Total Challenges",
+        "total_ideas": "Total Ideas",
+        "active_challenges": "Active Challenges"
+      },
+      "sections": {
+        "system_health": "System Health",
+        "recent_users": "Recent Users",
+        "quick_actions": "Quick Actions"
+      },
+      "health": {
+        "uptime": "Uptime",
+        "response_time": "Response Time",
+        "active_users": "Active Users",
+        "healthy": "Healthy",
+        "optimal": "Optimal",
+        "normal": "Normal"
+      },
+      "labels": {
+        "joined": "Joined",
+        "manage_all": "Manage All"
+      },
+      "messages": {
+        "no_users": "No users found"
+      }
+    },
+    "team": {
+      "title": "Team Workspace",
+      "description": "Collaborate with your team members",
+      "nav": {
+        "projects": "Projects",
+        "team_members": "Team Members",
+        "tasks": "Tasks"
+      },
+      "actions": {
+        "new_project": "New Project",
+        "create_project": "Create Project",
+        "invite_member": "Invite Member"
+      },
+      "metrics": {
+        "active_projects": "Active Projects",
+        "team_members": "Team Members",
+        "pending_tasks": "Pending Tasks"
+      }
+    },
+    "organization": {
+      "title": "Organization Workspace",
+      "description": "Manage organizational innovation initiatives",
+      "nav": {
+        "challenges": "Challenges",
+        "submissions": "Submissions",
+        "team": "Team"
+      },
+      "actions": {
+        "create_challenge": "Create Challenge",
+        "create_challenge_desc": "Create new innovation challenge",
+        "manage_team": "Manage Team",
+        "manage_team_desc": "Manage organization team"
+      },
+      "metrics": {
+        "active_challenges": "Active Challenges",
+        "total_submissions": "Total Submissions",
+        "team_size": "Team Size"
+      }
+    },
+    "partner": {
+      "title": "Partner Workspace",
+      "description": "Collaborate with government and private partners",
+      "nav": {
+        "partnerships": "Partnerships",
+        "opportunities": "Opportunities",
+        "collaboration": "Collaboration"
+      },
+      "actions": {
+        "new_partnership": "New Partnership",
+        "explore_opportunities": "Explore Opportunities"
+      },
+      "metrics": {
+        "active_partnerships": "Active Partnerships",
+        "collaboration_projects": "Collaboration Projects",
+        "opportunities": "Opportunities"
+      }
+    },
+    "common": {
+      "loading": "Loading workspace...",
+      "error": "Error loading workspace",
+      "refresh": "Refresh",
+      "view_all": "View All",
+      "manage": "Manage",
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  }
+}

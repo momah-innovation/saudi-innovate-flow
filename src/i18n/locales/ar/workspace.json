@@ -1,0 +1,193 @@
+{
+  "workspace": {
+    "user": {
+      "title": "مساحة العمل الشخصية",
+      "description": "إدارة أفكارك ومشاريعك الشخصية",
+      "nav": {
+        "ideas": "أفكاري",
+        "challenges": "التحديات",
+        "bookmarks": "المفضلة"
+      },
+      "actions": {
+        "new_idea": "فكرة جديدة",
+        "create_idea": "إنشاء فكرة جديدة",
+        "manage_ideas": "إدارة الأفكار"
+      },
+      "metrics": {
+        "total_ideas": "إجمالي الأفكار",
+        "active_challenges": "التحديات النشطة",
+        "saved_items": "العناصر المحفوظة",
+        "submissions": "المشاركات"
+      },
+      "sections": {
+        "recent_ideas": "الأفكار الحديثة",
+        "idea_insights": "إحصائيات الأفكار",
+        "quick_actions": "الإجراءات السريعة"
+      },
+      "status": {
+        "draft": "مسودة",
+        "submitted": "مُرسلة",
+        "under_review": "قيد المراجعة",
+        "approved": "موافق عليها"
+      },
+      "messages": {
+        "no_ideas": "لا توجد أفكار بعد. ابدأ بإنشاء فكرتك الأولى!",
+        "no_challenges": "لا توجد تحديات نشطة متاحة",
+        "no_submissions": "لا توجد مشاركات بعد"
+      }
+    },
+    "expert": {
+      "title": "مساحة الخبراء",
+      "description": "تقييم وإرشاد الأفكار المبتكرة",
+      "nav": {
+        "evaluations": "التقييمات",
+        "assigned_challenges": "التحديات المُعيّنة",
+        "completed": "مُكتملة"
+      },
+      "actions": {
+        "start_evaluation": "بدء التقييم",
+        "evaluate_ideas": "تقييم الأفكار",
+        "evaluate_ideas_desc": "مراجعة وتقييم الأفكار المُقدمة",
+        "review_submissions": "مراجعة المشاركات",
+        "review_submissions_desc": "مراجعة مشاركات التحديات وتقديم التغذية الراجعة"
+      },
+      "metrics": {
+        "pending_evaluations": "التقييمات المعلقة",
+        "completed_evaluations": "التقييمات المكتملة",
+        "assigned_challenges": "التحديات المُعيّنة"
+      },
+      "sections": {
+        "pending_evaluations": "التقييمات المعلقة",
+        "assigned_challenges": "التحديات المُعيّنة",
+        "quick_actions": "الإجراءات السريعة"
+      },
+      "status": {
+        "pending": "معلق",
+        "completed": "مكتمل",
+        "in_progress": "قيد التنفيذ"
+      },
+      "labels": {
+        "submitted": "مُرسلة",
+        "evaluate": "تقييم",
+        "status": "الحالة"
+      },
+      "messages": {
+        "no_evaluations": "لا توجد تقييمات معلقة",
+        "no_challenges": "لا توجد تحديات مُعيّنة"
+      }
+    },
+    "admin": {
+      "title": "مساحة إدارة النظام",
+      "description": "إدارة النظام والتحكم",
+      "nav": {
+        "users": "المستخدمون",
+        "system": "النظام",
+        "analytics": "التحليلات"
+      },
+      "actions": {
+        "add_user": "إضافة مستخدم",
+        "add_user_desc": "إضافة مستخدم جديد للنظام",
+        "system_settings": "إعدادات النظام",
+        "system_settings_desc": "تكوين إعدادات النظام",
+        "backup_data": "نسخ احتياطي للبيانات",
+        "backup_data_desc": "إنشاء نسخة احتياطية للنظام",
+        "manage_system": "إدارة النظام"
+      },
+      "metrics": {
+        "total_users": "إجمالي المستخدمين",
+        "total_challenges": "إجمالي التحديات",
+        "total_ideas": "إجمالي الأفكار",
+        "active_challenges": "التحديات النشطة"
+      },
+      "sections": {
+        "system_health": "صحة النظام",
+        "recent_users": "المستخدمون الجدد",
+        "quick_actions": "الإجراءات السريعة"
+      },
+      "health": {
+        "uptime": "وقت التشغيل",
+        "response_time": "وقت الاستجابة",
+        "active_users": "المستخدمون النشطون",
+        "healthy": "سليم",
+        "optimal": "مثالي",
+        "normal": "طبيعي"
+      },
+      "labels": {
+        "joined": "انضم",
+        "manage_all": "إدارة الكل"
+      },
+      "messages": {
+        "no_users": "لم يتم العثور على مستخدمين"
+      }
+    },
+    "team": {
+      "title": "مساحة الفريق",
+      "description": "التعاون مع أعضاء فريقك",
+      "nav": {
+        "projects": "المشاريع",
+        "team_members": "أعضاء الفريق",
+        "tasks": "المهام"
+      },
+      "actions": {
+        "new_project": "مشروع جديد",
+        "create_project": "إنشاء مشروع",
+        "invite_member": "دعوة عضو"
+      },
+      "metrics": {
+        "active_projects": "المشاريع النشطة",
+        "team_members": "أعضاء الفريق",
+        "pending_tasks": "المهام المعلقة"
+      }
+    },
+    "organization": {
+      "title": "مساحة المؤسسة",
+      "description": "إدارة مبادرات الابتكار التنظيمية",
+      "nav": {
+        "challenges": "التحديات",
+        "submissions": "المشاركات",
+        "team": "الفريق"
+      },
+      "actions": {
+        "create_challenge": "إنشاء تحدي",
+        "create_challenge_desc": "إنشاء تحدي ابتكار جديد",
+        "manage_team": "إدارة الفريق",
+        "manage_team_desc": "إدارة فريق المؤسسة"
+      },
+      "metrics": {
+        "active_challenges": "التحديات النشطة",
+        "total_submissions": "إجمالي المشاركات",
+        "team_size": "حجم الفريق"
+      }
+    },
+    "partner": {
+      "title": "مساحة الشركاء",
+      "description": "التعاون مع الشركاء الحكوميين والخاصين",
+      "nav": {
+        "partnerships": "الشراكات",
+        "opportunities": "الفرص",
+        "collaboration": "التعاون"
+      },
+      "actions": {
+        "new_partnership": "شراكة جديدة",
+        "explore_opportunities": "استكشاف الفرص"
+      },
+      "metrics": {
+        "active_partnerships": "الشراكات النشطة",
+        "collaboration_projects": "مشاريع التعاون",
+        "opportunities": "الفرص"
+      }
+    },
+    "common": {
+      "loading": "جاري تحميل مساحة العمل...",
+      "error": "خطأ في تحميل مساحة العمل",
+      "refresh": "تحديث",
+      "view_all": "عرض الكل",
+      "manage": "إدارة",
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    }
+  }
+}
