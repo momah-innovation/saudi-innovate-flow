@@ -259,6 +259,14 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
   {
+    // NEW: allow deep workspace links like /workspace/user/bookmarks
+    path: '/workspace/:type/*',
+    component: WorkspacePage,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
+  {
     path: ALL_ROUTES.WORKSPACE_USER,
     component: UserWorkspace,
     requireAuth: true,
