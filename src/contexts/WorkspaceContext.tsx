@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useWorkspaceRealtime } from '@/hooks/useWorkspaceRealtime';
+import { useWorkspaceRealTime } from '@/hooks/useWorkspaceRealTime';
 import { useWorkspaceChat } from '@/hooks/useWorkspaceChat';
 import { useWorkspaceDocuments } from '@/hooks/useWorkspaceDocuments';
 import type { Workspace, WorkspaceMember, UserWorkspaceContext, WorkspaceType } from '@/types/workspace';
@@ -40,7 +40,7 @@ interface WorkspaceContextType {
   getCurrentUserRole: () => string | null;
   
   // Real-time features
-  realtime: ReturnType<typeof useWorkspaceRealtime>;
+  realtime: ReturnType<typeof useWorkspaceRealTime>;
   chat: ReturnType<typeof useWorkspaceChat>;
   documents: ReturnType<typeof useWorkspaceDocuments>;
 }
@@ -69,9 +69,8 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
   const [membersLoading, setMembersLoading] = useState(false);
 
   // Initialize real-time hooks
-  const realtime = useWorkspaceRealtime({ 
-    workspaceId: currentWorkspace?.id || '', 
-    enabled: !!currentWorkspace 
+  const realtime = useWorkspaceRealTime({ 
+    workspaceId: currentWorkspace?.id || ''
   });
   
   const chat = useWorkspaceChat({ 

@@ -1,468 +1,376 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import type { WorkspaceType } from '@/types/workspace';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
-interface UserPresence {
+export interface UserPresence {
   userId: string;
   name: string;
-  avatar?: string;
   status: 'online' | 'away' | 'busy' | 'offline';
-  location?: string;
-  lastSeen: string;
+  lastSeen: Date;
   metadata?: Record<string, any>;
 }
 
-interface RealTimeMessage {
+export interface WorkspaceMessage {
   id: string;
-  senderId: string;
-  senderName: string;
   content: string;
-  messageType: 'text' | 'system' | 'file' | 'notification';
-  timestamp: string;
-  channelId: string;
+  userId: string;
+  userName: string;
+  timestamp: Date;
+  type: 'text' | 'system' | 'file' | 'mention';
   metadata?: Record<string, any>;
 }
 
-interface RealTimeUpdate {
-  type: 'insert' | 'update' | 'delete';
-  table: string;
-  record: any;
-  old_record?: any;
-  timestamp: string;
+export interface WorkspaceActivity {
+  id: string;
+  type: string;
+  description: string;
+  userId: string;
+  userName: string;
+  timestamp: Date;
+  entityType?: string;
+  entityId?: string;
+  metadata?: Record<string, any>;
 }
 
 interface UseWorkspaceRealTimeOptions {
-  workspaceType: WorkspaceType;
   workspaceId: string;
-  enablePresence?: boolean;
-  enableMessages?: boolean;
-  enableUpdates?: boolean;
-  customChannels?: string[];
-  presenceUpdateInterval?: number;
+  maxMessages?: number;
+  maxActivities?: number;
 }
 
 interface UseWorkspaceRealTimeReturn {
-  // Connection state
-  isConnected: boolean;
-  connectionStatus: 'connecting' | 'connected' | 'disconnected' | 'error';
-  error: string | null;
-  
   // Presence
   onlineUsers: UserPresence[];
-  myPresence: UserPresence | null;
+  currentUserStatus: UserPresence['status'];
   updatePresence: (status: UserPresence['status'], metadata?: Record<string, any>) => Promise<void>;
   
-  // Messaging
-  messages: RealTimeMessage[];
-  sendMessage: (content: string, channelId?: string, metadata?: Record<string, any>) => Promise<void>;
-  joinChannel: (channelId: string) => Promise<void>;
-  leaveChannel: (channelId: string) => Promise<void>;
+  // Messages
+  messages: WorkspaceMessage[];
+  sendMessage: (content: string, type?: WorkspaceMessage['type'], metadata?: Record<string, any>) => Promise<void>;
   
-  // Data updates
-  updates: RealTimeUpdate[];
-  subscribeToTable: (tableName: string, filters?: Record<string, any>) => void;
-  unsubscribeFromTable: (tableName: string) => void;
+  // Activities
+  activities: WorkspaceActivity[];
+  addActivity: (type: string, description: string, entityType?: string, entityId?: string) => Promise<void>;
   
-  // Channel management
-  activeChannels: string[];
-  createChannel: (channelName: string, config?: Record<string, any>) => Promise<void>;
-  
-  // Connection management
-  connect: () => Promise<void>;
-  disconnect: () => void;
+  // Connection state
+  isConnected: boolean;
   reconnect: () => Promise<void>;
   
-  // Utilities
-  clearMessages: () => void;
-  clearUpdates: () => void;
-  getChannelInfo: (channelId: string) => any;
+  // Online members for backward compatibility
+  onlineMembers: Array<{
+    id: string;
+    user_id: string;
+    name: string;
+    status: string;
+    last_active?: string;
+  }>;
 }
 
 export function useWorkspaceRealTime(
   options: UseWorkspaceRealTimeOptions
 ): UseWorkspaceRealTimeReturn {
   const { user } = useAuth();
-  const {
-    workspaceType,
-    workspaceId,
-    enablePresence = true,
-    enableMessages = true,
-    enableUpdates = true,
-    customChannels = [],
-    presenceUpdateInterval = 30000 // 30 seconds
-  } = options;
+  const { workspaceId, maxMessages = 100, maxActivities = 50 } = options;
 
-  // State
-  const [isConnected, setIsConnected] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected' | 'error'>('disconnected');
-  const [error, setError] = useState<string | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<UserPresence[]>([]);
-  const [myPresence, setMyPresence] = useState<UserPresence | null>(null);
-  const [messages, setMessages] = useState<RealTimeMessage[]>([]);
-  const [updates, setUpdates] = useState<RealTimeUpdate[]>([]);
-  const [activeChannels, setActiveChannels] = useState<string[]>([]);
+  const [currentUserStatus, setCurrentUserStatus] = useState<UserPresence['status']>('offline');
+  const [messages, setMessages] = useState<WorkspaceMessage[]>([]);
+  const [activities, setActivities] = useState<WorkspaceActivity[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
 
-  // Refs
   const channelsRef = useRef<Map<string, RealtimeChannel>>(new Map());
-  const presenceIntervalRef = useRef<NodeJS.Timeout>();
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+  const presenceChannelRef = useRef<RealtimeChannel | null>(null);
 
-  // Get channel name for workspace
-  const getWorkspaceChannelName = useCallback((suffix?: string) => {
-    const baseName = `workspace-${workspaceType}-${workspaceId}`;
-    return suffix ? `${baseName}-${suffix}` : baseName;
-  }, [workspaceType, workspaceId]);
+  // Initialize presence channel
+  const initializePresenceChannel = useCallback(async () => {
+    if (!user || !workspaceId) return;
 
-  // Update presence
+    const channelId = `workspace-presence-${workspaceId}`;
+    
+    // Remove existing channel
+    if (presenceChannelRef.current) {
+      await supabase.removeChannel(presenceChannelRef.current);
+    }
+
+    const channel = supabase
+      .channel(channelId, {
+        config: {
+          presence: {
+            key: user.id
+          }
+        }
+      })
+      .on('presence', { event: 'sync' }, () => {
+        const state = channel.presenceState();
+        const users: UserPresence[] = [];
+        
+        Object.entries(state).forEach(([key, presences]) => {
+          presences.forEach((presence: any) => {
+            users.push({
+              userId: key,
+              name: presence.user_metadata?.name || 'Unknown User',
+              status: presence.user_metadata?.status || 'online',
+              lastSeen: new Date(presence.user_metadata?.lastSeen || Date.now()),
+              metadata: presence.user_metadata?.metadata || {}
+            });
+          });
+        });
+        
+        setOnlineUsers(users);
+      })
+      .on('presence', { event: 'join' }, ({ newPresences }) => {
+        const newUsers: UserPresence[] = newPresences.map((p: any) => ({
+          userId: p.presence_ref || '',
+          name: p.user_metadata?.name || 'Unknown User',
+          status: p.user_metadata?.status || 'online',
+          lastSeen: new Date(),
+          metadata: p.user_metadata?.metadata || {}
+        }));
+        
+        setOnlineUsers(prev => [...prev, ...newUsers]);
+      })
+      .on('presence', { event: 'leave' }, ({ leftPresences }) => {
+        const leftUserIds = leftPresences.map((p: any) => p.presence_ref);
+        setOnlineUsers(prev => 
+          prev.filter(user => !leftUserIds.includes(user.userId))
+        );
+      });
+
+    await channel.subscribe();
+    presenceChannelRef.current = channel;
+    setIsConnected(true);
+  }, [user, workspaceId]);
+
+  // Initialize activity and message channels
+  const initializeDataChannels = useCallback(async () => {
+    if (!user || !workspaceId) return;
+
+    const activityChannelId = `workspace-activity-${workspaceId}`;
+    const messageChannelId = `workspace-messages-${workspaceId}`;
+
+    // Activity channel
+    const activityChannel = supabase
+      .channel(activityChannelId)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'workspace_activity_feed',
+          filter: `workspace_id=eq.${workspaceId}`
+        },
+        (payload) => {
+          const newActivity: WorkspaceActivity = {
+            id: payload.new.id,
+            type: payload.new.activity_type,
+            description: payload.new.description,
+            userId: payload.new.user_id,
+            userName: 'Unknown User', // Would be joined from profiles
+            timestamp: new Date(payload.new.created_at),
+            entityType: payload.new.entity_type,
+            entityId: payload.new.entity_id,
+            metadata: payload.new.metadata as Record<string, any>
+          };
+
+          setActivities(prev => [newActivity, ...prev.slice(0, maxActivities - 1)]);
+        }
+      )
+      .on('broadcast', { event: 'user-activity' }, ({ payload }) => {
+        setActivities(prev => [payload, ...prev.slice(0, maxActivities - 1)]);
+      });
+
+    // Message channel
+    const messageChannel = supabase
+      .channel(messageChannelId)
+      .on('broadcast', { event: 'message' }, ({ payload }) => {
+        const newMessage: WorkspaceMessage = {
+          id: payload.id || crypto.randomUUID(),
+          content: payload.content,
+          userId: payload.userId,
+          userName: payload.userName,
+          timestamp: new Date(payload.timestamp),
+          type: payload.type || 'text',
+          metadata: payload.metadata || {}
+        };
+
+        setMessages(prev => [newMessage, ...prev.slice(0, maxMessages - 1)]);
+      });
+
+    await Promise.all([
+      activityChannel.subscribe(),
+      messageChannel.subscribe()
+    ]);
+
+    channelsRef.current.set(activityChannelId, activityChannel);
+    channelsRef.current.set(messageChannelId, messageChannel);
+  }, [user, workspaceId, maxMessages, maxActivities]);
+
+  // Update user presence
   const updatePresence = useCallback(async (
     status: UserPresence['status'], 
     metadata?: Record<string, any>
   ) => {
-    if (!user) return;
+    if (!presenceChannelRef.current || !user) return;
 
-    const presenceData: UserPresence = {
-      userId: user.id,
-      name: user.email || 'Unknown User',
-      status,
-      location: window.location.pathname,
-      lastSeen: new Date().toISOString(),
-      metadata
-    };
+    setCurrentUserStatus(status);
 
-    try {
-      // Update presence in all relevant channels
-      for (const [channelName, channel] of channelsRef.current) {
-        if (channelName.includes('presence')) {
-          await channel.track(presenceData);
-        }
+    await presenceChannelRef.current.track({
+      user_metadata: {
+        name: user.email || 'Unknown User',
+        status,
+        lastSeen: new Date().toISOString(),
+        metadata: metadata || {}
       }
-
-      setMyPresence(presenceData);
-    } catch (err) {
-      console.error('Failed to update presence:', err);
-    }
+    });
   }, [user]);
 
   // Send message
   const sendMessage = useCallback(async (
-    content: string, 
-    channelId?: string, 
+    content: string,
+    type: WorkspaceMessage['type'] = 'text',
     metadata?: Record<string, any>
   ) => {
-    if (!user) throw new Error('User not authenticated');
+    if (!user || !workspaceId) return;
 
-    const message: RealTimeMessage = {
-      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      senderId: user.id,
-      senderName: user.email || 'Unknown User',
+    const messageChannelId = `workspace-messages-${workspaceId}`;
+    const channel = channelsRef.current.get(messageChannelId);
+
+    if (!channel) return;
+
+    const message = {
+      id: crypto.randomUUID(),
       content,
-      messageType: 'text',
+      userId: user.id,
+      userName: user.email || 'Unknown User',
       timestamp: new Date().toISOString(),
-      channelId: channelId || getWorkspaceChannelName('chat'),
-      metadata
+      type,
+      metadata: metadata || {}
     };
 
+    await channel.send({
+      type: 'broadcast',
+      event: 'message',
+      payload: message
+    });
+  }, [user, workspaceId]);
+
+  // Add activity
+  const addActivity = useCallback(async (
+    type: string,
+    description: string,
+    entityType?: string,
+    entityId?: string
+  ) => {
+    if (!user || !workspaceId) return;
+
     try {
-      const targetChannelName = channelId || getWorkspaceChannelName('chat');
-      const channel = channelsRef.current.get(targetChannelName);
-      
+      // Insert into database
+      await supabase
+        .from('workspace_activity_feed')
+        .insert({
+          workspace_id: workspaceId,
+          actor_id: user.id,
+          action_type: type,
+          activity_title: description,
+          entity_type: entityType,
+          entity_id: entityId,
+          metadata: {}
+        });
+
+      // Also broadcast for immediate update
+      const activityChannelId = `workspace-activity-${workspaceId}`;
+      const channel = channelsRef.current.get(activityChannelId);
+
       if (channel) {
         await channel.send({
           type: 'broadcast',
-          event: 'message',
-          payload: message
-        });
-      }
-
-      // Also store in database for persistence
-      await supabase.from('collaboration_messages').insert({
-        collaboration_id: workspaceId,
-        sender_id: user.id,
-        content,
-        message_type: 'text',
-        metadata
-      });
-
-    } catch (err) {
-      console.error('Failed to send message:', err);
-      throw err;
-    }
-  }, [user, workspaceId, getWorkspaceChannelName]);
-
-  // Join channel
-  const joinChannel = useCallback(async (channelId: string) => {
-    if (channelsRef.current.has(channelId)) return;
-
-    try {
-      const channel = supabase.channel(channelId);
-      
-      // Set up event handlers
-      channel
-        .on('presence', { event: 'sync' }, () => {
-          const state = channel.presenceState();
-          const users: UserPresence[] = [];
-          
-          Object.values(state).forEach((presences: any) => {
-            presences.forEach((presence: any) => {
-              users.push(presence);
-            });
-          });
-          
-          setOnlineUsers(users);
-        })
-        .on('presence', { event: 'join' }, ({ newPresences }) => {
-          setOnlineUsers(prev => [...prev, ...newPresences]);
-        })
-        .on('presence', { event: 'leave' }, ({ leftPresences }) => {
-          setOnlineUsers(prev => 
-            prev.filter(user => 
-              !leftPresences.some((left: any) => left.userId === user.userId)
-            )
-          );
-        })
-        .on('broadcast', { event: 'message' }, ({ payload }) => {
-          setMessages(prev => [payload, ...prev.slice(0, 99)]); // Keep last 100 messages
-        });
-
-      await channel.subscribe();
-      channelsRef.current.set(channelId, channel);
-      setActiveChannels(prev => [...prev, channelId]);
-
-    } catch (err) {
-      console.error('Failed to join channel:', err);
-      setError(`Failed to join channel: ${channelId}`);
-    }
-  }, []);
-
-  // Leave channel
-  const leaveChannel = useCallback(async (channelId: string) => {
-    const channel = channelsRef.current.get(channelId);
-    if (channel) {
-      await supabase.removeChannel(channel);
-      channelsRef.current.delete(channelId);
-      setActiveChannels(prev => prev.filter(id => id !== channelId));
-    }
-  }, []);
-
-  // Subscribe to table updates
-  const subscribeToTable = useCallback((tableName: string, filters?: Record<string, any>) => {
-    const channelName = `table-updates-${tableName}`;
-    
-    if (channelsRef.current.has(channelName)) return;
-
-    try {
-      const channel = supabase.channel(channelName);
-      
-      // Build filter string
-      let filterString = `workspace_id=eq.${workspaceId}`;
-      if (filters) {
-        Object.entries(filters).forEach(([key, value]) => {
-          filterString += `,${key}=eq.${value}`;
-        });
-      }
-
-      channel
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: tableName,
-            filter: filterString
-          },
-          (payload) => {
-            const update: RealTimeUpdate = {
-              type: payload.eventType as any,
-              table: tableName,
-              record: payload.new,
-              old_record: payload.old,
-              timestamp: new Date().toISOString()
-            };
-            
-            setUpdates(prev => [update, ...prev.slice(0, 49)]); // Keep last 50 updates
+          event: 'user-activity',
+          payload: {
+            id: crypto.randomUUID(),
+            type,
+            description,
+            userId: user.id,
+            userName: user.email || 'Unknown User',
+            timestamp: new Date(),
+            entityType,
+            entityId,
+            metadata: {}
           }
-        )
-        .subscribe();
-
-      channelsRef.current.set(channelName, channel);
-    } catch (err) {
-      console.error('Failed to subscribe to table:', err);
-    }
-  }, [workspaceId]);
-
-  // Unsubscribe from table
-  const unsubscribeFromTable = useCallback(async (tableName: string) => {
-    const channelName = `table-updates-${tableName}`;
-    await leaveChannel(channelName);
-  }, [leaveChannel]);
-
-  // Create custom channel
-  const createChannel = useCallback(async (
-    channelName: string, 
-    config?: Record<string, any>
-  ) => {
-    const fullChannelName = getWorkspaceChannelName(channelName);
-    await joinChannel(fullChannelName);
-  }, [getWorkspaceChannelName, joinChannel]);
-
-  // Connect to workspace channels
-  const connect = useCallback(async () => {
-    if (!user) return;
-
-    setConnectionStatus('connecting');
-    setError(null);
-
-    try {
-      // Join main workspace channels
-      const channels = [
-        getWorkspaceChannelName('presence'),
-        getWorkspaceChannelName('chat'),
-        ...customChannels.map(c => getWorkspaceChannelName(c))
-      ];
-
-      await Promise.all(channels.map(channelName => joinChannel(channelName)));
-
-      // Set up presence updates
-      if (enablePresence) {
-        await updatePresence('online');
-        
-        presenceIntervalRef.current = setInterval(() => {
-          updatePresence('online');
-        }, presenceUpdateInterval);
+        });
       }
-
-      // Subscribe to workspace tables
-      if (enableUpdates) {
-        subscribeToTable('workspace_members');
-        subscribeToTable('workspace_activities');
-        subscribeToTable('workspace_projects');
-      }
-
-      setIsConnected(true);
-      setConnectionStatus('connected');
-
-    } catch (err) {
-      console.error('Failed to connect to real-time:', err);
-      setError(err instanceof Error ? err.message : 'Connection failed');
-      setConnectionStatus('error');
+    } catch (error) {
+      console.error('Failed to add activity:', error);
     }
-  }, [
-    user, 
-    getWorkspaceChannelName, 
-    customChannels, 
-    joinChannel, 
-    enablePresence, 
-    enableUpdates,
-    updatePresence,
-    subscribeToTable,
-    presenceUpdateInterval
-  ]);
+  }, [user, workspaceId]);
 
-  // Disconnect from all channels
-  const disconnect = useCallback(() => {
-    // Clear intervals
-    if (presenceIntervalRef.current) {
-      clearInterval(presenceIntervalRef.current);
-    }
-    if (reconnectTimeoutRef.current) {
-      clearTimeout(reconnectTimeoutRef.current);
-    }
-
-    // Update presence to offline
-    if (myPresence) {
-      updatePresence('offline');
-    }
-
-    // Remove all channels
-    channelsRef.current.forEach(async (channel, channelName) => {
+  // Reconnect functionality
+  const reconnect = useCallback(async () => {
+    setIsConnected(false);
+    
+    // Clean up existing channels
+    channelsRef.current.forEach(async (channel) => {
       await supabase.removeChannel(channel);
     });
-    
     channelsRef.current.clear();
-    setActiveChannels([]);
-    setIsConnected(false);
-    setConnectionStatus('disconnected');
-    setOnlineUsers([]);
-    setMyPresence(null);
-  }, [myPresence, updatePresence]);
 
-  // Reconnect
-  const reconnect = useCallback(async () => {
-    disconnect();
-    
-    reconnectTimeoutRef.current = setTimeout(() => {
-      connect();
-    }, 1000);
-  }, [disconnect, connect]);
+    if (presenceChannelRef.current) {
+      await supabase.removeChannel(presenceChannelRef.current);
+      presenceChannelRef.current = null;
+    }
 
-  // Utility functions
-  const clearMessages = useCallback(() => {
-    setMessages([]);
-  }, []);
+    // Reinitialize
+    await initializePresenceChannel();
+    await initializeDataChannels();
+  }, [initializePresenceChannel, initializeDataChannels]);
 
-  const clearUpdates = useCallback(() => {
-    setUpdates([]);
-  }, []);
-
-  const getChannelInfo = useCallback((channelId: string) => {
-    const channel = channelsRef.current.get(channelId);
-    return channel ? {
-      name: channelId,
-      state: channel.state,
-      presenceState: channel.presenceState()
-    } : null;
-  }, []);
-
-  // Auto-connect on mount
+  // Initialize channels
   useEffect(() => {
-    if (user) {
-      connect();
+    if (workspaceId && user) {
+      initializePresenceChannel();
+      initializeDataChannels();
     }
 
     return () => {
-      disconnect();
-    };
-  }, [user, connect, disconnect]);
+      // Cleanup on unmount
+      channelsRef.current.forEach(async (channel) => {
+        await supabase.removeChannel(channel);
+      });
+      channelsRef.current.clear();
 
-  // Handle page visibility changes
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        updatePresence('away');
-      } else {
-        updatePresence('online');
+      if (presenceChannelRef.current) {
+        supabase.removeChannel(presenceChannelRef.current);
+        presenceChannelRef.current = null;
       }
     };
+  }, [workspaceId, user, initializePresenceChannel, initializeDataChannels]);
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, [updatePresence]);
+  // Update presence when status changes
+  useEffect(() => {
+    if (user && workspaceId && isConnected) {
+      updatePresence('online');
+    }
+  }, [user, workspaceId, isConnected, updatePresence]);
+
+  // Convert online users to legacy format for backward compatibility
+  const onlineMembers = onlineUsers.map(user => ({
+    id: user.userId,
+    user_id: user.userId,
+    name: user.name,
+    status: user.status,
+    last_active: user.lastSeen.toISOString()
+  }));
 
   return {
-    isConnected,
-    connectionStatus,
-    error,
     onlineUsers,
-    myPresence,
+    currentUserStatus,
     updatePresence,
     messages,
     sendMessage,
-    joinChannel,
-    leaveChannel,
-    updates,
-    subscribeToTable,
-    unsubscribeFromTable,
-    activeChannels,
-    createChannel,
-    connect,
-    disconnect,
+    activities,
+    addActivity,
+    isConnected,
     reconnect,
-    clearMessages,
-    clearUpdates,
-    getChannelInfo
+    onlineMembers
   };
 }

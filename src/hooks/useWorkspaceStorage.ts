@@ -107,7 +107,7 @@ export function useWorkspaceStorage(options: UseWorkspaceStorageOptions): UseWor
           profiles:uploaded_by(display_name)
         `)
         .eq('workspace_id', workspaceId)
-        .eq('workspace_type', workspaceType)
+        .eq('workspace_id', workspaceId)
         .eq('is_deleted', false)
         .order('created_at', { ascending: false });
 
@@ -119,7 +119,7 @@ export function useWorkspaceStorage(options: UseWorkspaceStorageOptions): UseWor
         originalName: file.original_filename,
         size: file.file_size,
         mimeType: file.mime_type,
-        workspaceType: file.workspace_type as WorkspaceType,
+        workspaceType: workspaceType,
         workspaceId: file.workspace_id,
         uploadedBy: file.uploaded_by,
         uploadedAt: file.created_at,
@@ -190,7 +190,7 @@ export function useWorkspaceStorage(options: UseWorkspaceStorageOptions): UseWor
         .from('workspace_files')
         .insert({
           workspace_id: workspaceId,
-          workspace_type: workspaceType,
+          
           filename: fileName,
           original_filename: file.name,
           file_path: filePath,
@@ -231,7 +231,7 @@ export function useWorkspaceStorage(options: UseWorkspaceStorageOptions): UseWor
         originalName: fileRecord.original_filename,
         size: fileRecord.file_size,
         mimeType: fileRecord.mime_type,
-        workspaceType: fileRecord.workspace_type as WorkspaceType,
+        workspaceType: workspaceType,
         workspaceId: fileRecord.workspace_id,
         uploadedBy: fileRecord.uploaded_by,
         uploadedAt: fileRecord.created_at,

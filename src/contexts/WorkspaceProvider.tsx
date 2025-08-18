@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer, useEffect, useCallback } 
 import { useAuth } from '@/contexts/AuthContext';
 // import { useUserWorkspaceData } from '@/hooks/useUserWorkspaceData';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
-import { useWorkspaceRealtime } from '@/hooks/useWorkspaceRealtime';
+import { useWorkspaceRealTime } from '@/hooks/useWorkspaceRealTime';
 import { useWorkspaceNotifications } from '@/hooks/useWorkspaceNotifications';
 import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
 import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
@@ -155,7 +155,7 @@ interface WorkspaceContextValue extends WorkspaceState, WorkspaceActions {
   translations: ReturnType<typeof useWorkspaceTranslations>;
   notifications: ReturnType<typeof useWorkspaceNotifications>;
   analytics: ReturnType<typeof useWorkspaceAnalytics>;
-  realTime: ReturnType<typeof useWorkspaceRealtime>;
+  realTime: ReturnType<typeof useWorkspaceRealTime>;
 }
 
 const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
@@ -202,9 +202,8 @@ export function WorkspaceProvider({
     realTimeUpdates: true
   });
 
-  const realTime = useWorkspaceRealtime({
-    workspaceId: currentWorkspace?.id,
-    enabled: !!currentWorkspace
+  const realTime = useWorkspaceRealTime({
+    workspaceId: currentWorkspace?.id || ''
   });
 
   // Sync loading state
@@ -225,11 +224,14 @@ export function WorkspaceProvider({
       workspace_id: currentWorkspace?.id || '',
       role: 'member',
       permissions: [],
-      access_level: 'read',
+      access_level: 'standard' as const,
       status: member.status || 'active',
       joined_at: new Date().toISOString(),
-      last_active: member.last_active || new Date().toISOString(),
-      name: member.name,
+      last_active_at: member.last_active || new Date().toISOString(),
+      notification_preferences: {},
+      workspace_settings: {},
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
       email: '',
       avatar_url: null
     })) as WorkspaceMember[];
