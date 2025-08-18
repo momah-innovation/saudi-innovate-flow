@@ -120,11 +120,7 @@ export const useRealTimeAnalytics = ({ opportunityId, onAnalyticsUpdate }: RealT
 
   const refreshAnalytics = async () => {
     try {
-      const { data } = await supabase.rpc('refresh_opportunity_analytics', {
-        p_opportunity_id: opportunityId
-      });
-      
-      // Get updated analytics
+      // Simplified analytics refresh - avoid expensive RPC call
       const { data: analyticsData } = await supabase
         .from('opportunity_analytics')
         .select('*')

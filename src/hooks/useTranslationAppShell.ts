@@ -133,7 +133,7 @@ export const useTranslationAppShell = () => {
         }
       };
 
-      const timer = window.setTimeout(load, 60);
+      const timer = window.setTimeout(load, 150); // Increased delay to reduce jank
       return () => clearTimeout(timer);
     }
   }, [location?.pathname]);

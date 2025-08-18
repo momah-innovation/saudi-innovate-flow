@@ -86,8 +86,8 @@ export const useRealTimeCollaboration = (): UseCollaborationReturn => {
       }
     };
 
-    // Debounce initialization to prevent rapid re-initialization
-    initializationTimeout = setTimeout(initializeCollaboration, 100);
+    // Increase debounce timeout to reduce race conditions and performance impact
+    initializationTimeout = setTimeout(initializeCollaboration, 500);
 
     return () => {
       isMounted = false;

@@ -58,7 +58,7 @@ export const useRealTimeMetrics = (
 ): UseRealTimeMetricsReturn => {
   const {
     enabled = true,
-    refreshInterval = 30 * 1000 // 30 seconds
+    refreshInterval = 60 * 1000 // 60 seconds (increased from 30s to reduce load)
   } = options;
 
   const [metrics, setMetrics] = useState<RealTimeMetrics | null>(null);

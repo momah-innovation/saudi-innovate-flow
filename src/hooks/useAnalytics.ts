@@ -171,16 +171,16 @@ export const useAdminAnalytics = () => {
   return useAnalytics({
     filters: { timeframe: '30d' },
     includeRoleSpecific: true,
-    includeSecurity: true,
+    includeSecurity: false, // Only enable security analytics when explicitly needed
     autoRefresh: true,
-    refreshInterval: 2 * 60 * 1000 // 2 minutes for admin
+    refreshInterval: 5 * 60 * 1000 // 5 minutes for admin (reduced from 2 minutes)
   });
 };
 
 export const useSecurityAnalytics = () => {
   return useAnalytics({
     includeSecurity: true,
-    autoRefresh: true,
-    refreshInterval: 1 * 60 * 1000 // 1 minute for security
+    autoRefresh: false, // Disable auto-refresh to prevent constant calls
+    refreshInterval: 5 * 60 * 1000 // 5 minutes if manually refreshed
   });
 };
