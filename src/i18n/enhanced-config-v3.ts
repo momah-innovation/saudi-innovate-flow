@@ -280,8 +280,8 @@ i18n
     defaultNS: 'common',
     ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists'],
     
-    // Configure for flat namespace structure (dot notation)
-    nsSeparator: '.',
+    // Namespace/key separators
+    nsSeparator: ':', // use ':' to separate namespace from key (avoids conflict with nested dot keys)
     keySeparator: '.',
     
     interpolation: {
