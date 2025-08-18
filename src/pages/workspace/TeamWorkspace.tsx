@@ -23,7 +23,7 @@ export default function TeamWorkspace() {
     <>
       <Select>
         <SelectTrigger className="w-32">
-          <SelectValue placeholder={t('export')} />
+          <SelectValue placeholder={t('common.actions.export')} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="pdf">PDF</SelectItem>
@@ -33,7 +33,7 @@ export default function TeamWorkspace() {
       </Select>
       <Button variant="outline" className="gap-2">
         <Calendar className="w-4 h-4" />
-        {t('schedule')}
+        {t('workspace.team.actions.create_project')}
       </Button>
     </>
   );
@@ -43,25 +43,25 @@ export default function TeamWorkspace() {
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder={t('filterByProject')} />
+            <SelectValue placeholder={t('workspace.team.nav.projects')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{t('allProjects')}</SelectItem>
-            <SelectItem value="active">{t('activeProjects')}</SelectItem>
-            <SelectItem value="completed">{t('completedProjects')}</SelectItem>
-            <SelectItem value="overdue">{t('overdueProjects')}</SelectItem>
+            <SelectItem value="all">{t('common.all')}</SelectItem>
+            <SelectItem value="active">{t('workspace.team.active_projects')}</SelectItem>
+            <SelectItem value="completed">{t('workspace.project_status.completed')}</SelectItem>
+            <SelectItem value="overdue">{t('workspace.project_status.delayed')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder={t('filterByTeam')} />
+            <SelectValue placeholder={t('workspace.team.nav.team_members')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{t('allTeams')}</SelectItem>
-            <SelectItem value="my_team">{t('myTeam')}</SelectItem>
-            <SelectItem value="available">{t('availableTeams')}</SelectItem>
+            <SelectItem value="all">{t('common.all')}</SelectItem>
+            <SelectItem value="my_team">{t('workspace.team.team_members')}</SelectItem>
+            <SelectItem value="available">{t('workspace.team.metrics.active_projects')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
