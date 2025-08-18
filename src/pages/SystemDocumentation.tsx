@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link } from 'react-router-dom';
 
 const SystemDocumentation = () => {
   const { t, language, isRTL } = useUnifiedTranslation();
@@ -128,10 +129,10 @@ const SystemDocumentation = () => {
                 className="h-auto p-4 flex-col gap-2"
                 asChild
               >
-                <a href={link.href}>
+                <Link to={link.href}>
                   <link.icon className="h-6 w-6" />
                   <span className="text-sm">{link.name}</span>
-                </a>
+                </Link>
               </Button>
             ))}
           </div>

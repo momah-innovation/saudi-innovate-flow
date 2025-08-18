@@ -103,15 +103,38 @@ export const useTranslationAppShell = () => {
       namespacesToLoad.push('system-lists', 'validation');
     }
 
-    // Production-optimized namespace preloading
+    // Production-optimized namespace preloading (debounced + staged)
     if (namespacesToLoad.length > 0) {
-      // Remove duplicates and prioritize loading
       const uniqueNamespaces = Array.from(new Set(namespacesToLoad));
-      
-      preloadNamespaces(uniqueNamespaces).catch((error) => {
-        // Silent error handling for production
-        debugLog.warn('Translation preload warning', { component: 'TranslationAppShell', error: error.message });
-      });
+      const critical = uniqueNamespaces.slice(0, 2);
+      const prefetch = uniqueNamespaces.slice(2);
+
+      const load = async () => {
+        try {
+          if (critical.length) {
+            await preloadNamespaces(critical);
+          }
+
+          if (prefetch.length) {
+            const win: any = typeof window !== 'undefined' ? window : undefined;
+            const schedule = win && typeof win.requestIdleCallback === 'function'
+              ? win.requestIdleCallback
+              : (cb: Function) => setTimeout(() => cb(), 100);
+
+            schedule(() => {
+              preloadNamespaces(prefetch).catch((error: any) => {
+                debugLog.warn('Translation prefetch warning', { component: 'TranslationAppShell', error: error?.message });
+              });
+            });
+          }
+        } catch (error: any) {
+          // Silent error handling for production
+          debugLog.warn('Translation preload warning', { component: 'TranslationAppShell', error: error?.message });
+        }
+      };
+
+      const timer = window.setTimeout(load, 60);
+      return () => clearTimeout(timer);
     }
   }, [location?.pathname]);
 };
