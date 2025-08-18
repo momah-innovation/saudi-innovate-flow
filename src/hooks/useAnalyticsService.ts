@@ -39,6 +39,20 @@ export function useAnalyticsService(): {
       if (!user?.id) throw new Error('User not authenticated');
 
       try {
+        // Check if user has analytics access first
+        const { data: hasAccess } = await supabase.rpc('has_role', {
+          _user_id: user.id,
+          _role: 'team_member'
+        });
+
+        if (!hasAccess) {
+          debugLog.warn('Analytics core metrics fallback used', {
+            component: 'useAnalyticsService',
+            error: 'Access denied: insufficient privileges for analytics data'
+          });
+          return getDefaultCoreMetrics();
+        }
+
         const { data, error } = await supabase.rpc('get_analytics_data', {
           p_user_id: user.id,
           p_user_role: 'innovator',
@@ -107,6 +121,20 @@ export function useAnalyticsService(): {
       if (!user?.id) throw new Error('User not authenticated');
 
       try {
+        // Check if user has analytics access first
+        const { data: hasRoleAccess } = await supabase.rpc('has_role', {
+          _user_id: user.id,
+          _role: 'admin'
+        });
+
+        if (!hasRoleAccess) {
+          debugLog.warn('Role-based metrics fallback used', {
+            component: 'useAnalyticsService',
+            error: 'Access denied: insufficient privileges for role-specific analytics'
+          });
+          return getDefaultRoleMetrics();
+        }
+
         const { data, error } = await supabase.rpc('get_role_specific_analytics', {
           p_user_id: user.id,
           p_user_role: 'innovator',
