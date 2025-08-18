@@ -73,9 +73,9 @@ export function useUnifiedTranslation() {
       try {
         let i18nextResult: string;
 
-        // Special-case mapping: keys nested under workspace namespace
-        const workspaceLikePrefixes = ['workspace_selection', 'workspace_types'];
-        if (workspaceLikePrefixes.some((p) => key.startsWith(p + '.'))) {
+        // Special-case mapping: workspace namespace keys 
+        const workspaceLikePrefixes = ['workspace_selection', 'workspace_types', 'workspace.'];
+        if (workspaceLikePrefixes.some((p) => key.startsWith(p))) {
           i18nextResult = i18nextT(key, { ...interpolationOptions, ns: 'workspace' }) as string;
         } else if (key.includes('.')) {
           // Handle namespaced keys (e.g., "landing.hero.title" -> namespace: "landing", key: "hero.title")
