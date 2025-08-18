@@ -5,7 +5,7 @@ import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { useWorkspaceRealTime } from '@/hooks/useWorkspaceRealTime';
 import { useWorkspaceNotifications } from '@/hooks/useWorkspaceNotifications';
 import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
-import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import type { WorkspaceType, Workspace, WorkspaceMember } from '@/types/workspace';
 
 interface WorkspaceState {
@@ -161,7 +161,7 @@ interface WorkspaceContextValue extends WorkspaceState, WorkspaceActions {
   setActiveView: (view: string) => void;
   
   // Hook integrations
-  translations: ReturnType<typeof useWorkspaceTranslations>;
+  translations: ReturnType<typeof useUnifiedTranslation>;
   notifications: ReturnType<typeof useWorkspaceNotifications>;
   analytics: ReturnType<typeof useWorkspaceAnalytics>;
   realTime: ReturnType<typeof useWorkspaceRealTime>;
@@ -194,10 +194,7 @@ export function WorkspaceProvider({
   const loading = workspaceLoading;
 
   // Initialize other hooks conditionally
-  const translations = useWorkspaceTranslations({
-    workspaceType: state.currentWorkspaceType || defaultWorkspaceType,
-    dynamicContent: true
-  });
+  const translations = useUnifiedTranslation();
 
   const notifications = useWorkspaceNotifications({
     workspaceType: state.currentWorkspaceType || defaultWorkspaceType,
