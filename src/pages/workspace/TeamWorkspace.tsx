@@ -4,6 +4,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { TeamWorkspaceContent } from '@/components/admin/TeamWorkspaceContent';
 import { EnhancedTeamWorkspaceHero } from '@/components/team-workspace/EnhancedTeamWorkspaceHero';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
 import { Users, UserPlus, Calendar, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -68,7 +69,9 @@ export default function TeamWorkspace() {
   );
 
   return (
-    <AppShell>
+    <>
+      <WorkspaceBreadcrumb />
+      <AppShell>
       <EnhancedTeamWorkspaceHero 
         totalTeams={5}
         activeProjects={8}
@@ -115,5 +118,6 @@ export default function TeamWorkspace() {
         showActivity={true}
       />
     </AppShell>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { usePartnerWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -117,7 +118,9 @@ export default function PartnerWorkspace() {
 
   if (isLoading) {
     return (
-      <WorkspaceLayout
+      <>
+        <WorkspaceBreadcrumb />
+        <WorkspaceLayout
         title={t('workspace.partner.title')}
         description={t('workspace.partner.description')}
         userRole={userProfile?.roles?.[0] || 'partner'}
@@ -127,11 +130,14 @@ export default function PartnerWorkspace() {
           <div className="h-64 bg-muted rounded-lg"></div>
         </div>
       </WorkspaceLayout>
+      </>
     );
   }
 
   return (
-    <WorkspaceLayout
+    <>
+      <WorkspaceBreadcrumb />
+      <WorkspaceLayout
       title={t('workspace.partner.title')}
       description={t('workspace.partner.description')}
       userRole={userProfile?.roles?.[0] || 'partner'}
@@ -295,5 +301,6 @@ export default function PartnerWorkspace() {
         showActivity={true}
       />
     </WorkspaceLayout>
+    </>
   );
 }
