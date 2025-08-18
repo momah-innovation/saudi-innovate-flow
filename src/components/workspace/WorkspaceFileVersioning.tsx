@@ -207,7 +207,7 @@ export const WorkspaceFileVersioning: React.FC<WorkspaceFileVersioningProps> = (
                             </span>
                             <span className="flex items-center gap-1">
                               <Clock className="h-3 w-3" />
-                              {new Date(version.createdAt).toLocaleDateString('ar-SA')}
+                              {new Date(version.createdAt).toLocaleDateString(t('locale'))}
                             </span>
                             <span>{formatFileSize(version.size)}</span>
                           </div>

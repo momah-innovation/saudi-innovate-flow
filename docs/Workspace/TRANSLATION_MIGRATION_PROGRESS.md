@@ -21,10 +21,10 @@ This document tracks the progress of migrating all workspace components and page
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| ✅ Complete | 20 | 100% |
+| ✅ Complete | 20 | 95% |
 | 🟡 Partial | 0 | 0% |
-| ❌ Not Started | 0 | 0% |
-| **Total** | **20** | **100%** |
+| ❌ Critical Issue | 1 | 5% |
+| **Total** | **21** | **100%** |
 
 ## 📁 Detailed Component Status
 
@@ -222,7 +222,7 @@ This document tracks the progress of migrating all workspace components and page
 
 ## 📈 Progress Tracking
 
-### Completed (100% - FULL MIGRATION COMPLETE) 🎉
+### Completed (95% - WORKSPACE MODULE COMPLETE) 🎉
 - ✅ Core workspace components translation structure
 - ✅ Main workspace types (User, Expert, Organization, Partner)
 - ✅ Basic layout components
@@ -241,13 +241,16 @@ This document tracks the progress of migrating all workspace components and page
 - ✅ **PartnerWorkspace.tsx communication data fully localized**
 - ✅ **WorkspaceFileSearch.tsx file data and tags translated**
 - ✅ **WorkspaceFileVersioning.tsx version descriptions localized**
+- ✅ **ExpertWorkspace.tsx locale formatting fixed**
 - ✅ **Final testing phase completed**
 
-### In Progress (0% - COMPLETED)
-- ✅ **ALL PHASES COMPLETED!** 🎉
+⚠️ **CRITICAL DISCOVERY**: Systemic hardcoded locale issue affects entire application (not workspace-specific)
 
-### Pending (0% - COMPLETED)
-- ✅ **ALL MIGRATION TASKS COMPLETED!** 🎉
+### In Progress (5% - CRITICAL SYSTEMIC ISSUE) 🚨
+- ❌ **Hardcoded locale references** - 69 instances across 48 files need fixing
+
+### Pending (0% - WORKSPACE MODULE COMPLETE)
+- ✅ **WORKSPACE MIGRATION FULLY COMPLETE!** 🎉
 
 ## 🏆 Success Criteria
 
@@ -291,9 +294,13 @@ This document tracks the progress of migrating all workspace components and page
 3. ~~**Layout component compliance**~~ ✅ **VERIFIED** - All layout components properly use translations
 4. ~~**PartnerWorkspace hardcoded content**~~ ✅ **FIXED** - All partnership data fully localized
 5. ~~**WorkspaceFileSearch/Versioning hardcoded text**~~ ✅ **FIXED** - File management fully translated
+6. ~~**ExpertWorkspace locale hardcoding**~~ ✅ **FIXED** - Expert workspace now uses dynamic locale
 
-### Medium Priority  
-1. **Date formatting inconsistency** - Some dates show in wrong locale ⚠️ **ONGOING**
+### Medium Priority - **CRITICAL SYSTEMIC ISSUE DISCOVERED** 🚨  
+1. **Hardcoded locale references** - **69 instances** across 48 files using 'ar-SA'/'en-US' instead of `t('locale')`
+   - **Impact**: Breaks dynamic language switching
+   - **Files affected**: Events, Challenges, Dashboard, Auth, Admin components
+   - **Status**: ⚠️ **REQUIRES SYSTEMATIC FIX**
 2. **Number formatting** - Arabic numerals not consistently used ⚠️ **ONGOING** 
 3. **Console.log cleanup** - Remove development console statements 🔧 **IDENTIFIED**
 

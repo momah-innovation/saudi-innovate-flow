@@ -500,7 +500,7 @@ export const WorkspaceFileSearch: React.FC<WorkspaceFileSearchProps> = ({
                           </span>
                           <span className="flex items-center gap-1">
                             <Clock className="h-3 w-3" />
-                            {new Date(file.uploadedAt).toLocaleDateString('ar-SA')}
+                            {new Date(file.uploadedAt).toLocaleDateString(t('locale'))}
                           </span>
                         </div>
                         <div className="flex gap-1 mt-2">
