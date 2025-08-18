@@ -1,7 +1,7 @@
 import { Component, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { debugLog } from "@/utils/debugLogger";
-import { useTranslation } from "react-i18next";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useNavigate } from "react-router-dom";
 import { navigationHandler } from "@/utils/unified-navigation";
 
@@ -49,7 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
 // Separate functional component for translation support
 function ErrorFallback() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
   
   return (

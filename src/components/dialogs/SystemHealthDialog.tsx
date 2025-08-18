@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Loader2, Server, Database, HardDrive, Cpu, Wifi, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface SystemHealth {
   overall_status: 'healthy' | 'warning' | 'critical';
@@ -31,7 +31,7 @@ interface SystemHealthDialogProps {
 export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps) {
   const [health, setHealth] = useState<SystemHealth | null>(null);
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     if (isOpen) {

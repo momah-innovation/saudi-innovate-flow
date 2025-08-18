@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { debugLog } from '@/utils/debugLogger';
 
@@ -44,7 +44,7 @@ export const useTranslationPrefetch = (config: TranslationPrefetchConfig = {}) =
     preloadNavigationNamespaces = true
   } = config;
 
-  const { i18n } = useTranslation();
+  const { i18n } = useUnifiedTranslation();
   const { user } = useCurrentUser();
 
   // Prefetch core namespaces

@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 type Direction = 'ltr' | 'rtl';
 type Language = 'ar' | 'en';  // Arabic first
@@ -33,7 +33,7 @@ const DirectionContext = createContext<DirectionContextType | undefined>(undefin
 
 export function DirectionProvider({ children }: { children: ReactNode }) {
   // Use direct i18next hook to avoid the circular dependency issue
-  const { i18n } = useTranslation();
+  const { i18n } = useUnifiedTranslation();
   const [direction, setDirectionState] = useState<Direction>(defaultConfig.direction);
   const [language, setLanguageState] = useState<Language>(defaultConfig.language);
 

@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import type { SystemTranslation } from '@/types/translation';
 import { queryKeys } from '@/lib/query/query-keys';
 import { useMemo } from 'react';
@@ -27,7 +27,7 @@ import { debugLog } from '@/utils/debugLogger';
  * - Both systems integrate transparently for optimal user experience
  */
 export function useSystemTranslations(language?: 'en' | 'ar') {
-  const { i18n } = useTranslation();
+  const { i18n } = useUnifiedTranslation();
   const currentLanguage = language || (i18n.language as 'en' | 'ar') || 'en';
   const queryClient = useQueryClient();
 

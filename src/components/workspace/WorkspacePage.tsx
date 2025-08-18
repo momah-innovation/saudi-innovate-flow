@@ -3,7 +3,7 @@ import { useWorkspace } from '@/contexts/WorkspaceContext';
 import { EnhancedWorkspaceLayout } from '@/components/workspace/layouts/EnhancedWorkspaceLayout';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 import { 
   Users, 
@@ -23,7 +23,7 @@ interface WorkspacePageProps {
 }
 
 export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const {
     currentWorkspace,
     userRole,

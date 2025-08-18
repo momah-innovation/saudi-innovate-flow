@@ -4,7 +4,7 @@
  */
 
 import { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useQueryClient } from '@tanstack/react-query';
 import { debugLog } from '@/utils/debugLogger';
 
@@ -62,7 +62,7 @@ export const useNavigationPreload = (config: NavigationPreloadConfig = {}) => {
     debounceMs = 300
   } = config;
 
-  const { i18n } = useTranslation();
+  const { i18n } = useUnifiedTranslation();
   const queryClient = useQueryClient();
 
   const preloadTranslationsForRoute = useCallback(async (route: string) => {
