@@ -3,7 +3,7 @@
  * Replaces scattered metrics hooks with unified, RBAC-enabled analytics
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAnalyticsService } from '@/hooks/useAnalyticsService';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
@@ -57,12 +57,16 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  // Check access permissions
-  const hasAccess = {
-    core: !!user,
-    security: canAccess('canViewAnalytics'), // Using existing permission
-    analytics: canAccess('canViewAnalytics') || canAccess('canManageSystem')
-  };
+// Stabilize filters and permissions to avoid re-renders
+const stableFilters = useMemo(() => filters, [JSON.stringify(filters)]);
+const primaryRole = useMemo(() => getPrimaryRole(), [getPrimaryRole, user?.id]);
+
+// Check access permissions (memoized to prevent infinite loops)
+const hasAccess = useMemo(() => ({
+  core: !!user,
+  security: canAccess('canViewAnalytics'), // Using existing permission
+  analytics: canAccess('canViewAnalytics') || canAccess('canManageSystem')
+}), [user?.id, canAccess]);
 
   const fetchMetrics = useCallback(async () => {
     if (!user?.id) {
@@ -73,11 +77,10 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
 
     try {
       setError(null);
-      const userRole = getPrimaryRole();
 
       // Fetch core metrics (always included)
       if (hasAccess.core) {
-        const core = await analyticsService.getCoreMetrics(filters);
+        const core = await analyticsService.getCoreMetrics(stableFilters);
         setCoreMetrics(core);
       }
 
@@ -95,7 +98,7 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
       // Fetch role-based metrics if requested
       if (includeRoleSpecific && hasAccess.analytics) {
         try {
-          const roleBased = await analyticsService.getRoleBasedMetrics(userRole, filters);
+          const roleBased = await analyticsService.getRoleBasedMetrics(primaryRole, stableFilters);
           setRoleBasedMetrics(roleBased);
         } catch (roleError) {
           logger.warn('Role-based metrics access limited', { component: 'useAnalytics', userId: user.id });
@@ -114,7 +117,7 @@ export const useAnalytics = (options: UseAnalyticsOptions = {}): UseAnalyticsRet
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [user?.id, filters, includeRoleSpecific, includeSecurity, hasAccess, getPrimaryRole]);
+  }, [user?.id, stableFilters, includeRoleSpecific, includeSecurity, hasAccess, primaryRole]);
 
   const refresh = useCallback(async () => {
     setIsRefreshing(true);
