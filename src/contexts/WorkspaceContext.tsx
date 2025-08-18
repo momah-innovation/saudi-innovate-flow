@@ -19,11 +19,19 @@ interface WorkspaceContextType {
   loading: boolean;
   membersLoading: boolean;
   
+  // UI State - Add missing properties
+  userRole: string | null;
+  sidebarCollapsed: boolean;
+  activeView: string;
+  isConnected: boolean;
+  onlineMembers: WorkspaceMember[];
+  
   // Actions
   setCurrentWorkspace: (workspace: Workspace | null) => void;
   switchWorkspace: (workspaceId: string) => Promise<void>;
   refreshWorkspaces: () => Promise<void>;
   refreshMembers: () => Promise<void>;
+  setActiveView: (view: string) => void;
   
   // Workspace management
   createWorkspace: (workspaceData: Partial<Workspace>) => Promise<Workspace>;
@@ -67,6 +75,10 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
   const [userWorkspaces, setUserWorkspaces] = useState<Workspace[]>([]);
   const [loading, setLoading] = useState(true);
   const [membersLoading, setMembersLoading] = useState(false);
+  
+  // UI State
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [activeView, setActiveView] = useState('dashboard');
 
   // Initialize real-time hooks
   const realtime = useWorkspaceRealTime({ 
@@ -395,6 +407,9 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
     };
   }, [user, currentWorkspace]);
 
+  // Get user role for current workspace
+  const userRole = getCurrentUserRole();
+  
   const value: WorkspaceContextType = {
     currentWorkspace,
     currentWorkspaceMembers,
@@ -402,10 +417,31 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
     userWorkspaces,
     loading,
     membersLoading,
+    userRole,
+    sidebarCollapsed,
+    activeView,
+    isConnected: realtime.isConnected,
+    onlineMembers: realtime.onlineMembers.map(member => ({
+      id: member.id,
+      workspace_id: currentWorkspace?.id || '',
+      user_id: member.user_id,
+      role: 'member',
+      permissions: {},
+      access_level: 'standard' as const,
+      status: member.status as 'active',
+      invited_by: undefined,
+      joined_at: new Date().toISOString(),
+      last_active_at: member.last_active,
+      notification_preferences: {},
+      workspace_settings: {},
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    })),
     setCurrentWorkspace,
     switchWorkspace,
     refreshWorkspaces,
     refreshMembers,
+    setActiveView,
     createWorkspace,
     updateWorkspace,
     inviteMember,
