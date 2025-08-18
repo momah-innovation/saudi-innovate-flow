@@ -177,7 +177,7 @@ export default function OrganizationWorkspace() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant={challenge.status === 'active' ? 'success' : 'secondary'}>
-                            {t(`status.${challenge.status}`) || challenge.status}
+                            {challenge.status?.startsWith('status.') ? t(challenge.status) : t(`status.${challenge.status}`) || challenge.status}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('common.manage')}
@@ -219,7 +219,7 @@ export default function OrganizationWorkspace() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant={submission.status === 'submitted' ? 'success' : 'secondary'}>
-                            {t(`status.${submission.status}`) || submission.status}
+                            {submission.status?.startsWith('status.') ? t(submission.status) : t(`status.${submission.status}`) || submission.status}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('common.review')}
