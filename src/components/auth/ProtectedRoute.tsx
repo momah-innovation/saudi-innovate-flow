@@ -108,18 +108,33 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={redirectTo || ALL_ROUTES.AUTH} state={{ from: location }} replace />;
   }
 
-  // Progressive profile requirement - reduced to 20% for better UX
-  if (requireProfile && user && (!userProfile || userProfile.profile_completion_percentage < 20)) {
-    debugLog.debug('ProtectedRoute: Redirecting to profile setup - incomplete profile', {
-      component: 'ProtectedRoute',
-      action: 'redirectToProfileSetup',
-      data: {
-        hasProfile: !!userProfile,
-        completion: userProfile?.profile_completion_percentage,
-        newRequirement: 20 // Updated to 20% for better UX
-      }
-    });
-    return <Navigate to={ALL_ROUTES.PROFILE_SETUP} replace />;
+  // Progressive profile requirement - wait for profile to load, then enforce threshold
+  if (requireProfile && user) {
+    // If profile hasn't loaded yet, wait (avoid bouncing to setup)
+    if (!userProfile) {
+      return (
+        <div className="min-h-[400px] flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="text-sm text-muted-foreground">Loading profile...</p>
+          </div>
+        </div>
+      );
+    }
+
+    // Enforce minimal completion after profile is available
+    if (userProfile.profile_completion_percentage < 20) {
+      debugLog.debug('ProtectedRoute: Redirecting to profile setup - incomplete profile', {
+        component: 'ProtectedRoute',
+        action: 'redirectToProfileSetup',
+        data: {
+          hasProfile: !!userProfile,
+          completion: userProfile.profile_completion_percentage,
+          newRequirement: 20 // Updated to 20% for better UX
+        }
+      });
+      return <Navigate to={ALL_ROUTES.PROFILE_SETUP} replace />;
+    }
   }
 
   // Check role requirements - support both single role and array of roles
