@@ -59,7 +59,22 @@ export function useUnifiedTranslation() {
     try {
       let fallback: string | undefined;
       let interpolationOptions: Record<string, any> | undefined;
-      
+
+      // lightweight alias map for known legacy keys (team workspace, etc.)
+      const aliasMap: Record<string, string> = {
+        teamWorkspace: 'workspace.team.title',
+        collaborativeWorkspaceForTeams: 'workspace.team.description',
+        joinTeam: 'workspace.team.actions.invite_member',
+        searchWorkspace: 'common.placeholders.search',
+        export: 'common.actions.export',
+        allProjects: 'workspace.projects.active_projects',
+        activeProjects: 'workspace.projects.active_projects',
+        completedProjects: 'workspace.project_status.completed',
+      };
+
+      // Apply alias if present
+      const resolvedKey = aliasMap[key] || key;
+
       // Handle parameter variations
       if (typeof fallbackOrOptions === 'string') {
         fallback = fallbackOrOptions;
@@ -69,14 +84,36 @@ export function useUnifiedTranslation() {
         fallback = undefined;
       }
 
+
       // Strategy 1: i18next translation (static files) - Primary source
       try {
         let i18nextResult: string;
 
         // Special-case mapping: workspace namespace keys 
         const workspaceLikePrefixes = ['workspace_selection', 'workspace_types', 'workspace.'];
-        if (workspaceLikePrefixes.some((p) => key.startsWith(p))) {
-          i18nextResult = i18nextT(key, { ...interpolationOptions, ns: 'workspace' }) as string;
+        if (workspaceLikePrefixes.some((p) => resolvedKey.startsWith(p))) {
+          // Try with full key inside workspace namespace
+          i18nextResult = i18nextT(resolvedKey, { ...interpolationOptions, ns: 'workspace' }) as string;
+          // If unresolved, try with variations (strip namespace prefix / fix aliases)
+          if (!i18nextResult || i18nextResult === resolvedKey) {
+            // 1) Strip leading "workspace." if present
+            const stripped = resolvedKey.replace(/^workspace\./, '');
+            const tryStripped = i18nextT(stripped, { ...interpolationOptions, ns: 'workspace' }) as string;
+            if (tryStripped && tryStripped !== resolvedKey) {
+              i18nextResult = tryStripped;
+            }
+          }
+          if (!i18nextResult || i18nextResult === resolvedKey) {
+            // 2) Map org -> organization if present
+            const orgFixed = resolvedKey.replace(/^workspace\.org\./, 'workspace.organization.');
+            if (orgFixed !== resolvedKey) {
+              const tryOrg = i18nextT(orgFixed, { ...interpolationOptions, ns: 'workspace' }) as string;
+              if (tryOrg && tryOrg !== orgFixed) {
+                i18nextResult = tryOrg;
+              }
+            }
+          }
+
         } else if (key.includes('.')) {
           // Handle namespaced keys (e.g., "landing.hero.title" -> namespace: "landing", key: "hero.title")
           const parts = key.split('.');
@@ -114,7 +151,7 @@ export function useUnifiedTranslation() {
         }
 
         // Check if we got a valid translation (not the key itself)
-        if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string' && !i18nextResult.includes('.')) {
+        if (i18nextResult && i18nextResult !== resolvedKey && i18nextResult !== key && typeof i18nextResult === 'string') {
           return i18nextResult;
         }
 
