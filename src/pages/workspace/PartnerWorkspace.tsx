@@ -178,12 +178,12 @@ export default function PartnerWorkspace() {
                         <div>
                           <h4 className="font-medium">{opportunity.title_ar}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.partner.deadline')}: {opportunity.deadline ? new Date(opportunity.deadline).toLocaleDateString('ar') : t('common.no_deadline')}
+                            {t('workspace.partner.deadline')}: {opportunity.deadline ? new Date(opportunity.deadline).toLocaleDateString(t('common.locale')) : t('common.placeholders.no_data')}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant="success">
-                            {opportunity.status}
+                            {opportunity.status?.startsWith('status.') ? t(opportunity.status) : t(`status.${opportunity.status}`) || opportunity.status}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('common.apply')}
@@ -220,7 +220,7 @@ export default function PartnerWorkspace() {
                         <div>
                           <h4 className="font-medium">{partnership.challenges?.title_ar}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.partner.status')}: {partnership.challenges?.status}
+                            {t('common.status_label')}: {partnership.challenges?.status?.startsWith('status.') ? t(partnership.challenges.status) : t(`status.${partnership.challenges?.status}`) || partnership.challenges?.status}
                           </p>
                         </div>
                         <Button variant="ghost" size="sm">
@@ -251,7 +251,7 @@ export default function PartnerWorkspace() {
                         <div>
                           <h4 className="font-medium">{application.id}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString('ar')}
+                            {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString(t('common.locale'))}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -259,7 +259,7 @@ export default function PartnerWorkspace() {
                             application.status === 'accepted' ? 'success' :
                             application.status === 'rejected' ? 'destructive' : 'secondary'
                           }>
-                            {application.status}
+                            {application.status?.startsWith('status.') ? t(application.status) : t(`status.${application.status}`) || application.status}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('common.view')}

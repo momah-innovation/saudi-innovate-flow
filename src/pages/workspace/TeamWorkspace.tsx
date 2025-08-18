@@ -81,11 +81,11 @@ export default function TeamWorkspace() {
         onShowFilters={() => logger.info('Show filters requested', { component: 'TeamWorkspace', action: 'onShowFilters' })}
       />
       <PageLayout 
-        title={t('teamWorkspace')}
-        description={t('collaborativeWorkspaceForTeams')}
+        title={t('workspace.team.title')}
+        description={t('workspace.team.description')}
         itemCount={0}
         primaryAction={{
-          label: t('joinTeam'),
+          label: t('workspace.team.actions.invite_member'),
           onClick: () => {},
           icon: <UserPlus className="w-4 h-4" />
         }}
@@ -96,7 +96,7 @@ export default function TeamWorkspace() {
         showSearch={true}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-        searchPlaceholder={t('searchWorkspace')}
+        searchPlaceholder={t('common.placeholders.search')}
         filters={filters}
         spacing="md"
         maxWidth="full"

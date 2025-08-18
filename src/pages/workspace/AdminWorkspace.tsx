@@ -227,7 +227,7 @@ export default function AdminWorkspace() {
                           <div>
                             <h4 className="font-medium">{user.email}</h4>
                             <p className="text-sm text-muted-foreground">
-                              {t('workspace.admin.joined')}: {new Date(user.created_at || '').toLocaleDateString('ar')}
+                              {t('workspace.admin.joined')}: {new Date(user.created_at || '').toLocaleDateString(t('common.locale'))}
                             </p>
                           </div>
                         </div>
