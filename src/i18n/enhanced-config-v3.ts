@@ -199,6 +199,12 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/error_boundary.json');
         break;
         
+      case 'workspace':
+        translations = language === 'en'
+          ? await import('./locales/en/workspace.json')
+          : await import('./locales/ar/workspace.json');
+        break;
+        
       default:
         logger.warn(`Unknown namespace: ${namespace}`, { component: 'FeatureBasedBackend' });
         return {};
