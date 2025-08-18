@@ -75,9 +75,9 @@ export const WorkspaceFileVersioning: React.FC<WorkspaceFileVersioningProps> = (
         id: 'v1',
         versionNumber: 1,
         createdAt: '2024-01-13T09:00:00Z',
-        createdBy: 'سارة علي', 
+        createdBy: t('mock_data.sample_member_3'), 
         size: 1756000,
-        changeDescription: 'النسخة الأولى من التقرير',
+        changeDescription: t('workspace.files.version_descriptions.initial_version'),
         downloadUrl: '/download/v1',
         isCurrent: false
       }

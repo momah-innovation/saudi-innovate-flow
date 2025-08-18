@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   HandHeart, 
   Building, 
@@ -33,6 +34,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState('overview');
   
+  const { t } = useUnifiedTranslation();
   const { tw } = useWorkspaceTranslations({
     workspaceType: 'partner',
     dynamicContent: true,
@@ -91,23 +93,23 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
       progress: 25, 
       budget: '3.2M', 
       deadline: '2024-06-30',
-      team: ['خالد', 'نورا']
+      team: [t('mock_data.sample_member_1'), t('mock_data.sample_member_4')]
     }
   ];
 
   const communications = [
-    { id: '1', type: 'اجتماع', title: 'مراجعة المشروع الأول', date: '2024-01-15 10:00', status: 'مقرر' },
-    { id: '2', type: 'بريد', title: 'تحديث حالة التطوير', date: '2024-01-14 14:30', status: 'مرسل' },
-    { id: '3', type: 'مكالمة', title: 'مناقشة الميزانية', date: '2024-01-13 16:00', status: 'مكتمل' },
-    { id: '4', type: 'تقرير', title: 'تقرير الأداء الشهري', date: '2024-01-12 09:00', status: 'مراجعة' }
+    { id: '1', type: t('workspace.partner.communication_types.meeting'), title: t('workspace.partner.communications.project_review'), date: '2024-01-15 10:00', status: t('workspace.partner.status.scheduled') },
+    { id: '2', type: t('workspace.partner.communication_types.email'), title: t('workspace.partner.communications.development_update'), date: '2024-01-14 14:30', status: t('workspace.partner.status.sent') },
+    { id: '3', type: t('workspace.partner.communication_types.call'), title: t('workspace.partner.communications.budget_discussion'), date: '2024-01-13 16:00', status: t('workspace.partner.status.completed') },
+    { id: '4', type: t('workspace.partner.communication_types.report'), title: t('workspace.partner.communications.monthly_report'), date: '2024-01-12 09:00', status: t('workspace.partner.status.review') }
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'قيد التطوير': return 'bg-yellow-500';
-      case 'اختبار': return 'bg-blue-500';
-      case 'تخطيط': return 'bg-gray-500';
-      case 'مكتمل': return 'bg-green-500';
+      case t('workspace.partner.project_status.in_development'): return 'bg-yellow-500';
+      case t('workspace.partner.project_status.testing'): return 'bg-blue-500';
+      case t('workspace.partner.project_status.planning'): return 'bg-gray-500';
+      case t('workspace.partner.project_status.completed'): return 'bg-green-500';
       default: return 'bg-gray-500';
     }
   };

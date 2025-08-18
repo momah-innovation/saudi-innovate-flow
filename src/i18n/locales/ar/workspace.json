@@ -611,6 +611,32 @@
     "file_updated": "قام بتحديث ملف",
     "default_user": "مستخدم"
   },
+  "partner": {
+    "communication_types": {
+      "meeting": "اجتماع",
+      "email": "بريد إلكتروني",
+      "call": "مكالمة", 
+      "report": "تقرير"
+    },
+    "communications": {
+      "project_review": "مراجعة المشروع الأول",
+      "development_update": "تحديث حالة التطوير",
+      "budget_discussion": "مناقشة الميزانية",
+      "monthly_report": "تقرير الأداء الشهري"
+    },
+    "status": {
+      "scheduled": "مقرر",
+      "sent": "مرسل", 
+      "completed": "مكتمل",
+      "review": "مراجعة"
+    },
+    "project_status": {
+      "in_development": "قيد التطوير",
+      "testing": "اختبار",
+      "planning": "تخطيط",
+      "completed": "مكتمل"
+    }
+  },
   "files": {
     "sample_file_1": "تقرير المشروع.pdf",
     "sample_file_2": "عرض تقديمي.pptx", 

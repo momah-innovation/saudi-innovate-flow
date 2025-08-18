@@ -611,6 +611,32 @@
     "file_updated": "updated a file",
     "default_user": "User"
   },
+  "partner": {
+    "communication_types": {
+      "meeting": "Meeting",
+      "email": "Email", 
+      "call": "Call",
+      "report": "Report"
+    },
+    "communications": {
+      "project_review": "First Project Review",
+      "development_update": "Development Status Update",
+      "budget_discussion": "Budget Discussion", 
+      "monthly_report": "Monthly Performance Report"
+    },
+    "status": {
+      "scheduled": "Scheduled",
+      "sent": "Sent",
+      "completed": "Completed",
+      "review": "Under Review"
+    },
+    "project_status": {
+      "in_development": "In Development",
+      "testing": "Testing",
+      "planning": "Planning", 
+      "completed": "Completed"
+    }
+  },
   "files": {
     "sample_file_1": "Project Report.pdf",
     "sample_file_2": "Presentation.pptx",

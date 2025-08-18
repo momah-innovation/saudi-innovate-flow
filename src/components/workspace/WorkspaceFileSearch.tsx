@@ -81,19 +81,19 @@ export const WorkspaceFileSearch: React.FC<WorkspaceFileSearchProps> = ({
   const [searchResults, setSearchResults] = useState<FileSearchResult[]>([
     {
       id: '1',
-      name: 'تقرير المشروع النهائي.pdf',
+      name: t('workspace.files.sample_search_file_1'),
       type: 'application/pdf',
       size: 2048000,
-      uploadedBy: 'أحمد محمد',
+      uploadedBy: t('mock_data.sample_member_1'),
       uploadedAt: '2024-01-15T10:30:00Z',
-      tags: ['تقرير', 'مشروع', 'نهائي'],
+      tags: [t('workspace.files.tags.report'), t('workspace.files.tags.project'), t('workspace.files.tags.final')],
       version: 3,
       isCollaborating: true,
       downloadUrl: '/download/1'
     },
     {
       id: '2',
-      name: 'عرض تقديمي للعملاء.pptx',
+      name: t('workspace.files.sample_search_file_2'),
       type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
       size: 5120000,
       uploadedBy: 'فاطمة أحمد',
@@ -125,8 +125,8 @@ export const WorkspaceFileSearch: React.FC<WorkspaceFileSearchProps> = ({
     { value: 'application/vnd.openxml', label: 'Office', icon: FileText }
   ]
 
-  const availableTags = ['تقرير', 'مشروع', 'نهائي', 'عرض', 'عملاء', 'تقديمي', 'مخطط', 'تصميم']
-  const availableUsers = ['أحمد محمد', 'فاطمة أحمد', 'سارة علي', 'محمد خالد']
+  const availableTags = [t('workspace.files.tags.report'), t('workspace.files.tags.project'), t('workspace.files.tags.final'), t('workspace.files.tags.presentation'), t('workspace.files.tags.clients'), t('workspace.files.tags.design')]
+  const availableUsers = [t('mock_data.sample_member_1'), t('mock_data.sample_member_2'), t('mock_data.sample_member_3'), t('mock_data.sample_member_4')]
 
   // Filter and sort results
   const filteredResults = useMemo(() => {
