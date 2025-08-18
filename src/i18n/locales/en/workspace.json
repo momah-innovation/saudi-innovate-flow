@@ -248,6 +248,115 @@
       "no_applications": "No applications",
       "quick_actions": "Quick Actions"
     },
+    "title": "Workspaces",
+    "type": "Type",
+    "role": "Role",
+    "activity": "Activity", 
+    "members": "Members",
+    "files": "Files",
+    "settings": "Settings",
+    "header": {
+      "welcome_back": "Welcome Back",
+      "personal_innovation_space": "Your personal innovation space",
+      "organization_dashboard": "Organization Dashboard",
+      "strategic_overview": "Strategic organizational overview",
+      "manager_dashboard": "Manager Dashboard",
+      "team_overview": "Team Overview"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "achievements": "Achievements",
+      "team_dashboard": "Team Dashboard",
+      "strategic_dashboard": "Strategic Dashboard", 
+      "analytics": "Analytics"
+    },
+    "dashboard": {
+      "recent_activities": "Recent Activities",
+      "no_activities": "No recent activities",
+      "team_overview": "Team Overview",
+      "pending_approvals": "Pending Approvals",
+      "upcoming_deadlines": "Upcoming Deadlines"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "coming_soon": "Coming soon"
+    },
+    "stats": {
+      "submissions": "Submissions",
+      "total_employees": "Total Employees",
+      "compliance_score": "Compliance Score", 
+      "innovation_index": "Innovation Index",
+      "digital_maturity": "Digital Maturity",
+      "team_members": "Team Members"
+    },
+    "strategic": {
+      "overview": "Strategic Overview",
+      "description": "Key organizational metrics and insights",
+      "active_challenges": "Active Challenges",
+      "challenges_description": "Currently running innovation challenges",
+      "total_submissions": "Total Submissions",
+      "submissions_description": "Ideas and proposals submitted"
+    },
+    "analytics": {
+      "organization_metrics": "Organization Metrics",
+      "digital_transformation": "Digital Transformation",
+      "compliance_score": "Compliance Score",
+      "total_members": "Total Members",
+      "active_members": "Active Members",
+      "active": "Active"
+    },
+    "actions": {
+      "generate_report": "Generate Report",
+      "manage_policies": "Manage Policies",
+      "notifications": "Notifications"
+    },
+    "projects": {
+      "members": "members"
+    },
+    "collaboration": {
+      "online_members": "Online Members",
+      "no_messages": "No messages yet"
+    },
+    "files": {
+      "upload_files": "Upload Files",
+      "drag_drop_files": "Drag and drop files here",
+      "or_click_to_browse": "or click to browse",
+      "uploading": "Uploading...",
+      "select_files": "Select Files",
+      "status": {
+        "uploading": "Uploading",
+        "completed": "Completed",
+        "failed": "Failed"
+      }
+    },
+    "sidebar": {
+      "online_now": "Online Now",
+      "recent_activity": "Recent Activity",
+      "quick_actions": "Quick Actions"
+    },
+    "hardcoded": {
+      "dashboard": "Dashboard",
+      "members": "Members", 
+      "files": "Files",
+      "messages": "Messages",
+      "settings": "Settings",
+      "workspace_overview": "Workspace Overview",
+      "files_documents": "Files & Documents",
+      "team_members": "Team Members",
+      "messages_chat": "Messages & Chat",
+      "workspace_settings": "Workspace Settings",
+      "content_for_view": "Content for {view} view will be rendered here.",
+      "placeholder_content": "This is a placeholder for the dynamic workspace content.",
+      "recent_activity": "Recent Activity",
+      "user_joined": "User joined workspace",
+      "new_file_uploaded": "New file uploaded", 
+      "meeting_scheduled": "Meeting scheduled",
+      "quick_actions": "Quick Actions",
+      "new_document": "New Document",
+      "invite_members": "Invite Members",
+      "online_members": "Online Members",
+      "more": "more"
+    },
     "common": {
       "loading": "Loading workspace...",
       "error": "Error loading workspace",

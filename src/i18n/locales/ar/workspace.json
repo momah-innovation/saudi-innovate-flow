@@ -248,6 +248,115 @@
       "no_applications": "لا توجد طلبات",
       "quick_actions": "الإجراءات السريعة"
     },
+    "title": "مساحات العمل",
+    "type": "النوع",
+    "role": "الدور",
+    "activity": "النشاط",
+    "members": "الأعضاء",
+    "files": "الملفات",
+    "settings": "الإعدادات",
+    "header": {
+      "welcome_back": "أهلاً بعودتك",
+      "personal_innovation_space": "مساحة الابتكار الشخصية",
+      "organization_dashboard": "لوحة المؤسسة",
+      "strategic_overview": "نظرة عامة استراتيجية للمؤسسة",
+      "manager_dashboard": "لوحة المدير",
+      "team_overview": "نظرة عامة على الفريق"
+    },
+    "tabs": {
+      "dashboard": "لوحة التحكم",
+      "achievements": "الإنجازات",
+      "team_dashboard": "لوحة الفريق",
+      "strategic_dashboard": "اللوحة الاستراتيجية",
+      "analytics": "التحليلات"
+    },
+    "dashboard": {
+      "recent_activities": "الأنشطة الحديثة",
+      "no_activities": "لا توجد أنشطة حديثة",
+      "team_overview": "نظرة عامة على الفريق", 
+      "pending_approvals": "الموافقات المعلقة",
+      "upcoming_deadlines": "المواعيد النهائية القادمة"
+    },
+    "achievements": {
+      "title": "الإنجازات",
+      "coming_soon": "قريباً"
+    },
+    "stats": {
+      "submissions": "المشاركات",
+      "total_employees": "إجمالي الموظفين",
+      "compliance_score": "نقاط الامتثال",
+      "innovation_index": "مؤشر الابتكار",
+      "digital_maturity": "النضج الرقمي",
+      "team_members": "أعضاء الفريق"
+    },
+    "strategic": {
+      "overview": "النظرة الاستراتيجية",
+      "description": "المقاييس والرؤى التنظيمية الرئيسية",
+      "active_challenges": "التحديات النشطة",
+      "challenges_description": "تحديات الابتكار الجارية حالياً",
+      "total_submissions": "إجمالي المشاركات",
+      "submissions_description": "الأفكار والمقترحات المُقدمة"
+    },
+    "analytics": {
+      "organization_metrics": "مقاييس المؤسسة",
+      "digital_transformation": "التحول الرقمي",
+      "compliance_score": "نقاط الامتثال",
+      "total_members": "إجمالي الأعضاء",
+      "active_members": "الأعضاء النشطون",
+      "active": "نشط"
+    },
+    "actions": {
+      "generate_report": "إنشاء تقرير",
+      "manage_policies": "إدارة السياسات",
+      "notifications": "الإشعارات"
+    },
+    "projects": {
+      "members": "أعضاء"
+    },
+    "collaboration": {
+      "online_members": "الأعضاء المتصلون",
+      "no_messages": "لا توجد رسائل بعد"
+    },
+    "files": {
+      "upload_files": "رفع الملفات",
+      "drag_drop_files": "اسحب وأفلت الملفات هنا",
+      "or_click_to_browse": "أو انقر للتصفح",
+      "uploading": "جاري الرفع...",
+      "select_files": "اختر الملفات",
+      "status": {
+        "uploading": "جاري الرفع",
+        "completed": "مكتمل",
+        "failed": "فشل"
+      }
+    },
+    "sidebar": {
+      "online_now": "متصل الآن",
+      "recent_activity": "النشاط الحديث",
+      "quick_actions": "الإجراءات السريعة"
+    },
+    "hardcoded": {
+      "dashboard": "لوحة التحكم",
+      "members": "الأعضاء",
+      "files": "الملفات", 
+      "messages": "الرسائل",
+      "settings": "الإعدادات",
+      "workspace_overview": "نظرة عامة على مساحة العمل",
+      "files_documents": "الملفات والوثائق",
+      "team_members": "أعضاء الفريق",
+      "messages_chat": "الرسائل والدردشة",
+      "workspace_settings": "إعدادات مساحة العمل",
+      "content_for_view": "سيتم عرض محتوى {view} هنا.",
+      "placeholder_content": "هذا نص تجريبي لمحتوى مساحة العمل الديناميكي.",
+      "recent_activity": "النشاط الحديث",
+      "user_joined": "انضم مستخدم لمساحة العمل",
+      "new_file_uploaded": "تم رفع ملف جديد",
+      "meeting_scheduled": "تم جدولة اجتماع",
+      "quick_actions": "الإجراءات السريعة",
+      "new_document": "وثيقة جديدة",
+      "invite_members": "دعوة أعضاء",
+      "online_members": "الأعضاء المتصلون",
+      "more": "المزيد"
+    },
     "common": {
       "loading": "جاري تحميل مساحة العمل...",
       "error": "خطأ في تحميل مساحة العمل",
