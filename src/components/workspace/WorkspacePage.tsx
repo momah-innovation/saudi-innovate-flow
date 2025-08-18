@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWorkspace } from '@/contexts/WorkspaceProvider';
+import { useWorkspaceProvider } from '@/contexts/WorkspaceProvider';
 import { EnhancedWorkspaceLayout } from '@/components/workspace/layouts/EnhancedWorkspaceLayout';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
@@ -30,7 +30,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
     setActiveView,
     isConnected,
     onlineMembers
-  } = useWorkspace();
+  } = useWorkspaceProvider();
 
   const permissions = useWorkspacePermissions();
 

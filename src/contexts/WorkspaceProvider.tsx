@@ -151,6 +151,15 @@ function workspaceReducer(state: WorkspaceState, action: WorkspaceAction): Works
 }
 
 interface WorkspaceContextValue extends WorkspaceState, WorkspaceActions {
+  // Explicitly include required properties
+  currentWorkspace: Workspace | null;
+  userRole: string | null;
+  sidebarCollapsed: boolean;
+  activeView: string;
+  isConnected: boolean;
+  onlineMembers: WorkspaceMember[];
+  setActiveView: (view: string) => void;
+  
   // Hook integrations
   translations: ReturnType<typeof useWorkspaceTranslations>;
   notifications: ReturnType<typeof useWorkspaceNotifications>;
@@ -158,7 +167,7 @@ interface WorkspaceContextValue extends WorkspaceState, WorkspaceActions {
   realTime: ReturnType<typeof useWorkspaceRealTime>;
 }
 
-const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
+const WorkspaceContextProvider = createContext<WorkspaceContextValue | null>(null);
 
 interface WorkspaceProviderProps {
   children: React.ReactNode;
@@ -375,16 +384,17 @@ export function WorkspaceProvider({
   };
 
   return (
-    <WorkspaceContext.Provider value={contextValue}>
+    <WorkspaceContextProvider.Provider value={contextValue}>
       {children}
-    </WorkspaceContext.Provider>
+    </WorkspaceContextProvider.Provider>
   );
 }
 
-export function useWorkspace() {
-  const context = useContext(WorkspaceContext);
+// Hook to use workspace context
+export function useWorkspaceProvider() {
+  const context = useContext(WorkspaceContextProvider);
   if (!context) {
-    throw new Error('useWorkspace must be used within a WorkspaceProvider');
+    throw new Error('useWorkspaceProvider must be used within a WorkspaceProvider');
   }
   return context;
 }
