@@ -12,11 +12,12 @@ import { ALL_ROUTES } from './routes';
 import { UserRole } from '@/hooks/useRoleAccess';
 import { Loader2 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { useTranslationPrefetch } from '@/hooks/useTranslationPrefetch';
-import { useNavigationPreload } from '@/hooks/useNavigationPreload';
-import { useDataPrefetching } from '@/hooks/useDataPrefetching';
-import { useIntelligentPrefetch } from '@/hooks/useIntelligentPrefetch';
-import { useAdvancedCacheWarming } from '@/hooks/useAdvancedCacheWarming';
+// ❌ DISABLED: These performance hooks are causing freezing
+// import { useTranslationPrefetch } from '@/hooks/useTranslationPrefetch';
+// import { useNavigationPreload } from '@/hooks/useNavigationPreload';
+// import { useDataPrefetching } from '@/hooks/useDataPrefetching';
+// import { useIntelligentPrefetch } from '@/hooks/useIntelligentPrefetch';
+// import { useAdvancedCacheWarming } from '@/hooks/useAdvancedCacheWarming';
 
 // CORE USER FLOWS - Direct imports (High usage 60%+)
 import LandingPage from '@/pages/LandingPage';
@@ -666,22 +667,21 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
   );
 };
 
-// Performance-enhanced router component 
+// ✅ OPTIMIZED: Lightweight router with minimal monitoring
 function RouterWithPerformanceMonitoring() {
   const location = useLocation();
 
-  // Simplified performance monitoring - remove heavy hooks causing freezing
+  // ✅ FIXED: Ultra-lightweight navigation logging only
   useEffect(() => {
     const currentPath = location.pathname;
     console.log(`[ROUTER] Navigating to: ${currentPath}`);
     
-    // Basic navigation timing
+    // Single timer for route load measurement
     const startTime = performance.now();
-    
     const timer = setTimeout(() => {
       const loadTime = performance.now() - startTime;
       console.log(`[ROUTER] Route loaded in ${loadTime.toFixed(2)}ms: ${currentPath}`);
-    }, 100);
+    }, 50);
     
     return () => clearTimeout(timer);
   }, [location.pathname]);
@@ -696,7 +696,6 @@ function RouterWithPerformanceMonitoring() {
             element={<RouteRenderer config={routeConfig} />}
           />
         ))}
-        {/* Catch-all route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </TranslationAppShellProvider>

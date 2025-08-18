@@ -22,18 +22,12 @@ export const TranslationAppShellProvider: React.FC<{ children: React.ReactNode }
     logErrors: true
   });
   
-  // Initialize translation appshell integration (safe within router context)
-  React.useEffect(() => {
-    const initializeTranslations = async () => {
-      try {
-        useTranslationAppShell();
-      } catch (error) {
-        handleError(error as Error, 'initialize_translations');
-      }
-    };
-    
-    initializeTranslations();
-  }, [handleError]);
+  // ✅ FIXED: Call hook directly instead of in useEffect to prevent timing issues
+  try {
+    useTranslationAppShell();
+  } catch (error) {
+    // Silent handling - don't break app initialization
+  }
   
   return <>{children}</>;
 };
