@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useOrganizationWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
 import { 
@@ -31,11 +31,8 @@ interface OrganizationWorkspaceProps {
 export const OrganizationWorkspace: React.FC<OrganizationWorkspaceProps> = ({ userId }) => {
   const [activeTab, setActiveTab] = useState('strategic');
   
-  const { tw, isRTL } = useWorkspaceTranslations({
-    workspaceType: 'organization',
-    dynamicContent: true,
-    fallbackStrategy: 'english'
-  });
+  const { t, isRTL } = useUnifiedTranslation();
+  const tw = React.useCallback((key: string, params?: Record<string, any>) => t(`workspace.organization.${key}`, params), [t]);
 
   const { 
     data: workspaceData,

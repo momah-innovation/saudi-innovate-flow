@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
-import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
+
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   HandHeart, 
@@ -35,11 +35,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
   const [activeTab, setActiveTab] = useState('overview');
   
   const { t } = useUnifiedTranslation();
-  const { tw } = useWorkspaceTranslations({
-    workspaceType: 'partner',
-    dynamicContent: true,
-    fallbackStrategy: 'english'
-  });
+  const tw = React.useCallback((key: string, params?: Record<string, any>) => t(`workspace.partner.${key}`, params), [t]);
 
   // Mock partner data
   const partnerData = {

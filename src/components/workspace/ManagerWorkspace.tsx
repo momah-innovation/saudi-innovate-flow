@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTeamWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
 import { 
@@ -31,11 +31,8 @@ interface ManagerWorkspaceProps {
 export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   
-  const { tw, isRTL } = useWorkspaceTranslations({
-    workspaceType: 'team',
-    dynamicContent: true,
-    fallbackStrategy: 'english'
-  });
+  const { t, isRTL } = useUnifiedTranslation();
+  const tw = React.useCallback((key: string, params?: Record<string, any>) => t(`workspace.team.${key}`, params), [t]);
 
   const { 
     data: workspaceData,

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useExpertWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
 import { useWorkspaceNotifications } from '@/hooks/useWorkspaceNotifications';
@@ -25,11 +25,8 @@ interface ExpertWorkspaceProps {
 export const ExpertWorkspace: React.FC<ExpertWorkspaceProps> = ({ userId }) => {
   const [activeTab, setActiveTab] = useState('queue');
   
-  const { tw, isRTL } = useWorkspaceTranslations({
-    workspaceType: 'expert',
-    dynamicContent: true,
-    fallbackStrategy: 'english'
-  });
+  const { t, isRTL } = useUnifiedTranslation();
+  const tw = React.useCallback((key: string, params?: Record<string, any>) => t(`workspace.expert.${key}`, params), [t]);
 
   const { 
     data: workspaceData,
