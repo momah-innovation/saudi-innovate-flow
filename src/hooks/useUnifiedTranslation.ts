@@ -72,20 +72,38 @@ export function useUnifiedTranslation() {
       // Strategy 1: i18next translation (static files) - Primary source
       try {
         let i18nextResult: string;
-        
-        // Handle namespaced keys (e.g., "landing.hero.title" -> namespace: "landing", key: "hero.title")
-        if (key.includes('.')) {
+
+        // Special-case mapping: keys nested under workspace namespace
+        const workspaceLikePrefixes = ['workspace_selection', 'workspace_types'];
+        if (workspaceLikePrefixes.some((p) => key.startsWith(p + '.'))) {
+          i18nextResult = i18nextT(key, { ...interpolationOptions, ns: 'workspace' }) as string;
+        } else if (key.includes('.')) {
+          // Handle namespaced keys (e.g., "landing.hero.title" -> namespace: "landing", key: "hero.title")
           const parts = key.split('.');
           const potentialNamespace = parts[0];
-          
+
           // Check if the first part is a known namespace
-          if (['landing', 'common', 'navigation', 'dashboard', 'workspace', 'auth', 'errors', 'challenges', 'campaigns', 'admin', 'users', 'settings'].includes(potentialNamespace)) {
+          if (
+            [
+              'landing',
+              'common',
+              'navigation',
+              'dashboard',
+              'workspace',
+              'auth',
+              'errors',
+              'challenges',
+              'campaigns',
+              'admin',
+              'users',
+              'settings',
+            ].includes(potentialNamespace)
+          ) {
             const actualKey = parts.slice(1).join('.');
-            i18nextResult = i18nextT(actualKey, { 
-              ...interpolationOptions, 
-              ns: potentialNamespace 
+            i18nextResult = i18nextT(actualKey, {
+              ...interpolationOptions,
+              ns: potentialNamespace,
             }) as string;
-            
           } else {
             // No namespace detected, use key as-is
             i18nextResult = i18nextT(key, interpolationOptions) as string;
@@ -94,12 +112,12 @@ export function useUnifiedTranslation() {
           // No namespace, use key as-is
           i18nextResult = i18nextT(key, interpolationOptions) as string;
         }
-        
+
         // Check if we got a valid translation (not the key itself)
         if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string' && !i18nextResult.includes('.')) {
           return i18nextResult;
         }
-        
+
         // Also try with defaultValue if fallback is provided
         if (fallback) {
           const i18nextWithFallback = i18nextT(key, { ...interpolationOptions, defaultValue: fallback });
