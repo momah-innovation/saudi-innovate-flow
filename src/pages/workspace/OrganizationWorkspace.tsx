@@ -131,21 +131,22 @@ export default function OrganizationWorkspace() {
   }
 
   return (
-    <WorkspaceLayout
-      title={t('workspace.organization.title')}
-      description={t('workspace.organization.description')}
-      userRole={userProfile?.roles?.[0] || 'admin'}
-      stats={stats}
-      quickActions={[
-        {
-          label: t('workspace.organization.actions.create_challenge'),
-          onClick: () => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create'),
-          icon: Plus
-        }
-      ]}
-    >
-      <WorkspaceBreadcrumb className="mb-6" />
-      <div className="space-y-6">
+    <>
+      <WorkspaceBreadcrumb />
+      <WorkspaceLayout
+        title={t('workspace.organization.title')}
+        description={t('workspace.organization.description')}
+        userRole={userProfile?.roles?.[0] || 'admin'}
+        stats={stats}
+        quickActions={[
+          {
+            label: t('workspace.organization.actions.create_challenge'),
+            onClick: () => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create'),
+            icon: Plus
+          }
+        ]}
+      >
+        <div className="space-y-6">
         {/* Navigation */}
         <WorkspaceNavigation items={navigationItems} />
 
@@ -262,6 +263,7 @@ export default function OrganizationWorkspace() {
         showPresence={true}
         showActivity={true}
       />
-    </WorkspaceLayout>
+      </WorkspaceLayout>
+    </>
   );
 }

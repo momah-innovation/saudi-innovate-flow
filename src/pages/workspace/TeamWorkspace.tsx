@@ -4,6 +4,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { TeamWorkspaceContent } from '@/components/admin/TeamWorkspaceContent';
 import { EnhancedTeamWorkspaceHero } from '@/components/team-workspace/EnhancedTeamWorkspaceHero';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
 import { Users, UserPlus, Calendar, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -68,15 +69,17 @@ export default function TeamWorkspace() {
   );
 
   return (
-    <AppShell>
-      <EnhancedTeamWorkspaceHero 
-        totalTeams={5}
-        activeProjects={8}
-        teamMembers={12}
-        completedTasks={45}
-        onJoinTeam={() => logger.info('Join team requested', { component: 'TeamWorkspace', action: 'onJoinTeam' })}
-        onShowFilters={() => logger.info('Show filters requested', { component: 'TeamWorkspace', action: 'onShowFilters' })}
-      />
+    <>
+      <WorkspaceBreadcrumb />
+      <AppShell>
+        <EnhancedTeamWorkspaceHero 
+          totalTeams={5}
+          activeProjects={8}
+          teamMembers={12}
+          completedTasks={45}
+          onJoinTeam={() => logger.info('Join team requested', { component: 'TeamWorkspace', action: 'onJoinTeam' })}
+          onShowFilters={() => logger.info('Show filters requested', { component: 'TeamWorkspace', action: 'onShowFilters' })}
+        />
       <PageLayout 
         title={t('teamWorkspace')}
         description={t('collaborativeWorkspaceForTeams')}
@@ -113,7 +116,8 @@ export default function TeamWorkspace() {
         showWidget={true}
         showPresence={true}
         showActivity={true}
-      />
-    </AppShell>
+        />
+      </AppShell>
+    </>
   );
 }
