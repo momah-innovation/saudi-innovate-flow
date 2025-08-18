@@ -137,10 +137,30 @@ export function useUnifiedTranslation() {
             ].includes(potentialNamespace)
           ) {
             const actualKey = parts.slice(1).join('.');
+            // First try standard lookup within namespace
             i18nextResult = i18nextT(actualKey, {
               ...interpolationOptions,
               ns: potentialNamespace,
             }) as string;
+
+            // Workspace namespace requires nested prefix in our JSON (workspace.*)
+            if (potentialNamespace === 'workspace' && (!i18nextResult || i18nextResult === actualKey)) {
+              // Try with nested prefix
+              const nestedKey = `workspace.${actualKey}`;
+              const tryNested = i18nextT(nestedKey, { ...interpolationOptions, ns: 'workspace' }) as string;
+              if (tryNested && tryNested !== nestedKey) {
+                i18nextResult = tryNested;
+              } else {
+                // Also handle shorthand org -> organization
+                const orgFixedNested = nestedKey.replace(/^workspace\.org\./, 'workspace.organization.');
+                if (orgFixedNested !== nestedKey) {
+                  const tryOrgNested = i18nextT(orgFixedNested, { ...interpolationOptions, ns: 'workspace' }) as string;
+                  if (tryOrgNested && tryOrgNested !== orgFixedNested) {
+                    i18nextResult = tryOrgNested;
+                  }
+                }
+              }
+            }
           } else {
             // No namespace detected, use key as-is
             i18nextResult = i18nextT(key, interpolationOptions) as string;
