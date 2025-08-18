@@ -63,7 +63,7 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
   const teamMembers = [
     {
       id: 1,
-      name: 'أحمد الزهراني',
+      name: tw('mock_data.sample_member_1'),
       role: tw('roles.senior_developer'),
       avatar: '',
       performance: 92,
@@ -73,7 +73,7 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
     },
     {
       id: 2,
-      name: 'سارة المطيري',
+      name: tw('mock_data.sample_member_2'),
       role: tw('roles.ui_ux_designer'),
       avatar: '',
       performance: 88,
@@ -83,7 +83,7 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
     },
     {
       id: 3,
-      name: 'محمد العتيبي',
+      name: tw('mock_data.sample_member_3'),
       role: tw('roles.project_coordinator'),
       avatar: '',
       performance: 85,
@@ -93,7 +93,7 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
     },
     {
       id: 4,
-      name: 'فاطمة الشهري',
+      name: tw('mock_data.sample_member_4'),
       role: tw('roles.quality_analyst'),
       avatar: '',
       performance: 94,
@@ -146,27 +146,27 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
     {
       id: 1,
       title: tw('tasks.code_review_approval'),
-      assignee: 'أحمد الزهراني',
+      assignee: tw('mock_data.sample_member_1'),
       priority: 'high',
-      dueDate: 'اليوم',
+      dueDate: tw('mock_data.today'),
       project: tw('projects.digital_transformation_initiative'),
       status: 'pending_approval'
     },
     {
       id: 2,
       title: tw('tasks.resource_allocation_review'),
-      assignee: 'محمد العتيبي',
+      assignee: tw('mock_data.sample_member_3'),
       priority: 'medium',
-      dueDate: 'غداً',
+      dueDate: tw('mock_data.tomorrow'),
       project: tw('projects.customer_portal_enhancement'),
       status: 'in_progress'
     },
     {
       id: 3,
       title: tw('tasks.stakeholder_presentation'),
-      assignee: 'سارة المطيري',
+      assignee: tw('mock_data.sample_member_2'),
       priority: 'high',
-      dueDate: 'الخميس',
+      dueDate: tw('mock_data.thursday'),
       project: tw('projects.mobile_app_development'),
       status: 'pending'
     }
@@ -204,7 +204,7 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
       id: 1,
       title: tw('deadlines.phase_two_delivery'),
       project: tw('projects.digital_transformation_initiative'),
-      dueDate: '15 فبراير 2024',
+      dueDate: tw('mock_data.sample_date_1'),
       daysLeft: 3,
       priority: 'critical'
     },
@@ -212,7 +212,7 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
       id: 2,
       title: tw('deadlines.user_testing_completion'),
       project: tw('projects.customer_portal_enhancement'),
-      dueDate: '22 فبراير 2024',
+      dueDate: tw('mock_data.sample_date_2'),
       daysLeft: 10,
       priority: 'high'
     },
@@ -220,7 +220,7 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
       id: 3,
       title: tw('deadlines.stakeholder_review'),
       project: tw('projects.mobile_app_development'),
-      dueDate: '28 فبراير 2024',
+      dueDate: tw('mock_data.sample_date_3'),
       daysLeft: 16,
       priority: 'medium'
     }

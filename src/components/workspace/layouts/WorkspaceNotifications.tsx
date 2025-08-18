@@ -58,37 +58,37 @@ export function WorkspaceNotifications({
       id: '1',
       type: 'mention',
       title: t('notifications.mention.title'),
-      message: 'ذكرك أحمد في مشروع التطوير الجديد',
+      message: t('mock_data.mention_message'),
       timestamp: new Date(Date.now() - 5 * 60 * 1000),
       read: false,
       priority: 'high',
-      sender: { name: 'أحمد محمد' }
+      sender: { name: t('mock_data.sample_member_1') }
     },
     {
       id: '2',
       type: 'assignment',
       title: t('notifications.assignment.title'),
-      message: 'تم تعيين مهمة جديدة لك في المشروع',
+      message: t('mock_data.assignment_message'),
       timestamp: new Date(Date.now() - 30 * 60 * 1000),
       read: false,
       priority: 'medium',
-      sender: { name: 'سارة أحمد' }
+      sender: { name: t('mock_data.sample_member_2') }
     },
     {
       id: '3',
       type: 'comment',
       title: t('notifications.comment.title'),
-      message: 'تعليق جديد على مقترحك',
+      message: t('mock_data.comment_message'),
       timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
       read: true,
       priority: 'low',
-      sender: { name: 'محمد علي' }
+      sender: { name: t('mock_data.sample_member_3') }
     },
     {
       id: '4',
       type: 'meeting',
       title: t('notifications.meeting.title'),
-      message: 'اجتماع فريق التطوير يبدأ خلال 15 دقيقة',
+      message: t('mock_data.meeting_message'),
       timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000),
       read: true,
       priority: 'high'

@@ -33,10 +33,20 @@
     }
   },
   "mock_data": {
-    "sample_member": "Team Member {number}",
-    "sample_project": "Sample Project {number}",
-    "sample_task": "Sample Task {number}",
-    "sample_deadline": "Sample Deadline {number}"
+    "sample_member_1": "Ahmad Al-Zahra",
+    "sample_member_2": "Sarah Al-Mutairi", 
+    "sample_member_3": "Mohammed Al-Otaibi",
+    "sample_member_4": "Fatima Al-Shehri",
+    "today": "Today",
+    "tomorrow": "Tomorrow", 
+    "thursday": "Thursday",
+    "sample_date_1": "February 15, 2024",
+    "sample_date_2": "February 22, 2024",
+    "sample_date_3": "February 28, 2024",
+    "mention_message": "Ahmad mentioned you in the new development project",
+    "assignment_message": "A new task has been assigned to you in the project",
+    "comment_message": "New comment on your proposal",
+    "meeting_message": "Development team meeting starts in 15 minutes"
   },
   "workspace": {
     "user": {
@@ -508,7 +518,62 @@
       "manage_team": "Manage Team",
       "update_status": "Update Status"
     },
-    "common": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "activity": "Activity",
+      "ideas": "Ideas",
+      "challenges": "Challenges",
+      "bookmarks": "Bookmarks",
+      "evaluations": "Evaluations",
+      "expertise": "Expertise",
+      "reports": "Reports",
+      "members": "Members",
+      "departments": "Departments",
+      "analytics": "Analytics",
+      "partnerships": "Partnerships",
+      "collaborations": "Collaborations",
+      "users": "Users",
+      "system": "System",
+      "projects": "Projects",
+      "tasks": "Tasks",
+      "meetings": "Meetings",
+      "overview": "Overview",
+      "feedback": "Feedback",
+      "files": "Files",
+      "messages": "Messages",
+      "calendar": "Calendar"
+    },
+    "quick_actions": "Quick Actions",
+    "navigation": "Navigation",
+    "types": {
+      "user": "User Workspace",
+      "expert": "Expert Workspace",
+      "organization": "Organization Workspace",
+      "partner": "Partner Workspace",
+      "admin": "Admin Workspace",
+      "team": "Team Workspace",
+      "stakeholder": "Stakeholder Workspace",
+      "project": "Project Workspace"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "mark_all_read": "Mark all as read",
+    "empty": "No notifications",
+    "mention": {
+      "title": "Mention"
+    },
+    "assignment": {
+      "title": "Assignment"
+    },
+    "comment": {
+      "title": "Comment"
+    },
+    "meeting": {
+      "title": "Meeting"
+    }
+  },
+  "common": {
       "loading": "Loading workspace...",
       "error": "Error loading workspace",
       "refresh": "Refresh",

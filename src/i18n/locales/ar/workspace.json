@@ -33,10 +33,20 @@
     }
   },
   "mock_data": {
-    "sample_member": "عضو الفريق {number}",
-    "sample_project": "مشروع تجريبي {number}",
-    "sample_task": "مهمة تجريبية {number}",
-    "sample_deadline": "موعد نهائي تجريبي {number}"
+    "sample_member_1": "أحمد الزهراني",
+    "sample_member_2": "سارة المطيري",
+    "sample_member_3": "محمد العتيبي", 
+    "sample_member_4": "فاطمة الشهري",
+    "today": "اليوم",
+    "tomorrow": "غداً",
+    "thursday": "الخميس",
+    "sample_date_1": "15 فبراير 2024",
+    "sample_date_2": "22 فبراير 2024", 
+    "sample_date_3": "28 فبراير 2024",
+    "mention_message": "ذكرك أحمد في مشروع التطوير الجديد",
+    "assignment_message": "تم تعيين مهمة جديدة لك في المشروع",
+    "comment_message": "تعليق جديد على مقترحك",
+    "meeting_message": "اجتماع فريق التطوير يبدأ خلال 15 دقيقة"
   },
   "workspace": {
     "user": {
@@ -508,7 +518,62 @@
       "manage_team": "إدارة الفريق",
       "update_status": "تحديث الحالة"
     },
-    "common": {
+    "nav": {
+      "dashboard": "لوحة التحكم",
+      "activity": "النشاط",
+      "ideas": "الأفكار",
+      "challenges": "التحديات",
+      "bookmarks": "المفضلة",
+      "evaluations": "التقييمات",
+      "expertise": "الخبرة",
+      "reports": "التقارير",
+      "members": "الأعضاء",
+      "departments": "الأقسام",
+      "analytics": "التحليلات",
+      "partnerships": "الشراكات",
+      "collaborations": "التعاونات",
+      "users": "المستخدمون",
+      "system": "النظام",
+      "projects": "المشاريع",
+      "tasks": "المهام",
+      "meetings": "الاجتماعات",
+      "overview": "نظرة عامة",
+      "feedback": "التغذية الراجعة",
+      "files": "الملفات",
+      "messages": "الرسائل",
+      "calendar": "التقويم"
+    },
+    "quick_actions": "الإجراءات السريعة",
+    "navigation": "التنقل",
+    "types": {
+      "user": "مساحة المستخدم",
+      "expert": "مساحة الخبراء",
+      "organization": "مساحة المؤسسة",
+      "partner": "مساحة الشركاء",
+      "admin": "مساحة الإدارة",
+      "team": "مساحة الفريق",
+      "stakeholder": "مساحة أصحاب المصلحة",
+      "project": "مساحة المشروع"
+    }
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "mark_all_read": "تحديد الكل كمقروء",
+    "empty": "لا توجد إشعارات",
+    "mention": {
+      "title": "إشارة"
+    },
+    "assignment": {
+      "title": "مهمة"
+    },
+    "comment": {
+      "title": "تعليق"
+    },
+    "meeting": {
+      "title": "اجتماع"
+    }
+  },
+  "common": {
       "loading": "جاري تحميل مساحة العمل...",
       "error": "خطأ في تحميل مساحة العمل",
       "refresh": "تحديث",
