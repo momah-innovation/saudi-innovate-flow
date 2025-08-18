@@ -585,5 +585,36 @@
       "save": "Save",
       "cancel": "Cancel"
     }
-  }
+  },
+  "ai": {
+    "assistant_title": "AI Assistant",
+    "analyze": "Analyze",
+    "suggest": "Suggest", 
+    "summarize": "Summarize",
+    "optimize": "Optimize",
+    "query_placeholder": "Ask me anything about your workspace...",
+    "auto_analysis_query": "General workspace analysis",
+    "performance_analysis": "Performance Analysis",
+    "improvement_suggestion": "Improvement Suggestion",
+    "quick_query_template": "{{action}} the workspace"
+  },
+  "analytics": {
+    "timeframe": {
+      "last_7_days": "Last 7 days",
+      "last_30_days": "Last 30 days", 
+      "last_90_days": "Last 90 days",
+      "last_year": "Last year"
+    }
+  },
+  "collaboration": {
+    "sample_user": "Sample User",
+    "file_updated": "updated a file",
+    "default_user": "User"
+  },
+  "files": {
+    "sample_file_1": "Project Report.pdf",
+    "sample_file_2": "Presentation.pptx",
+    "sample_file_3": "Diagram Image.png"
+  },
+  "locale": "en-US"
 }

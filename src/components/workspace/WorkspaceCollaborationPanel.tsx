@@ -243,15 +243,15 @@ export const WorkspaceCollaborationPanel: React.FC<WorkspaceCollaborationPanelPr
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm">
-                    <span className="font-medium">المستخدم</span>
+                    <span className="font-medium">{t('workspace.collaboration.sample_user')}</span>
                     <span className="text-muted-foreground ml-1">
-                      قام بتحديث ملف
+                      {t('workspace.collaboration.file_updated')}
                     </span>
                   </p>
                   <div className="flex items-center gap-2 mt-1">
                     <Clock className="h-3 w-3 text-muted-foreground" />
                     <span className="text-xs text-muted-foreground">
-                      منذ 5 دقائق
+                      {t('workspace.collaboration.minutes_ago', { count: 5 })}
                     </span>
                   </div>
                 </div>
@@ -278,7 +278,7 @@ export const WorkspaceCollaborationPanel: React.FC<WorkspaceCollaborationPanelPr
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium">
-                          {msg.sender?.display_name || 'مستخدم'}
+                          {msg.sender?.display_name || t('workspace.collaboration.default_user')}
                         </span>
                         <span className="text-xs text-muted-foreground">
                           {formatTimeAgo(msg.created_at)}

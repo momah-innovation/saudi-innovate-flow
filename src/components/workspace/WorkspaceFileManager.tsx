@@ -58,32 +58,32 @@ export const WorkspaceFileManager: React.FC<WorkspaceFileManagerProps> = ({
     const mockFiles: FileItem[] = [
       {
         id: '1',
-        name: 'تقرير المشروع.pdf',
+        name: t('workspace.files.sample_file_1'),
         size: 2048000,
         type: 'application/pdf',
         createdAt: '2024-01-15T10:30:00Z',
-        uploadedBy: 'أحمد محمد',
+        uploadedBy: t('mock_data.sample_member_1'),
         version: 3,
         isCollaborating: true,
         lastModified: '2024-01-15T14:20:00Z'
       },
       {
         id: '2', 
-        name: 'عرض تقديمي.pptx',
+        name: t('workspace.files.sample_file_2'),
         size: 5120000,
         type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         createdAt: '2024-01-14T09:15:00Z',
-        uploadedBy: 'فاطمة أحمد',
+        uploadedBy: t('mock_data.sample_member_2'),
         version: 1,
         isCollaborating: false
       },
       {
         id: '3',
-        name: 'صورة المخطط.png',
+        name: t('workspace.files.sample_file_3'),
         size: 1024000,
         type: 'image/png', 
         createdAt: '2024-01-13T16:45:00Z',
-        uploadedBy: 'سارة علي',
+        uploadedBy: t('mock_data.sample_member_3'),
         version: 2,
         isCollaborating: false
       }
@@ -266,7 +266,7 @@ export const WorkspaceFileManager: React.FC<WorkspaceFileManagerProps> = ({
                               <span>{t('workspace.files.uploaded_by')} {file.uploadedBy}</span>
                               <span className="flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
-                                {new Date(file.createdAt).toLocaleDateString('ar-SA')}
+                                {new Date(file.createdAt).toLocaleDateString(t('locale'))}
                               </span>
                             </div>
                           </div>

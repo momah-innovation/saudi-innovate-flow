@@ -585,5 +585,36 @@
       "save": "حفظ",
       "cancel": "إلغاء"
     }
-  }
+  },
+  "ai": {
+    "assistant_title": "المساعد الذكي",
+    "analyze": "تحليل",
+    "suggest": "اقتراح",
+    "summarize": "ملخص", 
+    "optimize": "تحسين",
+    "query_placeholder": "اسألني أي شيء عن مساحة العمل...",
+    "auto_analysis_query": "تحليل عام للمساحة الرقمية",
+    "performance_analysis": "تحليل الأداء",
+    "improvement_suggestion": "اقتراح للتحسين",
+    "quick_query_template": "{{action}} المساحة الرقمية"
+  },
+  "analytics": {
+    "timeframe": {
+      "last_7_days": "آخر 7 أيام",
+      "last_30_days": "آخر 30 يوم",
+      "last_90_days": "آخر 90 يوم", 
+      "last_year": "آخر سنة"
+    }
+  },
+  "collaboration": {
+    "sample_user": "مستخدم تجريبي",
+    "file_updated": "قام بتحديث ملف",
+    "default_user": "مستخدم"
+  },
+  "files": {
+    "sample_file_1": "تقرير المشروع.pdf",
+    "sample_file_2": "عرض تقديمي.pptx", 
+    "sample_file_3": "صورة المخطط.png"
+  },
+  "locale": "ar-SA"
 }

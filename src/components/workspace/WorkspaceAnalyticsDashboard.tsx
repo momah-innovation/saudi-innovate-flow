@@ -48,10 +48,10 @@ export const WorkspaceAnalyticsDashboard: React.FC<WorkspaceAnalyticsDashboardPr
   })
 
   const availableTimeRanges = [
-    { label: 'آخر 7 أيام', value: '7d' },
-    { label: 'آخر 30 يوم', value: '30d' },
-    { label: 'آخر 90 يوم', value: '90d' },
-    { label: 'آخر سنة', value: '1y' }
+    { label: t('workspace.analytics.timeframe.last_7_days'), value: '7d' },
+    { label: t('workspace.analytics.timeframe.last_30_days'), value: '30d' },
+    { label: t('workspace.analytics.timeframe.last_90_days'), value: '90d' },
+    { label: t('workspace.analytics.timeframe.last_year'), value: '1y' }
   ]
 
   const handleExport = async (format: 'csv' | 'json') => {
@@ -284,7 +284,7 @@ export const WorkspaceAnalyticsDashboard: React.FC<WorkspaceAnalyticsDashboardPr
                 <div className="pt-4 border-t">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    {t('workspace.analytics.last_updated')} {new Date().toLocaleString('ar-SA')}
+                    {t('workspace.analytics.last_updated')} {new Date().toLocaleString(t('locale'))}
                   </div>
                 </div>
               </CardContent>
