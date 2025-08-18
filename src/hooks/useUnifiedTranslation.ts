@@ -169,6 +169,10 @@ export function useUnifiedTranslation() {
           if (isValid(rPlain)) return rPlain;
         }
 
+        // Final attempt: try key within the 'workspace' namespace
+        const rWsAny = i18nextT(key, { ...interpolationOptions, ns: 'workspace' }) as string;
+        if (isValid(rWsAny)) return rWsAny;
+
         // If nothing returned a valid translation, let fallback strategy handle it
       } catch (e) {
         debugLog.warn('i18next error', { error: e });
