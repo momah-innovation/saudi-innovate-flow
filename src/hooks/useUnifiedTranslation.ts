@@ -87,31 +87,30 @@ export function useUnifiedTranslation() {
 
       // Strategy 1: i18next translation (static files) - Primary source
       try {
-        let i18nextResult: string;
+        let i18nextResult: string = '';
+        const tried: string[] = [];
+        const isValid = (val: any) => typeof val === 'string' && val.trim() !== '' && !tried.includes(val) && !val.includes('.');
 
-        // Special-case mapping: workspace namespace keys 
+        // Special-case mapping: workspace namespace keys
         const workspaceLikePrefixes = ['workspace_selection', 'workspace_types', 'workspace.'];
         if (workspaceLikePrefixes.some((p) => resolvedKey.startsWith(p))) {
-          // Try with full key inside workspace namespace
-          i18nextResult = i18nextT(resolvedKey, { ...interpolationOptions, ns: 'workspace' }) as string;
-          // If unresolved, try with variations (strip namespace prefix / fix aliases)
-          if (!i18nextResult || i18nextResult === resolvedKey) {
-            // 1) Strip leading "workspace." if present
-            const stripped = resolvedKey.replace(/^workspace\./, '');
-            const tryStripped = i18nextT(stripped, { ...interpolationOptions, ns: 'workspace' }) as string;
-            if (tryStripped && tryStripped !== resolvedKey) {
-              i18nextResult = tryStripped;
-            }
-          }
-          if (!i18nextResult || i18nextResult === resolvedKey) {
-            // 2) Map org -> organization if present
-            const orgFixed = resolvedKey.replace(/^workspace\.org\./, 'workspace.organization.');
-            if (orgFixed !== resolvedKey) {
-              const tryOrg = i18nextT(orgFixed, { ...interpolationOptions, ns: 'workspace' }) as string;
-              if (tryOrg && tryOrg !== orgFixed) {
-                i18nextResult = tryOrg;
-              }
-            }
+          // 1) Try full key inside workspace namespace
+          tried.push(resolvedKey);
+          const r1 = i18nextT(resolvedKey, { ...interpolationOptions, ns: 'workspace' }) as string;
+          if (isValid(r1)) return r1;
+
+          // 2) Strip leading "workspace." and try inside workspace namespace
+          const stripped = resolvedKey.replace(/^workspace\./, '');
+          tried.push(stripped);
+          const r2 = i18nextT(stripped, { ...interpolationOptions, ns: 'workspace' }) as string;
+          if (isValid(r2)) return r2;
+
+          // 3) Map org -> organization and try again
+          const orgFixed = resolvedKey.replace(/^workspace\.org\./, 'workspace.organization.');
+          if (orgFixed !== resolvedKey) {
+            tried.push(orgFixed);
+            const r3 = i18nextT(orgFixed, { ...interpolationOptions, ns: 'workspace' }) as string;
+            if (isValid(r3)) return r3;
           }
 
         } else if (key.includes('.')) {
@@ -138,50 +137,40 @@ export function useUnifiedTranslation() {
           ) {
             const actualKey = parts.slice(1).join('.');
             // First try standard lookup within namespace
-            i18nextResult = i18nextT(actualKey, {
-              ...interpolationOptions,
-              ns: potentialNamespace,
-            }) as string;
+            tried.push(actualKey);
+            const rNs = i18nextT(actualKey, { ...interpolationOptions, ns: potentialNamespace }) as string;
+            if (isValid(rNs)) return rNs;
 
             // Workspace namespace requires nested prefix in our JSON (workspace.*)
-            if (potentialNamespace === 'workspace' && (!i18nextResult || i18nextResult === actualKey)) {
+            if (potentialNamespace === 'workspace') {
               // Try with nested prefix
               const nestedKey = `workspace.${actualKey}`;
-              const tryNested = i18nextT(nestedKey, { ...interpolationOptions, ns: 'workspace' }) as string;
-              if (tryNested && tryNested !== nestedKey) {
-                i18nextResult = tryNested;
-              } else {
-                // Also handle shorthand org -> organization
-                const orgFixedNested = nestedKey.replace(/^workspace\.org\./, 'workspace.organization.');
-                if (orgFixedNested !== nestedKey) {
-                  const tryOrgNested = i18nextT(orgFixedNested, { ...interpolationOptions, ns: 'workspace' }) as string;
-                  if (tryOrgNested && tryOrgNested !== orgFixedNested) {
-                    i18nextResult = tryOrgNested;
-                  }
-                }
+              tried.push(nestedKey);
+              const rNested = i18nextT(nestedKey, { ...interpolationOptions, ns: 'workspace' }) as string;
+              if (isValid(rNested)) return rNested;
+
+              // Also handle shorthand org -> organization
+              const orgFixedNested = nestedKey.replace(/^workspace\.org\./, 'workspace.organization.');
+              if (orgFixedNested !== nestedKey) {
+                tried.push(orgFixedNested);
+                const rOrgNested = i18nextT(orgFixedNested, { ...interpolationOptions, ns: 'workspace' }) as string;
+                if (isValid(rOrgNested)) return rOrgNested;
               }
             }
           } else {
-            // No namespace detected, use key as-is
-            i18nextResult = i18nextT(key, interpolationOptions) as string;
+            // No recognized namespace, use key as-is
+            tried.push(key);
+            const rPlain = i18nextT(key, interpolationOptions) as string;
+            if (isValid(rPlain)) return rPlain;
           }
         } else {
           // No namespace, use key as-is
-          i18nextResult = i18nextT(key, interpolationOptions) as string;
+          tried.push(key);
+          const rPlain = i18nextT(key, interpolationOptions) as string;
+          if (isValid(rPlain)) return rPlain;
         }
 
-        // Check if we got a valid translation (not the key itself)
-        if (i18nextResult && i18nextResult !== resolvedKey && i18nextResult !== key && typeof i18nextResult === 'string') {
-          return i18nextResult;
-        }
-
-        // Also try with defaultValue if fallback is provided
-        if (fallback) {
-          const i18nextWithFallback = i18nextT(key, { ...interpolationOptions, defaultValue: fallback });
-          if (i18nextWithFallback && i18nextWithFallback !== key && typeof i18nextWithFallback === 'string') {
-            return i18nextWithFallback;
-          }
-        }
+        // If nothing returned a valid translation, let fallback strategy handle it
       } catch (e) {
         debugLog.warn('i18next error', { error: e });
       }
