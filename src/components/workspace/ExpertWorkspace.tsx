@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
-import { useUserWorkspaceData } from '@/hooks/useUserWorkspaceData';
+import { useExpertWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
 import { useWorkspaceNotifications } from '@/hooks/useWorkspaceNotifications';
 import { 
@@ -32,14 +32,9 @@ export const ExpertWorkspace: React.FC<ExpertWorkspaceProps> = ({ userId }) => {
   });
 
   const { 
-    workspaceData,
-    userMetrics,
+    data: workspaceData,
     isLoading: isDataLoading 
-  } = useUserWorkspaceData({
-    workspaceType: 'expert',
-    workspaceId: `expert-${userId}`,
-    userId
-  });
+  } = useExpertWorkspaceData();
 
   const {
     data: analytics,
@@ -47,7 +42,7 @@ export const ExpertWorkspace: React.FC<ExpertWorkspaceProps> = ({ userId }) => {
   } = useWorkspaceAnalytics({
     workspaceType: 'expert',
     workspaceId: `expert-${userId}`,
-    timeRange: '30d'
+    timeframe: '30d'
   });
 
   if (isDataLoading || isAnalyticsLoading) {

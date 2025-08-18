@@ -1,251 +1,226 @@
 import React, { useState } from 'react';
-import { WorkspaceLayout } from './WorkspaceLayout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
+import { useOrganizationWorkspaceData } from '@/hooks/useWorkspaceData';
+import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
 import { 
   Building2, 
-  Users, 
-  Target, 
   TrendingUp, 
-  Calendar, 
-  MessageSquare,
-  Settings,
-  BarChart3,
+  Users, 
+  Shield,
   FileText,
-  UserPlus
+  Target,
+  BarChart3,
+  AlertTriangle,
+  CheckCircle,
+  Globe,
+  Settings,
+  Award,
+  Calendar,
+  DollarSign
 } from 'lucide-react';
 
 interface OrganizationWorkspaceProps {
-  organizationId?: string;
+  userId: string;
 }
 
-export const OrganizationWorkspace: React.FC<OrganizationWorkspaceProps> = ({
-  organizationId = 'org-1'
-}) => {
-  const [activeTab, setActiveTab] = useState('overview');
+export const OrganizationWorkspace: React.FC<OrganizationWorkspaceProps> = ({ userId }) => {
+  const [activeTab, setActiveTab] = useState('strategic');
+  
+  const { tw, isRTL } = useWorkspaceTranslations({
+    workspaceType: 'organization',
+    dynamicContent: true,
+    fallbackStrategy: 'english'
+  });
 
-  // Mock organization data
-  const organizationData = {
-    name: 'الهيئة العامة للابتكار',
-    description: 'قيادة التحول الرقمي والابتكار في المملكة العربية السعودية',
-    memberCount: 156,
-    departmentCount: 12,
-    activeProjects: 24,
-    totalBudget: 15500000
+  const { 
+    data: workspaceData,
+    isLoading: isDataLoading 
+  } = useOrganizationWorkspaceData();
+
+  const {
+    data: analytics,
+    isLoading: isAnalyticsLoading
+  } = useWorkspaceAnalytics({
+    workspaceType: 'organization',
+    workspaceId: `organization-${userId}`,
+    timeframe: '30d'
+  });
+
+  const organizationStats = {
+    totalEmployees: workspaceData?.stats?.teamSize || 1247,
+    activeDepartments: 12,
+    activeProjects: workspaceData?.stats?.activeChallenges || 45,
+    complianceScore: 96,
+    innovationIndex: 8.7,
+    digitalMaturity: 85
   };
 
-  const quickActions = [
-    { icon: UserPlus, label: 'إضافة عضو', variant: 'default' as const, onClick: () => {} },
-    { icon: MessageSquare, label: 'إرسال إعلان', variant: 'outline' as const, onClick: () => {} },
-    { icon: FileText, label: 'تقرير جديد', variant: 'outline' as const, onClick: () => {} },
-    { icon: Settings, label: 'إعدادات المؤسسة', variant: 'outline' as const, onClick: () => {} }
-  ];
-
-  const stats = [
-    { label: 'إجمالي الأعضاء', value: '156', icon: Users, trend: 'up' as const },
-    { label: 'الأقسام', value: '12', icon: Building2, trend: 'neutral' as const },
-    { label: 'المشاريع النشطة', value: '24', icon: Target, trend: 'up' as const },
-    { label: 'الميزانية المخصصة', value: '15.5M ريال', icon: TrendingUp, trend: 'up' as const }
-  ];
-
-  const departments = [
-    { id: '1', name: 'قسم التكنولوجيا المالية', head: 'أحمد السعيد', members: 23, budget: '3.2M' },
-    { id: '2', name: 'قسم الذكاء الاصطناعي', head: 'فاطمة الأحمد', members: 18, budget: '4.1M' },
-    { id: '3', name: 'قسم البيانات والتحليلات', head: 'محمد العلي', members: 15, budget: '2.8M' },
-    { id: '4', name: 'قسم أمن المعلومات', head: 'سارة المحمد', members: 12, budget: '2.3M' }
-  ];
-
-  const recentActivities = [
-    { id: '1', user: 'أحمد السعيد', action: 'أضاف مشروع جديد', target: 'منصة المدفوعات الرقمية', time: 'منذ 30 دقيقة' },
-    { id: '2', user: 'فاطمة الأحمد', action: 'نشرت تقريراً', target: 'تقرير الذكاء الاصطناعي Q1', time: 'منذ ساعة' },
-    { id: '3', user: 'محمد العلي', action: 'عدّل ميزانية', target: 'قسم البيانات', time: 'منذ ساعتين' },
-    { id: '4', user: 'سارة المحمد', action: 'أكملت مراجعة', target: 'بروتوكول الأمان الجديد', time: 'منذ 3 ساعات' }
-  ];
+  if (isDataLoading || isAnalyticsLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
-    <WorkspaceLayout
-      title="مساحة عمل المؤسسة"
-      description={organizationData.description}
-      userRole="مدير المؤسسة"
-      stats={stats}
-      quickActions={quickActions}
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
-              <TabsTrigger value="departments">الأقسام</TabsTrigger>
-              <TabsTrigger value="projects">المشاريع</TabsTrigger>
-              <TabsTrigger value="analytics">التحليلات</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="overview" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Building2 className="h-5 w-5" />
-                    معلومات المؤسسة
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <div className="text-sm text-muted-foreground">اسم المؤسسة</div>
-                      <div className="font-medium">{organizationData.name}</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground">عدد الأعضاء</div>
-                      <div className="font-medium">{organizationData.memberCount} عضو</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground">عدد الأقسام</div>
-                      <div className="font-medium">{organizationData.departmentCount} قسم</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground">المشاريع النشطة</div>
-                      <div className="font-medium">{organizationData.activeProjects} مشروع</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    أداء الأقسام
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {departments.map((dept) => (
-                      <div key={dept.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarFallback>{dept.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="font-medium">{dept.name}</div>
-                            <div className="text-sm text-muted-foreground">رئيس القسم: {dept.head}</div>
-                          </div>
-                        </div>
-                        <div className="text-left">
-                          <Badge variant="secondary">{dept.members} عضو</Badge>
-                          <div className="text-sm text-muted-foreground mt-1">{dept.budget}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="departments" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>إدارة الأقسام</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {departments.map((dept) => (
-                      <Card key={dept.id}>
-                        <CardContent className="p-4">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h3 className="font-semibold">{dept.name}</h3>
-                              <p className="text-sm text-muted-foreground">رئيس القسم: {dept.head}</p>
-                              <div className="flex gap-2 mt-2">
-                                <Badge variant="outline">{dept.members} عضو</Badge>
-                                <Badge variant="secondary">الميزانية: {dept.budget}</Badge>
-                              </div>
-                            </div>
-                            <Button variant="outline" size="sm">
-                              إدارة القسم
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="projects" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>المشاريع النشطة</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Target className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>سيتم عرض المشاريع النشطة هنا</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="analytics" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>تحليلات الأداء</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-8 text-muted-foreground">
-                    <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>سيتم عرض التحليلات والإحصائيات هنا</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+    <div className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">
+            {tw('header.organization_dashboard')}
+          </h1>
+          <p className="text-muted-foreground">
+            {tw('header.strategic_overview')}
+          </p>
         </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm">
+            <FileText className="w-4 h-4 mr-2" />
+            {tw('actions.generate_report')}
+          </Button>
+          <Button size="sm">
+            <Settings className="w-4 h-4 mr-2" />
+            {tw('actions.manage_policies')}
+          </Button>
+        </div>
+      </div>
 
-        <div className="space-y-6">
+      {/* Organization Performance Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  {tw('stats.total_employees')}
+                </p>
+                <p className="text-2xl font-bold text-foreground">
+                  {organizationStats.totalEmployees.toLocaleString()}
+                </p>
+              </div>
+              <Users className="w-8 h-8 text-primary" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  {tw('stats.compliance_score')}
+                </p>
+                <p className="text-2xl font-bold text-foreground">
+                  {organizationStats.complianceScore}%
+                </p>
+              </div>
+              <Shield className="w-8 h-8 text-primary" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  {tw('stats.innovation_index')}
+                </p>
+                <p className="text-2xl font-bold text-foreground">
+                  {organizationStats.innovationIndex}/10
+                </p>
+              </div>
+              <Award className="w-8 h-8 text-primary" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  {tw('stats.digital_maturity')}
+                </p>
+                <p className="text-2xl font-bold text-foreground">
+                  {organizationStats.digitalMaturity}%
+                </p>
+              </div>
+              <Globe className="w-8 h-8 text-primary" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Main Content Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="strategic">{tw('tabs.strategic_dashboard')}</TabsTrigger>
+          <TabsTrigger value="analytics">{tw('tabs.analytics')}</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="strategic" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
-                النشاطات الأخيرة
+                <Target className="w-5 h-5" />
+                {tw('strategic.overview')}
               </CardTitle>
+              <CardDescription>{tw('strategic.description')}</CardDescription>
             </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-80">
-                <div className="space-y-4">
-                  {recentActivities.map((activity) => (
-                    <div key={activity.id} className="flex gap-3 text-sm">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback>{activity.user.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <p>
-                          <span className="font-medium">{activity.user}</span> {activity.action}{' '}
-                          <span className="text-primary">{activity.target}</span>
-                        </p>
-                        <p className="text-muted-foreground text-xs">{activity.time}</p>
-                      </div>
-                    </div>
-                  ))}
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-medium mb-2">{tw('strategic.active_challenges')}</h4>
+                  <p className="text-2xl font-bold text-primary">{workspaceData?.challenges?.length || 0}</p>
+                  <p className="text-sm text-muted-foreground">{tw('strategic.challenges_description')}</p>
                 </div>
-              </ScrollArea>
+                
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-medium mb-2">{tw('strategic.total_submissions')}</h4>
+                  <p className="text-2xl font-bold text-primary">{workspaceData?.submissions?.length || 0}</p>
+                  <p className="text-sm text-muted-foreground">{tw('strategic.submissions_description')}</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
+        </TabsContent>
 
-          <WorkspaceCollaboration
-            workspaceType="organization"
-            entityId={organizationId}
-            showWidget={true}
-            showPresence={true}
-            showActivity={true}
-          />
-        </div>
-      </div>
-    </WorkspaceLayout>
+        <TabsContent value="analytics" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="w-5 h-5" />
+                {tw('analytics.organization_metrics')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>{tw('analytics.digital_transformation')}</span>
+                  <span className="font-medium">{organizationStats.digitalMaturity}%</span>
+                </div>
+                <Progress value={organizationStats.digitalMaturity} className="h-2" />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>{tw('analytics.compliance_score')}</span>
+                  <span className="font-medium">{organizationStats.complianceScore}%</span>
+                </div>
+                <Progress value={organizationStats.complianceScore} className="h-2" />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };

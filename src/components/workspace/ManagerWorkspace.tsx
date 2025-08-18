@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
-import { useUserWorkspaceData } from '@/hooks/useUserWorkspaceData';
+import { useTeamWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
 import { 
   Users, 
@@ -32,20 +32,15 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
   const [activeTab, setActiveTab] = useState('dashboard');
   
   const { tw, isRTL } = useWorkspaceTranslations({
-    workspaceType: 'manager',
+    workspaceType: 'team',
     dynamicContent: true,
     fallbackStrategy: 'english'
   });
 
   const { 
-    workspaceData,
-    userMetrics,
+    data: workspaceData,
     isLoading: isDataLoading 
-  } = useUserWorkspaceData({
-    workspaceType: 'team',
-    workspaceId: `manager-${userId}`,
-    userId
-  });
+  } = useTeamWorkspaceData();
 
   const {
     data: analytics,
@@ -53,16 +48,16 @@ export const ManagerWorkspace: React.FC<ManagerWorkspaceProps> = ({ userId }) =>
   } = useWorkspaceAnalytics({
     workspaceType: 'team',
     workspaceId: `manager-${userId}`,
-    timeRange: '30d'
+    timeframe: '30d'
   });
 
   const managerStats = {
-    totalTeamMembers: userMetrics?.totalTeamMembers || 24,
-    activeProjects: userMetrics?.activeProjects || 8,
-    completedTasks: userMetrics?.completedTasks || 156,
-    pendingTasks: userMetrics?.pendingTasks || 23,
-    teamPerformance: userMetrics?.teamPerformance || 87,
-    resourceUtilization: userMetrics?.resourceUtilization || 78
+    totalTeamMembers: workspaceData?.stats?.teamMembers || 24,
+    activeProjects: workspaceData?.stats?.activeAssignments || 8,
+    completedTasks: workspaceData?.stats?.completedTasks || 156,
+    pendingTasks: 23,
+    teamPerformance: 87,
+    resourceUtilization: 78
   };
 
   const teamMembers = [

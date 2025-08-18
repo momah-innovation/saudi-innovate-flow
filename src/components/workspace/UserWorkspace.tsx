@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useWorkspaceTranslations } from '@/hooks/useWorkspaceTranslations';
-import { useUserWorkspaceData } from '@/hooks/useUserWorkspaceData';
+import { useUserWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useWorkspaceAnalytics } from '@/hooks/useWorkspaceAnalytics';
 import { useWorkspaceNotifications } from '@/hooks/useWorkspaceNotifications';
 import { 
@@ -35,14 +35,9 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
   });
 
   const { 
-    workspaceData,
-    userMetrics,
+    data: workspaceData,
     isLoading: isDataLoading 
-  } = useUserWorkspaceData({
-    workspaceType: 'user',
-    workspaceId: `user-${userId}`,
-    userId
-  });
+  } = useUserWorkspaceData();
 
   const {
     data: analytics,
@@ -50,7 +45,7 @@ export const UserWorkspace: React.FC<UserWorkspaceProps> = ({ userId }) => {
   } = useWorkspaceAnalytics({
     workspaceType: 'user',
     workspaceId: `user-${userId}`,
-    timeRange: '30d'
+    timeframe: '30d'
   });
 
   const {
