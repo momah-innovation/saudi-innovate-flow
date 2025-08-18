@@ -4,7 +4,6 @@ import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
-import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { usePartnerWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -118,9 +117,7 @@ export default function PartnerWorkspace() {
 
   if (isLoading) {
     return (
-      <>
-        <WorkspaceBreadcrumb />
-        <WorkspaceLayout
+      <WorkspaceLayout
         title={t('workspace.partner.title')}
         description={t('workspace.partner.description')}
         userRole={userProfile?.roles?.[0] || 'partner'}
@@ -130,14 +127,11 @@ export default function PartnerWorkspace() {
           <div className="h-64 bg-muted rounded-lg"></div>
         </div>
       </WorkspaceLayout>
-      </>
     );
   }
 
   return (
-    <>
-      <WorkspaceBreadcrumb />
-      <WorkspaceLayout
+    <WorkspaceLayout
       title={t('workspace.partner.title')}
       description={t('workspace.partner.description')}
       userRole={userProfile?.roles?.[0] || 'partner'}
@@ -178,12 +172,12 @@ export default function PartnerWorkspace() {
                         <div>
                           <h4 className="font-medium">{opportunity.title_ar}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.partner.deadline')}: {opportunity.deadline ? new Date(opportunity.deadline).toLocaleDateString(t('common.locale')) : t('common.placeholders.no_data')}
+                            {t('workspace.partner.deadline')}: {opportunity.deadline ? new Date(opportunity.deadline).toLocaleDateString('ar') : t('common.no_deadline')}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant="success">
-                            {opportunity.status?.startsWith('status.') ? t(opportunity.status) : t(`status.${opportunity.status}`) || opportunity.status}
+                            {opportunity.status}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('common.apply')}
@@ -220,7 +214,7 @@ export default function PartnerWorkspace() {
                         <div>
                           <h4 className="font-medium">{partnership.challenges?.title_ar}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('common.status_label')}: {partnership.challenges?.status?.startsWith('status.') ? t(partnership.challenges.status) : t(`status.${partnership.challenges?.status}`) || partnership.challenges?.status}
+                            {t('workspace.partner.status')}: {partnership.challenges?.status}
                           </p>
                         </div>
                         <Button variant="ghost" size="sm">
@@ -251,7 +245,7 @@ export default function PartnerWorkspace() {
                         <div>
                           <h4 className="font-medium">{application.id}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString(t('common.locale'))}
+                            {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString('ar')}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -259,7 +253,7 @@ export default function PartnerWorkspace() {
                             application.status === 'accepted' ? 'success' :
                             application.status === 'rejected' ? 'destructive' : 'secondary'
                           }>
-                            {application.status?.startsWith('status.') ? t(application.status) : t(`status.${application.status}`) || application.status}
+                            {application.status}
                           </Badge>
                           <Button variant="ghost" size="sm">
                             {t('common.view')}
@@ -301,6 +295,5 @@ export default function PartnerWorkspace() {
         showActivity={true}
       />
     </WorkspaceLayout>
-    </>
   );
 }

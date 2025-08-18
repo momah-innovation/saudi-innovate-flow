@@ -4,7 +4,6 @@ import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
-import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { useOrganizationWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -117,9 +116,7 @@ export default function OrganizationWorkspace() {
 
   if (isLoading) {
     return (
-      <>
-        <WorkspaceBreadcrumb />
-        <WorkspaceLayout
+      <WorkspaceLayout
         title={t('workspace.organization.title')}
         description={t('workspace.organization.description')}
         userRole={userProfile?.roles?.[0] || 'admin'}
@@ -128,15 +125,12 @@ export default function OrganizationWorkspace() {
           <div className="h-32 bg-muted rounded-lg"></div>
           <div className="h-64 bg-muted rounded-lg"></div>
         </div>
-        </WorkspaceLayout>
-      </>
+      </WorkspaceLayout>
     );
   }
 
   return (
-    <>
-      <WorkspaceBreadcrumb />
-      <WorkspaceLayout
+    <WorkspaceLayout
       title={t('workspace.organization.title')}
       description={t('workspace.organization.description')}
       userRole={userProfile?.roles?.[0] || 'admin'}
@@ -267,6 +261,5 @@ export default function OrganizationWorkspace() {
         showActivity={true}
       />
     </WorkspaceLayout>
-    </>
   );
 }

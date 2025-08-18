@@ -4,7 +4,6 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { TeamWorkspaceContent } from '@/components/admin/TeamWorkspaceContent';
 import { EnhancedTeamWorkspaceHero } from '@/components/team-workspace/EnhancedTeamWorkspaceHero';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
-import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
 import { Users, UserPlus, Calendar, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -23,7 +22,7 @@ export default function TeamWorkspace() {
     <>
       <Select>
         <SelectTrigger className="w-32">
-          <SelectValue placeholder={t('common.actions.export')} />
+          <SelectValue placeholder={t('export')} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="pdf">PDF</SelectItem>
@@ -33,7 +32,7 @@ export default function TeamWorkspace() {
       </Select>
       <Button variant="outline" className="gap-2">
         <Calendar className="w-4 h-4" />
-        {t('workspace.team.actions.create_project')}
+        {t('schedule')}
       </Button>
     </>
   );
@@ -43,25 +42,25 @@ export default function TeamWorkspace() {
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder={t('workspace.team.nav.projects')} />
+            <SelectValue placeholder={t('filterByProject')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{t('common.all')}</SelectItem>
-            <SelectItem value="active">{t('workspace.team.active_projects')}</SelectItem>
-            <SelectItem value="completed">{t('workspace.project_status.completed')}</SelectItem>
-            <SelectItem value="overdue">{t('workspace.project_status.delayed')}</SelectItem>
+            <SelectItem value="all">{t('allProjects')}</SelectItem>
+            <SelectItem value="active">{t('activeProjects')}</SelectItem>
+            <SelectItem value="completed">{t('completedProjects')}</SelectItem>
+            <SelectItem value="overdue">{t('overdueProjects')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder={t('workspace.team.nav.team_members')} />
+            <SelectValue placeholder={t('filterByTeam')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{t('common.all')}</SelectItem>
-            <SelectItem value="my_team">{t('workspace.team.team_members')}</SelectItem>
-            <SelectItem value="available">{t('workspace.team.metrics.active_projects')}</SelectItem>
+            <SelectItem value="all">{t('allTeams')}</SelectItem>
+            <SelectItem value="my_team">{t('myTeam')}</SelectItem>
+            <SelectItem value="available">{t('availableTeams')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -69,9 +68,7 @@ export default function TeamWorkspace() {
   );
 
   return (
-    <>
-      <WorkspaceBreadcrumb />
-      <AppShell>
+    <AppShell>
       <EnhancedTeamWorkspaceHero 
         totalTeams={5}
         activeProjects={8}
@@ -81,11 +78,11 @@ export default function TeamWorkspace() {
         onShowFilters={() => logger.info('Show filters requested', { component: 'TeamWorkspace', action: 'onShowFilters' })}
       />
       <PageLayout 
-        title={t('workspace.team.title')}
-        description={t('workspace.team.description')}
+        title={t('teamWorkspace')}
+        description={t('collaborativeWorkspaceForTeams')}
         itemCount={0}
         primaryAction={{
-          label: t('workspace.team.actions.invite_member'),
+          label: t('joinTeam'),
           onClick: () => {},
           icon: <UserPlus className="w-4 h-4" />
         }}
@@ -96,7 +93,7 @@ export default function TeamWorkspace() {
         showSearch={true}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-        searchPlaceholder={t('common.placeholders.search')}
+        searchPlaceholder={t('searchWorkspace')}
         filters={filters}
         spacing="md"
         maxWidth="full"
@@ -118,6 +115,5 @@ export default function TeamWorkspace() {
         showActivity={true}
       />
     </AppShell>
-    </>
   );
 }
