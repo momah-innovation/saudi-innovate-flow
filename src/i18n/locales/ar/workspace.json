@@ -1,4 +1,43 @@
 {
+  "workspace_selection": {
+    "title": "مساحات العمل",
+    "subtitle": "اختر نوع مساحة العمل المناسبة لك",
+    "enter": "دخول",
+    "invalid_type": "نوع مساحة العمل غير صحيح",
+    "invalid_description": "نوع مساحة العمل المطلوبة غير متاح: {type}"
+  },
+  "workspace_types": {
+    "personal": {
+      "title": "مساحة العمل الشخصية",
+      "description": "إدارة أفكارك ومشاريعك الشخصية"
+    },
+    "expert": {
+      "title": "مساحة الخبراء",
+      "description": "تقييم وإرشاد الأفكار المبتكرة"
+    },
+    "organization": {
+      "title": "مساحة المؤسسة",
+      "description": "إدارة الابتكار على مستوى المؤسسة"
+    },
+    "partner": {
+      "title": "مساحة الشركاء",
+      "description": "التعاون مع الشركاء الخارجيين"
+    },
+    "admin": {
+      "title": "مساحة الإدارة",
+      "description": "إدارة النظام والمستخدمين"
+    },
+    "team": {
+      "title": "مساحة الفريق",
+      "description": "العمل التعاوني مع الفريق"
+    }
+  },
+  "mock_data": {
+    "sample_member": "عضو الفريق {number}",
+    "sample_project": "مشروع تجريبي {number}",
+    "sample_task": "مهمة تجريبية {number}",
+    "sample_deadline": "موعد نهائي تجريبي {number}"
+  },
   "workspace": {
     "user": {
       "title": "مساحة العمل الشخصية",

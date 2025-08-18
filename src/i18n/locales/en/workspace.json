@@ -1,4 +1,43 @@
 {
+  "workspace_selection": {
+    "title": "Workspaces",
+    "subtitle": "Choose the workspace type that suits you",
+    "enter": "Enter",
+    "invalid_type": "Invalid workspace type",
+    "invalid_description": "The requested workspace type is not available: {type}"
+  },
+  "workspace_types": {
+    "personal": {
+      "title": "Personal Workspace",
+      "description": "Manage your ideas and personal projects"
+    },
+    "expert": {
+      "title": "Expert Workspace", 
+      "description": "Evaluate and guide innovative ideas"
+    },
+    "organization": {
+      "title": "Organization Workspace",
+      "description": "Manage innovation at the organizational level"
+    },
+    "partner": {
+      "title": "Partner Workspace",
+      "description": "Collaborate with external partners"
+    },
+    "admin": {
+      "title": "Admin Workspace",
+      "description": "Manage system and users"
+    },
+    "team": {
+      "title": "Team Workspace",
+      "description": "Collaborative work with the team"
+    }
+  },
+  "mock_data": {
+    "sample_member": "Team Member {number}",
+    "sample_project": "Sample Project {number}",
+    "sample_task": "Sample Task {number}",
+    "sample_deadline": "Sample Deadline {number}"
+  },
   "workspace": {
     "user": {
       "title": "Personal Workspace",
