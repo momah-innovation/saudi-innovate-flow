@@ -143,7 +143,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
   };
 
   const breadcrumbs = [
-    { label: 'Workspaces', href: '/workspaces' },
+    { label: 'Workspaces', href: '/workspace' },
     { 
       label: currentWorkspace?.name || `${workspaceType} Workspace`, 
       current: true 
