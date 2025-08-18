@@ -68,7 +68,7 @@ export const LiveEngagementMonitor: React.FC = () => {
   } = useAnalytics({
     filters: { timeframe: '7d' },
     autoRefresh: isRealTimeEnabled,
-    refreshInterval: 60 * 1000 // 60 seconds for live monitoring (reduced from 30s)
+    refreshInterval: 2 * 60 * 1000 // 2 minutes for live monitoring (reduced from 60s to balance performance)
   });
 
   // Transform analytics data to live metrics

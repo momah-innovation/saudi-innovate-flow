@@ -131,18 +131,19 @@ const hasAccess = useMemo(() => ({
     }
   }, [fetchMetrics, user?.id]);
 
-  // Auto-refresh setup
+  // Auto-refresh setup with improved performance
   useEffect(() => {
-    if (!autoRefresh || !user?.id) return;
+    if (!autoRefresh || !user?.id || isLoading || isRefreshing) return;
 
     const intervalId = setInterval(() => {
-      if (!isLoading && !isRefreshing) {
+      // Only refresh if component is still mounted and user is active
+      if (!isLoading && !isRefreshing && document.visibilityState === 'visible') {
         refresh();
       }
     }, refreshInterval);
 
     return () => clearInterval(intervalId);
-  }, [autoRefresh, refreshInterval, user?.id, isLoading, isRefreshing, refresh]);
+  }, [autoRefresh, refreshInterval, user?.id, refresh]); // Removed isLoading and isRefreshing
 
   return {
     coreMetrics,

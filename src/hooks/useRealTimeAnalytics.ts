@@ -120,12 +120,17 @@ export const useRealTimeAnalytics = ({ opportunityId, onAnalyticsUpdate }: RealT
 
   const refreshAnalytics = async () => {
     try {
-      // Simplified analytics refresh - avoid expensive RPC call
-      const { data: analyticsData } = await supabase
+      // Throttled analytics refresh - avoid expensive operations
+      const { data: analyticsData, error } = await supabase
         .from('opportunity_analytics')
-        .select('*')
+        .select('view_count, like_count, application_count, share_count')
         .eq('opportunity_id', opportunityId)
         .maybeSingle();
+      
+      if (error) {
+        logger.warn('Analytics refresh failed', { opportunityId, error: error.message });
+        return;
+      }
       
       if (analyticsData) {
         const updatedAnalytics = {

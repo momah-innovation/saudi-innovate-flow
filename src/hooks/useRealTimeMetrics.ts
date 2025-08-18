@@ -129,12 +129,12 @@ export const useRealTimeMetrics = (
     return clearTimer;
   }, [enabled, refreshInterval]);
 
-  // Handle visibility change to pause/resume updates
+  // Handle visibility change to pause/resume updates with better performance
   useEffect(() => {
     if (!enabled) return;
 
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === 'visible' && !isLoading) {
         // Resume updates when tab becomes visible
         fetchRealTimeStats();
       }
@@ -142,7 +142,7 @@ export const useRealTimeMetrics = (
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [enabled, fetchRealTimeStats]);
+  }, [enabled]); // Removed fetchRealTimeStats dependency
 
   // Cleanup on unmount
   useEffect(() => {
