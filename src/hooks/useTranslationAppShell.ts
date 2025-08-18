@@ -16,7 +16,7 @@ export const useTranslationAppShell = () => {
   } catch (error) {
     // Handle case where hook is called outside Router context
     // This can happen during app initialization
-    debugLog.warn('Translation AppShell: Router context not available yet', { component: 'TranslationAppShell' });
+    // Silently skip until Router is mounted
     return;
   }
 

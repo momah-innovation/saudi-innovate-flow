@@ -11,7 +11,7 @@ import { WorkspaceSidebar } from './WorkspaceSidebar';
 import { WorkspaceHeader } from './WorkspaceHeader';
 import { WorkspaceBreadcrumb } from './WorkspaceBreadcrumb';
 import { WorkspaceNotifications } from './WorkspaceNotifications';
-import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
+// import { RealTimeCollaborationWrapper } from '@/components/collaboration/RealTimeCollaborationWrapper';
 import { AlertCircle, Settings, Users, Activity, FileText, Calendar } from 'lucide-react';
 import type { WorkspaceType } from '@/types/workspace';
 
@@ -116,13 +116,7 @@ export function EnhancedWorkspaceLayout({
   const allActions = [...actions, ...defaultActions];
 
   return (
-    <RealTimeCollaborationWrapper
-      contextType="team"
-      contextId={workspaceId}
-      entityType={workspaceType}
-      entityId={workspaceId}
-      showWidget={showCollaboration}
-    >
+    <>
       <SidebarProvider defaultOpen={!sidebarCollapsed}>
         <div className={cn("min-h-screen flex w-full bg-background", className)}>
           {/* Workspace Sidebar */}
@@ -192,6 +186,6 @@ export function EnhancedWorkspaceLayout({
           </div>
         </div>
       </SidebarProvider>
-    </RealTimeCollaborationWrapper>
+    </>
   );
 }
