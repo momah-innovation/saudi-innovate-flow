@@ -12,8 +12,8 @@ const getToastLimit = async (): Promise<number> => {
       .from('system_settings')
       .select('setting_value')
       .eq('setting_key', 'notification_toast_limit')
-      .single();
-    return data ? parseInt(String(data.setting_value)) : 1;
+      .maybeSingle();
+    return data && data.setting_value != null ? parseInt(String(data.setting_value)) : 1;
   } catch {
     return 1;
   }
