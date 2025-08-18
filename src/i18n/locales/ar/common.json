@@ -233,6 +233,7 @@
   "apply": "تقديم",
   "manage": "إدارة",
   "locale": "ar-SA",
+  "status": "الحالة",
   "search_placeholder": "البحث...",
   "validation": {
     "validation_error": "خطأ في التحقق",

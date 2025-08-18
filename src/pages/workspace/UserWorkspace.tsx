@@ -158,7 +158,7 @@ export default function UserWorkspace() {
                         <div>
                           <h4 className="font-medium">{getDynamicText(idea.title_ar, idea.title_en)}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('common.status')}: {t(`status.${idea.status}`) || idea.status}
+                            {t('common.status')}: {idea.status?.startsWith('status.') ? t(idea.status) : t(`status.${idea.status}`) || idea.status}
                           </p>
                         </div>
                         <Button variant="ghost" size="sm">
@@ -195,7 +195,7 @@ export default function UserWorkspace() {
                         <div>
 <h4 className="font-medium">{getDynamicText(participation.challenges?.title_ar, (participation.challenges as any)?.title_en)}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('common.status')}: {t(`status.${participation.challenges?.status}`) || participation.challenges?.status}
+                            {t('common.status')}: {participation.challenges?.status?.startsWith('status.') ? t(participation.challenges.status) : t(`status.${participation.challenges?.status}`) || participation.challenges?.status}
                           </p>
                         </div>
                         <Button variant="ghost" size="sm">

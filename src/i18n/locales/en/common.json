@@ -155,6 +155,7 @@
   "apply": "Apply",
   "manage": "Manage",
   "locale": "en-US",
+  "status": "Status",
   "focusQuestionTypes": {
     "general": "General",
     "technical": "Technical",
