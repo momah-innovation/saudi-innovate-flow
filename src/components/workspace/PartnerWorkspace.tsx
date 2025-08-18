@@ -43,53 +43,53 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
 
   // Mock partner data
   const partnerData = {
-    name: 'شركة التقنية المتقدمة',
-    type: 'شركة تقنية',
-    industry: 'التكنولوجيا المالية',
+    name: t('workspace.partner.sample_company'),
+    type: t('workspace.partner.company_type'),
+    industry: t('workspace.partner.industry'),
     partnershipStart: '2023-01-15',
     totalProjects: 8,
     activeProjects: 3,
     totalInvestment: 5200000,
-    partnershipLevel: 'استراتيجي'
+    partnershipLevel: t('workspace.partner.strategic_level')
   };
 
   const quickActions = [
-    { icon: Plus, label: 'مشروع جديد', variant: 'default' as const, onClick: () => {} },
-    { icon: MessageSquare, label: 'تواصل مباشر', variant: 'outline' as const, onClick: () => {} },
-    { icon: FileText, label: 'عقد جديد', variant: 'outline' as const, onClick: () => {} },
-    { icon: Settings, label: 'إعدادات الشراكة', variant: 'outline' as const, onClick: () => {} }
+    { icon: Plus, label: t('workspace.partner.actions.new_project'), variant: 'default' as const, onClick: () => {} },
+    { icon: MessageSquare, label: t('workspace.partner.actions.direct_contact'), variant: 'outline' as const, onClick: () => {} },
+    { icon: FileText, label: t('workspace.partner.actions.new_contract'), variant: 'outline' as const, onClick: () => {} },
+    { icon: Settings, label: t('workspace.partner.actions.partnership_settings'), variant: 'outline' as const, onClick: () => {} }
   ];
 
   const stats = [
-    { label: 'مدة الشراكة', value: '18 شهراً', icon: HandHeart, trend: 'neutral' as const },
-    { label: 'المشاريع النشطة', value: '3', icon: Target, trend: 'up' as const },
-    { label: 'إجمالي الاستثمار', value: '5.2M ريال', icon: DollarSign, trend: 'up' as const },
-    { label: 'معدل النجاح', value: '87%', icon: TrendingUp, trend: 'up' as const }
+    { label: t('workspace.partner.stats.partnership_duration'), value: t('workspace.partner.stats.duration_months'), icon: HandHeart, trend: 'neutral' as const },
+    { label: t('workspace.partner.stats.active_projects'), value: '3', icon: Target, trend: 'up' as const },
+    { label: t('workspace.partner.stats.total_investment'), value: t('workspace.partner.stats.investment_amount'), icon: DollarSign, trend: 'up' as const },
+    { label: t('workspace.partner.stats.success_rate'), value: '87%', icon: TrendingUp, trend: 'up' as const }
   ];
 
   const projects = [
     { 
       id: '1', 
-      name: 'منصة المدفوعات الذكية', 
-      status: 'قيد التطوير', 
+      name: t('workspace.partner.projects.smart_payments'), 
+      status: t('workspace.partner.project_status.in_development'), 
       progress: 75, 
       budget: '2.1M', 
       deadline: '2024-03-15',
-      team: ['أحمد', 'فاطمة', 'محمد']
+      team: [t('mock_data.sample_member_1'), t('mock_data.sample_member_2'), t('mock_data.sample_member_3')]
     },
     { 
       id: '2', 
-      name: 'نظام إدارة الهوية الرقمية', 
-      status: 'اختبار', 
+      name: t('workspace.partner.projects.digital_identity'), 
+      status: t('workspace.partner.project_status.testing'), 
       progress: 90, 
       budget: '1.8M', 
       deadline: '2024-02-28',
-      team: ['سارة', 'علي', 'مريم']
+      team: [t('mock_data.sample_member_3'), t('mock_data.sample_member_1'), t('mock_data.sample_member_2')]
     },
     { 
       id: '3', 
-      name: 'تطبيق الخدمات المصرفية', 
-      status: 'تخطيط', 
+      name: t('workspace.partner.projects.banking_app'), 
+      status: t('workspace.partner.project_status.planning'), 
       progress: 25, 
       budget: '3.2M', 
       deadline: '2024-06-30',
@@ -116,9 +116,9 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
 
   return (
     <WorkspaceLayout
-      title="مساحة عمل الشريك"
-      description={`شراكة استراتيجية مع ${partnerData.name}`}
-      userRole="مدير الشراكات"
+      title={t('workspace.partner.title')}
+      description={t('workspace.partner.description', { companyName: partnerData.name })}
+      userRole={t('workspace.partner.role')}
       stats={stats}
       quickActions={quickActions}
     >
@@ -143,27 +143,27 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm text-muted-foreground">اسم الشريك</div>
+                      <div className="text-sm text-muted-foreground">{t('workspace.partner.labels.partner_name')}</div>
                       <div className="font-medium">{partnerData.name}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">نوع الشراكة</div>
+                      <div className="text-sm text-muted-foreground">{t('workspace.partner.labels.partnership_type')}</div>
                       <Badge variant="outline">{partnerData.partnershipLevel}</Badge>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">القطاع</div>
+                      <div className="text-sm text-muted-foreground">{t('workspace.partner.labels.industry')}</div>
                       <div className="font-medium">{partnerData.industry}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">بداية الشراكة</div>
-                      <div className="font-medium">{new Date(partnerData.partnershipStart).toLocaleDateString('ar-SA')}</div>
+                      <div className="text-sm text-muted-foreground">{t('workspace.partner.labels.partnership_start')}</div>
+                      <div className="font-medium">{new Date(partnerData.partnershipStart).toLocaleDateString(t('locale'))}</div>
                     </div>
                   </div>
                   
                   <div className="pt-4 border-t">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-muted-foreground">تقييم الشراكة</span>
-                      <span className="text-sm font-medium">ممتاز (87%)</span>
+                      <span className="text-sm text-muted-foreground">{t('workspace.partner.labels.partnership_rating')}</span>
+                      <span className="text-sm font-medium">{t('workspace.partner.labels.excellent_rating')}</span>
                     </div>
                     <Progress value={87} className="h-2" />
                   </div>
@@ -172,7 +172,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
 
               <Card>
                 <CardHeader>
-                  <CardTitle>المشاريع الحالية</CardTitle>
+                  <CardTitle>{t('workspace.partner.labels.current_projects')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -185,13 +185,13 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                           </Badge>
                         </div>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-muted-foreground">التقدم</span>
+                          <span className="text-sm text-muted-foreground">{t('workspace.partner.labels.progress')}</span>
                           <span className="text-sm font-medium">{project.progress}%</span>
                         </div>
                         <Progress value={project.progress} className="h-2 mb-2" />
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <span>الميزانية: {project.budget}</span>
-                          <span>الموعد النهائي: {new Date(project.deadline).toLocaleDateString('ar-SA')}</span>
+                          <span>{t('workspace.partner.labels.budget')}: {project.budget}</span>
+                          <span>{t('workspace.partner.labels.deadline')}: {new Date(project.deadline).toLocaleDateString(t('locale'))}</span>
                         </div>
                       </div>
                     ))}
@@ -204,10 +204,10 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    جميع المشاريع
+                    {t('workspace.partner.labels.all_projects')}
                     <Button size="sm">
                       <Plus className="h-4 w-4 mr-2" />
-                      مشروع جديد
+                      {t('workspace.partner.actions.new_project')}
                     </Button>
                   </CardTitle>
                 </CardHeader>
@@ -226,18 +226,18 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                           
                           <div className="grid grid-cols-2 gap-4 mb-3">
                             <div>
-                              <div className="text-xs text-muted-foreground">الميزانية</div>
+                              <div className="text-xs text-muted-foreground">{t('workspace.partner.labels.budget')}</div>
                               <div className="font-medium">{project.budget}</div>
                             </div>
                             <div>
-                              <div className="text-xs text-muted-foreground">الموعد النهائي</div>
-                              <div className="font-medium">{new Date(project.deadline).toLocaleDateString('ar-SA')}</div>
+                              <div className="text-xs text-muted-foreground">{t('workspace.partner.labels.deadline')}</div>
+                              <div className="font-medium">{new Date(project.deadline).toLocaleDateString(t('locale'))}</div>
                             </div>
                           </div>
                           
                           <div className="mb-3">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-xs text-muted-foreground">التقدم</span>
+                              <span className="text-xs text-muted-foreground">{t('workspace.partner.labels.progress')}</span>
                               <span className="text-xs font-medium">{project.progress}%</span>
                             </div>
                             <Progress value={project.progress} className="h-2" />
@@ -258,7 +258,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                             </div>
                             <Button variant="outline" size="sm">
                               <ExternalLink className="h-3 w-3 mr-1" />
-                              عرض
+                              {t('workspace.partner.actions.view')}
                             </Button>
                           </div>
                         </CardContent>
@@ -274,7 +274,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <MessageSquare className="h-5 w-5" />
-                    سجل التواصل
+                    {t('workspace.partner.labels.communication_log')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -301,12 +301,12 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
             <TabsContent value="contracts" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>العقود والاتفاقيات</CardTitle>
+                  <CardTitle>{t('workspace.partner.labels.contracts_agreements')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-8 text-muted-foreground">
                     <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>سيتم عرض العقود والاتفاقيات هنا</p>
+                    <p>{t('workspace.partner.labels.contracts_coming_soon')}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -319,18 +319,18 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="h-5 w-5" />
-                الأحداث القادمة
+                {t('workspace.partner.labels.upcoming_events')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="p-3 bg-muted rounded-lg">
-                  <div className="font-medium text-sm">اجتماع مراجعة المشروع</div>
-                  <div className="text-xs text-muted-foreground">غداً، 10:00 ص</div>
+                  <div className="font-medium text-sm">{t('workspace.partner.events.project_review_meeting')}</div>
+                  <div className="text-xs text-muted-foreground">{t('workspace.partner.events.tomorrow_10am')}</div>
                 </div>
                 <div className="p-3 bg-muted rounded-lg">
-                  <div className="font-medium text-sm">عرض تقديمي للعميل</div>
-                  <div className="text-xs text-muted-foreground">الخميس، 2:00 م</div>
+                  <div className="font-medium text-sm">{t('workspace.partner.events.client_presentation')}</div>
+                  <div className="text-xs text-muted-foreground">{t('workspace.partner.events.thursday_2pm')}</div>
                 </div>
               </div>
             </CardContent>

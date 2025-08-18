@@ -612,6 +612,56 @@
     "default_user": "مستخدم"
   },
   "partner": {
+    "sample_company": "شركة التقنية المتقدمة",
+    "company_type": "شركة تقنية",
+    "industry": "التكنولوجيا المالية", 
+    "strategic_level": "استراتيجي",
+    "title": "مساحة عمل الشريك",
+    "description": "شراكة استراتيجية مع {{companyName}}",
+    "role": "مدير الشراكات",
+    "actions": {
+      "new_project": "مشروع جديد",
+      "direct_contact": "تواصل مباشر",
+      "new_contract": "عقد جديد",
+      "partnership_settings": "إعدادات الشراكة",
+      "view": "عرض"
+    },
+    "stats": {
+      "partnership_duration": "مدة الشراكة",
+      "duration_months": "18 شهراً",
+      "active_projects": "المشاريع النشطة",
+      "total_investment": "إجمالي الاستثمار",
+      "investment_amount": "5.2 مليون ريال",
+      "success_rate": "معدل النجاح"
+    },
+    "projects": {
+      "smart_payments": "منصة المدفوعات الذكية",
+      "digital_identity": "نظام إدارة الهوية الرقمية",
+      "banking_app": "تطبيق الخدمات المصرفية"
+    },
+    "labels": {
+      "partner_name": "اسم الشريك",
+      "partnership_type": "نوع الشراكة",
+      "industry": "القطاع",
+      "partnership_start": "بداية الشراكة",
+      "partnership_rating": "تقييم الشراكة",
+      "excellent_rating": "ممتاز (87%)",
+      "current_projects": "المشاريع الحالية",
+      "progress": "التقدم",
+      "budget": "الميزانية",
+      "deadline": "الموعد النهائي",
+      "all_projects": "جميع المشاريع",
+      "communication_log": "سجل التواصل",
+      "contracts_agreements": "العقود والاتفاقيات",
+      "contracts_coming_soon": "سيتم عرض العقود والاتفاقيات هنا",
+      "upcoming_events": "الأحداث القادمة"
+    },
+    "events": {
+      "project_review_meeting": "اجتماع مراجعة المشروع",
+      "tomorrow_10am": "غداً، 10:00 ص",
+      "client_presentation": "عرض تقديمي للعميل",
+      "thursday_2pm": "الخميس، 2:00 م"
+    },
     "communication_types": {
       "meeting": "اجتماع",
       "email": "بريد إلكتروني",

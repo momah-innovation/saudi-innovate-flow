@@ -612,6 +612,56 @@
     "default_user": "User"
   },
   "partner": {
+    "sample_company": "Advanced Technology Company",
+    "company_type": "Technology Company", 
+    "industry": "Financial Technology",
+    "strategic_level": "Strategic",
+    "title": "Partner Workspace",
+    "description": "Strategic partnership with {{companyName}}",
+    "role": "Partnership Manager",
+    "actions": {
+      "new_project": "New Project",
+      "direct_contact": "Direct Contact",
+      "new_contract": "New Contract", 
+      "partnership_settings": "Partnership Settings",
+      "view": "View"
+    },
+    "stats": {
+      "partnership_duration": "Partnership Duration",
+      "duration_months": "18 months",
+      "active_projects": "Active Projects",
+      "total_investment": "Total Investment",
+      "investment_amount": "5.2M SAR",
+      "success_rate": "Success Rate"
+    },
+    "projects": {
+      "smart_payments": "Smart Payments Platform",
+      "digital_identity": "Digital Identity Management System",
+      "banking_app": "Banking Services Application"
+    },
+    "labels": {
+      "partner_name": "Partner Name",
+      "partnership_type": "Partnership Type",
+      "industry": "Industry",
+      "partnership_start": "Partnership Start",
+      "partnership_rating": "Partnership Rating",
+      "excellent_rating": "Excellent (87%)",
+      "current_projects": "Current Projects",
+      "progress": "Progress",
+      "budget": "Budget", 
+      "deadline": "Deadline",
+      "all_projects": "All Projects",
+      "communication_log": "Communication Log",
+      "contracts_agreements": "Contracts & Agreements",
+      "contracts_coming_soon": "Contracts and agreements will be displayed here",
+      "upcoming_events": "Upcoming Events"
+    },
+    "events": {
+      "project_review_meeting": "Project Review Meeting",
+      "tomorrow_10am": "Tomorrow, 10:00 AM",
+      "client_presentation": "Client Presentation",
+      "thursday_2pm": "Thursday, 2:00 PM"
+    },
     "communication_types": {
       "meeting": "Meeting",
       "email": "Email", 

@@ -54,9 +54,9 @@ export const WorkspaceFileVersioning: React.FC<WorkspaceFileVersioningProps> = (
         id: 'v3',
         versionNumber: 3,
         createdAt: '2024-01-15T14:20:00Z',
-        createdBy: 'أحمد محمد',
+        createdBy: t('mock_data.sample_member_1'),
         size: 2048000,
-        changeDescription: 'تحديث البيانات المالية وإضافة الرسوم البيانية الجديدة',
+        changeDescription: t('workspace.files.version_descriptions.financial_update'),
         downloadUrl: '/download/v3',
         isCurrent: true
       },
@@ -64,9 +64,9 @@ export const WorkspaceFileVersioning: React.FC<WorkspaceFileVersioningProps> = (
         id: 'v2',
         versionNumber: 2,
         createdAt: '2024-01-14T10:15:00Z', 
-        createdBy: 'فاطمة أحمد',
+        createdBy: t('mock_data.sample_member_2'),
         size: 1987000,
-        changeDescription: 'مراجعة المحتوى وتصحيح الأخطاء الإملائية',
+        changeDescription: t('workspace.files.version_descriptions.content_review'),
         downloadUrl: '/download/v2',
         isCurrent: false,
         hasConflicts: true
