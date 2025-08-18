@@ -39,13 +39,21 @@ export function useAnalyticsService(): {
       if (!user?.id) throw new Error('User not authenticated');
 
       try {
-        // Check if user has analytics access first
-        const { data: hasAccess } = await supabase.rpc('has_role', {
-          _user_id: user.id,
-          _role: 'team_member'
-        });
+        // Validate access: admin, super_admin, or active team member
+        const [{ data: isAdmin }, { data: isSuperAdmin }] = await Promise.all([
+          supabase.rpc('has_role', { _user_id: user.id, _role: 'admin' }),
+          supabase.rpc('has_role', { _user_id: user.id, _role: 'super_admin' })
+        ]);
 
-        if (!hasAccess) {
+        let isTeamMember = false;
+        if (!isAdmin && !isSuperAdmin) {
+          const { data: teamMember } = await supabase.rpc('is_team_member', {
+            user_uuid: user.id
+          });
+          isTeamMember = Boolean(teamMember);
+        }
+
+        if (!isAdmin && !isSuperAdmin && !isTeamMember) {
           debugLog.warn('Analytics core metrics fallback used', {
             component: 'useAnalyticsService',
             error: 'Access denied: insufficient privileges for analytics data'
@@ -53,9 +61,11 @@ export function useAnalyticsService(): {
           return getDefaultCoreMetrics();
         }
 
+        const roleParam = isAdmin ? 'admin' : isSuperAdmin ? 'super_admin' : 'team_member';
+
         const { data, error } = await supabase.rpc('get_analytics_data', {
           p_user_id: user.id,
-          p_user_role: 'innovator',
+          p_user_role: roleParam,
           p_filters: { timeframe: '30d' }
         });
 
