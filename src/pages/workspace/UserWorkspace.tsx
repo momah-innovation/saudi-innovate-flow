@@ -4,6 +4,7 @@ import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
+import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { useUserWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -105,34 +106,39 @@ export default function UserWorkspace() {
 
   if (isLoading) {
     return (
-      <WorkspaceLayout
-        title={t('workspace.user.title')}
-        description={t('workspace.user.description')}
-        userRole={userProfile?.roles?.[0] || 'user'}
-      >
-        <div className="animate-pulse space-y-6">
-          <div className="h-32 bg-muted rounded-lg"></div>
-          <div className="h-64 bg-muted rounded-lg"></div>
-        </div>
-      </WorkspaceLayout>
+      <>
+        <WorkspaceBreadcrumb />
+        <WorkspaceLayout
+          title={t('workspace.user.title')}
+          description={t('workspace.user.description')}
+          userRole={userProfile?.roles?.[0] || 'user'}
+        >
+          <div className="animate-pulse space-y-6">
+            <div className="h-32 bg-muted rounded-lg"></div>
+            <div className="h-64 bg-muted rounded-lg"></div>
+          </div>
+        </WorkspaceLayout>
+      </>
     );
   }
 
   return (
-    <WorkspaceLayout
-      title={t('workspace.user.title')}
-      description={t('workspace.user.description')}
-      userRole={userProfile?.roles?.[0] || 'user'}
-      stats={stats}
-      quickActions={[
-        {
-          label: t('workspace.user.actions.new_idea'),
-          onClick: () => navigate(ALL_ROUTES.IDEAS + '?action=create'),
-          icon: Plus
-        }
-      ]}
-    >
-      <div className="space-y-6">
+    <>
+      <WorkspaceBreadcrumb />
+      <WorkspaceLayout
+        title={t('workspace.user.title')}
+        description={t('workspace.user.description')}
+        userRole={userProfile?.roles?.[0] || 'user'}
+        stats={stats}
+        quickActions={[
+          {
+            label: t('workspace.user.actions.new_idea'),
+            onClick: () => navigate(ALL_ROUTES.IDEAS + '?action=create'),
+            icon: Plus
+          }
+        ]}
+      >
+        <div className="space-y-6">
         {/* Navigation */}
         <WorkspaceNavigation items={navigationItems} />
 
@@ -226,16 +232,17 @@ export default function UserWorkspace() {
             <WorkspaceMetrics metrics={metrics} />
           </div>
         </div>
-      </div>
-      
-      {/* User Workspace Collaboration */}
-      <WorkspaceCollaboration
-        workspaceType="user"
-        entityId={user?.id}
-        showWidget={true}
-        showPresence={true}
-        showActivity={true}
-      />
-    </WorkspaceLayout>
+        </div>
+        
+        {/* User Workspace Collaboration */}
+        <WorkspaceCollaboration
+          workspaceType="user"
+          entityId={user?.id}
+          showWidget={true}
+          showPresence={true}
+          showActivity={true}
+        />
+      </WorkspaceLayout>
+    </>
   );
 }
