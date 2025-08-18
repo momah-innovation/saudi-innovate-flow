@@ -28,53 +28,65 @@ export default function WorkspacePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <h3 className="text-lg font-semibold mb-2">مساحة العمل الشخصية</h3>
-                <p className="text-muted-foreground text-sm mb-4">إدارة أفكارك ومشاريعك الشخصية</p>
-                <Link to="/workspace/user" className="text-primary hover:underline">دخول →</Link>
-              </CardContent>
-            </Card>
+            <Link to="/workspace/user" className="block group">
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">مساحة العمل الشخصية</h3>
+                  <p className="text-muted-foreground text-sm mb-4">إدارة أفكارك ومشاريعك الشخصية</p>
+                  <span className="text-primary hover:underline">دخول →</span>
+                </CardContent>
+              </Card>
+            </Link>
             
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <h3 className="text-lg font-semibold mb-2">مساحة الخبراء</h3>
-                <p className="text-muted-foreground text-sm mb-4">تقييم وإرشاد الأفكار المبتكرة</p>
-                <Link to="/workspace/expert" className="text-primary hover:underline">دخول →</Link>
-              </CardContent>
-            </Card>
+            <Link to="/workspace/expert" className="block group">
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">مساحة الخبراء</h3>
+                  <p className="text-muted-foreground text-sm mb-4">تقييم وإرشاد الأفكار المبتكرة</p>
+                  <span className="text-primary hover:underline">دخول →</span>
+                </CardContent>
+              </Card>
+            </Link>
             
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <h3 className="text-lg font-semibold mb-2">مساحة المؤسسة</h3>
-                <p className="text-muted-foreground text-sm mb-4">إدارة الابتكار على مستوى المؤسسة</p>
-                <Link to="/workspace/organization" className="text-primary hover:underline">دخول →</Link>
-              </CardContent>
-            </Card>
+            <Link to="/workspace/organization" className="block group">
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">مساحة المؤسسة</h3>
+                  <p className="text-muted-foreground text-sm mb-4">إدارة الابتكار على مستوى المؤسسة</p>
+                  <span className="text-primary hover:underline">دخول →</span>
+                </CardContent>
+              </Card>
+            </Link>
             
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <h3 className="text-lg font-semibold mb-2">مساحة الشركاء</h3>
-                <p className="text-muted-foreground text-sm mb-4">التعاون مع الشركاء الخارجيين</p>
-                <Link to="/workspace/partner" className="text-primary hover:underline">دخول →</Link>
-              </CardContent>
-            </Card>
+            <Link to="/workspace/partner" className="block group">
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">مساحة الشركاء</h3>
+                  <p className="text-muted-foreground text-sm mb-4">التعاون مع الشركاء الخارجيين</p>
+                  <span className="text-primary hover:underline">دخول →</span>
+                </CardContent>
+              </Card>
+            </Link>
             
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <h3 className="text-lg font-semibold mb-2">مساحة الإدارة</h3>
-                <p className="text-muted-foreground text-sm mb-4">إدارة النظام والمستخدمين</p>
-                <Link to="/workspace/admin" className="text-primary hover:underline">دخول →</Link>
-              </CardContent>
-            </Card>
+            <Link to="/workspace/admin" className="block group">
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">مساحة الإدارة</h3>
+                  <p className="text-muted-foreground text-sm mb-4">إدارة النظام والمستخدمين</p>
+                  <span className="text-primary hover:underline">دخول →</span>
+                </CardContent>
+              </Card>
+            </Link>
             
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <h3 className="text-lg font-semibold mb-2">مساحة الفريق</h3>
-                <p className="text-muted-foreground text-sm mb-4">العمل التعاوني مع الفريق</p>
-                <Link to="/workspace/team" className="text-primary hover:underline">دخول →</Link>
-              </CardContent>
-            </Card>
+            <Link to="/workspace/team" className="block group">
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">مساحة الفريق</h3>
+                  <p className="text-muted-foreground text-sm mb-4">العمل التعاوني مع الفريق</p>
+                  <span className="text-primary hover:underline">دخول →</span>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       );
