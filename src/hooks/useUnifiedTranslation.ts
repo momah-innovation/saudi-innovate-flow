@@ -89,7 +89,7 @@ export function useUnifiedTranslation() {
       try {
         let i18nextResult: string = '';
         const tried: string[] = [];
-        const isValid = (val: any) => typeof val === 'string' && val.trim() !== '' && !tried.includes(val) && !val.includes('.');
+        const isValid = (val: any) => typeof val === 'string' && val.trim() !== '' && !tried.includes(val);
 
         // Special handling for workspace keys - they all use ':' as namespace separator
         if (resolvedKey.startsWith('workspace.')) {

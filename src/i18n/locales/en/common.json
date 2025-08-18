@@ -110,7 +110,8 @@
     "under_review": "Under Review",
     "approved": "Approved",
     "rejected": "Rejected",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "published": "Published"
   },
   "placeholders": {
     "search": "Search...",
@@ -124,7 +125,7 @@
   "error": "Error",
   "success": "Success",
   "description": "Description",
-  "status": "Status",
+  "status_label": "Status",
   "priority": "Priority",
   "type": "Type",
   "total_users": "Total Users",
@@ -155,7 +156,7 @@
   "apply": "Apply",
   "manage": "Manage",
   "locale": "en-US",
-  "status": "Status",
+  "status_label": "Status",
   "focusQuestionTypes": {
     "general": "General",
     "technical": "Technical",

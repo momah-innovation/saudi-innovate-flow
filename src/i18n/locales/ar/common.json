@@ -116,7 +116,8 @@
     "under_review": "قيد المراجعة",
     "approved": "موافق عليه",
     "rejected": "مرفوض",
-    "cancelled": "ملغي"
+    "cancelled": "ملغي",
+    "published": "منشور"
   },
   "placeholders": {
     "search": "بحث...",
@@ -140,7 +141,7 @@
   "error": "خطأ",
   "success": "نجح",
   "description": "الوصف",
-  "status": "الحالة",
+  "status_label": "الحالة",
   "priority": "الأولوية",
   "type": "النوع",
   "total_users": "إجمالي المستخدمين",
@@ -233,7 +234,7 @@
   "apply": "تقديم",
   "manage": "إدارة",
   "locale": "ar-SA",
-  "status": "الحالة",
+  "status_label": "الحالة",
   "search_placeholder": "البحث...",
   "validation": {
     "validation_error": "خطأ في التحقق",
