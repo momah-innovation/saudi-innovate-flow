@@ -3,6 +3,7 @@ import { useWorkspace } from '@/contexts/WorkspaceContext';
 import { EnhancedWorkspaceLayout } from '@/components/workspace/layouts/EnhancedWorkspaceLayout';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { cn } from '@/lib/utils';
 import { 
   Users, 
@@ -22,6 +23,7 @@ interface WorkspacePageProps {
 }
 
 export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
+  const { t } = useTranslation();
   const {
     currentWorkspace,
     userRole,
@@ -39,14 +41,14 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
     const baseItems = [
       {
         id: 'dashboard',
-        label: 'Dashboard',
+        label: t('workspace.general.nav.dashboard'),
         icon: BarChart3,
         active: activeView === 'dashboard',
         onClick: () => setActiveView('dashboard')
       },
       {
         id: 'files',
-        label: 'Files',
+        label: t('workspace.general.nav.files'),
         icon: Folder,
         count: 12, // Would come from file storage hook
         active: activeView === 'files',
@@ -54,7 +56,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
       },
       {
         id: 'messages',
-        label: 'Messages',
+        label: t('workspace.general.nav.messages'),
         icon: MessageCircle,
         count: 3, // Would come from real-time messages
         active: activeView === 'messages',
@@ -66,7 +68,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
     if (workspaceType === 'team' || workspaceType === 'organization') {
       baseItems.splice(1, 0, {
         id: 'members',
-        label: 'Members',
+        label: t('workspace.general.nav.members'),
         icon: Users,
         count: onlineMembers.length,
         active: activeView === 'members',
@@ -77,7 +79,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
     if (permissions.canManageSettings) {
       baseItems.push({
         id: 'settings',
-        label: 'Settings',
+        label: t('workspace.general.nav.settings'),
         icon: Settings,
         active: activeView === 'settings',
         onClick: () => setActiveView('settings')
@@ -91,13 +93,13 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
   const getWorkspaceMetrics = () => {
     const baseMetrics = [
       {
-        label: 'Online Members',
+        label: t('workspace.general.metrics.online_members'),
         value: onlineMembers.length.toString(),
         icon: Users,
         trend: 'up' as const
       },
       {
-        label: 'Files Shared',
+        label: t('workspace.general.metrics.files_shared'),
         value: '24',
         icon: FileText,
         trend: 'up' as const
@@ -107,7 +109,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
     // Add workspace-specific metrics
     if (workspaceType === 'organization' || workspaceType === 'admin') {
       baseMetrics.push({
-        label: 'Active Projects',
+        label: t('workspace.general.metrics.active_projects'),
         value: '8',
         icon: Folder,
         trend: 'up' as const
@@ -123,7 +125,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
 
     if (permissions.canCreate) {
       actions.push({
-        label: 'New Document',
+        label: t('workspace.general.actions.new_document'),
         icon: Plus,
         onClick: () => console.log('Create document'),
         variant: 'default' as const
@@ -132,7 +134,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
 
     if (permissions.canInviteUsers) {
       actions.push({
-        label: 'Invite Members',
+        label: t('workspace.general.actions.invite_members'),
         icon: Users,
         onClick: () => console.log('Invite members'),
         variant: 'outline' as const
@@ -143,9 +145,9 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
   };
 
   const breadcrumbs = [
-    { label: 'Workspaces', href: '/workspace' },
+    { label: t('workspace.general.breadcrumbs.workspaces'), href: '/workspace' },
     { 
-      label: currentWorkspace?.name || `${workspaceType} Workspace`, 
+      label: currentWorkspace?.name || t('workspace.general.breadcrumbs.workspace_type', { type: workspaceType }), 
       current: true 
     }
   ];
@@ -154,8 +156,8 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
     <EnhancedWorkspaceLayout
       workspaceType={workspaceType}
       workspaceId={currentWorkspace?.id || ''}
-      title={currentWorkspace?.name || `${workspaceType} Workspace`}
-      description={currentWorkspace?.description || `Collaborative ${workspaceType} workspace`}
+      title={currentWorkspace?.name || t('workspace.general.title', { type: workspaceType })}
+      description={currentWorkspace?.description || t('workspace.general.description', { type: workspaceType })}
       userRole={userRole || 'member'}
       metrics={getWorkspaceMetrics()}
       actions={getWorkspaceActions()}
@@ -170,7 +172,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
           
           {/* Online Members Widget */}
           <div className="p-3 bg-muted/30 rounded-lg">
-            <h4 className="text-sm font-medium mb-2">Online Now ({onlineMembers.length})</h4>
+            <h4 className="text-sm font-medium mb-2">{t('workspace.general.sidebar.online_now', { count: onlineMembers.length })}</h4>
             <div className="space-y-1">
               {onlineMembers.slice(0, 5).map((member) => (
                 <div key={member.id} className="flex items-center gap-2 text-xs">
@@ -180,7 +182,7 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
               ))}
               {onlineMembers.length > 5 && (
                 <div className="text-xs text-muted-foreground">
-                  +{onlineMembers.length - 5} more
+                  {t('workspace.general.sidebar.more_members', { count: onlineMembers.length - 5 })}
                 </div>
               )}
             </div>
@@ -198,16 +200,15 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-card rounded-lg border p-6">
                 <h3 className="text-lg font-semibold mb-4">
-                  {activeView === 'dashboard' && 'Workspace Overview'}
-                  {activeView === 'files' && 'Files & Documents'}
-                  {activeView === 'members' && 'Team Members'}
-                  {activeView === 'messages' && 'Messages & Chat'}
-                  {activeView === 'settings' && 'Workspace Settings'}
+                  {activeView === 'dashboard' && t('workspace.general.content.workspace_overview')}
+                  {activeView === 'files' && t('workspace.general.content.files_documents')}
+                  {activeView === 'members' && t('workspace.general.content.team_members')}
+                  {activeView === 'messages' && t('workspace.general.content.messages_chat')}
+                  {activeView === 'settings' && t('workspace.general.content.workspace_settings')}
                 </h3>
                 
                 <div className="text-muted-foreground">
-                  Content for {activeView} view will be rendered here.
-                  This is a placeholder for the dynamic workspace content.
+                  {t('workspace.general.content.placeholder', { view: activeView })}
                 </div>
               </div>
             </div>
@@ -215,16 +216,16 @@ export function WorkspacePage({ workspaceType, children }: WorkspacePageProps) {
             {/* Sidebar Content */}
             <div className="space-y-6">
               <div className="bg-card rounded-lg border p-4">
-                <h4 className="font-medium mb-3">Recent Activity</h4>
+                <h4 className="font-medium mb-3">{t('workspace.general.sidebar.recent_activity')}</h4>
                 <div className="space-y-2 text-sm text-muted-foreground">
-                  <div>User joined workspace</div>
-                  <div>New file uploaded</div>
-                  <div>Meeting scheduled</div>
+                  <div>{t('workspace.general.sidebar.user_joined')}</div>
+                  <div>{t('workspace.general.sidebar.file_uploaded')}</div>
+                  <div>{t('workspace.general.sidebar.meeting_scheduled')}</div>
                 </div>
               </div>
 
               <div className="bg-card rounded-lg border p-4">
-                <h4 className="font-medium mb-3">Quick Actions</h4>
+                <h4 className="font-medium mb-3">{t('workspace.general.sidebar.quick_actions')}</h4>
                 <div className="space-y-2">
                   {getWorkspaceActions().map((action, index) => (
                     <button
