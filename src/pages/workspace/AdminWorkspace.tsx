@@ -164,130 +164,136 @@ export default function AdminWorkspace() {
       
       <div className="container mx-auto px-4 pb-12">
         <div className="space-y-6">
-        {/* Navigation */}
-        <WorkspaceNavigation items={navigationItems} />
+          {/* Navigation */}
+          <WorkspaceNavigation items={navigationItems} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* System Health */}
-            <Card className="gradient-border hover-scale group">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
-                  {t('workspace.admin.system_health')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-green-500/10 to-green-600/20 text-green-600 group-hover:from-green-500/20 group-hover:to-green-600/30 transition-all duration-300 group-hover:scale-110">
-                        <Shield className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold group-hover:text-primary transition-colors">{t('workspace.admin.uptime')}</h4>
-                        <p className="text-sm text-muted-foreground">{workspaceData?.systemHealth?.uptime || '99.9%'}</p>
-                      </div>
-                    </div>
-                    <Badge variant="success" className="gradient-border">
-                      {t('workspace.admin.healthy')}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-600/20 text-blue-600 group-hover:from-blue-500/20 group-hover:to-blue-600/30 transition-all duration-300 group-hover:scale-110">
-                        <BarChart3 className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold group-hover:text-primary transition-colors">{t('workspace.admin.response_time')}</h4>
-                        <p className="text-sm text-muted-foreground">{workspaceData?.systemHealth?.responseTime || '120ms'}</p>
-                      </div>
-                    </div>
-                    <Badge variant="success" className="gradient-border">
-                      {t('workspace.admin.optimal')}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/10 to-purple-600/20 text-purple-600 group-hover:from-purple-500/20 group-hover:to-purple-600/30 transition-all duration-300 group-hover:scale-110">
-                        <Users className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold group-hover:text-primary transition-colors">{t('workspace.admin.active_users')}</h4>
-                        <p className="text-sm text-muted-foreground">{workspaceData?.systemHealth?.activeUsers || 1250}</p>
-                      </div>
-                    </div>
-                    <Badge variant="success" className="gradient-border">
-                      {t('workspace.admin.normal')}
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Users */}
-            <Card className="gradient-border hover-scale group">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
-                    {t('workspace.admin.recent_users')}
-                  </div>
-                  <Button 
-                    size="sm" 
-                    onClick={() => navigate(ALL_ROUTES.ADMIN_USERS)}
-                    className="hover-scale gradient-border"
-                  >
-                    {t('workspace.admin.manage_all')}
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {workspaceData?.recentUsers?.length > 0 ? (
-                  <div className="space-y-3">
-                    {workspaceData.recentUsers.slice(0, 5).map((user) => (
-                      <div key={user.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
-                        <div className="flex items-center gap-4">
-                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
-                            <Users className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <h4 className="font-semibold group-hover:text-primary transition-colors">{user.email}</h4>
-                            <p className="text-sm text-muted-foreground">
-                              {t('workspace.admin.joined')}: {new Date(user.created_at || '').toLocaleDateString('ar')}
-                            </p>
-                          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Main Content */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* System Health */}
+              <Card className="gradient-border hover-scale group">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+                    {t('workspace.admin.system_health')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 rounded-xl bg-gradient-to-br from-green-500/10 to-green-600/20 text-green-600 group-hover:from-green-500/20 group-hover:to-green-600/30 transition-all duration-300 group-hover:scale-110">
+                          <Shield className="h-5 w-5" />
                         </div>
-                        <Button variant="ghost" size="sm" className="hover-scale gradient-border">
-                          {t('common.manage')}
-                        </Button>
+                        <div>
+                          <h4 className="font-semibold group-hover:text-primary transition-colors">{t('workspace.admin.uptime')}</h4>
+                          <p className="text-sm text-muted-foreground">{workspaceData?.systemHealth?.uptime || '99.9%'}</p>
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
-                      <Users className="h-12 w-12 text-primary" />
+                      <Badge variant="success" className="gradient-border">
+                        {t('workspace.admin.healthy')}
+                      </Badge>
                     </div>
-                    <p className="text-lg font-medium mb-2">{t('workspace.admin.no_users')}</p>
-                    <p className="text-sm mb-6">{t('workspace.admin.no_users_desc', 'No users registered yet')}</p>
+                    <div className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-600/20 text-blue-600 group-hover:from-blue-500/20 group-hover:to-blue-600/30 transition-all duration-300 group-hover:scale-110">
+                          <BarChart3 className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold group-hover:text-primary transition-colors">{t('workspace.admin.response_time')}</h4>
+                          <p className="text-sm text-muted-foreground">{workspaceData?.systemHealth?.responseTime || '120ms'}</p>
+                        </div>
+                      </div>
+                      <Badge variant="success" className="gradient-border">
+                        {t('workspace.admin.optimal')}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/10 to-purple-600/20 text-purple-600 group-hover:from-purple-500/20 group-hover:to-purple-600/30 transition-all duration-300 group-hover:scale-110">
+                          <Users className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold group-hover:text-primary transition-colors">{t('workspace.admin.active_users')}</h4>
+                          <p className="text-sm text-muted-foreground">{workspaceData?.systemHealth?.activeUsers || 1250}</p>
+                        </div>
+                      </div>
+                      <Badge variant="success" className="gradient-border">
+                        {t('workspace.admin.normal')}
+                      </Badge>
+                    </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+
+              {/* Recent Users */}
+              <Card className="gradient-border hover-scale group">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+                      {t('workspace.admin.recent_users')}
+                    </div>
+                    <Button 
+                      size="sm" 
+                      onClick={() => navigate(ALL_ROUTES.ADMIN_USERS)}
+                      className="hover-scale gradient-border"
+                    >
+                      {t('workspace.admin.manage_all')}
+                    </Button>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {workspaceData?.recentUsers?.length > 0 ? (
+                    <div className="space-y-3">
+                      {workspaceData.recentUsers.slice(0, 5).map((user, index) => (
+                        <div 
+                          key={user.id} 
+                          className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10 animate-fade-in"
+                          style={{ animationDelay: `${index * 100}ms` }}
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                              <Users className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold group-hover:text-primary transition-colors">{user.email}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {t('workspace.admin.joined')}: {new Date(user.created_at || '').toLocaleDateString('ar')}
+                              </p>
+                            </div>
+                          </div>
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
+                            {t('common.manage')}
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4 hover-scale">
+                        <Users className="h-12 w-12 text-primary" />
+                      </div>
+                      <p className="text-lg font-medium mb-2">{t('workspace.admin.no_users')}</p>
+                      <p className="text-sm mb-6">{t('workspace.admin.no_users_desc', 'No users registered yet')}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              {/* Quick Actions */}
+              <WorkspaceQuickActions
+                title={t('workspace.admin.quick_actions')}
+                actions={quickActions}
+              />
+
+              {/* Metrics */}
+              <WorkspaceMetrics metrics={metrics} />
+            </div>
           </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <WorkspaceQuickActions
-              title={t('workspace.admin.quick_actions')}
-              actions={quickActions}
-            />
-
-            {/* Metrics */}
-            <WorkspaceMetrics metrics={metrics} />
         </div>
         
         {/* Admin Workspace Collaboration */}

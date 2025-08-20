@@ -203,48 +203,50 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
     return description;
   }, [t, isRTL]);
 
-  // Render menu item with tooltip
-  const renderMenuItem = useCallback((item: MenuItem) => {
+  // Render menu item with tooltip and enhanced animations
+  const renderMenuItem = useCallback((item: MenuItem, index: number = 0) => {
     const isActive = isActiveItem(item);
     const Icon = item.icon;
     const tooltipContent = getTooltipContent(item);
     
     return (
-      <TooltipProvider key={item.id} delayDuration={300}>
+      <TooltipProvider key={item.id} delayDuration={200}>
         <Tooltip>
           <TooltipTrigger asChild>
             <button
               onClick={(e) => handleNavigation(item.path, e)}
               className={cn(
-                'w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300',
+                'w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-500',
                 'hover:bg-gradient-to-r hover:from-accent/50 hover:to-accent/30 hover:text-accent-foreground',
-                'hover:shadow-sm hover:scale-[1.02] active:scale-[0.98]',
-                'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-                'group relative overflow-hidden',
-                isActive && 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-md scale-[1.02]',
+                'hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02] active:scale-[0.98]',
+                'focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2',
+                'group relative overflow-hidden animate-fade-in',
+                'before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-primary/5 before:to-transparent',
+                'before:translate-x-[-100%] before:transition-transform before:duration-700 hover:before:translate-x-[100%]',
+                isActive && 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-xl shadow-primary/20 scale-[1.02]',
                 isRTL && 'flex-row-reverse text-right'
               )}
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* Hover gradient effect */}
-              <div className={cn(
-                'absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity duration-300',
-                'group-hover:opacity-100',
-                isActive && 'opacity-0'
-              )} />
+              {/* Enhanced active indicator */}
+              {isActive && (
+                <div className="absolute inset-0 bg-gradient-primary opacity-10 rounded-xl pointer-events-none animate-pulse" />
+              )}
               
               <div className={cn(
-                'p-2 rounded-lg transition-all duration-300 group-hover:scale-110 relative z-10',
+                'p-2 rounded-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 relative z-10',
+                'group-hover:shadow-lg group-hover:shadow-primary/20',
                 isActive 
-                  ? 'bg-primary-foreground/20 text-primary-foreground' 
-                  : 'bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30'
+                  ? 'bg-primary-foreground/20 text-primary-foreground shadow-inner' 
+                  : 'bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 group-hover:shadow-md'
               )}>
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
               </div>
               
               <span className={cn(
-                'font-medium truncate flex-1 relative z-10 transition-all duration-300',
-                'group-hover:translate-x-1',
-                isRTL && 'group-hover:-translate-x-1'
+                'font-medium truncate flex-1 relative z-10 transition-all duration-500',
+                'group-hover:translate-x-2 group-hover:font-semibold',
+                isRTL && 'group-hover:-translate-x-2'
               )}>
                 {t(item.label)}
               </span>
@@ -253,28 +255,43 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
                 <Badge 
                   variant="secondary" 
                   className={cn(
-                    'h-5 min-w-[20px] px-1.5 text-xs relative z-10 transition-all duration-300',
-                    'group-hover:scale-110',
+                    'h-5 min-w-[20px] px-1.5 text-xs relative z-10 transition-all duration-500',
+                    'group-hover:scale-110 group-hover:shadow-md animate-pulse',
                     isActive && 'bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30'
                   )}
                 >
                   {item.badge}
                 </Badge>
               )}
+              
+              {/* Hover glow effect */}
+              <div className={cn(
+                'absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5',
+                'opacity-0 transition-opacity duration-500 group-hover:opacity-100',
+                isActive && 'opacity-0'
+              )} />
             </button>
           </TooltipTrigger>
           <TooltipContent 
             side={isRTL ? "left" : "right"} 
-            className="max-w-xs text-sm font-medium"
-            sideOffset={8}
+            className={cn(
+              "max-w-xs text-sm font-medium animate-scale-in",
+              "bg-gradient-to-br from-background via-background to-muted/50",
+              "border-2 gradient-border shadow-xl backdrop-blur-sm"
+            )}
+            sideOffset={12}
           >
-            <div className="space-y-1">
-              <p className="font-semibold">{t(item.label)}</p>
+            <div className="space-y-2">
+              <p className="font-semibold text-primary">{t(item.label)}</p>
               {tooltipContent !== t(item.label) && (
                 <p className="text-muted-foreground text-xs leading-relaxed">
                   {tooltipContent}
                 </p>
               )}
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+              <p className="text-xs text-muted-foreground/80">
+                {t('nav.click_to_navigate', 'Click to navigate')}
+              </p>
             </div>
           </TooltipContent>
         </Tooltip>
@@ -327,7 +344,7 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
           
           <CollapsibleContent className="space-y-1 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
             <div className={cn('pl-2 space-y-1', isRTL && 'pr-2 pl-0')}>
-              {items.map(renderMenuItem)}
+              {items.map((item, index) => renderMenuItem(item, index))}
             </div>
           </CollapsibleContent>
         </Collapsible>
@@ -449,13 +466,19 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
         <ScrollArea className="flex-1 px-4 py-4">
           <div className="space-y-3">
             {Object.entries(searchFilteredItems).length > 0 ? (
-              Object.entries(searchFilteredItems).map(([groupId, items]) =>
-                renderGroup(groupId, items)
+              Object.entries(searchFilteredItems).map(([groupId, items], groupIndex) =>
+                <div 
+                  key={groupId}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${groupIndex * 100}ms` }}
+                >
+                  {renderGroup(groupId, items)}
+                </div>
               )
             ) : searchQuery ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 w-fit mx-auto mb-4">
-                  <Search className="h-8 w-8 mx-auto" />
+              <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 w-fit mx-auto mb-4 hover-scale">
+                  <Search className="h-8 w-8 mx-auto animate-pulse" />
                 </div>
                 <p className="text-sm font-medium">
                   {t('common.no_results_found', 'No results found')}
@@ -465,9 +488,9 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
                 </p>
               </div>
             ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 w-fit mx-auto mb-4">
-                  <Menu className="h-8 w-8 mx-auto" />
+              <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 w-fit mx-auto mb-4 hover-scale">
+                  <Menu className="h-8 w-8 mx-auto animate-pulse" />
                 </div>
                 <p className="text-sm font-medium mb-2">Navigation Loading...</p>
                 <p className="text-xs space-y-1">
