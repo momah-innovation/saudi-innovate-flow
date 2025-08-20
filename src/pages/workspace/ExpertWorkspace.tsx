@@ -170,7 +170,7 @@ export default function ExpertWorkspace() {
                         <div>
                           <h4 className="font-medium">{evaluation.ideas?.title_ar}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {t('workspace.expert.submitted')}: {new Date(evaluation.ideas?.created_at || '').toLocaleDateString(t('locale'))}
+                            {t('workspace.expert.submitted')}: {new Date(evaluation.ideas?.created_at || '').toLocaleDateString(t('common.locale'))}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">

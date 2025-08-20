@@ -152,7 +152,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                     </div>
                     <div>
                       <div className="text-sm text-muted-foreground">{t('workspace.partner.labels.partnership_start')}</div>
-                      <div className="font-medium">{new Date(partnerData.partnershipStart).toLocaleDateString(t('locale'))}</div>
+                      <div className="font-medium">{new Date(partnerData.partnershipStart).toLocaleDateString(t('common.locale'))}</div>
                     </div>
                   </div>
                   
@@ -187,7 +187,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                         <Progress value={project.progress} className="h-2 mb-2" />
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
                           <span>{t('workspace.partner.labels.budget')}: {project.budget}</span>
-                          <span>{t('workspace.partner.labels.deadline')}: {new Date(project.deadline).toLocaleDateString(t('locale'))}</span>
+                          <span>{t('workspace.partner.labels.deadline')}: {new Date(project.deadline).toLocaleDateString(t('common.locale'))}</span>
                         </div>
                       </div>
                     ))}
@@ -227,7 +227,7 @@ export const PartnerWorkspace: React.FC<PartnerWorkspaceProps> = ({
                             </div>
                             <div>
                               <div className="text-xs text-muted-foreground">{t('workspace.partner.labels.deadline')}</div>
-                              <div className="font-medium">{new Date(project.deadline).toLocaleDateString(t('locale'))}</div>
+                              <div className="font-medium">{new Date(project.deadline).toLocaleDateString(t('common.locale'))}</div>
                             </div>
                           </div>
                           

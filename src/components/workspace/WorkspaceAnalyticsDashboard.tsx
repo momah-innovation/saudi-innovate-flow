@@ -284,7 +284,7 @@ export const WorkspaceAnalyticsDashboard: React.FC<WorkspaceAnalyticsDashboardPr
                 <div className="pt-4 border-t">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    {t('workspace.analytics.last_updated')} {new Date().toLocaleString(t('locale'))}
+                    {t('workspace.analytics.last_updated')} {new Date().toLocaleString(t('common.locale'))}
                   </div>
                 </div>
               </CardContent>
