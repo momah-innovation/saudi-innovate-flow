@@ -187,7 +187,16 @@ export const UserDashboard: React.FC = () => {
         stats={stats}
         onNavigate={handleNavigate}
         userRole={userRoleString}
-        rolePermissions={dashboardAccess}
+        rolePermissions={{
+          canCreateIdeas: true,
+          canJoinChallenges: true,
+          canViewAnalytics: dashboardAccess.canViewAnalytics,
+          canManageUsers: dashboardAccess.canManageUsers,
+          canManageSystem: isAdmin || isSuperAdmin,
+          canAccessAdminPanel: isAdmin || isSuperAdmin,
+          canModerateCommunity: isTeamMember || isAdmin || isSuperAdmin,
+          allowedSections: uiAccess.showAdminPanel ? ['all'] : ['basic']
+        }}
       />
 
       {/* Main Dashboard Tabs */}
