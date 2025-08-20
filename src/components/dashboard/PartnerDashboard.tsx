@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,27 +25,37 @@ export const PartnerDashboard = React.memo(function PartnerDashboard({ userProfi
   
   const { data: unifiedData } = useUnifiedDashboardData('partner');
 
-  // Use real partner stats from unified data
-  const partnerStats = [
-    {
-      title: language === 'ar' ? 'الفرص النشطة' : 'Active Opportunities',
-      value: unifiedData.partnerStats.activePartnerships.toString(),
-      icon: Target,
-      color: 'text-success'
-    },
-    {
-      title: language === 'ar' ? 'الشراكات' : 'Partnerships',
-      value: unifiedData.partnerStats.supportedProjects.toString(),
-      icon: Handshake,
-      color: 'text-info'
-    },
-    {
-      title: language === 'ar' ? 'معدل النجاح' : 'Success Rate',
-      value: `${unifiedData.partnerStats.partnershipScore}%`,
-      icon: TrendingUp,
-      color: 'text-primary'
-    }
-  ];
+  // Safe access to partner stats with fallbacks
+  const partnerStats = React.useMemo(() => {
+    const stats = unifiedData?.partnerStats || {
+      activePartnerships: 0,
+      supportedProjects: 0,
+      partnershipScore: 0,
+      sharedChallenges: 0,
+      collaborationScore: 0
+    };
+
+    return [
+      {
+        title: language === 'ar' ? 'الفرص النشطة' : 'Active Opportunities',
+        value: stats.activePartnerships.toString(),
+        icon: Target,
+        color: 'text-success'
+      },
+      {
+        title: language === 'ar' ? 'الشراكات' : 'Partnerships',
+        value: stats.supportedProjects.toString(),
+        icon: Handshake,
+        color: 'text-info'
+      },
+      {
+        title: language === 'ar' ? 'معدل النجاح' : 'Success Rate',
+        value: `${stats.partnershipScore}%`,
+        icon: TrendingUp,
+        color: 'text-primary'
+      }
+    ];
+  }, [unifiedData?.partnerStats, language]);
 
   const partnerActions = [
     {
@@ -61,6 +72,39 @@ export const PartnerDashboard = React.memo(function PartnerDashboard({ userProfi
     }
   ];
 
+  // Show loading state if data is still loading
+  if (unifiedData?.isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <Handshake className="w-6 h-6" />
+            <h2 className="text-xl font-bold">
+              {language === 'ar' ? 'لوحة الشريك' : 'Partner Dashboard'}
+            </h2>
+          </div>
+          <p className="text-white/80">
+            {language === 'ar' ? 'جاري التحميل...' : 'Loading...'}
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[1, 2, 3].map((index) => (
+            <Card key={index} className="animate-pulse">
+              <CardHeader className="space-y-0 pb-2">
+                <div className="h-4 bg-muted rounded w-3/4"></div>
+              </CardHeader>
+              <CardContent>
+                <div className="h-8 bg-muted rounded w-1/2 mb-2"></div>
+                <div className="h-3 bg-muted rounded w-2/3"></div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-lg p-6">
@@ -72,8 +116,8 @@ export const PartnerDashboard = React.memo(function PartnerDashboard({ userProfi
         </div>
         <p className="text-white/80">
           {language === 'ar' 
-            ? `أهلاً بك ${userProfile?.display_name} - إدارة الشراكات والفرص`
-            : `Welcome ${userProfile?.display_name} - Managing partnerships and opportunities`}
+            ? `أهلاً بك ${userProfile?.display_name || 'الشريك'} - إدارة الشراكات والفرص`
+            : `Welcome ${userProfile?.display_name || 'Partner'} - Managing partnerships and opportunities`}
         </p>
       </div>
 
