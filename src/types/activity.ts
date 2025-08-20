@@ -71,9 +71,11 @@ export type ActivityActionType =
   // Administrative
   | 'role_assigned' | 'role_revoked' | 'user_activated' | 'user_suspended'
   | 'backup_created' | 'maintenance_started' | 'configuration_changed'
-  | 'report_generated' | 'data_exported' | 'analytics_viewed';
+  | 'report_generated' | 'data_exported' | 'analytics_viewed'
+  // Navigation & UI interactions
+  | 'navigation' | 'tab_changed' | 'dashboard_accessed' | 'page_viewed';
 
 export type ActivityEntityType = 
   | 'challenge' | 'idea' | 'submission' | 'event' | 'opportunity' 
   | 'partnership' | 'campaign' | 'user' | 'team' | 'workspace' 
-  | 'file' | 'comment' | 'notification' | 'system';
+  | 'file' | 'comment' | 'notification' | 'system' | 'dashboard' | 'page';

@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRoleBasedAccess } from '@/hooks/useRoleBasedAccess';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useActivityLogger } from '@/hooks/useActivityLogger';
+import { useActivityFeed } from '@/hooks/useActivityFeed';
 import { DashboardHero } from './DashboardHero';
 import { DashboardMetrics } from './DashboardMetrics';
 import { DashboardQuickActions } from './DashboardQuickActions';
@@ -41,6 +43,10 @@ export const UserDashboard: React.FC = () => {
   } = useRoleBasedAccess();
   
   const { metrics, isLoading, error } = useDashboardData();
+  const { activities, isLoading: activitiesLoading } = useActivityFeed({ 
+    auto_refresh: true,
+    refresh_interval: 30000 
+  });
   const [activeTab, setActiveTab] = useState('overview');
 
   // Log dashboard access
@@ -206,7 +212,11 @@ export const UserDashboard: React.FC = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <DashboardRecentActivity />
+              <DashboardRecentActivity 
+                activities={activities.slice(0, 5)} 
+                isLoading={activitiesLoading}
+                onViewAll={() => handleTabChange('content')}
+              />
             </div>
             <div>
               <DashboardQuickActions 

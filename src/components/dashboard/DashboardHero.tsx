@@ -45,7 +45,7 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
   };
 
   const RoleIcon = getRoleIcon(userRole);
-  const displayName = userProfile?.display_name || userProfile?.full_name || 'User';
+  const displayName = userProfile?.display_name || userProfile?.email?.split('@')[0] || 'User';
 
   return (
     <div className={`${getRoleColor(userRole)} text-white rounded-lg p-6 shadow-lg`}>
@@ -61,9 +61,9 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
                 <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
                   {userRole?.replace('_', ' ').toUpperCase() || 'USER'}
                 </Badge>
-                {userProfile?.metadata?.profile_completion && (
+                {userProfile?.metadata && typeof userProfile.metadata === 'object' && 'profile_completion' in userProfile.metadata && (
                   <Badge variant="outline" className="bg-white/10 text-white border-white/30">
-                    {userProfile.metadata.profile_completion}% Complete
+                    {String(userProfile.metadata.profile_completion)}% Complete
                   </Badge>
                 )}
               </div>

@@ -28,16 +28,22 @@ export const useRolePermissions = (requiredRoles: UserRole[] = []) => {
     canManageChallenges: hasPermission(['admin', 'super_admin', 'challenge_manager', 'team_member']),
     canManageEvents: hasPermission(['admin', 'super_admin', 'event_manager']),
     canManageCampaigns: hasPermission(['admin', 'super_admin', 'campaign_manager']),
+    canManageSystem: hasPermission(['admin', 'super_admin']),
     
     // Access permissions
     canAccess: requiredRoles.length > 0 ? hasPermission(requiredRoles) : true,
     canView: hasPermission(['admin', 'super_admin', 'team_member', 'expert', 'partner']),
     canEdit: hasPermission(['admin', 'super_admin', 'challenge_manager']),
+    canAccessAdminPanel: hasPermission(['admin', 'super_admin']),
     
     // Team permissions
     isTeamMember: hasPermission(['team_member', 'admin', 'super_admin']),
     isExpert: hasPermission(['expert', 'domain_expert', 'external_expert', 'admin', 'super_admin']),
-    isPartner: hasPermission(['partner', 'admin', 'super_admin'])
+    isPartner: hasPermission(['partner', 'admin', 'super_admin']),
+    
+    // Content permissions
+    canCreateIdeas: hasPermission(['admin', 'super_admin', 'team_member', 'expert', 'partner']),
+    canJoinChallenges: hasPermission(['admin', 'super_admin', 'team_member', 'expert', 'partner'])
   };
 
   return {
