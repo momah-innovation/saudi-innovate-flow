@@ -242,7 +242,7 @@ export function useAnalyticsService(): {
         .select('id')
         .eq('user_id', user.id)
         .eq('status', 'active')
-        .single();
+        .maybeSingle();
 
       return Boolean(data);
     }

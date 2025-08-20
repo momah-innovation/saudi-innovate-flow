@@ -95,7 +95,7 @@ export const useAIFeatures = () => {
           .from('ai_preferences')
           .insert(defaultPrefs)
           .select()
-          .single();
+          .maybeSingle();
 
         if (createError) throw createError;
         setPreferences(newPrefs);

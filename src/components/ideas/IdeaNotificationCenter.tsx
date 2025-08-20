@@ -84,7 +84,7 @@ export function IdeaNotificationCenter({ className }: IdeaNotificationCenterProp
               .from('profiles')
               .select('name, name_ar, profile_image_url')
               .eq('id', notification.sender_id)
-              .single();
+              .maybeSingle();
             
             return { ...notification, sender_profile: profile };
           }

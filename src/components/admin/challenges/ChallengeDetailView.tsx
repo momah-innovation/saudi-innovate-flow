@@ -195,7 +195,7 @@ export function ChallengeDetailView({
           .from('implementation_tracker')
           .select('*')
           .eq('challenge_id', challenge.id)
-          .single()
+          .maybeSingle();
       ]);
 
       setRelatedData({

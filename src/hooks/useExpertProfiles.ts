@@ -68,7 +68,7 @@ export const useExpertProfiles = () => {
       .from('experts')
       .insert([expertData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create expert profile', { component: 'useExpertProfiles' }, error);
@@ -90,7 +90,7 @@ export const useExpertProfiles = () => {
       .update(expertData)
       .eq('id', expertId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update expert profile', { component: 'useExpertProfiles' }, error);

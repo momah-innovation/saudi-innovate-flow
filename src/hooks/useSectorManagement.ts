@@ -53,7 +53,7 @@ export const useSectorManagement = () => {
       .from('sectors')
       .insert([sectorData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create sector', { component: 'useSectorManagement' }, error);
@@ -75,7 +75,7 @@ export const useSectorManagement = () => {
       .update(sectorData)
       .eq('id', sectorId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update sector', { component: 'useSectorManagement' }, error);

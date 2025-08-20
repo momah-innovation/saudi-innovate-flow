@@ -80,7 +80,7 @@ export const useOpportunityOperations = () => {
           category: opportunityData.category
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (createError) throw createError;
 
@@ -307,7 +307,7 @@ export const useOpportunityOperations = () => {
           status: 'submitted'
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (applicationError) throw applicationError;
 

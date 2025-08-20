@@ -167,7 +167,7 @@ export function useParticipants(eventId: string | null) {
           registration_type: 'admin_registered'
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

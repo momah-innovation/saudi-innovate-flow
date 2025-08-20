@@ -67,7 +67,7 @@ export const useIdeaManagement = () => {
       .from('ideas')
       .insert([ideaData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create idea', { component: 'useIdeaManagement' }, error);
@@ -89,7 +89,7 @@ export const useIdeaManagement = () => {
       .update(ideaData)
       .eq('id', ideaId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update idea', { component: 'useIdeaManagement' }, error);

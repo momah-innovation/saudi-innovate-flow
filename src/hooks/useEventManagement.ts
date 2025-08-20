@@ -160,9 +160,9 @@ export const useEventManagement = () => {
 
       let result;
       if (eventId) {
-        result = await supabase.from('events').update(eventData).eq('id', eventId).select().single();
+        result = await supabase.from('events').update(eventData).eq('id', eventId).select().maybeSingle();
       } else {
-        result = await supabase.from('events').insert(eventData).select().single();
+        result = await supabase.from('events').insert(eventData).select().maybeSingle();
       }
 
       if (result.error) throw result.error;
@@ -336,7 +336,7 @@ export const useEventManagement = () => {
         .from('events')
         .select('*')
         .eq('id', eventId)
-        .single();
+        .maybeSingle();
 
       if (fetchError) throw fetchError;
 
@@ -355,7 +355,7 @@ export const useEventManagement = () => {
         .from('events')
         .insert(duplicateData)
         .select()
-        .single();
+        .maybeSingle();
 
       if (insertError) throw insertError;
 

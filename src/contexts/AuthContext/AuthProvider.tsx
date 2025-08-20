@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           .from('profiles')
           .select('*')
           .eq('id', userId)
-          .single(),
+          .maybeSingle(),
         supabase
           .from('user_roles')
           .select('role, is_active, expires_at')

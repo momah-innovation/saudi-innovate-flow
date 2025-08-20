@@ -231,7 +231,7 @@ export function useEventDetails(eventId: string | null) {
         .from('events')
         .select('campaign_id')
         .eq('id', eventId)
-        .single();
+        .maybeSingle();
 
       if (eventError || !eventData?.campaign_id) {
         setCampaignInfo(null);
@@ -243,7 +243,7 @@ export function useEventDetails(eventId: string | null) {
         .from('campaigns')
         .select('id, title_ar, description_ar, status, start_date, end_date, budget')
         .eq('id', eventData.campaign_id)
-        .single();
+        .maybeSingle();
 
       if (campaignError) throw campaignError;
 

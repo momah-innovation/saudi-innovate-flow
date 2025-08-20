@@ -61,7 +61,7 @@ export const usePartnerManagement = () => {
       .from('partners')
       .insert([partnerData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create partner', { component: 'usePartnerManagement' }, error);
@@ -83,7 +83,7 @@ export const usePartnerManagement = () => {
       .update(partnerData)
       .eq('id', partnerId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update partner', { component: 'usePartnerManagement' }, error);

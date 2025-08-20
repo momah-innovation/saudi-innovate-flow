@@ -123,7 +123,7 @@ export const ChallengePage: React.FC = () => {
           sectors(name_ar)
         `)
         .eq('id', challengeId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setChallenge(data as any);
@@ -159,7 +159,7 @@ export const ChallengePage: React.FC = () => {
         .select('*')
         .eq('challenge_id', challengeId)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       setIsParticipant(!!participation);
       

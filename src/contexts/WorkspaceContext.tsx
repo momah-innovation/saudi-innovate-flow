@@ -253,7 +253,7 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
       .from('workspaces')
       .insert(insertData)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
 

@@ -59,7 +59,7 @@ export const useExpertAssignment = () => {
       .from('challenge_experts')
       .insert([assignmentData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create expert assignment', { component: 'useExpertAssignment' }, error);
@@ -81,7 +81,7 @@ export const useExpertAssignment = () => {
       .update(assignmentData)
       .eq('id', assignmentId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update expert assignment', { component: 'useExpertAssignment' }, error);

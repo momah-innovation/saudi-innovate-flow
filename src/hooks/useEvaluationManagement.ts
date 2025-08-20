@@ -61,7 +61,7 @@ export const useEvaluationManagement = () => {
         .from('idea_evaluations')
         .insert([evaluationData])
         .select()
-        .single();
+        .maybeSingle();
     
     if (error) {
       logger.error('Failed to create evaluation', { component: 'useEvaluationManagement' }, error);
@@ -83,7 +83,7 @@ export const useEvaluationManagement = () => {
       .update(evaluationData)
       .eq('id', evaluationId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update evaluation', { component: 'useEvaluationManagement' }, error);

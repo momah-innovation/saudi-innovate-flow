@@ -67,7 +67,7 @@ export const useEventOperations = () => {
       .from('events')
       .insert([eventData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create event', { component: 'useEventOperations' }, error);
@@ -89,7 +89,7 @@ export const useEventOperations = () => {
       .update(eventData)
       .eq('id', eventId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update event', { component: 'useEventOperations' }, error);

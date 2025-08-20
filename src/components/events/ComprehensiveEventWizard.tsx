@@ -346,7 +346,7 @@ export const ComprehensiveEventWizard = ({
           .from('events')
           .insert([eventData])
           .select()
-          .single();
+          .maybeSingle();
         
         if (error) throw error;
         savedEventId = data.id;

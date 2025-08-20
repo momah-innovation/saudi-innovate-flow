@@ -171,7 +171,7 @@ export const OpportunityDetailsDialog = ({
         .from('opportunity_analytics')
         .select('view_count, like_count, application_count')
         .eq('opportunity_id', opportunityId)
-        .single();
+        .maybeSingle();
 
       // Use opportunity stats hook for applications count
       const applicationsCount = analytics?.application_count || 0;

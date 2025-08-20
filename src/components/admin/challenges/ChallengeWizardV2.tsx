@@ -292,7 +292,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
           .from('challenges')
           .insert([challengeData])
           .select()
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
 

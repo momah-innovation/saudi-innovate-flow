@@ -164,7 +164,7 @@ export const useCampaignManagement = () => {
           sector_id: campaignData.sector_id
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (campaignError) throw campaignError;
 

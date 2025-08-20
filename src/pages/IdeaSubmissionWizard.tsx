@@ -141,7 +141,7 @@ export default function IdeaSubmissionWizard() {
         .from('system_settings')
         .select('setting_value')
         .eq('setting_key', 'idea_predefined_tags')
-        .single();
+        .maybeSingle();
 
       if (data && !error && data.setting_value) {
         const tags = JSON.parse(data.setting_value as string);
@@ -230,7 +230,7 @@ export default function IdeaSubmissionWizard() {
           .from('ideas')
           .insert(ideaData)
           .select()
-          .single();
+          .maybeSingle();
         
         if (error) throw error;
         if (data) setDraftId(data.id);
@@ -251,7 +251,7 @@ export default function IdeaSubmissionWizard() {
         .from('ideas')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       
@@ -392,13 +392,13 @@ export default function IdeaSubmissionWizard() {
           .update({ ...ideaData, status: 'pending' })
           .eq('id', draftId)
           .select()
-          .single();
+          .maybeSingle();
       } else {
         result = await supabase
           .from('ideas')
           .insert(ideaData)
           .select()
-          .single();
+          .maybeSingle();
       }
 
       if (result.error) throw result.error;

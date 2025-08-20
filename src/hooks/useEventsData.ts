@@ -56,7 +56,7 @@ export const useEventsData = () => {
         .from('events')
         .insert([eventData])
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 
@@ -79,7 +79,7 @@ export const useEventsData = () => {
         .update(updates)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

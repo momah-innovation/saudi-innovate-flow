@@ -80,7 +80,7 @@ export const useStakeholderManagement = () => {
       .from('stakeholders')
       .insert([stakeholderData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create stakeholder', { component: 'useStakeholderManagement' }, error);
@@ -102,7 +102,7 @@ export const useStakeholderManagement = () => {
       .update(stakeholderData)
       .eq('id', stakeholderId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update stakeholder', { component: 'useStakeholderManagement' }, error);

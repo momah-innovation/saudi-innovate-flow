@@ -129,7 +129,7 @@ export const useChallengeManagement = () => {
           service_id: challengeData.service_id
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (challengeError) throw challengeError;
 

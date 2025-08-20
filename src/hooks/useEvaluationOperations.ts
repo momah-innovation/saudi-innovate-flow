@@ -145,7 +145,7 @@ export const useEvaluationOperations = () => {
           evaluation_date: evaluationData.evaluation_date
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (createError) throw createError;
 

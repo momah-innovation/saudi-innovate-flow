@@ -61,7 +61,7 @@ export const useFocusQuestionManagement = () => {
       .from('focus_questions')
       .insert([questionData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create focus question', { component: 'useFocusQuestionManagement' }, error);
@@ -83,7 +83,7 @@ export const useFocusQuestionManagement = () => {
       .update(questionData)
       .eq('id', questionId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update focus question', { component: 'useFocusQuestionManagement' }, error);

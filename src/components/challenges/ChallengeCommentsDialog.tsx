@@ -107,7 +107,7 @@ export function ChallengeCommentsDialog({
             avatar_url
           )
         `)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 
@@ -148,7 +148,7 @@ export function ChallengeCommentsDialog({
             avatar_url
           )
         `)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 
