@@ -1,33 +1,27 @@
+
 import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Shield, Users, Activity, AlertTriangle, ArrowRight } from 'lucide-react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useNavigate } from 'react-router-dom';
 import { navigationHandler } from '@/utils/unified-navigation';
-import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
-import { DashboardUserProfile } from '@/types/common';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { 
-  Users, 
-  Target, 
-  BarChart3, 
-  Calendar, 
-  TrendingUp,
-  ArrowRight,
-  UserCheck,
-  Building,
-  ClipboardList,
-  Activity
-} from 'lucide-react';
 
 interface ManagerDashboardProps {
-  userProfile: DashboardUserProfile;
-  canManageTeams: boolean;
-  canViewAnalytics: boolean;
-  canManageProjects: boolean;
+  userProfile: any;
+  canManageUsers: boolean;
+  canViewSystemStats: boolean;
+  canAccessAdminPanel: boolean;
 }
 
-export const ManagerDashboard = React.memo(function ManagerDashboard({ userProfile, canManageTeams, canViewAnalytics, canManageProjects }: ManagerDashboardProps) {
+export const ManagerDashboard = React.memo(function ManagerDashboard({ 
+  userProfile, 
+  canManageUsers, 
+  canViewSystemStats, 
+  canAccessAdminPanel 
+}: ManagerDashboardProps) {
   const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   
@@ -35,97 +29,128 @@ export const ManagerDashboard = React.memo(function ManagerDashboard({ userProfi
   React.useEffect(() => {
     navigationHandler.setNavigate(navigate);
   }, [navigate]);
-
-  const { data: unifiedData } = useUnifiedDashboardData('manager');
   
-  const managerStats = [
-    {
-      title: language === 'ar' ? 'أعضاء الفريق' : 'Team Members',
-      value: unifiedData?.adminStats?.totalUsers?.toString() || '0',
-      change: `+${Math.round((unifiedData?.adminStats?.activeUsers || 0) / Math.max(unifiedData?.adminStats?.totalUsers || 1, 1) * 10)}%`,
-      changeText: language === 'ar' ? 'هذا الشهر' : 'this month',
-      icon: Users,
-      color: 'text-info'
-    },
-    {
-      title: language === 'ar' ? 'المشاريع النشطة' : 'Active Projects',
-      value: unifiedData?.adminStats?.totalChallenges?.toString() || '0',
-      change: `+${Math.round((unifiedData?.adminStats?.totalChallenges || 0) * 0.1)}`,
-      changeText: language === 'ar' ? 'مشروع جديد' : 'new project',
-      icon: Target,
-      color: 'text-success'
-    },
-    {
-      title: language === 'ar' ? 'التحديات المكتملة' : 'Challenges Completed',
-      value: unifiedData?.adminStats?.totalSubmissions?.toString() || '0',
-      change: `+${Math.round((unifiedData?.adminStats?.totalSubmissions || 0) * 0.15)}`,
-      changeText: language === 'ar' ? 'هذا الأسبوع' : 'this week',
-      icon: ClipboardList,
-      color: 'text-primary'
-    },
-    {
-      title: language === 'ar' ? 'أداء الفريق' : 'Team Performance',
-      value: `${Math.round(unifiedData?.adminStats?.systemUptime || 85)}%`,
-      change: `+${Math.round((unifiedData?.adminStats?.securityScore || 0) - 90)}%`,
-      changeText: language === 'ar' ? 'تحسن' : 'improvement',
-      icon: TrendingUp,
-      color: 'text-warning'
-    }
-  ];
+  const { data: unifiedData, isLoading } = useUnifiedDashboardData('manager');
+
+  // Use managerStats instead of adminStats
+  const managerStats = React.useMemo(() => {
+    const stats = unifiedData?.managerStats || {
+      totalUsers: 0,
+      activeUsers: 0,
+      totalChallenges: 0,
+      totalSubmissions: 0,
+      systemHealth: 0,
+      pendingApprovals: 0,
+      systemUptime: 0,
+      securityScore: 0
+    };
+
+    return [
+      {
+        title: language === 'ar' ? 'إجمالي المستخدمين' : 'Total Users',
+        value: `${stats.totalUsers || 0}`,
+        subtitle: `${Math.round((stats.activeUsers || 0) / (stats.totalUsers || 1) * 100)}% active`,
+        icon: Users,
+        color: 'text-primary'
+      },
+      {
+        title: language === 'ar' ? 'التحديات النشطة' : 'Active Challenges',
+        value: `${stats.totalChallenges || 0}`,
+        subtitle: `${stats.totalChallenges || 0} total challenges`,
+        icon: Activity,
+        color: 'text-info'
+      },
+      {
+        title: language === 'ar' ? 'المشاركات' : 'Submissions',
+        value: `${stats.totalSubmissions || 0}`,
+        subtitle: `${stats.totalSubmissions || 0} total submissions`,
+        icon: Shield,
+        color: 'text-success'
+      },
+      {
+        title: language === 'ar' ? 'وقت التشغيل' : 'System Uptime',
+        value: `${stats.systemUptime || 0}%`,
+        subtitle: `Security: ${stats.securityScore || 0}%`,
+        icon: AlertTriangle,
+        color: 'text-warning'
+      }
+    ];
+  }, [unifiedData?.managerStats, language]);
 
   const managerActions = [
     {
-      title: language === 'ar' ? 'إدارة الفريق' : 'Team Management',
-      description: language === 'ar' ? 'إدارة أعضاء الفريق والأدوار' : 'Manage team members and roles',
-      icon: Users,
-      action: () => navigationHandler.navigateTo('/admin/teams'),
-      show: canManageTeams
+      title: language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users',
+      description: language === 'ar' ? 'إدارة المستخدمين والأدوار' : 'Manage users and roles',
+      action: () => navigationHandler.navigateTo('/admin/users'),
+      show: canManageUsers
     },
     {
-      title: language === 'ar' ? 'تقارير الأداء' : 'Performance Reports',
-      description: language === 'ar' ? 'عرض تقارير أداء الفريق والمشاريع' : 'View team and project performance reports',
-      icon: BarChart3,
-      action: () => navigationHandler.navigateTo('/analytics'),
-      show: canViewAnalytics
+      title: language === 'ar' ? 'إحصائيات النظام' : 'System Analytics',
+      description: language === 'ar' ? 'عرض إحصائيات النظام المفصلة' : 'View detailed system statistics',
+      action: () => navigationHandler.navigateTo('/admin/analytics'),
+      show: canViewSystemStats
     },
     {
-      title: language === 'ar' ? 'إدارة المشاريع' : 'Project Management',
-      description: language === 'ar' ? 'تتبع وإدارة المشاريع النشطة' : 'Track and manage active projects',
-      icon: Target,
-      action: () => navigationHandler.navigateTo('/projects'),
-      show: canManageProjects
-    },
-    {
-      title: language === 'ar' ? 'جدولة الاجتماعات' : 'Meeting Scheduling',
-      description: language === 'ar' ? 'تنظيم اجتماعات الفريق والمراجعات' : 'Schedule team meetings and reviews',
-      icon: Calendar,
-      action: () => navigationHandler.navigateTo('/meetings'),
-      show: true
-    },
-    {
-      title: language === 'ar' ? 'تقييم الأداء' : 'Performance Reviews',
-      description: language === 'ar' ? 'إجراء تقييمات دورية للأداء' : 'Conduct periodic performance evaluations',
-      icon: UserCheck,
-      action: () => navigationHandler.navigateTo('/reviews'),
-      show: canManageTeams
-    },
-    {
-      title: language === 'ar' ? 'موارد القطاع' : 'Sector Resources',
-      description: language === 'ar' ? 'إدارة موارد ومتطلبات القطاع' : 'Manage sector resources and requirements',
-      icon: Building,
-      action: () => navigationHandler.navigateTo('/admin/sectors'),
-      show: canViewAnalytics
+      title: language === 'ar' ? 'لوحة الإدارة' : 'Admin Panel',
+      description: language === 'ar' ? 'الوصول إلى لوحة الإدارة الشاملة' : 'Access comprehensive admin panel',
+      action: () => navigationHandler.navigateTo('/admin'),
+      show: canAccessAdminPanel
     }
   ];
 
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <Shield className="w-6 h-6" />
+            <h2 className="text-xl font-bold">
+              {language === 'ar' ? 'لوحة المدير' : 'Manager Dashboard'}
+            </h2>
+          </div>
+          <p className="text-white/80">
+            {language === 'ar' ? 'جاري التحميل...' : 'Loading...'}
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((index) => (
+            <Card key={index} className="animate-pulse">
+              <CardHeader className="space-y-0 pb-2">
+                <div className="h-4 bg-muted rounded w-3/4"></div>
+              </CardHeader>
+              <CardContent>
+                <div className="h-8 bg-muted rounded w-1/2 mb-2"></div>
+                <div className="h-3 bg-muted rounded w-2/3"></div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Manager Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {managerStats.map((stat) => {
+      <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg p-6">
+        <div className="flex items-center gap-3 mb-2">
+          <Shield className="w-6 h-6" />
+          <h2 className="text-xl font-bold">
+            {language === 'ar' ? 'لوحة المدير' : 'Manager Dashboard'}
+          </h2>
+        </div>
+        <p className="text-white/80">
+          {language === 'ar' 
+            ? `أهلاً بك ${userProfile?.display_name || 'المدير'} - إدارة النظام والمستخدمين`
+            : `Welcome ${userProfile?.display_name || 'Manager'} - System and user management`}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {managerStats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.title} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
+            <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
                   {stat.title}
@@ -135,7 +160,7 @@ export const ManagerDashboard = React.memo(function ManagerDashboard({ userProfi
               <CardContent>
                 <div className={`text-2xl font-bold ${stat.color || 'text-foreground'}`}>{stat.value}</div>
                 <p className="text-xs text-muted-foreground">
-                  {stat.change} {stat.changeText}
+                  {stat.subtitle}
                 </p>
               </CardContent>
             </Card>
@@ -143,91 +168,34 @@ export const ManagerDashboard = React.memo(function ManagerDashboard({ userProfi
         })}
       </div>
 
-      {/* Manager Tabs */}
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 h-12 bg-muted rounded-lg p-1">
-          <TabsTrigger 
-            value="overview" 
-            className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
-          >
-            <Activity className="w-4 h-4" />
-            {language === 'ar' ? 'نظرة عامة' : 'Overview'}
-          </TabsTrigger>
-          <TabsTrigger 
-            value="team" 
-            className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
-          >
-            <Users className="w-4 h-4" />
-            {language === 'ar' ? 'الفريق' : 'Team'}
-          </TabsTrigger>
-          <TabsTrigger 
-            value="projects" 
-            className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
-          >
-            <Target className="w-4 h-4" />
-            {language === 'ar' ? 'المشاريع' : 'Projects'}
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {managerActions.filter(action => action.show).map((action, index) => (
-              <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
-                    {action.title}
-                  </CardTitle>
-                  <action.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    {action.description}
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                    onClick={action.action}
-                  >
-                    <ArrowRight className="w-3 h-3 mr-2" />
-                    {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="team" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>{language === 'ar' ? 'إدارة الفريق' : 'Team Management'}</CardTitle>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {managerActions.filter(action => action.show).map((action, index) => (
+          <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
+                {action.title}
+              </CardTitle>
+              <Shield className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">
-                {language === 'ar' 
-                  ? 'أدوات إدارة أعضاء الفريق وتتبع الأداء ستكون متاحة هنا.'
-                  : 'Team member management tools and performance tracking will be available here.'}
+              <p className="text-sm text-muted-foreground mt-2">
+                {action.description}
               </p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                onClick={action.action}
+              >
+                <ArrowRight className="w-3 h-3 mr-2" />
+                {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
+              </Button>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        <TabsContent value="projects" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>{language === 'ar' ? 'إدارة المشاريع' : 'Project Management'}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                {language === 'ar' 
-                  ? 'أدوات تتبع المشاريع وإدارة المهام ستكون متاحة هنا.'
-                  : 'Project tracking tools and task management will be available here.'}
-              </p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        ))}
+      </div>
     </div>
   );
 });
+
+export default ManagerDashboard;

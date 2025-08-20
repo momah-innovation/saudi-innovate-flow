@@ -39,13 +39,49 @@ interface UnifiedDashboardData {
   quickActions: any[];
 }
 
+const getDefaultDashboardData = (): UnifiedDashboardData => ({
+  userStats: {
+    totalIdeas: 0,
+    totalChallenges: 0,
+    totalEvents: 0,
+    innovationScore: 0,
+    totalPoints: 0
+  },
+  expertStats: {
+    completedEvaluations: 0,
+    pendingEvaluations: 0,
+    averageRating: 0,
+    expertiseAreas: [],
+    assignedChallenges: 0
+  },
+  partnerStats: {
+    activePartnerships: 0,
+    totalInvestment: 0,
+    collaborationScore: 0,
+    partnershipOpportunities: 0
+  },
+  managerStats: {
+    totalUsers: 0,
+    activeUsers: 0,
+    totalChallenges: 0,
+    totalSubmissions: 0,
+    systemHealth: 0,
+    pendingApprovals: 0,
+    systemUptime: 0,
+    securityScore: 0,
+    recentActivity: []
+  },
+  recentActivities: [],
+  quickActions: []
+});
+
 export const useUnifiedDashboardData = (userType?: string) => {
   const { user } = useCurrentUser();
 
   return useQuery({
     queryKey: ['unified-dashboard-data', user?.id, userType],
     queryFn: async (): Promise<UnifiedDashboardData> => {
-      // Return mock data with correct property names
+      // Return mock data that matches the interface exactly
       return {
         userStats: {
           totalIdeas: 5,
@@ -128,6 +164,7 @@ export const useUnifiedDashboardData = (userType?: string) => {
     enabled: !!user?.id,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 15 * 60 * 1000, // 15 minutes
-    retry: 1
+    retry: 1,
+    initialData: getDefaultDashboardData()
   });
 };
