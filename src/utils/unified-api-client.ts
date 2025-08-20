@@ -98,7 +98,7 @@ class UnifiedAPIClient {
         .from(table as any)
         .insert(data)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) {
         this.errorHandler.handleError(error, {
@@ -138,7 +138,7 @@ class UnifiedAPIClient {
         .update(data)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) {
         this.errorHandler.handleError(error, {
@@ -213,7 +213,7 @@ class UnifiedAPIClient {
         .from(table as any)
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) {
         this.errorHandler.handleError(error, {

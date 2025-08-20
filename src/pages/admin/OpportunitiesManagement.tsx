@@ -82,7 +82,7 @@ export default function OpportunitiesManagement() {
           .from('opportunity_analytics')
           .select('view_count, like_count, application_count')
           .eq('opportunity_id', opp.id)
-          .single();
+          .maybeSingle();
 
         return {
           ...opp,

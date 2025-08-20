@@ -435,7 +435,7 @@ interface ChallengeData {
         .select('id')
         .eq('challenge_id', challenge.id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (existingBookmark) {
         // Remove bookmark

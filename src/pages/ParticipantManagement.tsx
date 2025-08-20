@@ -32,7 +32,7 @@ const ParticipantManagementPage = () => {
         .from('events')
         .select('*')
         .eq('id', eventId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

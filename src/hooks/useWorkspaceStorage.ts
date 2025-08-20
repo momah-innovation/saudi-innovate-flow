@@ -204,7 +204,7 @@ export function useWorkspaceStorage(options: UseWorkspaceStorageOptions): UseWor
           status: 'active'
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (dbError) throw dbError;
 

@@ -66,7 +66,7 @@ export default function ChallengeDetail() {
         .select('id')
         .eq('challenge_id', id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
       
       setIsParticipating(!!data);
     } catch (error) {
@@ -83,7 +83,7 @@ export default function ChallengeDetail() {
         .select('id')
         .eq('challenge_id', id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
       
       setIsLiked(!!data);
     } catch (error) {

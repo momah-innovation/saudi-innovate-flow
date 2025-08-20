@@ -149,7 +149,7 @@ export const useWorkspaceCollaboration = () => {
           meeting_type: meetingData.meeting_type || 'general'
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

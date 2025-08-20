@@ -69,7 +69,7 @@ export const useTagIntegration = () => {
         .eq('entity_type', entityType)
         .eq('entity_id', entityId)
         .eq('status', 'pending')
-        .single();
+        .maybeSingle();
 
       if (error || !data) return [];
 

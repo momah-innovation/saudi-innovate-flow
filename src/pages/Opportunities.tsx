@@ -138,7 +138,7 @@ export default function Opportunities() {
             .from('opportunity_analytics')
             .select('view_count')
             .eq('opportunity_id', opp.id)
-            .single();
+            .maybeSingle();
 
           // Manually attach sector and department data
           const sector = sectors.find(s => s.id === opp.sector_id) || null;

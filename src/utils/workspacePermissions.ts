@@ -183,7 +183,7 @@ export class WorkspacePermissionManager {
         .eq('workspace_id', this.workspaceId)
         .eq('user_id', this.userId)
         .eq('status', 'active')
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') throw error;
 
@@ -343,7 +343,7 @@ export async function getUserWorkspaceRole(
       .eq('workspace_id', workspaceId)
       .eq('user_id', userId)
       .eq('status', 'active')
-      .single();
+      .maybeSingle();
 
     if (error && error.code !== 'PGRST116') throw error;
     return data?.role || null;

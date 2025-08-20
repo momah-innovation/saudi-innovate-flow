@@ -51,7 +51,7 @@ export function useWorkspaceChat({ workspaceId, teamId, enabled = true }: UseWor
           *,
           sender:profiles(id, full_name, avatar_url)
         `)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

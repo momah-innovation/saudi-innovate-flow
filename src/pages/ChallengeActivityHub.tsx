@@ -77,7 +77,7 @@ export default function ChallengeActivityHub() {
         .from('challenges')
         .select('*')
         .eq('id', challengeId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setChallenge(data);

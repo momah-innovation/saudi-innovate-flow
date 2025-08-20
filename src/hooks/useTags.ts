@@ -87,7 +87,7 @@ export const useTags = (): UseTagsResult => {
           created_by: user?.id
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 
@@ -106,7 +106,7 @@ export const useTags = (): UseTagsResult => {
         .update(updates)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

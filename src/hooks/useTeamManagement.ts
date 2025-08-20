@@ -145,7 +145,7 @@ export const useTeamManagement = () => {
       .from('innovation_team_members')
       .insert([memberData])
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to create team member', { component: 'useTeamManagement' }, error);
@@ -167,7 +167,7 @@ export const useTeamManagement = () => {
       .update(memberData)
       .eq('id', memberId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) {
       logger.error('Failed to update team member', { component: 'useTeamManagement' }, error);

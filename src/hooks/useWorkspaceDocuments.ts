@@ -70,7 +70,7 @@ export function useWorkspaceDocuments({ workspaceId, enabled = true }: UseWorksp
         .from('workspace_files')
         .insert(documentData)
         .select('id, workspace_id, filename, file_category, file_size, uploaded_by, updated_at, access_level')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 
