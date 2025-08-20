@@ -1,372 +1,123 @@
-import { useState, useEffect } from 'react';
-import { navigationHandler } from '@/utils/unified-navigation';
+
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Lightbulb, Target, Award, Trophy, Star, Sparkles, Users, Settings, 
-  Shield, BarChart3, Brain, FileText, Clock, Handshake, Briefcase, TrendingUp,
-  Server, Activity, CheckCircle, Wifi, AlertCircle
-} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useDirection } from '@/components/ui/direction-provider';
-import { cn } from '@/lib/utils';
+import { 
+  Crown, 
+  Shield, 
+  Users, 
+  Star, 
+  TrendingUp,
+  Bell,
+  Settings
+} from 'lucide-react';
+import type { DashboardHeroProps } from '@/types/dashboard';
 
-interface DashboardUserProfile {
-  id: string;
-  name?: string;
-  display_name?: string;
-  email?: string;
-  role?: string;
-  avatar_url?: string;
-  department?: string;
-  organization?: string;
-}
-
-interface DashboardRolePermissions {
-  canManageUsers?: boolean;
-  canViewAdmin?: boolean;
-  canCreateChallenges?: boolean;
-  canModerateContent?: boolean;
-}
-
-interface DashboardHeroProps {
-  userProfile?: DashboardUserProfile;
-  unifiedData: {
-    totalIdeas: number;
-    activeChallenges: number;
-    totalPoints: number;
-    innovationScore: number;
-    expertStats: {
-      assignedChallenges: number;
-      pendingEvaluations: number;
-      completedEvaluations: number;
-      averageRating: number;
-    };
-    partnerStats: {
-      activePartnerships: number;
-      supportedProjects: number;
-      totalInvestment: number;
-      partnershipScore: number;
-    };
-    adminStats: {
-      totalUsers: number;
-      activeUsers: number;
-      systemUptime: number;
-      securityScore: number;
-      totalChallenges: number;
-      totalSubmissions: number;
-    };
-  };
-  onNavigate: (path: string) => void;
-  userRole?: string;
-  rolePermissions?: DashboardRolePermissions;
-}
-
-export const DashboardHero = ({ 
+export const DashboardHero: React.FC<DashboardHeroProps> = ({
   userProfile,
-  unifiedData,
+  stats,
   onNavigate,
-  userRole = 'innovator',
-  rolePermissions 
-}: DashboardHeroProps) => {
-  const { t, language } = useUnifiedTranslation();
-  const { isRTL } = useDirection();
-  const [currentStat, setCurrentStat] = useState(0);
+  userRole,
+  rolePermissions
+}) => {
+  const { t } = useUnifiedTranslation();
 
-  // Role-based configurations
-  const getRoleConfig = () => {
-    switch (userRole) {
-      case 'admin':
-      case 'super_admin':
-        return {
-          gradient: 'gradient-primary',
-          title: language === 'ar' ? 'لوحة الإدارة' : 'Admin Dashboard',
-          subtitle: language === 'ar' ? 'إدارة شاملة للنظام والمستخدمين' : 'Complete system and user management',
-          icon: Shield,
-          stats: [
-            { icon: Users, value: unifiedData.adminStats.totalUsers.toString(), label: language === 'ar' ? 'المستخدمين' : 'Users', color: 'text-primary-foreground' },
-            { icon: Settings, value: unifiedData.adminStats.totalChallenges.toString(), label: language === 'ar' ? 'المهام النشطة' : 'Active Tasks', color: 'text-primary-foreground' },
-            { icon: BarChart3, value: `${unifiedData.adminStats.systemUptime}%`, label: language === 'ar' ? 'أداء النظام' : 'System Performance', color: 'text-primary-foreground' },
-          ],
-          actions: [
-            { title: language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users', path: '/admin/users', icon: Users },
-            { title: language === 'ar' ? 'التحليلات' : 'Analytics', path: '/admin/analytics', icon: BarChart3 },
-            { title: language === 'ar' ? 'الإعدادات' : 'Settings', path: '/admin/settings', icon: Settings },
-          ]
-        };
-      case 'expert':
-        return {
-          gradient: 'gradient-info',
-          title: language === 'ar' ? 'مركز الخبرة' : 'Expert Center',
-          subtitle: language === 'ar' ? 'تقييم ومراجعة الأفكار الابتكارية' : 'Evaluate and review innovative ideas',
-          icon: Brain,
-          stats: [
-            { icon: FileText, value: unifiedData.expertStats.pendingEvaluations.toString(), label: language === 'ar' ? 'أفكار للمراجعة' : 'Ideas to Review', color: 'text-primary-foreground' },
-            { icon: Star, value: unifiedData.expertStats.averageRating.toFixed(1), label: language === 'ar' ? 'تقييم الخبرة' : 'Expert Rating', color: 'text-primary-foreground' },
-            { icon: Trophy, value: unifiedData.expertStats.completedEvaluations.toString(), label: language === 'ar' ? 'تم التقييم' : 'Evaluated', color: 'text-primary-foreground' },
-          ],
-          actions: [
-            { title: language === 'ar' ? 'تقييم الأفكار' : 'Evaluate Ideas', path: '/expert/evaluate', icon: FileText },
-            { title: language === 'ar' ? 'أدوات الخبير' : 'Expert Tools', path: '/expert/tools', icon: Brain },
-          ]
-        };
-      case 'partner':
-        return {
-          gradient: 'gradient-success',
-          title: language === 'ar' ? 'منصة الشريك' : 'Partner Platform',
-          subtitle: language === 'ar' ? 'إدارة الشراكات والفرص الاستثمارية' : 'Manage partnerships and investment opportunities',
-          icon: Handshake,
-          stats: [
-            { icon: Briefcase, value: unifiedData.partnerStats.activePartnerships.toString(), label: language === 'ar' ? 'فرص نشطة' : 'Active Opportunities', color: 'text-primary-foreground' },
-            { icon: TrendingUp, value: `${unifiedData.partnerStats.partnershipScore}%`, label: language === 'ar' ? 'معدل النجاح' : 'Success Rate', color: 'text-primary-foreground' },
-            { icon: Award, value: `${(unifiedData.partnerStats.totalInvestment / 1000).toFixed(1)}K`, label: language === 'ar' ? 'SAR مستثمر' : 'SAR Invested', color: 'text-primary-foreground' },
-          ],
-          actions: [
-            { title: language === 'ar' ? 'إدارة الفرص' : 'Manage Opportunities', path: '/partner/opportunities', icon: Briefcase },
-            { title: language === 'ar' ? 'لوحة الشريك' : 'Partner Dashboard', path: '/partner/dashboard', icon: TrendingUp },
-          ]
-        };
-      default: // innovator and others
-        return {
-          gradient: 'gradient-primary',
-          title: language === 'ar' ? 'رحلة الابتكار' : 'Innovation Journey',
-          subtitle: language === 'ar' ? 'اكتشف، ابتكر، وشارك أفكارك مع العالم' : 'Discover, innovate, and share your ideas with the world',
-          icon: Lightbulb,
-          stats: [
-            { icon: Lightbulb, value: unifiedData.totalIdeas.toString(), label: language === 'ar' ? 'أفكاري' : 'My Ideas', color: 'text-primary-foreground' },
-            { icon: Target, value: unifiedData.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-primary-foreground' },
-            { icon: Award, value: unifiedData.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-primary-foreground' },
-            { icon: Trophy, value: `${unifiedData.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-primary-foreground' },
-          ],
-          actions: [
-            { title: language === 'ar' ? 'تصفح التحديات' : 'Browse Challenges', path: '/challenges', icon: Target },
-            { title: language === 'ar' ? 'اقترح فكرة' : 'Submit Idea', path: '/ideas/submit', icon: Lightbulb },
-            { title: language === 'ar' ? 'الفعاليات' : 'Events', path: '/events', icon: Trophy },
-          ]
-        };
+  const getRoleIcon = (role?: string) => {
+    switch (role) {
+      case 'super_admin': return Crown;
+      case 'admin': return Shield;
+      case 'team_member': return Users;
+      case 'expert': return Star;
+      default: return Users;
     }
   };
 
-  const roleConfig = getRoleConfig();
-  const dashboardStats = roleConfig.stats;
+  const getRoleColor = (role?: string) => {
+    switch (role) {
+      case 'super_admin': return 'bg-gradient-to-r from-purple-600 to-indigo-600';
+      case 'admin': return 'bg-gradient-to-r from-red-500 to-pink-600';
+      case 'team_member': return 'bg-gradient-to-r from-blue-500 to-cyan-600';
+      case 'expert': return 'bg-gradient-to-r from-emerald-500 to-teal-600';
+      default: return 'bg-gradient-to-r from-slate-500 to-gray-600';
+    }
+  };
 
-  // Remove interval to prevent performance issues during navigation
+  const RoleIcon = getRoleIcon(userRole);
 
   return (
-    <div className="relative overflow-hidden">
-      {/* Role-specific background */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(99deg, rgba(59, 20, 93, 1) 51%, rgba(23, 8, 38, 1) 99%)' }}>
-        <div className="absolute inset-0 bg-black/10" />
-      </div>
-
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000" />
-      </div>
-
-      <div className="container mx-auto px-4 py-16 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content Section */}
-          <div className="space-y-8">
-            {/* Header with role-specific styling */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <roleConfig.icon className="w-6 h-6 text-white" />
-                </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-                  <Star className="w-3 h-3 mr-1" />
-                  {roleConfig.title}
+    <div className={`${getRoleColor(userRole)} text-white rounded-lg p-6 shadow-lg`}>
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3">
+            <RoleIcon className="h-8 w-8" />
+            <div>
+              <h1 className="text-3xl font-bold">
+                {t('dashboard.welcome', { 
+                  name: userProfile?.display_name || userProfile?.name || 'User' 
+                })}
+              </h1>
+              <div className="flex items-center gap-2 mt-1">
+                <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                  {userRole?.replace('_', ' ').toUpperCase() || 'USER'}
                 </Badge>
+                {userProfile?.profile_completion_percentage && (
+                  <Badge variant="outline" className="bg-white/10 text-white border-white/30">
+                    {userProfile.profile_completion_percentage}% Complete
+                  </Badge>
+                )}
               </div>
-              
-              <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  {language === 'ar' ? (
-                    <>
-                      مرحباً <span className="text-warning">{userProfile?.display_name || 'المستخدم'}</span>
-                    </>
-                  ) : (
-                    <>
-                      Welcome <span className="text-warning">{userProfile?.display_name || 'User'}</span>
-                    </>
-                  )}
-                </h1>
-                
-                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
-                  {roleConfig.subtitle}
-                </p>
-              </div>
-            </div>
-
-            {/* Animated Statistics */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {dashboardStats.map((stat, index) => {
-                const Icon = stat.icon;
-                const isActive = false; // Disable animation to prevent freeze
-                
-                return (
-                  <Card 
-                    key={index}
-                    className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-opacity duration-200",
-                      isActive && "bg-white/10 border-white/20"
-                    )}
-                  >
-                    <CardContent className="p-4 text-center">
-                      <Icon className="w-6 h-6 mx-auto mb-2 text-white" />
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
-                      <div className="text-sm text-white/70">{stat.label}</div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-
-            {/* Role-specific Action Buttons */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {roleConfig.actions.map((action, index) => (
-                <button
-                  key={index}
-                  onClick={() => navigationHandler.navigateTo(action.path)}
-                  className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all"
-                >
-                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <action.icon className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <h3 className="font-semibold text-sm text-white">{action.title}</h3>
-                  </div>
-                </button>
-              ))}
             </div>
           </div>
+          <p className="text-white/80 max-w-2xl">
+            Welcome to your personalized innovation dashboard. Track your progress, 
+            manage challenges, and drive innovation forward.
+          </p>
+        </div>
 
-          {/* Admin System Monitoring Section */}
-          {(userRole === 'admin' || userRole === 'super_admin') && (
-            <div className="space-y-6">
-              {/* System Health Card */}
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Server className="w-5 h-5 text-white" />
-                    <h3 className="text-lg font-bold text-white">
-                      {language === 'ar' ? 'حالة النظام' : 'System Health'}
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <CheckCircle className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'واجهة البرمجة' : 'API'}</p>
-                      <p className="text-xs text-green-200">{language === 'ar' ? 'متاح' : 'Online'}</p>
-                    </div>
-                    
-                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <Wifi className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
-                      <p className="text-xs text-green-200">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
-                    </div>
-                    
-                    <div className="text-center p-3 bg-orange-500/30 rounded-lg border border-orange-400/50 backdrop-blur-sm">
-                      <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <AlertCircle className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
-                      <p className="text-xs text-orange-200">68%</p>
-                    </div>
-                    
-                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <Shield className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'الأمان' : 'Security'}</p>
-                      <p className="text-xs text-green-200">{language === 'ar' ? 'محمي' : 'Secure'}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+            onClick={() => onNavigate('/notifications')}
+          >
+            <Bell className="h-4 w-4 mr-2" />
+            Notifications
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+            onClick={() => onNavigate('/settings')}
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Settings
+          </Button>
+        </div>
+      </div>
 
-              {/* Resource Usage Card */}
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Activity className="w-5 h-5 text-white" />
-                    <h3 className="text-lg font-bold text-white">
-                      {language === 'ar' ? 'استخدام الموارد' : 'Resource Usage'}
-                    </h3>
-                  </div>
-                  <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-white/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
-                        <span className="text-sm font-medium text-white">{(unifiedData.adminStats.totalSubmissions * 47).toLocaleString()}</span>
-                      </div>
-                      <Progress value={Math.min(65 + unifiedData.adminStats.systemUptime * 0.3, 90)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-white/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
-                        <span className="text-sm font-medium text-white">{Math.floor((100 - unifiedData.adminStats.securityScore) * 0.5)}</span>
-                      </div>
-                      <Progress value={Math.min(20 + unifiedData.adminStats.securityScore * 0.2, 40)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-white/80">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
-                        <span className="text-sm font-medium text-white">{(1.2 + (unifiedData.adminStats.totalSubmissions * 0.01)).toFixed(1)} GB</span>
-                      </div>
-                      <Progress value={Math.min(68 + unifiedData.adminStats.totalSubmissions * 0.5, 85)} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Progress Section - Only for innovators */}
-          {userRole === 'innovator' && (
-            <div className="space-y-6">
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
-                <CardContent className="p-6 space-y-6">
-                  <div className="text-center">
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {language === 'ar' ? 'مستوى الابتكار' : 'Innovation Level'}
-                    </h3>
-                    <div className="text-3xl font-bold text-warning mb-4">
-                      {unifiedData.innovationScore}%
-                    </div>
-                    <Progress 
-                      value={unifiedData.innovationScore} 
-                      className="h-3 bg-white/20"
-                    />
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-white/80">{language === 'ar' ? 'أفكار مقدمة' : 'Ideas Submitted'}</span>
-                      <span className="text-white font-semibold">{unifiedData.totalIdeas}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-white/80">{language === 'ar' ? 'نقاط مكتسبة' : 'Points Earned'}</span>
-                      <span className="text-white font-semibold">{unifiedData.totalPoints}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-white/80">{language === 'ar' ? 'تحديات نشطة' : 'Active Challenges'}</span>
-                      <span className="text-white font-semibold">{unifiedData.activeChallenges}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+      {/* Stats Preview */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        <div className="bg-white/10 rounded-lg p-3">
+          <div className="text-2xl font-bold">{stats.totalIdeas}</div>
+          <div className="text-sm text-white/80">Total Ideas</div>
+        </div>
+        <div className="bg-white/10 rounded-lg p-3">
+          <div className="text-2xl font-bold">{stats.activeChallenges}</div>
+          <div className="text-sm text-white/80">Active Challenges</div>
+        </div>
+        <div className="bg-white/10 rounded-lg p-3">
+          <div className="text-2xl font-bold">{stats.totalPoints}</div>
+          <div className="text-sm text-white/80">Points Earned</div>
+        </div>
+        <div className="bg-white/10 rounded-lg p-3 flex items-center gap-2">
+          <TrendingUp className="h-5 w-5 text-green-300" />
+          <div>
+            <div className="text-2xl font-bold">{stats.innovationScore}</div>
+            <div className="text-sm text-white/80">Innovation Score</div>
+          </div>
         </div>
       </div>
     </div>
