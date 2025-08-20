@@ -1,16 +1,11 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/AuthContext';
-import { useRoleBasedAccess } from '@/hooks/useRoleBasedAccess';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useActivityFeed } from '@/hooks/useActivityFeed';
+import { useRoleBasedAccess } from '@/hooks/useRoleBasedAccess';
+import { useDashboardData } from '@/hooks/useDashboardData';
 import { useActivityLogger } from '@/hooks/useActivityLogger';
-import { useDashboardData, type DashboardUserProfile } from '@/hooks/useDashboardData';
 import { DashboardHero } from './DashboardHero';
 import { DashboardMetrics } from './DashboardMetrics';
 import { DashboardQuickActions } from './DashboardQuickActions';
@@ -19,380 +14,381 @@ import { ActivityFeed } from '@/components/activity/ActivityFeed';
 import { 
   BarChart3, 
   Users, 
-  TrendingUp, 
+  Settings, 
+  Shield, 
   Activity,
-  Plus,
-  Search,
-  Filter,
-  Settings,
-  Shield,
-  Database,
+  TrendingUp,
   FileText,
   Calendar,
-  MessageSquare,
-  Bell
+  UserPlus,
+  Eye
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-export default function UserDashboard() {
+export const UserDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { user, userProfile } = useAuth();
   const { t } = useUnifiedTranslation();
-  const { 
-    hasPermission, 
-    userRole, 
-    canCreateChallenges,
-    canManageUsers,
-    canAccessAdminPanel,
-    canViewSystemMetrics
-  } = useRoleBasedAccess();
   const { logActivity } = useActivityLogger();
-  const { metrics, isLoading: metricsLoading } = useDashboardData();
-  
   const { 
-    activities, 
-    isLoading: activitiesLoading, 
-    refreshActivities 
-  } = useActivityFeed({
-    auto_refresh: true,
-    refresh_interval: 30000
-  });
-
+    user, 
+    userProfile, 
+    dashboardAccess, 
+    activityAccess,
+    uiAccess,
+    isAdmin,
+    isSuperAdmin,
+    isTeamMember 
+  } = useRoleBasedAccess();
+  
+  const { metrics, isLoading, error } = useDashboardData();
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Log dashboard view activity
-  React.useEffect(() => {
+  // Log dashboard access
+  useEffect(() => {
     if (user) {
       logActivity({
         action_type: 'user_login',
-        entity_type: 'system',
-        entity_id: 'dashboard',
-        metadata: { dashboard_view: activeTab },
-        privacy_level: 'private'
+        entity_type: 'user',
+        entity_id: user.id,
+        metadata: {
+          dashboard_version: '2.0',
+          features_accessed: ['overview', 'activity_feed'],
+          user_role: userProfile?.user_roles?.[0]?.role || 'user'
+        },
+        privacy_level: 'private',
+        severity: 'info',
+        tags: ['dashboard', 'access']
       });
     }
-  }, [user, activeTab, logActivity]);
+  }, [user, logActivity, userProfile]);
 
-  // Dashboard navigation handler
   const handleNavigate = (path: string) => {
+    navigate(path);
     logActivity({
-      action_type: 'user_login',
+      action_type: 'navigation',
       entity_type: 'system',
-      entity_id: 'navigation',
-      metadata: { target_path: path },
+      entity_id: user?.id || '',
+      metadata: { destination: path, source: 'dashboard' },
       privacy_level: 'private'
     });
-    navigate(path);
   };
 
-  // Quick actions based on user permissions
-  const quickActions = [
-    ...(canCreateChallenges ? [{
-      label: t('dashboard.cards.quick_actions.new_challenge'),
-      icon: Plus,
-      href: '/challenges/create',
-      visible: true,
-      color: 'bg-blue-500'
-    }] : []),
-    {
-      label: 'Submit Idea',
-      icon: FileText,
-      href: '/ideas/submit',
-      visible: true,
-      color: 'bg-green-500'
-    },
-    {
-      label: 'Join Event',
-      icon: Calendar,
-      href: '/events',
-      visible: true,
-      color: 'bg-purple-500'
-    },
-    ...(canAccessAdminPanel ? [{
-      label: 'Admin Panel',
-      icon: Shield,
-      href: '/admin',
-      visible: true,
-      color: 'bg-red-500'
-    }] : []),
-    ...(canViewSystemMetrics ? [{
-      label: 'System Metrics',
-      icon: BarChart3,
-      href: '/admin/analytics',
-      visible: true,
-      color: 'bg-indigo-500'
-    }] : [])
-  ].filter(action => action.visible);
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    logActivity({
+      action_type: 'tab_changed',
+      entity_type: 'dashboard',
+      entity_id: user?.id || '',
+      metadata: { tab, previous_tab: activeTab },
+      privacy_level: 'private'
+    });
+  };
 
-  // Dashboard metrics based on user role
-  const dashboardMetrics = [
+  // Role-based metrics
+  const roleBasedMetrics = [
     {
       title: t('dashboard.metrics.total_challenges'),
       value: metrics.totalChallenges.toString(),
       change: '+12%',
       icon: FileText,
       description: t('dashboard.metrics.this_month'),
-      visible: true
+      visible: dashboardAccess.canViewAnalytics
     },
     {
-      title: t('dashboard.metrics.active_challenges'),
-      value: metrics.activeChallenges.toString(),
-      change: '+8%',
-      icon: Activity,
-      description: t('dashboard.metrics.this_month'),
-      visible: true
-    },
-    {
-      title: 'My Submissions',
-      value: '5',
-      change: '+2',
-      icon: TrendingUp,
-      description: 'This month',
-      visible: true
-    },
-    {
-      title: t('dashboard.metrics.total_users'),
+      title: t('dashboard.metrics.active_users'),
       value: metrics.totalUsers.toString(),
-      change: '+15%',
+      change: '+8%',
       icon: Users,
       description: t('dashboard.metrics.this_month'),
-      visible: canViewSystemMetrics
+      visible: dashboardAccess.canViewUserMetrics
+    },
+    {
+      title: t('dashboard.metrics.new_submissions'),
+      value: metrics.totalSubmissions.toString(),
+      change: '+23%',
+      icon: TrendingUp,
+      description: t('dashboard.metrics.this_month'),
+      visible: dashboardAccess.canViewAnalytics
+    },
+    {
+      title: t('dashboard.metrics.system_uptime'),
+      value: '99.9%',
+      change: '+0.1%',
+      icon: Shield,
+      description: t('dashboard.metrics.this_month'),
+      visible: dashboardAccess.canViewSystemHealth
     }
   ].filter(metric => metric.visible);
 
-  // Dashboard stats for hero section
-  const dashboardStats = {
-    totalIdeas: 45,
-    activeChallenges: metrics.activeChallenges,
-    totalPoints: 1250,
-    innovationScore: 87
+  // Role-based quick actions
+  const quickActions = [
+    {
+      label: t('dashboard.cards.quick_actions.new_challenge'),
+      icon: FileText,
+      href: '/challenges/create',
+      visible: dashboardAccess.canManageChallenges,
+      color: 'bg-blue-500'
+    },
+    {
+      label: t('dashboard.cards.quick_actions.new_campaign'),
+      icon: Calendar,
+      href: '/campaigns/create',
+      visible: dashboardAccess.canCreateCampaigns,
+      color: 'bg-green-500'
+    },
+    {
+      label: t('dashboard.cards.quick_actions.invite_users'),
+      icon: UserPlus,
+      href: '/users/invite',
+      visible: dashboardAccess.canInviteUsers,
+      color: 'bg-purple-500'
+    },
+    {
+      label: t('dashboard.cards.quick_actions.view_analytics'),
+      icon: BarChart3,
+      href: '/analytics',
+      visible: dashboardAccess.canViewAnalytics,
+      color: 'bg-orange-500'
+    }
+  ].filter(action => action.visible);
+
+  const userRoleString = userProfile?.user_roles?.[0]?.role || 'user';
+
+  const stats = {
+    totalIdeas: metrics.totalSubmissions,
+    activeChallenges: metrics.totalChallenges,
+    totalPoints: 0, // This would come from a points system
+    innovationScore: 85 // This would be calculated based on user activity
   };
 
-  if (!user) {
+  if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Please log in to access the dashboard</h2>
-          <Button onClick={() => navigate('/auth')}>Go to Login</Button>
-        </div>
+      <div className="container mx-auto p-6">
+        <Card>
+          <CardContent className="p-6 text-center">
+            <p className="text-red-600">Error loading dashboard: {error}</p>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto p-6 space-y-6">
-        {/* Hero Section */}
-        <DashboardHero
-          userProfile={userProfile as DashboardUserProfile}
-          stats={dashboardStats}
-          onNavigate={handleNavigate}
-          userRole={userRole}
-          rolePermissions={{
-            canCreateIdeas: true,
-            canJoinChallenges: true,
-            canViewAnalytics: canViewSystemMetrics,
-            canManageUsers: canManageUsers,
-            canManageSystem: canAccessAdminPanel,
-            canAccessAdminPanel: canAccessAdminPanel,
-            canModerateCommunity: hasPermission(['admin', 'super_admin']),
-            allowedSections: ['overview', 'challenges', 'ideas']
-          }}
-        />
+    <div className="container mx-auto p-6 space-y-6">
+      {/* Hero Section */}
+      <DashboardHero
+        userProfile={userProfile}
+        stats={stats}
+        onNavigate={handleNavigate}
+        userRole={userRoleString}
+        rolePermissions={dashboardAccess}
+      />
 
-        {/* Main Dashboard Content */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">{t('dashboard.tabs.overview')}</TabsTrigger>
+      {/* Main Dashboard Tabs */}
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="overview">{t('dashboard.tabs.overview')}</TabsTrigger>
+          {uiAccess.showTeamFeatures && (
             <TabsTrigger value="management">{t('dashboard.tabs.management')}</TabsTrigger>
-            <TabsTrigger value="activity">Activity Feed</TabsTrigger>
-            {(canAccessAdminPanel || canViewSystemMetrics) && (
-              <TabsTrigger value="system">{t('dashboard.tabs.system')}</TabsTrigger>
-            )}
-          </TabsList>
+          )}
+          <TabsTrigger value="content">{t('dashboard.tabs.content')}</TabsTrigger>
+          {uiAccess.showAdminPanel && (
+            <TabsTrigger value="system">{t('dashboard.tabs.system')}</TabsTrigger>
+          )}
+          {uiAccess.showAdvancedMetrics && (
+            <TabsTrigger value="advanced">{t('dashboard.tabs.advanced')}</TabsTrigger>
+          )}
+        </TabsList>
 
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Metrics */}
-              <div className="lg:col-span-2">
-                <DashboardMetrics 
-                  metrics={dashboardMetrics}
-                  isLoading={metricsLoading}
-                />
-              </div>
-
-              {/* Quick Actions */}
-              <div>
-                <DashboardQuickActions
-                  actions={quickActions}
-                  onActionClick={handleNavigate}
-                />
-              </div>
+        {/* Overview Tab */}
+        <TabsContent value="overview" className="space-y-6">
+          <DashboardMetrics metrics={roleBasedMetrics} isLoading={isLoading} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <DashboardRecentActivity />
             </div>
-
-            {/* Recent Activity */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <DashboardRecentActivity
-                activities={activities}
-                isLoading={activitiesLoading}
-                onViewAll={() => setActiveTab('activity')}
+            <div>
+              <DashboardQuickActions 
+                actions={quickActions} 
+                onActionClick={handleNavigate}
               />
+            </div>
+          </div>
+        </TabsContent>
 
-              {/* Additional Dashboard Cards */}
+        {/* Management Tab */}
+        {uiAccess.showTeamFeatures && (
+          <TabsContent value="management" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Bell className="h-5 w-5" />
-                    Recent Notifications
+                    <Users className="h-5 w-5" />
+                    User Management
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 rounded-lg border">
-                      <div>
-                        <p className="font-medium">New challenge published</p>
-                        <p className="text-sm text-muted-foreground">Innovation Challenge 2024</p>
-                      </div>
-                      <Badge variant="secondary">New</Badge>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Manage users, roles, and permissions
+                  </p>
+                  <Button onClick={() => handleNavigate('/admin/users')} className="w-full">
+                    Manage Users
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    Challenge Management
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Create and manage innovation challenges
+                  </p>
+                  <Button onClick={() => handleNavigate('/admin/challenges')} className="w-full">
+                    Manage Challenges
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5" />
+                    Campaign Management
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Plan and execute innovation campaigns
+                  </p>
+                  <Button onClick={() => handleNavigate('/admin/campaigns')} className="w-full">
+                    Manage Campaigns
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        )}
+
+        {/* Content Tab */}
+        <TabsContent value="content" className="space-y-6">
+          {activityAccess.canViewAllActivities ? (
+            <ActivityFeed 
+              showFilters={true}
+              variant="default"
+              className="min-h-[600px]"
+            />
+          ) : (
+            <Card>
+              <CardContent className="p-6 text-center">
+                <Eye className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-muted-foreground">
+                  You don't have permission to view all activities
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* System Tab */}
+        {uiAccess.showAdminPanel && (
+          <TabsContent value="system" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t('dashboard.system_health.title')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between">
+                      <span>{t('dashboard.system_health.database_status')}</span>
+                      <span className="text-green-600">Healthy</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg border">
-                      <div>
-                        <p className="font-medium">Idea evaluation completed</p>
-                        <p className="text-sm text-muted-foreground">Smart City Solutions</p>
-                      </div>
-                      <Badge variant="outline">Reviewed</Badge>
+                    <div className="flex justify-between">
+                      <span>{t('dashboard.system_health.storage_status')}</span>
+                      <span className="text-green-600">Operational</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>{t('dashboard.system_health.security_score')}</span>
+                      <span className="text-green-600">98/100</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          </TabsContent>
 
-          {/* Management Tab */}
-          <TabsContent value="management" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {canCreateChallenges && (
-                <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleNavigate('/challenges')}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText className="h-5 w-5" />
-                      Challenge Management
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">Create and manage innovation challenges</p>
-                  </CardContent>
-                </Card>
-              )}
-
-              <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleNavigate('/ideas')}>
+              <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5" />
-                    Ideas & Submissions
-                  </CardTitle>
+                  <CardTitle>Quick System Actions</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">View and manage idea submissions</p>
-                </CardContent>
-              </Card>
-
-              <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleNavigate('/events')}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5" />
-                    Events Management
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Organize and participate in events</p>
+                <CardContent className="space-y-2">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => handleNavigate('/admin/system/backup')}
+                  >
+                    <Shield className="h-4 w-4 mr-2" />
+                    System Backup
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => handleNavigate('/admin/system/logs')}
+                  >
+                    <Activity className="h-4 w-4 mr-2" />
+                    View System Logs
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => handleNavigate('/admin/system/maintenance')}
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Maintenance Mode
+                  </Button>
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
+        )}
 
-          {/* Activity Tab */}
-          <TabsContent value="activity" className="space-y-6">
+        {/* Advanced Tab */}
+        {uiAccess.showAdvancedMetrics && (
+          <TabsContent value="advanced" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  Activity Feed
-                </CardTitle>
+                <CardTitle>{t('dashboard.trends.title')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <ActivityFeed
-                  className="max-h-[600px] overflow-y-auto"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="text-center p-4 border rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">{metrics.totalUsers}</div>
+                    <div className="text-sm text-muted-foreground">Total Users</div>
+                  </div>
+                  <div className="text-center p-4 border rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">{metrics.totalChallenges}</div>
+                    <div className="text-sm text-muted-foreground">Challenges</div>
+                  </div>
+                  <div className="text-center p-4 border rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">{metrics.totalSubmissions}</div>
+                    <div className="text-sm text-muted-foreground">Submissions</div>
+                  </div>
+                  <div className="text-center p-4 border rounded-lg">
+                    <div className="text-2xl font-bold text-orange-600">{metrics.recentActivity}</div>
+                    <div className="text-sm text-muted-foreground">Recent Activity</div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
-
-          {/* System Tab - Admin Only */}
-          {(canAccessAdminPanel || canViewSystemMetrics) && (
-            <TabsContent value="system" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {canViewSystemMetrics && (
-                  <>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <BarChart3 className="h-5 w-5" />
-                          {t('dashboard.system_analytics.title')}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">{t('dashboard.system_analytics.description')}</p>
-                        <Button className="mt-4" onClick={() => handleNavigate('/admin/analytics')}>
-                          View Analytics
-                        </Button>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <Database className="h-5 w-5" />
-                          {t('dashboard.system_health.title')}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span>{t('dashboard.system_health.database_status')}</span>
-                            <Badge variant="secondary" className="bg-green-100 text-green-800">Healthy</Badge>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>{t('dashboard.system_health.active_sessions')}</span>
-                            <span className="font-medium">24</span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </>
-                )}
-
-                {canManageUsers && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Users className="h-5 w-5" />
-                        User Management
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">Manage user accounts and permissions</p>
-                      <Button className="mt-4" onClick={() => handleNavigate('/admin/users')}>
-                        Manage Users
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-            </TabsContent>
-          )}
-        </Tabs>
-      </div>
+        )}
+      </Tabs>
     </div>
   );
-}
+};
+
+export default UserDashboard;

@@ -45,7 +45,7 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
   };
 
   const RoleIcon = getRoleIcon(userRole);
-  const displayName = userProfile?.display_name || userProfile?.name || 'User';
+  const displayName = userProfile?.display_name || userProfile?.full_name || 'User';
 
   return (
     <div className={`${getRoleColor(userRole)} text-white rounded-lg p-6 shadow-lg`}>
@@ -61,9 +61,9 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
                 <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
                   {userRole?.replace('_', ' ').toUpperCase() || 'USER'}
                 </Badge>
-                {userProfile?.profile_completion_percentage && (
+                {userProfile?.metadata?.profile_completion && (
                   <Badge variant="outline" className="bg-white/10 text-white border-white/30">
-                    {userProfile.profile_completion_percentage}% Complete
+                    {userProfile.metadata.profile_completion}% Complete
                   </Badge>
                 )}
               </div>
@@ -100,21 +100,21 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
       {/* Stats Preview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
         <div className="bg-white/10 rounded-lg p-3">
-          <div className="text-2xl font-bold">{stats.totalIdeas}</div>
+          <div className="text-2xl font-bold">{stats.totalIdeas || 0}</div>
           <div className="text-sm text-white/80">Total Ideas</div>
         </div>
         <div className="bg-white/10 rounded-lg p-3">
-          <div className="text-2xl font-bold">{stats.activeChallenges}</div>
+          <div className="text-2xl font-bold">{stats.activeChallenges || 0}</div>
           <div className="text-sm text-white/80">Active Challenges</div>
         </div>
         <div className="bg-white/10 rounded-lg p-3">
-          <div className="text-2xl font-bold">{stats.totalPoints}</div>
+          <div className="text-2xl font-bold">{stats.totalPoints || 0}</div>
           <div className="text-sm text-white/80">Points Earned</div>
         </div>
         <div className="bg-white/10 rounded-lg p-3 flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-green-300" />
           <div>
-            <div className="text-2xl font-bold">{stats.innovationScore}</div>
+            <div className="text-2xl font-bold">{stats.innovationScore || 0}</div>
             <div className="text-sm text-white/80">Innovation Score</div>
           </div>
         </div>

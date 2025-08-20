@@ -25,6 +25,17 @@ interface UseActivityFeedReturn {
   clearFilter: () => void;
 }
 
+// Helper function to safely parse JSONB data
+const safeParseJsonb = (data: any, fallback: any = {}) => {
+  if (!data) return fallback;
+  if (typeof data === 'object') return data;
+  try {
+    return JSON.parse(data);
+  } catch {
+    return fallback;
+  }
+};
+
 export function useActivityFeed(
   options: UseActivityFeedOptions = {}
 ): UseActivityFeedReturn {
@@ -107,22 +118,27 @@ export function useActivityFeed(
         throw queryError;
       }
 
-      // Transform database records to ActivityEvent format
-      const transformedActivities: ActivityEvent[] = (data || []).map(record => ({
-        id: record.id,
-        actor_id: record.user_id,
-        action_type: record.event_type,
-        entity_type: record.entity_type,
-        entity_id: record.entity_id,
-        target_user_id: record.visibility_scope?.target_user_id,
-        workspace_id: record.visibility_scope?.workspace_id,
-        workspace_type: record.visibility_scope?.workspace_type,
-        metadata: record.metadata || {},
-        privacy_level: record.privacy_level,
-        severity: record.visibility_scope?.severity || 'info',
-        tags: record.visibility_scope?.tags || [],
-        created_at: record.created_at
-      }));
+      // Transform database records to ActivityEvent format with proper type handling
+      const transformedActivities: ActivityEvent[] = (data || []).map(record => {
+        const visibilityScope = safeParseJsonb(record.visibility_scope, {});
+        const metadata = safeParseJsonb(record.metadata, {});
+
+        return {
+          id: record.id,
+          actor_id: record.user_id,
+          action_type: record.event_type,
+          entity_type: record.entity_type,
+          entity_id: record.entity_id,
+          target_user_id: visibilityScope?.target_user_id || undefined,
+          workspace_id: visibilityScope?.workspace_id || undefined,
+          workspace_type: visibilityScope?.workspace_type || undefined,
+          metadata: metadata,
+          privacy_level: record.privacy_level as ActivityEvent['privacy_level'],
+          severity: visibilityScope?.severity || 'info',
+          tags: Array.isArray(visibilityScope?.tags) ? visibilityScope.tags : [],
+          created_at: record.created_at
+        };
+      });
       
       if (reset) {
         setActivities(transformedActivities);
