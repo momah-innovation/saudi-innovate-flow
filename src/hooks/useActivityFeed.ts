@@ -56,29 +56,16 @@ export function useActivityFeed(
         .from('activity_events')
         .select(`
           id,
-          actor_id,
-          action_type,
+          user_id,
+          event_type,
           entity_type,
           entity_id,
-          target_user_id,
-          workspace_id,
-          workspace_type,
           metadata,
           privacy_level,
-          severity,
-          tags,
           created_at,
-          expires_at
+          visibility_scope
         `)
         .order('created_at', { ascending: false });
-
-      // Apply workspace filter
-      if (workspace_id) {
-        query = query.eq('workspace_id', workspace_id);
-      }
-      if (workspace_type) {
-        query = query.eq('workspace_type', workspace_type);
-      }
 
       // Apply entity filter
       if (entity_id) {
@@ -90,7 +77,7 @@ export function useActivityFeed(
 
       // Apply user filters
       if (filter.action_types?.length) {
-        query = query.in('action_type', filter.action_types);
+        query = query.in('event_type', filter.action_types);
       }
       if (filter.entity_types?.length) {
         query = query.in('entity_type', filter.entity_types);
@@ -99,10 +86,7 @@ export function useActivityFeed(
         query = query.in('privacy_level', filter.privacy_levels);
       }
       if (filter.actors?.length) {
-        query = query.in('actor_id', filter.actors);
-      }
-      if (filter.tags?.length) {
-        query = query.overlaps('tags', filter.tags);
+        query = query.in('user_id', filter.actors);
       }
 
       // Apply date range filter
@@ -123,22 +107,37 @@ export function useActivityFeed(
         throw queryError;
       }
 
-      const newActivities = (data || []) as ActivityEvent[];
+      // Transform database records to ActivityEvent format
+      const transformedActivities: ActivityEvent[] = (data || []).map(record => ({
+        id: record.id,
+        actor_id: record.user_id,
+        action_type: record.event_type,
+        entity_type: record.entity_type,
+        entity_id: record.entity_id,
+        target_user_id: record.visibility_scope?.target_user_id,
+        workspace_id: record.visibility_scope?.workspace_id,
+        workspace_type: record.visibility_scope?.workspace_type,
+        metadata: record.metadata || {},
+        privacy_level: record.privacy_level,
+        severity: record.visibility_scope?.severity || 'info',
+        tags: record.visibility_scope?.tags || [],
+        created_at: record.created_at
+      }));
       
       if (reset) {
-        setActivities(newActivities);
-        setOffset(newActivities.length);
+        setActivities(transformedActivities);
+        setOffset(transformedActivities.length);
       } else {
-        setActivities(prev => [...prev, ...newActivities]);
-        setOffset(prev => prev + newActivities.length);
+        setActivities(prev => [...prev, ...transformedActivities]);
+        setOffset(prev => prev + transformedActivities.length);
       }
 
-      setHasMore(newActivities.length === limit);
+      setHasMore(transformedActivities.length === limit);
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch activities';
       setError(errorMessage);
-      logger.error('Error fetching activities:', err);
+      logger.error('Error fetching activities', { component: 'ActivityFeed' }, err as Error);
     } finally {
       setIsLoading(false);
     }

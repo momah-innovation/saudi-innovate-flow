@@ -4,6 +4,26 @@ import { useAuth } from '@/contexts/AuthContext';
 import { apiClient } from '@/utils/unified-api-client';
 import { logger } from '@/utils/logger';
 
+export interface DashboardUserProfile {
+  id: string;
+  display_name?: string;
+  name?: string;
+  email?: string;
+  profile_image_url?: string;
+  expertise_areas?: string[];
+  organization?: string;
+  position?: string;
+  profile_completion_percentage?: number;
+  innovation_score?: number;
+  points?: number;
+  user_roles?: Array<{
+    role: string;
+    is_active: boolean;
+    expires_at?: string;
+  }>;
+  metadata?: Record<string, unknown>;
+}
+
 interface DashboardMetrics {
   totalChallenges: number;
   activeChallenges: number;
@@ -70,7 +90,7 @@ export function useDashboardData() {
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to fetch dashboard data';
         setError(errorMessage);
-        logger.error('Dashboard data fetch error:', err);
+        logger.error('Dashboard data fetch error', { component: 'Dashboard' }, err as Error);
       } finally {
         setIsLoading(false);
       }
@@ -91,3 +111,5 @@ export function useDashboardData() {
     }
   };
 }
+
+export type { DashboardMetrics };

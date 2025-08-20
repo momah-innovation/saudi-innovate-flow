@@ -45,6 +45,7 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
   };
 
   const RoleIcon = getRoleIcon(userRole);
+  const displayName = userProfile?.display_name || userProfile?.name || 'User';
 
   return (
     <div className={`${getRoleColor(userRole)} text-white rounded-lg p-6 shadow-lg`}>
@@ -54,9 +55,7 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
             <RoleIcon className="h-8 w-8" />
             <div>
               <h1 className="text-3xl font-bold">
-                {t('dashboard.welcome', { 
-                  name: userProfile?.display_name || userProfile?.name || 'User' 
-                })}
+                {t('dashboard.welcome', { name: displayName })}
               </h1>
               <div className="flex items-center gap-2 mt-1">
                 <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
