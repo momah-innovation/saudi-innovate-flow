@@ -1,13 +1,12 @@
 /**
  * Enhanced Navigation Sidebar
- * Comprehensive sidebar with RBAC, RTL/LTR, mobile support, animations, and full feature set
+ * Comprehensive sidebar with RBAC, RTL/LTR, mobile support, animations, tooltips, and full feature set
  */
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { debugLog } from '@/utils/debugLogger';
-// Removed debounced navigation - using direct navigate
 import { useNavigationCache } from '@/hooks/useOptimizedDashboardStats';
 import { Search, X, ChevronDown, ChevronRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -29,6 +28,7 @@ import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface EnhancedNavigationSidebarProps {
   open: boolean;
@@ -72,8 +72,6 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
   }, [userProfile, user]);
   
   // State management with navigation cache restoration
-  
-  // Local state
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -102,7 +100,7 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
   
   // OPTIMIZED: State management for navigation groups
   const [openGroups, setOpenGroups] = useState<Set<string>>(
-    () => new Set([MENU_GROUPS.MAIN])
+    () => new Set([MENU_GROUPS.MAIN, MENU_GROUPS.INNOVATION])
   );
   const [isMobile, setIsMobile] = useState(false);
 
@@ -131,7 +129,7 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
     if (filtered.length === 0) {
       debugLog.warn('⚠️ No menu items available, providing fallback navigation');
       return NAVIGATION_ITEMS.filter(item => 
-        ['dashboard', 'workspace', 'settings'].includes(item.id)
+        ['dashboard', 'workspace-user', 'settings'].includes(item.id)
       );
     }
     
@@ -154,7 +152,9 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
       const matchingItems = items.filter(item => 
         t(item.label).toLowerCase().includes(query) ||
         item.arabicLabel.toLowerCase().includes(query) ||
-        item.path.toLowerCase().includes(query)
+        item.path.toLowerCase().includes(query) ||
+        (item.description && t(item.description).toLowerCase().includes(query)) ||
+        (item.descriptionAr && item.descriptionAr.toLowerCase().includes(query))
       );
       
       if (matchingItems.length > 0) {
@@ -197,90 +197,143 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
     return location.pathname === item.path;
   }, [location.pathname]);
 
-  // Render menu item
+  // Get tooltip content for menu item
+  const getTooltipContent = useCallback((item: MenuItem) => {
+    const description = item.description ? t(item.description) : (isRTL ? item.descriptionAr : '') || t(item.label);
+    return description;
+  }, [t, isRTL]);
+
+  // Render menu item with tooltip
   const renderMenuItem = useCallback((item: MenuItem) => {
     const isActive = isActiveItem(item);
     const Icon = item.icon;
+    const tooltipContent = getTooltipContent(item);
     
     return (
-      <button
-        key={item.id}
-        onClick={(e) => handleNavigation(item.path, e)}
-        className={cn(
-          'w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200',
-          'hover:bg-accent hover:text-accent-foreground',
-          'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-          isActive && 'bg-primary text-primary-foreground shadow-sm',
-          isRTL && 'flex-row-reverse text-right'
-        )}
-      >
-        <Icon className={cn(
-          'h-5 w-5 shrink-0 transition-colors',
-          (isActive) && 'text-primary-foreground'
-        )} />
-        
-        <span className="font-medium truncate flex-1">
-          {t(item.label)}
-        </span>
-        
-        {item.badge && item.badge > 0 && (
-          <Badge 
-            variant="secondary" 
-            className={cn(
-              'h-5 min-w-[20px] px-1.5 text-xs',
-              isActive && 'bg-primary-foreground/20 text-primary-foreground'
-            )}
+      <TooltipProvider key={item.id} delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={(e) => handleNavigation(item.path, e)}
+              className={cn(
+                'w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300',
+                'hover:bg-gradient-to-r hover:from-accent/50 hover:to-accent/30 hover:text-accent-foreground',
+                'hover:shadow-sm hover:scale-[1.02] active:scale-[0.98]',
+                'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                'group relative overflow-hidden',
+                isActive && 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-md scale-[1.02]',
+                isRTL && 'flex-row-reverse text-right'
+              )}
+            >
+              {/* Hover gradient effect */}
+              <div className={cn(
+                'absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity duration-300',
+                'group-hover:opacity-100',
+                isActive && 'opacity-0'
+              )} />
+              
+              <div className={cn(
+                'p-2 rounded-lg transition-all duration-300 group-hover:scale-110 relative z-10',
+                isActive 
+                  ? 'bg-primary-foreground/20 text-primary-foreground' 
+                  : 'bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30'
+              )}>
+                <Icon className="h-4 w-4" />
+              </div>
+              
+              <span className={cn(
+                'font-medium truncate flex-1 relative z-10 transition-all duration-300',
+                'group-hover:translate-x-1',
+                isRTL && 'group-hover:-translate-x-1'
+              )}>
+                {t(item.label)}
+              </span>
+              
+              {item.badge && item.badge > 0 && (
+                <Badge 
+                  variant="secondary" 
+                  className={cn(
+                    'h-5 min-w-[20px] px-1.5 text-xs relative z-10 transition-all duration-300',
+                    'group-hover:scale-110',
+                    isActive && 'bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30'
+                  )}
+                >
+                  {item.badge}
+                </Badge>
+              )}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent 
+            side={isRTL ? "left" : "right"} 
+            className="max-w-xs text-sm font-medium"
+            sideOffset={8}
           >
-            {item.badge}
-          </Badge>
-        )}
-      </button>
+            <div className="space-y-1">
+              <p className="font-semibold">{t(item.label)}</p>
+              {tooltipContent !== t(item.label) && (
+                <p className="text-muted-foreground text-xs leading-relaxed">
+                  {tooltipContent}
+                </p>
+              )}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     );
-  }, [t, isRTL, handleNavigation, isActiveItem]);
+  }, [t, isRTL, handleNavigation, isActiveItem, getTooltipContent]);
 
-  // Render group section
+  // Render group section with enhanced styling
   const renderGroup = useCallback((groupId: string, items: MenuItem[]) => {
     const isOpen = openGroups.has(groupId);
     const groupLabel = GROUP_LABELS[groupId];
     const hasActiveItem = items.some(item => isActiveItem(item));
     
     return (
-      <div key={groupId} className="space-y-1">
+      <div key={groupId} className="space-y-2">
         <Collapsible open={isOpen} onOpenChange={() => toggleGroup(groupId)}>
           <CollapsibleTrigger asChild>
             <Button
               variant="ghost"
               className={cn(
-                'w-full justify-between px-3 py-2 h-auto font-medium text-sm',
-                'hover:bg-accent hover:text-accent-foreground',
-                'data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
-                hasActiveItem && 'text-primary',
+                'w-full justify-between px-3 py-2.5 h-auto font-semibold text-sm rounded-xl',
+                'hover:bg-gradient-to-r hover:from-accent/50 hover:to-accent/30 hover:text-accent-foreground',
+                'transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]',
+                'data-[state=open]:bg-accent/50 data-[state=open]:text-accent-foreground',
+                'group relative overflow-hidden',
+                hasActiveItem && 'text-primary bg-primary/10',
                 isRTL && 'flex-row-reverse'
               )}
             >
-              <span className="truncate">
+              {/* Gradient accent */}
+              <div className={cn(
+                'absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-primary/50 transition-all duration-300',
+                'opacity-0 group-hover:opacity-100',
+                hasActiveItem && 'opacity-100',
+                isRTL && 'left-auto right-0'
+              )} />
+              
+              <span className="truncate relative z-10 transition-all duration-300 group-hover:translate-x-1">
                 {t(`nav.group.${groupLabel?.en?.toLowerCase()?.replace(/\s+/g, '_')?.replace(/&/g, '')}`, groupLabel?.en || groupId)}
               </span>
-              {isOpen ? (
+              
+              <div className={cn(
+                'transition-all duration-300 relative z-10',
+                isOpen && 'rotate-180'
+              )}>
                 <ChevronDown className="h-4 w-4 shrink-0" />
-              ) : (
-                <ChevronRight className={cn(
-                  'h-4 w-4 shrink-0',
-                  isRTL && 'rotate-180'
-                )} />
-              )}
+              </div>
             </Button>
           </CollapsibleTrigger>
           
-          <CollapsibleContent className="space-y-1 animate-accordion-down">
-            <div className={cn('pl-3 space-y-1', isRTL && 'pr-3 pl-0')}>
+          <CollapsibleContent className="space-y-1 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+            <div className={cn('pl-2 space-y-1', isRTL && 'pr-2 pl-0')}>
               {items.map(renderMenuItem)}
             </div>
           </CollapsibleContent>
         </Collapsible>
         
         {Object.keys(searchFilteredItems).indexOf(groupId) < Object.keys(searchFilteredItems).length - 1 && (
-          <Separator className="my-2" />
+          <Separator className="my-3 bg-gradient-to-r from-transparent via-border to-transparent" />
         )}
       </div>
     );
@@ -292,7 +345,7 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
       {/* Overlay for mobile */}
       {open && isMobile && (
         <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
           onClick={handleOverlayClick}
         />
       )}
@@ -300,26 +353,30 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
       {/* Sidebar panel */}
       <div
         className={cn(
-          'fixed top-0 h-full bg-background border-r shadow-lg',
-          'flex flex-col overflow-hidden z-50',
+          'fixed top-0 h-full bg-gradient-to-b from-background via-background/95 to-background',
+          'border-r shadow-2xl flex flex-col overflow-hidden z-50',
+          'backdrop-blur-xl transition-all duration-300 ease-out',
           isRTL ? 'right-0' : 'left-0',
-          'w-80 max-w-[80vw] lg:w-72',
-          // Optimized visibility toggle with will-change for performance
-          open ? 'block' : 'hidden',
-          'will-change-[transform]'
+          'w-80 max-w-[85vw] lg:w-72',
+          // Enhanced visibility toggle with smooth animations
+          open ? 'translate-x-0 opacity-100' : (isRTL ? 'translate-x-full opacity-0' : '-translate-x-full opacity-0'),
+          'will-change-[transform,opacity]'
         )}
       >
-        {/* Header */}
+        {/* Enhanced Header */}
         <div className={cn(
-          'flex items-center justify-between p-4 border-b bg-muted/50',
+          'flex items-center justify-between p-4 border-b',
+          'bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 backdrop-blur-sm',
           isRTL && 'flex-row-reverse'
         )}>
           <div className={cn(
             'flex items-center gap-3',
             isRTL && 'flex-row-reverse'
           )}>
-            <Menu className="h-6 w-6 text-primary" />
-            <span className="font-semibold text-lg">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20">
+              <Menu className="h-5 w-5 text-primary" />
+            </div>
+            <span className="font-bold text-lg bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
               {t('nav.navigation_menu', 'Navigation Menu')}
             </span>
           </div>
@@ -328,87 +385,107 @@ export const EnhancedNavigationSidebar = React.memo(function EnhancedNavigationS
             variant="ghost"
             size="sm"
             onClick={() => onOpenChange(false)}
-            className="h-8 w-8 p-0 hover:bg-accent"
+            className="h-8 w-8 p-0 hover:bg-accent/50 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95"
           >
             <X className="h-4 w-4" />
           </Button>
         </div>
         
-        {/* Search */}
-        <div className="p-4 border-b">
-          <div className="relative">
+        {/* Enhanced Search */}
+        <div className="p-4 border-b bg-muted/20">
+          <div className="relative group">
             <Search className={cn(
-              'absolute top-2.5 h-4 w-4 text-muted-foreground',
+              'absolute top-2.5 h-4 w-4 text-muted-foreground transition-colors duration-200',
+              'group-focus-within:text-primary',
               isRTL ? 'right-3' : 'left-3'
             )} />
             <Input
-              placeholder={t('common.search_placeholder', 'Search...')}
+              placeholder={t('common.search_placeholder', 'Search navigation...')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
-                'bg-background',
+                'bg-background/50 backdrop-blur-sm border-0 ring-1 ring-border/50',
+                'focus:ring-2 focus:ring-primary/50 transition-all duration-200',
+                'hover:ring-border/80',
                 isRTL ? 'pr-9 text-right' : 'pl-9'
               )}
             />
           </div>
         </div>
         
-        {/* User info */}
+        {/* Enhanced User info */}
         {user && (
           <div className={cn(
-            'p-4 border-b bg-muted/30',
-            'flex items-center gap-3',
+            'p-4 border-b bg-gradient-to-r from-muted/30 via-muted/20 to-muted/30',
+            'flex items-center gap-3 backdrop-blur-sm',
             isRTL && 'flex-row-reverse text-right'
           )}>
-            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <span className="text-sm font-medium text-primary">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center ring-2 ring-primary/20">
+              <span className="text-sm font-bold text-primary">
                 {userProfile?.name?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase()}
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">
+              <p className="text-sm font-semibold truncate bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
                 {userProfile?.name || user.email}
               </p>
-              <p className="text-xs text-muted-foreground truncate">
-                {userRoles.join(', ') || 'User'}
-              </p>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {userRoles.slice(0, 2).map((role, index) => (
+                  <Badge key={role} variant="outline" className="text-xs px-1.5 py-0.5 h-5">
+                    {role}
+                  </Badge>
+                ))}
+                {userRoles.length > 2 && (
+                  <Badge variant="outline" className="text-xs px-1.5 py-0.5 h-5">
+                    +{userRoles.length - 2}
+                  </Badge>
+                )}
+              </div>
             </div>
           </div>
         )}
         
-        {/* Navigation Menu */}
-        <ScrollArea className="flex-1 px-4 py-2">
-          <div className="space-y-2">
+        {/* Enhanced Navigation Menu */}
+        <ScrollArea className="flex-1 px-4 py-4">
+          <div className="space-y-3">
             {Object.entries(searchFilteredItems).length > 0 ? (
               Object.entries(searchFilteredItems).map(([groupId, items]) =>
                 renderGroup(groupId, items)
               )
             ) : searchQuery ? (
-              <div className="text-center py-8 text-muted-foreground">
-                <Search className="h-8 w-8 mx-auto mb-2" />
-                <p className="text-sm">
+              <div className="text-center py-12 text-muted-foreground">
+                <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 w-fit mx-auto mb-4">
+                  <Search className="h-8 w-8 mx-auto" />
+                </div>
+                <p className="text-sm font-medium">
                   {t('common.no_results_found', 'No results found')}
+                </p>
+                <p className="text-xs mt-1">
+                  {t('common.try_different_search', 'Try a different search term')}
                 </p>
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                <Menu className="h-8 w-8 mx-auto mb-2" />
+              <div className="text-center py-12 text-muted-foreground">
+                <div className="p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 w-fit mx-auto mb-4">
+                  <Menu className="h-8 w-8 mx-auto" />
+                </div>
                 <p className="text-sm font-medium mb-2">Navigation Loading...</p>
-                <p className="text-xs">
-                  User: {user?.email || 'None'}<br/>
-                  Roles: {userRoles.join(', ') || 'None'}<br/>
-                  Items: {filteredMenuItems.length}
+                <p className="text-xs space-y-1">
+                  <span className="block">User: {user?.email || 'None'}</span>
+                  <span className="block">Roles: {userRoles.join(', ') || 'None'}</span>
+                  <span className="block">Items: {filteredMenuItems.length}</span>
                 </p>
               </div>
             )}
           </div>
         </ScrollArea>
         
-        {/* Footer */}
-        <div className="p-4 border-t text-center">
-          <p className="text-xs text-muted-foreground">
-            {t('system.title', 'Innovation System')} v1.0
+        {/* Enhanced Footer */}
+        <div className="p-4 border-t text-center bg-gradient-to-r from-muted/20 via-muted/10 to-muted/20">
+          <p className="text-xs text-muted-foreground font-medium">
+            {t('system.title', 'Innovation System')} v2.0
           </p>
+          <div className="mt-1 h-0.5 w-12 mx-auto bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 rounded-full" />
         </div>
       </div>
     </>

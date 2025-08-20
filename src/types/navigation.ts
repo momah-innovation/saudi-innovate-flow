@@ -9,6 +9,8 @@ export interface MenuItem {
   id: string;
   label: string;
   arabicLabel: string;
+  description?: string;
+  descriptionAr?: string;
   icon: LucideIcon;
   path: string;
   badge?: number;

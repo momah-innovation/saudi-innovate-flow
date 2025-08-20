@@ -7,7 +7,8 @@ import {
   Home, Calendar, Users, Lightbulb, Briefcase, Target,
   Settings, Shield, BarChart3, FileText, HelpCircle,
   Database, Zap, Trophy, MessageSquare, Search,
-  Bell, Clock, Archive, Star, Bookmark
+  Bell, Clock, Archive, Star, Bookmark, Building,
+  Crown, Handshake, UserCog
 } from 'lucide-react';
 import { MenuItem, GroupLabels } from '@/types/navigation';
 import { debugLog } from '@/utils/debugLogger';
@@ -104,14 +105,72 @@ export const NAVIGATION_ITEMS: MenuItem[] = [
     group: MENU_GROUPS.INNOVATION,
     roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
   },
+  // Workspace Hub - Individual workspace links
   {
-    id: 'workspace',
-    label: 'nav.workspace', // ✅ Added to DB
-    arabicLabel: 'مساحة العمل',
-    icon: Briefcase,
-    path: '/workspace',
+    id: 'workspace-user',
+    label: 'nav.workspace_user',
+    arabicLabel: 'مساحة العمل الشخصية',
+    description: 'nav.workspace_user_desc',
+    descriptionAr: 'مساحة العمل الشخصية لإدارة أفكارك ومشاركاتك',
+    icon: Users,
+    path: '/workspace/user',
     group: MENU_GROUPS.INNOVATION,
-    roles: ['user', 'admin', 'super_admin', 'innovator', 'evaluator', 'mentor', 'team_member', 'expert', 'partner', 'stakeholder', 'department_head', 'sector_lead', 'domain_expert', 'viewer', 'user_manager', 'role_manager', 'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor', 'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager', 'partnership_manager', 'team_lead', 'project_manager', 'research_lead', 'innovation_manager', 'external_expert', 'judge', 'facilitator', 'organization_admin', 'entity_manager', 'deputy_manager', 'domain_manager', 'sub_domain_manager', 'service_manager']
+    roles: ['user', 'admin', 'super_admin', 'innovator', 'team_member', 'viewer']
+  },
+  {
+    id: 'workspace-expert',
+    label: 'nav.workspace_expert',
+    arabicLabel: 'مساحة عمل الخبير',
+    description: 'nav.workspace_expert_desc',
+    descriptionAr: 'مساحة عمل متخصصة للخبراء لتقييم الأفكار',
+    icon: Star,
+    path: '/workspace/expert',
+    group: MENU_GROUPS.INNOVATION,
+    roles: ['expert', 'evaluator', 'external_expert', 'judge', 'domain_expert', 'admin', 'super_admin']
+  },
+  {
+    id: 'workspace-organization',
+    label: 'nav.workspace_organization',
+    arabicLabel: 'مساحة عمل المؤسسة',
+    description: 'nav.workspace_organization_desc',
+    descriptionAr: 'مساحة عمل للمؤسسات لإدارة التحديات والفرق',
+    icon: Building,
+    path: '/workspace/organization',
+    group: MENU_GROUPS.INNOVATION,
+    roles: ['organization_admin', 'entity_manager', 'department_head', 'sector_lead', 'team_lead', 'admin', 'super_admin']
+  },
+  {
+    id: 'workspace-partner',
+    label: 'nav.workspace_partner',
+    arabicLabel: 'مساحة عمل الشريك',
+    description: 'nav.workspace_partner_desc',
+    descriptionAr: 'مساحة عمل للشركاء لإدارة الفرص والشراكات',
+    icon: Handshake,
+    path: '/workspace/partner',
+    group: MENU_GROUPS.INNOVATION,
+    roles: ['partner', 'stakeholder', 'partnership_manager', 'admin', 'super_admin']
+  },
+  {
+    id: 'workspace-admin',
+    label: 'nav.workspace_admin',
+    arabicLabel: 'مساحة عمل الإدارة',
+    description: 'nav.workspace_admin_desc',
+    descriptionAr: 'مساحة عمل إدارية لمراقبة النظام والإحصائيات',
+    icon: Crown,
+    path: '/workspace/admin',
+    group: MENU_GROUPS.INNOVATION,
+    roles: ['admin', 'super_admin', 'system_auditor']
+  },
+  {
+    id: 'workspace-team',
+    label: 'nav.workspace_team',
+    arabicLabel: 'مساحة عمل الفريق',
+    description: 'nav.workspace_team_desc',
+    descriptionAr: 'مساحة عمل للفرق للتعاون في المشاريع',
+    icon: UserCog,
+    path: '/workspace/team',
+    group: MENU_GROUPS.INNOVATION,
+    roles: ['team_member', 'team_lead', 'project_manager', 'admin', 'super_admin']
   },
 
   // Administration
@@ -218,7 +277,7 @@ export const filterMenuItemsByRoles = (items: MenuItem[], userRoles: string[]): 
   if (!Array.isArray(userRoles) || userRoles.length === 0) {
     debugLog.warn('No valid user roles provided to filterMenuItemsByRoles', { component: 'NavigationMenu', data: { userRoles } });
     // Return basic navigation items that all users should see
-    return items.filter(item => ['dashboard', 'workspace', 'settings'].includes(item.id));
+    return items.filter(item => ['dashboard', 'workspace-user', 'settings'].includes(item.id));
   }
   
   const filtered = items.filter(item => {
@@ -231,7 +290,7 @@ export const filterMenuItemsByRoles = (items: MenuItem[], userRoles: string[]): 
   
   if (filtered.length === 0) {
     debugLog.error('No menu items passed role filter! Providing emergency fallback', { component: 'NavigationMenu' });
-    return items.filter(item => ['dashboard', 'workspace', 'settings'].includes(item.id));
+    return items.filter(item => ['dashboard', 'workspace-user', 'settings'].includes(item.id));
   }
   
   return filtered;

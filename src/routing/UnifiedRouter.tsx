@@ -88,7 +88,6 @@ import OrganizationWorkspace from '@/pages/workspace/OrganizationWorkspace';
 import PartnerWorkspace from '@/pages/workspace/PartnerWorkspace';
 import AdminWorkspace from '@/pages/workspace/AdminWorkspace';
 import TeamWorkspace from '@/pages/workspace/TeamWorkspace';
-import WorkspacePage from '@/pages/WorkspacePage';
 import { MigratedAdminDashboard } from '@/components/admin/MigratedAdminDashboard';
 
 // Loading component
@@ -244,35 +243,12 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
 
-  // Workspace routes
-  {
-    path: '/workspace',
-    component: WorkspacePage,
-    requireAuth: true,
-    requireProfile: false,
-    withAppShell: true,
-  },
-  {
-    path: '/workspace/:type',
-    component: WorkspacePage,
-    requireAuth: true,
-    requireProfile: false,
-    withAppShell: true,
-  },
-  {
-    // NEW: allow deep workspace links like /workspace/user/bookmarks
-    path: '/workspace/:type/*',
-    component: WorkspacePage,
-    requireAuth: true,
-    requireProfile: false,
-    withAppShell: true,
-  },
+  // Workspace routes - individual workspace pages
   {
     path: ALL_ROUTES.WORKSPACE_USER,
     component: UserWorkspace,
     requireAuth: true,
     requireProfile: true,
-    requiredRole: ['innovator', 'team_member', 'admin', 'super_admin'],
     withAppShell: true,
   },
   {
@@ -280,15 +256,13 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     component: ExpertWorkspace,
     requireAuth: true,
     requireProfile: true,
-    requiredRole: ['domain_expert', 'evaluator', 'expert', 'admin', 'super_admin'],
     withAppShell: true,
   },
   {
-    path: ALL_ROUTES.WORKSPACE_ORG,
+    path: ALL_ROUTES.WORKSPACE_ORGANIZATION,
     component: OrganizationWorkspace,
     requireAuth: true,
     requireProfile: true,
-    requiredRole: ['admin', 'super_admin'],
     withAppShell: true,
   },
   {
@@ -296,7 +270,6 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     component: PartnerWorkspace,
     requireAuth: true,
     requireProfile: true,
-    requiredRole: ['partner', 'admin', 'super_admin'],
     withAppShell: true,
   },
   {
@@ -307,6 +280,15 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     requiredRole: ['admin', 'super_admin'],
     withAppShell: true,
   },
+  {
+    path: ALL_ROUTES.WORKSPACE_TEAM,
+    component: TeamWorkspace,
+    requireAuth: true,
+    requireProfile: true,
+    withAppShell: true,
+  },
+
+  // Dashboard routes
   {
     path: ALL_ROUTES.DASHBOARD_TEAMS,
     component: TeamWorkspace,

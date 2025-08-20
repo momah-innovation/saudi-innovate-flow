@@ -39,7 +39,6 @@ export const PUBLIC_ROUTES = {
   STATISTICS: '/statistics',
   HELP: '/help',
   DESIGN_SYSTEM: '/design-system',
-  WORKSPACE: '/workspace',
   WORKSPACE_DOCS: '/docs/workspaces',
   COLLABORATION: '/collaboration',
 } as const;
@@ -47,11 +46,12 @@ export const PUBLIC_ROUTES = {
 // Authenticated routes (require login)
 export const AUTHENTICATED_ROUTES = {
   // User workspace routes
-  WORKSPACE_USER: '/workspace/user/:userId',
-  WORKSPACE_EXPERT: '/workspace/expert/:expertId', 
-  WORKSPACE_ORG: '/workspace/org/:orgId',
-  WORKSPACE_PARTNER: '/workspace/partner/:partnerId',
+  WORKSPACE_USER: '/workspace/user',
+  WORKSPACE_EXPERT: '/workspace/expert', 
+  WORKSPACE_ORGANIZATION: '/workspace/organization',
+  WORKSPACE_PARTNER: '/workspace/partner',
   WORKSPACE_ADMIN: '/workspace/admin',
+  WORKSPACE_TEAM: '/workspace/team',
   
   // Profile & Settings
   PROFILE_SETUP: '/profile/setup',

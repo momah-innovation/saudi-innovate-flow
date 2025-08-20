@@ -146,7 +146,12 @@ export default function AdminWorkspace() {
           userProfile={userProfile}
           title={t('workspace.admin.title')}
           description={t('workspace.admin.description')}
-          stats={stats}
+          stats={[
+            { label: t('workspace.admin.metrics.total_users'), value: workspaceData?.stats?.totalUsers || 0, icon: Users },
+            { label: t('workspace.admin.metrics.total_challenges'), value: workspaceData?.stats?.totalChallenges || 0, icon: Shield },
+            { label: t('workspace.admin.metrics.total_ideas'), value: workspaceData?.stats?.totalIdeas || 0, icon: BarChart3 },
+            { label: t('workspace.admin.metrics.active_challenges'), value: workspaceData?.stats?.totalChallenges || 0, icon: Settings }
+          ]}
           quickActions={[
             {
               label: t('workspace.admin.actions.manage_system'),
@@ -283,8 +288,6 @@ export default function AdminWorkspace() {
 
             {/* Metrics */}
             <WorkspaceMetrics metrics={metrics} />
-          </div>
-        </div>
         </div>
         
         {/* Admin Workspace Collaboration */}
