@@ -83,7 +83,7 @@ interface Goal {
   target: number;
   current: number;
   deadline: string;
-  type: 'ideas' | 'challenges' | 'events';
+  type: 'ideas' | 'challenges' | 'events' | 'custom';
 }
 
 export default React.memo(function UserDashboard() {
@@ -197,59 +197,7 @@ export default React.memo(function UserDashboard() {
     }
   }, [userProfile?.id, loadDashboardData]);
 
-  // REMOVED: loadUserStats and loadUserActivities - now using optimized hooks
-
-  const loadUserAchievements = async () => {
-    if (!userProfile?.id) return;
-    
-    // For now, use placeholder data
-    setAchievements([
-      {
-        id: '1',
-        achievement_name_ar: 'أول فكرة',
-        achievement_name_en: 'First Idea',
-        description_ar: 'تم تقديم أول فكرة ابتكارية',
-        description_en: 'Submitted your first innovative idea',
-        points_earned: 100,
-        badge_icon: 'lightbulb',
-        badge_color: '#10B981',
-        earned_at: dateHandler.formatForAPI(new Date())
-      }
-    ]);
-  };
-
-  const loadUserGoals = async () => {
-    // Sample goals - in a real app, these would come from the database
-    const weeklyIdeasProgress = Math.min(stats.totalIdeas % 7, stats.weeklyGoal);
-    const monthlyIdeasProgress = Math.min(stats.totalIdeas, stats.monthlyGoal);
-    
-    setGoals([
-      {
-        id: '1',
-        title: currentLanguage === 'ar' ? 'أفكار هذا الأسبوع' : 'This Week\'s Ideas',
-        target: stats.weeklyGoal,
-        current: weeklyIdeasProgress,
-        deadline: '2024-02-11',
-        type: 'ideas'
-      },
-      {
-        id: '2', 
-        title: currentLanguage === 'ar' ? 'أفكار هذا الشهر' : 'This Month\'s Ideas',
-        target: stats.monthlyGoal,
-        current: monthlyIdeasProgress,
-        deadline: '2024-02-29',
-        type: 'ideas'
-      },
-      {
-        id: '3',
-        title: currentLanguage === 'ar' ? 'المشاركة في التحديات' : 'Challenge Participation',
-        target: 5,
-        current: stats.challengesParticipated,
-        deadline: '2024-03-01',
-        type: 'challenges'
-      }
-    ]);
-  };
+  // REMOVED: Manual loading functions - now handled by hooks
 
   const getActivityIcon = (type: string) => {
     switch (type) {

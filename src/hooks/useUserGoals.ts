@@ -6,9 +6,9 @@ interface Goal {
   id: string;
   title: string;
   description: string;
-  target_value: number;
-  current_value: number;
-  goal_type: 'ideas' | 'challenges' | 'events' | 'custom';
+  target: number;
+  current: number;
+  type: 'ideas' | 'challenges' | 'events' | 'custom';
   deadline: string;
   status: 'active' | 'completed' | 'paused';
   created_at: string;
@@ -26,7 +26,33 @@ export const useUserGoals = () => {
 
       try {
         // Return empty array since user_goals table doesn't exist yet
-        return [];
+        // Mock some default goals for testing
+        return [
+          {
+            id: '1',
+            title: 'أهداف الأفكار الشهرية',
+            description: 'تقديم 3 أفكار إبداعية هذا الشهر',
+            target: 3,
+            current: 0,
+            type: 'ideas' as const,
+            deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            status: 'active' as const,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
+          {
+            id: '2',
+            title: 'المشاركة في المسابقات',
+            description: 'المشاركة في مسابقتين هذا الشهر',
+            target: 2,
+            current: 0,
+            type: 'challenges' as const,
+            deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            status: 'active' as const,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }
+        ];
       } catch (error) {
         console.warn('Failed to fetch goals:', error);
         return [];
