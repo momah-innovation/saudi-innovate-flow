@@ -31,31 +31,33 @@ interface ChallengeTeamWorkspaceProps {
   challengeId: string;
 }
 
-export const ChallengeTeamWorkspace: React.FC<ChallengeTeamWorkspaceProps> = ({
-  challengeId
-}) => {
+export function ChallengeTeamWorkspace({ challengeId }: ChallengeTeamWorkspaceProps) {
   const [teams] = useState<Team[]>([]);
 
   return (
-    <div className="space-y-6">
-      {/* Team Formation Header */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            فرق التحدي
+    <div className="space-y-8">
+      {/* Enhanced Team Formation Header */}
+      <Card className="gradient-border hover-scale">
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary">
+              <Users className="h-6 w-6" />
+            </div>
+            <span className="bg-gradient-primary bg-clip-text text-transparent">
+              فرق التحدي
+            </span>
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-lg leading-relaxed">
             كون فريقك أو انضم لفريق موجود للعمل معاً على التحدي
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
-            <Button>
+            <Button className="hover-scale gradient-border">
               <Plus className="h-4 w-4 mr-2" />
               إنشاء فريق جديد
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" className="hover-scale gradient-border">
               <Target className="h-4 w-4 mr-2" />
               البحث عن فريق
             </Button>
@@ -63,17 +65,21 @@ export const ChallengeTeamWorkspace: React.FC<ChallengeTeamWorkspaceProps> = ({
         </CardContent>
       </Card>
 
-      {/* Teams List */}
+      {/* Enhanced Teams List */}
       {teams.length === 0 ? (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center py-8">
-              <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">لا توجد فرق بعد</h3>
-              <p className="text-muted-foreground mb-4">
+        <Card className="gradient-border hover-scale">
+          <CardContent className="pt-8">
+            <div className="text-center py-12">
+              <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Users className="h-10 w-10 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 bg-gradient-primary bg-clip-text text-transparent">
+                لا توجد فرق بعد
+              </h3>
+              <p className="text-muted-foreground mb-6 text-lg leading-relaxed max-w-md mx-auto">
                 كن أول من ينشئ فريقاً لهذا التحدي
               </p>
-              <Button>
+              <Button className="hover-scale gradient-border">
                 <Plus className="h-4 w-4 mr-2" />
                 إنشاء أول فريق
               </Button>
@@ -81,54 +87,60 @@ export const ChallengeTeamWorkspace: React.FC<ChallengeTeamWorkspaceProps> = ({
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-6">
           {teams.map((team, index) => (
-            <Card key={index}>
+            <Card key={index} className="gradient-border hover-scale group">
               <CardContent className="pt-6">
                 <div className="flex items-start justify-between">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold">{team.name}</h3>
-                      <Badge variant="outline">{team.members?.length || 0}/5 أعضاء</Badge>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-xl font-bold group-hover:text-primary transition-colors">{team.name}</h3>
+                      <Badge variant="outline" className="gradient-border">{team.members?.length || 0}/5 أعضاء</Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground">{team.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
+                    <p className="text-muted-foreground leading-relaxed">{team.description}</p>
+                    <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1 rounded-lg bg-primary/10 text-primary">
+                          <Clock className="h-3 w-3" />
+                        </div>
                         منذ {team.createdAgo}
                       </div>
-                      <div className="flex items-center gap-1">
-                        <MessageCircle className="h-4 w-4" />
+                      <div className="flex items-center gap-2">
+                        <div className="p-1 rounded-lg bg-primary/10 text-primary">
+                          <MessageCircle className="h-3 w-3" />
+                        </div>
                         {team.messagesCount || 0} رسالة
                       </div>
                     </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline">
+                  <div className="flex gap-3">
+                    <Button size="sm" variant="outline" className="hover-scale gradient-border">
                       عرض
                     </Button>
-                    <Button size="sm">
+                    <Button size="sm" className="hover-scale gradient-border">
                       انضمام
                     </Button>
                   </div>
                 </div>
                 
-                <div className="mt-4 pt-4 border-t">
+                <div className="mt-6 pt-6 border-t border-gradient-to-r from-transparent via-border to-transparent">
                   <div className="flex items-center justify-between">
                     <div className="flex -space-x-2 rtl:space-x-reverse">
                       {team.members?.slice(0, 4).map((member: TeamMember, idx: number) => (
-                        <Avatar key={idx} className="h-8 w-8 border-2 border-background">
+                        <Avatar key={idx} className="h-10 w-10 border-2 border-background ring-2 ring-primary/10 hover:ring-primary/30 transition-all">
                           <AvatarImage src={member.avatar} />
-                          <AvatarFallback>{member.name?.charAt(0)}</AvatarFallback>
+                          <AvatarFallback className="bg-gradient-to-br from-primary/10 to-primary/20 text-primary font-medium">
+                            {member.name?.charAt(0)}
+                          </AvatarFallback>
                         </Avatar>
                       ))}
                       {team.members?.length > 4 && (
-                        <div className="h-8 w-8 bg-muted border-2 border-background rounded-full flex items-center justify-center">
-                          <span className="text-xs">+{team.members.length - 4}</span>
+                        <div className="h-10 w-10 bg-gradient-to-br from-muted to-muted/50 border-2 border-background rounded-full flex items-center justify-center ring-2 ring-primary/10">
+                          <span className="text-sm font-medium">+{team.members.length - 4}</span>
                         </div>
                       )}
                     </div>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" className="hover-scale">
                       <Settings className="h-4 w-4" />
                     </Button>
                   </div>

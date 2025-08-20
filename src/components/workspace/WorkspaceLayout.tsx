@@ -47,23 +47,25 @@ export function WorkspaceLayout({
   }, [navigate]);
 
   return (
-    <div className={cn("min-h-screen bg-background", className)}>
-      {/* Header */}
-      <div className="border-b bg-card">
-        <div className="container mx-auto px-4 py-6">
+    <div className={cn("min-h-screen bg-gradient-subtle", className)}>
+      {/* Enhanced Header with Gradient */}
+      <div className="border-b bg-gradient-to-r from-background via-background/95 to-background backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-8">
           <div className="flex items-start justify-between">
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-                <Badge variant="outline" className="capitalize">
+                <h1 className="text-4xl font-bold tracking-tight bg-gradient-primary bg-clip-text text-transparent">
+                  {title}
+                </h1>
+                <Badge variant="outline" className="capitalize gradient-border hover-scale">
                   {getDynamicText(userRole, userRole)}
                 </Badge>
               </div>
-              <p className="text-muted-foreground max-w-2xl">{description}</p>
+              <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed">{description}</p>
             </div>
             
             {quickActions.length > 0 && (
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 {quickActions.map((action, index) => {
                   const IconComponent = action.icon;
                   return (
@@ -71,7 +73,7 @@ export function WorkspaceLayout({
                       key={index}
                       variant={action.variant || 'default'}
                       onClick={action.onClick}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 hover-scale gradient-border"
                     >
                       {IconComponent && <IconComponent className="h-4 w-4" />}
                       {action.label}
@@ -84,30 +86,34 @@ export function WorkspaceLayout({
         </div>
       </div>
 
-      {/* Stats Dashboard */}
+      {/* Enhanced Stats Dashboard */}
       {stats.length > 0 && (
-        <div className="border-b bg-muted/30">
-          <div className="container mx-auto px-4 py-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="border-b bg-gradient-to-r from-muted/20 via-muted/30 to-muted/20 backdrop-blur-sm">
+          <div className="container mx-auto px-4 py-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
               {stats.map((stat, index) => {
                 const IconComponent = stat.icon;
                 return (
-                  <Card key={index} className="p-4">
-                    <div className="flex items-center justify-between space-y-0">
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium leading-none text-muted-foreground">
-                          {stat.label}
-                        </p>
-                        <p className="text-2xl font-bold">{stat.value}</p>
-                      </div>
-                      {IconComponent && (
-                        <div className={cn(
-                          "p-2 rounded-lg",
-                          stat.color || "bg-primary/10 text-primary"
-                        )}>
-                          <IconComponent className="h-4 w-4" />
+                  <Card key={index} className="gradient-border hover-scale group">
+                    <div className="p-6">
+                      <div className="flex items-center justify-between space-y-0">
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium leading-none text-muted-foreground group-hover:text-primary transition-colors">
+                            {stat.label}
+                          </p>
+                          <p className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                            {stat.value}
+                          </p>
                         </div>
-                      )}
+                        {IconComponent && (
+                          <div className={cn(
+                            "p-3 rounded-xl transition-all duration-300 group-hover:scale-110",
+                            stat.color || "bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30"
+                          )}>
+                            <IconComponent className="h-5 w-5" />
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </Card>
                 );
@@ -117,11 +123,13 @@ export function WorkspaceLayout({
         </div>
       )}
 
-      <Separator />
+      <Separator className="bg-gradient-to-r from-transparent via-border to-transparent" />
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {children}
+      {/* Enhanced Main Content */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="min-h-[60vh]">
+          {children}
+        </div>
       </div>
     </div>
   );

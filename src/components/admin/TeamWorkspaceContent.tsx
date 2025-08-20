@@ -268,27 +268,32 @@ export function TeamWorkspaceContent({
 
   const QuickActionsPanel = () => (
     <Sheet open={showQuickActions} onOpenChange={setShowQuickActions}>
-      <SheetContent>
+      <SheetContent className="bg-gradient-subtle">
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5" />
-            إجراءات سريعة
+          <SheetTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary">
+              <Zap className="h-6 w-6" />
+            </div>
+            <span className="bg-gradient-primary bg-clip-text text-transparent">
+              إجراءات سريعة
+            </span>
           </SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="text-lg leading-relaxed">
             قم بإنشاء مهام جديدة وتنظيم العمل بسرعة
           </SheetDescription>
         </SheetHeader>
         
-        <div className="space-y-6 mt-6">
-          <div className="space-y-4">
-            <h3 className="font-medium">إنشاء مهمة جديدة</h3>
+        <div className="space-y-8 mt-8">
+          <div className="space-y-6">
+            <h3 className="text-xl font-bold">إنشاء مهمة جديدة</h3>
             <Input
               placeholder={t('workspace.task_title_placeholder', 'عنوان المهمة')}
               value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
+              className="gradient-border"
             />
             <Select value={newTaskAssignee} onValueChange={setNewTaskAssignee}>
-              <SelectTrigger>
+              <SelectTrigger className="gradient-border">
                 <SelectValue placeholder={t('workspace.assign_member_placeholder', 'تكليف عضو')} />
               </SelectTrigger>
               <SelectContent>
@@ -301,29 +306,37 @@ export function TeamWorkspaceContent({
                 ))}
               </SelectContent>
             </Select>
-            <Button onClick={createQuickTask} className="w-full">
+            <Button onClick={createQuickTask} className="w-full hover-scale gradient-border">
               <Plus className="h-4 w-4 mr-2" />
               إنشاء المهمة
             </Button>
           </div>
 
-          <Separator />
+          <Separator className="bg-gradient-to-r from-transparent via-border to-transparent" />
 
-          <div className="grid grid-cols-2 gap-3">
-            <Button variant="outline" className="h-20 flex-col gap-2" onClick={() => setShowCreateProject(true)}>
-              <FolderPlus className="h-6 w-6" />
+          <div className="grid grid-cols-2 gap-4">
+            <Button variant="outline" className="h-24 flex-col gap-3 hover-scale gradient-border" onClick={() => setShowCreateProject(true)}>
+              <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary">
+                <FolderPlus className="h-6 w-6" />
+              </div>
               مشروع جديد
             </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2" onClick={() => setShowMeetingScheduler(true)}>
-              <CalendarIcon className="h-6 w-6" />
+            <Button variant="outline" className="h-24 flex-col gap-3 hover-scale gradient-border" onClick={() => setShowMeetingScheduler(true)}>
+              <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary">
+                <CalendarIcon className="h-6 w-6" />
+              </div>
               جدولة اجتماع
             </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2" onClick={() => setShowTeamChat(true)}>
-              <MessageSquare className="h-6 w-6" />
+            <Button variant="outline" className="h-24 flex-col gap-3 hover-scale gradient-border" onClick={() => setShowTeamChat(true)}>
+              <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary">
+                <MessageSquare className="h-6 w-6" />
+              </div>
               مناقشة فريق
             </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2">
-              <BarChart3 className="h-6 w-6" />
+            <Button variant="outline" className="h-24 flex-col gap-3 hover-scale gradient-border">
+              <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary">
+                <BarChart3 className="h-6 w-6" />
+              </div>
               تقرير أداء
             </Button>
           </div>

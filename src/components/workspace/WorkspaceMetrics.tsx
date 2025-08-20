@@ -35,33 +35,33 @@ export function MetricCard({
   const getTrendIcon = () => {
     switch (trend?.direction) {
       case 'up':
-        return <TrendingUp className="h-4 w-4 text-green-500" />;
+        return <TrendingUp className="h-4 w-4 text-success" />;
       case 'down':
-        return <TrendingDown className="h-4 w-4 text-red-500" />;
+        return <TrendingDown className="h-4 w-4 text-destructive" />;
       default:
-        return <Minus className="h-4 w-4 text-gray-500" />;
+        return <Minus className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
   const getStatusColor = () => {
     switch (status) {
       case 'success':
-        return 'text-green-600 bg-green-50 dark:bg-green-900/20';
+        return 'text-success bg-success/10';
       case 'warning':
-        return 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20';
+        return 'text-warning bg-warning/10';
       case 'error':
-        return 'text-red-600 bg-red-50 dark:bg-red-900/20';
+        return 'text-destructive bg-destructive/10';
       default:
-        return 'text-blue-600 bg-blue-50 dark:bg-blue-900/20';
+        return 'text-primary bg-primary/10';
     }
   };
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+    <Card className="gradient-border hover-scale group">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+        <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">{title}</CardTitle>
         {Icon && (
-          <div className={cn("p-2 rounded-lg", getStatusColor())}>
+          <div className={cn("p-2 rounded-xl transition-all duration-300 group-hover:scale-110", getStatusColor())}>
             <Icon className="h-4 w-4" />
           </div>
         )}
@@ -69,14 +69,14 @@ export function MetricCard({
       <CardContent>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold">{value}</div>
+            <div className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">{value}</div>
             {trend && (
               <div className="flex items-center gap-1">
                 {getTrendIcon()}
                 <span className={cn(
                   "text-sm font-medium",
-                  trend.direction === 'up' ? 'text-green-600' :
-                  trend.direction === 'down' ? 'text-red-600' : 'text-gray-600'
+                  trend.direction === 'up' ? 'text-success' :
+                  trend.direction === 'down' ? 'text-destructive' : 'text-muted-foreground'
                 )}>
                   {trend.value > 0 && trend.direction !== 'neutral' && '+'}
                   {trend.value}%
@@ -86,14 +86,14 @@ export function MetricCard({
           </div>
           
           {description && (
-            <p className="text-xs text-muted-foreground">{description}</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">{description}</p>
           )}
           
           {progress && (
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span>{progress.label || 'Progress'}</span>
-                <span>{progress.value}/{progress.max}</span>
+                <span className="text-muted-foreground">{progress.label || 'Progress'}</span>
+                <span className="font-medium">{progress.value}/{progress.max}</span>
               </div>
               <Progress 
                 value={(progress.value / progress.max) * 100} 
@@ -103,7 +103,7 @@ export function MetricCard({
           )}
           
           {trend?.label && (
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs gradient-border">
               {trend.label}
             </Badge>
           )}

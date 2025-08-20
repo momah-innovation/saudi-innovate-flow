@@ -30,36 +30,39 @@ export function WorkspaceQuickActions({
   className 
 }: WorkspaceQuickActionsProps) {
   return (
-    <Card className={className}>
+    <Card className={cn("gradient-border", className)}>
       <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
+        <CardTitle className="text-lg flex items-center gap-2">
+          <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+          {title}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4">
         {actions.map((action) => {
           const IconComponent = action.icon;
           return (
             <div
               key={action.id}
               className={cn(
-                "flex items-center justify-between p-3 rounded-lg border",
-                "hover:bg-muted/50 transition-colors",
+                "flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300",
+                "hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10",
                 action.disabled && "opacity-50 cursor-not-allowed"
               )}
             >
-              <div className="flex items-center gap-3 flex-1">
-                <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                  <IconComponent className="h-4 w-4" />
+              <div className="flex items-center gap-4 flex-1">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                  <IconComponent className="h-5 w-5" />
                 </div>
                 <div className="space-y-1 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="font-medium text-sm">{action.title}</p>
+                    <p className="font-semibold text-sm group-hover:text-primary transition-colors">{action.title}</p>
                     {action.badge && (
-                      <Badge variant={action.badge.variant || 'default'} className="text-xs">
+                      <Badge variant={action.badge.variant || 'default'} className="text-xs gradient-border">
                         {action.badge.text}
                       </Badge>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {action.description}
                   </p>
                 </div>
@@ -69,6 +72,7 @@ export function WorkspaceQuickActions({
                 size="sm"
                 onClick={action.onClick}
                 disabled={action.disabled}
+                className="hover-scale gradient-border ml-3"
               >
                 {action.title}
               </Button>
