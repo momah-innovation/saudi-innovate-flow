@@ -1,201 +1,165 @@
 
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Shield, Users, Activity, AlertTriangle, ArrowRight } from 'lucide-react';
-import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useNavigate } from 'react-router-dom';
-import { navigationHandler } from '@/utils/unified-navigation';
-import { useUnifiedDashboardData } from '@/hooks/useUnifiedDashboardData';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Users, Target, TrendingUp, Calendar, BarChart3, CheckCircle } from "lucide-react";
+import { DashboardUserProfile } from "@/hooks/useDashboardData";
 
-interface ManagerDashboardProps {
-  userProfile: any;
-  canManageUsers: boolean;
-  canViewSystemStats: boolean;
-  canAccessAdminPanel: boolean;
+export interface ManagerDashboardProps {
+  userProfile: DashboardUserProfile;
+  canViewAnalytics: boolean;
+  canManageProjects: boolean;
 }
 
-export const ManagerDashboard = React.memo(function ManagerDashboard({ 
+export function ManagerDashboard({ 
   userProfile, 
-  canManageUsers, 
-  canViewSystemStats, 
-  canAccessAdminPanel 
+  canViewAnalytics, 
+  canManageProjects 
 }: ManagerDashboardProps) {
-  const { t, language } = useUnifiedTranslation();
-  const navigate = useNavigate();
-  
-  // Initialize navigation handler
-  React.useEffect(() => {
-    navigationHandler.setNavigate(navigate);
-  }, [navigate]);
-  
-  const { data: unifiedData, isLoading } = useUnifiedDashboardData('manager');
-
-  // Use managerStats instead of adminStats
-  const managerStats = React.useMemo(() => {
-    const stats = unifiedData?.managerStats || {
-      totalUsers: 0,
-      activeUsers: 0,
-      totalChallenges: 0,
-      totalSubmissions: 0,
-      systemHealth: 0,
-      pendingApprovals: 0,
-      systemUptime: 0,
-      securityScore: 0
-    };
-
-    return [
-      {
-        title: language === 'ar' ? 'إجمالي المستخدمين' : 'Total Users',
-        value: `${stats.totalUsers || 0}`,
-        subtitle: `${Math.round((stats.activeUsers || 0) / (stats.totalUsers || 1) * 100)}% active`,
-        icon: Users,
-        color: 'text-primary'
-      },
-      {
-        title: language === 'ar' ? 'التحديات النشطة' : 'Active Challenges',
-        value: `${stats.totalChallenges || 0}`,
-        subtitle: `${stats.totalChallenges || 0} total challenges`,
-        icon: Activity,
-        color: 'text-info'
-      },
-      {
-        title: language === 'ar' ? 'المشاركات' : 'Submissions',
-        value: `${stats.totalSubmissions || 0}`,
-        subtitle: `${stats.totalSubmissions || 0} total submissions`,
-        icon: Shield,
-        color: 'text-success'
-      },
-      {
-        title: language === 'ar' ? 'وقت التشغيل' : 'System Uptime',
-        value: `${stats.systemUptime || 0}%`,
-        subtitle: `Security: ${stats.securityScore || 0}%`,
-        icon: AlertTriangle,
-        color: 'text-warning'
-      }
-    ];
-  }, [unifiedData?.managerStats, language]);
-
-  const managerActions = [
-    {
-      title: language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users',
-      description: language === 'ar' ? 'إدارة المستخدمين والأدوار' : 'Manage users and roles',
-      action: () => navigationHandler.navigateTo('/admin/users'),
-      show: canManageUsers
-    },
-    {
-      title: language === 'ar' ? 'إحصائيات النظام' : 'System Analytics',
-      description: language === 'ar' ? 'عرض إحصائيات النظام المفصلة' : 'View detailed system statistics',
-      action: () => navigationHandler.navigateTo('/admin/analytics'),
-      show: canViewSystemStats
-    },
-    {
-      title: language === 'ar' ? 'لوحة الإدارة' : 'Admin Panel',
-      description: language === 'ar' ? 'الوصول إلى لوحة الإدارة الشاملة' : 'Access comprehensive admin panel',
-      action: () => navigationHandler.navigateTo('/admin'),
-      show: canAccessAdminPanel
-    }
-  ];
-
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg p-6">
-          <div className="flex items-center gap-3 mb-2">
-            <Shield className="w-6 h-6" />
-            <h2 className="text-xl font-bold">
-              {language === 'ar' ? 'لوحة المدير' : 'Manager Dashboard'}
-            </h2>
-          </div>
-          <p className="text-white/80">
-            {language === 'ar' ? 'جاري التحميل...' : 'Loading...'}
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map((index) => (
-            <Card key={index} className="animate-pulse">
-              <CardHeader className="space-y-0 pb-2">
-                <div className="h-4 bg-muted rounded w-3/4"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-8 bg-muted rounded w-1/2 mb-2"></div>
-                <div className="h-3 bg-muted rounded w-2/3"></div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  const managerMetrics = {
+    teamSize: 8,
+    activeProjects: 3,
+    completedThisMonth: 12,
+    teamPerformance: 94
+  };
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg p-6">
-        <div className="flex items-center gap-3 mb-2">
-          <Shield className="w-6 h-6" />
-          <h2 className="text-xl font-bold">
-            {language === 'ar' ? 'لوحة المدير' : 'Manager Dashboard'}
-          </h2>
-        </div>
-        <p className="text-white/80">
-          {language === 'ar' 
-            ? `أهلاً بك ${userProfile?.display_name || 'المدير'} - إدارة النظام والمستخدمين`
-            : `Welcome ${userProfile?.display_name || 'Manager'} - System and user management`}
-        </p>
+      {/* Manager Overview Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Team Size</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{managerMetrics.teamSize}</div>
+            <p className="text-xs text-muted-foreground">Active team members</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Projects</CardTitle>
+            <Target className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{managerMetrics.activeProjects}</div>
+            <p className="text-xs text-muted-foreground">In progress</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{managerMetrics.completedThisMonth}</div>
+            <p className="text-xs text-muted-foreground">This month</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Performance</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{managerMetrics.teamPerformance}%</div>
+            <p className="text-xs text-muted-foreground">Team average</p>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {managerStats.map((stat, index) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
-                  {stat.title}
-                </CardTitle>
-                <Icon className={`h-5 w-5 transition-colors ${stat.color || 'text-muted-foreground group-hover:text-primary'}`} />
-              </CardHeader>
-              <CardContent>
-                <div className={`text-2xl font-bold ${stat.color || 'text-foreground'}`}>{stat.value}</div>
-                <p className="text-xs text-muted-foreground">
-                  {stat.subtitle}
-                </p>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {managerActions.filter(action => action.show).map((action, index) => (
-          <Card key={index} className="hover:shadow-lg transition-all duration-300 hover-scale cursor-pointer group border-l-4 border-l-primary/20 hover:border-l-primary">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
-                {action.title}
-              </CardTitle>
-              <Shield className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mt-2">
-                {action.description}
-              </p>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                onClick={action.action}
-              >
-                <ArrowRight className="w-3 h-3 mr-2" />
-                {language === 'ar' ? 'الوصول للواجهة' : 'Access Interface'}
+      {/* Team Management Section */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Team Overview</CardTitle>
+            <CardDescription>Current team status and assignments</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Available Members</span>
+              <Badge variant="outline">5</Badge>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">On Assignment</span>
+              <Badge variant="secondary">3</Badge>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">In Training</span>
+              <Badge variant="outline">2</Badge>
+            </div>
+            {canManageProjects && (
+              <Button className="w-full mt-4">
+                <Users className="mr-2 h-4 w-4" />
+                Manage Team
               </Button>
-            </CardContent>
-          </Card>
-        ))}
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Project Pipeline</CardTitle>
+            <CardDescription>Upcoming and active projects</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Innovation Challenge Q1</span>
+                <Badge>Active</Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Digital Transformation</span>
+                <Badge variant="outline">Planning</Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">AI Integration Project</span>
+                <Badge variant="secondary">Review</Badge>
+              </div>
+            </div>
+            {canManageProjects && (
+              <Button className="w-full mt-4">
+                <Target className="mr-2 h-4 w-4" />
+                View All Projects
+              </Button>
+            )}
+          </CardContent>
+        </Card>
       </div>
+
+      {/* Analytics Section */}
+      {canViewAnalytics && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Team Analytics</CardTitle>
+            <CardDescription>Performance metrics and insights</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary">94%</div>
+                <div className="text-sm text-muted-foreground">Success Rate</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary">8.5</div>
+                <div className="text-sm text-muted-foreground">Avg Score</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary">15</div>
+                <div className="text-sm text-muted-foreground">Projects Completed</div>
+              </div>
+            </div>
+            <Button className="w-full mt-4">
+              <BarChart3 className="mr-2 h-4 w-4" />
+              View Detailed Analytics
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
-});
-
-export default ManagerDashboard;
+}
