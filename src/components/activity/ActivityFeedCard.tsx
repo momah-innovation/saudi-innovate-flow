@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { formatDistanceToNow } from 'date-fns';
 import { ar, enUS } from 'date-fns/locale';
 import { Card } from '@/components/ui/card';
@@ -65,8 +65,8 @@ export function ActivityFeedCard({
   variant = 'default',
   showMetadata = true 
 }: ActivityFeedCardProps) {
-  const { t, i18n } = useTranslation('activity');
-  const isRTL = i18n.language === 'ar';
+  const { t, language } = useUnifiedTranslation();
+  const isRTL = language === 'ar';
 
   const ActionIcon = ACTION_ICONS[activity.action_type] || Activity;
   const SeverityIcon = SEVERITY_ICONS[activity.severity] || Info;
@@ -96,7 +96,7 @@ export function ActivityFeedCard({
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm text-foreground truncate">
-            {t(`actions.${activity.action_type}`, activity.action_type)} {t(`entities.${activity.entity_type}`, activity.entity_type)}
+            {t(`activity.actions.${activity.action_type}`, activity.action_type)} {t(`activity.entities.${activity.entity_type}`, activity.entity_type)}
           </p>
           <p className="text-xs text-muted-foreground">
             {formatTimeAgo(activity.created_at)}
@@ -105,7 +105,7 @@ export function ActivityFeedCard({
         {activity.severity !== 'info' && (
           <Badge variant="secondary" className={`text-xs ${SEVERITY_COLORS[activity.severity]}`}>
             <SeverityIcon className="w-3 h-3 mr-1" />
-            {t(`severity.${activity.severity}`)}
+            {t(`activity.severity.${activity.severity}`)}
           </Badge>
         )}
       </div>
@@ -124,9 +124,9 @@ export function ActivityFeedCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1">
-              <p className="text-sm font-medium text-foreground">
-                {t(`actions.${activity.action_type}`, activity.action_type)} {t(`entities.${activity.entity_type}`, activity.entity_type)}
-              </p>
+            <p className="text-sm font-medium text-foreground">
+              {t(`activity.actions.${activity.action_type}`, activity.action_type)} {t(`activity.entities.${activity.entity_type}`, activity.entity_type)}
+            </p>
               <p className="text-xs text-muted-foreground mt-1">
                 {formatTimeAgo(activity.created_at)}
               </p>
@@ -135,13 +135,13 @@ export function ActivityFeedCard({
             <div className="flex items-center gap-2">
               {activity.privacy_level !== 'public' && (
                 <Badge variant="outline" className="text-xs">
-                  {t(`privacy.${activity.privacy_level}`)}
+                  {t(`activity.privacy.${activity.privacy_level}`)}
                 </Badge>
               )}
               {activity.severity !== 'info' && (
                 <Badge variant="secondary" className={`text-xs ${SEVERITY_COLORS[activity.severity]}`}>
                   <SeverityIcon className="w-3 h-3 mr-1" />
-                  {t(`severity.${activity.severity}`)}
+                  {t(`activity.severity.${activity.severity}`)}
                 </Badge>
               )}
             </div>
