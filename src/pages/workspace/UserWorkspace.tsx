@@ -5,6 +5,7 @@ import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActi
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
+import { EnhancedWorkspaceHero } from '@/components/workspace/EnhancedWorkspaceHero';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { useUserWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -108,16 +109,12 @@ export default function UserWorkspace() {
     return (
       <>
         <WorkspaceBreadcrumb />
-        <WorkspaceLayout
-          title={t('workspace.user.title')}
-          description={t('workspace.user.description')}
-          userRole={userProfile?.roles?.[0] || 'user'}
-        >
+        <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-6">
             <div className="h-32 bg-muted rounded-lg"></div>
             <div className="h-64 bg-muted rounded-lg"></div>
           </div>
-        </WorkspaceLayout>
+        </div>
       </>
     );
   }
@@ -125,19 +122,24 @@ export default function UserWorkspace() {
   return (
     <>
       <WorkspaceBreadcrumb />
-      <WorkspaceLayout
-        title={t('workspace.user.title')}
-        description={t('workspace.user.description')}
-        userRole={userProfile?.roles?.[0] || 'user'}
-        stats={stats}
-        quickActions={[
-          {
-            label: t('workspace.user.actions.new_idea'),
-            onClick: () => navigate(ALL_ROUTES.IDEAS + '?action=create'),
-            icon: Plus
-          }
-        ]}
-      >
+      <div className="container mx-auto px-4 py-8">
+        <EnhancedWorkspaceHero
+          userRole={userProfile?.roles?.[0] || 'user'}
+          userProfile={userProfile}
+          title={t('workspace.user.title')}
+          description={t('workspace.user.description')}
+          stats={stats}
+          quickActions={[
+            {
+              label: t('workspace.user.actions.new_idea'),
+              onClick: () => navigate(ALL_ROUTES.IDEAS + '?action=create'),
+              icon: Plus
+            }
+          ]}
+        />
+      </div>
+      
+      <div className="container mx-auto px-4 pb-12">
         <div className="space-y-6">
         {/* Navigation */}
         <WorkspaceNavigation items={navigationItems} />
@@ -266,7 +268,7 @@ export default function UserWorkspace() {
           showPresence={true}
           showActivity={true}
         />
-      </WorkspaceLayout>
+      </div>
     </>
   );
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import { WorkspaceLayout } from '@/components/workspace/WorkspaceLayout';
 import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
+import { EnhancedWorkspaceHero } from '@/components/workspace/EnhancedWorkspaceHero';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { usePartnerWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -120,16 +120,12 @@ export default function PartnerWorkspace() {
     return (
       <>
         <WorkspaceBreadcrumb />
-        <WorkspaceLayout
-          title={t('workspace.partner.title')}
-          description={t('workspace.partner.description')}
-          userRole={userProfile?.roles?.[0] || 'partner'}
-        >
+        <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-6">
             <div className="h-32 bg-muted rounded-lg"></div>
             <div className="h-64 bg-muted rounded-lg"></div>
           </div>
-        </WorkspaceLayout>
+        </div>
       </>
     );
   }
@@ -137,19 +133,24 @@ export default function PartnerWorkspace() {
   return (
     <>
       <WorkspaceBreadcrumb />
-      <WorkspaceLayout
-        title={t('workspace.partner.title')}
-        description={t('workspace.partner.description')}
-        userRole={userProfile?.roles?.[0] || 'partner'}
-        stats={stats}
-        quickActions={[
-          {
-            label: t('workspace.partner.actions.browse_opportunities'),
-            onClick: () => navigate(ALL_ROUTES.OPPORTUNITIES),
-            icon: Search
-          }
-        ]}
-      >
+      <div className="container mx-auto px-4 py-8">
+        <EnhancedWorkspaceHero
+          userRole={userProfile?.roles?.[0] || 'partner'}
+          userProfile={userProfile}
+          title={t('workspace.partner.title')}
+          description={t('workspace.partner.description')}
+          stats={stats}
+          quickActions={[
+            {
+              label: t('workspace.partner.actions.browse_opportunities'),
+              onClick: () => navigate(ALL_ROUTES.OPPORTUNITIES),
+              icon: Search
+            }
+          ]}
+        />
+      </div>
+      
+      <div className="container mx-auto px-4 pb-12">
         <div className="space-y-6">
         {/* Navigation */}
         <WorkspaceNavigation items={navigationItems} />
@@ -325,17 +326,17 @@ export default function PartnerWorkspace() {
             <WorkspaceMetrics metrics={metrics} />
           </div>
         </div>
+        </div>
+        
+        {/* Partner Workspace Collaboration */}
+        <WorkspaceCollaboration
+          workspaceType="partner"
+          entityId={user?.id}
+          showWidget={true}
+          showPresence={true}
+          showActivity={true}
+        />
       </div>
-      
-      {/* Partner Workspace Collaboration */}
-      <WorkspaceCollaboration
-        workspaceType="partner"
-        entityId={user?.id}
-        showWidget={true}
-        showPresence={true}
-        showActivity={true}
-      />
-      </WorkspaceLayout>
     </>
   );
 }

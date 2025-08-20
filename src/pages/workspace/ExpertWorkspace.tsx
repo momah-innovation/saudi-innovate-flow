@@ -5,6 +5,7 @@ import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActi
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
+import { EnhancedWorkspaceHero } from '@/components/workspace/EnhancedWorkspaceHero';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { useExpertWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -113,16 +114,12 @@ export default function ExpertWorkspace() {
     return (
       <>
         <WorkspaceBreadcrumb />
-        <WorkspaceLayout
-          title={t('workspace.expert.title')}
-          description={t('workspace.expert.description')}
-          userRole={userProfile?.roles?.[0] || 'expert'}
-        >
+        <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-6">
             <div className="h-32 bg-muted rounded-lg"></div>
             <div className="h-64 bg-muted rounded-lg"></div>
           </div>
-        </WorkspaceLayout>
+        </div>
       </>
     );
   }
@@ -130,19 +127,24 @@ export default function ExpertWorkspace() {
   return (
     <>
       <WorkspaceBreadcrumb />
-      <WorkspaceLayout
-        title={t('workspace.expert.title')}
-        description={t('workspace.expert.description')}
-        userRole={userProfile?.roles?.[0] || 'expert'}
-        stats={stats}
-        quickActions={[
-          {
-            label: t('workspace.expert.actions.start_evaluation'),
-            onClick: () => {},
-            icon: Star
-          }
-        ]}
-      >
+      <div className="container mx-auto px-4 py-8">
+        <EnhancedWorkspaceHero
+          userRole={userProfile?.roles?.[0] || 'expert'}
+          userProfile={userProfile}
+          title={t('workspace.expert.title')}
+          description={t('workspace.expert.description')}
+          stats={stats}
+          quickActions={[
+            {
+              label: t('workspace.expert.actions.start_evaluation'),
+              onClick: () => {},
+              icon: Star
+            }
+          ]}
+        />
+      </div>
+      
+      <div className="container mx-auto px-4 pb-12">
         <div className="space-y-6">
           {/* Navigation */}
           <WorkspaceNavigation items={navigationItems} />
@@ -269,7 +271,7 @@ export default function ExpertWorkspace() {
           showPresence={true}
           showActivity={true}
         />
-      </WorkspaceLayout>
+      </div>
     </>
   );
 }

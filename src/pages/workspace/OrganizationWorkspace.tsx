@@ -1,10 +1,10 @@
 import React from 'react';
-import { WorkspaceLayout } from '@/components/workspace/WorkspaceLayout';
 import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
 import { WorkspaceCollaboration } from '@/components/collaboration/WorkspaceCollaboration';
 import { WorkspaceBreadcrumb } from '@/components/layout/WorkspaceBreadcrumb';
+import { EnhancedWorkspaceHero } from '@/components/workspace/EnhancedWorkspaceHero';
 import { useWorkspacePermissions } from '@/hooks/useWorkspacePermissions';
 import { useOrganizationWorkspaceData } from '@/hooks/useWorkspaceData';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -117,35 +117,39 @@ export default function OrganizationWorkspace() {
 
   if (isLoading) {
     return (
-      <WorkspaceLayout
-        title={t('workspace.organization.title')}
-        description={t('workspace.organization.description')}
-        userRole={userProfile?.roles?.[0] || 'admin'}
-      >
-        <div className="animate-pulse space-y-6">
-          <div className="h-32 bg-muted rounded-lg"></div>
-          <div className="h-64 bg-muted rounded-lg"></div>
+      <>
+        <WorkspaceBreadcrumb />
+        <div className="container mx-auto px-4 py-8">
+          <div className="animate-pulse space-y-6">
+            <div className="h-32 bg-muted rounded-lg"></div>
+            <div className="h-64 bg-muted rounded-lg"></div>
+          </div>
         </div>
-      </WorkspaceLayout>
+      </>
     );
   }
 
   return (
     <>
       <WorkspaceBreadcrumb />
-      <WorkspaceLayout
-        title={t('workspace.organization.title')}
-        description={t('workspace.organization.description')}
-        userRole={userProfile?.roles?.[0] || 'admin'}
-        stats={stats}
-        quickActions={[
-          {
-            label: t('workspace.organization.actions.create_challenge'),
-            onClick: () => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create'),
-            icon: Plus
-          }
-        ]}
-      >
+      <div className="container mx-auto px-4 py-8">
+        <EnhancedWorkspaceHero
+          userRole={userProfile?.roles?.[0] || 'organization'}
+          userProfile={userProfile}
+          title={t('workspace.organization.title')}
+          description={t('workspace.organization.description')}
+          stats={stats}
+          quickActions={[
+            {
+              label: t('workspace.organization.actions.create_challenge'),
+              onClick: () => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create'),
+              icon: Plus
+            }
+          ]}
+        />
+      </div>
+      
+      <div className="container mx-auto px-4 pb-12">
         <div className="space-y-6">
         {/* Navigation */}
         <WorkspaceNavigation items={navigationItems} />
@@ -277,17 +281,17 @@ export default function OrganizationWorkspace() {
             <WorkspaceMetrics metrics={metrics} />
           </div>
         </div>
+        </div>
+        
+        {/* Organization Workspace Collaboration */}
+        <WorkspaceCollaboration
+          workspaceType="organization"
+          entityId={user?.id}
+          showWidget={true}
+          showPresence={true}
+          showActivity={true}
+        />
       </div>
-      
-      {/* Organization Workspace Collaboration */}
-      <WorkspaceCollaboration
-        workspaceType="organization"
-        entityId={user?.id}
-        showWidget={true}
-        showPresence={true}
-        showActivity={true}
-      />
-      </WorkspaceLayout>
     </>
   );
 }
