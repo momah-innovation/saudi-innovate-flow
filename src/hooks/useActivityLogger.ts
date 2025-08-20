@@ -2,7 +2,15 @@
 import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { ActivityEvent, ActivityActionType, ActivityEntityType } from '@/types/activity';
+import { 
+  ActivityEvent, 
+  ActivityActionType, 
+  ActivityEntityType, 
+  ActivityImportance,
+  CRITICAL_ACTIVITIES,
+  HIGH_PRIORITY_ACTIVITIES,
+  MEDIUM_PRIORITY_ACTIVITIES
+} from '@/types/activity';
 import { logger } from '@/utils/logger';
 
 interface LogActivityParams {
@@ -18,31 +26,71 @@ interface LogActivityParams {
   tags?: string[];
 }
 
+/**
+ * Enhanced Activity Logger with intelligent filtering
+ * Only logs important activities to reduce noise and improve performance
+ */
 export function useActivityLogger() {
   const { user } = useAuth();
 
-  const logActivity = useCallback(async (params: LogActivityParams) => {
+  // Determine activity importance
+  const getActivityImportance = (actionType: ActivityActionType): ActivityImportance => {
+    if (CRITICAL_ACTIVITIES.includes(actionType)) return 'critical';
+    if (HIGH_PRIORITY_ACTIVITIES.includes(actionType)) return 'high';
+    if (MEDIUM_PRIORITY_ACTIVITIES.includes(actionType)) return 'medium';
+    return 'low';
+  };
+
+  // Check if activity should be logged
+  const shouldLogActivity = (actionType: ActivityActionType, forceLog?: boolean): boolean => {
+    if (forceLog) return true;
+    
+    const importance = getActivityImportance(actionType);
+    // Only log critical, high, and medium priority activities
+    return ['critical', 'high', 'medium'].includes(importance);
+  };
+
+  const logActivity = useCallback(async (params: LogActivityParams & { forceLog?: boolean }) => {
     if (!user) {
       logger.warn('Cannot log activity: user not authenticated');
       return;
     }
 
+    // Filter out unnecessary activities
+    if (!shouldLogActivity(params.action_type, params.forceLog)) {
+      logger.debug('Skipping low-priority activity logging', {
+        component: 'ActivityLogger',
+        action_type: params.action_type,
+        importance: getActivityImportance(params.action_type)
+      });
+      return;
+    }
+
     try {
-      // Map our interface to database schema (activity_events table)
+      // Enhanced activity event with importance and better metadata
+      const importance = getActivityImportance(params.action_type);
       const activityEvent = {
-        user_id: user.id, // Maps to user_id in database
-        event_type: params.action_type, // Maps to event_type in database
+        user_id: user.id,
+        event_type: params.action_type,
         entity_type: params.entity_type,
         entity_id: params.entity_id,
-        metadata: params.metadata || {},
+        metadata: {
+          ...params.metadata,
+          importance,
+          logged_at: new Date().toISOString(),
+          user_agent: navigator.userAgent,
+          session_id: user.id + '_' + Date.now(),
+          entity_title: params.metadata?.title || params.metadata?.name,
+          entity_description: params.metadata?.description
+        },
         privacy_level: params.privacy_level || 'public',
         created_at: new Date().toISOString(),
         visibility_scope: {
           target_user_id: params.target_user_id,
           workspace_id: params.workspace_id,
           workspace_type: params.workspace_type,
-          severity: params.severity || 'info',
-          tags: params.tags || []
+          severity: params.severity || (importance === 'critical' ? 'warning' : 'info'),
+          tags: [...(params.tags || []), importance, params.entity_type]
         }
       };
 
@@ -55,12 +103,14 @@ export function useActivityLogger() {
         throw error;
       }
 
-      logger.debug('Activity logged successfully', {
+      logger.info('Important activity logged successfully', {
         component: 'ActivityLogger',
         data: {
           action_type: params.action_type,
           entity_type: params.entity_type,
-          entity_id: params.entity_id
+          entity_id: params.entity_id,
+          importance,
+          privacy_level: params.privacy_level
         }
       });
 
@@ -70,30 +120,48 @@ export function useActivityLogger() {
     }
   }, [user]);
 
-  const logMultipleActivities = useCallback(async (activities: LogActivityParams[]) => {
+  const logMultipleActivities = useCallback(async (activities: (LogActivityParams & { forceLog?: boolean })[]) => {
     if (!user) {
       logger.warn('Cannot log activities: user not authenticated');
       return;
     }
 
+    // Filter activities by importance
+    const importantActivities = activities.filter(params => 
+      shouldLogActivity(params.action_type, params.forceLog)
+    );
+
+    if (importantActivities.length === 0) {
+      logger.debug('No important activities to log', { component: 'ActivityLogger' });
+      return;
+    }
+
     try {
-      // Map our interface to database schema
-      const activityEvents = activities.map(params => ({
-        user_id: user.id,
-        event_type: params.action_type,
-        entity_type: params.entity_type,
-        entity_id: params.entity_id,
-        metadata: params.metadata || {},
-        privacy_level: params.privacy_level || 'public',
-        created_at: new Date().toISOString(),
-        visibility_scope: {
-          target_user_id: params.target_user_id,
-          workspace_id: params.workspace_id,
-          workspace_type: params.workspace_type,
-          severity: params.severity || 'info',
-          tags: params.tags || []
-        }
-      }));
+      // Map filtered activities to database schema
+      const activityEvents = importantActivities.map(params => {
+        const importance = getActivityImportance(params.action_type);
+        return {
+          user_id: user.id,
+          event_type: params.action_type,
+          entity_type: params.entity_type,
+          entity_id: params.entity_id,
+          metadata: {
+            ...params.metadata,
+            importance,
+            logged_at: new Date().toISOString(),
+            batch_id: Date.now().toString()
+          },
+          privacy_level: params.privacy_level || 'public',
+          created_at: new Date().toISOString(),
+          visibility_scope: {
+            target_user_id: params.target_user_id,
+            workspace_id: params.workspace_id,
+            workspace_type: params.workspace_type,
+            severity: params.severity || (importance === 'critical' ? 'warning' : 'info'),
+            tags: [...(params.tags || []), importance, params.entity_type]
+          }
+        };
+      });
 
       const { error } = await supabase
         .from('activity_events')
@@ -104,8 +172,9 @@ export function useActivityLogger() {
         throw error;
       }
 
-      logger.debug(`${activities.length} activities logged successfully`, {
-        component: 'ActivityLogger'
+      logger.info(`${activityEvents.length}/${activities.length} important activities logged successfully`, {
+        component: 'ActivityLogger',
+        filtered_count: activities.length - activityEvents.length
       });
 
     } catch (error) {
@@ -113,8 +182,20 @@ export function useActivityLogger() {
     }
   }, [user]);
 
+  // Utility functions for external use
+  const logCriticalActivity = useCallback(async (params: LogActivityParams) => {
+    return logActivity({ ...params, forceLog: true });
+  }, [logActivity]);
+
+  const isImportantActivity = useCallback((actionType: ActivityActionType) => {
+    return shouldLogActivity(actionType);
+  }, []);
+
   return {
     logActivity,
-    logMultipleActivities
+    logMultipleActivities,
+    logCriticalActivity,
+    isImportantActivity,
+    getActivityImportance
   };
 }

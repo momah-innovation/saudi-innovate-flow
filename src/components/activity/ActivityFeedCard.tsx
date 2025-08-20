@@ -112,11 +112,41 @@ export function ActivityFeedCard({
     );
   }
 
+  // Enhanced activity content with better metadata display
+  const getActivityTitle = () => {
+    const entityTitle = activity.metadata?.entity_title || activity.metadata?.title || activity.metadata?.name;
+    const actionText = t(`activity.actions.${activity.action_type}`, activity.action_type);
+    const entityText = t(`activity.entities.${activity.entity_type}`, activity.entity_type);
+    
+    if (entityTitle) {
+      return `${actionText} ${entityText}: "${entityTitle}"`;
+    }
+    return `${actionText} ${entityText}`;
+  };
+
+  const getActivityDescription = () => {
+    return activity.metadata?.entity_description || activity.metadata?.description;
+  };
+
+  const getImportanceBadge = () => {
+    const importance = activity.metadata?.importance;
+    if (!importance || importance === 'medium') return null;
+    
+    const variant = importance === 'critical' ? 'destructive' : 'secondary';
+    const color = importance === 'critical' ? 'text-red-600' : 'text-orange-600';
+    
+    return (
+      <Badge variant={variant} className={`text-xs ${color}`}>
+        {importance.toUpperCase()}
+      </Badge>
+    );
+  };
+
   return (
-    <Card className="p-4 hover:shadow-md transition-shadow">
+    <Card className="group p-4 hover:shadow-lg transition-all duration-200 border-l-4 border-l-transparent hover:border-l-primary/50">
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center group-hover:from-primary/20 group-hover:to-primary/30 transition-colors">
             <ActionIcon className="w-5 h-5 text-primary" />
           </div>
         </div>
@@ -124,20 +154,36 @@ export function ActivityFeedCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1">
-            <p className="text-sm font-medium text-foreground">
-              {t(`activity.actions.${activity.action_type}`, activity.action_type)} {t(`activity.entities.${activity.entity_type}`, activity.entity_type)}
-            </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {formatTimeAgo(activity.created_at)}
+              <p className="text-sm font-medium text-foreground leading-relaxed">
+                {getActivityTitle()}
               </p>
+              
+              {getActivityDescription() && (
+                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                  {getActivityDescription()}
+                </p>
+              )}
+              
+              <div className="flex items-center gap-2 mt-2">
+                <p className="text-xs text-muted-foreground">
+                  {formatTimeAgo(activity.created_at)}
+                </p>
+                
+                {activity.metadata?.user_agent && (
+                  <span className="text-xs text-muted-foreground/70">•</span>
+                )}
+              </div>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 ml-2">
+              {getImportanceBadge()}
+              
               {activity.privacy_level !== 'public' && (
                 <Badge variant="outline" className="text-xs">
                   {t(`activity.privacy.${activity.privacy_level}`)}
                 </Badge>
               )}
+              
               {activity.severity !== 'info' && (
                 <Badge variant="secondary" className={`text-xs ${SEVERITY_COLORS[activity.severity]}`}>
                   <SeverityIcon className="w-3 h-3 mr-1" />
@@ -148,25 +194,48 @@ export function ActivityFeedCard({
           </div>
 
           {showMetadata && activity.metadata && Object.keys(activity.metadata).length > 0 && (
-            <div className="mt-3 p-2 bg-muted/50 rounded text-xs">
-              <details className="cursor-pointer">
-                <summary className="text-muted-foreground hover:text-foreground">
+            <div className="mt-3 p-3 bg-muted/30 rounded-lg border border-muted/50">
+              <details className="cursor-pointer group/details">
+                <summary className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                  <span className="group-open/details:rotate-90 transition-transform">▶</span>
                   Activity Details
                 </summary>
-                <pre className="mt-2 text-xs overflow-x-auto">
-                  {JSON.stringify(activity.metadata, null, 2)}
-                </pre>
+                <div className="mt-2 space-y-1">
+                  {activity.metadata.importance && (
+                    <div className="text-xs">
+                      <span className="font-medium">Importance:</span> {activity.metadata.importance}
+                    </div>
+                  )}
+                  {activity.metadata.session_id && (
+                    <div className="text-xs">
+                      <span className="font-medium">Session:</span> {activity.metadata.session_id.slice(-8)}
+                    </div>
+                  )}
+                  <details className="text-xs">
+                    <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
+                      Raw Metadata
+                    </summary>
+                    <pre className="mt-1 text-xs overflow-x-auto bg-background/50 p-2 rounded border">
+                      {JSON.stringify(activity.metadata, null, 2)}
+                    </pre>
+                  </details>
+                </div>
               </details>
             </div>
           )}
 
           {activity.tags && activity.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-2">
-              {activity.tags.map((tag, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
+            <div className="flex flex-wrap gap-1 mt-3">
+              {activity.tags.slice(0, 5).map((tag, index) => (
+                <Badge key={index} variant="outline" className="text-xs hover:bg-primary/10 transition-colors">
                   {tag}
                 </Badge>
               ))}
+              {activity.tags.length > 5 && (
+                <Badge variant="outline" className="text-xs text-muted-foreground">
+                  +{activity.tags.length - 5} more
+                </Badge>
+              )}
             </div>
           )}
         </div>
