@@ -23,34 +23,37 @@ export const PartnerDashboard = React.memo(function PartnerDashboard({ userProfi
     navigationHandler.setNavigate(navigate);
   }, [navigate]);
   
-  const { data: unifiedData } = useUnifiedDashboardData('partner');
+  // FIX: also get isLoading from the hook result
+  const { data: unifiedData, isLoading } = useUnifiedDashboardData('partner');
 
-  // Safe access to partner stats with fallbacks
+  // Safe access to partner stats with correct keys and fallbacks
   const partnerStats = React.useMemo(() => {
     const stats = unifiedData?.partnerStats || {
       activePartnerships: 0,
-      supportedProjects: 0,
-      partnershipScore: 0,
-      sharedChallenges: 0,
-      collaborationScore: 0
+      partnershipOpportunities: 0,
+      collaborationScore: 0,
+      totalInvestment: 0
     };
 
     return [
       {
-        title: language === 'ar' ? 'الفرص النشطة' : 'Active Opportunities',
-        value: stats.activePartnerships.toString(),
-        icon: Target,
+        // Previously "Active Opportunities" mapped to a non-existent field; align to active partnerships
+        title: language === 'ar' ? 'الشراكات النشطة' : 'Active Partnerships',
+        value: String(stats.activePartnerships ?? 0),
+        icon: Handshake,
         color: 'text-success'
       },
       {
-        title: language === 'ar' ? 'الشراكات' : 'Partnerships',
-        value: stats.supportedProjects.toString(),
-        icon: Handshake,
+        // Use partnershipOpportunities from hook
+        title: language === 'ar' ? 'فرص الشراكة' : 'Partnership Opportunities',
+        value: String(stats.partnershipOpportunities ?? 0),
+        icon: Target,
         color: 'text-info'
       },
       {
-        title: language === 'ar' ? 'معدل النجاح' : 'Success Rate',
-        value: `${stats.partnershipScore}%`,
+        // Use collaborationScore from hook
+        title: language === 'ar' ? 'درجة التعاون' : 'Collaboration Score',
+        value: `${stats.collaborationScore ?? 0}%`,
         icon: TrendingUp,
         color: 'text-primary'
       }
@@ -72,8 +75,8 @@ export const PartnerDashboard = React.memo(function PartnerDashboard({ userProfi
     }
   ];
 
-  // Show loading state if data is still loading
-  if (unifiedData?.isLoading) {
+  // FIX: use isLoading instead of unifiedData?.isLoading
+  if (isLoading) {
     return (
       <div className="space-y-6">
         <div className="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-lg p-6">
