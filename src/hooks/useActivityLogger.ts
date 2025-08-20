@@ -12,6 +12,13 @@ import {
   MEDIUM_PRIORITY_ACTIVITIES
 } from '@/types/activity';
 import { logger } from '@/utils/logger';
+import { 
+  shouldLogActivity, 
+  checkRateLimit, 
+  enhanceActivityMetadata,
+  ActivityFilterConfig,
+  DEFAULT_FILTER_CONFIG
+} from '@/utils/activityFilters';
 
 interface LogActivityParams {
   action_type: ActivityActionType;
@@ -33,7 +40,7 @@ interface LogActivityParams {
 export function useActivityLogger() {
   const { user } = useAuth();
 
-  // Determine activity importance
+  // Enhanced activity filtering using centralized utility
   const getActivityImportance = (actionType: ActivityActionType): ActivityImportance => {
     if (CRITICAL_ACTIVITIES.includes(actionType)) return 'critical';
     if (HIGH_PRIORITY_ACTIVITIES.includes(actionType)) return 'high';
@@ -41,13 +48,27 @@ export function useActivityLogger() {
     return 'low';
   };
 
-  // Check if activity should be logged
-  const shouldLogActivity = (actionType: ActivityActionType, forceLog?: boolean): boolean => {
-    if (forceLog) return true;
-    
-    const importance = getActivityImportance(actionType);
-    // Only log critical, high, and medium priority activities
-    return ['critical', 'high', 'medium'].includes(importance);
+  // Advanced activity filtering configuration
+  const activityConfig: Partial<ActivityFilterConfig> = {
+    enableSmartFiltering: true,
+    logLevel: 'medium', // Only log medium priority and above
+    rateLimitPerHour: 25, // Reduced from 50 to prevent spam
+    excludePatterns: [
+      'user_login', // Exclude frequent login events
+      'page_viewed',
+      'tab_changed', 
+      'dashboard_accessed',
+      'navigation'
+    ],
+    includePatterns: [
+      'challenge_*',
+      'idea_*', 
+      'security_*',
+      'role_*',
+      'system_*',
+      'partnership_*',
+      'campaign_*'
+    ]
   };
 
   const logActivity = useCallback(async (params: LogActivityParams & { forceLog?: boolean }) => {
@@ -56,33 +77,43 @@ export function useActivityLogger() {
       return;
     }
 
-    // Filter out unnecessary activities
-    if (!shouldLogActivity(params.action_type, params.forceLog)) {
-      logger.debug('Skipping low-priority activity logging', {
+    // Apply advanced activity filtering
+    if (!shouldLogActivity(params.action_type, activityConfig) && !params.forceLog) {
+      logger.debug('Skipping filtered activity', {
         component: 'ActivityLogger',
-        action_type: params.action_type,
-        importance: getActivityImportance(params.action_type)
+        actionType: params.action_type
+      });
+      return;
+    }
+
+    // Check rate limiting to prevent spam
+    if (!checkRateLimit(user.id, activityConfig)) {
+      logger.warn('Activity logging rate limit exceeded', {
+        component: 'ActivityLogger',
+        userId: user.id,
+        actionType: params.action_type
       });
       return;
     }
 
     try {
-      // Enhanced activity event with importance and better metadata
+      // Enhanced activity event with smart metadata enhancement
       const importance = getActivityImportance(params.action_type);
+      const enhancedMetadata = enhanceActivityMetadata(params.action_type, {
+        ...params.metadata,
+        user_agent: navigator.userAgent,
+        session_id: user.id + '_' + Date.now(),
+        entity_title: params.metadata?.title || params.metadata?.name,
+        entity_description: params.metadata?.description,
+        logged_via: 'smart_filter'
+      });
+
       const activityEvent = {
         user_id: user.id,
         event_type: params.action_type,
         entity_type: params.entity_type,
         entity_id: params.entity_id,
-        metadata: {
-          ...params.metadata,
-          importance,
-          logged_at: new Date().toISOString(),
-          user_agent: navigator.userAgent,
-          session_id: user.id + '_' + Date.now(),
-          entity_title: params.metadata?.title || params.metadata?.name,
-          entity_description: params.metadata?.description
-        },
+        metadata: enhancedMetadata,
         privacy_level: params.privacy_level || 'public',
         created_at: new Date().toISOString(),
         visibility_scope: {
@@ -106,11 +137,11 @@ export function useActivityLogger() {
       logger.info('Important activity logged successfully', {
         component: 'ActivityLogger',
         data: {
-          action_type: params.action_type,
-          entity_type: params.entity_type,
-          entity_id: params.entity_id,
+          actionType: params.action_type,
+          entityType: params.entity_type,
+          entityId: params.entity_id,
           importance,
-          privacy_level: params.privacy_level
+          privacyLevel: params.privacy_level
         }
       });
 
@@ -126,9 +157,11 @@ export function useActivityLogger() {
       return;
     }
 
-    // Filter activities by importance
+    // Apply smart filtering to batch activities
     const importantActivities = activities.filter(params => 
-      shouldLogActivity(params.action_type, params.forceLog)
+      shouldLogActivity(params.action_type, activityConfig) || params.forceLog
+    ).filter(params => 
+      checkRateLimit(user.id, activityConfig)
     );
 
     if (importantActivities.length === 0) {
@@ -173,8 +206,7 @@ export function useActivityLogger() {
       }
 
       logger.info(`${activityEvents.length}/${activities.length} important activities logged successfully`, {
-        component: 'ActivityLogger',
-        filtered_count: activities.length - activityEvents.length
+        component: 'ActivityLogger'
       });
 
     } catch (error) {

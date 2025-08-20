@@ -24,16 +24,12 @@ interface ActivityFiltersProps {
 
 const COMMON_ACTION_TYPES: ActivityActionType[] = [
   'challenge_created',
-  'challenge_updated', 
   'challenge_published',
+  'challenge_archived',
   'idea_created',
   'idea_submitted',
   'event_created',
-  'user_login',
-  'team_joined',
-  'liked',
-  'shared',
-  'commented'
+  'team_joined'
 ];
 
 const COMMON_ENTITY_TYPES: ActivityEntityType[] = [

@@ -67,7 +67,7 @@ export const ACTIVITY_CATEGORIES = {
 
 export function getActivityCategory(actionType: ActivityActionType): keyof typeof ACTIVITY_CATEGORIES | 'other' {
   for (const [category, activities] of Object.entries(ACTIVITY_CATEGORIES)) {
-    if (activities.includes(actionType as any)) {
+    if ((activities as readonly ActivityActionType[]).includes(actionType)) {
       return category as keyof typeof ACTIVITY_CATEGORIES;
     }
   }
