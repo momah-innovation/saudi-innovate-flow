@@ -158,13 +158,17 @@ export default function PartnerWorkspace() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Available Opportunities */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  {t('workspace.partner.available_opportunities')}
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                    {t('workspace.partner.available_opportunities')}
+                  </div>
                   <Button 
                     size="sm" 
                     onClick={() => navigate(ALL_ROUTES.OPPORTUNITIES)}
+                    className="hover-scale gradient-border"
                   >
                     {t('workspace.partner.view_all')}
                   </Button>
@@ -174,18 +178,23 @@ export default function PartnerWorkspace() {
                 {workspaceData?.opportunities?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.opportunities.slice(0, 5).map((opportunity) => (
-                      <div key={opportunity.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{opportunity.title_ar}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('workspace.partner.deadline')}: {opportunity.deadline ? new Date(opportunity.deadline).toLocaleDateString('ar') : t('common.no_deadline')}
-                          </p>
+                      <div key={opportunity.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <Briefcase className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{opportunity.title_ar}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('workspace.partner.deadline')}: {opportunity.deadline ? new Date(opportunity.deadline).toLocaleDateString('ar') : t('common.no_deadline')}
+                            </p>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant="success">
+                          <Badge variant="success" className="gradient-border">
                             {opportunity.status}
                           </Badge>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                             {t('common.apply')}
                           </Button>
                         </div>
@@ -193,13 +202,17 @@ export default function PartnerWorkspace() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Briefcase className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.partner.no_opportunities')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <Briefcase className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.partner.no_opportunities')}</p>
+                    <p className="text-sm mb-6">{t('workspace.partner.no_opportunities_desc', 'Browse available partnership opportunities')}</p>
                     <Button 
-                      className="mt-4" 
+                      className="hover-scale gradient-border" 
                       onClick={() => navigate(ALL_ROUTES.OPPORTUNITIES)}
                     >
+                      <Search className="h-4 w-4 mr-2" />
                       {t('workspace.partner.actions.browse_opportunities')}
                     </Button>
                   </div>
@@ -208,60 +221,79 @@ export default function PartnerWorkspace() {
             </Card>
 
             {/* Active Partnerships */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
-                <CardTitle>{t('workspace.partner.active_partnerships')}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                  {t('workspace.partner.active_partnerships')}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {workspaceData?.partnerships?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.partnerships.map((partnership) => (
-                      <div key={partnership.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{partnership.challenges?.title_ar}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('workspace.partner.status')}: {partnership.challenges?.status}
-                          </p>
+                      <div key={partnership.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <Handshake className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{partnership.challenges?.title_ar}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('workspace.partner.status')}: {partnership.challenges?.status}
+                            </p>
+                          </div>
                         </div>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                           {t('common.manage')}
                         </Button>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Handshake className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.partner.no_partnerships')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <Handshake className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.partner.no_partnerships')}</p>
+                    <p className="text-sm mb-6">{t('workspace.partner.no_partnerships_desc', 'No active partnerships at this time')}</p>
                   </div>
                 )}
               </CardContent>
             </Card>
 
             {/* Applications */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
-                <CardTitle>{t('workspace.partner.my_applications')}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                  {t('workspace.partner.my_applications')}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {workspaceData?.applications?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.applications.slice(0, 3).map((application) => (
-                      <div key={application.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{application.id}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString('ar')}
-                          </p>
+                      <div key={application.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <FileCheck className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{application.id}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString('ar')}
+                            </p>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant={
                             application.status === 'accepted' ? 'success' :
                             application.status === 'rejected' ? 'destructive' : 'secondary'
-                          }>
+                          } className="gradient-border">
                             {application.status}
                           </Badge>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                             {t('common.view')}
                           </Button>
                         </div>
@@ -269,9 +301,12 @@ export default function PartnerWorkspace() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <FileCheck className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.partner.no_applications')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <FileCheck className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.partner.no_applications')}</p>
+                    <p className="text-sm mb-6">{t('workspace.partner.no_applications_desc', 'You have not submitted any applications yet')}</p>
                   </div>
                 )}
               </CardContent>

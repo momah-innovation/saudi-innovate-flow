@@ -146,35 +146,47 @@ export default function UserWorkspace() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Recent Ideas */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
-                <CardTitle>{t('workspace.user.recent_ideas')}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                  {t('workspace.user.recent_ideas')}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {workspaceData?.ideas?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.ideas.slice(0, 5).map((idea) => (
-                      <div key={idea.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{getDynamicText(idea.title_ar, idea.title_en)}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('common.status_label')}: {idea.status?.startsWith('status.') ? t(idea.status) : t(`status.${idea.status}`) || idea.status}
-                          </p>
+                      <div key={idea.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <Lightbulb className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{getDynamicText(idea.title_ar, idea.title_en)}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('common.status_label')}: {idea.status?.startsWith('status.') ? t(idea.status) : t(`status.${idea.status}`) || idea.status}
+                            </p>
+                          </div>
                         </div>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                           {t('common.view')}
                         </Button>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Lightbulb className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.user.no_ideas')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <Lightbulb className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.user.no_ideas')}</p>
+                    <p className="text-sm mb-6">{t('workspace.user.no_ideas_desc', 'Start your innovation journey by sharing your first idea')}</p>
                     <Button 
-                      className="mt-4" 
+                      className="hover-scale gradient-border" 
                       onClick={() => navigate(ALL_ROUTES.IDEAS + '?action=create')}
                     >
+                      <Lightbulb className="h-4 w-4 mr-2" />
                       {t('workspace.user.actions.new_idea')}
                     </Button>
                   </div>
@@ -183,35 +195,47 @@ export default function UserWorkspace() {
             </Card>
 
             {/* Participated Challenges */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
-                <CardTitle>{t('workspace.user.participated_challenges')}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                  {t('workspace.user.participated_challenges')}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {workspaceData?.participatedChallenges?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.participatedChallenges.map((participation) => (
-                      <div key={participation.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-<h4 className="font-medium">{getDynamicText(participation.challenges?.title_ar, (participation.challenges as any)?.title_en)}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('common.status_label')}: {participation.challenges?.status?.startsWith('status.') ? t(participation.challenges.status) : t(`status.${participation.challenges?.status}`) || participation.challenges?.status}
-                          </p>
+                      <div key={participation.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <Target className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{getDynamicText(participation.challenges?.title_ar, (participation.challenges as any)?.title_en)}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('common.status_label')}: {participation.challenges?.status?.startsWith('status.') ? t(participation.challenges.status) : t(`status.${participation.challenges?.status}`) || participation.challenges?.status}
+                            </p>
+                          </div>
                         </div>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                           {t('common.view')}
                         </Button>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Target className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.user.no_challenges')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <Target className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.user.no_challenges')}</p>
+                    <p className="text-sm mb-6">{t('workspace.user.no_challenges_desc', 'Join challenges to showcase your innovation skills')}</p>
                     <Button 
-                      className="mt-4" 
+                      className="hover-scale gradient-border" 
                       onClick={() => navigate(ALL_ROUTES.CHALLENGES)}
                     >
+                      <Target className="h-4 w-4 mr-2" />
                       {t('workspace.user.actions.browse_challenges')}
                     </Button>
                   </div>

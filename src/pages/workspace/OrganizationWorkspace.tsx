@@ -154,13 +154,17 @@ export default function OrganizationWorkspace() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Active Challenges */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  {t('workspace.organization.active_challenges')}
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                    {t('workspace.organization.active_challenges')}
+                  </div>
                   <Button 
                     size="sm" 
                     onClick={() => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create')}
+                    className="hover-scale gradient-border"
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     {t('workspace.organization.new_challenge')}
@@ -171,18 +175,23 @@ export default function OrganizationWorkspace() {
                 {workspaceData?.challenges?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.challenges.slice(0, 5).map((challenge) => (
-                      <div key={challenge.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{getDynamicText(challenge.title_ar, (challenge as any).title_en)}</h4>
-                           <p className="text-sm text-muted-foreground">
-                             {t('workspace.organization.created')}: {new Date(challenge.created_at || '').toLocaleDateString(t('common.locale'))}
-                           </p>
+                      <div key={challenge.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <Target className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{getDynamicText(challenge.title_ar, (challenge as any).title_en)}</h4>
+                             <p className="text-sm text-muted-foreground">
+                               {t('workspace.organization.created')}: {new Date(challenge.created_at || '').toLocaleDateString(t('common.locale'))}
+                             </p>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant={challenge.status === 'active' ? 'success' : 'secondary'}>
+                          <Badge variant={challenge.status === 'active' ? 'success' : 'secondary'} className="gradient-border">
                             {challenge.status?.startsWith('status.') ? t(challenge.status) : t(`status.${challenge.status}`) || challenge.status}
                           </Badge>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                             {t('common.manage')}
                           </Button>
                         </div>
@@ -190,13 +199,17 @@ export default function OrganizationWorkspace() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Target className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.organization.no_challenges')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <Target className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.organization.no_challenges')}</p>
+                    <p className="text-sm mb-6">{t('workspace.organization.no_challenges_desc', 'Create your first challenge to start innovation')}</p>
                     <Button 
-                      className="mt-4" 
+                      className="hover-scale gradient-border" 
                       onClick={() => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create')}
                     >
+                      <Plus className="h-4 w-4 mr-2" />
                       {t('workspace.organization.actions.create_challenge')}
                     </Button>
                   </div>
@@ -205,26 +218,34 @@ export default function OrganizationWorkspace() {
             </Card>
 
             {/* Recent Submissions */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
-                <CardTitle>{t('workspace.organization.recent_submissions')}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                  {t('workspace.organization.recent_submissions')}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {workspaceData?.submissions?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.submissions.slice(0, 5).map((submission) => (
-                      <div key={submission.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{getDynamicText(submission.title_ar, (submission as any).title_en)}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('workspace.organization.challenge')}: {getDynamicText(submission.challenges?.title_ar, (submission.challenges as any)?.title_en)}
-                          </p>
+                      <div key={submission.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <FileText className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{getDynamicText(submission.title_ar, (submission as any).title_en)}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('workspace.organization.challenge')}: {getDynamicText(submission.challenges?.title_ar, (submission.challenges as any)?.title_en)}
+                            </p>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant={submission.status === 'submitted' ? 'success' : 'secondary'}>
+                          <Badge variant={submission.status === 'submitted' ? 'success' : 'secondary'} className="gradient-border">
                             {submission.status?.startsWith('status.') ? t(submission.status) : t(`status.${submission.status}`) || submission.status}
                           </Badge>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                             {t('common.review')}
                           </Button>
                         </div>
@@ -232,9 +253,12 @@ export default function OrganizationWorkspace() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <FileText className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.organization.no_submissions')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <FileText className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.organization.no_submissions')}</p>
+                    <p className="text-sm mb-6">{t('workspace.organization.no_submissions_desc', 'No submissions received yet')}</p>
                   </div>
                 )}
               </CardContent>

@@ -151,12 +151,15 @@ export default function ExpertWorkspace() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Pending Evaluations */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  {t('workspace.expert.pending_evaluations')}
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                    {t('workspace.expert.pending_evaluations')}
+                  </div>
                   {workspaceData?.stats?.pendingEvaluations > 0 && (
-                    <Badge variant="destructive">
+                    <Badge variant="destructive" className="gradient-border">
                       {workspaceData.stats.pendingEvaluations} {t('workspace.expert.pending')}
                     </Badge>
                   )}
@@ -166,18 +169,23 @@ export default function ExpertWorkspace() {
                 {workspaceData?.evaluations?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.evaluations.slice(0, 5).map((evaluation) => (
-                      <div key={evaluation.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{evaluation.ideas?.title_ar}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('workspace.expert.submitted')}: {new Date(evaluation.ideas?.created_at || '').toLocaleDateString(t('common.locale'))}
-                          </p>
+                      <div key={evaluation.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <Star className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{evaluation.ideas?.title_ar}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('workspace.expert.submitted')}: {new Date(evaluation.ideas?.created_at || '').toLocaleDateString(t('common.locale'))}
+                            </p>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant={evaluation.evaluation_date ? 'success' : 'secondary'}>
+                          <Badge variant={evaluation.evaluation_date ? 'success' : 'secondary'} className="gradient-border">
                             {evaluation.evaluation_date ? t('status.completed') : t('status.pending')}
                           </Badge>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                             {t('workspace.expert.evaluate')}
                           </Button>
                         </div>
@@ -185,40 +193,54 @@ export default function ExpertWorkspace() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <ClipboardList className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.expert.no_evaluations')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <ClipboardList className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.expert.no_evaluations')}</p>
+                    <p className="text-sm mb-6">{t('workspace.expert.no_evaluations_desc', 'No pending evaluations at this time')}</p>
                   </div>
                 )}
               </CardContent>
             </Card>
 
             {/* Assigned Challenges */}
-            <Card>
+            <Card className="gradient-border hover-scale group">
               <CardHeader>
-                <CardTitle>{t('workspace.expert.assigned_challenges')}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full"></div>
+                  {t('workspace.expert.assigned_challenges')}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {workspaceData?.assignedChallenges?.length > 0 ? (
                   <div className="space-y-3">
                     {workspaceData.assignedChallenges.map((assignment) => (
-                      <div key={assignment.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{assignment.challenges?.title_ar}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('common.status_label')}: {assignment.challenges?.status?.startsWith('status.') ? t(assignment.challenges.status) : t(`status.${assignment.challenges?.status}`) || assignment.challenges?.status}
-                          </p>
+                      <div key={assignment.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <Users className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{assignment.challenges?.title_ar}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('common.status_label')}: {assignment.challenges?.status?.startsWith('status.') ? t(assignment.challenges.status) : t(`status.${assignment.challenges?.status}`) || assignment.challenges?.status}
+                            </p>
+                          </div>
                         </div>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="hover-scale gradient-border">
                           {t('common.view')}
                         </Button>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Users className="mx-auto h-12 w-12 mb-4" />
-                    <p>{t('workspace.expert.no_challenges')}</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4">
+                      <Users className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.expert.no_challenges')}</p>
+                    <p className="text-sm mb-6">{t('workspace.expert.no_challenges_desc', 'No challenges assigned to you currently')}</p>
                   </div>
                 )}
               </CardContent>
