@@ -1,0 +1,75 @@
+
+{
+  "activity": {
+    "feed": {
+      "title": "Activity Feed",
+      "empty": "No activities found",
+      "loading": "Loading activities...",
+      "loadMore": "Load More",
+      "refresh": "Refresh",
+      "error": "Failed to load activities"
+    },
+    "filters": {
+      "title": "Filter Activities",
+      "actionTypes": "Action Types",
+      "entityTypes": "Entity Types",
+      "privacyLevels": "Privacy Levels",
+      "dateRange": "Date Range",
+      "tags": "Tags",
+      "clear": "Clear Filters",
+      "apply": "Apply Filters"
+    },
+    "actions": {
+      "challenge_created": "created a challenge",
+      "challenge_updated": "updated a challenge",
+      "challenge_published": "published a challenge",
+      "challenge_archived": "archived a challenge",
+      "idea_created": "created an idea",
+      "idea_submitted": "submitted an idea",
+      "idea_reviewed": "reviewed an idea",
+      "idea_approved": "approved an idea",
+      "event_created": "created an event",
+      "event_registered": "registered for an event",
+      "event_attended": "attended an event",
+      "user_login": "logged in",
+      "user_logout": "logged out",
+      "liked": "liked",
+      "bookmarked": "bookmarked",
+      "shared": "shared",
+      "commented": "commented on",
+      "followed": "followed",
+      "team_joined": "joined a team",
+      "file_uploaded": "uploaded a file"
+    },
+    "entities": {
+      "challenge": "Challenge",
+      "idea": "Idea",
+      "event": "Event",
+      "user": "User",
+      "team": "Team",
+      "file": "File",
+      "comment": "Comment"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Warning",
+      "error": "Error",
+      "critical": "Critical"
+    },
+    "privacy": {
+      "public": "Public",
+      "team": "Team",
+      "organization": "Organization",
+      "private": "Private"
+    },
+    "timeAgo": {
+      "justNow": "just now",
+      "minutesAgo": "{{count}} minute ago",
+      "minutesAgo_plural": "{{count}} minutes ago",
+      "hoursAgo": "{{count}} hour ago",
+      "hoursAgo_plural": "{{count}} hours ago",
+      "daysAgo": "{{count}} day ago",
+      "daysAgo_plural": "{{count}} days ago"
+    }
+  }
+}

@@ -28,7 +28,8 @@ export function useActivityLogger() {
     }
 
     try {
-      const activityEvent: Partial<ActivityEvent> = {
+      // Map our interface to database schema
+      const activityEvent = {
         actor_id: user.id,
         action_type: params.action_type,
         entity_type: params.entity_type,
@@ -71,6 +72,7 @@ export function useActivityLogger() {
     }
 
     try {
+      // Map our interface to database schema
       const activityEvents = activities.map(params => ({
         actor_id: user.id,
         action_type: params.action_type,

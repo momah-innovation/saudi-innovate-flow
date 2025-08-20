@@ -1,0 +1,75 @@
+
+{
+  "activity": {
+    "feed": {
+      "title": "تغذية الأنشطة",
+      "empty": "لم يتم العثور على أنشطة",
+      "loading": "جاري تحميل الأنشطة...",
+      "loadMore": "تحميل المزيد",
+      "refresh": "تحديث",
+      "error": "فشل في تحميل الأنشطة"
+    },
+    "filters": {
+      "title": "تصفية الأنشطة",
+      "actionTypes": "أنواع الإجراءات",
+      "entityTypes": "أنواع الكيانات",
+      "privacyLevels": "مستويات الخصوصية",
+      "dateRange": "نطاق التاريخ",
+      "tags": "العلامات",
+      "clear": "مسح المرشحات",
+      "apply": "تطبيق المرشحات"
+    },
+    "actions": {
+      "challenge_created": "أنشأ تحدياً",
+      "challenge_updated": "حدث تحدياً",
+      "challenge_published": "نشر تحدياً",
+      "challenge_archived": "أرشف تحدياً",
+      "idea_created": "أنشأ فكرة",
+      "idea_submitted": "قدم فكرة",
+      "idea_reviewed": "راجع فكرة",
+      "idea_approved": "وافق على فكرة",
+      "event_created": "أنشأ حدثاً",
+      "event_registered": "سجل في حدث",
+      "event_attended": "حضر حدثاً",
+      "user_login": "سجل الدخول",
+      "user_logout": "سجل الخروج",
+      "liked": "أعجب بـ",
+      "bookmarked": "أضاف إلى المفضلة",
+      "shared": "شارك",
+      "commented": "علق على",
+      "followed": "تابع",
+      "team_joined": "انضم إلى فريق",
+      "file_uploaded": "رفع ملف"
+    },
+    "entities": {
+      "challenge": "تحدي",
+      "idea": "فكرة",
+      "event": "حدث",
+      "user": "مستخدم",
+      "team": "فريق",
+      "file": "ملف",
+      "comment": "تعليق"
+    },
+    "severity": {
+      "info": "معلومة",
+      "warning": "تحذير",
+      "error": "خطأ",
+      "critical": "حرج"
+    },
+    "privacy": {
+      "public": "عام",
+      "team": "فريق",
+      "organization": "منظمة",
+      "private": "خاص"
+    },
+    "timeAgo": {
+      "justNow": "الآن",
+      "minutesAgo": "منذ {{count}} دقيقة",
+      "minutesAgo_plural": "منذ {{count}} دقائق",
+      "hoursAgo": "منذ {{count}} ساعة",
+      "hoursAgo_plural": "منذ {{count}} ساعات",
+      "daysAgo": "منذ {{count}} يوم",
+      "daysAgo_plural": "منذ {{count}} أيام"
+    }
+  }
+}

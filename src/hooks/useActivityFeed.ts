@@ -123,7 +123,7 @@ export function useActivityFeed(
         throw queryError;
       }
 
-      const newActivities = data || [];
+      const newActivities = (data || []) as ActivityEvent[];
       
       if (reset) {
         setActivities(newActivities);
