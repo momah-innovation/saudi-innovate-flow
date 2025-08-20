@@ -20,6 +20,9 @@ import { createErrorHandler } from '@/utils/unified-error-handler';
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";
 import { useOptimizedDashboardCounts, useOptimizedTeamCounts } from '@/hooks/useOptimizedDashboardCounts';
+import { useUserAchievements } from '@/hooks/useUserAchievements';
+import { useUserNotifications } from '@/hooks/useUserNotifications';
+import { useDashboardTrends } from '@/hooks/useDashboardTrends';
 
 interface DashboardStats {
   activeChallenges: number;
@@ -94,37 +97,40 @@ export const EnhancedDashboardOverview = () => {
   const errorHandler = createErrorHandler({ component: 'EnhancedDashboardOverview' });
   const [selectedTrend, setSelectedTrend] = useState<Trend | null>(null);
 
-// Optimized cached counts
+// Optimized cached counts and hooks
 const { data: countsData } = useOptimizedDashboardCounts();
 const { data: teamCount } = useOptimizedTeamCounts();
+const { data: hookAchievements = [], isLoading: achievementsLoading } = useUserAchievements();
+const { data: hookNotifications = [], isLoading: notificationsLoading } = useUserNotifications(5);
+const { data: hookTrends = [], isLoading: trendsLoading } = useDashboardTrends();
+
+  // Update state from hooks data
+  useEffect(() => {
+    if (hookAchievements) {
+      setAchievements(hookAchievements);
+    }
+  }, [hookAchievements]);
 
   useEffect(() => {
-    loadDashboardData();
-    
-    // Set up real-time updates
-    const channel = supabase
-      .channel('dashboard-updates')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'dashboard_notifications'
-      }, () => {
-        loadNotifications();
-      })
-      .subscribe();
+    if (hookNotifications) {
+      setNotifications(hookNotifications);
+    }
+  }, [hookNotifications]);
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+  useEffect(() => {
+    if (hookTrends) {
+      setTrends(hookTrends);
+    }
+  }, [hookTrends]);
+
+  useEffect(() => {
+    // Only load dashboard data on mount - most data now comes from hooks
+    loadDashboardData();
   }, [userProfile]);
 
   const loadDashboardData = async () => {
+    // Most data now loaded via hooks - this is for any remaining manual loading
     return withLoading('loadDashboard', async () => {
-      await Promise.all([
-        loadAchievements(),
-        loadNotifications(),
-        loadTrends()
-      ]);
       return true;
     }, {
       errorMessage: t('error.load_dashboard_data'),
@@ -152,106 +158,25 @@ const { data: teamCount } = useOptimizedTeamCounts();
       }));
     }
   }, [countsData, teamCount]);
+  // Legacy loading functions - replaced by hooks
   const loadStats = async () => {
     // This function is now superseded by cached counts from React Query hooks
-    // Kept for backward compatibility if needed elsewhere
   };
 
   const loadAchievements = async () => {
-    if (!userProfile?.id) return;
-    
-    try {
-      // For now, just return empty achievements since we don't have the exact table structure
-      setAchievements([]);
-    } catch (error) {
-      logger.warn('Could not load achievements, using empty state', { component: 'EnhancedDashboardOverview', action: 'loadAchievements' });
-      setAchievements([]);
-    }
+    // Now handled by useUserAchievements hook
   };
 
   const loadNotifications = async () => {
-    if (!userProfile?.id) return;
-    
-    try {
-      const { data: notificationsData } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', userProfile.id)
-        .order('created_at', { ascending: false })
-        .limit(5);
-
-      if (notificationsData && notificationsData.length > 0) {
-        setNotifications(notificationsData.map(notif => ({
-          id: notif.id,
-          title_ar: notif.title,
-          title_en: notif.title,
-          message_ar: notif.message,
-          message_en: notif.message,
-          type: notif.type || 'info',
-          is_read: notif.is_read || false,
-          created_at: notif.created_at,
-          action_url: typeof notif.metadata === 'object' && notif.metadata ? (notif.metadata as any).action_url : undefined
-        })));
-      } else {
-        setNotifications([]);
-      }
-    } catch (error) {
-      logger.warn('Could not load notifications, using empty state', { component: 'EnhancedDashboardOverview', action: 'loadNotifications' });
-      setNotifications([]);
-    }
+    // Now handled by useUserNotifications hook  
   };
 
   const loadTrends = async () => {
-    try {
-      // Get trend data from challenges and tag data
-      const { data: challengesData } = await supabase
-        .from('challenges')
-        .select('title, created_at')
-        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
-
-      if (challengesData && challengesData.length > 0) {
-        // Create mock trend data based on challenges
-        const trendData = [
-          {
-            id: '1',
-            trend_name_ar: 'التكنولوجيا',
-            trend_name_en: 'Technology',
-            trend_category: 'technology',
-            growth_percentage: 35.2,
-            current_value: Math.floor(challengesData.length * 0.4),
-            trend_direction: 'up' as const
-          },
-          {
-            id: '2',
-            trend_name_ar: 'الابتكار',
-            trend_name_en: 'Innovation',
-            trend_category: 'innovation',
-            growth_percentage: 28.8,
-            current_value: Math.floor(challengesData.length * 0.3),
-            trend_direction: 'up' as const
-          },
-          {
-            id: '3',
-            trend_name_ar: 'التطوير',
-            trend_name_en: 'Development',
-            trend_category: 'development',
-            growth_percentage: 15.4,
-            current_value: Math.floor(challengesData.length * 0.2),
-            trend_direction: 'stable' as const
-          }
-        ];
-
-        setTrends(trendData);
-      } else {
-        setTrends([]);
-      }
-    } catch (error) {
-      logger.warn('Could not load trends, using empty state', { component: 'EnhancedDashboardOverview', action: 'loadTrends' });
-      setTrends([]);
-    }
+    // Now handled by useDashboardTrends hook
   };
 
   const markNotificationAsRead = async (notificationId: string) => {
+    // Use the hook's markAsRead function if available, otherwise update local state
     setNotifications(prev => 
       prev.map(n => n.id === notificationId ? { ...n, is_read: true } : n)
     );

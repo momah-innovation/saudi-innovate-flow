@@ -16,6 +16,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useOptimizedDashboardStats, useUserActivitySummary } from '@/hooks/useOptimizedDashboardStats';
+import { useUserAchievements } from '@/hooks/useUserAchievements';
+import { useUserGoals } from '@/hooks/useUserGoals';
 import { useDirection } from '@/components/ui/direction-provider';
 import { queryBatcher } from '@/utils/queryBatcher';
 import { timeAsync } from '@/utils/performanceMonitor';
@@ -102,6 +104,8 @@ export default React.memo(function UserDashboard() {
   // OPTIMIZED: Use new hooks instead of manual data fetching
   const { data: optimizedStats, isLoading: statsLoading } = useOptimizedDashboardStats();
   const { data: userActivity, isLoading: activityLoading } = useUserActivitySummary(userProfile?.id);
+  const { data: userAchievements = [], isLoading: achievementsLoading } = useUserAchievements();
+  const { data: userGoals = [], isLoading: goalsLoading } = useUserGoals();
   
   // State hooks - always called in the same order
   const [primaryRole, setPrimaryRole] = useState<string>('innovator');
@@ -150,29 +154,28 @@ export default React.memo(function UserDashboard() {
     }
   }, [optimizedStats, userActivity]);
 
-  // OPTIMIZED: Simplified dashboard data loading - only for non-cached data
+  // Update achievements and goals from hooks
+  useEffect(() => {
+    if (userAchievements) {
+      setAchievements(userAchievements);
+    }
+  }, [userAchievements]);
+
+  useEffect(() => {
+    if (userGoals) {
+      setGoals(userGoals);
+    }
+  }, [userGoals]);
+
+  // OPTIMIZED: All data now loaded via hooks - no manual loading needed
   const loadDashboardData = useCallback(async () => {
     if (!userProfile?.id) {
-      debugLog.log('Skipping loadDashboardData - no user ID');
+      debugLog.log('Skipping loadDashboardData - no user ID, all data loaded via hooks');
       return;
     }
     
-    debugLog.log('Starting loadDashboardData...');
-    try {
-      setLoading(true);
-      // Only load data that doesn't have optimized hooks yet
-      await Promise.all([
-        loadUserAchievements(),
-        loadUserGoals()
-      ]);
-      debugLog.log('Dashboard supplementary data loaded successfully');
-    } catch (error) {
-      debugLog.error('Error loading dashboard data:', error);
-      logger.error('Error loading dashboard data', { component: 'UserDashboard', action: 'loadDashboardData' }, error as Error);
-      toast.error('خطأ في تحميل بيانات لوحة القيادة');
-    } finally {
-      // Don't set loading false here - let the optimized data effect handle it
-    }
+    debugLog.log('Dashboard data loading now handled by hooks');
+    // All data is now loaded via hooks, no manual loading needed
   }, [userProfile?.id]);
 
   useEffect(() => {
