@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useDirection } from '@/components/ui/direction-provider';
 import { Calendar, Clock, UserCheck, UserX, Users, Download } from 'lucide-react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface EventParticipant {
   id: string;
@@ -30,6 +31,7 @@ export const AttendeesTab = ({
   onCancelRegistration 
 }: AttendeesTabProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const getAttendanceStatusColor = (status: string) => {
     switch (status) {
@@ -52,21 +54,21 @@ export const AttendeesTab = ({
   };
 
   const getStatusText = (status: string) => {
-    const statusMap = {
-      'registered': isRTL ? 'مسجل' : 'Registered',
-      'checked_in': isRTL ? 'حضر' : 'Checked In',
-      'checked_out': isRTL ? 'غادر' : 'Checked Out', 
-      'no_show': isRTL ? 'لم يحضر' : 'No Show',
-      'cancelled': isRTL ? 'ملغي' : 'Cancelled'
+    const statusMap: Record<string, string> = {
+      'registered': t('events:attendees.attendance_status.registered'),
+      'checked_in': t('events:attendees.attendance_status.checked_in'),
+      'checked_out': t('events:attendees.attendance_status.checked_out'),
+      'no_show': t('events:attendees.attendance_status.no_show'),
+      'cancelled': t('events:attendees.attendance_status.cancelled')
     };
     return statusMap[status] || status;
   };
 
   const getRegistrationTypeText = (type: string) => {
-    const typeMap = {
-      'self_registered': isRTL ? 'تسجيل ذاتي' : 'Self Registered',
-      'invited': isRTL ? 'مدعو' : 'Invited',
-      'admin_added': isRTL ? 'أضيف إدارياً' : 'Admin Added'
+    const typeMap: Record<string, string> = {
+      'self_registered': t('events:attendees.registration_type.self_registered'),
+      'invited': t('events:attendees.registration_type.invited'),
+      'admin_added': t('events:attendees.registration_type.admin_added')
     };
     return typeMap[type] || type;
   };
@@ -118,7 +120,7 @@ export const AttendeesTab = ({
           <Users className="w-6 h-6 mx-auto mb-2 text-primary" />
           <div className="text-2xl font-bold">{participants.length}</div>
           <div className="text-xs text-muted-foreground">
-            {isRTL ? 'المسجلين' : 'Registered'}
+            {t('events:attendance.registered')}
           </div>
           {maxParticipants && (
             <div className="text-xs text-muted-foreground">
@@ -131,7 +133,7 @@ export const AttendeesTab = ({
           <UserCheck className="w-6 h-6 mx-auto mb-2 text-green-600" />
           <div className="text-2xl font-bold text-green-600">{checkedInCount}</div>
           <div className="text-xs text-muted-foreground">
-            {isRTL ? 'حضر' : 'Attended'}
+            {t('events:attendance.attended')}
           </div>
         </div>
         
@@ -139,14 +141,14 @@ export const AttendeesTab = ({
           <UserX className="w-6 h-6 mx-auto mb-2 text-red-600" />
           <div className="text-2xl font-bold text-red-600">{noShowCount}</div>
           <div className="text-xs text-muted-foreground">
-            {isRTL ? 'لم يحضر' : 'No Show'}
+            {t('events:attendance.no_show')}
           </div>
         </div>
         
         <div className="text-center p-4 bg-muted/50 rounded-lg">
           <div className="text-2xl font-bold text-primary">{attendanceRate.toFixed(1)}%</div>
           <div className="text-xs text-muted-foreground">
-            {isRTL ? 'معدل الحضور' : 'Attendance Rate'}
+            {t('events:attendees.attendance_rate')}
           </div>
         </div>
       </div>
@@ -155,7 +157,7 @@ export const AttendeesTab = ({
       <div className="flex items-center justify-between">
         <h4 className="font-semibold flex items-center gap-2">
           <Users className="w-4 h-4" />
-          {isRTL ? 'قائمة الحضور' : 'Attendee List'}
+          {t('events:attendees.title')}
           <Badge variant="secondary" className="ml-2">
             {participants.length}
           </Badge>
@@ -163,7 +165,7 @@ export const AttendeesTab = ({
         
         <Button variant="outline" size="sm">
           <Download className="w-4 h-4 mr-2" />
-          {isRTL ? 'تصدير القائمة' : 'Export List'}
+          {t('events:attendees.export_list')}
         </Button>
       </div>
 
@@ -180,11 +182,11 @@ export const AttendeesTab = ({
                     </div>
                     <div>
                       <div className="font-medium text-foreground">
-                        {isRTL ? 'مشارك' : 'Participant'} #{participant.user_id.slice(-8)}
+                        {t('events:attendees.participant')} #{participant.user_id.slice(-8)}
                       </div>
                       <div className="text-sm text-muted-foreground flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        {isRTL ? 'سجل في: ' : 'Registered: '}{formatDate(participant.registration_date)}
+                        {t('events:attendees.registration_date')}: {formatDate(participant.registration_date)}
                       </div>
                     </div>
                   </div>
@@ -203,13 +205,13 @@ export const AttendeesTab = ({
                       {participant.check_in_time && (
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3 text-green-600" />
-                          {isRTL ? 'دخل: ' : 'Checked in: '}{formatDateTime(participant.check_in_time)}
+                          {t('events:attendees.check_in_time')}: {formatDateTime(participant.check_in_time)}
                         </div>
                       )}
                       {participant.check_out_time && (
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3 text-purple-600" />
-                          {isRTL ? 'خرج: ' : 'Checked out: '}{formatDateTime(participant.check_out_time)}
+                          {t('events:attendees.check_out_time')}: {formatDateTime(participant.check_out_time)}
                         </div>
                       )}
                     </div>
@@ -217,7 +219,7 @@ export const AttendeesTab = ({
                   
                   {participant.notes && (
                     <div className="mt-2 text-sm text-muted-foreground p-2 bg-muted/50 rounded">
-                      <strong>{isRTL ? 'ملاحظات: ' : 'Notes: '}</strong>
+                      <strong>{t('events:attendees.notes')}: </strong>
                       {participant.notes}
                     </div>
                   )}
@@ -228,7 +230,7 @@ export const AttendeesTab = ({
         </div>
       ) : (
         <div className="text-center py-8 text-muted-foreground">
-          {isRTL ? 'لا يوجد مشاركين مسجلين في هذه الفعالية' : 'No participants registered for this event'}
+          {t('events:attendees.no_attendees')}
         </div>
       )}
     </div>

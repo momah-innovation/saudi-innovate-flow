@@ -1,0 +1,97 @@
+{
+    "title": "تحليلات النظام",
+    "page_title": "تحليلات النظام",
+    "description": "مراقبة أداء النظام والخوادم والأمان",
+    "buttons": {
+        "refresh": "تحديث",
+        "export": "تصدير",
+        "export_logs": "تصدير السجلات",
+        "monitoring_settings": "إعدادات المراقبة",
+        "configure_settings": "تعديل الإعدادات"
+    },
+    "metrics": {
+        "system_uptime": "وقت التشغيل",
+        "avg_response_time": "متوسط الاستجابة",
+        "active_connections": "الاتصالات النشطة",
+        "error_rate": "معدل الأخطاء",
+        "current_usage": "الاستخدام الحالي",
+        "total_requests_today": "إجمالي الطلبات اليوم",
+        "requests_per_second": "الطلبات في الثانية",
+        "peak_hours": "أوقات الذروة",
+        "queries_today": "استعلامات اليوم",
+        "slow_queries": "استعلامات بطيئة",
+        "connection_pool": "تجمع الاتصالات",
+        "storage_used": "مساحة التخزين",
+        "threats_blocked": "التهديدات المحجوبة",
+        "login_attempts": "محاولات تسجيل الدخول",
+        "failed_logins": "تسجيل دخول فاشل",
+        "suspicious_activity": "نشاط مشبوه"
+    },
+    "tabs": {
+        "performance": "الأداء",
+        "database": "قاعدة البيانات",
+        "security": "الأمان",
+        "logs": "السجلات",
+        "monitoring": "المراقبة"
+    },
+    "performance": {
+        "cpu_usage": "المعالج",
+        "memory_usage": "الذاكرة",
+        "disk_usage": "التخزين",
+        "network_traffic": "الشبكة",
+        "request_statistics": "إحصائيات الطلبات",
+        "system_health": "صحة النظام",
+        "system_services": "خدمات النظام",
+        "all_running": "تعمل بشكل طبيعي",
+        "last_backup": "آخر نسخ احتياطي",
+        "last_system_update": "آخر تحديث للنظام"
+    },
+    "database": {
+        "performance": "أداء قاعدة البيانات",
+        "avg_query_time": "متوسط وقت الاستعلام",
+        "index_usage": "استخدام الفهارس",
+        "cache_hit_rate": "معدل إصابة التخزين المؤقت",
+        "table_statistics": "إحصائيات الجداول",
+        "rows": "سجل"
+    },
+    "security": {
+        "report": "تقرير الأمان",
+        "last_security_scan": "آخر فحص أمني",
+        "data_encryption": "تشفير البيانات",
+        "firewall_status": "جدار الحماية",
+        "potential_vulnerabilities": "نقاط الضعف المحتملة",
+        "pending_security_updates": "تحديثات الأمان المعلقة",
+        "weak_passwords": "كلمات مرور ضعيفة",
+        "expired_sessions": "جلسات منتهية الصلاحية",
+        "clean": "نظيف",
+        "enabled": "مفعل",
+        "active": "نشط"
+    },
+    "logs": {
+        "recent_system_logs": "سجلات النظام الحديثة",
+        "level": {
+            "info": "معلومات",
+            "warning": "تحذير",
+            "error": "خطأ",
+            "success": "نجاح"
+        }
+    },
+    "monitoring": {
+        "system_alerts": "تنبيهات النظام",
+        "settings": "إعدادات المراقبة",
+        "performance_monitoring": "مراقبة الأداء",
+        "email_alerts": "تنبيهات البريد الإلكتروني",
+        "log_retention": "حفظ السجلات",
+        "high_memory_usage": "استخدام ذاكرة عالي",
+        "backup_completed": "النسخ الاحتياطي مكتمل",
+        "warning": "تحذير",
+        "success": "تم",
+        "days": "يوم"
+    },
+    "units": {
+        "ms": "مللي ثانية",
+        "gb": "جيجابايت",
+        "gbps": "جيجابت/ثانية",
+        "of": "من"
+    }
+}

@@ -35,7 +35,7 @@ export default function WorkspacePage() {
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{t('workspace_types.personal.title')}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{t('workspace_types.personal.description')}</p>
-                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {isRTL ? '←' : '→'}</span>
+                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {t('workspace_selection.enter_arrow')}</span>
                 </CardContent>
               </Card>
             </Link>
@@ -45,7 +45,7 @@ export default function WorkspacePage() {
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{t('workspace_types.expert.title')}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{t('workspace_types.expert.description')}</p>
-                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {isRTL ? '←' : '→'}</span>
+                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {t('workspace_selection.enter_arrow')}</span>
                 </CardContent>
               </Card>
             </Link>
@@ -55,7 +55,7 @@ export default function WorkspacePage() {
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{t('workspace_types.organization.title')}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{t('workspace_types.organization.description')}</p>
-                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {isRTL ? '←' : '→'}</span>
+                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {t('workspace_selection.enter_arrow')}</span>
                 </CardContent>
               </Card>
             </Link>
@@ -65,7 +65,7 @@ export default function WorkspacePage() {
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{t('workspace_types.partner.title')}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{t('workspace_types.partner.description')}</p>
-                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {isRTL ? '←' : '→'}</span>
+                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {t('workspace_selection.enter_arrow')}</span>
                 </CardContent>
               </Card>
             </Link>
@@ -75,7 +75,7 @@ export default function WorkspacePage() {
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{t('workspace_types.admin.title')}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{t('workspace_types.admin.description')}</p>
-                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {isRTL ? '←' : '→'}</span>
+                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {t('workspace_selection.enter_arrow')}</span>
                 </CardContent>
               </Card>
             </Link>
@@ -85,7 +85,7 @@ export default function WorkspacePage() {
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{t('workspace_types.team.title')}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{t('workspace_types.team.description')}</p>
-                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {isRTL ? '←' : '→'}</span>
+                  <span className="text-primary hover:underline">{t('workspace_selection.enter')} {t('workspace_selection.enter_arrow')}</span>
                 </CardContent>
               </Card>
             </Link>

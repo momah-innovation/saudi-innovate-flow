@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, Users, MapPin, TrendingUp, Plus, Filter } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface EventsHeroProps {
   totalEvents: number;
@@ -21,6 +22,7 @@ export const EventsHero = ({
   canCreateEvent = true
 }: EventsHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 rounded-xl p-8 mb-8">
@@ -49,13 +51,10 @@ export const EventsHero = ({
               </div>
               <div>
                 <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                  {isRTL ? 'استكشاف الفعاليات' : 'Discover Events'}
+                  {t('events:hero.title')}
                 </h1>
                 <p className="text-lg text-white/80">
-                  {isRTL 
-                    ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' 
-                    : 'Discover and register for the latest innovation events and activities'
-                  }
+                  {t('events:hero.subtitle')}
                 </p>
               </div>
             </div>
@@ -72,7 +71,7 @@ export const EventsHero = ({
                       {totalEvents}
                     </div>
                     <div className="text-sm text-white/70">
-                      {isRTL ? 'إجمالي الفعاليات' : 'Total Events'}
+                      {t('events:hero.total_events')}
                     </div>
                   </div>
                 </div>
@@ -88,7 +87,7 @@ export const EventsHero = ({
                       {upcomingEvents}
                     </div>
                     <div className="text-sm text-white/70">
-                      {isRTL ? 'قادمة' : 'Upcoming'}
+                      {t('events:hero.upcoming')}
                     </div>
                   </div>
                 </div>
@@ -104,7 +103,7 @@ export const EventsHero = ({
                       {todayEvents}
                     </div>
                     <div className="text-sm text-white/70">
-                      {isRTL ? 'اليوم' : 'Today'}
+                      {t('events:hero.today')}
                     </div>
                   </div>
                 </div>
@@ -120,7 +119,7 @@ export const EventsHero = ({
                       12
                     </div>
                     <div className="text-sm text-white/70">
-                      {isRTL ? 'مواقع' : 'Venues'}
+                      {t('events:hero.venues')}
                     </div>
                   </div>
                 </div>
@@ -137,7 +136,7 @@ export const EventsHero = ({
                 size="lg"
               >
                 <Plus className="w-5 h-5" />
-                {isRTL ? 'فعالية جديدة' : 'New Event'}
+                {t('events:hero.new_event')}
               </Button>
             )}
             <Button 
@@ -147,7 +146,7 @@ export const EventsHero = ({
               size="lg"
             >
               <Filter className="w-5 h-5" />
-              {isRTL ? 'الفلاتر' : 'Filters'}
+              {t('events:hero.filters')}
             </Button>
           </div>
         </div>
@@ -155,12 +154,12 @@ export const EventsHero = ({
         {/* Enhanced Quick Tags with Hover Effects */}
         <div className="flex flex-wrap gap-3 mt-8">
           {[
-            { label: isRTL ? 'ورش عمل' : 'Workshops', icon: '🛠️' },
-            { label: isRTL ? 'مؤتمرات' : 'Conferences', icon: '🎤' },
-            { label: isRTL ? 'ندوات' : 'Webinars', icon: '💻' },
-            { label: isRTL ? 'لقاءات' : 'Meetups', icon: '👥' },
-            { label: isRTL ? 'معارض' : 'Expos', icon: '🏛️' },
-            { label: isRTL ? 'هاكاثون' : 'Hackathons', icon: '💡' }
+            { label: t('events:tags.workshops'), icon: '🛠️' },
+            { label: t('events:tags.conferences'), icon: '🎤' },
+            { label: t('events:tags.webinars'), icon: '💻' },
+            { label: t('events:tags.meetups'), icon: '👥' },
+            { label: t('events:tags.expos'), icon: '🏛️' },
+            { label: t('events:tags.hackathons'), icon: '💡' }
           ].map((tag, index) => (
             <Badge 
               key={index}

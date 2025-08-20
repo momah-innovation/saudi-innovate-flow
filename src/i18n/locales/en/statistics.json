@@ -1,14 +1,14 @@
 {
   "hero": {
     "advanced_analytics_center": "Advanced Analytics Center",
-    "smart_innovation_analytics": "Smart Innovation Analytics", 
+    "smart_innovation_analytics": "Smart Innovation Analytics",
     "smart": "Smart",
     "innovation": "Innovation",
     "analytics": "Analytics",
     "hero_description": "Discover deep insights and advanced data to measure innovation platform performance and track progress towards Vision 2030",
     "labels": {
       "ideas": "ideas",
-      "challenges": "challenges", 
+      "challenges": "challenges",
       "events": "events",
       "users": "users"
     },
@@ -34,9 +34,24 @@
     "interactive": "Interactive"
   },
   "filters": {
-    "select_departments": "Select departments",
-    "select_sectors": "Select sectors",
+    "title": "Analytics Filters",
+    "time_range": "Time Range",
+    "select_time_range": "Select time range",
+    "all_time": "All Time",
+    "last_7_days": "Last 7 Days",
+    "last_30_days": "Last 30 Days",
+    "last_3_months": "Last 3 Months",
+    "last_year": "Last Year",
+    "custom_range": "Custom Range",
     "date_range": "Date Range",
+    "pick_date_range": "Pick a date range",
+    "departments": "Departments",
+    "select_departments": "Select departments",
+    "sectors": "Sectors",
+    "select_sectors": "Select sectors",
+    "active_filters": "Active Filters:",
+    "export_data": "Export Data",
+    "reset_filters": "Reset Filters",
     "apply_filters": "Apply Filters",
     "clear_filters": "Clear Filters"
   },
@@ -44,5 +59,196 @@
     "monthly_trends": "Monthly Trends",
     "registration_trends": "Registration Trends",
     "performance_metrics": "Performance Metrics"
+  },
+  "page": {
+    "title": "Platform Statistics",
+    "analytics_title": "Platform Analytics",
+    "description": "Loading innovation platform analytics...",
+    "analytics_description": "Comprehensive overview of innovation platform performance and activity"
+  },
+  "access": {
+    "denied": "Access Denied",
+    "no_permission": "You do not have permission to access this page",
+    "admin_only": "This page is only available to administrators"
+  },
+  "actions": {
+    "refresh_data": "Refresh Data",
+    "last_updated": "Last updated"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "trends": "Trends",
+    "categories": "Categories",
+    "impact": "Impact"
+  },
+  "analytics": {
+    "total_metrics": "Total Metrics",
+    "active_reports": "Active Reports",
+    "total_users": "Total Users",
+    "avg_engagement": "Avg Engagement",
+    "from_last_month": "from last month",
+    "reports": "Reports",
+    "users": "Users",
+    "engagement": "Engagement",
+    "performance_goals": "Performance Goals",
+    "report_completion_rate": "Report Completion Rate",
+    "data_accuracy": "Data Accuracy",
+    "trend_analysis": "Trend Analysis",
+    "top_categories": "Top Categories",
+    "report_types": "Report Types",
+    "of_total_reports": "of total reports"
+  },
+  "metrics": {
+    "total_ideas": "Total Ideas",
+    "ideas_submitted": "ideas submitted",
+    "active_challenges": "Active Challenges",
+    "open_challenges": "open challenges",
+    "events": "Events",
+    "events_organized": "events organized",
+    "active_innovators": "Active Innovators",
+    "active_users": "active users",
+    "successful_implementations": "Successful Implementations",
+    "partnerships": "Partnerships",
+    "departments": "departments",
+    "sectors": "sectors",
+    "average_rating": "Average Rating",
+    "idea_quality_rating": "idea quality rating"
+  },
+  "detailed_metrics": {
+    "total_submitted": "Total Submitted",
+    "under_review": "Under Review",
+    "approved": "Approved",
+    "in_development": "In Development",
+    "draft": "Draft",
+    "rejected": "Rejected",
+    "completed": "Completed",
+    "avg_ideas_per_challenge": "Avg Ideas per Challenge",
+    "total_events": "Total Events",
+    "total_participants": "Total Participants",
+    "avg_attendance": "Avg Attendance",
+    "expert_evaluators": "Expert Evaluators",
+    "platform_growth": "Platform Growth",
+    "innovators": "Innovators",
+    "experts": "Experts",
+    "partners": "Partners"
+  },
+  "chart_titles": {
+    "ideas_status_distribution": "Ideas Status Distribution",
+    "challenge_status_distribution": "Challenge Status Distribution",
+    "event_participation_trends": "Event Participation Trends",
+    "user_base_growth": "User Base Growth",
+    "activity_trends": "Activity Trends (Last 6 Months)",
+    "ideas_distribution_by_sector": "Ideas Distribution by Sector",
+    "top_sectors": "Top Sectors"
+  },
+  "impact": {
+    "social_impact": "Social Impact",
+    "people_benefited": "people benefited from implemented solutions",
+    "economic_impact": "Economic Impact",
+    "economic_value_added": "estimated economic value added",
+    "platform_growth": "Platform Growth",
+    "monthly_user_growth": "monthly user growth rate",
+    "key_performance_indicators": "Key Performance Indicators",
+    "idea_acceptance_rate": "Idea Acceptance Rate",
+    "implementation_rate": "Implementation Rate",
+    "user_engagement": "User Engagement",
+    "user_satisfaction": "User Satisfaction"
+  },
+  "dialog": {
+    "ideas_analytics": "Ideas Analytics",
+    "challenges_analytics": "Challenges Analytics",
+    "events_analytics": "Events Analytics",
+    "users_analytics": "Users Analytics",
+    "analytics": "Analytics",
+    "ideas_description": "Detailed breakdown of innovation ideas submission and evaluation",
+    "challenges_description": "Analysis of innovation challenges and their progress",
+    "events_description": "Event participation and engagement metrics",
+    "users_description": "User activity and platform engagement statistics",
+    "default_description": "Detailed analytics data",
+    "data_visualization": "Data Visualization",
+    "performance_indicators": "Performance Indicators",
+    "detailed_breakdown": "Detailed Breakdown"
+  },
+  "statuses": {
+    "active": "Active",
+    "completed": "Completed"
+  },
+  "system_uptime": "System Uptime",
+  "avg_response_time": "Avg Response Time",
+  "threats_blocked": "Threats Blocked",
+  "queries_today": "Queries Today",
+  "system_alerts": "System Alerts",
+  "high_impact": "High Impact",
+  "medium_impact": "Medium Impact",
+  "growth": "Growth",
+  "projects": "Projects",
+  "budget": "Budget",
+  "avg_value": "Avg Value",
+  "rising_trends": "Rising Trends",
+  "declining_trends": "Declining Trends",
+  "sar": "SAR",
+  "notifications": {
+    "title": "Statistics Notifications",
+    "mark_all_read": "Mark all read",
+    "no_notifications": "No new notifications",
+    "types": {
+      "report_generated": {
+        "title": "New Report Generated",
+        "message": "Monthly statistics report is ready for review"
+      },
+      "threshold_reached": {
+        "title": "Threshold Reached",
+        "message": "Active users exceeded 1000 users"
+      },
+      "data_updated": {
+        "title": "Data Updated",
+        "message": "Ideas and challenges data has been updated"
+      },
+      "milestone": {
+        "title": "Milestone Achieved",
+        "message": "Reached 500 published ideas"
+      },
+      "alert": {
+        "title": "System Alert",
+        "message": "Decrease in engagement rate this week"
+      }
+    },
+    "time_ago": {
+      "now": "now",
+      "minutes_ago": "{{count}}m ago",
+      "hours_ago": "{{count}}h ago",
+      "days_ago": "{{count}}d ago"
+    }
+  },
+  "trending": {
+    "title": "Trending Statistics",
+    "error_loading": "Error loading statistics",
+    "stats": {
+      "user_engagement": {
+        "title": "User Engagement",
+        "description": "Active users in the system",
+        "description_alt": "Increased user activity"
+      },
+      "active_challenges": {
+        "title": "Active Challenges",
+        "description": "Currently available challenges"
+      },
+      "submissions": {
+        "title": "Submissions",
+        "description": "Total submissions received"
+      },
+      "submitted_ideas": {
+        "title": "Submitted Ideas",
+        "description": "New innovative ideas"
+      },
+      "success_rate": {
+        "title": "Success Rate",
+        "description": "System operation success rate"
+      },
+      "event_attendance": {
+        "title": "Event Attendance",
+        "description": "Excellent attendance rate"
+      }
+    }
   }
 }

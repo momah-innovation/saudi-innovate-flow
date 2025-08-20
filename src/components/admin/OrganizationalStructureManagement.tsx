@@ -35,13 +35,13 @@ export function OrganizationalStructureManagement() {
   } = useOrganizationalHierarchy();
 
   const entityTypes = [
-    { value: 'sector', label: isRTL ? 'قطاع' : 'Sector', icon: Globe, count: sectors.length },
-    { value: 'entity', label: isRTL ? 'جهة' : 'Entity', icon: Building, count: entities.length },
-    { value: 'deputy', label: isRTL ? 'نائب' : 'Deputy', icon: Users, count: deputies.length },
-    { value: 'department', label: isRTL ? 'إدارة' : 'Department', icon: Briefcase, count: departments.length },
-    { value: 'domain', label: isRTL ? 'نطاق' : 'Domain', icon: MapPin, count: domains.length },
-    { value: 'sub_domain', label: isRTL ? 'نطاق فرعي' : 'Sub Domain', icon: MapPin, count: subDomains.length },
-    { value: 'service', label: isRTL ? 'خدمة' : 'Service', icon: Settings, count: services.length }
+    { value: 'sector', label: t('admin:organizational_structure.entity_types.sector'), icon: Globe, count: sectors.length },
+    { value: 'entity', label: t('admin:organizational_structure.entity_types.entity'), icon: Building, count: entities.length },
+    { value: 'deputy', label: t('admin:organizational_structure.entity_types.deputy'), icon: Users, count: deputies.length },
+    { value: 'department', label: t('admin:organizational_structure.entity_types.department'), icon: Briefcase, count: departments.length },
+    { value: 'domain', label: t('admin:organizational_structure.entity_types.domain'), icon: MapPin, count: domains.length },
+    { value: 'sub_domain', label: t('admin:organizational_structure.entity_types.sub_domain'), icon: MapPin, count: subDomains.length },
+    { value: 'service', label: t('admin:organizational_structure.entity_types.service'), icon: Settings, count: services.length }
   ];
 
   const getAllEntities = () => {
@@ -71,7 +71,7 @@ export function OrganizationalStructureManagement() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
           <p className="mt-2 text-muted-foreground">
-            {isRTL ? 'جاري تحميل الهيكل التنظيمي...' : 'Loading organizational structure...'}
+            {t('admin:organizational_structure.loading')}
           </p>
         </div>
       </div>
@@ -135,13 +135,13 @@ export function OrganizationalStructureManagement() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">
-                  {isRTL ? 'المستويات التنظيمية' : 'Organizational Levels'}
+                  {t('admin:organizational_structure.organizational_levels')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-primary">7</div>
                 <p className="text-sm text-muted-foreground">
-                  {isRTL ? 'مستويات في الهيكل' : 'Levels in structure'}
+                  {t('admin:organizational_structure.levels_in_structure')}
                 </p>
               </CardContent>
             </Card>
@@ -149,13 +149,13 @@ export function OrganizationalStructureManagement() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">
-                  {isRTL ? 'القطاعات النشطة' : 'Active Sectors'}
+                  {t('admin:organizational_structure.active_sectors')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-primary">{sectors.length}</div>
                 <p className="text-sm text-muted-foreground">
-                  {isRTL ? 'قطاعات حكومية' : 'Government sectors'}
+                  {t('admin:organizational_structure.government_sectors')}
                 </p>
               </CardContent>
             </Card>
@@ -168,7 +168,7 @@ export function OrganizationalStructureManagement() {
             <div className="relative flex-1">
               <Search className="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder={isRTL ? 'البحث في العناصر...' : 'Search entities...'}
+                placeholder={t('admin:organizational_structure.search_entities')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 rtl:pl-3 rtl:pr-10"
@@ -180,7 +180,7 @@ export function OrganizationalStructureManagement() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الأنواع' : 'All Types'}</SelectItem>
+                <SelectItem value="all">{t('admin:organizational_structure.all_types')}</SelectItem>
                 {entityTypes.map((type) => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}
@@ -213,24 +213,21 @@ export function OrganizationalStructureManagement() {
           <Card>
             <CardHeader>
               <CardTitle>
-                {isRTL ? 'العناصر التنظيمية' : 'Organizational Entities'}
+                {t('admin:organizational_structure.organizational_entities')}
               </CardTitle>
               <CardDescription>
-                {isRTL 
-                  ? `${filteredEntities.length} عنصر موجود`
-                  : `${filteredEntities.length} entities found`
-                }
+                {filteredEntities.length} {t('admin:organizational_structure.entities_found')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{isRTL ? 'الاسم' : 'Name'}</TableHead>
-                    <TableHead>{isRTL ? 'النوع' : 'Type'}</TableHead>
-                    <TableHead>{isRTL ? 'العنصر الأب' : 'Parent'}</TableHead>
-                    <TableHead>{isRTL ? 'تاريخ الإنشاء' : 'Created'}</TableHead>
-                    <TableHead>{isRTL ? 'الإجراءات' : 'Actions'}</TableHead>
+                    <TableHead>{t('admin:organizational_structure.name')}</TableHead>
+                    <TableHead>{t('admin:organizational_structure.type')}</TableHead>
+                    <TableHead>{t('admin:organizational_structure.parent')}</TableHead>
+                    <TableHead>{t('admin:organizational_structure.created')}</TableHead>
+                    <TableHead>{t('admin:organizational_structure.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -245,7 +242,7 @@ export function OrganizationalStructureManagement() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {entity.parent || (isRTL ? 'لا يوجد' : 'None')}
+                        {entity.parent || t('admin:organizational_structure.none')}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
                         {isRTL ? formatDateArabic(entity.created_at) : formatDate(entity.created_at)}
@@ -263,7 +260,7 @@ export function OrganizationalStructureManagement() {
               {filteredEntities.length === 0 && (
                 <div className="text-center py-8">
                   <p className="text-muted-foreground">
-                    {isRTL ? 'لم يتم العثور على نتائج' : 'No results found'}
+                    {t('admin:organizational_structure.no_results_found')}
                   </p>
                 </div>
               )}
@@ -274,12 +271,9 @@ export function OrganizationalStructureManagement() {
         <TabsContent value="hierarchy" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'الهيكل التنظيمي الهرمي' : 'Organizational Hierarchy'}</CardTitle>
+              <CardTitle>{t('admin:organizational_structure.hierarchical_tree')}</CardTitle>
               <CardDescription>
-                {isRTL 
-                  ? 'عرض الهيكل التنظيمي في شكل شجرة هرمية' 
-                  : 'View the organizational structure in a hierarchical tree format'
-                }
+                {t('admin:organizational_structure.tree_format_description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -307,7 +301,7 @@ export function OrganizationalStructureManagement() {
                             
                             <div className="ml-6 mt-1 text-sm text-muted-foreground">
                               {departments.filter(d => d.deputy_id === deputy.id).length > 0 && (
-                                <span>{departments.filter(d => d.deputy_id === deputy.id).length} {isRTL ? 'إدارات' : 'departments'}</span>
+                                <span>{departments.filter(d => d.deputy_id === deputy.id).length} {t('admin:organizational_structure.departments')}</span>
                               )}
                             </div>
                           </div>
@@ -321,7 +315,7 @@ export function OrganizationalStructureManagement() {
                   <div className="text-center py-8">
                     <Building className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <p className="text-muted-foreground">
-                      {isRTL ? 'لا توجد بيانات في الهيكل التنظيمي' : 'No organizational structure data available'}
+                      {t('admin:organizational_structure.no_data_available')}
                     </p>
                   </div>
                 )}

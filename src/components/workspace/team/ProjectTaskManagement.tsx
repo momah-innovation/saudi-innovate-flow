@@ -207,11 +207,11 @@ export function ProjectTaskManagement({ teamId, canManage }: ProjectTaskManageme
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Project</DropdownMenuItem>
-                        <DropdownMenuItem>Add Task</DropdownMenuItem>
+                        <DropdownMenuItem>{t('team:actions.view_details')}</DropdownMenuItem>
+                        <DropdownMenuItem>{t('team:actions.edit_project')}</DropdownMenuItem>
+                        <DropdownMenuItem>{t('team:actions.add_task')}</DropdownMenuItem>
                         <DropdownMenuItem className="text-destructive">
-                          Archive Project
+                          {t('team:actions.archive_project')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -277,9 +277,9 @@ export function ProjectTaskManagement({ teamId, canManage }: ProjectTaskManageme
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Button variant="outline" size="sm">All Tasks</Button>
-                <Button variant="ghost" size="sm">My Tasks</Button>
-                <Button variant="ghost" size="sm">Overdue</Button>
+                <Button variant="outline" size="sm">{t('team:actions.all_tasks')}</Button>
+                <Button variant="ghost" size="sm">{t('team:actions.my_tasks')}</Button>
+                <Button variant="ghost" size="sm">{t('team:actions.overdue')}</Button>
               </div>
               
               {canManage && (
@@ -337,11 +337,11 @@ export function ProjectTaskManagement({ teamId, canManage }: ProjectTaskManageme
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Edit Task</DropdownMenuItem>
-                          <DropdownMenuItem>Change Status</DropdownMenuItem>
-                          <DropdownMenuItem>Assign Member</DropdownMenuItem>
+                          <DropdownMenuItem>{t('team:actions.edit_task')}</DropdownMenuItem>
+                          <DropdownMenuItem>{t('team:actions.change_status')}</DropdownMenuItem>
+                          <DropdownMenuItem>{t('team:actions.assign_member')}</DropdownMenuItem>
                           <DropdownMenuItem className="text-destructive">
-                            Delete Task
+                            {t('team:actions.delete_task')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

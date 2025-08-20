@@ -300,8 +300,8 @@ export default function Opportunities() {
   const handleBookmark = async (opportunity: OpportunityItem) => {
     if (!user) {
       toast({
-        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in',
-        description: isRTL ? 'يجب تسجيل الدخول لحفظ الفرص' : 'You need to sign in to bookmark opportunities',
+        title: t('opportunities:messages.please_sign_in'),
+        description: t('opportunities:messages.sign_in_to_bookmark'),
         variant: "destructive",
       });
       return;
@@ -315,22 +315,22 @@ export default function Opportunities() {
         if (bookmarkId) {
           await removeBookmark(bookmarkId, 'opportunity');
           toast({
-            title: isRTL ? 'تم إلغاء الحفظ' : 'Bookmark Removed',
-            description: isRTL ? 'تم إلغاء حفظ الفرصة' : 'Opportunity removed from bookmarks',
+            title: t('opportunities:messages.bookmark_removed'),
+            description: t('opportunities:messages.bookmark_removed_desc'),
           });
         }
       } else {
         await addBookmark('opportunity', opportunity.id);
         toast({
-          title: isRTL ? 'تم الحفظ' : 'Bookmarked',
-          description: isRTL ? 'تم حفظ الفرصة في المفضلة' : 'Opportunity saved to bookmarks',
+          title: t('opportunities:messages.bookmarked'),
+          description: t('opportunities:messages.bookmarked_desc'),
         });
       }
     } catch (error) {
       logger.error('Bookmark error', { opportunityId: opportunity.id }, error as Error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في حفظ الفرصة' : 'Failed to bookmark opportunity',
+        title: t('opportunities:messages.error'),
+        description: t('opportunities:messages.bookmark_failed'),
         variant: "destructive",
       });
     }
@@ -377,8 +377,8 @@ export default function Opportunities() {
       
       if (result.success) {
         toast({
-          title: isRTL ? 'تم تحميل الصور بنجاح' : 'Images downloaded successfully',
-          description: isRTL ? `تم معالجة ${result.results?.length || 0} فرصة` : `Processed ${result.results?.length || 0} opportunities`,
+          title: t('opportunities:messages.images_downloaded'),
+          description: t('opportunities:messages.images_processed', { count: result.results?.length || 0 }),
         });
         // Reload opportunities to show the new images
         await loadOpportunities();
@@ -388,8 +388,8 @@ export default function Opportunities() {
     } catch (error) {
       logger.error('Error downloading images', {}, error as Error);
       toast({
-        title: isRTL ? 'خطأ في تحميل الصور' : 'Error downloading images',
-        description: isRTL ? 'فشل في تحميل الصور' : 'Failed to download images',
+        title: t('opportunities:messages.images_download_error'),
+        description: t('opportunities:messages.images_download_failed'),
         variant: "destructive",
       });
     } finally {
@@ -441,8 +441,8 @@ export default function Opportunities() {
       />
       
       <PageLayout
-        title={isRTL ? 'فرص الشراكة المتاحة' : 'Available Partnership Opportunities'}
-        description={isRTL ? 'تصفح واختر فرص الشراكة التي تناسب أهدافك' : 'Browse and select partnership opportunities that match your goals'}
+        title={t('opportunities:page_title')}
+        description={t('opportunities:page_description')}
         itemCount={tabFilteredOpportunities.length}
         secondaryActions={
           <div className="flex gap-2">
@@ -454,7 +454,7 @@ export default function Opportunities() {
               disabled={downloadingImages}
             >
               <FileText className="w-4 h-4 mr-2" />
-              {downloadingImages ? (isRTL ? 'جارٍ التحميل...' : 'Downloading...') : (isRTL ? 'تحميل الصور' : 'Download Images')}
+              {downloadingImages ? t('opportunities:actions.downloading') : t('opportunities:actions.download_images')}
             </Button>
             <Button
               variant="outline"
@@ -462,7 +462,7 @@ export default function Opportunities() {
               onClick={() => setTemplatesDialogOpen(true)}
             >
               <FileText className="w-4 h-4 mr-2" />
-              {isRTL ? 'القوالب' : 'Templates'}
+              {t('opportunities:actions.templates')}
             </Button>
             <Button
               variant="outline"
@@ -470,7 +470,7 @@ export default function Opportunities() {
               onClick={() => setAnalyticsDialogOpen(true)}
             >
               <BarChart3 className="w-4 h-4 mr-2" />
-              {isRTL ? 'الإحصائيات' : 'Analytics'}
+              {t('opportunities:actions.analytics')}
             </Button>
             <LayoutSelector
               viewMode={viewMode}
@@ -502,26 +502,26 @@ export default function Opportunities() {
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className={`grid w-full grid-cols-4 ${isRTL ? 'rtl' : 'ltr'}`}>
                   <TabsTrigger value="all" className="relative">
-                    {isRTL ? 'الكل' : 'All'}
+                    {t('opportunities:tabs.all')}
                     <Badge variant="secondary" className="ml-2 text-xs">
                       {filteredOpportunities.length}
                     </Badge>
                   </TabsTrigger>
                   <TabsTrigger value="active" className="relative">
-                    {isRTL ? 'نشط' : 'Active'}
+                    {t('opportunities:tabs.active')}
                     <Badge variant="secondary" className="ml-2 text-xs">
                       {filteredOpportunities.filter(o => o.status === 'open').length}
                     </Badge>
                   </TabsTrigger>
                   <TabsTrigger value="upcoming" className="relative">
-                    {isRTL ? 'قادم' : 'Upcoming'}
+                    {t('opportunities:tabs.upcoming')}
                     <Badge variant="secondary" className="ml-2 text-xs">
                       {filteredOpportunities.filter(o => new Date(o.deadline) > new Date()).length}
                     </Badge>
                   </TabsTrigger>
                   <TabsTrigger value="trending" className="relative">
                     <TrendingUp className="w-4 h-4 mr-1" />
-                    {isRTL ? 'رائج' : 'Trending'}
+                    {t('opportunities:tabs.trending')}
                     <Badge variant="secondary" className="ml-2 text-xs">
                       {filteredOpportunities.filter(o => o.priority_level === 'high' || (o.applications_count || 0) > 10).length}
                     </Badge>
@@ -543,10 +543,10 @@ export default function Opportunities() {
                     <div className="text-center py-12">
                       <Target className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                       <h3 className="text-xl font-semibold mb-2">
-                        {isRTL ? 'لا توجد فرص متاحة' : 'No opportunities found'}
+                        {t('opportunities:empty_state.no_opportunities')}
                       </h3>
                       <p className="text-muted-foreground">
-                        {isRTL ? 'جرب تعديل المرشحات أو تحقق لاحقاً' : 'Try adjusting your filters or check back later'}
+                        {t('opportunities:empty_state.try_adjusting')}
                       </p>
                     </div>
                   )}

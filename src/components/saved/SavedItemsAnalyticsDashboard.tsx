@@ -18,6 +18,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface SavedAnalyticsData {
   totalBookmarks: number;
@@ -48,6 +49,7 @@ interface SavedAnalyticsDashboardProps {
 
 export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { 
     challengeBookmarks, 
     eventBookmarks, 
@@ -86,15 +88,15 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
           { month: 'Jun', bookmarks: 32, collections: 8, activity: 55 }
         ],
         topCategories: [
-          { name: isRTL ? 'التحديات' : 'Challenges', count: challengeBookmarks.length, percentage: Math.round((challengeBookmarks.length / Math.max(totalBookmarks, 1)) * 100) },
-          { name: isRTL ? 'الفعاليات' : 'Events', count: eventBookmarks.length, percentage: Math.round((eventBookmarks.length / Math.max(totalBookmarks, 1)) * 100) },
-          { name: isRTL ? 'الأفكار' : 'Ideas', count: ideaBookmarks.length, percentage: Math.round((ideaBookmarks.length / Math.max(totalBookmarks, 1)) * 100) },
-          { name: isRTL ? 'أخرى' : 'Others', count: 0, percentage: 0 }
+          { name: t('saved:analytics.categories.challenges'), count: challengeBookmarks.length, percentage: Math.round((challengeBookmarks.length / Math.max(totalBookmarks, 1)) * 100) },
+          { name: t('saved:analytics.categories.events'), count: eventBookmarks.length, percentage: Math.round((eventBookmarks.length / Math.max(totalBookmarks, 1)) * 100) },
+          { name: t('saved:analytics.categories.ideas'), count: ideaBookmarks.length, percentage: Math.round((ideaBookmarks.length / Math.max(totalBookmarks, 1)) * 100) },
+          { name: t('saved:analytics.categories.others'), count: 0, percentage: 0 }
         ],
         collectionTypes: [
-          { type: isRTL ? 'مجموعات شخصية' : 'Personal Collections', count: Math.floor(collections.length * 0.6), percentage: 60 },
-          { type: isRTL ? 'مجموعات عامة' : 'Public Collections', count: Math.floor(collections.length * 0.3), percentage: 30 },
-          { type: isRTL ? 'مجموعات مشتركة' : 'Shared Collections', count: Math.floor(collections.length * 0.1), percentage: 10 }
+          { type: t('saved:analytics.collection_types.personal'), count: Math.floor(collections.length * 0.6), percentage: 60 },
+          { type: t('saved:analytics.collection_types.public'), count: Math.floor(collections.length * 0.3), percentage: 30 },
+          { type: t('saved:analytics.collection_types.shared'), count: Math.floor(collections.length * 0.1), percentage: 10 }
         ]
       };
 
@@ -130,7 +132,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
 
   const keyMetrics = [
     {
-      title: isRTL ? 'إجمالي المحفوظات' : 'Total Bookmarks',
+      title: t('saved:analytics.metrics.total_bookmarks'),
       value: data.totalBookmarks,
       change: '+24%',
       trend: 'up',
@@ -138,7 +140,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
       color: 'text-blue-600'
     },
     {
-      title: isRTL ? 'المجموعات' : 'Collections',
+      title: t('saved:analytics.metrics.collections'),
       value: data.totalCollections,
       change: '+12%',
       trend: 'up',
@@ -146,7 +148,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
       color: 'text-green-600'
     },
     {
-      title: isRTL ? 'النشاط الأخير' : 'Recent Activity',
+      title: t('saved:analytics.metrics.recent_activity'),
       value: data.recentActivity,
       change: '+18%',
       trend: 'up',
@@ -154,7 +156,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
       color: 'text-purple-600'
     },
     {
-      title: isRTL ? 'العناصر المفضلة' : 'Favorite Items',
+      title: t('saved:analytics.metrics.favorite_items'),
       value: data.favoriteItems,
       change: '+8%',
       trend: 'up',
@@ -184,7 +186,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
                     {metric.change}
                   </Badge>
                   <span className="text-xs text-muted-foreground">
-                    {isRTL ? 'من الشهر الماضي' : 'from last month'}
+                    {t('saved:analytics.metrics.from_last_month')}
                   </span>
                 </div>
               </CardContent>
@@ -196,10 +198,10 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
       {/* Analytics Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">{isRTL ? 'نظرة عامة' : 'Overview'}</TabsTrigger>
-          <TabsTrigger value="trends">{isRTL ? 'الاتجاهات' : 'Trends'}</TabsTrigger>
-          <TabsTrigger value="categories">{isRTL ? 'الفئات' : 'Categories'}</TabsTrigger>
-          <TabsTrigger value="collections">{isRTL ? 'المجموعات' : 'Collections'}</TabsTrigger>
+          <TabsTrigger value="overview">{t('saved:analytics.tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="trends">{t('saved:analytics.tabs.trends')}</TabsTrigger>
+          <TabsTrigger value="categories">{t('saved:analytics.tabs.categories')}</TabsTrigger>
+          <TabsTrigger value="collections">{t('saved:analytics.tabs.collections')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -208,7 +210,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5" />
-                  {isRTL ? 'نمو الحفظ' : 'Bookmark Growth'}
+                  {t('saved:analytics.charts.bookmark_growth')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -218,11 +220,11 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
                       <span className="font-medium">{trend.month}</span>
                       <div className="flex items-center gap-4">
                         <div className="text-sm">
-                          <span className="text-muted-foreground">{isRTL ? 'محفوظات:' : 'Bookmarks:'}</span>
+                          <span className="text-muted-foreground">{t('saved:analytics.charts.bookmarks_label')}</span>
                           <span className="font-semibold ml-1">{trend.bookmarks}</span>
                         </div>
                         <div className="text-sm">
-                          <span className="text-muted-foreground">{isRTL ? 'مجموعات:' : 'Collections:'}</span>
+                          <span className="text-muted-foreground">{t('saved:analytics.charts.collections_label')}</span>
                           <span className="font-semibold ml-1">{trend.collections}</span>
                         </div>
                       </div>
@@ -236,28 +238,28 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
-                  {isRTL ? 'النشاط الأسبوعي' : 'Weekly Activity'}
+                  {t('saved:analytics.charts.weekly_activity')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'عناصر محفوظة جديدة' : 'New Bookmarks'}</span>
+                      <span>{t('saved:analytics.charts.new_bookmarks')}</span>
                       <span className="font-semibold">12</span>
                     </div>
                     <Progress value={75} className="h-2" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'مجموعات منشأة' : 'Collections Created'}</span>
+                      <span>{t('saved:analytics.charts.collections_created')}</span>
                       <span className="font-semibold">3</span>
                     </div>
                     <Progress value={60} className="h-2" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'عناصر تمت مشاركتها' : 'Items Shared'}</span>
+                      <span>{t('saved:analytics.charts.items_shared')}</span>
                       <span className="font-semibold">8</span>
                     </div>
                     <Progress value={45} className="h-2" />
@@ -271,7 +273,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
         <TabsContent value="trends" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'تحليل الاتجاهات' : 'Trend Analysis'}</CardTitle>
+              <CardTitle>{t('saved:analytics.charts.trend_analysis')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -280,15 +282,15 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
                     <div className="font-semibold text-lg">{trend.month}</div>
                     <div className="space-y-2 mt-2">
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'المحفوظات' : 'Bookmarks'}</span>
+                        <span className="text-sm text-muted-foreground">{t('saved:analytics.charts.bookmarks')}</span>
                         <span className="font-medium">{trend.bookmarks}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'المجموعات' : 'Collections'}</span>
+                        <span className="text-sm text-muted-foreground">{t('saved:analytics.charts.collections')}</span>
                         <span className="font-medium">{trend.collections}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'النشاط' : 'Activity'}</span>
+                        <span className="text-sm text-muted-foreground">{t('saved:analytics.charts.activity')}</span>
                         <span className="font-medium">{trend.activity}</span>
                       </div>
                     </div>
@@ -304,7 +306,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <PieChart className="w-5 h-5" />
-                {isRTL ? 'أهم الفئات' : 'Top Categories'}
+                {t('saved:analytics.charts.top_categories')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -336,7 +338,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5" />
-                {isRTL ? 'أنواع المجموعات' : 'Collection Types'}
+                {t('saved:analytics.charts.collection_types')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -349,7 +351,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
                     </div>
                     <Progress value={collection.percentage} className="h-2" />
                     <div className="text-sm text-muted-foreground mt-1">
-                      {collection.percentage}% {isRTL ? 'من إجمالي المجموعات' : 'of total collections'}
+                      {collection.percentage}% {t('saved:analytics.charts.of_total_collections')}
                     </div>
                   </div>
                 ))}

@@ -54,6 +54,7 @@ export const EventResourcesTab = ({
   onResourcesUpdate
 }: EventResourcesTabProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -78,16 +79,7 @@ export const EventResourcesTab = ({
   };
 
   const getResourceTypeText = (type: string) => {
-    const typeMap: { [key: string]: string } = {
-      'document': isRTL ? 'مستند' : 'Document',
-      'presentation': isRTL ? 'عرض تقديمي' : 'Presentation', 
-      'video': isRTL ? 'فيديو' : 'Video',
-      'image': isRTL ? 'صورة' : 'Image',
-      'template': isRTL ? 'نموذج' : 'Template',
-      'guide': isRTL ? 'دليل' : 'Guide',
-      'other': isRTL ? 'أخرى' : 'Other'
-    };
-    return typeMap[type] || type;
+    return t(`events:resources.types.${type}`) || type;
   };
 
   const getAvailabilityColor = (status: string) => {
@@ -100,12 +92,7 @@ export const EventResourcesTab = ({
   };
 
   const getAvailabilityText = (status: string) => {
-    const statusMap: { [key: string]: string } = {
-      'available': isRTL ? 'متاح' : 'Available',
-      'coming_soon': isRTL ? 'قريباً' : 'Coming Soon',
-      'archived': isRTL ? 'مؤرشف' : 'Archived'
-    };
-    return statusMap[status] || status;
+    return t(`events:resources.status.${status}`) || status;
   };
 
   const handleFileUpload = useCallback(async (file: File) => {
@@ -139,8 +126,8 @@ export const EventResourcesTab = ({
         fileSize: file.size 
       }, error as Error);
       toast({
-        title: 'خطأ في الرفع',
-        description: 'حدث خطأ أثناء رفع الملف',
+        title: t('events:resources.upload_error'),
+        description: t('events:resources.upload_error_description'),
         variant: 'destructive'
       });
       return null;
@@ -180,8 +167,8 @@ export const EventResourcesTab = ({
       if (error) throw error;
 
       toast({
-        title: 'تم إضافة المورد',
-        description: 'تم إضافة المورد بنجاح'
+        title: t('events:resources.resource_added'),
+        description: t('events:resources.resource_added_description')
       });
 
       setShowAddDialog(false);
@@ -202,8 +189,8 @@ export const EventResourcesTab = ({
         resourceType: newResource.resource_type 
       }, error as Error);
       toast({
-        title: 'خطأ',
-        description: 'حدث خطأ أثناء إضافة المورد',
+        title: t('events:resources.error'),
+        description: t('events:resources.error_adding'),
         variant: 'destructive'
       });
     } finally {
@@ -245,8 +232,8 @@ export const EventResourcesTab = ({
       if (error) throw error;
 
       toast({
-        title: 'تم حذف المورد',
-        description: 'تم حذف المورد بنجاح'
+        title: t('events:resources.resource_deleted'),
+        description: t('events:resources.resource_deleted_description')
       });
       
       onResourcesUpdate?.();
@@ -258,8 +245,8 @@ export const EventResourcesTab = ({
         eventId: eventId 
       }, error as Error);
       toast({
-        title: 'خطأ',
-        description: 'حدث خطأ أثناء حذف المورد',
+        title: t('events:resources.error'),
+        description: t('events:resources.error_deleting'),
         variant: 'destructive'
       });
     }
@@ -270,10 +257,10 @@ export const EventResourcesTab = ({
       <div className="text-center py-12">
         <FileText className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
         <p className="text-lg font-medium mb-2">
-          {isRTL ? 'لا توجد موارد' : 'No Resources'}
+          {t('events:resources.no_resources')}
         </p>
         <p className="text-muted-foreground">
-          {isRTL ? 'لم يتم إضافة أي موارد لهذه الفعالية بعد' : 'No resources have been added to this event yet'}
+          {t('events:resources.no_resources_description')}
         </p>
       </div>
     );
@@ -288,44 +275,44 @@ export const EventResourcesTab = ({
             <DialogTrigger asChild>
               <Button className="flex items-center gap-2">
                 <Plus className="w-4 h-4" />
-                {isRTL ? 'إضافة مورد' : 'Add Resource'}
+                {t('events:resources.add_resource')}
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-md">
               <DialogHeader>
                 <DialogTitle>
-                  {isRTL ? 'إضافة مورد جديد' : 'Add New Resource'}
+                  {t('events:resources.add_new_resource')}
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="title">
-                    {isRTL ? 'العنوان' : 'Title'}
+                    {t('events:resources.resource_title')}
                   </Label>
                   <Input
                     id="title"
                     value={newResource.title}
                     onChange={(e) => setNewResource(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder={isRTL ? 'عنوان المورد' : 'Resource title'}
+                    placeholder={t('events:resources.resource_title_placeholder')}
                   />
                 </div>
                 
                 <div>
                   <Label htmlFor="description">
-                    {isRTL ? 'الوصف' : 'Description'}
+                    {t('events:resources.description')}
                   </Label>
                   <Textarea
                     id="description"
                     value={newResource.description}
                     onChange={(e) => setNewResource(prev => ({ ...prev, description: e.target.value }))}
-                    placeholder={isRTL ? 'وصف المورد' : 'Resource description'}
+                    placeholder={t('events:resources.description_placeholder')}
                     rows={3}
                   />
                 </div>
                 
                 <div>
                   <Label htmlFor="type">
-                    {isRTL ? 'النوع' : 'Type'}
+                    {t('events:resources.type')}
                   </Label>
                   <Select
                     value={newResource.resource_type}
@@ -335,20 +322,20 @@ export const EventResourcesTab = ({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="document">{isRTL ? 'مستند' : 'Document'}</SelectItem>
-                      <SelectItem value="presentation">{isRTL ? 'عرض تقديمي' : 'Presentation'}</SelectItem>
-                      <SelectItem value="video">{isRTL ? 'فيديو' : 'Video'}</SelectItem>
-                      <SelectItem value="image">{isRTL ? 'صورة' : 'Image'}</SelectItem>
-                      <SelectItem value="template">{isRTL ? 'نموذج' : 'Template'}</SelectItem>
-                      <SelectItem value="guide">{isRTL ? 'دليل' : 'Guide'}</SelectItem>
-                      <SelectItem value="other">{isRTL ? 'أخرى' : 'Other'}</SelectItem>
+                      <SelectItem value="document">{t('events:resources.types.document')}</SelectItem>
+                      <SelectItem value="presentation">{t('events:resources.types.presentation')}</SelectItem>
+                      <SelectItem value="video">{t('events:resources.types.video')}</SelectItem>
+                      <SelectItem value="image">{t('events:resources.types.image')}</SelectItem>
+                      <SelectItem value="template">{t('events:resources.types.template')}</SelectItem>
+                      <SelectItem value="guide">{t('events:resources.types.guide')}</SelectItem>
+                      <SelectItem value="other">{t('events:resources.types.other')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div>
                   <Label htmlFor="file">
-                    {isRTL ? 'الملف' : 'File'} ({isRTL ? 'اختياري' : 'Optional'})
+                    {t('events:resources.file')} ({t('events:resources.optional')})
                   </Label>
                   <Input
                     id="file"
@@ -371,7 +358,7 @@ export const EventResourcesTab = ({
                     onClick={() => setShowAddDialog(false)}
                     disabled={loading || uploading}
                   >
-                    {isRTL ? 'إلغاء' : 'Cancel'}
+                    {t('events:resources.cancel')}
                   </Button>
                   <Button
                     onClick={() => {
@@ -381,11 +368,10 @@ export const EventResourcesTab = ({
                     }}
                     disabled={loading || uploading || !newResource.title}
                   >
-                    {loading || uploading ? (
-                      isRTL ? 'جاري الإضافة...' : 'Adding...'
-                    ) : (
-                      isRTL ? 'إضافة' : 'Add'
-                    )}
+                    {loading || uploading ? 
+                      t('events:resources.adding') : 
+                      t('events:resources.add')
+                    }
                   </Button>
                 </div>
               </div>
@@ -461,7 +447,7 @@ export const EventResourcesTab = ({
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <Download className="w-3 h-3" />
                   <span>
-                    {resource.download_count} {isRTL ? 'تحميل' : 'downloads'}
+                    {resource.download_count} {t('events:resources.downloads')}
                   </span>
                 </div>
                 
@@ -475,7 +461,7 @@ export const EventResourcesTab = ({
                       className="flex-1"
                     >
                       <Download className="w-3 h-3 mr-1" />
-                      {isRTL ? 'تحميل' : 'Download'}
+                      {t('events:resources.download')}
                     </Button>
                   )}
                   
@@ -499,14 +485,14 @@ export const EventResourcesTab = ({
         <div className="text-center py-12">
           <FileText className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
           <p className="text-lg font-medium mb-2">
-            {isRTL ? 'لا توجد موارد' : 'No Resources'}
+            {t('events:resources.no_resources')}
           </p>
           <p className="text-muted-foreground mb-4">
-            {isRTL ? 'ابدأ بإضافة موارد لهذه الفعالية' : 'Start by adding resources to this event'}
+            {t('events:resources.no_resources_admin')}
           </p>
           <Button onClick={() => setShowAddDialog(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            {isRTL ? 'إضافة مورد' : 'Add Resource'}
+            {t('events:resources.add_resource')}
           </Button>
         </div>
       )}

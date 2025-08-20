@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   DepartmentReference, 
   DeputyReference, 
@@ -38,9 +39,9 @@ export function DynamicSelect({
   options,
   value,
   onChange,
-  placeholder = "اختر...",
-  searchPlaceholder = "البحث...",
-  isRTL = true,
+  placeholder,
+  searchPlaceholder,
+  isRTL,
   disabled = false,
   className = "",
   showBadges = true,
@@ -52,6 +53,14 @@ export function DynamicSelect({
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const { t, isRTL: isRTLFromHook } = useUnifiedTranslation();
+  
+  // Use isRTL from hook if not explicitly provided
+  const effectiveIsRTL = isRTL !== undefined ? isRTL : isRTLFromHook;
+  
+  // Use default placeholders from translations if not provided
+  const effectivePlaceholder = placeholder || t('ui:select.placeholder');
+  const effectiveSearchPlaceholder = searchPlaceholder || t('ui:select.search_placeholder');
 
   const selectedOption = options.find(option => option.value === value);
 
@@ -104,11 +113,11 @@ export function DynamicSelect({
           "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background",
           "placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          isRTL ? "text-right" : "text-left"
+          effectiveIsRTL ? "text-right" : "text-left"
         )}
       >
         <span className="block truncate">
-          {selectedOption ? selectedOption.label : placeholder}
+          {selectedOption ? selectedOption.label : effectivePlaceholder}
         </span>
         <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
@@ -122,12 +131,12 @@ export function DynamicSelect({
               <input
                 ref={searchRef}
                 type="text"
-                placeholder={searchPlaceholder}
+                placeholder={effectiveSearchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={cn(
                   "w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-ring",
-                  isRTL ? "text-right" : "text-left"
+                  effectiveIsRTL ? "text-right" : "text-left"
                 )}
               />
             </div>
@@ -137,7 +146,7 @@ export function DynamicSelect({
           <div className="max-h-60 overflow-auto">
             {filteredOptions.length === 0 ? (
               <div className="px-3 py-2 text-sm text-muted-foreground text-center">
-                لا توجد نتائج
+                {t('common:no_results')}
               </div>
             ) : (
               filteredOptions.map((option) => (
@@ -150,7 +159,7 @@ export function DynamicSelect({
                     "hover:bg-accent hover:text-accent-foreground",
                     "focus:bg-accent focus:text-accent-foreground",
                     option.value === value && "bg-accent text-accent-foreground",
-                    isRTL ? "text-right" : "text-left"
+                    effectiveIsRTL ? "text-right" : "text-left"
                   )}
                 >
                   <div className="flex-1 min-w-0">
@@ -188,29 +197,29 @@ export function DynamicSelect({
 
 // Utility functions to transform data for the DynamicSelect component
 
-export const transformDepartments = (departments: DepartmentReference[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformDepartments = (departments: DepartmentReference[], isRTL: boolean, t: (key: string) => string): DynamicSelectOption[] => {
   return departments.map(dept => ({
     value: dept.id,
     label: isRTL ? (dept.name_ar || dept.name) : dept.name,
     sublabel: dept.department_head,
-    badge: isRTL ? 'قسم' : 'Dept'
+    badge: t('common:badges.department')
   }));
 };
 
-export const transformDeputies = (deputies: DeputyReference[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformDeputies = (deputies: DeputyReference[], isRTL: boolean, t: (key: string) => string): DynamicSelectOption[] => {
   return deputies.map(deputy => ({
     value: deputy.id,
     label: isRTL ? (deputy.name_ar || deputy.name) : deputy.name,
     sublabel: deputy.deputy_minister,
-    badge: isRTL ? 'نائب' : 'Deputy'
+    badge: t('common:badges.deputy')
   }));
 };
 
-export const transformSectors = (sectors: SectorReference[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformSectors = (sectors: SectorReference[], isRTL: boolean, t: (key: string) => string): DynamicSelectOption[] => {
   return sectors.map(sector => ({
     value: sector.id,
     label: isRTL ? (sector.name_ar || sector.name) : sector.name,
-    badge: isRTL ? 'قطاع' : 'Sector'
+    badge: t('common:badges.sector')
   }));
 };
 
@@ -233,11 +242,11 @@ export const transformChallenges = (challenges: ChallengeReference[], isRTL: boo
   }));
 };
 
-export const transformTeamMembers = (members: TeamMemberExtended[], isRTL: boolean): DynamicSelectOption[] => {
+export const transformTeamMembers = (members: TeamMemberExtended[], isRTL: boolean, t: (key: string) => string): DynamicSelectOption[] => {
   return members.map(member => ({
     value: member.id,
     label: member.email || member.user_id,
     sublabel: member.specialization,
-    badge: isRTL ? 'عضو' : 'Member'
+    badge: t('common:badges.member')
   }));
 };

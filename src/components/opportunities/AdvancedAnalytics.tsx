@@ -138,11 +138,11 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
   const generateUserJourneyAnalysis = (journeys: Record<string, unknown>[]) => {
     const steps = [
-      { step: isRTL ? 'زيارة الصفحة' : 'Page Visit', users: 0, dropoff: 0, time: 0 },
-      { step: isRTL ? 'قراءة التفاصيل' : 'Read Details', users: 0, dropoff: 0, time: 0 },
-      { step: isRTL ? 'عرض المتطلبات' : 'View Requirements', users: 0, dropoff: 0, time: 0 },
-      { step: isRTL ? 'بدء التطبيق' : 'Start Application', users: 0, dropoff: 0, time: 0 },
-      { step: isRTL ? 'إرسال الطلب' : 'Submit Application', users: 0, dropoff: 0, time: 0 }
+      { step: t('opportunities:advanced_metrics.user_journey.steps.page_visit'), users: 0, dropoff: 0, time: 0 },
+      { step: t('opportunities:advanced_metrics.user_journey.steps.read_details'), users: 0, dropoff: 0, time: 0 },
+      { step: t('opportunities:advanced_metrics.user_journey.steps.view_requirements'), users: 0, dropoff: 0, time: 0 },
+      { step: t('opportunities:advanced_metrics.user_journey.steps.start_application'), users: 0, dropoff: 0, time: 0 },
+      { step: t('opportunities:advanced_metrics.user_journey.steps.submit_application'), users: 0, dropoff: 0, time: 0 }
     ];
 
     // Analyze journey data to populate steps
@@ -294,9 +294,9 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
       const sessionCount = Math.max(1, sessionsWithMetadata.length); // Avoid division by zero
       
       return [
-        { category: isRTL ? 'العمر' : 'Age', value: mostCommonAge, percentage: agePercentage },
+        { category: t('opportunities:advanced_metrics.demographics.age'), value: mostCommonAge, percentage: agePercentage },
         { 
-          category: isRTL ? 'الخبرة' : 'Experience', 
+          category: t('opportunities:advanced_metrics.demographics.experience'), 
           value: '2-5 years', 
           percentage: Math.round(sessionsWithMetadata.filter(s => {
             const metadata = s.metadata as Record<string, unknown>;
@@ -305,7 +305,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
           }).length / sessionCount * 100) || 0 
         },
         { 
-          category: isRTL ? 'التعليم' : 'Education', 
+          category: t('opportunities:advanced_metrics.demographics.education'), 
           value: 'Bachelor+', 
           percentage: Math.round(sessionsWithMetadata.filter(s => {
             const metadata = s.metadata as Record<string, unknown>;
@@ -313,7 +313,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
           }).length / sessionCount * 100) || 0 
         },
         { 
-          category: isRTL ? 'الموقع' : 'Location', 
+          category: t('opportunities:advanced_metrics.demographics.location'), 
           value: 'Urban', 
           percentage: Math.round(sessionsWithMetadata.filter(s => {
             const metadata = s.metadata as Record<string, unknown>;
@@ -327,10 +327,10 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     
     return {
       segments: [
-        { segment: isRTL ? 'مهتمون جدد' : 'New Prospects', count: Number(userSegments.new_prospects) || 0, engagement: Math.round((Number(userSegments.new_prospects) || 0) / journeyCount * 100) },
-        { segment: isRTL ? 'عائدون مهتمون' : 'Returning Interested', count: Number(userSegments.returning_interested) || 0, engagement: Math.round((Number(userSegments.returning_interested) || 0) / journeyCount * 100) },
-        { segment: isRTL ? 'مقدمو طلبات' : 'Active Applicants', count: Number(userSegments.active_applicants) || 0, engagement: Math.round((Number(userSegments.active_applicants) || 0) / journeyCount * 100) },
-        { segment: isRTL ? 'متصفحون' : 'Casual Browsers', count: Number(userSegments.casual_browsers) || 0, engagement: Math.round((Number(userSegments.casual_browsers) || 0) / journeyCount * 100) }
+        { segment: t('opportunities:advanced_metrics.audience_segments.new_prospects'), count: Number(userSegments.new_prospects) || 0, engagement: Math.round((Number(userSegments.new_prospects) || 0) / journeyCount * 100) },
+        { segment: t('opportunities:advanced_metrics.audience_segments.returning_interested'), count: Number(userSegments.returning_interested) || 0, engagement: Math.round((Number(userSegments.returning_interested) || 0) / journeyCount * 100) },
+        { segment: t('opportunities:advanced_metrics.audience_segments.active_applicants'), count: Number(userSegments.active_applicants) || 0, engagement: Math.round((Number(userSegments.active_applicants) || 0) / journeyCount * 100) },
+        { segment: t('opportunities:advanced_metrics.audience_segments.casual_browsers'), count: Number(userSegments.casual_browsers) || 0, engagement: Math.round((Number(userSegments.casual_browsers) || 0) / journeyCount * 100) }
       ],
       demographics: calculateDemographics(),
       interests: journeys.reduce((acc: Record<string, number>, journey: Record<string, unknown>) => {
@@ -419,9 +419,9 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
               <Brain className="w-5 h-5 text-purple-500" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.predictiveMetrics.expectedApplications}</p>
-                <p className="text-sm text-muted-foreground">{t('opportunities.metrics.expected_applications')}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:metrics.expected_applications')}</p>
                 <Badge variant="outline" className={getTrendColor(advancedData.predictiveMetrics.conversionTrend)}>
-                  {advancedData.predictiveMetrics.conversionTrend}
+                  {t(`opportunities:advanced_metrics.trends.${advancedData.predictiveMetrics.conversionTrend}`)}
                 </Badge>
               </div>
             </div>
@@ -434,7 +434,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
               <Gauge className="w-5 h-5 text-blue-500" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.predictiveMetrics.qualityScore}</p>
-                <p className="text-sm text-muted-foreground">{t('opportunities.metrics.quality_score')}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:metrics.quality_score')}</p>
                 <Progress value={advancedData.predictiveMetrics.qualityScore} className="mt-1" />
               </div>
             </div>
@@ -447,9 +447,9 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
               <Zap className="w-5 h-5 text-green-500" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.performanceMetrics.loadTime.toFixed(1)}s</p>
-                <p className="text-sm text-muted-foreground">{t('opportunities.metrics.load_time')}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:metrics.load_time')}</p>
                 <Badge variant="outline" className="mt-1">
-                  {advancedData.performanceMetrics.loadTime < 2 ? 'Fast' : 'Average'}
+                  {advancedData.performanceMetrics.loadTime < 2 ? t('opportunities:advanced_metrics.speed_labels.fast') : t('opportunities:advanced_metrics.speed_labels.average')}
                 </Badge>
               </div>
             </div>
@@ -462,9 +462,9 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
               <Target className="w-5 h-5 text-orange-500" />
               <div>
                 <p className="text-2xl font-bold">#{advancedData.competitiveAnalysis.position}</p>
-                <p className="text-sm text-muted-foreground">{t('opportunities.metrics.market_position')}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:metrics.market_position')}</p>
                 <Badge variant="outline" className={getRiskColor(advancedData.predictiveMetrics.riskLevel)}>
-                  {advancedData.predictiveMetrics.riskLevel} risk
+                  {t(`opportunities:advanced_metrics.risk_levels.${advancedData.predictiveMetrics.riskLevel}`)} {t('opportunities:advanced_metrics.risk_levels.risk')}
                 </Badge>
               </div>
             </div>
@@ -478,7 +478,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Route className="w-5 h-5" />
-              {isRTL ? 'تحليل رحلة المستخدم' : 'User Journey Analysis'}
+              {t('opportunities:advanced_metrics.user_journey.title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -489,7 +489,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-sm font-medium">{step.step}</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">{step.users} users</span>
+                        <span className="text-sm text-muted-foreground">{step.users} {t('opportunities:advanced_metrics.user_journey.users')}</span>
                         {step.dropoff > 0 && (
                           <Badge variant="outline" className="text-red-600">
                             -{step.dropoff}%
@@ -504,7 +504,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
                       ></div>
                     </div>
                     <div className="text-xs text-muted-foreground mt-1">
-                      Avg. time: {Math.floor(step.time / 60)}m {step.time % 60}s
+                      {t('opportunities:advanced_metrics.user_journey.avg_time')}: {Math.floor(step.time / 60)}m {step.time % 60}s
                     </div>
                   </div>
                 </div>
@@ -518,7 +518,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Activity className="w-5 h-5" />
-              {isRTL ? 'أنماط السلوك' : 'Behavior Patterns'}
+              {t('opportunities:advanced_metrics.behavior_patterns.title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -544,7 +544,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="w-5 h-5" />
-              {isRTL ? 'شرائح الجمهور' : 'Audience Segments'}
+              {t('opportunities:advanced_metrics.audience_segments.title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -557,13 +557,13 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5" />
-              {isRTL ? 'مقاييس الأداء' : 'Performance Metrics'}
+              {t('opportunities:advanced_metrics.performance.title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">{isRTL ? 'مدة الجلسة' : 'Session Duration'}</span>
+                <span className="text-sm font-medium">{t('opportunities:advanced_metrics.performance.session_duration')}</span>
                 <span className="text-sm text-muted-foreground">
                   {Math.floor(advancedData.performanceMetrics.sessionDuration / 60)}m {advancedData.performanceMetrics.sessionDuration % 60}s
                 </span>
@@ -573,7 +573,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
             
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">{isRTL ? 'معدل الارتداد' : 'Bounce Rate'}</span>
+                <span className="text-sm font-medium">{t('opportunities:advanced_metrics.performance.bounce_rate')}</span>
                 <span className="text-sm text-muted-foreground">
                   {advancedData.performanceMetrics.bounceRate}%
                 </span>
@@ -583,7 +583,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
             
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">{isRTL ? 'مشاهدات الصفحة' : 'Page Views'}</span>
+                <span className="text-sm font-medium">{t('opportunities:advanced_metrics.performance.page_views')}</span>
                 <span className="text-sm text-muted-foreground">
                   {advancedData.performanceMetrics.pageViews}
                 </span>
@@ -597,28 +597,28 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
       {/* Competitive Analysis */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="w-5 h-5" />
-            {isRTL ? 'التحليل التنافسي' : 'Competitive Analysis'}
-          </CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="w-5 h-5" />
+              {t('opportunities:advanced_metrics.competitive.title')}
+            </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center">
               <p className="text-2xl font-bold text-blue-600">#{advancedData.competitiveAnalysis.position}</p>
-              <p className="text-sm text-muted-foreground">{isRTL ? 'الترتيب' : 'Market Position'}</p>
+              <p className="text-sm text-muted-foreground">{t('opportunities:advanced_metrics.competitive.market_position')}</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-green-600">{advancedData.competitiveAnalysis.similarOpportunities}</p>
-              <p className="text-sm text-muted-foreground">{isRTL ? 'فرص مشابهة' : 'Similar Opportunities'}</p>
+              <p className="text-sm text-muted-foreground">{t('opportunities:advanced_metrics.competitive.similar_opportunities')}</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-purple-600">{advancedData.competitiveAnalysis.marketShare}%</p>
-              <p className="text-sm text-muted-foreground">{isRTL ? 'حصة السوق' : 'Market Share'}</p>
+              <p className="text-sm text-muted-foreground">{t('opportunities:advanced_metrics.competitive.market_share')}</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-orange-600">{advancedData.competitiveAnalysis.uniqueValue}</p>
-              <p className="text-sm text-muted-foreground">{isRTL ? 'نقاط التميز' : 'Unique Value'}</p>
+              <p className="text-sm text-muted-foreground">{t('opportunities:advanced_metrics.competitive.unique_value')}</p>
             </div>
           </div>
         </CardContent>

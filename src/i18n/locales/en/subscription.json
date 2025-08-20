@@ -1,0 +1,97 @@
+{
+    "loading": "Loading subscription information...",
+    "hero": {
+        "title": "Premium Subscription Plans",
+        "description": "Join leading innovators and get advanced capabilities to develop your ideas and achieve your innovation goals"
+    },
+    "plans": {
+        "title": "Subscription Plans",
+        "description": "Choose the plan that fits your innovation journey",
+        "basic": "Basic",
+        "professional": "Professional",
+        "enterprise": "Enterprise",
+        "custom": "Custom"
+    },
+    "status": {
+        "title": "Current Subscription Status",
+        "active_plan": "Active Plan",
+        "active": "Active",
+        "free": "Free",
+        "expires_on": "Expires on: ",
+        "current_plan": "Current Plan",
+        "processing": "Processing..."
+    },
+    "features": {
+        "unlimited_ideas": "Unlimited Ideas",
+        "unlimited_ideas_desc": "Share your ideas without limits",
+        "ai_assistant": "AI Assistant",
+        "ai_assistant_desc": "Get intelligent assistance",
+        "early_access": "Early Access",
+        "early_access_desc": "Be first to try new features",
+        "priority_support": "Priority Support",
+        "custom_branding": "Custom Branding",
+        "advanced_analytics": "Advanced Analytics",
+        "team_collaboration": "Team Collaboration",
+        "api_access": "API Access",
+        "dedicated_account_manager": "Dedicated Account Manager"
+    },
+    "pricing": {
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "save": "Save",
+        "per_month": "/month",
+        "per_year": "/year",
+        "or": "or",
+        "billed_monthly": "Billed monthly",
+        "billed_yearly": "Billed yearly",
+        "contact_sales": "Contact Sales"
+    },
+    "actions": {
+        "subscribe": "Subscribe",
+        "subscribe_now": "Subscribe Now",
+        "upgrade": "Upgrade",
+        "downgrade": "Downgrade",
+        "cancel": "Cancel Subscription",
+        "manage": "Manage Subscription",
+        "change_plan": "Change Plan",
+        "view_invoice": "View Invoice",
+        "refresh_status": "Refresh Subscription Status"
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "description": "Answers to common questions about subscriptions",
+        "cancel_anytime": {
+            "question": "Can I cancel my subscription anytime?",
+            "answer": "Yes, you can cancel your subscription anytime from your dashboard. You'll retain access until the end of your paid period."
+        },
+        "annual_discount": {
+            "question": "Is there a discount for annual subscriptions?",
+            "answer": "Yes, we offer up to 20% discount on annual subscriptions compared to monthly billing."
+        },
+        "upgrade_plan": {
+            "question": "Can I upgrade my plan later?",
+            "answer": "Absolutely! You can upgrade your plan anytime and get additional features immediately."
+        },
+        "data_security": {
+            "question": "Is my data secure and protected?",
+            "answer": "Yes, we use the highest security standards and data encryption to protect your information and ensure privacy."
+        },
+        "question_1": "Can I change my plan anytime?",
+        "answer_1": "Yes, you can upgrade or downgrade your plan at any time.",
+        "question_2": "What payment methods do you accept?",
+        "answer_2": "We accept all major credit cards and bank transfers.",
+        "question_3": "Is there a free trial?",
+        "answer_3": "Yes, we offer a 14-day free trial for new users.",
+        "question_4": "Can I cancel anytime?",
+        "answer_4": "Yes, you can cancel your subscription at any time."
+    },
+    "messages": {
+        "subscription_success": "Subscription successful",
+        "subscription_failed": "Subscription failed",
+        "upgrade_success": "Plan upgraded successfully",
+        "downgrade_success": "Plan downgraded successfully",
+        "cancellation_success": "Subscription cancelled",
+        "payment_failed": "Payment failed",
+        "trial_expired": "Your trial has expired"
+    }
+}

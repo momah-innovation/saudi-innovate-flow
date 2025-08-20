@@ -1,0 +1,97 @@
+{
+    "title": "Trends",
+    "page_title": "Trends Analysis",
+    "impact": {
+        "high": "High Impact",
+        "medium": "Medium Impact",
+        "low": "Low Impact",
+        "very_high": "Very High Impact",
+        "minimal": "Minimal Impact"
+    },
+    "statistics": {
+        "growth": "Growth",
+        "projects": "Projects",
+        "budget": "Budget",
+        "avg_value": "Avg Value",
+        "total_value": "Total Value",
+        "completion_rate": "Completion Rate",
+        "success_rate": "Success Rate",
+        "roi": "ROI",
+        "efficiency": "Efficiency"
+    },
+    "trends": {
+        "rising": "Rising Trends",
+        "declining": "Declining Trends",
+        "stable": "Stable Trends",
+        "emerging": "Emerging Trends",
+        "fading": "Fading Trends"
+    },
+    "categories": {
+        "technology": "Technology",
+        "innovation": "Innovation",
+        "sustainability": "Sustainability",
+        "healthcare": "Healthcare",
+        "education": "Education",
+        "finance": "Finance",
+        "energy": "Energy"
+    },
+    "time_periods": {
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "quarterly": "Quarterly",
+        "yearly": "Yearly",
+        "all_time": "All Time"
+    },
+    "indicators": {
+        "up": "Up",
+        "down": "Down",
+        "unchanged": "Unchanged",
+        "new": "New",
+        "trending": "Trending"
+    },
+    "analysis": {
+        "view_details": "View Details",
+        "compare": "Compare",
+        "export": "Export",
+        "share": "Share",
+        "forecast": "Forecast",
+        "historical": "Historical Data"
+    },
+    "filters": {
+        "filter_by": "Filter by",
+        "sort_by": "Sort by",
+        "date_range": "Date Range",
+        "category": "Category",
+        "impact_level": "Impact Level"
+    },
+    "charts": {
+        "trend_chart": "Trend Chart",
+        "growth_chart": "Growth Chart",
+        "comparison_chart": "Comparison Chart",
+        "distribution": "Distribution"
+    },
+    "predictions": {
+        "ai_projects_growth": "AI Projects Growth",
+        "sustainability_projects": "Sustainability Projects",
+        "fintech_solutions": "FinTech Solutions",
+        "ar_applications": "AR Applications",
+        "emerging_opportunities": "Emerging Opportunities",
+        "quantum_computing": "Quantum Computing Technologies",
+        "expected_growth": "Expected 150% growth in projects",
+        "digital_medicine": "Digital Medicine & Telemedicine",
+        "demand_increase": "85% increase in demand",
+        "renewable_energy": "Renewable Energy Technologies",
+        "increasing_investments": "Increasing investments in the sector"
+    },
+    "tabs": {
+        "emerging": "Emerging",
+        "insights": "Insights",
+        "keywords": "Keywords",
+        "sectors": "Sectors",
+        "predictions": "Predictions"
+    },
+    "no_data": "No trends data available",
+    "loading": "Loading trends...",
+    "error": "Error loading trends"
+}

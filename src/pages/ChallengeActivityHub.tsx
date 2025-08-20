@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { ChallengeActivityHub as ActivityHubComponent } from '@/components/challenges/ChallengeActivityHub';
 import { logger } from '@/utils/logger';
@@ -42,6 +43,7 @@ export default function ChallengeActivityHub() {
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   
   const [challenge, setChallenge] = useState<PageChallenge | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,12 +62,12 @@ export default function ChallengeActivityHub() {
     if (!hasRole('admin') && !hasRole('super_admin') && !hasRole('moderator') && !hasRole('challenge_manager') && !hasRole('sector_lead')) {
       toast({
         variant: "destructive",
-        title: isRTL ? "غير مصرح" : "Access Denied",
-        description: isRTL ? "ليس لديك صلاحية للوصول لهذه الصفحة" : "You don't have permission to access this page"
+        title: t('challenges:access_denied'),
+        description: t('challenges:access_denied_message')
       });
       navigate('/challenges');
     }
-  }, [user, hasRole, navigate, toast, isRTL]);
+  }, [user, hasRole, navigate, toast, isRTL, t]);
 
   const fetchChallenge = async () => {
     if (!challengeId) return;
@@ -83,8 +85,8 @@ export default function ChallengeActivityHub() {
       logger.error('Failed to fetch challenge data', { component: 'ChallengeActivityHub', action: 'fetchChallenge', challengeId }, error as Error);
       toast({
         variant: "destructive",
-        title: isRTL ? "خطأ" : "Error",
-        description: isRTL ? "فشل في تحميل التحدي" : "Failed to load challenge"
+        title: t('challenges:error'),
+        description: t('challenges:error_load_challenge')
       });
     } finally {
       setLoading(false);
@@ -105,9 +107,9 @@ export default function ChallengeActivityHub() {
     return (
       <AdminLayout>
         <div className="text-center py-12">
-          <h2 className="text-2xl font-bold mb-4">{isRTL ? 'التحدي غير موجود' : 'Challenge Not Found'}</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('challenges:challenge_not_found')}</h2>
           <Button onClick={() => navigate('/challenges')}>
-            {isRTL ? 'العودة للتحديات' : 'Back to Challenges'}
+            {t('challenges:back_to_challenges')}
           </Button>
         </div>
       </AdminLayout>
@@ -148,11 +150,11 @@ export default function ChallengeActivityHub() {
               onClick={() => navigate('/challenges')}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              {isRTL ? 'العودة' : 'Back'}
+              {t('challenges:back')}
             </Button>
             <div>
               <h1 className="text-3xl font-bold">{challenge.title_ar}</h1>
-              <p className="text-muted-foreground">{isRTL ? 'مركز النشاط والتعاون' : 'Activity & Collaboration Hub'}</p>
+              <p className="text-muted-foreground">{t('challenges:activity_collaboration_hub')}</p>
             </div>
           </div>
           <Badge className="bg-green-500 text-white">
@@ -170,7 +172,7 @@ export default function ChallengeActivityHub() {
                 </div>
                 <div>
                   <div className="text-2xl font-bold">{challenge.participants || 0}</div>
-                  <div className="text-sm text-muted-foreground">{isRTL ? 'مشارك' : 'Participants'}</div>
+                  <div className="text-sm text-muted-foreground">{t('challenges:participants')}</div>
                 </div>
               </div>
             </CardContent>
@@ -184,7 +186,7 @@ export default function ChallengeActivityHub() {
                 </div>
                 <div>
                   <div className="text-2xl font-bold">{challenge.estimated_budget?.toLocaleString() || '0'}</div>
-                  <div className="text-sm text-muted-foreground">{isRTL ? 'ريال' : 'SAR'}</div>
+                  <div className="text-sm text-muted-foreground">{t('challenges:currency')}</div>
                 </div>
               </div>
             </CardContent>
@@ -198,7 +200,7 @@ export default function ChallengeActivityHub() {
                 </div>
                 <div>
                   <div className="text-2xl font-bold">{daysRemaining || 0}</div>
-                  <div className="text-sm text-muted-foreground">{isRTL ? 'يوم متبقي' : 'Days Left'}</div>
+                  <div className="text-sm text-muted-foreground">{t('challenges:days_left')}</div>
                 </div>
               </div>
             </CardContent>
@@ -212,7 +214,7 @@ export default function ChallengeActivityHub() {
                 </div>
                 <div>
                   <div className="text-2xl font-bold">{Math.round(progressPercentage)}%</div>
-                  <div className="text-sm text-muted-foreground">{isRTL ? 'مكتمل' : 'Progress'}</div>
+                  <div className="text-sm text-muted-foreground">{t('challenges:progress')}</div>
                 </div>
               </div>
             </CardContent>
@@ -225,7 +227,7 @@ export default function ChallengeActivityHub() {
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold">{isRTL ? 'تقدم التحدي' : 'Challenge Progress'}</h3>
+                  <h3 className="font-semibold">{t('challenges:challenge_progress')}</h3>
                   <span className="text-2xl font-bold">{Math.round(progressPercentage)}%</span>
                 </div>
                 <Progress value={progressPercentage} className="h-3" />
@@ -257,7 +259,7 @@ export default function ChallengeActivityHub() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart3 className="w-5 h-5" />
-                  {isRTL ? 'أدوات الإدارة' : 'Admin Controls'}
+                  {t('challenges:admin_controls')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -267,7 +269,7 @@ export default function ChallengeActivityHub() {
                   onClick={() => navigate(`/admin/challenges/edit/${challenge.id}`)}
                 >
                   <FileText className="w-4 h-4 mr-2" />
-                  {isRTL ? 'تعديل التحدي' : 'Edit Challenge'}
+                  {t('challenges:detail.edit_challenge')}
                 </Button>
                 
                 <Button 
@@ -276,7 +278,7 @@ export default function ChallengeActivityHub() {
                   onClick={() => navigate(`/admin/challenges/participants/${challenge.id}`)}
                 >
                   <Users className="w-4 h-4 mr-2" />
-                  {isRTL ? 'إدارة المشاركين' : 'Manage Participants'}
+                  {t('challenges:admin.manage_participants')}
                 </Button>
                 
                 <Button 
@@ -285,7 +287,7 @@ export default function ChallengeActivityHub() {
                   onClick={() => navigate(`/admin/challenges/analytics/${challenge.id}`)}
                 >
                   <BarChart3 className="w-4 h-4 mr-2" />
-                  {isRTL ? 'التحليلات' : 'Analytics'}
+                  {t('challenges:admin.analytics')}
                 </Button>
                 
                 <Button 
@@ -294,30 +296,30 @@ export default function ChallengeActivityHub() {
                   onClick={() => navigate(`/admin/challenges/submissions/${challenge.id}`)}
                 >
                   <MessageSquare className="w-4 h-4 mr-2" />
-                  {isRTL ? 'المشاريع المقدمة' : 'Submissions'}
+                  {t('challenges:admin.submissions')}
                 </Button>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>{isRTL ? 'إحصائيات سريعة' : 'Quick Stats'}</CardTitle>
+                <CardTitle>{t('challenges:admin.quick_stats')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{isRTL ? 'إجمالي النشاطات:' : 'Total Activities:'}</span>
+                  <span className="text-muted-foreground">{t('challenges:admin.total_activities')}</span>
                   <span className="font-medium">24</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{isRTL ? 'مشاريع مقدمة:' : 'Submissions:'}</span>
+                  <span className="text-muted-foreground">{t('challenges:admin.submissions_count')}</span>
                   <span className="font-medium">8</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{isRTL ? 'رسائل اليوم:' : 'Messages Today:'}</span>
+                  <span className="text-muted-foreground">{t('challenges:admin.messages_today')}</span>
                   <span className="font-medium">12</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{isRTL ? 'معدل المشاركة:' : 'Engagement Rate:'}</span>
+                  <span className="text-muted-foreground">{t('challenges:admin.engagement_rate')}</span>
                   <span className="font-medium">87%</span>
                 </div>
               </CardContent>

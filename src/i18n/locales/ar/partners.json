@@ -142,5 +142,50 @@
     "export_completed": "تم تصدير بيانات الشركاء بنجاح",
     "delete_confirmation": "هل أنت متأكد من حذف هذا الشريك؟",
     "terminate_confirmation": "هل أنت متأكد من إنهاء هذه الشراكة؟"
+  },
+  "dashboard": {
+    "partnerDashboard": "لوحة تحكم الشريك",
+    "createNewPartnership": "إنشاء شراكة جديدة",
+    "exploreOpportunities": "استكشاف الفرص",
+    "browseChallenges": "تصفح التحديات",
+    "viewProfile": "عرض الملف الشخصي"
+  },
+  "profile": {
+    "badge": "ملف الشريك",
+    "organization_name": "اسم المؤسسة",
+    "save_changes": "حفظ التغييرات",
+    "edit_profile": "تحرير الملف",
+    "dashboard": "لوحة التحكم",
+    "browse_challenges": "تصفح التحديات",
+    "partnership_info": "معلومات الشراكة",
+    "founded": "سنة التأسيس",
+    "team_size": "حجم الفريق",
+    "investment_capacity": "الاستثمار المتاح",
+    "areas_of_interest": "مجالات الاهتمام",
+    "metrics": {
+      "active_partnerships": "شراكة نشطة",
+      "sar_invested": "ر.س استثمار",
+      "projects_supported": "مشروع مدعوم",
+      "partnership_rating": "تقييم الشراكة"
+    }
+  },
+  "details": {
+    "partnershipDetails": "تفاصيل الشراكة",
+    "timeline": "الجدول الزمني",
+    "contribution": "المساهمة",
+    "description": "الوصف",
+    "ideasGenerated": "الأفكار المولدة",
+    "participants": "المشاركون",
+    "impactScore": "نقاط التأثير"
+  },
+  "applications": {
+    "opportunity": "الفرصة",
+    "type": "النوع",
+    "submittedDate": "تاريخ التقديم",
+    "status": "الحالة",
+    "contribution": "المساهمة",
+    "contact": "جهة الاتصال",
+    "actions": "الإجراءات",
+    "noApplicationsFound": "لا توجد طلبات"
   }
 }

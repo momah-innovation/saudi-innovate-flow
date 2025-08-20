@@ -1,0 +1,95 @@
+{
+    "management": {
+        "title": "إدارة التخزين",
+        "description": "إدارة ملفاتك ومساحات التخزين",
+        "search_placeholder": "البحث عن الملفات...",
+        "filter_by_type": "تصفية حسب النوع",
+        "sort_by": "ترتيب حسب",
+        "view_mode": "وضع العرض"
+    },
+    "buckets": {
+        "title": "مساحات التخزين",
+        "create_bucket": "إنشاء مساحة تخزين",
+        "bucket_name": "اسم مساحة التخزين",
+        "bucket_size": "حجم مساحة التخزين",
+        "files_count": "عدد الملفات",
+        "public_bucket": "مساحة عامة",
+        "private_bucket": "مساحة خاصة",
+        "bucket_settings": "إعدادات مساحة التخزين",
+        "delete_bucket": "حذف مساحة التخزين",
+        "view_bucket": "عرض مساحة التخزين",
+        "total_buckets": "إجمالي مساحات التخزين"
+    },
+    "files": {
+        "title": "الملفات",
+        "upload_file": "رفع ملف",
+        "upload_files": "رفع ملفات",
+        "download_file": "تحميل الملف",
+        "delete_file": "حذف الملف",
+        "view_file": "عرض الملف",
+        "file_name": "اسم الملف",
+        "file_size": "حجم الملف",
+        "file_type": "نوع الملف",
+        "modified_date": "تاريخ التعديل",
+        "created_date": "تاريخ الإنشاء",
+        "actions": "الإجراءات",
+        "no_files": "لا توجد ملفات",
+        "drag_drop": "اسحب وأسقط الملفات هنا",
+        "browse_files": "تصفح الملفات",
+        "selected_files": "الملفات المحددة"
+    },
+    "actions": {
+        "move": "نقل",
+        "copy": "نسخ",
+        "rename": "إعادة تسمية",
+        "share": "مشاركة",
+        "download": "تحميل",
+        "delete": "حذف",
+        "select_all": "تحديد الكل",
+        "deselect_all": "إلغاء تحديد الكل",
+        "bulk_actions": "إجراءات جماعية",
+        "confirm_delete": "تأكيد الحذف",
+        "delete_warning": "هل أنت متأكد من حذف هذا الملف؟",
+        "delete_multiple_warning": "هل أنت متأكد من حذف {{count}} ملفات؟"
+    },
+    "stats": {
+        "storage_usage": "استخدام التخزين",
+        "total_storage": "إجمالي التخزين",
+        "used_storage": "التخزين المستخدم",
+        "available_storage": "التخزين المتاح",
+        "files_uploaded": "الملفات المرفوعة",
+        "total_downloads": "إجمالي التحميلات",
+        "storage_limit": "حد التخزين"
+    },
+    "settings": {
+        "title": "إعدادات التخزين",
+        "auto_backup": "النسخ الاحتياطي التلقائي",
+        "encryption": "التشفير",
+        "versioning": "إدارة الإصدارات",
+        "access_control": "التحكم في الوصول",
+        "retention_policy": "سياسة الاحتفاظ",
+        "max_file_size": "الحد الأقصى لحجم الملف",
+        "allowed_formats": "التنسيقات المسموحة",
+        "global_settings": "الإعدادات العامة"
+    },
+    "policies": {
+        "title": "سياسات التخزين",
+        "create_policy": "إنشاء سياسة",
+        "policy_name": "اسم السياسة",
+        "policy_rules": "قواعد السياسة",
+        "apply_policy": "تطبيق السياسة",
+        "active_policies": "السياسات النشطة"
+    },
+    "dialog": {
+        "create_bucket_title": "إنشاء مساحة تخزين جديدة",
+        "edit_bucket_title": "تعديل مساحة التخزين",
+        "bucket_name_label": "اسم مساحة التخزين",
+        "bucket_name_placeholder": "أدخل اسم مساحة التخزين",
+        "bucket_type_label": "نوع مساحة التخزين",
+        "public_access": "وصول عام",
+        "private_access": "وصول خاص",
+        "save_changes": "حفظ التغييرات",
+        "cancel": "إلغاء",
+        "confirm": "تأكيد"
+    }
+}

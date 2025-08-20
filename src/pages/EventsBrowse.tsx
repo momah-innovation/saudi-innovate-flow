@@ -65,6 +65,7 @@ interface Event {
 const EventsBrowse = () => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const { user, userProfile, hasRole } = useAuth();
   
   // State management
@@ -174,8 +175,8 @@ const EventsBrowse = () => {
     } catch (error) {
       logger.error('Failed to load events', { component: 'EventsBrowse', action: 'loadEvents' }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في تحميل الفعاليات' : 'Error loading events',
-        description: isRTL ? 'حدث خطأ أثناء تحميل الفعاليات' : 'An error occurred while loading events',
+        title: t('events:error_loading'),
+        description: t('events:error_loading_description'),
         variant: 'destructive'
       });
     } finally {
@@ -208,8 +209,8 @@ const EventsBrowse = () => {
   const registerForEvent = async (event: Event) => {
     if (!user) {
       toast({
-        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please log in',
-        description: isRTL ? 'يجب تسجيل الدخول للتسجيل في الفعاليات' : 'You need to log in to register for events',
+        title: t('events:registration.login_required'),
+        description: t('events:registration.login_required_description'),
         variant: 'destructive'
       });
       return;
@@ -220,8 +221,8 @@ const EventsBrowse = () => {
     const now = new Date();
     if (eventDate < now) {
       toast({
-        title: isRTL ? 'لا يمكن التسجيل' : 'Registration Not Available',
-        description: isRTL ? 'لا يمكن التسجيل في فعالية انتهت' : 'Cannot register for a past event',
+        title: t('events:registration.not_available'),
+        description: t('events:registration.cannot_register_past'),
         variant: 'destructive'
       });
       return;
@@ -240,8 +241,8 @@ const EventsBrowse = () => {
       if (error) {
         if (error.code === '23505') {
           toast({
-            title: isRTL ? 'مسجل مسبقاً' : 'Already registered',
-            description: isRTL ? 'أنت مسجل في هذه الفعالية بالفعل' : 'You are already registered for this event',
+            title: t('events:registration.already_registered'),
+            description: t('events:registration.already_registered_description'),
             variant: 'destructive'
           });
         } else {
@@ -251,8 +252,8 @@ const EventsBrowse = () => {
       }
 
       toast({
-        title: isRTL ? 'تم التسجيل بنجاح!' : 'Successfully Registered!',
-        description: isRTL ? `تم تسجيلك في فعالية "${event.title_ar}"` : `You have been registered for "${event.title_ar}"`,
+        title: t('events:registration.register_success'),
+        description: t('events:registration.registered_for', { event: event.title_ar }),
       });
 
       // Reload events to update participant count
@@ -261,8 +262,8 @@ const EventsBrowse = () => {
     } catch (error) {
       logger.error('Failed to register for event', { component: 'EventsBrowse', action: 'registerForEvent' }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في التسجيل' : 'Registration Error',
-        description: isRTL ? 'حدث خطأ أثناء التسجيل في الفعالية' : 'An error occurred while registering for the event',
+        title: t('events:registration.register_error'),
+        description: t('events:error_loading_description'),
         variant: 'destructive'
       });
     }
@@ -271,8 +272,8 @@ const EventsBrowse = () => {
   const cancelRegistration = async (event: Event) => {
     if (!user) {
       toast({
-        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please log in',
-        description: isRTL ? 'يجب تسجيل الدخول لإلغاء التسجيل' : 'You need to log in to cancel registration',
+        title: t('events:registration.cancel_login_required'),
+        description: t('events:registration.cancel_login_required_description'),
         variant: 'destructive'
       });
       return;
@@ -283,8 +284,8 @@ const EventsBrowse = () => {
     const now = new Date();
     if (eventDate < now) {
       toast({
-        title: isRTL ? 'لا يمكن إلغاء التسجيل' : 'Cannot Cancel Registration',
-        description: isRTL ? 'لا يمكن إلغاء التسجيل من فعالية انتهت' : 'Cannot cancel registration for a past event',
+        title: t('events:registration.cancel_not_available'),
+        description: t('events:registration.cancel_past_event'),
         variant: 'destructive'
       });
       return;
@@ -303,8 +304,8 @@ const EventsBrowse = () => {
 
       if (!participation) {
         toast({
-          title: isRTL ? 'لم يتم العثور على التسجيل' : 'Registration not found',
-          description: isRTL ? 'لم يتم العثور على تسجيلك في هذه الفعالية' : 'Your registration for this event was not found',
+          title: t('events:registration.not_found'),
+          description: t('events:registration.not_found_description'),
           variant: 'destructive'
         });
         return;
@@ -329,8 +330,8 @@ const EventsBrowse = () => {
       if (updateError) throw updateError;
 
       toast({
-        title: isRTL ? 'تم إلغاء التسجيل بنجاح!' : 'Successfully Cancelled!',
-        description: isRTL ? `تم إلغاء تسجيلك من فعالية "${event.title_ar}"` : `Your registration for "${event.title_ar}" has been cancelled`,
+        title: t('events:registration.cancelled_successfully'),
+        description: t('events:registration.cancelled_for', { event: event.title_ar }),
       });
 
       // Reload events to update participant count
@@ -339,8 +340,8 @@ const EventsBrowse = () => {
     } catch (error) {
       logger.error('Failed to cancel registration', { component: 'EventsBrowse', action: 'cancelRegistration' }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في إلغاء التسجيل' : 'Cancellation Error',
-        description: isRTL ? 'حدث خطأ أثناء إلغاء التسجيل' : 'An error occurred while cancelling registration',
+        title: t('events:registration.cancel_error'),
+        description: t('events:registration.cancel_error_description'),
         variant: 'destructive'
       });
     }
@@ -417,11 +418,11 @@ const EventsBrowse = () => {
           {/* Page Title and Description */}
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">
-              {isRTL ? 'استكشاف الفعاليات' : 'Browse Events'}
+              {t('events:browse_title')}
             </h1>
             <p className="text-muted-foreground">
-              {isRTL ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' : 'Discover and register for the latest innovation events and activities'}
-              {` (${filteredEvents.length} ${filteredEvents.length === 1 ? (isRTL ? 'عنصر' : 'Item') : (isRTL ? 'عناصر' : 'Items')})`}
+              {t('events:browse_description')}
+              {` (${filteredEvents.length} ${filteredEvents.length === 1 ? t('events:item') : t('events:items')})`}
             </p>
           </div>
 
@@ -433,7 +434,7 @@ const EventsBrowse = () => {
                 <Search className="absolute left-3 top-1/2 h-4 w-4 text-muted-foreground -translate-y-1/2" />
                 <Input
                   className="pl-10 h-9"
-                  placeholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
+                  placeholder={t('events:search.placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -448,7 +449,7 @@ const EventsBrowse = () => {
                 onClick={() => logger.info('Analytics requested', { component: 'EventsBrowse', action: 'showAnalytics' })}
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
-                {isRTL ? 'الإحصائيات' : 'Analytics'}
+                {t('events:analytics')}
               </Button>
               <LayoutSelector
                 viewMode={viewMode}
@@ -458,7 +459,7 @@ const EventsBrowse = () => {
               {user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) && (
                 <Button onClick={() => logger.info('New event requested', { component: 'EventsBrowse', action: 'createNewEvent' })}>
                   <Plus className="w-4 h-4 mr-2" />
-                  {isRTL ? 'فعالية جديدة' : 'New Event'}
+                  {t('events:new_event')}
                 </Button>
               )}
             </div>
@@ -481,7 +482,7 @@ const EventsBrowse = () => {
               <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="upcoming" className="animate-fade-in">
                   <Calendar className="w-4 h-4 mr-2" />
-                  {isRTL ? 'القادمة' : 'Upcoming'}
+                  {t('events:tabs.upcoming')}
                   {activeTab === 'upcoming' && (
                     <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
                       {filteredEvents.filter(e => new Date(e.event_date) >= new Date()).length}
@@ -490,7 +491,7 @@ const EventsBrowse = () => {
                 </TabsTrigger>
                 <TabsTrigger value="today" className="animate-fade-in">
                   <TrendingUp className="w-4 h-4 mr-2" />
-                  {isRTL ? 'اليوم' : 'Today'}
+                  {t('events:tabs.today')}
                   {activeTab === 'today' && (
                     <span className="ml-2 bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs">
                       {filteredEvents.filter(e => {
@@ -502,7 +503,7 @@ const EventsBrowse = () => {
                   )}
                 </TabsTrigger>
                 <TabsTrigger value="all" className="animate-fade-in">
-                  {isRTL ? 'جميع الفعاليات' : 'All Events'}
+                  {t('events:tabs.all')}
                   {activeTab === 'all' && (
                     <span className="ml-2 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full text-xs">
                       {filteredEvents.length}
@@ -511,7 +512,7 @@ const EventsBrowse = () => {
                 </TabsTrigger>
                 <TabsTrigger value="past" className="animate-fade-in">
                   <MapPin className="w-4 h-4 mr-2" />
-                  {isRTL ? 'السابقة' : 'Past'}
+                  {t('events:tabs.past')}
                   {activeTab === 'past' && (
                     <span className="ml-2 bg-muted text-muted-foreground px-2 py-0.5 rounded-full text-xs">
                       {filteredEvents.filter(e => new Date(e.event_date) < new Date()).length}
@@ -524,7 +525,7 @@ const EventsBrowse = () => {
                 {loading ? (
                   <div className="text-center py-12">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                    <p className="text-muted-foreground">{isRTL ? 'جاري تحميل الفعاليات...' : 'Loading events...'}</p>
+                    <p className="text-muted-foreground">{t('events:loading_events')}</p>
                   </div>
                 ) : filteredEvents.length > 0 ? (
                   renderEventCards(filteredEvents)
@@ -532,17 +533,17 @@ const EventsBrowse = () => {
                   <div className="text-center py-12">
                     <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
                     <h3 className="text-lg font-medium mb-2">
-                      {isRTL ? 'لا توجد فعاليات' : 'No events found'}
+                      {t('events:no_data')}
                     </h3>
                     <p className="text-muted-foreground mb-4">
                       {searchQuery ? 
-                        (isRTL ? `لا توجد فعاليات تطابق البحث "${searchQuery}"` : `No events match your search for "${searchQuery}"`) :
-                        (isRTL ? 'لا توجد فعاليات في الوقت الحالي' : 'No events available at the moment')
+                        `${t('events:no_events_search')} "${searchQuery}"` :
+                        t('events:no_events_available')
                       }
                     </p>
                     {searchQuery && (
                       <Button variant="outline" onClick={() => setSearchQuery('')}>
-                        {isRTL ? 'مسح البحث' : 'Clear Search'}
+                        {t('events:clear_search')}
                       </Button>
                     )}
                   </div>

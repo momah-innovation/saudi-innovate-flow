@@ -6,6 +6,7 @@ import { Heart, Bookmark, Share2, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 
 interface InteractionButtonsProps {
@@ -26,6 +27,7 @@ export const InteractionButtons = ({
   const { user } = useAuth();
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
@@ -84,8 +86,8 @@ export const InteractionButtons = ({
   const handleLike = async () => {
     if (!user) {
       toast({
-        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in',
-        description: isRTL ? 'يجب تسجيل الدخول للإعجاب' : 'You need to sign in to like',
+        title: t('common:auth.sign_in_required'),
+        description: t('common:auth.sign_in_to_like'),
         variant: 'destructive',
       });
       return;
@@ -127,14 +129,14 @@ export const InteractionButtons = ({
       }
       
       toast({
-        title: liked ? (isRTL ? 'تم إلغاء الإعجاب' : 'Unliked') : (isRTL ? 'أعجبني' : 'Liked'),
+        title: liked ? t('common:interactions.unliked') : t('common:interactions.liked'),
         description: `${title}`,
       });
     } catch (error) {
       logger.error('Error liking', { component: 'InteractionButtons', action: 'handleLike', itemId, itemType }, error as Error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في العملية' : 'Failed to process action',
+        title: t('common:error'),
+        description: t('common:interactions.action_failed'),
         variant: 'destructive',
       });
     } finally {
@@ -145,8 +147,8 @@ export const InteractionButtons = ({
   const handleBookmark = async () => {
     if (!user) {
       toast({
-        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in',
-        description: isRTL ? 'يجب تسجيل الدخول للحفظ' : 'You need to sign in to bookmark',
+        title: t('common:auth.sign_in_required'),
+        description: t('common:auth.sign_in_to_bookmark'),
         variant: 'destructive',
       });
       return;
@@ -167,7 +169,7 @@ export const InteractionButtons = ({
         
         setBookmarked(false);
         toast({
-          title: isRTL ? 'تم إلغاء الحفظ' : 'Bookmark removed',
+          title: t('common:interactions.bookmark_removed'),
           description: `${title}`,
         });
       } else {
@@ -184,15 +186,15 @@ export const InteractionButtons = ({
         
         setBookmarked(true);
         toast({
-          title: isRTL ? 'تم الحفظ' : 'Bookmarked',
+          title: t('common:interactions.bookmarked'),
           description: `${title}`,
         });
       }
     } catch (error) {
       logger.error('Error bookmarking', { component: 'InteractionButtons', action: 'handleBookmark', itemId, itemType }, error as Error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في الحفظ' : 'Failed to bookmark',
+        title: t('common:error'),
+        description: t('common:interactions.bookmark_failed'),
         variant: 'destructive',
       });
     } finally {
@@ -215,14 +217,14 @@ export const InteractionButtons = ({
         // Fallback to clipboard
         navigator.clipboard.writeText(url);
         toast({
-          title: isRTL ? 'تم النسخ' : 'Copied to clipboard',
+          title: t('common:interactions.copied_to_clipboard'),
           description: url,
         });
       }
     } else {
       navigator.clipboard.writeText(url);
       toast({
-        title: isRTL ? 'تم النسخ' : 'Copied to clipboard',
+        title: t('common:interactions.copied_to_clipboard'),
         description: url,
       });
     }

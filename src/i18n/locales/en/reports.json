@@ -1,0 +1,50 @@
+{
+    "title": "Reports",
+    "description": "Manage and export various reports and analytics",
+    "search_placeholder": "Search reports...",
+    "advanced_filter": "Advanced Filter",
+    "new_report": "New Report",
+    "create_report": "Create Report",
+    "schedule_report": "Schedule Report",
+    "no_scheduled_reports": "No scheduled reports found",
+    "tabs": {
+        "published": "Published",
+        "drafts": "Drafts",
+        "templates": "Templates",
+        "scheduled": "Scheduled"
+    },
+    "filters": {
+        "report_type": "Report Type",
+        "category": "Category",
+        "types": {
+            "all": "All Types",
+            "performance": "Performance",
+            "analytics": "Analytics",
+            "financial": "Financial",
+            "survey": "Survey",
+            "impact": "Impact"
+        },
+        "categories": {
+            "all": "All Categories",
+            "monthly": "Monthly",
+            "quarterly": "Quarterly",
+            "annual": "Annual",
+            "special": "Special"
+        }
+    },
+    "status": {
+        "published": "Published",
+        "draft": "Draft",
+        "reviewing": "Reviewing"
+    },
+    "card": {
+        "pages": "pages",
+        "downloads": "downloads",
+        "size": "Size:",
+        "sections": "Sections:",
+        "last_used": "Last Used:",
+        "view": "View",
+        "share": "Share",
+        "download": "Download"
+    }
+}

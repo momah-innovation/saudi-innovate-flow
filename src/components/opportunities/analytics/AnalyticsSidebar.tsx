@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   BarChart3, 
   Users, 
@@ -19,68 +20,63 @@ interface AnalyticsSidebarProps {
   className?: string;
 }
 
-const sidebarSections = [
-  {
-    id: 'overview',
-    icon: BarChart3,
-    labelEn: 'Overview',
-    labelAr: 'نظرة عامة',
-    description: 'Key metrics and trends'
-  },
-  {
-    id: 'engagement',
-    icon: Activity,
-    labelEn: 'Engagement',
-    labelAr: 'التفاعل',
-    description: 'User interaction data'
-  },
-  {
-    id: 'applications',
-    icon: Users,
-    labelEn: 'Applications',
-    labelAr: 'الطلبات',
-    description: 'Application analytics',
-    badge: 'Hot'
-  },
-  {
-    id: 'geographic',
-    icon: Globe,
-    labelEn: 'Geographic',
-    labelAr: 'جغرافي',
-    description: 'Location-based insights'
-  },
-  {
-    id: 'performance',
-    icon: TrendingUp,
-    labelEn: 'Performance',
-    labelAr: 'الأداء',
-    description: 'Performance metrics'
-  },
-  {
-    id: 'advanced',
-    icon: Target,
-    labelEn: 'Advanced',
-    labelAr: 'متقدم',
-    description: 'Deep analytics'
-  }
-];
-
 export const AnalyticsSidebar = ({ 
   activeSection, 
   onSectionChange, 
   className = '' 
 }: AnalyticsSidebarProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
+
+  const sidebarSections = [
+    {
+      id: 'overview',
+      icon: BarChart3,
+      label: t('opportunities:analytics_sidebar.section_labels.overview'),
+      description: t('opportunities:analytics_sidebar.section_descriptions.overview')
+    },
+    {
+      id: 'engagement',
+      icon: Activity,
+      label: t('opportunities:analytics_sidebar.section_labels.engagement'),
+      description: t('opportunities:analytics_sidebar.section_descriptions.engagement')
+    },
+    {
+      id: 'applications',
+      icon: Users,
+      label: t('opportunities:analytics_sidebar.section_labels.applications'),
+      description: t('opportunities:analytics_sidebar.section_descriptions.applications'),
+      badge: t('opportunities:analytics_sidebar.badge_hot')
+    },
+    {
+      id: 'geographic',
+      icon: Globe,
+      label: t('opportunities:analytics_sidebar.section_labels.geographic'),
+      description: t('opportunities:analytics_sidebar.section_descriptions.geographic')
+    },
+    {
+      id: 'performance',
+      icon: TrendingUp,
+      label: t('opportunities:analytics_sidebar.section_labels.performance'),
+      description: t('opportunities:analytics_sidebar.section_descriptions.performance')
+    },
+    {
+      id: 'advanced',
+      icon: Target,
+      label: t('opportunities:analytics_sidebar.section_labels.advanced'),
+      description: t('opportunities:analytics_sidebar.section_descriptions.advanced')
+    }
+  ];
 
   return (
     <div className={cn('w-64 bg-muted/30 border-r p-4 space-y-2', className)}>
       <div className="mb-6">
         <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
           <FileText className="w-5 h-5 text-primary" />
-          {isRTL ? 'أقسام التحليل' : 'Analytics Sections'}
+          {t('opportunities:analytics_sidebar.sections')}
         </h3>
         <p className="text-sm text-muted-foreground">
-          {isRTL ? 'اختر قسم لعرض التفاصيل' : 'Select a section to view details'}
+          {t('opportunities:analytics_sidebar.select_section')}
         </p>
       </div>
 
@@ -104,7 +100,7 @@ export const AnalyticsSidebar = ({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium truncate">
-                    {isRTL ? section.labelAr : section.labelEn}
+                    {section.label}
                   </span>
                   {section.badge && (
                     <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
@@ -124,17 +120,17 @@ export const AnalyticsSidebar = ({
       {/* Quick Stats */}
       <div className="mt-8 pt-4 border-t border-border/50">
         <h4 className="text-sm font-medium mb-2 text-muted-foreground">
-          {isRTL ? 'إحصائيات سريعة' : 'Quick Stats'}
+          {t('opportunities:analytics_sidebar.quick_stats')}
         </h4>
         <div className="space-y-2 text-xs">
           <div className="flex justify-between">
-            <span>{isRTL ? 'آخر تحديث:' : 'Last updated:'}</span>
+            <span>{t('opportunities:analytics_sidebar.last_updated')}</span>
             <span className="text-muted-foreground">
               {new Date().toLocaleDateString()}
             </span>
           </div>
           <div className="flex justify-between">
-            <span>{isRTL ? 'الفترة الزمنية:' : 'Time period:'}</span>
+            <span>{t('opportunities:analytics_sidebar.time_period')}</span>
             <span className="text-muted-foreground">30d</span>
           </div>
         </div>

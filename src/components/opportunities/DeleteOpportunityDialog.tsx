@@ -45,16 +45,16 @@ export const DeleteOpportunityDialog = ({
       if (error) throw error;
 
       toast({
-        title: isRTL ? 'تم الحذف بنجاح' : 'Deleted Successfully',
-        description: isRTL ? 'تم حذف الفرصة بنجاح' : 'Opportunity deleted successfully',
+        title: t('opportunities:delete.success_title'),
+        description: t('opportunities:delete.success_message'),
       });
 
       onSuccess?.();
       onOpenChange(false);
     } catch (error: any) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: error.message || (isRTL ? 'حدث خطأ أثناء حذف الفرصة' : 'An error occurred while deleting the opportunity'),
+        title: t('opportunities:common.error'),
+        description: error.message || t('opportunities:delete.error_message'),
         variant: 'destructive',
       });
     } finally {
@@ -68,34 +68,28 @@ export const DeleteOpportunityDialog = ({
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-destructive" />
-            {isRTL ? 'تأكيد الحذف' : 'Confirm Deletion'}
+            {t('opportunities:delete.confirm_title')}
           </AlertDialogTitle>
           <AlertDialogDescription className="space-y-2">
             <p>
-              {isRTL 
-                ? 'هل أنت متأكد من أنك تريد حذف هذه الفرصة؟' 
-                : 'Are you sure you want to delete this opportunity?'
-              }
+              {t('opportunities:delete.confirm_message')}
             </p>
             <div className="p-3 bg-muted rounded-lg">
               <p className="font-medium">
-                {isRTL ? 'الفرصة:' : 'Opportunity:'} {opportunity?.title_ar || opportunity?.title_en || opportunity?.title}
+                {t('opportunities:delete.opportunity_label')} {opportunity?.title_ar || opportunity?.title_en || opportunity?.title}
               </p>
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'النوع:' : 'Type:'} {opportunity?.opportunity_type || opportunity?.type}
+                {t('opportunities:delete.type_label')} {opportunity?.opportunity_type || opportunity?.type}
               </p>
             </div>
             <p className="text-sm text-destructive">
-              {isRTL 
-                ? 'تحذير: هذا الإجراء لا يمكن التراجع عنه.' 
-                : 'Warning: This action cannot be undone.'
-              }
+              {t('opportunities:delete.warning_message')}
             </p>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className={isRTL ? 'flex-row-reverse' : 'flex-row'}>
           <AlertDialogCancel disabled={loading}>
-            {isRTL ? 'إلغاء' : 'Cancel'}
+            {t('opportunities:common.cancel')}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
@@ -103,7 +97,7 @@ export const DeleteOpportunityDialog = ({
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             <Trash2 className="w-4 h-4 mr-2" />
-            {loading ? (isRTL ? 'جاري الحذف...' : 'Deleting...') : (isRTL ? 'حذف' : 'Delete')}
+            {loading ? t('opportunities:delete.deleting') : t('opportunities:delete.delete_button')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

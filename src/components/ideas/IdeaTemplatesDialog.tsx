@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -37,6 +37,7 @@ export function IdeaTemplatesDialog({
   onSelectTemplate 
 }: IdeaTemplatesDialogProps) {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const [templates, setTemplates] = useState<IdeaTemplate[]>([]);
   const [loading, setLoading] = useState(false);
@@ -68,7 +69,7 @@ export function IdeaTemplatesDialog({
         action: 'loadTemplates' 
       }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في تحميل القوالب' : 'Error loading templates',
+        title: t('ideas:templates.error_loading'),
         variant: 'destructive'
       });
     } finally {
@@ -102,13 +103,13 @@ export function IdeaTemplatesDialog({
 
   const getCategoryName = (category: string) => {
     const categoryMap = {
-      technology: isRTL ? 'التكنولوجيا' : 'Technology',
-      process: isRTL ? 'العمليات' : 'Process',
-      digital: isRTL ? 'التحول الرقمي' : 'Digital',
-      sustainability: isRTL ? 'الاستدامة' : 'Sustainability',
-      customer: isRTL ? 'العملاء' : 'Customer',
-      business: isRTL ? 'الأعمال' : 'Business',
-      general: isRTL ? 'عام' : 'General'
+      technology: t('ideas:templates.categories.technology'),
+      process: t('ideas:templates.categories.process'),
+      digital: t('ideas:templates.categories.digital'),
+      sustainability: t('ideas:templates.categories.sustainability'),
+      customer: t('ideas:templates.categories.customer'),
+      business: t('ideas:templates.categories.business'),
+      general: t('ideas:templates.categories.general')
     };
     return categoryMap[category as keyof typeof categoryMap] || category;
   };
@@ -122,10 +123,10 @@ export function IdeaTemplatesDialog({
     onSelectTemplate(template);
     onOpenChange(false);
     toast({
-      title: isRTL ? 'تم اختيار القالب' : 'Template selected',
-      description: isRTL ? 
-        `تم اختيار قالب "${template.name_ar}" بنجاح` : 
-        `"${template.name}" template selected successfully`
+      title: t('ideas:templates.template_selected'),
+      description: t('ideas:templates.template_selected_description', { 
+        name: isRTL ? template.name_ar : template.name 
+      })
     });
   };
 
@@ -135,13 +136,10 @@ export function IdeaTemplatesDialog({
         <DialogHeader>
           <DialogTitle className="text-2xl flex items-center gap-2">
             <Palette className="w-6 h-6" />
-            {isRTL ? 'قوالب الأفكار الابتكارية' : 'Innovation Idea Templates'}
+            {t('ideas:templates.title')}
           </DialogTitle>
           <p className="text-muted-foreground">
-            {isRTL ? 
-              'اختر قالباً لمساعدتك في صياغة فكرتك الابتكارية بشكل منظم وشامل' : 
-              'Choose a template to help you structure your innovative idea comprehensively'
-            }
+            {t('ideas:templates.description')}
           </p>
         </DialogHeader>
 
@@ -155,7 +153,7 @@ export function IdeaTemplatesDialog({
               className="gap-2"
             >
               <Lightbulb className="w-4 h-4" />
-              {isRTL ? 'جميع القوالب' : 'All Templates'}
+              {t('ideas:templates.all_templates')}
             </Button>
             {categories.map((category) => (
               <Button
@@ -220,7 +218,7 @@ export function IdeaTemplatesDialog({
                     {template.template_data?.sections && (
                       <div>
                         <p className="text-xs font-medium text-muted-foreground mb-2">
-                          {isRTL ? 'الأقسام المتضمنة:' : 'Included sections:'}
+                          {t('ideas:templates.included_sections')}
                         </p>
                         <div className="flex flex-wrap gap-1">
                           {template.template_data.sections.slice(0, 3).map((section: string, index: number) => (
@@ -231,7 +229,7 @@ export function IdeaTemplatesDialog({
                           ))}
                           {template.template_data.sections.length > 3 && (
                             <Badge variant="outline" className="text-xs">
-                              +{template.template_data.sections.length - 3} {isRTL ? 'المزيد' : 'more'}
+                              +{template.template_data.sections.length - 3} {t('ideas:templates.more')}
                             </Badge>
                           )}
                         </div>
@@ -245,7 +243,7 @@ export function IdeaTemplatesDialog({
                         variant="outline"
                       >
                         <Palette className="w-4 h-4" />
-                        {isRTL ? 'استخدام هذا القالب' : 'Use This Template'}
+                        {t('ideas:templates.use_template')}
                       </Button>
                     </div>
                   </CardContent>
@@ -256,13 +254,10 @@ export function IdeaTemplatesDialog({
             <div className="text-center py-12 text-muted-foreground">
               <Palette className="w-16 h-16 mx-auto mb-4 opacity-50" />
               <h3 className="text-lg font-medium mb-2">
-                {isRTL ? 'لا توجد قوالب' : 'No templates available'}
+                {t('ideas:templates.no_templates')}
               </h3>
               <p className="text-sm">
-                {isRTL ? 
-                  'لا توجد قوالب في هذه الفئة حالياً' : 
-                  'No templates are available in this category at the moment'
-                }
+                {t('ideas:templates.no_templates_description')}
               </p>
             </div>
           )}
@@ -270,7 +265,7 @@ export function IdeaTemplatesDialog({
 
         <div className="pt-4 border-t flex justify-end gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {isRTL ? 'إلغاء' : 'Cancel'}
+            {t('ideas:templates.cancel')}
           </Button>
         </div>
       </DialogContent>

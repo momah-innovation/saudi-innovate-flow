@@ -22,6 +22,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { getInitials } from '@/contexts/SystemSettingsContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface ProfileHeroProps {
   userProfile?: any;
@@ -37,13 +38,14 @@ export const EnhancedProfileHero = ({
   onNavigate
 }: ProfileHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [currentBadge, setCurrentBadge] = useState(0);
 
   const profileBadges = [
-    { icon: Award, label: isRTL ? 'مبتكر نشط' : 'Active Innovator', color: 'text-blue-400' },
-    { icon: Star, label: isRTL ? 'عضو مميز' : 'Featured Member', color: 'text-yellow-400' },
-    { icon: Shield, label: isRTL ? 'ملف موثق' : 'Verified Profile', color: 'text-green-400' },
-    { icon: Trophy, label: isRTL ? 'فائز بجوائز' : 'Award Winner', color: 'text-purple-400' }
+    { icon: Award, label: t('profile:hero.badges.active_innovator'), color: 'text-blue-400' },
+    { icon: Star, label: t('profile:hero.badges.featured_member'), color: 'text-yellow-400' },
+    { icon: Shield, label: t('profile:hero.badges.verified_profile'), color: 'text-green-400' },
+    { icon: Trophy, label: t('profile:hero.badges.award_winner'), color: 'text-purple-400' }
   ];
 
   const { setInterval: scheduleInterval } = useTimerManager();
@@ -80,7 +82,7 @@ export const EnhancedProfileHero = ({
               </div>
               <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                 <User className="w-3 h-3 mr-1" />
-                {isRTL ? 'الملف الشخصي' : 'Personal Profile'}
+                {t('profile:hero.personal_profile')}
               </Badge>
             </div>
 
@@ -104,7 +106,7 @@ export const EnhancedProfileHero = ({
 
             <div className="space-y-2">
               <h1 className="text-4xl md:text-5xl font-bold text-white">
-                {userProfile?.name_ar || (isRTL ? 'اسم المستخدم' : 'User Name')}
+                {userProfile?.name_ar || t('profile:hero.user_name')}
               </h1>
               
               {userProfile?.job_title && (
@@ -162,12 +164,12 @@ export const EnhancedProfileHero = ({
               {isEditing ? (
                 <>
                   <Shield className="w-5 h-5 mr-2" />
-                  {isRTL ? 'حفظ التغييرات' : 'Save Changes'}
+                  {t('profile:hero.save_changes')}
                 </>
               ) : (
                 <>
                   <Edit3 className="w-5 h-5 mr-2" />
-                  {isRTL ? 'تحرير الملف' : 'Edit Profile'}
+                  {t('profile:hero.edit_profile')}
                 </>
               )}
             </Button>
@@ -179,7 +181,7 @@ export const EnhancedProfileHero = ({
               className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
             >
               <Settings className="w-5 h-5 mr-2" />
-              {isRTL ? 'الإعدادات' : 'Settings'}
+              {t('profile:hero.settings')}
             </Button>
 
             <Button
@@ -189,7 +191,7 @@ export const EnhancedProfileHero = ({
               className="text-white hover:bg-white/10"
             >
               <Users className="w-5 h-5 mr-2" />
-              {isRTL ? 'لوحة التحكم' : 'Dashboard'}
+              {t('profile:hero.dashboard')}
             </Button>
           </div>
 
@@ -204,7 +206,7 @@ export const EnhancedProfileHero = ({
                         new Date().getFullYear() - new Date(userProfile.created_at).getFullYear() : 0}
                     </div>
                     <div className="text-sm text-white/70">
-                      {isRTL ? 'سنوات العضوية' : 'Years Member'}
+                      {t('profile:hero.years_member')}
                     </div>
                   </div>
                   
@@ -213,7 +215,7 @@ export const EnhancedProfileHero = ({
                       0
                     </div>
                     <div className="text-sm text-white/70">
-                      {isRTL ? 'أفكار مقدمة' : 'Ideas Submitted'}
+                      {t('profile:hero.ideas_submitted')}
                     </div>
                   </div>
                   
@@ -222,7 +224,7 @@ export const EnhancedProfileHero = ({
                       0
                     </div>
                     <div className="text-sm text-white/70">
-                      {isRTL ? 'نقاط الابتكار' : 'Innovation Points'}
+                      {t('profile:hero.innovation_points')}
                     </div>
                   </div>
                 </div>

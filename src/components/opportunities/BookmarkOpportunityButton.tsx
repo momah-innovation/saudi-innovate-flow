@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface BookmarkOpportunityButtonProps {
@@ -21,6 +22,7 @@ export const BookmarkOpportunityButton = ({
 }: BookmarkOpportunityButtonProps) => {
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useCurrentUser();
@@ -57,8 +59,8 @@ export const BookmarkOpportunityButton = ({
       
       if (!user) {
         toast({
-          title: isRTL ? 'خطأ' : 'Error',
-          description: isRTL ? 'يجب تسجيل الدخول أولاً' : 'Please log in to bookmark opportunities',
+          title: t('opportunities:messages.error'),
+          description: t('opportunities:messages.sign_in_to_bookmark'),
           variant: 'destructive',
         });
         return;
@@ -90,8 +92,8 @@ export const BookmarkOpportunityButton = ({
         });
 
         toast({
-          title: isRTL ? 'تم إلغاء الإشارة المرجعية' : 'Bookmark Removed',
-          description: isRTL ? 'تم إزالة الفرصة من الإشارات المرجعية' : 'Opportunity removed from bookmarks',
+          title: t('opportunities:messages.bookmark_removed'),
+          description: t('opportunities:messages.bookmark_removed_desc'),
         });
       } else {
         // Add bookmark
@@ -120,15 +122,15 @@ export const BookmarkOpportunityButton = ({
         });
 
         toast({
-          title: isRTL ? 'تم حفظ الإشارة المرجعية' : 'Bookmarked',
-          description: isRTL ? 'تم حفظ الفرصة في الإشارات المرجعية' : 'Opportunity saved to bookmarks',
+          title: t('opportunities:messages.bookmarked'),
+          description: t('opportunities:messages.bookmarked_desc'),
         });
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحديث الإشارة المرجعية' : 'Failed to update bookmark',
+        title: t('opportunities:messages.error'),
+        description: t('opportunities:messages.bookmark_failed'),
         variant: 'destructive',
       });
     } finally {
@@ -152,8 +154,8 @@ export const BookmarkOpportunityButton = ({
       {showText && (
         <span className={isRTL ? "mr-2" : "ml-2"}>
           {isBookmarked 
-            ? (isRTL ? 'محفوظ' : 'Saved')
-            : (isRTL ? 'حفظ' : 'Save')
+            ? t('opportunities:bookmark.saved')
+            : t('opportunities:bookmark.save')
           }
         </span>
       )}

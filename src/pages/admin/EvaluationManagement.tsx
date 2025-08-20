@@ -42,6 +42,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface EvaluationCriteria {
   id: string;
@@ -80,6 +81,7 @@ interface EvaluationRule {
 const EvaluationManagement = () => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   
   // State management
   const [criteria, setCriteria] = useState<EvaluationCriteria[]>([]);
@@ -419,13 +421,13 @@ const EvaluationManagement = () => {
   if (loading) {
     return (
       <PageLayout
-          title={isRTL ? 'إدارة نظام التقييم' : 'Evaluation System Management'}
-          description={isRTL ? 'جاري التحميل...' : 'Loading...'}
+          title={t('admin:evaluation.title')}
+          description={t('admin:common.loading')}
         >
           <div className="min-h-[400px] flex items-center justify-center">
             <div className="text-center space-y-4">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="text-sm text-muted-foreground">{isRTL ? 'جاري تحميل البيانات...' : 'Loading data...'}</p>
+              <p className="text-sm text-muted-foreground">{t('admin:evaluation.loading')}</p>
             </div>
           </div>
         </PageLayout>
@@ -436,10 +438,10 @@ const EvaluationManagement = () => {
     <div className="container mx-auto px-4 py-8">
       <AdminBreadcrumb />
       <PageLayout
-        title={isRTL ? 'إدارة نظام التقييم' : 'Evaluation System Management'}
-        description={isRTL ? 'إدارة معايير التقييم والقوالب والقواعد' : 'Manage evaluation criteria, templates, and rules'}
+        title={t('admin:evaluation.title')}
+        description={t('admin:evaluation.description')}
         primaryAction={{
-          label: isRTL ? 'إعدادات النظام' : 'System Settings',
+          label: t('admin:evaluation.system_settings'),
           onClick: () => {},
           icon: <Settings className="w-4 h-4" />
         }}
@@ -450,7 +452,7 @@ const EvaluationManagement = () => {
             <Card>
               <CardContent className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{isRTL ? 'المعايير النشطة' : 'Active Criteria'}</p>
+                  <p className="text-sm text-muted-foreground">{t('admin:evaluation.metrics.active_criteria')}</p>
                   <p className="text-2xl font-bold">{criteria.length}</p>
                 </div>
                 <Target className="h-8 w-8 text-primary" />
@@ -459,7 +461,7 @@ const EvaluationManagement = () => {
             <Card>
               <CardContent className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{isRTL ? 'القوالب' : 'Templates'}</p>
+                  <p className="text-sm text-muted-foreground">{t('admin:evaluation.metrics.templates')}</p>
                   <p className="text-2xl font-bold">{templates.length}</p>
                 </div>
                 <FileText className="h-8 w-8 text-success" />
@@ -468,7 +470,7 @@ const EvaluationManagement = () => {
             <Card>
               <CardContent className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{isRTL ? 'القواعد النشطة' : 'Active Rules'}</p>
+                  <p className="text-sm text-muted-foreground">{t('admin:evaluation.metrics.active_rules')}</p>
                   <p className="text-2xl font-bold">{rules.filter(r => r.is_active).length}</p>
                 </div>
                 <Scale className="h-8 w-8 text-warning" />
@@ -477,7 +479,7 @@ const EvaluationManagement = () => {
             <Card>
               <CardContent className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{isRTL ? 'متوسط الوزن' : 'Avg Weight'}</p>
+                  <p className="text-sm text-muted-foreground">{t('admin:evaluation.metrics.avg_weight')}</p>
                   <p className="text-2xl font-bold">{criteria.length > 0 ? Math.round(criteria.reduce((sum, c) => sum + c.weight, 0) / criteria.length) : 0}%</p>
                 </div>
                 <BarChart3 className="h-8 w-8 text-info" />
@@ -489,89 +491,89 @@ const EvaluationManagement = () => {
             <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="criteria" className="flex items-center gap-2">
                 <Target className="h-4 w-4" />
-                {isRTL ? 'المعايير' : 'Criteria'}
+                {t('admin:evaluation.tabs.criteria')}
               </TabsTrigger>
               <TabsTrigger value="templates" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
-                {isRTL ? 'القوالب' : 'Templates'}
+                {t('admin:evaluation.tabs.templates')}
               </TabsTrigger>
               <TabsTrigger value="rules" className="flex items-center gap-2">
                 <Scale className="h-4 w-4" />
-                {isRTL ? 'القواعد' : 'Rules'}
+                {t('admin:evaluation.tabs.rules')}
               </TabsTrigger>
               <TabsTrigger value="scorecards" className="flex items-center gap-2">
                 <ClipboardList className="h-4 w-4" />
-                {isRTL ? 'بطاقات النتائج' : 'Scorecards'}
+                {t('admin:evaluation.tabs.scorecards')}
               </TabsTrigger>
               <TabsTrigger value="framework" className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
-                {isRTL ? 'الإطار' : 'Framework'}
+                {t('admin:evaluation.tabs.framework')}
               </TabsTrigger>
               <TabsTrigger value="analytics" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
-                {isRTL ? 'التحليلات' : 'Analytics'}
+                {t('admin:evaluation.tabs.analytics')}
               </TabsTrigger>
             </TabsList>
 
             {/* Criteria Tab */}
             <TabsContent value="criteria" className="space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">{isRTL ? 'معايير التقييم' : 'Evaluation Criteria'}</h3>
+                <h3 className="text-lg font-semibold">{t('admin:evaluation.criteria.title')}</h3>
                 <Dialog open={isCriteriaDialogOpen} onOpenChange={setIsCriteriaDialogOpen}>
                   <DialogTrigger asChild>
                     <Button onClick={resetCriteriaForm}>
                       <Plus className="w-4 h-4 mr-2" />
-                      {isRTL ? 'إضافة معيار' : 'Add Criteria'}
+                      {t('admin:evaluation.criteria.add')}
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl">
                     <DialogHeader>
                       <DialogTitle>
-                        {editingItem ? (isRTL ? 'تعديل المعيار' : 'Edit Criteria') : (isRTL ? 'إضافة معيار جديد' : 'Add New Criteria')}
+                        {editingItem ? t('admin:evaluation.criteria.edit') : t('admin:evaluation.criteria.add_new')}
                       </DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="criteria-name">{isRTL ? 'اسم المعيار' : 'Criteria Name'}</Label>
+                          <Label htmlFor="criteria-name">{t('admin:evaluation.criteria.name')}</Label>
                           <Input
                             id="criteria-name"
                             value={criteriaForm.name}
                             onChange={(e) => setCriteriaForm({...criteriaForm, name: e.target.value})}
-                            placeholder={isRTL ? 'أدخل اسم المعيار' : 'Enter criteria name'}
+                            placeholder={t('admin:evaluation.criteria.name_placeholder')}
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="criteria-category">{isRTL ? 'الفئة' : 'Category'}</Label>
+                          <Label htmlFor="criteria-category">{t('admin:evaluation.criteria.category')}</Label>
                           <Select value={criteriaForm.category} onValueChange={(value) => setCriteriaForm({...criteriaForm, category: value})}>
                             <SelectTrigger>
-                              <SelectValue placeholder={isRTL ? 'اختر الفئة' : 'Select category'} />
+                              <SelectValue placeholder={t('admin:evaluation.criteria.category_placeholder')} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="technical">{isRTL ? 'تقني' : 'Technical'}</SelectItem>
-                              <SelectItem value="financial">{isRTL ? 'مالي' : 'Financial'}</SelectItem>
-                              <SelectItem value="strategic">{isRTL ? 'استراتيجي' : 'Strategic'}</SelectItem>
-                              <SelectItem value="innovation">{isRTL ? 'ابتكار' : 'Innovation'}</SelectItem>
-                              <SelectItem value="market">{isRTL ? 'سوق' : 'Market'}</SelectItem>
+                              <SelectItem value="technical">{t('admin:evaluation.criteria.categories.technical')}</SelectItem>
+                              <SelectItem value="financial">{t('admin:evaluation.criteria.categories.financial')}</SelectItem>
+                              <SelectItem value="strategic">{t('admin:evaluation.criteria.categories.strategic')}</SelectItem>
+                              <SelectItem value="innovation">{t('admin:evaluation.criteria.categories.innovation')}</SelectItem>
+                              <SelectItem value="market">{t('admin:evaluation.criteria.categories.market')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="criteria-description">{isRTL ? 'الوصف' : 'Description'}</Label>
+                        <Label htmlFor="criteria-description">{t('admin:evaluation.criteria.description')}</Label>
                         <Textarea
                           id="criteria-description"
                           value={criteriaForm.description}
                           onChange={(e) => setCriteriaForm({...criteriaForm, description: e.target.value})}
-                          placeholder={isRTL ? 'أدخل وصف المعيار' : 'Enter criteria description'}
+                          placeholder={t('admin:evaluation.criteria.description_placeholder')}
                           rows={3}
                         />
                       </div>
 
                       <div className="grid grid-cols-3 gap-4">
                         <div className="space-y-2">
-                          <Label>{isRTL ? 'الوزن (%)' : 'Weight (%)'}</Label>
+                          <Label>{t('admin:evaluation.criteria.weight')}</Label>
                           <div className="px-3">
                             <Slider
                               value={[criteriaForm.weight]}
@@ -587,7 +589,7 @@ const EvaluationManagement = () => {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <Label>{isRTL ? 'الحد الأدنى' : 'Min Score'}</Label>
+                          <Label>{t('admin:evaluation.criteria.min_score')}</Label>
                           <Input
                             type="number"
                             value={criteriaForm.min_score}
@@ -597,7 +599,7 @@ const EvaluationManagement = () => {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label>{isRTL ? 'الحد الأقصى' : 'Max Score'}</Label>
+                          <Label>{t('admin:evaluation.criteria.max_score')}</Label>
                           <Input
                             type="number"
                             value={criteriaForm.max_score}
@@ -609,12 +611,12 @@ const EvaluationManagement = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="scoring-guide">{isRTL ? 'دليل التقييم' : 'Scoring Guide'}</Label>
+                        <Label htmlFor="scoring-guide">{t('admin:evaluation.criteria.scoring_guide')}</Label>
                         <Textarea
                           id="scoring-guide"
                           value={criteriaForm.scoring_guide}
                           onChange={(e) => setCriteriaForm({...criteriaForm, scoring_guide: e.target.value})}
-                          placeholder={isRTL ? 'أدخل دليل التقييم المفصل' : 'Enter detailed scoring guide'}
+                          placeholder={t('admin:evaluation.criteria.scoring_guide_placeholder')}
                           rows={4}
                         />
                       </div>
@@ -625,16 +627,16 @@ const EvaluationManagement = () => {
                           checked={criteriaForm.is_required}
                           onCheckedChange={(checked) => setCriteriaForm({...criteriaForm, is_required: checked})}
                         />
-                        <Label htmlFor="is-required">{isRTL ? 'معيار إجباري' : 'Required Criteria'}</Label>
+                        <Label htmlFor="is-required">{t('admin:evaluation.criteria.required')}</Label>
                       </div>
 
                       <div className="flex justify-end space-x-2">
                         <Button variant="outline" onClick={() => setIsCriteriaDialogOpen(false)}>
-                          {isRTL ? 'إلغاء' : 'Cancel'}
+                          {t('admin:evaluation.common.cancel')}
                         </Button>
                         <Button onClick={saveCriteria}>
                           <Save className="w-4 h-4 mr-2" />
-                          {isRTL ? 'حفظ' : 'Save'}
+                          {t('admin:evaluation.common.save')}
                         </Button>
                       </div>
                     </div>
@@ -655,13 +657,13 @@ const EvaluationManagement = () => {
                               {criterion.category}
                             </Badge>
                             <Badge variant="outline">
-                              {isRTL ? 'الوزن:' : 'Weight:'} {criterion.weight}%
+                              {t('admin:evaluation.common.weight_label')} {criterion.weight}%
                             </Badge>
                             <Badge variant="outline">
                               {criterion.min_score}-{criterion.max_score}
                             </Badge>
                             {criterion.is_required && (
-                              <Badge variant="destructive">{isRTL ? 'إجباري' : 'Required'}</Badge>
+                              <Badge variant="destructive">{t('admin:evaluation.criteria.required')}</Badge>
                             )}
                           </div>
                         </div>
@@ -677,15 +679,15 @@ const EvaluationManagement = () => {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>{isRTL ? 'حذف المعيار' : 'Delete Criteria'}</AlertDialogTitle>
+                                <AlertDialogTitle>{t('admin:evaluation.criteria.delete_title')}</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  {isRTL ? 'هل أنت متأكد من حذف هذا المعيار؟ لا يمكن التراجع عن هذا الإجراء.' : 'Are you sure you want to delete this criteria? This action cannot be undone.'}
+                                  {t('admin:evaluation.criteria.delete_confirm')}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>{isRTL ? 'إلغاء' : 'Cancel'}</AlertDialogCancel>
+                                <AlertDialogCancel>{t('admin:evaluation.common.cancel')}</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => deleteCriteria(criterion.id)}>
-                                  {isRTL ? 'حذف' : 'Delete'}
+                                  {t('admin:evaluation.common.delete')}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -696,7 +698,7 @@ const EvaluationManagement = () => {
                     {criterion.scoring_guide && (
                       <CardContent>
                         <div className="space-y-2">
-                          <Label className="text-sm font-medium">{isRTL ? 'دليل التقييم:' : 'Scoring Guide:'}</Label>
+                          <Label className="text-sm font-medium">{t('admin:evaluation.criteria.scoring_guide')}</Label>
                           <p className="text-sm text-muted-foreground bg-muted p-3 rounded-md">
                             {criterion.scoring_guide}
                           </p>
@@ -711,60 +713,60 @@ const EvaluationManagement = () => {
             {/* Templates Tab */}
             <TabsContent value="templates" className="space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">{isRTL ? 'قوالب التقييم' : 'Evaluation Templates'}</h3>
+                <h3 className="text-lg font-semibold">{t('admin:evaluation.templates.title')}</h3>
                 <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
                   <DialogTrigger asChild>
                     <Button onClick={resetTemplateForm}>
                       <Plus className="w-4 h-4 mr-2" />
-                      {isRTL ? 'إضافة قالب' : 'Add Template'}
+                      {t('admin:evaluation.templates.add')}
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl">
                     <DialogHeader>
                       <DialogTitle>
-                        {editingItem ? (isRTL ? 'تعديل القالب' : 'Edit Template') : (isRTL ? 'إضافة قالب جديد' : 'Add New Template')}
+                        {editingItem ? t('admin:evaluation.templates.edit') : t('admin:evaluation.templates.add_new')}
                       </DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="template-name">{isRTL ? 'اسم القالب' : 'Template Name'}</Label>
+                          <Label htmlFor="template-name">{t('admin:evaluation.templates.name')}</Label>
                           <Input
                             id="template-name"
                             value={templateForm.name}
                             onChange={(e) => setTemplateForm({...templateForm, name: e.target.value})}
-                            placeholder={isRTL ? 'أدخل اسم القالب' : 'Enter template name'}
+                            placeholder={t('admin:evaluation.templates.name_placeholder')}
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="evaluation-type">{isRTL ? 'نوع التقييم' : 'Evaluation Type'}</Label>
+                          <Label htmlFor="evaluation-type">{t('admin:evaluation.templates.type')}</Label>
                           <Select value={templateForm.evaluation_type} onValueChange={(value) => setTemplateForm({...templateForm, evaluation_type: value})}>
                             <SelectTrigger>
-                              <SelectValue placeholder={isRTL ? 'اختر النوع' : 'Select type'} />
+                              <SelectValue placeholder={t('admin:evaluation.templates.type_placeholder')} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="innovation">{isRTL ? 'ابتكار' : 'Innovation'}</SelectItem>
-                              <SelectItem value="feasibility">{isRTL ? 'جدوى' : 'Feasibility'}</SelectItem>
-                              <SelectItem value="impact">{isRTL ? 'تأثير' : 'Impact'}</SelectItem>
-                              <SelectItem value="comprehensive">{isRTL ? 'شامل' : 'Comprehensive'}</SelectItem>
+                              <SelectItem value="innovation">{t('admin:evaluation.templates.types.innovation')}</SelectItem>
+                              <SelectItem value="feasibility">{t('admin:evaluation.templates.types.feasibility')}</SelectItem>
+                              <SelectItem value="impact">{t('admin:evaluation.templates.types.impact')}</SelectItem>
+                              <SelectItem value="comprehensive">{t('admin:evaluation.templates.types.comprehensive')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="template-description">{isRTL ? 'الوصف' : 'Description'}</Label>
+                        <Label htmlFor="template-description">{t('admin:evaluation.templates.description')}</Label>
                         <Textarea
                           id="template-description"
                           value={templateForm.description}
                           onChange={(e) => setTemplateForm({...templateForm, description: e.target.value})}
-                          placeholder={isRTL ? 'أدخل وصف القالب' : 'Enter template description'}
+                          placeholder={t('admin:evaluation.templates.description_placeholder')}
                           rows={3}
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label>{isRTL ? 'المعايير المحددة' : 'Selected Criteria'}</Label>
+                        <Label>{t('admin:evaluation.templates.selected_criteria')}</Label>
                         <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
                           {criteria.map((criterion) => (
                             <div key={criterion.id} className="flex items-center space-x-2 mb-2">
@@ -801,16 +803,16 @@ const EvaluationManagement = () => {
                           checked={templateForm.is_default}
                           onCheckedChange={(checked) => setTemplateForm({...templateForm, is_default: checked})}
                         />
-                        <Label htmlFor="is-default">{isRTL ? 'قالب افتراضي' : 'Default Template'}</Label>
+                        <Label htmlFor="is-default">{t('admin:evaluation.templates.default')}</Label>
                       </div>
 
                       <div className="flex justify-end space-x-2">
                         <Button variant="outline" onClick={() => setIsTemplateDialogOpen(false)}>
-                          {isRTL ? 'إلغاء' : 'Cancel'}
+                          {t('admin:evaluation.common.cancel')}
                         </Button>
                         <Button onClick={saveTemplate}>
                           <Save className="w-4 h-4 mr-2" />
-                          {isRTL ? 'حفظ' : 'Save'}
+                          {t('admin:evaluation.common.save')}
                         </Button>
                       </div>
                     </div>
@@ -827,14 +829,14 @@ const EvaluationManagement = () => {
                           <div className="flex items-center gap-2">
                             <CardTitle className="text-lg">{template.name}</CardTitle>
                             {template.is_default && (
-                              <Badge className="bg-primary/10 text-primary">{isRTL ? 'افتراضي' : 'Default'}</Badge>
+                              <Badge className="bg-primary/10 text-primary">{t('admin:evaluation.templates.default')}</Badge>
                             )}
                           </div>
                           <CardDescription>{template.description}</CardDescription>
                           <div className="flex items-center gap-2">
                             <Badge variant="outline">{template.evaluation_type}</Badge>
                             <Badge variant="outline">
-                              {template.criteria_ids.length} {isRTL ? 'معيار' : 'criteria'}
+                              {template.criteria_ids.length} {t('admin:evaluation.templates.criteria_count')}
                             </Badge>
                           </div>
                         </div>
@@ -850,15 +852,15 @@ const EvaluationManagement = () => {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>{isRTL ? 'حذف القالب' : 'Delete Template'}</AlertDialogTitle>
+                                <AlertDialogTitle>{t('admin:evaluation.templates.delete_title')}</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  {isRTL ? 'هل أنت متأكد من حذف هذا القالب؟ لا يمكن التراجع عن هذا الإجراء.' : 'Are you sure you want to delete this template? This action cannot be undone.'}
+                                  {t('admin:evaluation.templates.delete_confirm')}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>{isRTL ? 'إلغاء' : 'Cancel'}</AlertDialogCancel>
+                                <AlertDialogCancel>{t('admin:evaluation.common.cancel')}</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => deleteTemplate(template.id)}>
-                                  {isRTL ? 'حذف' : 'Delete'}
+                                  {t('admin:evaluation.common.delete')}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -866,9 +868,9 @@ const EvaluationManagement = () => {
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium">{isRTL ? 'المعايير المضمنة:' : 'Included Criteria:'}</Label>
+                      <CardContent>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">{t('admin:evaluation.templates.included_criteria')}</Label>
                         <div className="flex flex-wrap gap-2">
                           {template.criteria_ids.map(criteriaId => {
                             const criterion = criteria.find(c => c.id === criteriaId);
@@ -889,48 +891,48 @@ const EvaluationManagement = () => {
             {/* Rules Tab */}
             <TabsContent value="rules" className="space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">{isRTL ? 'قواعد التقييم' : 'Evaluation Rules'}</h3>
+                <h3 className="text-lg font-semibold">{t('admin:evaluation.rules.title')}</h3>
                 <Dialog open={isRuleDialogOpen} onOpenChange={setIsRuleDialogOpen}>
                   <DialogTrigger asChild>
                     <Button onClick={resetRuleForm}>
                       <Plus className="w-4 h-4 mr-2" />
-                      {isRTL ? 'إضافة قاعدة' : 'Add Rule'}
+                      {t('admin:evaluation.rules.add')}
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl">
                     <DialogHeader>
                       <DialogTitle>
-                        {editingItem ? (isRTL ? 'تعديل القاعدة' : 'Edit Rule') : (isRTL ? 'إضافة قاعدة جديدة' : 'Add New Rule')}
+                        {editingItem ? t('admin:evaluation.rules.edit') : t('admin:evaluation.rules.add_new')}
                       </DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="rule-name">{isRTL ? 'اسم القاعدة' : 'Rule Name'}</Label>
+                        <Label htmlFor="rule-name">{t('admin:evaluation.rules.name')}</Label>
                         <Input
                           id="rule-name"
                           value={ruleForm.name}
                           onChange={(e) => setRuleForm({...ruleForm, name: e.target.value})}
-                          placeholder={isRTL ? 'أدخل اسم القاعدة' : 'Enter rule name'}
+                          placeholder={t('admin:evaluation.rules.name_placeholder')}
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label>{isRTL ? 'نوع الشرط' : 'Condition Type'}</Label>
+                          <Label>{t('admin:evaluation.rules.condition_type')}</Label>
                           <Select value={ruleForm.condition_type} onValueChange={(value) => setRuleForm({...ruleForm, condition_type: value})}>
                             <SelectTrigger>
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="min_score">{isRTL ? 'الحد الأدنى للنتيجة' : 'Minimum Score'}</SelectItem>
-                              <SelectItem value="max_score">{isRTL ? 'الحد الأقصى للنتيجة' : 'Maximum Score'}</SelectItem>
-                              <SelectItem value="avg_score">{isRTL ? 'متوسط النتيجة' : 'Average Score'}</SelectItem>
-                              <SelectItem value="criteria_score">{isRTL ? 'نتيجة معيار محدد' : 'Specific Criteria Score'}</SelectItem>
+                              <SelectItem value="min_score">{t('admin:evaluation.rules.conditions.min_score')}</SelectItem>
+                              <SelectItem value="max_score">{t('admin:evaluation.rules.conditions.max_score')}</SelectItem>
+                              <SelectItem value="avg_score">{t('admin:evaluation.rules.conditions.avg_score')}</SelectItem>
+                              <SelectItem value="criteria_score">{t('admin:evaluation.rules.conditions.criteria_score')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>{isRTL ? 'قيمة الشرط' : 'Condition Value'}</Label>
+                          <Label>{t('admin:evaluation.rules.condition_value')}</Label>
                           <Input
                             type="number"
                             value={ruleForm.condition_value}
@@ -943,22 +945,22 @@ const EvaluationManagement = () => {
 
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label>{isRTL ? 'نوع الإجراء' : 'Action Type'}</Label>
+                          <Label>{t('admin:evaluation.rules.action_type')}</Label>
                           <Select value={ruleForm.action_type} onValueChange={(value) => setRuleForm({...ruleForm, action_type: value})}>
                             <SelectTrigger>
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="auto_approve">{isRTL ? 'موافقة تلقائية' : 'Auto Approve'}</SelectItem>
-                              <SelectItem value="auto_reject">{isRTL ? 'رفض تلقائي' : 'Auto Reject'}</SelectItem>
-                              <SelectItem value="flag_review">{isRTL ? 'تحديد للمراجعة' : 'Flag for Review'}</SelectItem>
-                              <SelectItem value="assign_evaluator">{isRTL ? 'تعيين مقيم' : 'Assign Evaluator'}</SelectItem>
-                              <SelectItem value="send_notification">{isRTL ? 'إرسال إشعار' : 'Send Notification'}</SelectItem>
+                              <SelectItem value="auto_approve">{t('admin:evaluation.rules.actions.auto_approve')}</SelectItem>
+                              <SelectItem value="auto_reject">{t('admin:evaluation.rules.actions.auto_reject')}</SelectItem>
+                              <SelectItem value="flag_review">{t('admin:evaluation.rules.actions.flag_review')}</SelectItem>
+                              <SelectItem value="assign_evaluator">{t('admin:evaluation.rules.actions.assign_evaluator')}</SelectItem>
+                              <SelectItem value="send_notification">{t('admin:evaluation.rules.actions.send_notification')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>{isRTL ? 'الأولوية' : 'Priority'}</Label>
+                          <Label>{t('admin:evaluation.rules.priority')}</Label>
                           <Input
                             type="number"
                             value={ruleForm.priority}
@@ -970,11 +972,11 @@ const EvaluationManagement = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label>{isRTL ? 'قيمة الإجراء' : 'Action Value'}</Label>
+                        <Label>{t('admin:evaluation.rules.action_value')}</Label>
                         <Input
                           value={ruleForm.action_value}
                           onChange={(e) => setRuleForm({...ruleForm, action_value: e.target.value})}
-                          placeholder={isRTL ? 'أدخل قيمة الإجراء (اختياري)' : 'Enter action value (optional)'}
+                          placeholder={t('admin:evaluation.rules.action_value_placeholder')}
                         />
                       </div>
 
@@ -984,16 +986,16 @@ const EvaluationManagement = () => {
                           checked={ruleForm.is_active}
                           onCheckedChange={(checked) => setRuleForm({...ruleForm, is_active: checked})}
                         />
-                        <Label htmlFor="rule-active">{isRTL ? 'قاعدة نشطة' : 'Active Rule'}</Label>
+                        <Label htmlFor="rule-active">{t('admin:evaluation.rules.active')}</Label>
                       </div>
 
                       <div className="flex justify-end space-x-2">
                         <Button variant="outline" onClick={() => setIsRuleDialogOpen(false)}>
-                          {isRTL ? 'إلغاء' : 'Cancel'}
+                          {t('admin:evaluation.common.cancel')}
                         </Button>
                         <Button onClick={saveRule}>
                           <Save className="w-4 h-4 mr-2" />
-                          {isRTL ? 'حفظ' : 'Save'}
+                          {t('admin:evaluation.common.save')}
                         </Button>
                       </div>
                     </div>
@@ -1010,16 +1012,16 @@ const EvaluationManagement = () => {
                           <div className="flex items-center gap-2">
                             <CardTitle className="text-lg">{rule.name}</CardTitle>
                             <Badge variant={rule.is_active ? 'default' : 'secondary'}>
-                              {rule.is_active ? (isRTL ? 'نشط' : 'Active') : (isRTL ? 'غير نشط' : 'Inactive')}
+                              {rule.is_active ? t('admin:evaluation.rules.status_active') : t('admin:evaluation.rules.status_inactive')}
                             </Badge>
                             <Badge variant="outline">
-                              {isRTL ? 'أولوية' : 'Priority'} {rule.priority}
+                              {t('admin:evaluation.rules.priority')} {rule.priority}
                             </Badge>
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            <span className="font-medium">{isRTL ? 'الشرط:' : 'Condition:'}</span> {rule.condition_type} ≥ {rule.condition_value}
+                            <span className="font-medium">{t('admin:evaluation.rules.condition')}</span> {rule.condition_type} ≥ {rule.condition_value}
                             <br />
-                            <span className="font-medium">{isRTL ? 'الإجراء:' : 'Action:'}</span> {rule.action_type}
+                            <span className="font-medium">{t('admin:evaluation.rules.action')}</span> {rule.action_type}
                             {rule.action_value && ` (${rule.action_value})`}
                           </div>
                         </div>
@@ -1035,15 +1037,15 @@ const EvaluationManagement = () => {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>{isRTL ? 'حذف القاعدة' : 'Delete Rule'}</AlertDialogTitle>
+                                <AlertDialogTitle>{t('admin:evaluation.rules.delete_title')}</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  {isRTL ? 'هل أنت متأكد من حذف هذه القاعدة؟ لا يمكن التراجع عن هذا الإجراء.' : 'Are you sure you want to delete this rule? This action cannot be undone.'}
+                                  {t('admin:evaluation.rules.delete_confirm')}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>{isRTL ? 'إلغاء' : 'Cancel'}</AlertDialogCancel>
+                                <AlertDialogCancel>{t('admin:evaluation.common.cancel')}</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => deleteRule(rule.id)}>
-                                  {isRTL ? 'حذف' : 'Delete'}
+                                  {t('admin:evaluation.common.delete')}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -1061,14 +1063,14 @@ const EvaluationManagement = () => {
               <div className="text-center py-12">
                 <ClipboardList className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">
-                  {isRTL ? 'بطاقات النتائج' : 'Evaluation Scorecards'}
+                  {t('admin:evaluation.scorecards.title')}
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  {isRTL ? 'إدارة وتخصيص بطاقات النتائج لتقييم الأفكار' : 'Manage and customize scorecards for idea evaluation'}
+                  {t('admin:evaluation.scorecards.description')}
                 </p>
                 <Button>
                   <Plus className="w-4 h-4 mr-2" />
-                  {isRTL ? 'إنشاء بطاقة نتائج' : 'Create Scorecard'}
+                  {t('admin:evaluation.scorecards.create')}
                 </Button>
               </div>
             </TabsContent>
@@ -1080,39 +1082,39 @@ const EvaluationManagement = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <BookOpen className="h-5 w-5" />
-                      {isRTL ? 'إطار التقييم' : 'Evaluation Framework'}
+                      {t('admin:evaluation.framework.title')}
                     </CardTitle>
                     <CardDescription>
-                      {isRTL ? 'تكوين الإطار العام لنظام التقييم' : 'Configure the overall evaluation system framework'}
+                      {t('admin:evaluation.framework.description')}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label>{isRTL ? 'نوع المقياس' : 'Scale Type'}</Label>
+                        <Label>{t('admin:evaluation.framework.scale_type')}</Label>
                         <Select defaultValue="1-10">
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="1-5">1-5 {isRTL ? 'نقاط' : 'Points'}</SelectItem>
-                            <SelectItem value="1-10">1-10 {isRTL ? 'نقاط' : 'Points'}</SelectItem>
-                            <SelectItem value="1-100">1-100 {isRTL ? 'نقطة' : 'Points'}</SelectItem>
-                            <SelectItem value="percentage">{isRTL ? 'نسبة مئوية' : 'Percentage'}</SelectItem>
+                            <SelectItem value="1-5">{t('admin:evaluation.framework.scales.points_5')}</SelectItem>
+                            <SelectItem value="1-10">{t('admin:evaluation.framework.scales.points_10')}</SelectItem>
+                            <SelectItem value="1-100">{t('admin:evaluation.framework.scales.points_100')}</SelectItem>
+                            <SelectItem value="percentage">{t('admin:evaluation.framework.scales.percentage')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label>{isRTL ? 'طريقة حساب النتيجة النهائية' : 'Final Score Calculation'}</Label>
+                        <Label>{t('admin:evaluation.framework.final_score')}</Label>
                         <Select defaultValue="weighted_average">
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="weighted_average">{isRTL ? 'متوسط مرجح' : 'Weighted Average'}</SelectItem>
-                            <SelectItem value="simple_average">{isRTL ? 'متوسط بسيط' : 'Simple Average'}</SelectItem>
-                            <SelectItem value="sum">{isRTL ? 'مجموع' : 'Sum'}</SelectItem>
-                            <SelectItem value="custom">{isRTL ? 'مخصص' : 'Custom'}</SelectItem>
+                            <SelectItem value="weighted_average">{t('admin:evaluation.framework.calculations.weighted_average')}</SelectItem>
+                            <SelectItem value="simple_average">{t('admin:evaluation.framework.calculations.simple_average')}</SelectItem>
+                            <SelectItem value="sum">{t('admin:evaluation.framework.calculations.sum')}</SelectItem>
+                            <SelectItem value="custom">{t('admin:evaluation.framework.calculations.custom')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -1124,21 +1126,21 @@ const EvaluationManagement = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Calculator className="h-5 w-5" />
-                      {isRTL ? 'حدود التقييم' : 'Evaluation Thresholds'}
+                      {t('admin:evaluation.framework.thresholds')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-3 gap-4">
                       <div className="space-y-2">
-                        <Label className="text-success">{isRTL ? 'حد الموافقة (ممتاز)' : 'Approval Threshold (Excellent)'}</Label>
+                        <Label className="text-success">{t('admin:evaluation.framework.approval_threshold')}</Label>
                         <Input type="number" defaultValue="8" min="1" max="10" />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-warning">{isRTL ? 'حد المراجعة (جيد)' : 'Review Threshold (Good)'}</Label>
+                        <Label className="text-warning">{t('admin:evaluation.framework.review_threshold')}</Label>
                         <Input type="number" defaultValue="6" min="1" max="10" />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-destructive">{isRTL ? 'حد الرفض (ضعيف)' : 'Rejection Threshold (Poor)'}</Label>
+                        <Label className="text-destructive">{t('admin:evaluation.framework.rejection_threshold')}</Label>
                         <Input type="number" defaultValue="4" min="1" max="10" />
                       </div>
                     </div>
@@ -1154,7 +1156,7 @@ const EvaluationManagement = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <BarChart3 className="h-5 w-5" />
-                      {isRTL ? 'إحصائيات المعايير' : 'Criteria Statistics'}
+                      {t('admin:evaluation.analytics.criteria_stats')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -1176,26 +1178,26 @@ const EvaluationManagement = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <TrendingUp className="h-5 w-5" />
-                      {isRTL ? 'إحصائيات الاستخدام' : 'Usage Statistics'}
+                      {t('admin:evaluation.analytics.usage_stats')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'إجمالي التقييمات' : 'Total Evaluations'}</span>
+                        <span>{t('admin:evaluation.analytics.total_evaluations')}</span>
                         <span className="font-bold">124</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'متوسط النتيجة' : 'Average Score'}</span>
+                        <span>{t('admin:evaluation.analytics.average_score')}</span>
                         <span className="font-bold">7.2/10</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'معدل الموافقة' : 'Approval Rate'}</span>
+                        <span>{t('admin:evaluation.analytics.approval_rate')}</span>
                         <span className="font-bold">68%</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'وقت التقييم المتوسط' : 'Avg Evaluation Time'}</span>
-                        <span className="font-bold">{isRTL ? '3.5 أيام' : '3.5 days'}</span>
+                        <span>{t('admin:evaluation.analytics.avg_evaluation_time')}</span>
+                        <span className="font-bold">3.5 {t('admin:evaluation.analytics.days')}</span>
                       </div>
                     </div>
                   </CardContent>

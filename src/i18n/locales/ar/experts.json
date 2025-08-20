@@ -1,0 +1,45 @@
+{
+    "title": "الخبراء",
+    "network": {
+        "title": "شبكة الخبراء",
+        "description": "تعرف على الخبراء المرشدين في التحديات",
+        "total_experts": "إجمالي الخبراء",
+        "available_now": "متاحون الآن",
+        "years_experience": "سنوات خبرة",
+        "avg_rating": "تقييم متوسط",
+        "featured_expert": "خبير مميز",
+        "featured_badge": "مميز",
+        "active_challenges": "تحديات نشطة",
+        "mentored_projects": "مشروع منتور",
+        "view_profile": "عرض الملف الشخصي",
+        "their_challenges": "تحدياته",
+        "show_all": "عرض الكل",
+        "show_less": "عرض أقل",
+        "browse_experts": "استكشف الخبراء",
+        "experts_count": "خبراء"
+    },
+    "specialization": {
+        "title": "تصفح حسب التخصص",
+        "ai_ml": "الذكاء الاصطناعي والتعلم الآلي",
+        "blockchain": "البلوك تشين",
+        "mobile_dev": "تطوير الهواتف المحمولة",
+        "ux_ui": "تصميم واجهة وتجربة المستخدم",
+        "data_science": "علم البيانات",
+        "cybersecurity": "الأمن السيبراني",
+        "iot": "إنترنت الأشياء",
+        "cloud_computing": "الحوسبة السحابية"
+    },
+    "availability": {
+        "available": "متاح",
+        "busy": "مشغول",
+        "unavailable": "غير متاح"
+    },
+    "card": {
+        "years_experience": "سنوات خبرة",
+        "specializations": "التخصصات",
+        "active_challenges": "تحديات نشطة",
+        "mentored_projects": "مشاريع منتورة",
+        "view_profile": "الملف الشخصي",
+        "contact": "تواصل"
+    }
+}

@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Bell, 
   Check, 
@@ -43,6 +44,7 @@ export const OpportunityNotificationsPanel = ({
   const { user } = useAuth();
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -97,8 +99,8 @@ export const OpportunityNotificationsPanel = ({
     } catch (error) {
       // Failed to load notifications
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحميل الإشعارات' : 'Failed to load notifications',
+        title: t('opportunities:notifications.error'),
+        description: t('opportunities:notifications.load_error'),
         variant: 'destructive',
       });
     } finally {
@@ -123,8 +125,8 @@ export const OpportunityNotificationsPanel = ({
     } catch (error) {
       // Failed to mark as read
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحديث الإشعار' : 'Failed to update notification',
+        title: t('opportunities:notifications.error'),
+        description: t('opportunities:notifications.update_error'),
         variant: 'destructive',
       });
     }
@@ -146,14 +148,14 @@ export const OpportunityNotificationsPanel = ({
       setUnreadCount(0);
 
       toast({
-        title: isRTL ? 'تم تحديث الإشعارات' : 'Notifications Updated',
-        description: isRTL ? 'تم تحديد جميع الإشعارات كمقروءة' : 'All notifications marked as read',
+        title: t('opportunities:notifications.updated_title'),
+        description: t('opportunities:notifications.all_marked_read'),
       });
     } catch (error) {
       // Failed to mark all as read
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحديث الإشعارات' : 'Failed to update notifications',
+        title: t('opportunities:notifications.error'),
+        description: t('opportunities:notifications.update_all_error'),
         variant: 'destructive',
       });
     }
@@ -183,14 +185,14 @@ export const OpportunityNotificationsPanel = ({
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
-    if (diffInMinutes < 1) return isRTL ? 'الآن' : 'now';
-    if (diffInMinutes < 60) return isRTL ? `منذ ${diffInMinutes} دقيقة` : `${diffInMinutes}m ago`;
+    if (diffInMinutes < 1) return t('opportunities:notifications.now');
+    if (diffInMinutes < 60) return t('opportunities:notifications.minutes_ago_short', { count: diffInMinutes });
     
     const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return isRTL ? `منذ ${diffInHours} ساعة` : `${diffInHours}h ago`;
+    if (diffInHours < 24) return t('opportunities:notifications.hours_ago_short', { count: diffInHours });
     
     const diffInDays = Math.floor(diffInHours / 24);
-    return isRTL ? `منذ ${diffInDays} يوم` : `${diffInDays}d ago`;
+    return t('opportunities:notifications.days_ago_short', { count: diffInDays });
   };
 
   const handleNotificationClick = (notification: Notification) => {
@@ -211,7 +213,7 @@ export const OpportunityNotificationsPanel = ({
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Bell className="w-5 h-5" />
-            {isRTL ? 'الإشعارات' : 'Notifications'}
+            {t('opportunities:notifications.title')}
             {unreadCount > 0 && (
               <Badge variant="destructive" className={isRTL ? 'mr-2' : 'ml-2'}>
                 {unreadCount}
@@ -225,7 +227,7 @@ export const OpportunityNotificationsPanel = ({
               onClick={markAllAsRead}
             >
               <Check className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {isRTL ? 'تحديد الكل كمقروء' : 'Mark All Read'}
+              {t('opportunities:notifications.mark_all_read')}
             </Button>
           )}
         </div>
@@ -246,8 +248,8 @@ export const OpportunityNotificationsPanel = ({
         ) : notifications.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             <Bell className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>{isRTL ? 'لا توجد إشعارات' : 'No notifications'}</p>
-            <p className="text-sm">{isRTL ? 'ستظهر الإشعارات هنا عند وصولها' : 'Notifications will appear here when they arrive'}</p>
+            <p>{t('opportunities:notifications.no_notifications')}</p>
+            <p className="text-sm">{t('opportunities:notifications.will_appear_here')}</p>
           </div>
         ) : (
           <div className="space-y-2 max-h-96 overflow-y-auto">

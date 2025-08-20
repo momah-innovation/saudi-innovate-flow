@@ -48,7 +48,7 @@ export function LanguageToggle() {
               <span className="font-medium">{lang.nativeName}</span>
               {language === lang.code && (
                 <Badge variant="secondary" className={cn("text-xs", isRTL ? "ml-auto" : "mr-auto")}>
-                  {t('active', isRTL ? 'نشط' : 'Active')}
+                  {t('common:active')}
                 </Badge>
               )}
             </div>

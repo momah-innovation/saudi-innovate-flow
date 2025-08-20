@@ -223,11 +223,11 @@ export const OpportunityDetailsDialog = ({
   };
 
   const formatBudget = (min?: number, max?: number) => {
-    if (!min && !max) return isRTL ? 'غير محدد' : 'Not specified';
-    if (min && max) return `${min.toLocaleString()} - ${max.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
-    if (min) return `${isRTL ? 'من' : 'From'} ${min.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
-    if (max) return `${isRTL ? 'حتى' : 'Up to'} ${max.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
-    return isRTL ? 'غير محدد' : 'Not specified';
+    if (!min && !max) return t('opportunities:details.not_specified');
+    if (min && max) return `${min.toLocaleString()} - ${max.toLocaleString()} ${t('opportunities:details.currency')}`;
+    if (min) return `${t('opportunities:details.from')} ${min.toLocaleString()} ${t('opportunities:details.currency')}`;
+    if (max) return `${t('opportunities:details.up_to')} ${max.toLocaleString()} ${t('opportunities:details.currency')}`;
+    return t('opportunities:details.not_specified');
   };
 
   const formatDate = (dateString: string) => {
@@ -256,7 +256,7 @@ export const OpportunityDetailsDialog = ({
         <DialogContent className="max-w-4xl">
           <div className="text-center py-8">
             <p className="text-muted-foreground">
-              {isRTL ? 'لم يتم العثور على الفرصة' : 'Opportunity not found'}
+              {t('opportunities:details.not_found')}
             </p>
           </div>
         </DialogContent>
@@ -270,7 +270,7 @@ export const OpportunityDetailsDialog = ({
         <DialogHeader className={isRTL ? 'text-right' : 'text-left'}>
           <DialogTitle className="flex items-center gap-2">
             <Building2 className="w-5 h-5 text-primary" />
-            {isRTL ? 'تفاصيل الفرصة' : 'Opportunity Details'}
+            {t('opportunities:details.title')}
           </DialogTitle>
         </DialogHeader>
 
@@ -299,26 +299,13 @@ export const OpportunityDetailsDialog = ({
                   </CardTitle>
                   <div className="flex gap-2 flex-wrap">
                     <Badge className={getStatusColor(opportunity.status)}>
-                      {isRTL ? 
-                        (opportunity.status === 'open' ? 'مفتوح' : 
-                         opportunity.status === 'closed' ? 'مغلق' : 'متوقف') :
-                        opportunity.status
-                      }
+                      {t(`opportunities:status.${opportunity.status}`)}
                     </Badge>
                     <Badge className={getPriorityColor(opportunity.priority_level)}>
-                      {isRTL ? 
-                        (opportunity.priority_level === 'high' ? 'عالي' : 
-                         opportunity.priority_level === 'medium' ? 'متوسط' : 'منخفض') :
-                        opportunity.priority_level
-                      } {isRTL ? 'الأولوية' : 'Priority'}
+                      {t(`opportunities:priority.${opportunity.priority_level}`)} {t('opportunities:details.priority_label')}
                     </Badge>
                     <Badge variant="outline">
-                      {isRTL ? 
-                        (opportunity.opportunity_type === 'funding' ? 'تمويل' :
-                         opportunity.opportunity_type === 'collaboration' ? 'تعاون' :
-                         opportunity.opportunity_type === 'sponsorship' ? 'رعاية' : 'بحث') :
-                        opportunity.opportunity_type
-                      }
+                      {t(`opportunities:types.${opportunity.opportunity_type}`)}
                     </Badge>
                   </div>
                 </div>
@@ -335,7 +322,7 @@ export const OpportunityDetailsDialog = ({
                   >
                     <Button variant="outline" size="sm">
                       <Share2 className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                      {isRTL ? 'مشاركة' : 'Share'}
+                      {t('opportunities:share.share')}
                     </Button>
                   </ShareOpportunityDialog>
                   <BookmarkOpportunityButton
@@ -362,7 +349,7 @@ export const OpportunityDetailsDialog = ({
                   <Users className="w-5 h-5 text-blue-500" />
                   <div>
                     <p className="text-2xl font-bold">{opportunity.applications_count}</p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'طلبات' : 'Applications'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:details.applications')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -373,7 +360,7 @@ export const OpportunityDetailsDialog = ({
                   <Eye className="w-5 h-5 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">{opportunity.views_count}</p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'مشاهدات' : 'Views'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:details.views')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -384,7 +371,7 @@ export const OpportunityDetailsDialog = ({
                   <MessageSquare className="w-5 h-5 text-red-500" />
                   <div>
                     <p className="text-2xl font-bold">{opportunity.likes_count}</p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'إعجابات' : 'Likes'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:details.likes')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -396,7 +383,7 @@ export const OpportunityDetailsDialog = ({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />
-                {isRTL ? 'المعلومات الأساسية' : 'Key Information'}
+                {t('opportunities:details.key_information')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -404,7 +391,7 @@ export const OpportunityDetailsDialog = ({
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <DollarSign className="w-4 h-4 text-green-600" />
-                    <span className="font-medium">{isRTL ? 'الميزانية:' : 'Budget:'}</span>
+                    <span className="font-medium">{t('opportunities:details.budget_label')}</span>
                   </div>
                   <p className={`text-muted-foreground ${isRTL ? 'mr-6' : 'ml-6'}`}>
                     {formatBudget(opportunity.budget_min, opportunity.budget_max)}
@@ -414,7 +401,7 @@ export const OpportunityDetailsDialog = ({
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-blue-600" />
-                    <span className="font-medium">{isRTL ? 'الموعد النهائي:' : 'Deadline:'}</span>
+                    <span className="font-medium">{t('opportunities:details.deadline_label')}</span>
                   </div>
                   <p className="text-muted-foreground ml-6">
                     {formatDate(opportunity.deadline)}
@@ -424,17 +411,17 @@ export const OpportunityDetailsDialog = ({
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-red-600" />
-                    <span className="font-medium">{isRTL ? 'الموقع:' : 'Location:'}</span>
+                    <span className="font-medium">{t('opportunities:details.location_label')}</span>
                   </div>
                   <p className="text-muted-foreground ml-6">
-                    {opportunity.location || (isRTL ? 'غير محدد' : 'Not specified')}
+                    {opportunity.location || t('opportunities:details.not_specified')}
                   </p>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-orange-600" />
-                    <span className="font-medium">{isRTL ? 'تاريخ النشر:' : 'Published:'}</span>
+                    <span className="font-medium">{t('opportunities:details.published_label')}</span>
                   </div>
                   <p className="text-muted-foreground ml-6">
                     {formatDate(opportunity.created_at)}
@@ -449,7 +436,7 @@ export const OpportunityDetailsDialog = ({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="w-5 h-5" />
-                {isRTL ? 'معلومات التواصل' : 'Contact Information'}
+                {t('opportunities:details.contact_information')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -457,7 +444,7 @@ export const OpportunityDetailsDialog = ({
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-blue-600" />
-                    <span className="font-medium">{isRTL ? 'الشخص المسؤول:' : 'Contact Person:'}</span>
+                    <span className="font-medium">{t('opportunities:details.contact_person_label')}</span>
                   </div>
                   <p className="text-muted-foreground ml-6">{opportunity.contact_person}</p>
                 </div>
@@ -465,7 +452,7 @@ export const OpportunityDetailsDialog = ({
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-green-600" />
-                    <span className="font-medium">{isRTL ? 'البريد الإلكتروني:' : 'Email:'}</span>
+                    <span className="font-medium">{t('opportunities:details.email_label')}</span>
                   </div>
                   <p className="text-muted-foreground ml-6">
                     <a href={`mailto:${opportunity.contact_email}`} className="hover:underline"
@@ -484,13 +471,13 @@ export const OpportunityDetailsDialog = ({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="w-5 h-5" />
-                  {isRTL ? 'المتطلبات' : 'Requirements'}
+                  {t('opportunities:details.requirements')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground whitespace-pre-wrap">
                   {typeof opportunity.requirements === 'string' ? opportunity.requirements : 
-                   JSON.stringify(opportunity.requirements) || (isRTL ? 'لا توجد متطلبات محددة' : 'No specific requirements')}
+                   JSON.stringify(opportunity.requirements) || t('opportunities:details.no_requirements')}
                 </p>
               </CardContent>
             </Card>
@@ -499,13 +486,13 @@ export const OpportunityDetailsDialog = ({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5" />
-                  {isRTL ? 'الفوائد' : 'Benefits'}
+                  {t('opportunities:details.benefits')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground whitespace-pre-wrap">
                   {typeof opportunity.benefits === 'string' ? opportunity.benefits : 
-                   JSON.stringify(opportunity.benefits) || (isRTL ? 'لا توجد فوائد محددة' : 'No specific benefits')}
+                   JSON.stringify(opportunity.benefits) || t('opportunities:details.no_benefits')}
                 </p>
               </CardContent>
             </Card>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BarChart3, Users, TrendingUp, DollarSign, Target, Calendar } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 import { OpportunityAnalyticsDashboardProps } from '@/types/opportunities';
 
@@ -13,6 +14,7 @@ export const OpportunityAnalyticsDashboard = ({
   opportunities 
 }: OpportunityAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const stats = {
     totalOpportunities: opportunities.length,
@@ -29,7 +31,7 @@ export const OpportunityAnalyticsDashboard = ({
         <DialogHeader>
           <DialogTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
             <BarChart3 className="w-5 h-5" />
-            {isRTL ? 'تحليلات الفرص' : 'Opportunities Analytics'}
+            {t('opportunities:analytics.title')}
           </DialogTitle>
         </DialogHeader>
 
@@ -40,7 +42,7 @@ export const OpportunityAnalyticsDashboard = ({
               <CardHeader className="pb-2">
                 <CardTitle className={`flex items-center gap-2 text-sm ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                   <Target className="w-4 h-4 text-blue-500" />
-                  {isRTL ? 'إجمالي الفرص' : 'Total Opportunities'}
+                  {t('opportunities:analytics.metrics.total_opportunities')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -52,7 +54,7 @@ export const OpportunityAnalyticsDashboard = ({
               <CardHeader className="pb-2">
                 <CardTitle className={`flex items-center gap-2 text-sm ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                   <TrendingUp className="w-4 h-4 text-green-500" />
-                  {isRTL ? 'الفرص النشطة' : 'Active Opportunities'}
+                  {t('opportunities:analytics.metrics.active_opportunities')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -64,7 +66,7 @@ export const OpportunityAnalyticsDashboard = ({
               <CardHeader className="pb-2">
                 <CardTitle className={`flex items-center gap-2 text-sm ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                   <Users className="w-4 h-4 text-purple-500" />
-                  {isRTL ? 'إجمالي الطلبات' : 'Total Applications'}
+                  {t('opportunities:analytics.metrics.total_applications')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -76,12 +78,12 @@ export const OpportunityAnalyticsDashboard = ({
               <CardHeader className="pb-2">
                 <CardTitle className={`flex items-center gap-2 text-sm ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                   <DollarSign className="w-4 h-4 text-yellow-500" />
-                  {isRTL ? 'متوسط الميزانية' : 'Average Budget'}
+                  {t('opportunities:analytics.metrics.average_budget')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-yellow-600">
-                  {stats.averageBudget.toLocaleString()} {isRTL ? 'ر.س' : 'SAR'}
+                  {stats.averageBudget.toLocaleString()} {t('opportunities:common.currency')}
                 </div>
               </CardContent>
             </Card>
@@ -91,7 +93,7 @@ export const OpportunityAnalyticsDashboard = ({
           <Card>
             <CardHeader>
               <CardTitle className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'أفضل الفرص أداءً' : 'Top Performing Opportunities'}
+                {t('opportunities:analytics.top_performing')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -106,12 +108,12 @@ export const OpportunityAnalyticsDashboard = ({
                         <div>
                           <div className="font-medium">{opportunity.title_ar}</div>
                           <div className="text-sm text-muted-foreground">
-                            {Number(opportunity.applications_count) || 0} {isRTL ? 'طلب' : 'applications'}
+                            {Number(opportunity.applications_count) || 0} {t('opportunities:common.applications')}
                           </div>
                         </div>
                       </div>
                       <Badge variant="secondary">
-                        {opportunity.status === 'open' ? (isRTL ? 'نشط' : 'Active') : (isRTL ? 'مغلق' : 'Closed')}
+                        {opportunity.status === 'open' ? t('opportunities:common.status_active') : t('opportunities:common.status_closed')}
                       </Badge>
                     </div>
                   ))}
@@ -122,7 +124,7 @@ export const OpportunityAnalyticsDashboard = ({
 
         <div className="flex justify-end pt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {isRTL ? 'إغلاق' : 'Close'}
+            {t('opportunities:common.close')}
           </Button>
         </div>
       </DialogContent>

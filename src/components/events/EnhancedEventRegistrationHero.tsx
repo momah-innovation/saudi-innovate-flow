@@ -22,6 +22,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface EnhancedEventRegistrationHeroProps {
@@ -54,13 +55,14 @@ export const EnhancedEventRegistrationHero = ({
   featuredEvent
 }: EnhancedEventRegistrationHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Calendar, value: totalRegistrations, label: isRTL ? 'تسجيل' : 'registrations', color: 'text-blue-400' },
-    { icon: Clock, value: upcomingEvents, label: isRTL ? 'قادم' : 'upcoming', color: 'text-green-400' },
-    { icon: Users, value: `${Math.floor(totalParticipants / 1000)}K+`, label: isRTL ? 'مشارك' : 'participants', color: 'text-purple-400' },
-    { icon: CheckCircle, value: completedEvents, label: isRTL ? 'مكتمل' : 'completed', color: 'text-orange-400' }
+    { icon: Calendar, value: totalRegistrations, label: t('events:hero.registrations'), color: 'text-blue-400' },
+    { icon: Clock, value: upcomingEvents, label: t('events:hero.upcoming'), color: 'text-green-400' },
+    { icon: Users, value: `${Math.floor(totalParticipants / 1000)}K+`, label: t('events:hero.participants'), color: 'text-purple-400' },
+    { icon: CheckCircle, value: completedEvents, label: t('events:hero.completed'), color: 'text-orange-400' }
   ];
 
   const { setInterval: scheduleInterval } = useTimerManager();
@@ -99,7 +101,7 @@ export const EnhancedEventRegistrationHero = ({
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
-                  {isRTL ? 'منصة تسجيل الفعاليات' : 'Event Registration Platform'}
+                  {t('events:hero.platform_badge')}
                 </Badge>
               </div>
               
@@ -107,7 +109,7 @@ export const EnhancedEventRegistrationHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {isRTL ? (
                     <>
-                      سجل في <span className="text-transparent bg-clip-text bg-gradient-text">الفعاليات</span> المميزة
+                      {t('events:hero.title_ar')}
                     </>
                   ) : (
                     <>
@@ -117,10 +119,7 @@ export const EnhancedEventRegistrationHero = ({
                 </h1>
                 
                 <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
-                  {isRTL 
-                    ? 'انضم إلى فعاليات الابتكار والتطوير وكن جزءاً من رحلة التحول الرقمي ورؤية المملكة 2030'
-                    : 'Join innovation and development events and be part of the digital transformation journey and Saudi Vision 2030'
-                  }
+                  {t('events:hero.subtitle_full')}
                 </p>
               </div>
             </div>
@@ -158,7 +157,7 @@ export const EnhancedEventRegistrationHero = ({
                   className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   <Plus className="w-5 h-5 mr-2" />
-                  {isRTL ? 'سجل في فعالية' : 'Register for Event'}
+                  {t('events:hero.register_for_event')}
                 </Button>
               )}
               
@@ -168,7 +167,7 @@ export const EnhancedEventRegistrationHero = ({
                 size="lg"
               >
                 <Filter className="w-5 h-5 mr-2" />
-                {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
+                {t('events:hero.advanced_filters')}
               </Button>
 
               <Button
@@ -176,7 +175,7 @@ export const EnhancedEventRegistrationHero = ({
                 size="lg"
               >
                 <Play className="w-5 h-5 mr-2" />
-                {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
+                {t('events:hero.watch_demo')}
               </Button>
             </div>
           </div>
@@ -210,7 +209,7 @@ export const EnhancedEventRegistrationHero = ({
                     <div className="absolute top-4 right-4">
                       <Badge className="bg-purple-500/90 text-white border-0">
                         <TrendingUp className="w-3 h-3 mr-1" />
-                        {isRTL ? 'مميزة' : 'Featured'}
+                        {t('events:hero.featured')}
                       </Badge>
                     </div>
 
@@ -227,13 +226,13 @@ export const EnhancedEventRegistrationHero = ({
                         <div className="text-2xl font-bold text-blue-300">
                           {featuredEvent.participants}
                         </div>
-                        <div className="text-sm text-white/70">{isRTL ? 'مشارك' : 'participants'}</div>
+                        <div className="text-sm text-white/70">{t('events:hero.participants')}</div>
                       </div>
                       <div className="text-center">
                         <div className="text-2xl font-bold text-purple-300">
                           {featuredEvent.capacity}
                         </div>
-                        <div className="text-sm text-white/70">{isRTL ? 'سعة' : 'capacity'}</div>
+                        <div className="text-sm text-white/70">{t('events:hero.capacity')}</div>
                       </div>
                     </div>
 
@@ -250,7 +249,7 @@ export const EnhancedEventRegistrationHero = ({
                     <Button 
                       className="w-full bg-gradient-primary hover:opacity-90 text-white"
                     >
-                      {isRTL ? 'سجل الآن' : 'Register Now'}
+                      {t('events:hero.register_now')}
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
@@ -261,10 +260,10 @@ export const EnhancedEventRegistrationHero = ({
                 <CardContent className="p-8 text-center">
                   <Calendar className="w-16 h-16 mx-auto text-white/40 mb-4" />
                   <h3 className="text-lg font-semibold text-white/80 mb-2">
-                    {isRTL ? 'لا توجد فعالية مميزة حالياً' : 'No Featured Event'}
+                    {t('events:hero.no_featured_event')}
                   </h3>
                   <p className="text-white/60 text-sm">
-                    {isRTL ? 'سيتم عرض الفعاليات المميزة هنا' : 'Featured events will appear here'}
+                    {t('events:hero.featured_events_will_appear')}
                   </p>
                 </CardContent>
               </Card>
@@ -276,10 +275,10 @@ export const EnhancedEventRegistrationHero = ({
                 <CardContent className="p-4 text-center">
                   <Target className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'فعاليات اليوم' : "Today's Events"}
+                    {t('events:hero.todays_events')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {isRTL ? '3 فعاليات' : '3 events'}
+                    3 {t('events:tabs.all')}
                   </div>
                 </CardContent>
               </Card>
@@ -288,10 +287,10 @@ export const EnhancedEventRegistrationHero = ({
                 <CardContent className="p-4 text-center">
                   <Award className="w-8 h-8 text-purple-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'شهاداتي' : 'My Certificates'}
+                    {t('events:hero.my_certificates')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {isRTL ? '5 شهادات' : '5 certificates'}
+                    5 {t('events:hero.my_certificates')}
                   </div>
                 </CardContent>
               </Card>

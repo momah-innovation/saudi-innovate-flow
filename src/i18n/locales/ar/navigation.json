@@ -15,7 +15,7 @@
   },
   "admin": {
     "admin_dashboard": "لوحة التحكم الإدارية",
-    "user_management": "إدارة المستخدمين", 
+    "user_management": "إدارة المستخدمين",
     "challenges_management": "إدارة التحديات",
     "campaigns_management": "إدارة الحملات",
     "events_management": "إدارة الفعاليات",
@@ -38,9 +38,14 @@
   "landing": {
     "about": "حول المنصة",
     "campaigns": "الحملات",
-    "marketplace": "السوق", 
+    "marketplace": "السوق",
     "pricing": "الأسعار",
-    "learn_more": "تعرف على المزيد"
+    "learn_more": "تعرف على المزيد",
+    "logo_text": "رواد",
+    "welcome": "مرحباً",
+    "dashboard": "لوحة التحكم",
+    "login": "تسجيل الدخول",
+    "get_started": "البدء"
   },
   "breadcrumbs": {
     "workspaces": "مساحات العمل",
@@ -81,7 +86,7 @@
     "main": "الرئيسي",
     "innovation": "الابتكار",
     "management": "الإدارة",
-    "analytics": "التحليلات", 
+    "analytics": "التحليلات",
     "settings": "الإعدادات",
     "advanced": "متقدم"
   },

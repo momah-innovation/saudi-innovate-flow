@@ -22,9 +22,11 @@ import { useSubscription } from '@/hooks/useSubscription';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export const SubscriptionManager = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { 
     subscriptionStatus, 
     loading, 
@@ -82,7 +84,7 @@ export const SubscriptionManager = () => {
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
           <p className="mt-2 text-muted-foreground">
-            {isRTL ? 'جاري تحميل معلومات الاشتراك...' : 'Loading subscription information...'}
+            {t('subscription:loading')}
           </p>
         </div>
       </div>
@@ -99,7 +101,7 @@ export const SubscriptionManager = () => {
               <div className="p-2 bg-primary/10 rounded-lg">
                 <Crown className="w-5 h-5 text-primary" />
               </div>
-              {isRTL ? 'حالة الاشتراك الحالي' : 'Current Subscription Status'}
+              {t('subscription:status.title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -109,7 +111,7 @@ export const SubscriptionManager = () => {
                   {isRTL ? subscriptionStatus.planNameAr : subscriptionStatus.planNameEn}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  {isRTL ? 'الخطة النشطة' : 'Active Plan'}
+                  {t('subscription:status.active_plan')}
                 </p>
               </div>
               <Badge 
@@ -117,15 +119,15 @@ export const SubscriptionManager = () => {
                 className="text-sm"
               >
                 {subscriptionStatus.hasSubscription 
-                  ? (isRTL ? 'نشط' : 'Active')
-                  : (isRTL ? 'مجاني' : 'Free')
+                  ? t('subscription:status.active')
+                  : t('subscription:status.free')
                 }
               </Badge>
             </div>
 
             {subscriptionStatus.currentPeriodEnd && (
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'ينتهي في: ' : 'Expires on: '}
+                {t('subscription:status.expires_on')}
                 {new Date(subscriptionStatus.currentPeriodEnd).toLocaleDateString(
                   isRTL ? 'ar-SA' : 'en-US'
                 )}
@@ -157,7 +159,7 @@ export const SubscriptionManager = () => {
                   onClick={handleCancel}
                   className="text-destructive hover:text-destructive"
                 >
-                  {isRTL ? 'إلغاء الاشتراك' : 'Cancel Subscription'}
+                  {t('subscription:actions.cancel')}
                 </Button>
               </div>
             )}
@@ -169,13 +171,10 @@ export const SubscriptionManager = () => {
       <div>
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-2">
-            {isRTL ? 'خطط الاشتراك' : 'Subscription Plans'}
+            {t('subscription:plans.title')}
           </h2>
           <p className="text-muted-foreground">
-            {isRTL 
-              ? 'اختر الخطة التي تناسب احتياجاتك في رحلة الابتكار'
-              : 'Choose the plan that fits your innovation journey'
-            }
+            {t('subscription:plans.description')}
           </p>
         </div>
 
@@ -196,7 +195,7 @@ export const SubscriptionManager = () => {
                 {isCurrentPlan && (
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-primary text-primary-foreground">
-                      {isRTL ? 'خطتك الحالية' : 'Current Plan'}
+                      {t('subscription:status.current_plan')}
                     </Badge>
                   </div>
                 )}
@@ -211,12 +210,12 @@ export const SubscriptionManager = () => {
                   <div className="text-3xl font-bold text-primary">
                     {plan.price_monthly}
                     <span className="text-sm text-muted-foreground ml-1">
-                      {plan.currency} {isRTL ? '/شهر' : '/month'}
+                      {plan.currency} {t('subscription:pricing.per_month')}
                     </span>
                   </div>
                   {plan.price_yearly && (
                     <div className="text-sm text-muted-foreground">
-                      {isRTL ? 'أو ' : 'or '}{plan.price_yearly} {plan.currency} {isRTL ? '/سنة' : '/year'}
+                      {t('subscription:pricing.or')} {plan.price_yearly} {plan.currency} {t('subscription:pricing.per_year')}
                     </div>
                   )}
                 </CardHeader>
@@ -255,7 +254,7 @@ export const SubscriptionManager = () => {
                     {isCurrentPlan ? (
                       <Button className="w-full" disabled>
                         <Crown className="w-4 h-4 mr-2" />
-                        {isRTL ? 'خطتك الحالية' : 'Current Plan'}
+                        {t('subscription:status.current_plan')}
                       </Button>
                     ) : (
                       <Button
@@ -266,12 +265,12 @@ export const SubscriptionManager = () => {
                         {isProcessing ? (
                           <div className="flex items-center gap-2">
                             <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
-                            {isRTL ? 'جاري المعالجة...' : 'Processing...'}
+                            {t('subscription:status.processing')}
                           </div>
                         ) : (
                           <>
                             <CreditCard className="w-4 h-4 mr-2" />
-                            {isRTL ? 'اشترك الآن' : 'Subscribe Now'}
+                            {t('subscription:actions.subscribe_now')}
                           </>
                         )}
                       </Button>
@@ -287,7 +286,7 @@ export const SubscriptionManager = () => {
       {/* Refresh Button */}
       <div className="text-center">
         <Button variant="outline" onClick={refreshSubscription}>
-          {isRTL ? 'تحديث حالة الاشتراك' : 'Refresh Subscription Status'}
+          {t('subscription:actions.refresh_status')}
         </Button>
       </div>
     </div>

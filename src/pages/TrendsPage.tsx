@@ -11,6 +11,7 @@ import {
   ArrowUp, ArrowDown, Eye, Share
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 const mockTrends = {
   emergingTopics: [
@@ -119,6 +120,7 @@ const mockTrends = {
 
 const TrendsPage = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat(isRTL ? 'ar-SA' : 'en-US').format(num);
@@ -155,9 +157,9 @@ const TrendsPage = () => {
 
   const getImpactText = (impact: string) => {
     switch (impact) {
-      case 'high': return isRTL ? 'تأثير عالي' : 'High Impact';
-      case 'medium': return isRTL ? 'تأثير متوسط' : 'Medium Impact';
-      case 'low': return isRTL ? 'تأثير منخفض' : 'Low Impact';
+      case 'high': return t('trends:impact.high');
+      case 'medium': return t('trends:impact.medium');
+      case 'low': return t('trends:impact.low');
       default: return impact;
     }
   };
@@ -183,18 +185,18 @@ const TrendsPage = () => {
       <CardContent>
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">{isRTL ? 'النمو:' : 'Growth:'}</span>
+            <span className="text-sm text-muted-foreground">{t('trends:statistics.growth')}:</span>
             <span className={`font-medium ${getTrendColor(trend.growth)}`}>
               {trend.growth > 0 ? '+' : ''}{trend.growth}%
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">{isRTL ? 'المشاريع:' : 'Projects:'}</span>
+            <span className="text-sm text-muted-foreground">{t('trends:statistics.projects')}:</span>
             <span className="font-medium">{formatNumber(trend.projects)}</span>
           </div>
           <Button variant="outline" size="sm" className="w-full">
             <Eye className="h-4 w-4 mr-2" />
-            {isRTL ? 'عرض التفاصيل' : 'View Details'}
+            {t('trends:analysis.view_details')}
           </Button>
         </div>
       </CardContent>
@@ -246,15 +248,15 @@ const TrendsPage = () => {
       <CardContent>
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">{isRTL ? 'المشاريع:' : 'Projects:'}</span>
+            <span className="text-sm text-muted-foreground">{t('trends:statistics.projects')}:</span>
             <span className="font-medium">{formatNumber(sector.projects)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">{isRTL ? 'الميزانية:' : 'Budget:'}</span>
+            <span className="text-sm text-muted-foreground">{t('trends:statistics.budget')}:</span>
             <span className="font-medium">{formatCurrency(sector.budget)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">{isRTL ? 'متوسط القيمة:' : 'Avg Value:'}</span>
+            <span className="text-sm text-muted-foreground">{t('trends:statistics.avg_value')}:</span>
             <span className="font-medium">{formatCurrency(sector.budget / sector.projects)}</span>
           </div>
         </div>
@@ -265,17 +267,17 @@ const TrendsPage = () => {
   return (
     <AppShell>
       <PageLayout
-        title={isRTL ? 'الاتجاهات والرؤى' : 'Trends & Insights'}
-        description={isRTL ? 'تحليل الاتجاهات الناشئة والرؤى الاستراتيجية للمنصة' : 'Analysis of emerging trends and strategic insights for the platform'}
+        title={t('trends:page_title')}
+        description={t('trends:page_title')}
         secondaryActions={
           <div className="flex gap-2">
             <Button variant="outline">
               <Share className="h-4 w-4 mr-2" />
-              {isRTL ? 'مشاركة' : 'Share'}
+              {t('trends:analysis.share')}
             </Button>
             <Button>
               <BarChart3 className="h-4 w-4 mr-2" />
-              {isRTL ? 'تحليل مخصص' : 'Custom Analysis'}
+              {t('trends:analysis.compare')}
             </Button>
           </div>
         }
@@ -288,7 +290,7 @@ const TrendsPage = () => {
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-green-500" />
                   <div>
-                    <div className="text-sm text-muted-foreground">{isRTL ? 'اتجاهات صاعدة' : 'Rising Trends'}</div>
+                    <div className="text-sm text-muted-foreground">{t('trends:trends.rising')}</div>
                     <div className="text-xl font-bold">12</div>
                   </div>
                 </div>
@@ -300,7 +302,7 @@ const TrendsPage = () => {
                 <div className="flex items-center gap-2">
                   <TrendingDown className="h-5 w-5 text-red-500" />
                   <div>
-                    <div className="text-sm text-muted-foreground">{isRTL ? 'اتجاهات هابطة' : 'Declining Trends'}</div>
+                    <div className="text-sm text-muted-foreground">{t('trends:trends.declining')}</div>
                     <div className="text-xl font-bold">3</div>
                   </div>
                 </div>
@@ -312,7 +314,7 @@ const TrendsPage = () => {
                 <div className="flex items-center gap-2">
                   <Star className="h-5 w-5 text-yellow-500" />
                   <div>
-                    <div className="text-sm text-muted-foreground">{isRTL ? 'رؤى جديدة' : 'New Insights'}</div>
+                    <div className="text-sm text-muted-foreground">{t('trends:indicators.new')}</div>
                     <div className="text-xl font-bold">8</div>
                   </div>
                 </div>
@@ -324,7 +326,7 @@ const TrendsPage = () => {
                 <div className="flex items-center gap-2">
                   <Target className="h-5 w-5 text-blue-500" />
                   <div>
-                    <div className="text-sm text-muted-foreground">{isRTL ? 'فرص ناشئة' : 'Emerging Opportunities'}</div>
+                    <div className="text-sm text-muted-foreground">{t('trends:trends.emerging')}</div>
                     <div className="text-xl font-bold">15</div>
                   </div>
                 </div>
@@ -334,11 +336,11 @@ const TrendsPage = () => {
 
           <Tabs defaultValue="emerging" className="w-full">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="emerging">{isRTL ? 'المواضيع الناشئة' : 'Emerging Topics'}</TabsTrigger>
-              <TabsTrigger value="insights">{isRTL ? 'الرؤى' : 'Insights'}</TabsTrigger>
-              <TabsTrigger value="keywords">{isRTL ? 'الكلمات المفتاحية' : 'Keywords'}</TabsTrigger>
-              <TabsTrigger value="sectors">{isRTL ? 'القطاعات' : 'Sectors'}</TabsTrigger>
-              <TabsTrigger value="predictions">{isRTL ? 'التنبؤات' : 'Predictions'}</TabsTrigger>
+              <TabsTrigger value="emerging">{t('trends:tabs.emerging')}</TabsTrigger>
+              <TabsTrigger value="insights">{t('trends:tabs.insights')}</TabsTrigger>
+              <TabsTrigger value="keywords">{t('trends:tabs.keywords')}</TabsTrigger>
+              <TabsTrigger value="sectors">{t('trends:tabs.sectors')}</TabsTrigger>
+              <TabsTrigger value="predictions">{t('trends:tabs.predictions')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="emerging" className="space-y-4">
@@ -360,9 +362,9 @@ const TrendsPage = () => {
             <TabsContent value="keywords" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>{isRTL ? 'الكلمات المفتاحية الأكثر شعبية' : 'Most Popular Keywords'}</CardTitle>
+                  <CardTitle>{t('trends:tabs.keywords')}</CardTitle>
                   <CardDescription>
-                    {isRTL ? 'الكلمات الأكثر استخداماً في المشاريع والمساهمات' : 'Most frequently used keywords in projects and submissions'}
+                    {t('trends:tabs.keywords')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -375,7 +377,7 @@ const TrendsPage = () => {
                         </div>
                         <div className="flex items-center gap-4">
                           <span className="text-sm text-muted-foreground">
-                            {formatNumber(keyword.count)} {isRTL ? 'مشروع' : 'projects'}
+                            {formatNumber(keyword.count)} {t('trends:statistics.projects')}
                           </span>
                           <div className="flex items-center gap-2">
                             <Progress value={Math.min(keyword.count / 2.34, 100)} className="w-16 h-2" />
@@ -403,32 +405,32 @@ const TrendsPage = () => {
               <div className="grid gap-6 md:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'توقعات الربع القادم' : 'Next Quarter Predictions'}</CardTitle>
+                    <CardTitle>{t('trends:analysis.forecast')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'نمو مشاريع الذكاء الاصطناعي' : 'AI Projects Growth'}</span>
+                        <span>{t('trends:predictions.ai_projects_growth')}</span>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                           <ArrowUp className="h-3 w-3 mr-1" />
                           +35%
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'مشاريع الاستدامة' : 'Sustainability Projects'}</span>
+                        <span>{t('trends:predictions.sustainability_projects')}</span>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                           <ArrowUp className="h-3 w-3 mr-1" />
                           +28%
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'التكنولوجيا المالية' : 'FinTech Solutions'}</span>
+                        <span>{t('trends:predictions.fintech_solutions')}</span>
                         <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
                           +12%
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'تطبيقات الواقع المعزز' : 'AR Applications'}</span>
+                        <span>{t('trends:predictions.ar_applications')}</span>
                         <Badge className="bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
                           <ArrowDown className="h-3 w-3 mr-1" />
                           -15%
@@ -440,7 +442,7 @@ const TrendsPage = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'الفرص الناشئة' : 'Emerging Opportunities'}</CardTitle>
+                    <CardTitle>{t('trends:predictions.emerging_opportunities')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
@@ -448,10 +450,10 @@ const TrendsPage = () => {
                         <Lightbulb className="h-5 w-5 text-yellow-500 mt-0.5" />
                         <div>
                           <div className="font-medium">
-                            {isRTL ? 'تقنيات الحوسبة الكمية' : 'Quantum Computing Technologies'}
+                            {t('trends:predictions.quantum_computing')}
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {isRTL ? 'نمو متوقع 150% في المشاريع' : 'Expected 150% growth in projects'}
+                            {t('trends:predictions.expected_growth')}
                           </div>
                         </div>
                       </div>
@@ -459,10 +461,10 @@ const TrendsPage = () => {
                         <Lightbulb className="h-5 w-5 text-yellow-500 mt-0.5" />
                         <div>
                           <div className="font-medium">
-                            {isRTL ? 'الطب الرقمي والتطبيب عن بعد' : 'Digital Medicine & Telemedicine'}
+                            {t('trends:predictions.digital_medicine')}
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {isRTL ? 'زيادة الطلب بنسبة 85%' : '85% increase in demand'}
+                            {t('trends:predictions.demand_increase')}
                           </div>
                         </div>
                       </div>
@@ -470,10 +472,10 @@ const TrendsPage = () => {
                         <Lightbulb className="h-5 w-5 text-yellow-500 mt-0.5" />
                         <div>
                           <div className="font-medium">
-                            {isRTL ? 'تقنيات الطاقة المتجددة' : 'Renewable Energy Technologies'}
+                            {t('trends:predictions.renewable_energy')}
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {isRTL ? 'استثمارات متزايدة في القطاع' : 'Increasing investments in the sector'}
+                            {t('trends:predictions.increasing_investments')}
                           </div>
                         </div>
                       </div>

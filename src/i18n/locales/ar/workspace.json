@@ -3,6 +3,7 @@
     "title": "مساحات العمل",
     "subtitle": "اختر نوع مساحة العمل المناسبة لك",
     "enter": "دخول",
+    "enter_arrow": "←",
     "invalid_type": "نوع مساحة العمل غير صحيح",
     "invalid_description": "نوع مساحة العمل المطلوبة غير متاح: {type}"
   },
@@ -35,13 +36,13 @@
   "mock_data": {
     "sample_member_1": "أحمد الزهراني",
     "sample_member_2": "سارة المطيري",
-    "sample_member_3": "محمد العتيبي", 
+    "sample_member_3": "محمد العتيبي",
     "sample_member_4": "فاطمة الشهري",
     "today": "اليوم",
     "tomorrow": "غداً",
     "thursday": "الخميس",
     "sample_date_1": "15 فبراير 2024",
-    "sample_date_2": "22 فبراير 2024", 
+    "sample_date_2": "22 فبراير 2024",
     "sample_date_3": "28 فبراير 2024",
     "mention_message": "ذكرك أحمد في مشروع التطوير الجديد",
     "assignment_message": "تم تعيين مهمة جديدة لك في المشروع",
@@ -260,21 +261,21 @@
         "manage_team_desc": "إدارة فريق المؤسسة"
       },
       "metrics": {
+        "active_challenges": "التحديات النشطة",
+        "total_submissions": "إجمالي المشاركات",
+        "team_size": "حجم الفريق",
+        "completed_challenges": "التحديات المكتملة"
+      },
       "active_challenges": "التحديات النشطة",
+      "new_challenge": "تحدي جديد",
+      "created": "تم الإنشاء",
+      "challenge": "التحدي",
+      "recent_submissions": "المشاركات الحديثة",
+      "no_challenges": "لا توجد تحديات بعد. أنشئ أول تحدي لك!",
+      "no_submissions": "لا توجد مشاركات بعد",
       "total_submissions": "إجمالي المشاركات",
       "team_size": "حجم الفريق",
-      "completed_challenges": "التحديات المكتملة"
-    },
-    "active_challenges": "التحديات النشطة",
-    "new_challenge": "تحدي جديد",
-    "created": "تم الإنشاء",
-    "challenge": "التحدي",
-    "recent_submissions": "المشاركات الحديثة",
-    "no_challenges": "لا توجد تحديات بعد. أنشئ أول تحدي لك!",
-    "no_submissions": "لا توجد مشاركات بعد",
-    "total_submissions": "إجمالي المشاركات",
-    "team_size": "حجم الفريق",
-    "quick_actions": "الإجراءات السريعة"
+      "quick_actions": "الإجراءات السريعة"
     },
     "partner": {
       "title": "مساحة الشركاء",
@@ -315,7 +316,7 @@
       "tabs": {
         "overview": "نظرة عامة",
         "projects": "المشاريع",
-        "communication": "التواصل", 
+        "communication": "التواصل",
         "contracts": "العقود"
       },
       "partner_info": {
@@ -347,7 +348,7 @@
     "dashboard": {
       "recent_activities": "الأنشطة الحديثة",
       "no_activities": "لا توجد أنشطة حديثة",
-      "team_overview": "نظرة عامة على الفريق", 
+      "team_overview": "نظرة عامة على الفريق",
       "pending_approvals": "الموافقات المعلقة",
       "upcoming_deadlines": "المواعيد النهائية القادمة"
     },
@@ -411,7 +412,7 @@
     "hardcoded": {
       "dashboard": "لوحة التحكم",
       "members": "الأعضاء",
-      "files": "الملفات", 
+      "files": "الملفات",
       "messages": "الرسائل",
       "settings": "الإعدادات",
       "workspace_overview": "نظرة عامة على مساحة العمل",
@@ -590,22 +591,22 @@
     }
   },
   "common": {
-      "loading": "جاري تحميل مساحة العمل...",
-      "error": "خطأ في تحميل مساحة العمل",
-      "refresh": "تحديث",
-      "view_all": "عرض الكل",
-      "manage": "إدارة",
-      "create": "إنشاء",
-      "edit": "تعديل",
-      "delete": "حذف",
-      "save": "حفظ",
-      "cancel": "إلغاء"
-    },
+    "loading": "جاري تحميل مساحة العمل...",
+    "error": "خطأ في تحميل مساحة العمل",
+    "refresh": "تحديث",
+    "view_all": "عرض الكل",
+    "manage": "إدارة",
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "save": "حفظ",
+    "cancel": "إلغاء"
+  },
   "ai": {
     "assistant_title": "المساعد الذكي",
     "analyze": "تحليل",
     "suggest": "اقتراح",
-    "summarize": "ملخص", 
+    "summarize": "ملخص",
     "optimize": "تحسين",
     "query_placeholder": "اسألني أي شيء عن مساحة العمل...",
     "auto_analysis_query": "تحليل عام للمساحة الرقمية",
@@ -617,7 +618,7 @@
     "timeframe": {
       "last_7_days": "آخر 7 أيام",
       "last_30_days": "آخر 30 يوم",
-      "last_90_days": "آخر 90 يوم", 
+      "last_90_days": "آخر 90 يوم",
       "last_year": "آخر سنة"
     }
   },
@@ -629,7 +630,7 @@
   "partner": {
     "sample_company": "شركة التقنية المتقدمة",
     "company_type": "شركة تقنية",
-    "industry": "التكنولوجيا المالية", 
+    "industry": "التكنولوجيا المالية",
     "strategic_level": "استراتيجي",
     "title": "مساحة عمل الشريك",
     "description": "شراكة استراتيجية مع {{companyName}}",
@@ -680,7 +681,7 @@
     "communication_types": {
       "meeting": "اجتماع",
       "email": "بريد إلكتروني",
-      "call": "مكالمة", 
+      "call": "مكالمة",
       "report": "تقرير"
     },
     "communications": {
@@ -691,7 +692,7 @@
     },
     "status": {
       "scheduled": "مقرر",
-      "sent": "مرسل", 
+      "sent": "مرسل",
       "completed": "مكتمل",
       "review": "مراجعة"
     },
@@ -704,13 +705,13 @@
   },
   "files": {
     "sample_file_1": "تقرير المشروع.pdf",
-    "sample_file_2": "عرض تقديمي.pptx", 
+    "sample_file_2": "عرض تقديمي.pptx",
     "sample_file_3": "صورة المخطط.png"
   },
   "general": {
     "nav": {
       "dashboard": "لوحة التحكم",
-      "files": "الملفات", 
+      "files": "الملفات",
       "messages": "الرسائل",
       "members": "الأعضاء",
       "settings": "الإعدادات"
@@ -741,7 +742,7 @@
     },
     "content": {
       "workspace_overview": "نظرة عامة على مساحة العمل",
-      "files_documents": "الملفات والمستندات", 
+      "files_documents": "الملفات والمستندات",
       "team_members": "أعضاء الفريق",
       "messages_chat": "الرسائل والدردشة",
       "workspace_settings": "إعدادات مساحة العمل",

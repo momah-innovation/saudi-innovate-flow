@@ -1,0 +1,102 @@
+{
+    "title": "لوحة أصحاب المصلحة",
+    "page_title": "نظرة عامة على أصحاب المصلحة",
+    "welcome": "مرحباً، صاحب المصلحة",
+    "overview": "نظرة عامة",
+    "dashboard": {
+        "title": "لوحة القيادة",
+        "subtitle": "راقب استثماراتك وشراكاتك",
+        "last_updated": "آخر تحديث",
+        "refresh": "تحديث لوحة القيادة"
+    },
+    "metrics": {
+        "total_investment": "إجمالي الاستثمار",
+        "active_projects": "المشاريع النشطة",
+        "roi": "العائد على الاستثمار",
+        "portfolio_value": "قيمة المحفظة",
+        "success_rate": "معدل النجاح",
+        "partnerships": "الشراكات",
+        "initiatives": "المبادرات",
+        "impact_score": "نقاط التأثير"
+    },
+    "projects": {
+        "title": "المشاريع",
+        "my_projects": "مشاريعي",
+        "all_projects": "جميع المشاريع",
+        "invested": "مستثمر",
+        "monitoring": "قيد المراقبة",
+        "completed": "مكتمل",
+        "view_details": "عرض التفاصيل",
+        "track_progress": "تتبع التقدم"
+    },
+    "investments": {
+        "title": "الاستثمارات",
+        "current": "الاستثمارات الحالية",
+        "historical": "الاستثمارات التاريخية",
+        "opportunities": "فرص الاستثمار",
+        "amount": "المبلغ",
+        "date": "التاريخ",
+        "status": "الحالة",
+        "returns": "العوائد"
+    },
+    "reports": {
+        "title": "التقارير",
+        "quarterly": "التقرير الربع سنوي",
+        "annual": "التقرير السنوي",
+        "performance": "تقرير الأداء",
+        "financial": "التقرير المالي",
+        "impact": "تقرير الأثر",
+        "download": "تحميل",
+        "generate": "إنشاء تقرير",
+        "stakeholder_report": "تقرير المعنيين",
+        "stakeholder_report_description": "تقرير عن مشاركة ورضا المعنيين"
+    },
+    "communications": {
+        "title": "الاتصالات",
+        "messages": "الرسائل",
+        "announcements": "الإعلانات",
+        "updates": "التحديثات",
+        "notifications": "الإشعارات",
+        "mark_read": "وضع علامة كمقروء"
+    },
+    "portfolio": {
+        "title": "المحفظة",
+        "summary": "ملخص المحفظة",
+        "distribution": "التوزيع",
+        "performance": "الأداء",
+        "risk_assessment": "تقييم المخاطر",
+        "diversification": "التنويع"
+    },
+    "actions": {
+        "invest": "استثمر",
+        "withdraw": "سحب",
+        "contact": "اتصل",
+        "schedule_meeting": "جدولة اجتماع",
+        "request_info": "طلب معلومات",
+        "view_all": "عرض الكل"
+    },
+    "status": {
+        "active": "نشط",
+        "pending": "قيد الانتظار",
+        "completed": "مكتمل",
+        "on_hold": "معلق",
+        "cancelled": "ملغى"
+    },
+    "indicators": {
+        "key_indicators": "المؤشرات الرئيسية",
+        "projects_on_time": "المشاريع في الموعد",
+        "within_budget": "ضمن الميزانية",
+        "identified_risks": "المخاطر المحددة",
+        "actions_required": "الإجراءات المطلوبة"
+    },
+    "filters": {
+        "filter_by": "تصفية حسب",
+        "date_range": "النطاق الزمني",
+        "investment_type": "نوع الاستثمار",
+        "project_status": "حالة المشروع",
+        "sector": "القطاع"
+    },
+    "no_data": "لا توجد بيانات أصحاب المصلحة متاحة",
+    "loading": "جاري تحميل معلومات أصحاب المصلحة...",
+    "error": "خطأ في تحميل بيانات أصحاب المصلحة"
+}

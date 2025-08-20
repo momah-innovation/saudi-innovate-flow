@@ -3,6 +3,7 @@
     "title": "Workspaces",
     "subtitle": "Choose the workspace type that suits you",
     "enter": "Enter",
+    "enter_arrow": "→",
     "invalid_type": "Invalid workspace type",
     "invalid_description": "The requested workspace type is not available: {type}"
   },
@@ -12,7 +13,7 @@
       "description": "Manage your ideas and personal projects"
     },
     "expert": {
-      "title": "Expert Workspace", 
+      "title": "Expert Workspace",
       "description": "Evaluate and guide innovative ideas"
     },
     "organization": {
@@ -34,11 +35,11 @@
   },
   "mock_data": {
     "sample_member_1": "Ahmad Al-Zahra",
-    "sample_member_2": "Sarah Al-Mutairi", 
+    "sample_member_2": "Sarah Al-Mutairi",
     "sample_member_3": "Mohammed Al-Otaibi",
     "sample_member_4": "Fatima Al-Shehri",
     "today": "Today",
-    "tomorrow": "Tomorrow", 
+    "tomorrow": "Tomorrow",
     "thursday": "Thursday",
     "sample_date_1": "February 15, 2024",
     "sample_date_2": "February 22, 2024",
@@ -260,21 +261,21 @@
         "manage_team_desc": "Manage organization team"
       },
       "metrics": {
+        "active_challenges": "Active Challenges",
+        "total_submissions": "Total Submissions",
+        "team_size": "Team Size",
+        "completed_challenges": "Completed Challenges"
+      },
       "active_challenges": "Active Challenges",
+      "new_challenge": "New Challenge",
+      "created": "Created",
+      "challenge": "Challenge",
+      "recent_submissions": "Recent Submissions",
+      "no_challenges": "No challenges yet. Create your first challenge!",
+      "no_submissions": "No submissions yet",
       "total_submissions": "Total Submissions",
       "team_size": "Team Size",
-      "completed_challenges": "Completed Challenges"
-    },
-    "active_challenges": "Active Challenges",
-    "new_challenge": "New Challenge",
-    "created": "Created",
-    "challenge": "Challenge",
-    "recent_submissions": "Recent Submissions",
-    "no_challenges": "No challenges yet. Create your first challenge!",
-    "no_submissions": "No submissions yet",
-    "total_submissions": "Total Submissions",
-    "team_size": "Team Size",
-    "quick_actions": "Quick Actions"
+      "quick_actions": "Quick Actions"
     },
     "partner": {
       "title": "Partner Workspace",
@@ -314,7 +315,7 @@
       "quick_actions": "Quick Actions",
       "tabs": {
         "overview": "Overview",
-        "projects": "Projects", 
+        "projects": "Projects",
         "communication": "Communication",
         "contracts": "Contracts"
       },
@@ -325,7 +326,7 @@
     "title": "Workspaces",
     "type": "Type",
     "role": "Role",
-    "activity": "Activity", 
+    "activity": "Activity",
     "members": "Members",
     "files": "Files",
     "settings": "Settings",
@@ -341,7 +342,7 @@
       "dashboard": "Dashboard",
       "achievements": "Achievements",
       "team_dashboard": "Team Dashboard",
-      "strategic_dashboard": "Strategic Dashboard", 
+      "strategic_dashboard": "Strategic Dashboard",
       "analytics": "Analytics"
     },
     "dashboard": {
@@ -358,7 +359,7 @@
     "stats": {
       "submissions": "Submissions",
       "total_employees": "Total Employees",
-      "compliance_score": "Compliance Score", 
+      "compliance_score": "Compliance Score",
       "innovation_index": "Innovation Index",
       "digital_maturity": "Digital Maturity",
       "team_members": "Team Members"
@@ -410,7 +411,7 @@
     },
     "hardcoded": {
       "dashboard": "Dashboard",
-      "members": "Members", 
+      "members": "Members",
       "files": "Files",
       "messages": "Messages",
       "settings": "Settings",
@@ -423,7 +424,7 @@
       "placeholder_content": "This is a placeholder for the dynamic workspace content.",
       "recent_activity": "Recent Activity",
       "user_joined": "User joined workspace",
-      "new_file_uploaded": "New file uploaded", 
+      "new_file_uploaded": "New file uploaded",
       "meeting_scheduled": "Meeting scheduled",
       "quick_actions": "Quick Actions",
       "new_document": "New Document",
@@ -433,7 +434,7 @@
     },
     "roles": {
       "senior_developer": "Senior Developer",
-      "ui_ux_designer": "UI/UX Designer", 
+      "ui_ux_designer": "UI/UX Designer",
       "project_coordinator": "Project Coordinator",
       "quality_analyst": "Quality Analyst"
     },
@@ -450,7 +451,7 @@
     },
     "projects": {
       "digital_transformation_initiative": "Digital Transformation Initiative",
-      "customer_portal_enhancement": "Customer Portal Enhancement", 
+      "customer_portal_enhancement": "Customer Portal Enhancement",
       "mobile_app_development": "Mobile App Development",
       "active_projects": "Active Projects",
       "description": "Manage and track all active projects",
@@ -464,7 +465,7 @@
     "resources": {
       "development_team": "Development Team",
       "design_team": "Design Team",
-      "qa_team": "QA Team", 
+      "qa_team": "QA Team",
       "project_management": "Project Management",
       "allocation_overview": "Resource Allocation Overview",
       "description": "Monitor resource utilization and capacity",
@@ -491,7 +492,7 @@
     },
     "project_status": {
       "on_track": "On Track",
-      "at_risk": "At Risk", 
+      "at_risk": "At Risk",
       "delayed": "Delayed",
       "completed": "Completed"
     },
@@ -516,7 +517,7 @@
       "dashboard": "Dashboard",
       "achievements": "Achievements",
       "team_dashboard": "Team Dashboard",
-      "strategic_dashboard": "Strategic Dashboard", 
+      "strategic_dashboard": "Strategic Dashboard",
       "analytics": "Analytics",
       "projects": "Projects",
       "resources": "Resources",
@@ -590,21 +591,21 @@
     }
   },
   "common": {
-      "loading": "Loading workspace...",
-      "error": "Error loading workspace",
-      "refresh": "Refresh",
-      "view_all": "View All",
-      "manage": "Manage",
-      "create": "Create",
-      "edit": "Edit",
-      "delete": "Delete",
-      "save": "Save",
-      "cancel": "Cancel"
-    },
+    "loading": "Loading workspace...",
+    "error": "Error loading workspace",
+    "refresh": "Refresh",
+    "view_all": "View All",
+    "manage": "Manage",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
   "ai": {
     "assistant_title": "AI Assistant",
     "analyze": "Analyze",
-    "suggest": "Suggest", 
+    "suggest": "Suggest",
     "summarize": "Summarize",
     "optimize": "Optimize",
     "query_placeholder": "Ask me anything about your workspace...",
@@ -616,7 +617,7 @@
   "analytics": {
     "timeframe": {
       "last_7_days": "Last 7 days",
-      "last_30_days": "Last 30 days", 
+      "last_30_days": "Last 30 days",
       "last_90_days": "Last 90 days",
       "last_year": "Last year"
     }
@@ -628,7 +629,7 @@
   },
   "partner": {
     "sample_company": "Advanced Technology Company",
-    "company_type": "Technology Company", 
+    "company_type": "Technology Company",
     "industry": "Financial Technology",
     "strategic_level": "Strategic",
     "title": "Partner Workspace",
@@ -637,7 +638,7 @@
     "actions": {
       "new_project": "New Project",
       "direct_contact": "Direct Contact",
-      "new_contract": "New Contract", 
+      "new_contract": "New Contract",
       "partnership_settings": "Partnership Settings",
       "view": "View"
     },
@@ -663,7 +664,7 @@
       "excellent_rating": "Excellent (87%)",
       "current_projects": "Current Projects",
       "progress": "Progress",
-      "budget": "Budget", 
+      "budget": "Budget",
       "deadline": "Deadline",
       "all_projects": "All Projects",
       "communication_log": "Communication Log",
@@ -679,14 +680,14 @@
     },
     "communication_types": {
       "meeting": "Meeting",
-      "email": "Email", 
+      "email": "Email",
       "call": "Call",
       "report": "Report"
     },
     "communications": {
       "project_review": "First Project Review",
       "development_update": "Development Status Update",
-      "budget_discussion": "Budget Discussion", 
+      "budget_discussion": "Budget Discussion",
       "monthly_report": "Monthly Performance Report"
     },
     "status": {
@@ -698,7 +699,7 @@
     "project_status": {
       "in_development": "In Development",
       "testing": "Testing",
-      "planning": "Planning", 
+      "planning": "Planning",
       "completed": "Completed"
     }
   },
@@ -710,7 +711,7 @@
   "general": {
     "nav": {
       "dashboard": "Dashboard",
-      "files": "Files", 
+      "files": "Files",
       "messages": "Messages",
       "members": "Members",
       "settings": "Settings"
@@ -741,7 +742,7 @@
     },
     "content": {
       "workspace_overview": "Workspace Overview",
-      "files_documents": "Files & Documents", 
+      "files_documents": "Files & Documents",
       "team_members": "Team Members",
       "messages_chat": "Messages & Chat",
       "workspace_settings": "Workspace Settings",

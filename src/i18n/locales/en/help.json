@@ -1,0 +1,70 @@
+{
+    "title": "Help & Documentation",
+    "description": "Find answers and comprehensive guides for using the platform",
+    "search_title": "How can we help you?",
+    "search_placeholder": "Search for an answer...",
+    "need_help": "Need additional help?",
+    "support_available": "Our support team is here to help you",
+    "tabs": {
+        "faq": "FAQ",
+        "guides": "Guides",
+        "videos": "Videos",
+        "contact": "Contact",
+        "downloads": "Downloads"
+    },
+    "contact": {
+        "live_chat": {
+            "title": "Live Chat",
+            "description": "Available 24/7 for instant help",
+            "action": "Start Chat",
+            "availability": "Available Now"
+        },
+        "email": {
+            "title": "Email Support",
+            "description": "We respond within 24 hours",
+            "action": "Send Email"
+        },
+        "phone": {
+            "title": "Phone Support",
+            "description": "Sun-Thu 9AM-5PM",
+            "action": "Call Now"
+        }
+    },
+    "categories": {
+        "all": "All Categories",
+        "account": "Account",
+        "ideas": "Ideas",
+        "projects": "Projects",
+        "evaluation": "Evaluation",
+        "technical": "Technical"
+    },
+    "guide": {
+        "chapters": "chapters",
+        "start_reading": "Start Reading"
+    },
+    "video": {
+        "views": "views",
+        "watch": "Watch Video"
+    },
+    "downloads": {
+        "user_manual": {
+            "title": "User Manual",
+            "description": "Comprehensive guide to all platform features"
+        },
+        "workspace_docs": {
+            "title": "Workspace Documentation",
+            "description": "Comprehensive guide to workspace types and their functions",
+            "type": "Web Page",
+            "action": "View Documentation"
+        },
+        "project_templates": {
+            "title": "Project Templates",
+            "description": "Ready templates for creating successful projects"
+        },
+        "developer_guide": {
+            "title": "Developer Guide",
+            "description": "Documentation for developers and engineers"
+        },
+        "download": "Download"
+    }
+}

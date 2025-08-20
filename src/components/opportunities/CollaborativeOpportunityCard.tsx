@@ -13,6 +13,7 @@ import {
   Building2, Target, MessageSquare, Activity, Wifi, WifiOff
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { getOpportunityImageUrl } from '@/utils/storageUtils';
 
 interface OpportunityData {
@@ -64,6 +65,7 @@ export const CollaborativeOpportunityCard = ({
 }: CollaborativeOpportunityCardProps) => {
   // Removed useTimerManager to prevent hook violations
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [liveApplications, setLiveApplications] = useState(opportunity.applications_count || 0);
   const [liveViews, setLiveViews] = useState(opportunity.views_count || 0);
@@ -123,10 +125,10 @@ export const CollaborativeOpportunityCard = ({
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'open': return isRTL ? 'مفتوحة' : 'Open';
-      case 'closed': return isRTL ? 'مغلقة' : 'Closed';
-      case 'review': return isRTL ? 'قيد المراجعة' : 'Under Review';
-      case 'pending': return isRTL ? 'معلقة' : 'Pending';
+      case 'open': return t('opportunities:card.status_labels.open');
+      case 'closed': return t('opportunities:card.status_labels.closed');
+      case 'review': return t('opportunities:card.status_labels.review');
+      case 'pending': return t('opportunities:card.status_labels.pending');
       default: return status;
     }
   };
@@ -161,10 +163,11 @@ export const CollaborativeOpportunityCard = ({
   };
 
   const formatBudgetRange = () => {
-    if (!opportunity.budget_min && !opportunity.budget_max) return isRTL ? 'حسب التفاوض' : 'Negotiable';
-    if (!opportunity.budget_max) return `${opportunity.budget_min?.toLocaleString()}+ ${isRTL ? 'ر.س' : 'SAR'}`;
-    if (!opportunity.budget_min) return `${isRTL ? 'حتى' : 'Up to'} ${opportunity.budget_max?.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}`;
-    return `${opportunity.budget_min?.toLocaleString()} - ${opportunity.budget_max?.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}`;
+    const currency = t('opportunities:card.budget.currency');
+    if (!opportunity.budget_min && !opportunity.budget_max) return t('opportunities:card.budget.negotiable');
+    if (!opportunity.budget_max) return `${opportunity.budget_min?.toLocaleString()}+ ${currency}`;
+    if (!opportunity.budget_min) return `${t('opportunities:card.budget.up_to')} ${opportunity.budget_max?.toLocaleString()} ${currency}`;
+    return `${opportunity.budget_min?.toLocaleString()} - ${opportunity.budget_max?.toLocaleString()} ${currency}`;
   };
 
   const handleBookmark = () => {
@@ -209,7 +212,7 @@ export const CollaborativeOpportunityCard = ({
           {opportunity.priority_level === 'high' && (
             <Badge className="bg-orange-500 text-white border-0">
               <TrendingUp className="w-3 h-3 mr-1" />
-              {isRTL ? 'مميزة' : 'Featured'}
+              {t('opportunities:card.featured')}
             </Badge>
           )}
           <Badge className={`${getStatusColor(opportunity.status)} border-0 flex items-center gap-1`}>
@@ -258,7 +261,7 @@ export const CollaborativeOpportunityCard = ({
         {daysLeft !== null && daysLeft <= 7 && (
           <div className="absolute bottom-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
             <Clock className="w-3 h-3" />
-            {daysLeft === 0 ? (isRTL ? 'اليوم الأخير' : 'Last Day') : `${daysLeft} ${isRTL ? 'أيام' : 'days'}`}
+            {daysLeft === 0 ? t('opportunities:card.last_day') : `${daysLeft} ${t('opportunities:card.days')}`}
           </div>
         )}
 
@@ -296,8 +299,8 @@ export const CollaborativeOpportunityCard = ({
         {opportunity.status === 'open' && opportunity.deadline && (
           <div className="mt-4">
             <div className="flex justify-between text-xs text-muted-foreground mb-1">
-              <span>{isRTL ? 'الوقت المتبقي' : 'Time Remaining'}</span>
-              <span>{daysLeft} {isRTL ? 'أيام' : 'days'}</span>
+              <span>{t('opportunities:card.time_remaining')}</span>
+              <span>{daysLeft} {t('opportunities:card.days')}</span>
             </div>
             <Progress value={daysLeft ? Math.max(0, 100 - (daysLeft / 30) * 100) : 100} className="h-2" />
           </div>
@@ -308,14 +311,14 @@ export const CollaborativeOpportunityCard = ({
           <div className="mt-3 p-2 bg-muted/30 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <Activity className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">{isRTL ? 'نشاط حديث' : 'Recent Activity'}</span>
+              <span className="text-sm font-medium">{t('opportunities:card.recent_activity')}</span>
             </div>
             <div className="space-y-1">
               {recentActivity.slice(0, 2).map((activity, index) => (
                 <div key={index} className="text-xs text-muted-foreground">
                   {activity.event_type} • {
                     Math.floor((Date.now() - new Date(activity.created_at).getTime()) / (1000 * 60))
-                  } {isRTL ? 'دقيقة مضت' : 'min ago'}
+                  } {t('opportunities:card.min_ago')}
                 </div>
               ))}
             </div>
@@ -325,7 +328,7 @@ export const CollaborativeOpportunityCard = ({
         {/* Contact Person */}
         {opportunity.contact_person && (
           <div className="flex items-center justify-between mt-3 p-2 bg-muted/30 rounded-lg">
-            <span className="text-sm font-medium text-foreground">{isRTL ? 'جهة الاتصال:' : 'Contact Person:'}</span>
+            <span className="text-sm font-medium text-foreground">{t('opportunities:card.contact_person')}</span>
             <div className="flex items-center gap-2">
               <Avatar className="w-6 h-6">
                 <AvatarFallback className="text-xs bg-primary text-primary-foreground font-semibold">
@@ -350,7 +353,7 @@ export const CollaborativeOpportunityCard = ({
                   <span className="text-xs ml-1">📈</span>
                 )}
               </div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'طلب' : 'applications'}</div>
+              <div className="text-xs text-muted-foreground">{t('opportunities:card.applications')}</div>
             </div>
           </div>
           
@@ -363,7 +366,7 @@ export const CollaborativeOpportunityCard = ({
                   <span className="text-xs ml-1">👀</span>
                 )}
               </div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'مشاهدة' : 'views'}</div>
+              <div className="text-xs text-muted-foreground">{t('opportunities:card.views')}</div>
             </div>
           </div>
           
@@ -371,7 +374,7 @@ export const CollaborativeOpportunityCard = ({
             <DollarSign className="h-4 w-4 text-primary" />
             <div>
               <div className="text-sm font-medium truncate">{formatBudgetRange()}</div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'الميزانية' : 'budget'}</div>
+              <div className="text-xs text-muted-foreground">{t('opportunities:card.budget_label')}</div>
             </div>
           </div>
           
@@ -381,7 +384,7 @@ export const CollaborativeOpportunityCard = ({
               <div className="text-sm font-medium">
                 {opportunity.deadline ? new Date(opportunity.deadline).toLocaleDateString('ar-SA') : 'N/A'}
               </div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'الموعد النهائي' : 'deadline'}</div>
+              <div className="text-xs text-muted-foreground">{t('opportunities:card.deadline_label')}</div>
             </div>
           </div>
         </div>
@@ -392,7 +395,7 @@ export const CollaborativeOpportunityCard = ({
             <div className="flex items-center gap-2 mb-1">
               <Activity className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">
-                {opportunityViewers.length} {isRTL ? 'يتصفح الآن' : 'viewing now'}
+                {opportunityViewers.length} {t('opportunities:card.viewing_now')}
               </span>
             </div>
             <div className="flex -space-x-1">
@@ -418,7 +421,7 @@ export const CollaborativeOpportunityCard = ({
           <div className="mb-4 p-3 bg-muted/30 rounded-lg">
             <div className="flex items-center gap-2 mb-1">
               <Building2 className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium">{isRTL ? 'الجهة المسؤولة' : 'Responsible Entity'}</span>
+              <span className="text-sm font-medium">{t('opportunities:card.responsible_entity')}</span>
             </div>
             <div className="text-sm text-muted-foreground">
               {opportunity.sector && (isRTL ? opportunity.sector.name_ar : opportunity.sector.name)}
@@ -432,13 +435,7 @@ export const CollaborativeOpportunityCard = ({
         <div className="mb-4">
           <Badge variant="outline" className="truncate">
             <Zap className="w-3 h-3 mr-1" />
-            {isRTL ? 
-              (opportunity.opportunity_type === 'sponsorship' ? 'رعاية' : 
-               opportunity.opportunity_type === 'collaboration' ? 'تعاون' : 
-               opportunity.opportunity_type === 'research' ? 'بحث' : 
-               opportunity.opportunity_type) :
-              opportunity.opportunity_type
-            }
+            {t(`opportunities:types.${opportunity.opportunity_type}`)}
           </Badge>
         </div>
 
@@ -451,7 +448,7 @@ export const CollaborativeOpportunityCard = ({
             className="flex-1 hover:bg-primary hover:text-white transition-colors"
           >
             <Eye className="h-4 w-4 mr-2" />
-            {isRTL ? 'التفاصيل' : 'Details'}
+            {t('opportunities:card.details')}
           </Button>
           {showCollaboration && (
             <Button 
@@ -461,7 +458,7 @@ export const CollaborativeOpportunityCard = ({
               className="hover:bg-primary hover:text-white transition-colors"
             >
               <MessageSquare className="h-4 w-4 mr-2" />
-              {isRTL ? 'تعاون' : 'Collaborate'}
+              {t('opportunities:card.collaborate')}
             </Button>
           )}
           {opportunity.status === 'open' && (
@@ -471,7 +468,7 @@ export const CollaborativeOpportunityCard = ({
               className="flex-1 bg-primary hover:bg-primary/90"
             >
               <Star className="h-4 w-4 mr-2" />
-              {isRTL ? 'تقدم الآن' : 'Apply Now'}
+              {t('opportunities:card.apply_now')}
             </Button>
           )}
         </div>

@@ -12,6 +12,7 @@ import {
   Eye, Share, Filter, Plus
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 const mockReports = [
   {
@@ -123,6 +124,7 @@ const mockReportTemplates = [
 
 const ReportsPage = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [typeFilter, setTypeFilter] = useState('all');
@@ -131,25 +133,25 @@ const ReportsPage = () => {
   const filterOptions = [
     {
       key: 'type',
-      label: isRTL ? 'نوع التقرير' : 'Report Type',
+      label: t('reports:filters.report_type'),
       options: [
-        { value: 'all', label: isRTL ? 'جميع الأنواع' : 'All Types' },
-        { value: 'performance', label: isRTL ? 'أداء' : 'Performance' },
-        { value: 'analytics', label: isRTL ? 'تحليلات' : 'Analytics' },
-        { value: 'financial', label: isRTL ? 'مالي' : 'Financial' },
-        { value: 'survey', label: isRTL ? 'استبيان' : 'Survey' },
-        { value: 'impact', label: isRTL ? 'أثر' : 'Impact' }
+        { value: 'all', label: t('reports:filters.types.all') },
+        { value: 'performance', label: t('reports:filters.types.performance') },
+        { value: 'analytics', label: t('reports:filters.types.analytics') },
+        { value: 'financial', label: t('reports:filters.types.financial') },
+        { value: 'survey', label: t('reports:filters.types.survey') },
+        { value: 'impact', label: t('reports:filters.types.impact') }
       ]
     },
     {
       key: 'category',
-      label: isRTL ? 'الفئة' : 'Category',
+      label: t('reports:filters.category'),
       options: [
-        { value: 'all', label: isRTL ? 'جميع الفئات' : 'All Categories' },
-        { value: 'monthly', label: isRTL ? 'شهري' : 'Monthly' },
-        { value: 'quarterly', label: isRTL ? 'ربعي' : 'Quarterly' },
-        { value: 'annual', label: isRTL ? 'سنوي' : 'Annual' },
-        { value: 'special', label: isRTL ? 'خاص' : 'Special' }
+        { value: 'all', label: t('reports:filters.categories.all') },
+        { value: 'monthly', label: t('reports:filters.categories.monthly') },
+        { value: 'quarterly', label: t('reports:filters.categories.quarterly') },
+        { value: 'annual', label: t('reports:filters.categories.annual') },
+        { value: 'special', label: t('reports:filters.categories.special') }
       ]
     }
   ];
@@ -192,9 +194,9 @@ const ReportsPage = () => {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'published': return isRTL ? 'منشور' : 'Published';
-      case 'draft': return isRTL ? 'مسودة' : 'Draft';
-      case 'reviewing': return isRTL ? 'قيد المراجعة' : 'Reviewing';
+      case 'published': return t('reports:status.published');
+      case 'draft': return t('reports:status.draft');
+      case 'reviewing': return t('reports:status.reviewing');
       default: return status;
     }
   };
@@ -235,14 +237,14 @@ const ReportsPage = () => {
             </div>
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
-              <span>{report.pages} {isRTL ? 'صفحة' : 'pages'}</span>
+              <span>{report.pages} {t('reports:card.pages')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Download className="h-4 w-4" />
-              <span>{formatNumber(report.downloads)} {isRTL ? 'تحميل' : 'downloads'}</span>
+              <span>{formatNumber(report.downloads)} {t('reports:card.downloads')}</span>
             </div>
             <div>
-              <span>{isRTL ? 'الحجم:' : 'Size:'} {report.size}</span>
+              <span>{t('reports:card.size')} {report.size}</span>
             </div>
           </div>
 
@@ -258,17 +260,17 @@ const ReportsPage = () => {
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Eye className="h-4 w-4 mr-2" />
-                {isRTL ? 'عرض' : 'View'}
+                {t('reports:card.view')}
               </Button>
               <Button variant="outline" size="sm">
                 <Share className="h-4 w-4 mr-2" />
-                {isRTL ? 'مشاركة' : 'Share'}
+                {t('reports:card.share')}
               </Button>
             </div>
             {report.status === 'published' && (
               <Button size="sm">
                 <Download className="h-4 w-4 mr-2" />
-                {isRTL ? 'تحميل' : 'Download'}
+                {t('reports:card.download')}
               </Button>
             )}
           </div>
@@ -290,16 +292,16 @@ const ReportsPage = () => {
       <CardContent>
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">{isRTL ? 'الأقسام:' : 'Sections:'}</span>
+            <span className="text-muted-foreground">{t('reports:card.sections')}</span>
             <span className="font-medium">{template.sections}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">{isRTL ? 'آخر استخدام:' : 'Last Used:'}</span>
+            <span className="text-muted-foreground">{t('reports:card.last_used')}</span>
             <span className="font-medium">{template.lastUsed}</span>
           </div>
           <Button className="w-full">
             <Plus className="h-4 w-4 mr-2" />
-            {isRTL ? 'إنشاء تقرير' : 'Create Report'}
+            {t('reports:create_report')}
           </Button>
         </div>
       </CardContent>
@@ -309,17 +311,17 @@ const ReportsPage = () => {
   return (
     <AppShell>
       <PageLayout
-        title={isRTL ? 'التقارير' : 'Reports'}
-        description={isRTL ? 'إدارة وتصدير التقارير والتحليلات المتنوعة' : 'Manage and export various reports and analytics'}
+        title={t('reports:title')}
+        description={t('reports:description')}
         secondaryActions={
           <div className="flex gap-2">
             <Button variant="outline">
               <Filter className="h-4 w-4 mr-2" />
-              {isRTL ? 'فلترة متقدمة' : 'Advanced Filter'}
+              {t('reports:advanced_filter')}
             </Button>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              {isRTL ? 'تقرير جديد' : 'New Report'}
+              {t('reports:new_report')}
             </Button>
           </div>
         }
@@ -327,7 +329,7 @@ const ReportsPage = () => {
         <div className="space-y-6">
           <div className="flex gap-4 mb-4">
             <Input
-              placeholder={isRTL ? 'البحث في التقارير...' : 'Search reports...'}
+              placeholder={t('reports:search_placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="max-w-sm"
@@ -336,10 +338,10 @@ const ReportsPage = () => {
 
           <Tabs defaultValue="published" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="published">{isRTL ? 'المنشورة' : 'Published'}</TabsTrigger>
-              <TabsTrigger value="drafts">{isRTL ? 'المسودات' : 'Drafts'}</TabsTrigger>
-              <TabsTrigger value="templates">{isRTL ? 'القوالب' : 'Templates'}</TabsTrigger>
-              <TabsTrigger value="scheduled">{isRTL ? 'المجدولة' : 'Scheduled'}</TabsTrigger>
+              <TabsTrigger value="published">{t('reports:tabs.published')}</TabsTrigger>
+              <TabsTrigger value="drafts">{t('reports:tabs.drafts')}</TabsTrigger>
+              <TabsTrigger value="templates">{t('reports:tabs.templates')}</TabsTrigger>
+              <TabsTrigger value="scheduled">{t('reports:tabs.scheduled')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="published" className="space-y-4">
@@ -370,10 +372,10 @@ const ReportsPage = () => {
               <div className="flex items-center justify-center h-32 text-muted-foreground">
                 <div className="text-center">
                   <Calendar className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p>{isRTL ? 'لا توجد تقارير مجدولة' : 'No scheduled reports found'}</p>
+                  <p>{t('reports:no_scheduled_reports')}</p>
                   <Button variant="outline" className="mt-2">
                     <Plus className="h-4 w-4 mr-2" />
-                    {isRTL ? 'جدولة تقرير' : 'Schedule Report'}
+                    {t('reports:schedule_report')}
                   </Button>
                 </div>
               </div>

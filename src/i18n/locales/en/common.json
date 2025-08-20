@@ -78,7 +78,7 @@
   },
   "actions": {
     "create": "Create",
-    "update": "Update", 
+    "update": "Update",
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
@@ -99,9 +99,32 @@
     "manage": "Manage",
     "review": "Review"
   },
+  "messages": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information",
+    "saved_successfully": "Saved successfully",
+    "deleted_successfully": "Deleted successfully",
+    "updated_successfully": "Updated successfully",
+    "created_successfully": "Created successfully",
+    "operation_failed": "Operation failed",
+    "please_try_again": "Please try again",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "please_wait": "Please wait...",
+    "no_data_available": "No data available",
+    "something_went_wrong": "Something went wrong",
+    "permission_denied": "Permission denied",
+    "unauthorized_access": "Unauthorized access",
+    "session_expired": "Session expired",
+    "network_error": "Network error",
+    "validation_error": "Validation error",
+    "required_fields": "Please fill in all required fields"
+  },
   "status": {
     "active": "Active",
-    "inactive": "Inactive", 
+    "inactive": "Inactive",
     "pending": "Pending",
     "completed": "Completed",
     "in_progress": "In Progress",
@@ -111,7 +134,12 @@
     "approved": "Approved",
     "rejected": "Rejected",
     "cancelled": "Cancelled",
-    "published": "Published"
+    "published": "Published",
+    "on_hold": "On Hold",
+    "planning": "Planning",
+    "upcoming": "Upcoming",
+    "closed": "Closed",
+    "ongoing": "Ongoing"
   },
   "placeholders": {
     "search": "Search...",
@@ -167,5 +195,73 @@
     "ethical": "Ethical",
     "medical": "Medical",
     "regulatory": "Regulatory"
+  },
+  "units": {
+    "bytes": "Bytes",
+    "kb": "KB",
+    "mb": "MB",
+    "gb": "GB",
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds",
+    "currency": "SAR",
+    "percentage": "%"
+  },
+  "directions": {
+    "up": "up",
+    "down": "down",
+    "neutral": "neutral"
+  },
+  "view_details": "View Details",
+  "tasks": "Tasks",
+  "filter": "Filter",
+  "close_sr": "Close",
+  "metrics": {
+    "growth": "Growth",
+    "projects": "Projects",
+    "budget": "Budget",
+    "progress": "Progress",
+    "participants": "Participants",
+    "revenue": "Revenue",
+    "performance": "Performance",
+    "uptime": "Uptime",
+    "response_time": "Response Time",
+    "error_rate": "Error Rate",
+    "success_rate": "Success Rate",
+    "completion_rate": "Completion Rate",
+    "engagement_rate": "Engagement Rate"
+  },
+  "labels": {
+    "refresh": "Refresh",
+    "share": "Share",
+    "analytics": "Analytics",
+    "reports": "Reports",
+    "notifications": "Notifications",
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "details": "Details",
+    "statistics": "Statistics",
+    "trends": "Trends",
+    "insights": "Insights",
+    "monitoring": "Monitoring",
+    "settings": "Settings",
+    "back_to": "Back to",
+    "manage": "Manage",
+    "view_all": "View All",
+    "show_more": "Show More",
+    "show_less": "Show Less"
+  },
+  "priority": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "critical": "Critical",
+    "normal": "Normal"
+  },
+  "impact": {
+    "high": "High Impact",
+    "medium": "Medium Impact",
+    "low": "Low Impact"
   }
 }

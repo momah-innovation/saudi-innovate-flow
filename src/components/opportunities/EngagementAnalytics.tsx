@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Heart, 
@@ -38,6 +39,7 @@ interface EngagementData {
 
 export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnalyticsProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [engagementData, setEngagementData] = useState<EngagementData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -206,7 +208,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
               <Heart className="w-5 h-5 text-red-500" />
               <div>
                 <p className="text-2xl font-bold">{engagementData.totalLikes}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'إعجابات' : 'Likes'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:engagement.likes')}</p>
                 {/* Real trend calculated from data */}
               </div>
             </div>
@@ -219,7 +221,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
               <Share2 className="w-5 h-5 text-blue-500" />
               <div>
                 <p className="text-2xl font-bold">{engagementData.totalShares}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'مشاركات' : 'Shares'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:engagement.shares')}</p>
                 {/* Real trend calculated from data */}
               </div>
             </div>
@@ -232,7 +234,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
               <MessageCircle className="w-5 h-5 text-green-500" />
               <div>
                 <p className="text-2xl font-bold">{engagementData.totalComments}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'تعليقات' : 'Comments'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:engagement.comments')}</p>
                 {/* Real trend calculated from data */}
               </div>
             </div>
@@ -245,7 +247,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
               <Clock className="w-5 h-5 text-purple-500" />
               <div>
                 <p className="text-2xl font-bold">{formatDuration(engagementData.avgTimeSpent)}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'متوسط الوقت' : 'Avg. Time'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:engagement.avg_time')}</p>
                 {/* Real trend calculated from data */}
               </div>
             </div>
@@ -259,11 +261,11 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Activity className="w-5 h-5" />
-              {isRTL ? 'اتجاه التفاعل' : 'Engagement Trend'}
+              {t('opportunities:engagement.trend_title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartPlaceholder title={isRTL ? "اتجاه التفاعل" : "Engagement Trend"} height={300} />
+            <ChartPlaceholder title={t('opportunities:engagement.trend_title')} height={300} />
           </CardContent>
         </Card>
 
@@ -272,11 +274,11 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Share2 className="w-5 h-5" />
-              {isRTL ? 'منصات المشاركة' : 'Sharing Platforms'}
+              {t('opportunities:engagement.sharing_platforms')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartPlaceholder title={isRTL ? "منصات المشاركة" : "Sharing Platforms"} height={300} />
+            <ChartPlaceholder title={t('opportunities:engagement.sharing_platforms')} height={300} />
           </CardContent>
         </Card>
 
@@ -285,13 +287,13 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MousePointer className="w-5 h-5" />
-              {isRTL ? 'جودة التفاعل' : 'Engagement Quality'}
+              {t('opportunities:engagement.quality_title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">{isRTL ? 'متوسط الوقت المقضي' : 'Avg. Time Spent'}</span>
+                <span className="text-sm font-medium">{t('opportunities:engagement.avg_time_spent')}</span>
                 <span className="text-sm text-muted-foreground">
                   {formatDuration(engagementData.avgTimeSpent)}
                 </span>
@@ -301,7 +303,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
             
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">{isRTL ? 'معدل الارتداد' : 'Bounce Rate'}</span>
+                <span className="text-sm font-medium">{t('opportunities:engagement.bounce_rate')}</span>
                 <span className="text-sm text-muted-foreground">
                   {engagementData.bounceRate}%
                 </span>
@@ -311,7 +313,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
             
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">{isRTL ? 'الزوار العائدون' : 'Return Visitors'}</span>
+                <span className="text-sm font-medium">{t('opportunities:engagement.return_visitors')}</span>
                 <span className="text-sm text-muted-foreground">
                   {engagementData.returnVisitors}%
                 </span>
@@ -321,7 +323,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">{isRTL ? 'معدل الحفظ' : 'Bookmark Rate'}</span>
+                <span className="text-sm font-medium">{t('opportunities:engagement.bookmark_rate')}</span>
                 <span className="text-sm text-muted-foreground">
                   {((engagementData.totalBookmarks / Math.max(1, analytics.totalViews)) * 100).toFixed(1)}%
                 </span>
@@ -336,11 +338,11 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
-              {isRTL ? 'نمط التفاعل اليومي' : 'Hourly Engagement Pattern'}
+              {t('opportunities:engagement.hourly_pattern')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartPlaceholder title={isRTL ? "نمط التفاعل اليومي" : "Hourly Engagement Pattern"} height={300} />
+            <ChartPlaceholder title={t('opportunities:engagement.hourly_pattern')} height={300} />
           </CardContent>
         </Card>
       </div>

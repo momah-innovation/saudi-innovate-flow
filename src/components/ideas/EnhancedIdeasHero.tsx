@@ -20,7 +20,7 @@ import {
   Brain,
   Rocket
 } from 'lucide-react';
-import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface EnhancedIdeasHeroProps {
@@ -51,14 +51,14 @@ export const EnhancedIdeasHero = ({
   canCreateIdea = true,
   featuredIdea
 }: EnhancedIdeasHeroProps) => {
-  const { isRTL } = useDirection();
+  const { t, isRTL } = useUnifiedTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Lightbulb, value: totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-yellow-400' },
-    { icon: Award, value: publishedIdeas, label: isRTL ? 'منشورة' : 'published', color: 'text-green-400' },
-    { icon: Users, value: `${Math.floor(totalViews / 1000)}K+`, label: isRTL ? 'مشاهدة' : 'views', color: 'text-blue-400' },
-    { icon: TrendingUp, value: `${Math.floor(totalLikes / 100)}K+`, label: isRTL ? 'إعجاب' : 'likes', color: 'text-pink-400' }
+    { icon: Lightbulb, value: totalIdeas, label: t('ideas:hero.stats.ideas'), color: 'text-yellow-400' },
+    { icon: Award, value: publishedIdeas, label: t('ideas:hero.stats.published'), color: 'text-green-400' },
+    { icon: Users, value: `${Math.floor(totalViews / 1000)}K+`, label: t('ideas:hero.stats.views'), color: 'text-blue-400' },
+    { icon: TrendingUp, value: `${Math.floor(totalLikes / 100)}K+`, label: t('ideas:hero.stats.likes'), color: 'text-pink-400' }
   ];
 
   const { setInterval: scheduleInterval } = useTimerManager();
@@ -97,28 +97,17 @@ export const EnhancedIdeasHero = ({
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
-                  {isRTL ? 'منصة الأفكار الإبداعية' : 'Creative Ideas Platform'}
+                  {t('ideas:hero.platform_badge')}
                 </Badge>
               </div>
               
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  {isRTL ? (
-                    <>
-                      اكتشف <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">الأفكار</span> المبدعة
-                    </>
-                  ) : (
-                    <>
-                      Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Creative</span> Ideas
-                    </>
-                  )}
+                  {t('ideas:hero.title')}
                 </h1>
                 
                 <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
-                  {isRTL 
-                    ? 'انضم إلى مجتمع المبدعين وشارك أفكارك المبتكرة التي تساهم في تحقيق رؤية المملكة 2030'
-                    : 'Join the innovators community and share your creative ideas that contribute to achieving Saudi Vision 2030'
-                  }
+                  {t('ideas:hero.subtitle')}
                 </p>
               </div>
             </div>
@@ -156,7 +145,7 @@ export const EnhancedIdeasHero = ({
                   className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   <Plus className="w-5 h-5 mr-2" />
-                  {isRTL ? 'إضافة فكرة جديدة' : 'Submit New Idea'}
+                  {t('ideas:hero.buttons.submit_new')}
                 </Button>
               )}
               
@@ -167,7 +156,7 @@ export const EnhancedIdeasHero = ({
                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
-                {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
+                {t('ideas:hero.buttons.advanced_filters')}
               </Button>
 
               <Button
@@ -176,7 +165,7 @@ export const EnhancedIdeasHero = ({
                 className="text-white hover:bg-white/10"
               >
                 <Play className="w-5 h-5 mr-2" />
-                {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
+                {t('ideas:hero.buttons.watch_demo')}
               </Button>
             </div>
           </div>
@@ -203,14 +192,14 @@ export const EnhancedIdeasHero = ({
                     <div className="absolute top-4 left-4">
                       <Badge className="bg-yellow-500/90 text-white border-0 animate-pulse">
                         <Star className="w-3 h-3 mr-1" />
-                        {isRTL ? 'فكرة مميزة' : 'Featured'}
+                        {t('ideas:hero.featured.badge')}
                       </Badge>
                     </div>
 
                     <div className="absolute top-4 right-4">
                       <Badge className="bg-orange-500/90 text-white border-0">
                         <TrendingUp className="w-3 h-3 mr-1" />
-                        {isRTL ? 'رائجة' : 'Trending'}
+                        {t('ideas:hero.featured.trending_badge')}
                       </Badge>
                     </div>
 
@@ -227,18 +216,18 @@ export const EnhancedIdeasHero = ({
                         <div className="text-2xl font-bold text-blue-300">
                           {featuredIdea.views}
                         </div>
-                        <div className="text-sm text-white/70">{isRTL ? 'مشاهدة' : 'views'}</div>
+                        <div className="text-sm text-white/70">{t('ideas:hero.stats.views')}</div>
                       </div>
                       <div className="text-center">
                         <div className="text-2xl font-bold text-pink-300">
                           {featuredIdea.likes}
                         </div>
-                        <div className="text-sm text-white/70">{isRTL ? 'إعجاب' : 'likes'}</div>
+                        <div className="text-sm text-white/70">{t('ideas:hero.stats.likes')}</div>
                       </div>
                     </div>
 
                     <div className="text-center text-white/80">
-                      <span className="text-sm">{isRTL ? 'من:' : 'By:'} {featuredIdea.innovator}</span>
+                      <span className="text-sm">{t('ideas:hero.featured.by')} {featuredIdea.innovator}</span>
                     </div>
 
                     <Progress 
@@ -249,7 +238,7 @@ export const EnhancedIdeasHero = ({
                     <Button 
                       className="w-full bg-gradient-primary hover:opacity-90 text-white"
                     >
-                      {isRTL ? 'اعرض التفاصيل' : 'View Details'}
+                      {t('ideas:hero.featured.view_details')}
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
@@ -260,10 +249,10 @@ export const EnhancedIdeasHero = ({
                 <CardContent className="p-8 text-center">
                   <Lightbulb className="w-16 h-16 mx-auto text-white/40 mb-4" />
                   <h3 className="text-lg font-semibold text-white/80 mb-2">
-                    {isRTL ? 'لا توجد فكرة مميزة حالياً' : 'No Featured Idea'}
+                    {t('ideas:hero.featured.no_featured_title')}
                   </h3>
                   <p className="text-white/60 text-sm">
-                    {isRTL ? 'سيتم عرض الأفكار المميزة هنا' : 'Featured ideas will appear here'}
+                    {t('ideas:hero.featured.no_featured_subtitle')}
                   </p>
                 </CardContent>
               </Card>
@@ -275,10 +264,10 @@ export const EnhancedIdeasHero = ({
                 <CardContent className="p-4 text-center">
                   <Rocket className="w-8 h-8 text-orange-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'الأفكار الجديدة' : 'New Ideas'}
+                    {t('ideas:hero.quick_actions.new_ideas')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {isRTL ? '12 فكرة' : '12 ideas'}
+                    12 {t('ideas:hero.stats.ideas')}
                   </div>
                 </CardContent>
               </Card>
@@ -287,10 +276,10 @@ export const EnhancedIdeasHero = ({
                 <CardContent className="p-4 text-center">
                   <Target className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'قيد التطوير' : 'In Development'}
+                    {t('ideas:hero.quick_actions.in_development')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {isRTL ? '8 مشاريع' : '8 projects'}
+                    8 {t('ideas:hero.quick_actions.projects_count')}
                   </div>
                 </CardContent>
               </Card>

@@ -25,6 +25,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { getOpportunityImageUrl } from '@/utils/storageUtils';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface EnhancedOpportunitiesHeroProps {
   totalOpportunities: number;
@@ -54,13 +55,14 @@ export const EnhancedOpportunitiesHero = ({
   featuredOpportunity
 }: EnhancedOpportunitiesHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Handshake, value: totalOpportunities, label: isRTL ? 'فرصة' : 'opportunities', color: 'text-blue-400' },
-    { icon: Award, value: activeOpportunities, label: isRTL ? 'نشطة' : 'active', color: 'text-green-400' },
-    { icon: Users, value: `${Math.floor(totalApplications / 1000)}K+`, label: isRTL ? 'طلب' : 'applications', color: 'text-purple-400' },
-    { icon: DollarSign, value: `${Math.floor(totalBudget / 1000000)}M+`, label: isRTL ? 'ر.س' : 'SAR', color: 'text-yellow-400' }
+    { icon: Handshake, value: totalOpportunities, label: t('opportunities:hero.stats.opportunities'), color: 'text-blue-400' },
+    { icon: Award, value: activeOpportunities, label: t('opportunities:hero.stats.active'), color: 'text-green-400' },
+    { icon: Users, value: `${Math.floor(totalApplications / 1000)}K+`, label: t('opportunities:hero.stats.applications'), color: 'text-purple-400' },
+    { icon: DollarSign, value: `${Math.floor(totalBudget / 1000000)}M+`, label: t('opportunities:hero.stats.currency'), color: 'text-yellow-400' }
   ];
 
   // Removed useTimerManager to prevent hook violations
@@ -100,7 +102,7 @@ export const EnhancedOpportunitiesHero = ({
                 </div>
                 <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
-                  {isRTL ? 'منصة الفرص الاستثمارية' : 'Partnership Opportunities Platform'}
+                  {t('opportunities:hero.platform_badge')}
                 </Badge>
               </div>
               
@@ -108,20 +110,17 @@ export const EnhancedOpportunitiesHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {isRTL ? (
                     <>
-                      اكتشف <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">الفرص</span> الاستثمارية
+                      {t('opportunities:hero.title_prefix')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{t('opportunities:hero.title_highlight')}</span> {t('opportunities:hero.title_suffix')}
                     </>
                   ) : (
                     <>
-                      Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Partnership</span> Opportunities
+                      {t('opportunities:hero.title_prefix')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{t('opportunities:hero.title_highlight')}</span> {t('opportunities:hero.title_suffix')}
                     </>
                   )}
                 </h1>
                 
                 <p className="text-xl text-primary-foreground/80 max-w-2xl leading-relaxed">
-                  {isRTL 
-                    ? 'انضم إلى شبكة الشراكات الاستراتيجية واستكشف فرص التعاون مع القطاع الحكومي والشركات الرائدة'
-                    : 'Join the strategic partnerships network and explore collaboration opportunities with government sectors and leading companies'
-                  }
+                  {t('opportunities:hero.subtitle')}
                 </p>
               </div>
             </div>
@@ -158,7 +157,7 @@ export const EnhancedOpportunitiesHero = ({
                 className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Plus className="w-5 h-5 mr-2" />
-                {isRTL ? 'إنشاء فرصة جديدة' : 'Create New Opportunity'}
+                {t('opportunities:hero.buttons.create_opportunity')}
               </Button>
               
               <Button
@@ -168,7 +167,7 @@ export const EnhancedOpportunitiesHero = ({
                 className="border-primary/30 text-primary-foreground hover:bg-primary/10 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
-                {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
+                {t('opportunities:hero.buttons.advanced_filters')}
               </Button>
 
               <Button
@@ -177,7 +176,7 @@ export const EnhancedOpportunitiesHero = ({
                 className="text-primary-foreground hover:bg-primary/10"
               >
                 <Play className="w-5 h-5 mr-2" />
-                {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
+                {t('opportunities:hero.buttons.watch_demo')}
               </Button>
             </div>
           </div>
@@ -204,14 +203,14 @@ export const EnhancedOpportunitiesHero = ({
                     <div className="absolute top-4 left-4">
                       <Badge className="bg-red-500/90 text-red-50 border-0 animate-pulse">
                         <Clock className="w-3 h-3 mr-1" />
-                        {featuredOpportunity.daysLeft} {isRTL ? 'أيام متبقية' : 'days left'}
+                        {featuredOpportunity.daysLeft} {t('opportunities:hero.featured.days_left')}
                       </Badge>
                     </div>
 
                     <div className="absolute top-4 right-4">
                       <Badge className="bg-orange-500/90 text-orange-50 border-0">
                         <TrendingUp className="w-3 h-3 mr-1" />
-                        {isRTL ? 'مميزة' : 'Featured'}
+                        {t('opportunities:hero.featured.badge')}
                       </Badge>
                     </div>
 
@@ -228,13 +227,13 @@ export const EnhancedOpportunitiesHero = ({
                         <div className="text-2xl font-bold text-emerald-300">
                           {featuredOpportunity.applications}
                         </div>
-                        <div className="text-sm text-primary-foreground/70">{isRTL ? 'طلب' : 'applications'}</div>
+                        <div className="text-sm text-primary-foreground/70">{t('opportunities:hero.featured.applications')}</div>
                       </div>
                       <div className="text-center">
                         <div className="text-2xl font-bold text-yellow-300">
                           {Math.floor(featuredOpportunity.budget / 1000)}K
                         </div>
-                        <div className="text-sm text-primary-foreground/70">{isRTL ? 'ر.س ميزانية' : 'SAR budget'}</div>
+                        <div className="text-sm text-primary-foreground/70">{t('opportunities:hero.featured.budget')}</div>
                       </div>
                     </div>
 
@@ -246,7 +245,7 @@ export const EnhancedOpportunitiesHero = ({
                     <Button 
                       className="w-full bg-gradient-primary hover:opacity-90 text-white"
                     >
-                      {isRTL ? 'اعرض التفاصيل' : 'View Details'}
+                      {t('opportunities:hero.featured.view_details')}
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
@@ -257,10 +256,10 @@ export const EnhancedOpportunitiesHero = ({
                 <CardContent className="p-8 text-center">
                   <Building2 className="w-16 h-16 mx-auto text-muted-foreground/40 mb-4" />
                   <h3 className="text-lg font-semibold text-muted-foreground/80 mb-2">
-                    {isRTL ? 'لا توجد فرصة مميزة حالياً' : 'No Featured Opportunity'}
+                    {t('opportunities:hero.featured.no_featured_title')}
                   </h3>
                   <p className="text-muted-foreground/60 text-sm">
-                    {isRTL ? 'سيتم عرض الفرص المميزة هنا' : 'Featured opportunities will appear here'}
+                    {t('opportunities:hero.featured.no_featured_subtitle')}
                   </p>
                 </CardContent>
               </Card>
@@ -272,10 +271,10 @@ export const EnhancedOpportunitiesHero = ({
                 <CardContent className="p-4 text-center">
                   <Calendar className="w-8 h-8 text-teal-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-primary-foreground">
-                    {isRTL ? 'الفرص القادمة' : 'Upcoming'}
+                    {t('opportunities:hero.quick_actions.upcoming')}
                   </div>
                   <div className="text-xs text-primary-foreground/70">
-                    {isRTL ? '8 فرص' : '8 opportunities'}
+                    {t('opportunities:hero.quick_actions.upcoming_count', { count: 8 })}
                   </div>
                 </CardContent>
               </Card>
@@ -284,10 +283,10 @@ export const EnhancedOpportunitiesHero = ({
                 <CardContent className="p-4 text-center">
                   <Star className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-primary-foreground">
-                    {isRTL ? 'المفضلة' : 'Favorites'}
+                    {t('opportunities:hero.quick_actions.favorites')}
                   </div>
                   <div className="text-xs text-primary-foreground/70">
-                    {isRTL ? '15 محفوظة' : '15 saved'}
+                    {t('opportunities:hero.quick_actions.saved_count', { count: 15 })}
                   </div>
                 </CardContent>
               </Card>

@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Trophy, Star, Medal, Crown, Zap, Target, 
    TrendingUp, Award, Flame, Sparkles 
@@ -21,6 +22,7 @@ interface GamificationDashboardProps {
 
 export function GamificationDashboard({ userId, showLeaderboard = true }: GamificationDashboardProps) {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { user, userProfile } = useAuth();
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
@@ -182,12 +184,12 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
 
   const getLevelName = (level: string) => {
     const levelNames = {
-      legend: isRTL ? 'أسطورة' : 'Legend',
-      expert: isRTL ? 'خبير' : 'Expert', 
-      advanced: isRTL ? 'متقدم' : 'Advanced',
-      intermediate: isRTL ? 'متوسط' : 'Intermediate',
-      beginner: isRTL ? 'مبتدئ' : 'Beginner',
-      novice: isRTL ? 'مبتدىء' : 'Novice'
+      legend: t('ideas:gamification.levels.legend'),
+      expert: t('ideas:gamification.levels.expert'),
+      advanced: t('ideas:gamification.levels.advanced'),
+      intermediate: t('ideas:gamification.levels.intermediate'),
+      beginner: t('ideas:gamification.levels.beginner'),
+      novice: t('ideas:gamification.levels.novice')
     };
     return levelNames[level as keyof typeof levelNames] || level;
   };
@@ -224,7 +226,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
                 {getLevelName(userStats.level)}
               </span>
               <p className="text-sm text-muted-foreground font-normal">
-                {userStats.totalPoints} {isRTL ? 'نقطة' : 'points'}
+                {userStats.totalPoints} {t('ideas:gamification.points')}
               </p>
             </div>
           </CardTitle>
@@ -232,9 +234,9 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
         <CardContent className="space-y-4">
           <div>
             <div className="flex justify-between text-sm mb-2">
-              <span>{isRTL ? 'التقدم للمستوى التالي' : 'Progress to next level'}</span>
+              <span>{t('ideas:gamification.progress_to_next')}</span>
               <span className="font-medium">
-                {userStats.nextLevelPoints - userStats.totalPoints} {isRTL ? 'نقطة متبقية' : 'points to go'}
+                {userStats.nextLevelPoints - userStats.totalPoints} {t('ideas:gamification.points_to_go')}
               </span>
             </div>
             <Progress value={userStats.progress} className="h-3" />
@@ -248,7 +250,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-5 h-5" />
-              {isRTL ? 'الإنجازات الأخيرة' : 'Recent Achievements'}
+              {t('ideas:gamification.recent_achievements')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -268,7 +270,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
                       </div>
                       <p className="text-sm text-muted-foreground">{achievement.description}</p>
                       <p className="text-xs text-primary font-medium">
-                        +{achievement.points_earned} {isRTL ? 'نقطة' : 'points'}
+                        +{achievement.points_earned} {t('ideas:gamification.points')}
                       </p>
                     </div>
                   </div>
@@ -277,8 +279,8 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 <Trophy className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p>{isRTL ? 'لا توجد إنجازات بعد' : 'No achievements yet'}</p>
-                <p className="text-sm">{isRTL ? 'ابدأ بتقديم أفكارك لكسب النقاط!' : 'Start submitting ideas to earn points!'}</p>
+                <p>{t('ideas:gamification.no_achievements')}</p>
+                <p className="text-sm">{t('ideas:gamification.start_submitting')}</p>
               </div>
             )}
           </CardContent>
@@ -290,7 +292,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Medal className="w-5 h-5" />
-                {isRTL ? 'المتصدرون هذا الشهر' : 'Monthly Leaderboard'}
+                {t('ideas:gamification.monthly_leaderboard')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -321,7 +323,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
                           {isRTL ? entry.profiles?.name_ar : entry.profiles?.name || 'Anonymous'}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {entry.total_points} {isRTL ? 'نقطة' : 'pts'} • {entry.ideas_submitted} {isRTL ? 'فكرة' : 'ideas'}
+                          {entry.total_points} {t('ideas:gamification.points_unit')} • {entry.ideas_submitted} {t('ideas:gamification.ideas')}
                         </p>
                       </div>
                     </div>
@@ -330,7 +332,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
                   <Medal className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>{isRTL ? 'لا توجد بيانات للمتصدرين' : 'No leaderboard data'}</p>
+                  <p>{t('ideas:gamification.no_leaderboard_data')}</p>
                 </div>
               )}
             </CardContent>

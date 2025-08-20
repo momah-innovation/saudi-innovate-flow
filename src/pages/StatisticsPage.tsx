@@ -79,16 +79,16 @@ export default function StatisticsPage() {
     return (
       <AppShell>
         <PageLayout 
-          title={isRTL ? 'الوصول مرفوض' : 'Access Denied'} 
-          description={isRTL ? 'ليس لديك صلاحية للوصول إلى هذه الصفحة' : 'You do not have permission to access this page'}
+          title={t('statistics:access.denied')} 
+          description={t('statistics:access.no_permission')}
         >
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <div className="text-6xl mb-4">🔒</div>
             <h2 className="text-2xl font-bold mb-2">
-              {isRTL ? 'الوصول مرفوض' : 'Access Denied'}
+              {t('statistics:access.denied')}
             </h2>
             <p className="text-muted-foreground mb-4">
-              {isRTL ? 'هذه الصفحة متاحة للإداريين فقط' : 'This page is only available to administrators'}
+              {t('statistics:access.admin_only')}
             </p>
           </div>
         </PageLayout>
@@ -223,19 +223,19 @@ export default function StatisticsPage() {
       case 'ideas':
         data = {
           metrics: [
-            { label: isRTL ? 'إجمالي المقترحة' : 'Total Submitted', value: stats.totalIdeas, change: 12 },
-            { label: isRTL ? 'قيد المراجعة' : 'Under Review', value: Math.floor(stats.totalIdeas * 0.3), change: 8 },
-            { label: isRTL ? 'مقبولة' : 'Approved', value: stats.successfulImplementations, change: 15 },
-            { label: isRTL ? 'قيد التطوير' : 'In Development', value: stats.ongoingProjects, change: 5 }
+            { label: t('statistics:detailed_metrics.total_submitted'), value: stats.totalIdeas, change: 12 },
+            { label: t('statistics:detailed_metrics.under_review'), value: Math.floor(stats.totalIdeas * 0.3), change: 8 },
+            { label: t('statistics:detailed_metrics.approved'), value: stats.successfulImplementations, change: 15 },
+            { label: t('statistics:detailed_metrics.in_development'), value: stats.ongoingProjects, change: 5 }
           ],
           chartType: 'bar',
-          chartTitle: isRTL ? 'توزيع حالة الأفكار' : 'Ideas Status Distribution',
+          chartTitle: t('statistics:chart_titles.ideas_status_distribution'),
           chartData: [
-            { name: isRTL ? 'مسودة' : 'Draft', value: Math.floor(stats.totalIdeas * 0.2) },
-            { name: isRTL ? 'قيد المراجعة' : 'Under Review', value: Math.floor(stats.totalIdeas * 0.3) },
-            { name: isRTL ? 'مقبولة' : 'Approved', value: stats.successfulImplementations },
-            { name: isRTL ? 'مرفوضة' : 'Rejected', value: Math.floor(stats.totalIdeas * 0.2) },
-            { name: isRTL ? 'قيد التطوير' : 'In Development', value: stats.ongoingProjects }
+            { name: t('statistics:detailed_metrics.draft'), value: Math.floor(stats.totalIdeas * 0.2) },
+            { name: t('statistics:detailed_metrics.under_review'), value: Math.floor(stats.totalIdeas * 0.3) },
+            { name: t('statistics:detailed_metrics.approved'), value: stats.successfulImplementations },
+            { name: t('statistics:detailed_metrics.rejected'), value: Math.floor(stats.totalIdeas * 0.2) },
+            { name: t('statistics:detailed_metrics.in_development'), value: stats.ongoingProjects }
           ]
         };
         break;
@@ -243,15 +243,15 @@ export default function StatisticsPage() {
       case 'challenges':
         data = {
           metrics: [
-            { label: isRTL ? 'التحديات النشطة' : 'Active Challenges', value: stats.totalChallenges, change: 8 },
-            { label: isRTL ? 'مكتملة' : 'Completed', value: Math.floor(stats.totalChallenges * 0.4), change: 12 },
-            { label: isRTL ? 'متوسط الأفكار لكل تحدي' : 'Avg Ideas per Challenge', value: Math.floor(stats.totalIdeas / Math.max(stats.totalChallenges, 1)), change: 5 }
+            { label: t('statistics:metrics.active_challenges'), value: stats.totalChallenges, change: 8 },
+            { label: t('statistics:detailed_metrics.completed'), value: Math.floor(stats.totalChallenges * 0.4), change: 12 },
+            { label: t('statistics:detailed_metrics.avg_ideas_per_challenge'), value: Math.floor(stats.totalIdeas / Math.max(stats.totalChallenges, 1)), change: 5 }
           ],
           chartType: 'pie',
-          chartTitle: isRTL ? 'توزيع حالة التحديات' : 'Challenge Status Distribution',
+          chartTitle: t('statistics:chart_titles.challenge_status_distribution'),
           chartData: [
-            { name: isRTL ? 'نشط' : 'Active', value: Math.floor(stats.totalChallenges * 0.6) },
-            { name: isRTL ? 'مكتمل' : 'Completed', value: Math.floor(stats.totalChallenges * 0.4) }
+            { name: t('statistics:statuses.active'), value: Math.floor(stats.totalChallenges * 0.6) },
+            { name: t('statistics:statuses.completed'), value: Math.floor(stats.totalChallenges * 0.4) }
           ]
         };
         break;
@@ -259,12 +259,12 @@ export default function StatisticsPage() {
       case 'events':
         data = {
           metrics: [
-            { label: isRTL ? 'إجمالي الفعاليات' : 'Total Events', value: stats.totalEvents, change: 15 },
-            { label: isRTL ? 'إجمالي المشاركين' : 'Total Participants', value: stats.totalParticipants, change: 20 },
-            { label: isRTL ? 'متوسط الحضور' : 'Avg Attendance', value: stats.averageEventAttendance, change: 8 }
+            { label: t('statistics:detailed_metrics.total_events'), value: stats.totalEvents, change: 15 },
+            { label: t('statistics:detailed_metrics.total_participants'), value: stats.totalParticipants, change: 20 },
+            { label: t('statistics:detailed_metrics.avg_attendance'), value: stats.averageEventAttendance, change: 8 }
           ],
           chartType: 'line',
-          chartTitle: isRTL ? 'اتجاهات مشاركة الفعاليات' : 'Event Participation Trends',
+          chartTitle: t('statistics:chart_titles.event_participation_trends'),
           chartData: trendData.map(d => ({ name: d.period, value: d.participants }))
         };
         break;
@@ -272,16 +272,16 @@ export default function StatisticsPage() {
       case 'users':
         data = {
           metrics: [
-            { label: isRTL ? 'المبدعون النشطون' : 'Active Innovators', value: stats.activeInnovators, change: 18 },
-            { label: isRTL ? 'الخبراء المقيمون' : 'Expert Evaluators', value: stats.totalExperts, change: 10 },
-            { label: isRTL ? 'نمو المنصة' : 'Platform Growth', value: `${stats.platformGrowthRate}%`, change: 12 }
+            { label: t('statistics:metrics.active_innovators'), value: stats.activeInnovators, change: 18 },
+            { label: t('statistics:detailed_metrics.expert_evaluators'), value: stats.totalExperts, change: 10 },
+            { label: t('statistics:detailed_metrics.platform_growth'), value: `${stats.platformGrowthRate}%`, change: 12 }
           ],
           chartType: 'bar',
-          chartTitle: isRTL ? 'نمو قاعدة المستخدمين' : 'User Base Growth',
+          chartTitle: t('statistics:chart_titles.user_base_growth'),
           chartData: [
-            { name: isRTL ? 'مبدعون' : 'Innovators', value: stats.activeInnovators },
-            { name: isRTL ? 'خبراء' : 'Experts', value: stats.totalExperts },
-            { name: isRTL ? 'شركاء' : 'Partners', value: stats.totalPartners }
+            { name: t('statistics:detailed_metrics.innovators'), value: stats.activeInnovators },
+            { name: t('statistics:detailed_metrics.experts'), value: stats.totalExperts },
+            { name: t('statistics:detailed_metrics.partners'), value: stats.totalPartners }
           ]
         };
         break;
@@ -308,9 +308,9 @@ export default function StatisticsPage() {
       a.click();
       URL.revokeObjectURL(url);
       
-      toast.success(isRTL ? 'تم تصدير الإحصائيات بنجاح' : 'Statistics exported successfully');
+      toast.success(t('common:messages.export_success'));
     } catch (error) {
-      toast.error(isRTL ? 'فشل في تصدير الإحصائيات' : 'Failed to export statistics');
+      toast.error(t('common:messages.export_error'));
     }
   };
 
@@ -325,8 +325,8 @@ export default function StatisticsPage() {
     return (
       <AppShell>
         <PageLayout 
-          title={isRTL ? 'إحصائيات المنصة' : 'Platform Statistics'} 
-          description={isRTL ? 'جاري تحميل تحليلات منصة الابتكار...' : 'Loading innovation platform analytics...'}
+          title={t('statistics:page.title')} 
+          description={t('statistics:page.description')}
         >
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -348,8 +348,8 @@ export default function StatisticsPage() {
         isAdmin={true}
       />
       <PageLayout
-        title={isRTL ? 'إحصائيات المنصة' : 'Platform Analytics'}
-        description={isRTL ? 'نظرة شاملة على أداء ونشاط منصة الابتكار' : 'Comprehensive overview of innovation platform performance and activity'}
+        title={t('statistics:page.analytics_title')}
+        description={t('statistics:page.analytics_description')}
         className="space-y-6"
       >
         {/* Filters */}
@@ -378,13 +378,13 @@ export default function StatisticsPage() {
               className="gap-2"
             >
               <RefreshCw className="w-4 h-4" />
-              {isRTL ? 'تحديث البيانات' : 'Refresh Data'}
+              {t('statistics:actions.refresh_data')}
             </Button>
           </div>
           
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>
-              {isRTL ? 'آخر تحديث:' : 'Last updated:'} {format(new Date(), 'MMM dd, yyyy HH:mm')}
+              {t('statistics:actions.last_updated')} {format(new Date(), 'MMM dd, yyyy HH:mm')}
             </span>
           </div>
         </div>
@@ -393,19 +393,19 @@ export default function StatisticsPage() {
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
-              {isRTL ? 'نظرة عامة' : 'Overview'}
+              {t('statistics:tabs.overview')}
             </TabsTrigger>
             <TabsTrigger value="trends" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
-              {isRTL ? 'الاتجاهات' : 'Trends'}
+              {t('statistics:tabs.trends')}
             </TabsTrigger>
             <TabsTrigger value="categories" className="flex items-center gap-2">
               <PieChartIcon className="w-4 h-4" />
-              {isRTL ? 'التصنيفات' : 'Categories'}
+              {t('statistics:tabs.categories')}
             </TabsTrigger>
             <TabsTrigger value="impact" className="flex items-center gap-2">
               <Award className="w-4 h-4" />
-              {isRTL ? 'التأثير' : 'Impact'}
+              {t('statistics:tabs.impact')}
             </TabsTrigger>
           </TabsList>
 
@@ -413,52 +413,52 @@ export default function StatisticsPage() {
             {/* Key Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <MetricCard
-                title={isRTL ? 'إجمالي الأفكار' : 'Total Ideas'}
+                title={t('statistics:metrics.total_ideas')}
                 value={stats.totalIdeas}
-                subtitle={isRTL ? 'أفكار مقترحة' : 'ideas submitted'}
+                subtitle={t('statistics:metrics.ideas_submitted')}
                 icon={<Lightbulb className="w-5 h-5 text-yellow-500" />}
                 trend={{
                   value: 12,
-                  label: isRTL ? 'هذا الشهر' : 'this month',
+                  label: t('statistics:hero.this_month'),
                   direction: 'up'
                 }}
                 onClick={() => handleMetricClick('ideas')}
               />
 
               <MetricCard
-                title={isRTL ? 'التحديات النشطة' : 'Active Challenges'}
+                title={t('statistics:metrics.active_challenges')}
                 value={stats.totalChallenges}
-                subtitle={isRTL ? 'تحديات مفتوحة' : 'open challenges'}
+                subtitle={t('statistics:metrics.open_challenges')}
                 icon={<Target className="w-5 h-5 text-blue-500" />}
                 trend={{
                   value: 8,
-                  label: isRTL ? 'هذا الشهر' : 'this month',
+                  label: t('statistics:hero.this_month'),
                   direction: 'up'
                 }}
                 onClick={() => handleMetricClick('challenges')}
               />
 
               <MetricCard
-                title={isRTL ? 'الفعاليات' : 'Events'}
+                title={t('statistics:metrics.events')}
                 value={stats.totalEvents}
-                subtitle={isRTL ? 'فعاليات منظمة' : 'events organized'}
+                subtitle={t('statistics:metrics.events_organized')}
                 icon={<Calendar className="w-5 h-5 text-green-500" />}
                 trend={{
                   value: 15,
-                  label: isRTL ? 'هذا الشهر' : 'this month',
+                  label: t('statistics:hero.this_month'),
                   direction: 'up'
                 }}
                 onClick={() => handleMetricClick('events')}
               />
 
               <MetricCard
-                title={isRTL ? 'المبدعون النشطون' : 'Active Innovators'}
+                title={t('statistics:metrics.active_innovators')}
                 value={stats.activeInnovators}
-                subtitle={isRTL ? 'مستخدم نشط' : 'active users'}
+                subtitle={t('statistics:metrics.active_users')}
                 icon={<Users className="w-5 h-5 text-purple-500" />}
                 trend={{
                   value: 18,
-                  label: isRTL ? 'هذا الشهر' : 'this month',
+                  label: t('statistics:hero.this_month'),
                   direction: 'up'
                 }}
                 onClick={() => handleMetricClick('users')}
@@ -471,14 +471,14 @@ export default function StatisticsPage() {
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
                     <Award className="w-5 h-5 text-orange-500" />
-                    {isRTL ? 'التطبيقات الناجحة' : 'Successful Implementations'}
+                    {t('statistics:metrics.successful_implementations')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold mb-2">{stats.successfulImplementations}</div>
                   <Progress value={(stats.successfulImplementations / stats.totalIdeas) * 100} className="mb-2" />
                   <p className="text-sm text-muted-foreground">
-                    {Math.round((stats.successfulImplementations / stats.totalIdeas) * 100)}% {isRTL ? 'معدل النجاح' : 'success rate'}
+                    {Math.round((stats.successfulImplementations / stats.totalIdeas) * 100)}% {t('statistics:hero.success_rate')}
                   </p>
                 </CardContent>
               </Card>
@@ -487,14 +487,14 @@ export default function StatisticsPage() {
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
                     <Building className="w-5 h-5 text-indigo-500" />
-                    {isRTL ? 'الشراكات' : 'Partnerships'}
+                    {t('statistics:metrics.partnerships')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold mb-2">{stats.totalPartners}</div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary">{stats.totalDepartments} {isRTL ? 'إدارات' : 'departments'}</Badge>
-                    <Badge variant="secondary">{stats.totalSectors} {isRTL ? 'قطاعات' : 'sectors'}</Badge>
+                    <Badge variant="secondary">{stats.totalDepartments} {t('statistics:metrics.departments')}</Badge>
+                    <Badge variant="secondary">{stats.totalSectors} {t('statistics:metrics.sectors')}</Badge>
                   </div>
                 </CardContent>
               </Card>
@@ -503,14 +503,14 @@ export default function StatisticsPage() {
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
                     <Star className="w-5 h-5 text-yellow-500" />
-                    {isRTL ? 'متوسط التقييم' : 'Average Rating'}
+                    {t('statistics:metrics.average_rating')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold mb-2">{stats.averageIdeaScore.toFixed(1)}/10</div>
                   <Progress value={stats.averageIdeaScore * 10} className="mb-2" />
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'تقييم جودة الأفكار' : 'idea quality rating'}
+                    {t('statistics:metrics.idea_quality_rating')}
                   </p>
                 </CardContent>
               </Card>
@@ -520,7 +520,7 @@ export default function StatisticsPage() {
           <TabsContent value="trends" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>{isRTL ? 'اتجاهات النشاط (آخر 6 أشهر)' : 'Activity Trends (Last 6 Months)'}</CardTitle>
+                <CardTitle>{t('statistics:chart_titles.activity_trends')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[400px] flex items-center justify-center">
@@ -530,12 +530,12 @@ export default function StatisticsPage() {
                         <div key={index} className="text-center">
                           <div className="text-2xl font-bold text-primary">{item.ideas}</div>
                           <div className="text-sm text-muted-foreground">{item.period}</div>
-                          <div className="text-xs text-muted-foreground">Ideas</div>
+                          <div className="text-xs text-muted-foreground">{t('common:ideas')}</div>
                         </div>
                       ))}
                     </div>
                     <p className="text-muted-foreground">
-                      {isRTL ? 'اتجاهات النشاط للأشهر الستة الماضية' : 'Activity trends for the last 6 months'}
+                      {t('statistics:chart_titles.activity_trends')}
                     </p>
                   </div>
                 </div>
@@ -547,7 +547,7 @@ export default function StatisticsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>{isRTL ? 'توزيع الأفكار حسب القطاع' : 'Ideas Distribution by Sector'}</CardTitle>
+                  <CardTitle>{t('statistics:chart_titles.ideas_distribution_by_sector')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="h-[300px] flex items-center justify-center">
@@ -574,7 +574,7 @@ export default function StatisticsPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>{isRTL ? 'أهم القطاعات' : 'Top Sectors'}</CardTitle>
+                  <CardTitle>{t('statistics:chart_titles.top_sectors')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {categoryStats.slice(0, 5).map((category, index) => (
@@ -604,7 +604,7 @@ export default function StatisticsPage() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base">
-                    {isRTL ? 'التأثير الاجتماعي' : 'Social Impact'}
+                    {t('statistics:impact.social_impact')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -612,7 +612,7 @@ export default function StatisticsPage() {
                     {stats.successfulImplementations * 1000}+
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'مستفيد من الحلول المنفذة' : 'people benefited from implemented solutions'}
+                    {t('statistics:impact.people_benefited')}
                   </p>
                 </CardContent>
               </Card>
@@ -620,15 +620,15 @@ export default function StatisticsPage() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base">
-                    {isRTL ? 'التأثير الاقتصادي' : 'Economic Impact'}
+                    {t('statistics:impact.economic_impact')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold text-blue-600 mb-2">
-                    {(stats.successfulImplementations * 2.5).toFixed(1)}M {isRTL ? 'ريال' : 'SAR'}
+                    {(stats.successfulImplementations * 2.5).toFixed(1)}M {t('statistics:sar')}
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'قيمة اقتصادية مضافة تقديرية' : 'estimated economic value added'}
+                    {t('statistics:impact.economic_value_added')}
                   </p>
                 </CardContent>
               </Card>
@@ -636,7 +636,7 @@ export default function StatisticsPage() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base">
-                    {isRTL ? 'نمو المنصة' : 'Platform Growth'}
+                    {t('statistics:impact.platform_growth')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -644,7 +644,7 @@ export default function StatisticsPage() {
                     +{stats.platformGrowthRate}%
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'نمو المستخدمين الشهري' : 'monthly user growth rate'}
+                    {t('statistics:impact.monthly_user_growth')}
                   </p>
                 </CardContent>
               </Card>
@@ -653,7 +653,7 @@ export default function StatisticsPage() {
             <Card>
               <CardHeader>
                 <CardTitle>
-                  {isRTL ? 'مؤشرات الأداء الرئيسية' : 'Key Performance Indicators'}
+                  {t('statistics:impact.key_performance_indicators')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -661,7 +661,7 @@ export default function StatisticsPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">
-                        {isRTL ? 'معدل قبول الأفكار' : 'Idea Acceptance Rate'}
+                        {t('statistics:impact.idea_acceptance_rate')}
                       </span>
                       <span className="text-sm text-muted-foreground">15%</span>
                     </div>
@@ -671,7 +671,7 @@ export default function StatisticsPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">
-                        {isRTL ? 'معدل التنفيذ' : 'Implementation Rate'}
+                        {t('statistics:impact.implementation_rate')}
                       </span>
                       <span className="text-sm text-muted-foreground">25%</span>
                     </div>
@@ -681,7 +681,7 @@ export default function StatisticsPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">
-                        {isRTL ? 'مشاركة المستخدمين' : 'User Engagement'}
+                        {t('statistics:impact.user_engagement')}
                       </span>
                       <span className="text-sm text-muted-foreground">78%</span>
                     </div>
@@ -691,7 +691,7 @@ export default function StatisticsPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">
-                        {isRTL ? 'رضا المستخدمين' : 'User Satisfaction'}
+                        {t('statistics:impact.user_satisfaction')}
                       </span>
                       <span className="text-sm text-muted-foreground">85%</span>
                     </div>

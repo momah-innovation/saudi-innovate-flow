@@ -19,6 +19,7 @@ import {
   Tag
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface EnhancedSavedHeroProps {
@@ -39,13 +40,14 @@ export const EnhancedSavedHero = ({
   onShowFilters
 }: EnhancedSavedHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Bookmark, value: totalBookmarks, label: isRTL ? 'محفوظة' : 'bookmarks', color: 'text-blue-400' },
-    { icon: Folder, value: totalCollections, label: isRTL ? 'مجموعة' : 'collections', color: 'text-green-400' },
-    { icon: Tag, value: totalTags, label: isRTL ? 'علامة' : 'tags', color: 'text-purple-400' },
-    { icon: Star, value: recentActivity, label: isRTL ? 'نشاط حديث' : 'recent activity', color: 'text-yellow-400' }
+    { icon: Bookmark, value: totalBookmarks, label: t('saved:hero.stats.bookmarks'), color: 'text-blue-400' },
+    { icon: Folder, value: totalCollections, label: t('saved:hero.stats.collections'), color: 'text-green-400' },
+    { icon: Tag, value: totalTags, label: t('saved:hero.stats.tags'), color: 'text-purple-400' },
+    { icon: Star, value: recentActivity, label: t('saved:hero.stats.recent_activity'), color: 'text-yellow-400' }
   ];
 
   const { setInterval: scheduleInterval } = useTimerManager();
@@ -84,7 +86,7 @@ export const EnhancedSavedHero = ({
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
-                  {isRTL ? 'مركز المحتوى المحفوظ' : 'Saved Content Hub'}
+                  {t('saved:hero.badge')}
                 </Badge>
               </div>
               
@@ -92,20 +94,17 @@ export const EnhancedSavedHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {isRTL ? (
                     <>
-                      نظم <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">محتواك</span> المحفوظ
+                      {t('saved:hero.title')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{t('saved:hero.title_highlight')}</span> {t('saved:hero.title_suffix')}
                     </>
                   ) : (
                     <>
-                      Organize Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Saved</span> Content
+                      {t('saved:hero.title')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{t('saved:hero.title_highlight')}</span> {t('saved:hero.title_suffix')}
                     </>
                   )}
                 </h1>
                 
                 <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
-                  {isRTL 
-                    ? 'إدارة وتنظيم جميع المحتوى المحفوظ في مكان واحد مع أدوات متقدمة للبحث والتصنيف'
-                    : 'Manage and organize all your saved content in one place with advanced search and categorization tools'
-                  }
+                  {t('saved:hero.subtitle')}
                 </p>
               </div>
             </div>
@@ -142,7 +141,7 @@ export const EnhancedSavedHero = ({
                 className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <FolderPlus className="w-5 h-5 mr-2" />
-                {isRTL ? 'إنشاء مجموعة جديدة' : 'Create New Collection'}
+                {t('saved:hero.buttons.create_collection')}
               </Button>
               
               <Button
@@ -152,7 +151,7 @@ export const EnhancedSavedHero = ({
                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
-                {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+                {t('saved:hero.buttons.advanced_filters')}
               </Button>
 
               <Button
@@ -161,7 +160,7 @@ export const EnhancedSavedHero = ({
                 className="text-white hover:bg-white/10"
               >
                 <Play className="w-5 h-5 mr-2" />
-                {isRTL ? 'جولة تعريفية' : 'Take Tour'}
+                {t('saved:hero.buttons.take_tour')}
               </Button>
             </div>
           </div>
@@ -181,14 +180,14 @@ export const EnhancedSavedHero = ({
                   <div className="absolute top-4 left-4">
                     <Badge className="bg-blue-500/90 text-white border-0 animate-pulse">
                       <Archive className="w-3 h-3 mr-1" />
-                      {isRTL ? 'منظمة' : 'Organized'}
+                      {t('saved:hero.badges.organized')}
                     </Badge>
                   </div>
 
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-green-500/90 text-white border-0">
                       <Heart className="w-3 h-3 mr-1" />
-                      {isRTL ? 'مفضلة' : 'Favorites'}
+                      {t('saved:hero.badges.favorites')}
                     </Badge>
                   </div>
 
@@ -197,7 +196,7 @@ export const EnhancedSavedHero = ({
 
                 <div className="p-6 space-y-4">
                   <h3 className="text-xl font-bold text-white">
-                    {isRTL ? 'مجموعاتك المنظمة' : 'Your Organized Collections'}
+                    {t('saved:hero.collections_card.title')}
                   </h3>
 
                   <div className="grid grid-cols-2 gap-4">
@@ -205,13 +204,13 @@ export const EnhancedSavedHero = ({
                       <div className="text-2xl font-bold text-blue-300">
                         {totalCollections}
                       </div>
-                      <div className="text-sm text-white/70">{isRTL ? 'مجموعة' : 'collections'}</div>
+                      <div className="text-sm text-white/70">{t('saved:hero.collections_card.collections_label')}</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-green-300">
                         {Math.round((totalBookmarks / Math.max(totalCollections, 1)))}
                       </div>
-                      <div className="text-sm text-white/70">{isRTL ? 'عنصر/مجموعة' : 'items/collection'}</div>
+                      <div className="text-sm text-white/70">{t('saved:hero.collections_card.items_per_collection')}</div>
                     </div>
                   </div>
 
@@ -223,7 +222,7 @@ export const EnhancedSavedHero = ({
                   <Button 
                     className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
-                    {isRTL ? 'تصفح المجموعات' : 'Browse Collections'}
+                    {t('saved:hero.collections_card.browse_collections')}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
@@ -236,10 +235,10 @@ export const EnhancedSavedHero = ({
                 <CardContent className="p-4 text-center">
                   <Bookmark className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'المحفوظات الحديثة' : 'Recent Saves'}
+                    {t('saved:hero.quick_actions.recent_saves')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {recentActivity} {isRTL ? 'عنصر' : 'items'}
+                    {recentActivity} {t('saved:hero.quick_actions.items')}
                   </div>
                 </CardContent>
               </Card>
@@ -248,10 +247,10 @@ export const EnhancedSavedHero = ({
                 <CardContent className="p-4 text-center">
                   <Tag className="w-8 h-8 text-purple-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'العلامات النشطة' : 'Active Tags'}
+                    {t('saved:hero.quick_actions.active_tags')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {totalTags} {isRTL ? 'علامة' : 'tags'}
+                    {totalTags} {t('saved:hero.quick_actions.tags')}
                   </div>
                 </CardContent>
               </Card>

@@ -1,0 +1,45 @@
+{
+    "title": "Experts",
+    "network": {
+        "title": "Expert Network",
+        "description": "Meet the expert mentors guiding our challenges",
+        "total_experts": "Total Experts",
+        "available_now": "Available Now",
+        "years_experience": "Years Experience",
+        "avg_rating": "Avg Rating",
+        "featured_expert": "Featured Expert",
+        "featured_badge": "Featured",
+        "active_challenges": "active challenges",
+        "mentored_projects": "mentored projects",
+        "view_profile": "View Profile",
+        "their_challenges": "Their Challenges",
+        "show_all": "Show All",
+        "show_less": "Show Less",
+        "browse_experts": "Browse Experts",
+        "experts_count": "experts"
+    },
+    "specialization": {
+        "title": "Browse by Specialization",
+        "ai_ml": "AI & Machine Learning",
+        "blockchain": "Blockchain",
+        "mobile_dev": "Mobile Development",
+        "ux_ui": "UX/UI Design",
+        "data_science": "Data Science",
+        "cybersecurity": "Cybersecurity",
+        "iot": "IoT",
+        "cloud_computing": "Cloud Computing"
+    },
+    "availability": {
+        "available": "Available",
+        "busy": "Busy",
+        "unavailable": "Unavailable"
+    },
+    "card": {
+        "years_experience": "years exp",
+        "specializations": "Specializations",
+        "active_challenges": "Active Challenges",
+        "mentored_projects": "Mentored Projects",
+        "view_profile": "View Profile",
+        "contact": "Contact"
+    }
+}

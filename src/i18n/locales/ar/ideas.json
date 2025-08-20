@@ -1,0 +1,324 @@
+{
+    "wizard": {
+        "title": "معالج تقديم الفكرة الابتكارية",
+        "description": "شاركنا فكرتك الابتكارية خطوة بخطوة وساعد في بناء مستقبل أفضل",
+        "step_label": "الخطوة {{current}} من {{total}}",
+        "complete_percentage": "{{percent}}% مكتمل",
+        "auto_saving": "جاري الحفظ...",
+        "submitting": "جاري الإرسال..."
+    },
+    "steps": {
+        "basic_info": {
+            "title": "المعلومات الأساسية",
+            "description": "عنوان ووصف الفكرة"
+        },
+        "challenge_focus": {
+            "title": "التحدي والتركيز",
+            "description": "اختيار التحدي والسؤال المحوري"
+        },
+        "solution_details": {
+            "title": "تفاصيل الحل",
+            "description": "نهج الحل والتأثير المتوقع"
+        },
+        "implementation": {
+            "title": "خطة التنفيذ",
+            "description": "خطة التنفيذ والموارد المطلوبة"
+        },
+        "review_submit": {
+            "title": "المراجعة والإرسال",
+            "description": "مراجعة نهائية وإرسال الفكرة"
+        }
+    },
+    "fields": {
+        "title": "عنوان الفكرة (عربي)",
+        "title_placeholder": "أدخل عنوان فكرتك بالعربية",
+        "description": "وصف الفكرة (عربي)",
+        "description_placeholder": "اوصف فكرتك بالتفصيل...",
+        "tags": "العلامات",
+        "tags_optional": "اختياري",
+        "tags_predefined": "اختر من العلامات المحددة مسبقاً:",
+        "tags_custom_placeholder": "أضف علامة مخصصة...",
+        "tags_selected": "العلامات المختارة:",
+        "challenge": "اختر التحدي",
+        "challenge_placeholder": "اختر تحدي",
+        "challenge_high_priority": "عالي الأولوية",
+        "focus_question": "السؤال المحوري",
+        "focus_question_optional": "اختياري",
+        "focus_question_placeholder": "اختر سؤال محوري",
+        "innovation_level": "مستوى الابتكار",
+        "solution_approach": "نهج الحل",
+        "solution_approach_placeholder": "اوصف النهج المقترح للحل...",
+        "expected_impact": "التأثير المتوقع",
+        "expected_impact_placeholder": "ما التأثير المتوقع لهذه الفكرة؟",
+        "collaboration_open": "مفتوح للتعاون مع فرق أخرى",
+        "implementation_plan": "خطة التنفيذ",
+        "implementation_plan_placeholder": "كيف ستقوم بتنفيذ هذه الفكرة؟",
+        "resource_requirements": "المتطلبات والموارد",
+        "resource_requirements_placeholder": "ما الموارد التي ستحتاجها؟",
+        "timeline": "الجدول الزمني المقدر",
+        "timeline_placeholder": "اختر الجدول الزمني",
+        "characters": "حرف"
+    },
+    "innovation_levels": {
+        "incremental": "تحسين تدريجي",
+        "radical": "ابتكار جذري",
+        "disruptive": "ابتكار تحويلي"
+    },
+    "timelines": {
+        "1_3_months": "1-3 أشهر",
+        "3_6_months": "3-6 أشهر",
+        "6_12_months": "6-12 شهر",
+        "1_year_plus": "أكثر من سنة"
+    },
+    "review": {
+        "title": "ملخص الفكرة",
+        "info_message": "يرجى مراجعة جميع المعلومات قبل الإرسال. سيتم إشعارك عند بدء مراجعة فكرتك.",
+        "field_title": "العنوان:",
+        "field_description": "الوصف:",
+        "field_challenge": "التحدي:",
+        "field_focus_question": "السؤال المحوري:",
+        "field_innovation_level": "مستوى الابتكار:",
+        "field_solution_approach": "نهج الحل:",
+        "field_expected_impact": "التأثير المتوقع:",
+        "field_implementation_plan": "خطة التنفيذ:",
+        "field_resource_requirements": "المتطلبات والموارد:",
+        "field_tags": "العلامات:",
+        "field_collaboration": "مفتوح للتعاون",
+        "not_selected": "لم يتم اختياره"
+    },
+    "actions": {
+        "previous": "السابق",
+        "next": "التالي",
+        "save_draft": "حفظ مسودة",
+        "load_draft": "تحميل مسودة",
+        "cancel": "إلغاء",
+        "submit": "إرسال الفكرة"
+    },
+    "drafts": {
+        "title": "المسودات المحفوظة",
+        "untitled": "بدون عنوان"
+    },
+    "messages": {
+        "error_loading": "خطأ في تحميل التحديات والأسئلة المحورية",
+        "draft_auto_saved": "تم حفظ المسودة تلقائياً",
+        "draft_loaded": "تم تحميل المسودة بنجاح",
+        "error_loading_draft": "خطأ في تحميل المسودة",
+        "draft_saved_manually": "تم حفظ المسودة يدوياً",
+        "validation_error": "يرجى ملء جميع الحقول المطلوبة قبل المتابعة",
+        "user_not_authenticated": "المستخدم غير مسجل الدخول",
+        "submit_success": "تم إرسال الفكرة بنجاح!",
+        "submit_error": "خطأ في إرسال الفكرة. يرجى المحاولة مرة أخرى."
+    },
+    "page": {
+        "title": "مسودات الأفكار",
+        "description": "استمر في العمل على مسودات أفكارك المحفوظة",
+        "new_idea": "فكرة جديدة",
+        "no_drafts": "لا توجد مسودات",
+        "no_drafts_message": "لم تحفظ أي مسودات بعد. ابدأ بإنشاء فكرة جديدة!",
+        "create_new": "إنشاء فكرة جديدة",
+        "draft_status": "مسودة",
+        "untitled": "فكرة بدون عنوان",
+        "no_description": "بدون وصف",
+        "last_updated": "آخر تحديث:",
+        "continue_editing": "متابعة التحرير",
+        "delete_draft": "حذف المسودة",
+        "delete_draft_message": "هل أنت متأكد من حذف هذه المسودة؟ لا يمكن التراجع عن هذا الإجراء.",
+        "delete": "حذف",
+        "cancel": "إلغاء"
+    },
+    "hero": {
+        "platform_badge": "منصة الأفكار الإبداعية",
+        "title": "اكتشف الأفكار المبدعة",
+        "subtitle": "انضم إلى مجتمع المبدعين وشارك أفكارك المبتكرة التي تساهم في تحقيق رؤية المملكة 2030",
+        "stats": {
+            "ideas": "فكرة",
+            "published": "منشورة",
+            "views": "مشاهدة",
+            "likes": "إعجاب"
+        },
+        "buttons": {
+            "submit_new": "إضافة فكرة جديدة",
+            "advanced_filters": "تصفية متقدمة",
+            "watch_demo": "شاهد الفيديو"
+        },
+        "featured": {
+            "badge": "فكرة مميزة",
+            "trending_badge": "رائجة",
+            "by": "من:",
+            "view_details": "اعرض التفاصيل",
+            "no_featured_title": "لا توجد فكرة مميزة حالياً",
+            "no_featured_subtitle": "سيتم عرض الأفكار المميزة هنا"
+        },
+        "quick_actions": {
+            "new_ideas": "الأفكار الجديدة",
+            "in_development": "قيد التطوير",
+            "ideas_count": "فكرة",
+            "projects_count": "مشاريع"
+        }
+    },
+    "detail": {
+        "featured_badge": "مميزة",
+        "like_button": "إعجاب",
+        "comment_added": "تم إضافة التعليق",
+        "comment_added_description": "تم إضافة تعليقك بنجاح",
+        "comment_error": "خطأ في إضافة التعليق",
+        "link_copied": "تم نسخ الرابط",
+        "link_copied_description": "تم نسخ رابط الفكرة إلى الحافظة",
+        "status": {
+            "pending": "في الانتظار",
+            "under_review": "قيد المراجعة",
+            "approved": "موافق عليها",
+            "rejected": "مرفوضة",
+            "in_development": "قيد التطوير",
+            "implemented": "منفذة"
+        },
+        "sections": {
+            "description": "الوصف",
+            "solution_approach": "نهج الحل",
+            "implementation_plan": "خطة التنفيذ",
+            "expected_impact": "التأثير المتوقع",
+            "collaboration_space": "مساحة التعاون",
+            "evaluation_scores": "نتائج التقييم",
+            "innovator_info": "معلومات المبتكر"
+        },
+        "scores": {
+            "technical_feasibility": "الجدوى الفنية",
+            "impact": "التأثير",
+            "innovation": "الابتكار",
+            "strategic_alignment": "التوافق الاستراتيجي",
+            "overall_score": "النتيجة الإجمالية"
+        },
+        "innovator": {
+            "label": "مبتكر",
+            "submitted": "تاريخ التقديم:",
+            "last_updated": "آخر تحديث:"
+        },
+        "comments": {
+            "title": "التعليقات",
+            "add_comment": "إضافة تعليق",
+            "write_placeholder": "اكتب تعليقك هنا...",
+            "cancel": "إلغاء",
+            "adding": "جاري الإضافة...",
+            "no_comments": "لا توجد تعليقات بعد",
+            "be_first": "كن أول من يضيف تعليقاً على هذه الفكرة"
+        }
+    },
+    "gamification": {
+        "levels": {
+            "legend": "أسطورة",
+            "expert": "خبير",
+            "advanced": "متقدم",
+            "intermediate": "متوسط",
+            "beginner": "مبتدئ",
+            "novice": "مبتدىء"
+        },
+        "points": "نقطة",
+        "points_unit": "نقطة",
+        "progress_to_next": "التقدم للمستوى التالي",
+        "points_to_go": "نقطة متبقية",
+        "recent_achievements": "الإنجازات الأخيرة",
+        "no_achievements": "لا توجد إنجازات بعد",
+        "start_submitting": "ابدأ بتقديم أفكارك لكسب النقاط!",
+        "monthly_leaderboard": "المتصدرون هذا الشهر",
+        "ideas": "فكرة",
+        "no_leaderboard_data": "لا توجد بيانات للمتصدرين"
+    },
+    "filters": {
+        "title": "تصفية الأفكار",
+        "reset": "إعادة تعيين",
+        "quick_filters": "فلاتر سريعة",
+        "featured_ideas": "الأفكار المميزة",
+        "trending_ideas": "الأفكار الرائجة",
+        "idea_status": "حالة الفكرة",
+        "maturity_level": "مستوى النضج",
+        "score_range": "نطاق النتيجة",
+        "sectors": "القطاعات",
+        "challenges": "التحديات",
+        "date_range": "فترة زمنية",
+        "date_ranges": {
+            "all": "جميع الفترات",
+            "week": "آخر أسبوع",
+            "month": "آخر شهر",
+            "quarter": "آخر 3 أشهر",
+            "year": "آخر سنة"
+        },
+        "active_filters": "فلاتر نشطة",
+        "no_active_filters": "لا توجد فلاتر نشطة",
+        "cancel": "إلغاء",
+        "apply_filters": "تطبيق الفلاتر"
+    },
+    "templates": {
+        "title": "قوالب الأفكار الابتكارية",
+        "description": "اختر قالباً لمساعدتك في صياغة فكرتك الابتكارية بشكل منظم وشامل",
+        "error_loading": "خطأ في تحميل القوالب",
+        "template_selected": "تم اختيار القالب",
+        "template_selected_description": "تم اختيار قالب \"{{name}}\" بنجاح",
+        "all_templates": "جميع القوالب",
+        "categories": {
+            "technology": "التكنولوجيا",
+            "process": "العمليات",
+            "digital": "التحول الرقمي",
+            "sustainability": "الاستدامة",
+            "customer": "العملاء",
+            "business": "الأعمال",
+            "general": "عام"
+        },
+        "included_sections": "الأقسام المتضمنة:",
+        "more": "المزيد",
+        "use_template": "استخدام هذا القالب",
+        "no_templates": "لا توجد قوالب",
+        "no_templates_description": "لا توجد قوالب في هذه الفئة حالياً",
+        "cancel": "إلغاء"
+    },
+    "success_stories": {
+        "title": "قصص النجاح الابتكارية",
+        "description": "اكتشف كيف تحولت الأفكار الابتكارية إلى حلول ناجحة وأثرت بشكل إيجابي",
+        "implemented_badge": "منفذة",
+        "read_full_story": "قراءة القصة كاملة",
+        "no_stories_title": "لا توجد قصص نجاح بعد",
+        "no_stories_description": "ستظهر قصص النجاح هنا عند تنفيذ الأفكار الابتكارية",
+        "metrics": {
+            "cost_savings": "توفير في التكاليف",
+            "revenue_increase": "زيادة الإيرادات",
+            "efficiency_gain": "تحسن الكفاءة",
+            "time_saved": "توفير الوقت",
+            "saved": "توفير",
+            "efficiency": "كفاءة",
+            "areas": "مجالات"
+        },
+        "innovator_label": "المبتكر",
+        "dialog": {
+            "detailed_story": "القصة التفصيلية",
+            "roi_metrics": "مؤشرات الأداء والعائد",
+            "implementation_timeline": "جدول زمني للتنفيذ",
+            "testimonials": "شهادات وآراء"
+        }
+    },
+    "recommendations": {
+        "title": "توصيات ذكية لك",
+        "description": "أفكار مختارة بعناية قد تهمك",
+        "refresh": "تحديث",
+        "generate": "إنشاء توصيات",
+        "likes": "إعجاب",
+        "views": "مشاهدة",
+        "no_recommendations_title": "لا توجد توصيات متاحة",
+        "no_recommendations_description": "تفاعل مع المزيد من الأفكار للحصول على توصيات مخصصة",
+        "popular_idea_reasoning": "فكرة شائعة ومحبوبة من المجتمع",
+        "types": {
+            "high_potential": "إمكانية عالية",
+            "trending": "رائجة",
+            "popular": "شائعة",
+            "similar_interests": "مشابهة لاهتماماتك",
+            "expert_recommended": "موصى بها",
+            "discovery": "اكتشاف"
+        },
+        "reasoning": {
+            "high_potential": "فكرة عالية الجودة بنتيجة {{score}}/10",
+            "trending": "فكرة رائجة بـ {{likes}} إعجاب",
+            "popular": "فكرة شائعة بـ {{views}} مشاهدة",
+            "similar_interests": "قد تعجبك بناءً على اهتماماتك",
+            "expert_recommended": "موصى بها من قبل الخبراء",
+            "discovery": "اكتشف شيئاً جديداً"
+        }
+    }
+}

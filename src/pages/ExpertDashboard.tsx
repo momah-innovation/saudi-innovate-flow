@@ -163,16 +163,16 @@ export default function ExpertDashboard() {
   };
 
   const getPriorityBadge = (priority: string, daysPending: number) => {
-    if (daysPending > 7) return <Badge variant="destructive">Urgent</Badge>;
-    if (daysPending > 3) return <Badge variant="default">High</Badge>;
-    return <Badge variant="secondary">Normal</Badge>;
+    if (daysPending > 7) return <Badge variant="destructive">{t('expert:priority.urgent')}</Badge>;
+    if (daysPending > 3) return <Badge variant="default">{t('expert:priority.high')}</Badge>;
+    return <Badge variant="secondary">{t('expert:priority.normal')}</Badge>;
   };
 
   const getScoreBadge = (score: number) => {
-    if (score >= 8) return <Badge variant="default" className="bg-green-100 text-green-800">Excellent</Badge>;
-    if (score >= 6) return <Badge variant="secondary">Good</Badge>;
-    if (score >= 4) return <Badge variant="outline">Fair</Badge>;
-    return <Badge variant="destructive">Poor</Badge>;
+    if (score >= 8) return <Badge variant="default" className="bg-green-100 text-green-800">{t('expert:score.excellent')}</Badge>;
+    if (score >= 6) return <Badge variant="secondary">{t('expert:score.good')}</Badge>;
+    if (score >= 4) return <Badge variant="outline">{t('expert:score.fair')}</Badge>;
+    return <Badge variant="destructive">{t('expert:score.poor')}</Badge>;
   };
 
   return (
@@ -189,10 +189,10 @@ export default function ExpertDashboard() {
       />
       
       <PageLayout
-        title={isRTL ? 'لوحة القيادة - الخبير' : 'Expert Dashboard'}
-        description={isRTL ? 'أهلاً بك في نظام إدارة الخبراء والتقييمات' : 'Welcome to the expert evaluation management system'}
+        title={t('expert:dashboard.title')}
+        description={t('expert:dashboard.description')}
         primaryAction={{
-          label: isRTL ? 'ابدأ التقييم' : 'Start Evaluating',
+          label: t('expert:dashboard.start_evaluating'),
           onClick: () => navigate('/evaluations'),
           icon: <Star className="w-4 h-4" />
         }}
@@ -205,7 +205,7 @@ export default function ExpertDashboard() {
               onClick={() => setShowFilters(!showFilters)}
             >
               <Filter className="w-4 h-4 mr-2" />
-              {isRTL ? 'المرشحات' : 'Filters'}
+              {t('expert:dashboard.filters')}
             </Button>
           </div>
         }
@@ -220,11 +220,11 @@ export default function ExpertDashboard() {
                 <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="overview" className="flex items-center gap-2">
                     <TrendingUp className="w-4 h-4" />
-                    {isRTL ? 'نظرة عامة' : 'Overview'}
+                    {t('expert:tabs.overview')}
                   </TabsTrigger>
                   <TabsTrigger value="pending" className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
-                    {isRTL ? 'في الانتظار' : 'Pending'} 
+                    {t('expert:tabs.pending')} 
                     {stats.pendingEvaluations > 0 && (
                       <Badge variant="destructive" className="ml-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
                         {stats.pendingEvaluations}
@@ -233,11 +233,11 @@ export default function ExpertDashboard() {
                   </TabsTrigger>
                   <TabsTrigger value="completed" className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    {isRTL ? 'مكتمل' : 'Completed'}
+                    {t('expert:tabs.completed')}
                   </TabsTrigger>
                   <TabsTrigger value="analytics" className="flex items-center gap-2">
                     <TrendingUp className="w-4 h-4" />
-                    {isRTL ? 'التحليلات' : 'Analytics'}
+                    {t('expert:tabs.analytics')}
                   </TabsTrigger>
                 </TabsList>
 
@@ -247,14 +247,14 @@ export default function ExpertDashboard() {
                     <Card className="hover:shadow-lg transition-shadow">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                          {isRTL ? 'التحديات المُكلفة' : 'Assigned Challenges'}
+                          {t('expert:metrics.assigned_challenges')}
                         </CardTitle>
                         <Target className="h-4 w-4 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">{stats.assignedChallenges}</div>
                         <p className="text-xs text-muted-foreground">
-                          {isRTL ? 'تكاليف نشطة' : 'active assignments'}
+                          {t('expert:metrics.active_assignments')}
                         </p>
                       </CardContent>
                     </Card>
@@ -262,14 +262,14 @@ export default function ExpertDashboard() {
                     <Card className="hover:shadow-lg transition-shadow">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                          {isRTL ? 'التقييمات المعلقة' : 'Pending Evaluations'}
+                          {t('expert:metrics.pending_evaluations')}
                         </CardTitle>
                         <Clock className="h-4 w-4 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">{stats.pendingEvaluations}</div>
                         <p className="text-xs text-muted-foreground">
-                          {isRTL ? 'في انتظار المراجعة' : 'awaiting review'}
+                          {t('expert:metrics.awaiting_review')}
                         </p>
                       </CardContent>
                     </Card>
@@ -277,14 +277,14 @@ export default function ExpertDashboard() {
                     <Card className="hover:shadow-lg transition-shadow">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                          {isRTL ? 'إجمالي المُقيّمة' : 'Total Evaluated'}
+                          {t('expert:metrics.total_evaluated')}
                         </CardTitle>
                         <Star className="h-4 w-4 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">{stats.totalIdeasEvaluated}</div>
                         <p className="text-xs text-muted-foreground">
-                          {isRTL ? 'أفكار مراجعة' : 'ideas reviewed'}
+                          {t('expert:metrics.ideas_reviewed')}
                         </p>
                       </CardContent>
                     </Card>
@@ -292,14 +292,14 @@ export default function ExpertDashboard() {
                     <Card className="hover:shadow-lg transition-shadow">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                          {isRTL ? 'متوسط التقييم' : 'Average Rating'}
+                          {t('expert:metrics.average_rating')}
                         </CardTitle>
                         <Award className="h-4 w-4 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">{stats.averageRating.toFixed(1)}/10</div>
                         <p className="text-xs text-muted-foreground">
-                          {isRTL ? 'جودة التقييم' : 'evaluation quality'}
+                          {t('expert:metrics.evaluation_quality')}
                         </p>
                       </CardContent>
                     </Card>
@@ -309,29 +309,29 @@ export default function ExpertDashboard() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <Card>
                       <CardHeader>
-                        <CardTitle>{isRTL ? 'تقدم التقييم' : 'Evaluation Progress'}</CardTitle>
+                        <CardTitle>{t('expert:progress.title')}</CardTitle>
                         <CardDescription>
-                          {isRTL ? 'مقاييس أداء التقييم الخاصة بك' : 'Your evaluation performance metrics'}
+                          {t('expert:progress.description')}
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div>
                           <div className="flex justify-between text-sm">
-                            <span>{isRTL ? 'معدل الإنجاز' : 'Completion Rate'}</span>
+                            <span>{t('expert:progress.completion_rate')}</span>
                             <span>{stats.totalIdeasEvaluated > 0 ? Math.round((stats.completedEvaluations / stats.totalIdeasEvaluated) * 100) : 0}%</span>
                           </div>
                           <Progress value={stats.totalIdeasEvaluated > 0 ? (stats.completedEvaluations / stats.totalIdeasEvaluated) * 100 : 0} className="mt-2" />
                         </div>
                         <div>
                           <div className="flex justify-between text-sm">
-                            <span>{isRTL ? 'متوسط وقت الاستجابة' : 'Average Response Time'}</span>
-                            <span>{isRTL ? '2.3 أيام' : '2.3 days'}</span>
+                            <span>{t('expert:progress.response_time')}</span>
+                            <span>{t('expert:progress.response_time_value')}</span>
                           </div>
                           <Progress value={70} className="mt-2" />
                         </div>
                         <div>
                           <div className="flex justify-between text-sm">
-                            <span>{isRTL ? 'نقاط الجودة' : 'Quality Score'}</span>
+                            <span>{t('expert:progress.quality_score')}</span>
                             <span>{stats.averageRating.toFixed(1)}/10</span>
                           </div>
                           <Progress value={(stats.averageRating / 10) * 100} className="mt-2" />
@@ -341,27 +341,27 @@ export default function ExpertDashboard() {
 
                     <Card>
                       <CardHeader>
-                        <CardTitle>{isRTL ? 'الإجراءات السريعة' : 'Quick Actions'}</CardTitle>
+                        <CardTitle>{t('expert:actions.title')}</CardTitle>
                         <CardDescription>
-                          {isRTL ? 'ماذا تريد أن تفعل بعد ذلك؟' : 'What would you like to do next?'}
+                          {t('expert:actions.description')}
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <Button onClick={() => navigate('/evaluations')} className="w-full justify-start">
                           <Star className="w-4 h-4 mr-2" />
-                          {isRTL ? 'ابدأ تقييم الأفكار' : 'Start Evaluating Ideas'}
+                          {t('expert:actions.start_evaluating')}
                         </Button>
                         <Button onClick={() => navigate('/expert-profile')} variant="outline" className="w-full justify-start">
                           <Edit className="w-4 h-4 mr-2" />
-                          {isRTL ? 'تحديث ملف الخبير' : 'Update Expert Profile'}
+                          {t('expert:actions.update_profile')}
                         </Button>
                         <Button onClick={() => navigate('/challenges')} variant="outline" className="w-full justify-start">
                           <Target className="w-4 h-4 mr-2" />
-                          {isRTL ? 'عرض التحديات المُكلفة' : 'View Assigned Challenges'}
+                          {t('expert:actions.view_challenges')}
                         </Button>
                         <Button onClick={() => navigate('/statistics')} variant="outline" className="w-full justify-start">
                           <TrendingUp className="w-4 h-4 mr-2" />
-                          {isRTL ? 'عرض التحليلات' : 'View Analytics'}
+                          {t('expert:actions.view_analytics')}
                         </Button>
                       </CardContent>
                     </Card>
@@ -370,9 +370,9 @@ export default function ExpertDashboard() {
                   {/* Expertise Areas */}
                   <Card>
                     <CardHeader>
-                      <CardTitle>{isRTL ? 'مجالات الخبرة' : 'Expertise Areas'}</CardTitle>
+                      <CardTitle>{t('expert:expertise.title')}</CardTitle>
                       <CardDescription>
-                        {isRTL ? 'مجالات تخصصك' : 'Your areas of specialization'}
+                        {t('expert:expertise.description')}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -388,9 +388,9 @@ export default function ExpertDashboard() {
                 <TabsContent value="pending" className="space-y-4 animate-fade-in">
                   <Card>
                     <CardHeader>
-                      <CardTitle>{isRTL ? 'التقييمات المعلقة' : 'Pending Evaluations'}</CardTitle>
+                      <CardTitle>{t('expert:pending.title')}</CardTitle>
                       <CardDescription>
-                        {isRTL ? 'الأفكار في انتظار مراجعة الخبير' : 'Ideas waiting for your expert review'}
+                        {t('expert:pending.description')}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -398,7 +398,7 @@ export default function ExpertDashboard() {
                         <div className="text-center py-4">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
                           <p className="mt-2 text-sm text-muted-foreground">
-                            {isRTL ? 'جاري التحميل...' : 'Loading...'}
+                            {t('expert:pending.loading')}
                           </p>
                         </div>
                       ) : pendingEvaluations.length > 0 ? (
@@ -411,7 +411,7 @@ export default function ExpertDashboard() {
                                   <h4 className="font-medium">{evaluation.idea_title}</h4>
                                   <p className="text-sm text-muted-foreground">{evaluation.challenge_title}</p>
                                   <p className="text-xs text-muted-foreground mt-1">
-                                    {isRTL ? `تم التقديم منذ ${evaluation.days_pending} أيام` : `Submitted ${evaluation.days_pending} days ago`}
+                                    {t('expert:pending.submitted_days_ago', { days: evaluation.days_pending })}
                                   </p>
                                 </div>
                               </div>
@@ -419,7 +419,7 @@ export default function ExpertDashboard() {
                                 {getPriorityBadge(evaluation.priority, evaluation.days_pending)}
                                 <Button size="sm" onClick={() => navigate(`/evaluations/${evaluation.id}`)}>
                                   <Star className="w-4 h-4 mr-1" />
-                                  {isRTL ? 'قيّم' : 'Evaluate'}
+                                  {t('expert:pending.evaluate')}
                                 </Button>
                               </div>
                             </div>
@@ -429,10 +429,10 @@ export default function ExpertDashboard() {
                         <div className="text-center py-8">
                           <Clock className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                           <h3 className="text-lg font-medium">
-                            {isRTL ? 'لا توجد تقييمات معلقة' : 'No pending evaluations'}
+                            {t('expert:pending.no_pending')}
                           </h3>
                           <p className="text-muted-foreground">
-                            {isRTL ? 'رائع! لقد أنهيت جميع المهام.' : 'Great job! You\'re all caught up.'}
+                            {t('expert:pending.all_caught_up')}
                           </p>
                         </div>
                       )}
@@ -443,9 +443,9 @@ export default function ExpertDashboard() {
                 <TabsContent value="completed" className="space-y-4 animate-fade-in">
                   <Card>
                     <CardHeader>
-                      <CardTitle>{isRTL ? 'التقييمات الأخيرة' : 'Recent Evaluations'}</CardTitle>
+                      <CardTitle>{t('expert:recent.title')}</CardTitle>
                       <CardDescription>
-                        {isRTL ? 'التقييمات المكتملة مؤخراً' : 'Your recently completed evaluations'}
+                        {t('expert:recent.description')}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -458,8 +458,9 @@ export default function ExpertDashboard() {
                                 <div>
                                   <h4 className="font-medium">{evaluation.idea_title}</h4>
                                   <p className="text-sm text-muted-foreground">
-                                    {isRTL ? `تم التقييم في ${new Date(evaluation.evaluation_date).toLocaleDateString('ar-SA')}` : 
-                                             `Evaluated on ${new Date(evaluation.evaluation_date).toLocaleDateString()}`}
+                                    {t('expert:recent.evaluated_on', { 
+                                      date: new Date(evaluation.evaluation_date).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US')
+                                    })}
                                   </p>
                                 </div>
                               </div>
@@ -468,7 +469,7 @@ export default function ExpertDashboard() {
                                 <span className="text-sm font-medium">{evaluation.score}/10</span>
                                 <Button size="sm" variant="outline" onClick={() => navigate(`/evaluations/${evaluation.id}`)}>
                                   <Eye className="w-4 h-4 mr-1" />
-                                  {isRTL ? 'اعرض' : 'View'}
+                                  {t('expert:recent.view')}
                                 </Button>
                               </div>
                             </div>
@@ -478,10 +479,10 @@ export default function ExpertDashboard() {
                         <div className="text-center py-8">
                           <Star className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                           <h3 className="text-lg font-medium">
-                            {isRTL ? 'لم يتم إنجاز أي تقييمات بعد' : 'No completed evaluations yet'}
+                            {t('expert:recent.no_evaluations')}
                           </h3>
                           <p className="text-muted-foreground">
-                            {isRTL ? 'ابدأ تقييم الأفكار لترى تاريخك هنا' : 'Start evaluating ideas to see your history here'}
+                            {t('expert:recent.start_message')}
                           </p>
                         </div>
                       )}
@@ -501,29 +502,29 @@ export default function ExpertDashboard() {
               <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm font-medium text-blue-900">
-                    {isRTL ? 'إحصائيات سريعة' : 'Quick Stats'}
+                    {t('expert:stats.quick_stats')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-blue-700">
-                      {isRTL ? 'هذا الأسبوع' : 'This Week'}
+                      {t('expert:stats.this_week')}
                     </span>
                     <Badge variant="outline" className="bg-blue-100 text-blue-800">
-                      {Math.floor(stats.pendingEvaluations / 2)} {isRTL ? 'تقييمات' : 'evaluations'}
+                      {Math.floor(stats.pendingEvaluations / 2)} {t('expert:stats.evaluations')}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-blue-700">
-                      {isRTL ? 'متوسط الوقت' : 'Avg Time'}
+                      {t('expert:stats.avg_time')}
                     </span>
                     <Badge variant="outline" className="bg-green-100 text-green-800">
-                      {isRTL ? '2.1 أيام' : '2.1 days'}
+                      {t('expert:stats.avg_time_value')}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-blue-700">
-                      {isRTL ? 'معدل الجودة' : 'Quality Rate'}
+                      {t('expert:stats.quality_rate')}
                     </span>
                     <Badge variant="outline" className="bg-yellow-100 text-yellow-800">
                       {stats.averageRating.toFixed(1)}/10
@@ -536,24 +537,24 @@ export default function ExpertDashboard() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm font-medium">
-                    {isRTL ? 'النشاط الأخير' : 'Recent Activity'}
+                    {t('expert:activity.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {[
                     {
-                      action: isRTL ? 'تم تقييم فكرة' : 'Evaluated idea',
-                      time: isRTL ? 'منذ ساعتين' : '2h ago',
+                      action: t('expert:activity.evaluated_idea'),
+                      time: t('expert:activity.2_hours_ago'),
                       type: 'evaluation'
                     },
                     {
-                      action: isRTL ? 'تكليف جديد' : 'New assignment',
-                      time: isRTL ? 'منذ 5 ساعات' : '5h ago',
+                      action: t('expert:activity.new_assignment'),
+                      time: t('expert:activity.5_hours_ago'),
                       type: 'assignment'
                     },
                     {
-                      action: isRTL ? 'تم تحديث الملف' : 'Profile updated',
-                      time: isRTL ? 'أمس' : 'Yesterday',
+                      action: t('expert:activity.profile_updated'),
+                      time: t('expert:activity.yesterday'),
                       type: 'profile'
                     }
                   ].map((activity, index) => (

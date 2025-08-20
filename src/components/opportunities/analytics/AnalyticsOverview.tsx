@@ -3,6 +3,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { MetricsCard } from './MetricsCard';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Eye, 
   Users, 
@@ -22,55 +23,56 @@ interface AnalyticsOverviewProps {
 
 export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const keyMetrics = [
     {
-      title: isRTL ? 'إجمالي المشاهدات' : 'Total Views',
+      title: t('opportunities:analytics_overview.total_views'),
       value: analytics.totalViews.toLocaleString(),
       icon: <Eye className="w-5 h-5" />,
       trend: trends.views,
-      badge: { label: isRTL ? 'نشط' : 'Active', variant: 'default' as const }
+      badge: { label: t('opportunities:analytics_overview.active'), variant: 'default' as const }
     },
     {
-      title: isRTL ? 'إجمالي الطلبات' : 'Total Applications',
+      title: t('opportunities:analytics_overview.total_applications'),
       value: analytics.totalApplications,
       icon: <Users className="w-5 h-5" />,
       trend: trends.applications,
-      badge: { label: isRTL ? 'جديد' : 'New', variant: 'secondary' as const }
+      badge: { label: t('opportunities:analytics_overview.new'), variant: 'secondary' as const }
     },
     {
-      title: isRTL ? 'الإعجابات' : 'Likes',
+      title: t('opportunities:analytics_overview.likes'),
       value: analytics.totalLikes,
       icon: <MessageSquare className="w-5 h-5" />,
       trend: trends.likes
     },
     {
-      title: isRTL ? 'معدل التحويل' : 'Conversion Rate',
+      title: t('opportunities:analytics_overview.conversion_rate'),
       value: `${analytics.conversionRate.toFixed(1)}%`,
       icon: <Target className="w-5 h-5" />,
       trend: trends.conversion,
-      badge: { label: isRTL ? 'متميز' : 'Excellent', variant: 'outline' as const }
+      badge: { label: t('opportunities:analytics_overview.excellent'), variant: 'outline' as const }
     }
   ];
 
   const additionalMetrics = [
     {
-      title: isRTL ? 'المشاركات' : 'Shares',
+      title: t('opportunities:analytics_overview.shares'),
       value: analytics.totalShares || 0,
       icon: <Share2 className="w-4 h-4" />
     },
     {
-      title: isRTL ? 'متوسط الوقت' : 'Avg. Time',
+      title: t('opportunities:analytics_overview.avg_time'),
       value: `${analytics.engagementMetrics.avgTimeOnPage}s`,
       icon: <Clock className="w-4 h-4" />
     },
     {
-      title: isRTL ? 'معدل الارتداد' : 'Bounce Rate',
+      title: t('opportunities:analytics_overview.bounce_rate'),
       value: `${analytics.engagementMetrics.bounceRate}%`,
       icon: <Activity className="w-4 h-4" />
     },
     {
-      title: isRTL ? 'الزوار العائدون' : 'Return Visitors',
+      title: t('opportunities:analytics_overview.return_visitors'),
       value: analytics.engagementMetrics.returnVisitors,
       icon: <Globe className="w-4 h-4" />
     }
@@ -83,9 +85,9 @@ export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps)
   };
 
   const getPerformanceLabel = (rate: number) => {
-    if (rate >= 80) return isRTL ? 'ممتاز' : 'Excellent';
-    if (rate >= 60) return isRTL ? 'جيد' : 'Good';
-    return isRTL ? 'يحتاج تحسين' : 'Needs Improvement';
+    if (rate >= 80) return t('opportunities:analytics_overview.performance_labels.excellent');
+    if (rate >= 60) return t('opportunities:analytics_overview.performance_labels.good');
+    return t('opportunities:analytics_overview.performance_labels.needs_improvement');
   };
 
   return (
@@ -94,15 +96,15 @@ export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps)
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">
-            {isRTL ? 'نظرة عامة على الأداء' : 'Performance Overview'}
+            {t('opportunities:analytics_overview.performance_overview')}
           </h2>
           <p className="text-muted-foreground">
-            {isRTL ? 'ملخص شامل لأداء الفرصة' : 'Comprehensive summary of opportunity performance'}
+            {t('opportunities:analytics_overview.performance_summary')}
           </p>
         </div>
         <Badge variant="outline" className="flex items-center gap-1">
           <Activity className="w-3 h-3" />
-          {isRTL ? 'مُحدَّث' : 'Live'}
+          {t('opportunities:analytics_overview.live')}
         </Badge>
       </div>
 
@@ -118,14 +120,14 @@ export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps)
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Target className="w-5 h-5 text-primary" />
-            {isRTL ? 'نقاط الأداء العامة' : 'Overall Performance Score'}
+            {t('opportunities:analytics_overview.overall_performance_score')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">
-                {isRTL ? 'النقاط الإجمالية' : 'Overall Score'}
+                {t('opportunities:analytics_overview.overall_score')}
               </span>
               <span className={`text-sm font-bold ${getPerformanceColor(75)}`}>
                 75/100
@@ -137,7 +139,7 @@ export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps)
                 {getPerformanceLabel(75)}
               </Badge>
               <span className="text-xs text-muted-foreground">
-                {isRTL ? 'بناءً على آخر 30 يوم' : 'Based on last 30 days'}
+                {t('opportunities:analytics_overview.based_on_last_30_days')}
               </span>
             </div>
           </div>
@@ -151,7 +153,7 @@ export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps)
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Activity className="w-5 h-5" />
-              {isRTL ? 'اتجاهات المشاهدات والطلبات' : 'Views & Applications Trends'}
+              {t('opportunities:analytics_overview.views_applications_trends')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -159,7 +161,7 @@ export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps)
               <div className="text-center">
                 <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
                 <p className="text-sm text-muted-foreground">
-                  {isRTL ? 'بيانات الرسم البياني متاحة' : 'Chart data available'}
+                  {t('opportunities:analytics_overview.chart_data_available')}
                 </p>
               </div>
             </div>
@@ -171,7 +173,7 @@ export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps)
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Globe className="w-5 h-5" />
-              {isRTL ? 'مؤشرات إضافية' : 'Additional Metrics'}
+              {t('opportunities:analytics_overview.additional_metrics')}
             </CardTitle>
           </CardHeader>
           <CardContent>

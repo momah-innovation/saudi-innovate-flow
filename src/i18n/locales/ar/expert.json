@@ -1,0 +1,98 @@
+{
+    "dashboard": {
+        "title": "لوحة القيادة - الخبير",
+        "description": "أهلاً بك في نظام إدارة الخبراء والتقييمات",
+        "start_evaluating": "ابدأ التقييم",
+        "filters": "المرشحات"
+    },
+    "tabs": {
+        "overview": "نظرة عامة",
+        "pending": "في الانتظار",
+        "completed": "مكتمل",
+        "analytics": "التحليلات"
+    },
+    "metrics": {
+        "assigned_challenges": "التحديات المُكلفة",
+        "active_assignments": "تكاليف نشطة",
+        "pending_evaluations": "التقييمات المعلقة",
+        "awaiting_review": "في انتظار المراجعة",
+        "total_evaluated": "إجمالي المُقيّمة",
+        "ideas_reviewed": "أفكار مراجعة",
+        "average_rating": "متوسط التقييم",
+        "evaluation_quality": "جودة التقييم"
+    },
+    "progress": {
+        "title": "تقدم التقييم",
+        "description": "مقاييس أداء التقييم الخاصة بك",
+        "completion_rate": "معدل الإنجاز",
+        "response_time": "متوسط وقت الاستجابة",
+        "response_time_value": "2.3 أيام",
+        "quality_score": "نقاط الجودة",
+        "days": "أيام"
+    },
+    "actions": {
+        "title": "الإجراءات السريعة",
+        "description": "ماذا تريد أن تفعل بعد ذلك؟",
+        "start_evaluating": "ابدأ تقييم الأفكار",
+        "update_profile": "تحديث ملف الخبير",
+        "view_challenges": "عرض التحديات المُكلفة",
+        "view_analytics": "عرض التحليلات"
+    },
+    "expertise": {
+        "title": "مجالات الخبرة",
+        "description": "مجالات تخصصك"
+    },
+    "pending": {
+        "title": "التقييمات المعلقة",
+        "description": "الأفكار في انتظار مراجعة الخبير",
+        "loading": "جاري التحميل...",
+        "submitted_days_ago": "تم التقديم منذ {{days}} أيام",
+        "evaluate": "قيّم",
+        "no_pending": "لا توجد تقييمات معلقة",
+        "all_caught_up": "رائع! لقد أنهيت جميع المهام."
+    },
+    "recent": {
+        "title": "التقييمات الأخيرة",
+        "description": "التقييمات المكتملة مؤخراً",
+        "evaluated_on": "تم التقييم في {{date}}",
+        "view": "اعرض",
+        "no_evaluations": "لم يتم إنجاز أي تقييمات بعد",
+        "start_message": "ابدأ تقييم الأفكار لترى تاريخك هنا"
+    },
+    "stats": {
+        "quick_stats": "إحصائيات سريعة",
+        "this_week": "هذا الأسبوع",
+        "evaluations": "تقييمات",
+        "avg_time": "متوسط الوقت",
+        "avg_time_value": "2.1 أيام",
+        "quality_rate": "معدل الجودة"
+    },
+    "status": {
+        "pending": "في الانتظار",
+        "completed": "مكتمل",
+        "in_progress": "قيد التنفيذ",
+        "active": "نشط",
+        "waiting": "في انتظار"
+    },
+    "activity": {
+        "title": "النشاط الأخير",
+        "evaluated_idea": "تم تقييم فكرة",
+        "new_assignment": "تكليف جديد",
+        "profile_updated": "تم تحديث الملف",
+        "time_ago": "منذ {{time}}",
+        "yesterday": "أمس",
+        "2_hours_ago": "منذ ساعتين",
+        "5_hours_ago": "منذ 5 ساعات"
+    },
+    "priority": {
+        "urgent": "عاجل",
+        "high": "عالية",
+        "normal": "عادي"
+    },
+    "score": {
+        "excellent": "ممتاز",
+        "good": "جيد",
+        "fair": "مقبول",
+        "poor": "ضعيف"
+    }
+}

@@ -21,6 +21,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface EnhancedTeamWorkspaceHeroProps {
@@ -43,13 +44,14 @@ export const EnhancedTeamWorkspaceHero = ({
   canJoinTeams = true
 }: EnhancedTeamWorkspaceHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Users, value: totalTeams, label: isRTL ? 'فريق' : 'teams', color: 'text-blue-400' },
-    { icon: Target, value: activeProjects, label: isRTL ? 'مشروع نشط' : 'active projects', color: 'text-green-400' },
-    { icon: UserPlus, value: teamMembers, label: isRTL ? 'عضو' : 'members', color: 'text-purple-400' },
-    { icon: CheckCircle, value: `${completedTasks}%`, label: isRTL ? 'إنجاز' : 'completion', color: 'text-yellow-400' }
+    { icon: Users, value: totalTeams, label: t('team:hero.stats.teams'), color: 'text-blue-400' },
+    { icon: Target, value: activeProjects, label: t('team:hero.stats.active_projects'), color: 'text-green-400' },
+    { icon: UserPlus, value: teamMembers, label: t('team:hero.stats.members'), color: 'text-purple-400' },
+    { icon: CheckCircle, value: `${completedTasks}%`, label: t('team:hero.stats.completion'), color: 'text-yellow-400' }
   ];
 
   const { setInterval: scheduleInterval } = useTimerManager();
@@ -88,7 +90,7 @@ export const EnhancedTeamWorkspaceHero = ({
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Users className="w-3 h-3 mr-1" />
-                  {isRTL ? 'مساحة العمل التعاونية' : 'Collaborative Workspace'}
+                  {t('team:hero.workspace.collaborative')}
                 </Badge>
               </div>
               
@@ -147,7 +149,7 @@ export const EnhancedTeamWorkspaceHero = ({
                   className="gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   <UserPlus className="w-5 h-5 mr-2" />
-                  {isRTL ? 'انضم لفريق' : 'Join Team'}
+                  {t('team:hero.workspace.join_team')}
                 </Button>
               )}
               
@@ -158,7 +160,7 @@ export const EnhancedTeamWorkspaceHero = ({
                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
-                {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+                {t('team:hero.workspace.advanced_filters')}
               </Button>
 
               <Button
@@ -167,7 +169,7 @@ export const EnhancedTeamWorkspaceHero = ({
                 className="text-white hover:bg-white/10"
               >
                 <Play className="w-5 h-5 mr-2" />
-                {isRTL ? 'دليل التعاون' : 'Collaboration Guide'}
+                {t('team:hero.workspace.collaboration_guide')}
               </Button>
             </div>
           </div>
@@ -185,14 +187,14 @@ export const EnhancedTeamWorkspaceHero = ({
                   <div className="absolute top-4 left-4">
                     <Badge className="bg-green-500/90 text-white border-0 animate-pulse">
                       <TrendingUp className="w-3 h-3 mr-1" />
-                      {isRTL ? 'نشط' : 'Active'}
+                      {t('team:hero.workspace.active')}
                     </Badge>
                   </div>
 
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-blue-500/90 text-white border-0">
                       <MessageSquare className="w-3 h-3 mr-1" />
-                      {isRTL ? 'تفاعلي' : 'Interactive'}
+                      {t('team:hero.workspace.interactive')}
                     </Badge>
                   </div>
 
@@ -201,7 +203,7 @@ export const EnhancedTeamWorkspaceHero = ({
 
                 <div className="p-6 space-y-4">
                   <h3 className="text-xl font-bold text-white">
-                    {isRTL ? 'فرق العمل النشطة' : 'Active Team Workspace'}
+                    {t('team:hero.workspace.active_workspace')}
                   </h3>
 
                   <div className="grid grid-cols-2 gap-4">
@@ -209,13 +211,13 @@ export const EnhancedTeamWorkspaceHero = ({
                       <div className="text-2xl font-bold text-blue-300">
                         {activeProjects}
                       </div>
-                      <div className="text-sm text-white/70">{isRTL ? 'مشروع نشط' : 'active projects'}</div>
+                      <div className="text-sm text-white/70">{t('team:hero.workspace.active_projects')}</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-green-300">
                         {completedTasks}%
                       </div>
-                      <div className="text-sm text-white/70">{isRTL ? 'معدل الإنجاز' : 'completion rate'}</div>
+                      <div className="text-sm text-white/70">{t('team:hero.workspace.completion_rate')}</div>
                     </div>
                   </div>
 
@@ -227,7 +229,7 @@ export const EnhancedTeamWorkspaceHero = ({
                   <Button 
                     className="w-full gradient-primary hover:opacity-90 text-white"
                   >
-                    {isRTL ? 'دخول مساحة العمل' : 'Enter Workspace'}
+                    {t('team:hero.workspace.enter_workspace')}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
@@ -240,10 +242,10 @@ export const EnhancedTeamWorkspaceHero = ({
                 <CardContent className="p-4 text-center">
                   <Calendar className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'الاجتماعات' : 'Meetings'}
+                    {t('team:hero.workspace.meetings')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {Math.round(activeProjects * 1.5)} {isRTL ? 'اجتماع' : 'scheduled'}
+                    {Math.round(activeProjects * 1.5)} {t('team:hero.workspace.scheduled')}
                   </div>
                 </CardContent>
               </Card>
@@ -252,10 +254,10 @@ export const EnhancedTeamWorkspaceHero = ({
                 <CardContent className="p-4 text-center">
                   <Award className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'الإنجازات' : 'Achievements'}
+                    {t('team:hero.workspace.achievements')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {Math.round(completedTasks * 0.1)} {isRTL ? 'إنجاز' : 'milestones'}
+                    {Math.round(completedTasks * 0.1)} {t('team:hero.workspace.milestones')}
                   </div>
                 </CardContent>
               </Card>

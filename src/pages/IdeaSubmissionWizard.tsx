@@ -28,6 +28,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { logger } from '@/utils/logger';
 import { errorHandler } from '@/utils/error-handler';
 import { useTimerManager } from '@/utils/timerManager';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface IdeaFormData {
   title_ar: string;
@@ -64,24 +65,26 @@ interface IdeaDraft {
   created_at: string;
 }
 
+// These arrays will be populated from translations
 const STEPS = [
-  { id: 1, title: 'المعلومات الأساسية', titleEn: 'Basic Information', icon: Lightbulb, description: 'عنوان ووصف الفكرة' },
-  { id: 2, title: 'التحدي والتركيز', titleEn: 'Challenge & Focus', icon: Target, description: 'اختيار التحدي والسؤال المحوري' },
-  { id: 3, title: 'تفاصيل الحل', titleEn: 'Solution Details', icon: FileText, description: 'نهج الحل والتأثير المتوقع' },
-  { id: 4, title: 'خطة التنفيذ', titleEn: 'Implementation', icon: Rocket, description: 'خطة التنفيذ والموارد المطلوبة' },
-  { id: 5, title: 'المراجعة والإرسال', titleEn: 'Review & Submit', icon: Check, description: 'مراجعة نهائية وإرسال الفكرة' },
+  { id: 1, key: 'basic_info', icon: Lightbulb },
+  { id: 2, key: 'challenge_focus', icon: Target },
+  { id: 3, key: 'solution_details', icon: FileText },
+  { id: 4, key: 'implementation', icon: Rocket },
+  { id: 5, key: 'review_submit', icon: Check }
 ];
 
 const INNOVATION_LEVELS = [
-  { value: 'incremental', label: 'تحسين تدريجي', labelEn: 'Incremental' },
-  { value: 'radical', label: 'ابتكار جذري', labelEn: 'Radical' },
-  { value: 'disruptive', label: 'ابتكار تحويلي', labelEn: 'Disruptive' }
+  { value: 'incremental', key: 'incremental' },
+  { value: 'radical', key: 'radical' },
+  { value: 'disruptive', key: 'disruptive' }
 ];
 
 export default function IdeaSubmissionWizard() {
   const { userProfile } = useAuth();
   const navigate = useNavigate();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   
   // Predefined tags state
   const [predefinedTags, setPredefinedTags] = useState<string[]>([
@@ -168,7 +171,7 @@ export default function IdeaSubmissionWizard() {
       setFocusQuestions(data.focusQuestions);
     } catch (error) {
       logger.error('Error loading challenges and questions', {}, error as Error);
-      toast.error(isRTL ? 'خطأ في تحميل التحديات والأسئلة المحورية' : 'Error loading challenges and focus questions');
+      toast.error(t('ideas:messages.error_loading'));
     }
   };
 
@@ -233,7 +236,7 @@ export default function IdeaSubmissionWizard() {
         if (data) setDraftId(data.id);
       }
       
-      toast.success(isRTL ? 'تم حفظ المسودة تلقائياً' : 'Draft auto-saved', { duration: 2000 });
+      toast.success(t('ideas:messages.draft_auto_saved'), { duration: 2000 });
     } catch (error) {
       logger.error('Auto-save error', {}, error as Error);
       // Don't show error toast for auto-save failures to avoid spam
@@ -270,17 +273,17 @@ export default function IdeaSubmissionWizard() {
       setDraftId(id);
       setShowDrafts(false);
       
-      toast.success(isRTL ? 'تم تحميل المسودة بنجاح' : 'Draft loaded successfully');
+      toast.success(t('ideas:messages.draft_loaded'));
     } catch (error) {
       logger.error('Error loading draft', {}, error as Error);
-      toast.error(isRTL ? 'خطأ في تحميل المسودة' : 'Error loading draft');
+      toast.error(t('ideas:messages.error_loading_draft'));
     }
   };
 
   const manualSave = async () => {
     await autoSave();
     if (!autoSaving) {
-      toast.success(isRTL ? 'تم حفظ المسودة يدوياً' : 'Draft saved manually');
+      toast.success(t('ideas:messages.draft_saved_manually'));
     }
   };
 
@@ -340,7 +343,7 @@ export default function IdeaSubmissionWizard() {
       }
       setCurrentStep(prev => Math.min(prev + 1, STEPS.length));
     } else {
-      toast.error(isRTL ? 'يرجى ملء جميع الحقول المطلوبة قبل المتابعة' : 'Please fill in all required fields before proceeding');
+      toast.error(t('ideas:messages.validation_error'));
     }
   };
 
@@ -354,7 +357,7 @@ export default function IdeaSubmissionWizard() {
 
   const submitIdea = async () => {
     if (!userProfile?.id) {
-      toast.error(isRTL ? 'المستخدم غير مسجل الدخول' : 'User not authenticated');
+      toast.error(t('ideas:messages.user_not_authenticated'));
       return;
     }
 
@@ -400,12 +403,12 @@ export default function IdeaSubmissionWizard() {
 
       if (result.error) throw result.error;
 
-      toast.success(isRTL ? 'تم إرسال الفكرة بنجاح!' : 'Idea submitted successfully!');
+      toast.success(t('ideas:messages.submit_success'));
       navigate('/dashboard');
       
     } catch (error) {
       errorHandler.handleError(error, 'IdeaSubmissionWizard.handleSubmit');
-      toast.error(isRTL ? 'خطأ في إرسال الفكرة. يرجى المحاولة مرة أخرى.' : 'Error submitting idea. Please try again.');
+      toast.error(t('ideas:messages.submit_error'));
     } finally {
       setLoading(false);
     }
@@ -419,26 +422,26 @@ export default function IdeaSubmissionWizard() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 <Lightbulb className="w-5 h-5 text-primary" />
-                {isRTL ? 'المعلومات الأساسية' : 'Basic Information'}
+                {t('ideas:steps.basic_info.title')}
               </h3>
               {drafts.length > 0 && (
                 <Dialog open={showDrafts} onOpenChange={setShowDrafts}>
                   <DialogTrigger asChild>
                     <Button variant="outline" size="sm">
                       <FileText className="w-4 h-4 mr-2" />
-                      {isRTL ? 'تحميل مسودة' : 'Load Draft'}
+                      {t('ideas:actions.load_draft')}
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>{isRTL ? 'المسودات المحفوظة' : 'Saved Drafts'}</DialogTitle>
+                      <DialogTitle>{t('ideas:drafts.title')}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-2">
                       {drafts.map((draft) => (
                         <Card key={draft.id} className="p-3 cursor-pointer hover:bg-muted/50" 
                               onClick={() => loadDraft(draft.id)}>
                           <div className="flex justify-between items-center">
-                            <span className="font-medium">{draft.title_ar || 'Untitled'}</span>
+                            <span className="font-medium">{draft.title_ar || t('ideas:drafts.untitled')}</span>
                             <span className="text-xs text-muted-foreground">
                               {new Date(draft.created_at).toLocaleDateString()}
                             </span>
@@ -453,46 +456,46 @@ export default function IdeaSubmissionWizard() {
             
             <div>
               <Label htmlFor="title_ar" className="flex items-center gap-2">
-                {isRTL ? 'عنوان الفكرة (عربي)' : 'Idea Title (Arabic)'} 
+                {t('ideas:fields.title')} 
                 <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="title_ar"
                 value={formData.title_ar}
                 onChange={(e) => handleInputChange('title_ar', e.target.value)}
-                placeholder={isRTL ? 'أدخل عنوان فكرتك بالعربية' : 'Enter your idea title in Arabic'}
+                placeholder={t('ideas:fields.title_placeholder')}
                 className="mt-1"
               />
             </div>
             
             <div>
               <Label htmlFor="description_ar" className="flex items-center gap-2">
-                {isRTL ? 'وصف الفكرة (عربي)' : 'Idea Description (Arabic)'} 
+                {t('ideas:fields.description')} 
                 <span className="text-red-500">*</span>
               </Label>
               <Textarea
                 id="description_ar"
                 value={formData.description_ar}
                 onChange={(e) => handleInputChange('description_ar', e.target.value)}
-                placeholder={isRTL ? 'اوصف فكرتك بالتفصيل...' : 'Describe your idea in detail...'}
+                placeholder={t('ideas:fields.description_placeholder')}
                 rows={6}
                 className="mt-1"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                {formData.description_ar.length}/500 {isRTL ? 'حرف' : 'characters'}
+                {formData.description_ar.length}/500 {t('ideas:fields.characters')}
               </p>
             </div>
 
             <div>
               <Label className="flex items-center gap-2">
-                {isRTL ? 'العلامات' : 'Tags'} 
-                <span className="text-muted-foreground text-sm">({isRTL ? 'اختياري' : 'Optional'})</span>
+                {t('ideas:fields.tags')} 
+                <span className="text-muted-foreground text-sm">({t('ideas:fields.tags_optional')})</span>
               </Label>
               
               {/* Predefined Tags */}
               <div className="mt-2">
                 <p className="text-sm text-muted-foreground mb-2">
-                  {isRTL ? 'اختر من العلامات المحددة مسبقاً:' : 'Select from predefined tags:'}
+                  {t('ideas:fields.tags_predefined')}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {predefinedTags.map((tag) => (
@@ -522,7 +525,7 @@ export default function IdeaSubmissionWizard() {
                 <Input
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
-                  placeholder={isRTL ? 'أضف علامة مخصصة...' : 'Add custom tag...'}
+                  placeholder={t('ideas:fields.tags_custom_placeholder')}
                   onKeyPress={(e) => e.key === 'Enter' && addTag()}
                 />
                 <Button type="button" onClick={addTag} size="sm">
@@ -534,7 +537,7 @@ export default function IdeaSubmissionWizard() {
               {formData.tags.length > 0 && (
                 <div className="mt-3">
                   <p className="text-sm text-muted-foreground mb-2">
-                    {isRTL ? 'العلامات المختارة:' : 'Selected tags:'}
+                    {t('ideas:fields.tags_selected')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {formData.tags.map((tag, index) => (
@@ -563,17 +566,17 @@ export default function IdeaSubmissionWizard() {
           <div className="space-y-6">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <Target className="w-5 h-5 text-primary" />
-              {isRTL ? 'التحدي والتركيز' : 'Challenge & Focus'}
+              {t('ideas:steps.challenge_focus.title')}
             </h3>
             
             <div>
               <Label htmlFor="challenge" className="flex items-center gap-2">
-                {isRTL ? 'اختر التحدي' : 'Select Challenge'} 
+                {t('ideas:fields.challenge')} 
                 <span className="text-red-500">*</span>
               </Label>
               <Select value={formData.challenge_id} onValueChange={(value) => handleInputChange('challenge_id', value)}>
                 <SelectTrigger className="mt-1">
-                  <SelectValue placeholder={isRTL ? 'اختر تحدي' : 'Choose a challenge'} />
+                  <SelectValue placeholder={t('ideas:fields.challenge_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {challenges.map((challenge) => (
@@ -582,7 +585,7 @@ export default function IdeaSubmissionWizard() {
                         <span>{challenge.title_ar}</span>
                         {challenge.priority_level === 'high' && (
                           <Badge variant="destructive" className="text-xs">
-                            {isRTL ? 'عالي الأولوية' : 'High Priority'}
+                            {t('ideas:fields.challenge_high_priority')}
                           </Badge>
                         )}
                       </div>
@@ -603,12 +606,12 @@ export default function IdeaSubmissionWizard() {
             {filteredFocusQuestions.length > 0 && (
               <div>
                 <Label htmlFor="focus_question" className="flex items-center gap-2">
-                  {isRTL ? 'السؤال المحوري' : 'Focus Question'} 
-                  <span className="text-muted-foreground text-sm">({isRTL ? 'اختياري' : 'Optional'})</span>
+                  {t('ideas:fields.focus_question')} 
+                  <span className="text-muted-foreground text-sm">({t('ideas:fields.focus_question_optional')})</span>
                 </Label>
                 <Select value={formData.focus_question_id} onValueChange={(value) => handleInputChange('focus_question_id', value)}>
                   <SelectTrigger className="mt-1">
-                    <SelectValue placeholder={isRTL ? 'اختر سؤال محوري' : 'Choose a focus question'} />
+                    <SelectValue placeholder={t('ideas:fields.focus_question_placeholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {filteredFocusQuestions.map((question) => (
@@ -623,7 +626,7 @@ export default function IdeaSubmissionWizard() {
 
             <div>
               <Label className="flex items-center gap-2">
-                {isRTL ? 'مستوى الابتكار' : 'Innovation Level'}
+                {t('ideas:fields.innovation_level')}
               </Label>
               <Select value={formData.innovation_level} onValueChange={(value) => handleInputChange('innovation_level', value)}>
                 <SelectTrigger className="mt-1">
@@ -632,7 +635,7 @@ export default function IdeaSubmissionWizard() {
                 <SelectContent>
                   {INNOVATION_LEVELS.map((level) => (
                     <SelectItem key={level.value} value={level.value}>
-                      {isRTL ? level.label : level.labelEn}
+                      {t(`ideas:innovation_levels.${level.key}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -646,19 +649,19 @@ export default function IdeaSubmissionWizard() {
           <div className="space-y-6">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <FileText className="w-5 h-5 text-primary" />
-              {isRTL ? 'تفاصيل الحل' : 'Solution Details'}
+              {t('ideas:steps.solution_details.title')}
             </h3>
             
             <div>
               <Label htmlFor="solution_approach" className="flex items-center gap-2">
-                {isRTL ? 'نهج الحل' : 'Solution Approach'} 
+                {t('ideas:fields.solution_approach')} 
                 <span className="text-red-500">*</span>
               </Label>
               <Textarea
                 id="solution_approach"
                 value={formData.solution_approach}
                 onChange={(e) => handleInputChange('solution_approach', e.target.value)}
-                placeholder={isRTL ? 'اوصف النهج المقترح للحل...' : 'Describe your proposed solution approach...'}
+                placeholder={t('ideas:fields.solution_approach_placeholder')}
                 rows={4}
                 className="mt-1"
               />
@@ -666,14 +669,14 @@ export default function IdeaSubmissionWizard() {
             
             <div>
               <Label htmlFor="expected_impact" className="flex items-center gap-2">
-                {isRTL ? 'التأثير المتوقع' : 'Expected Impact'} 
+                {t('ideas:fields.expected_impact')} 
                 <span className="text-red-500">*</span>
               </Label>
               <Textarea
                 id="expected_impact"
                 value={formData.expected_impact}
                 onChange={(e) => handleInputChange('expected_impact', e.target.value)}
-                placeholder={isRTL ? 'ما التأثير المتوقع لهذه الفكرة؟' : 'What impact do you expect this idea to have?'}
+                placeholder={t('ideas:fields.expected_impact_placeholder')}
                 rows={4}
                 className="mt-1"
               />
@@ -687,7 +690,7 @@ export default function IdeaSubmissionWizard() {
               />
               <Label htmlFor="collaboration" className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
-                {isRTL ? 'مفتوح للتعاون مع فرق أخرى' : 'Open for collaboration with other teams'}
+                {t('ideas:fields.collaboration_open')}
               </Label>
             </div>
           </div>
@@ -698,19 +701,19 @@ export default function IdeaSubmissionWizard() {
           <div className="space-y-6">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <Rocket className="w-5 h-5 text-primary" />
-              {isRTL ? 'خطة التنفيذ' : 'Implementation Plan'}
+              {t('ideas:steps.implementation.title')}
             </h3>
             
             <div>
               <Label htmlFor="implementation_plan" className="flex items-center gap-2">
-                {isRTL ? 'خطة التنفيذ' : 'Implementation Plan'} 
+                {t('ideas:fields.implementation_plan')} 
                 <span className="text-red-500">*</span>
               </Label>
               <Textarea
                 id="implementation_plan"
                 value={formData.implementation_plan}
                 onChange={(e) => handleInputChange('implementation_plan', e.target.value)}
-                placeholder={isRTL ? 'كيف ستقوم بتنفيذ هذه الفكرة؟' : 'How would you implement this idea?'}
+                placeholder={t('ideas:fields.implementation_plan_placeholder')}
                 rows={4}
                 className="mt-1"
               />
@@ -718,14 +721,14 @@ export default function IdeaSubmissionWizard() {
             
             <div>
               <Label htmlFor="resource_requirements" className="flex items-center gap-2">
-                {isRTL ? 'المتطلبات والموارد' : 'Resource Requirements'} 
+                {t('ideas:fields.resource_requirements')} 
                 <span className="text-red-500">*</span>
               </Label>
               <Textarea
                 id="resource_requirements"
                 value={formData.resource_requirements}
                 onChange={(e) => handleInputChange('resource_requirements', e.target.value)}
-                placeholder={isRTL ? 'ما الموارد التي ستحتاجها؟' : 'What resources would be needed?'}
+                placeholder={t('ideas:fields.resource_requirements_placeholder')}
                 rows={4}
                 className="mt-1"
               />
@@ -734,17 +737,17 @@ export default function IdeaSubmissionWizard() {
             <div>
               <Label htmlFor="estimated_timeline" className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
-                {isRTL ? 'الجدول الزمني المقدر' : 'Estimated Timeline'}
+                {t('ideas:fields.timeline')}
               </Label>
               <Select value={formData.estimated_timeline} onValueChange={(value) => handleInputChange('estimated_timeline', value)}>
                 <SelectTrigger className="mt-1">
-                  <SelectValue placeholder={isRTL ? 'اختر الجدول الزمني' : 'Select timeline'} />
+                  <SelectValue placeholder={t('ideas:fields.timeline_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1-3months">{isRTL ? '1-3 أشهر' : '1-3 months'}</SelectItem>
-                  <SelectItem value="3-6months">{isRTL ? '3-6 أشهر' : '3-6 months'}</SelectItem>
-                  <SelectItem value="6-12months">{isRTL ? '6-12 شهر' : '6-12 months'}</SelectItem>
-                  <SelectItem value="1year+">{isRTL ? 'أكثر من سنة' : '1+ years'}</SelectItem>
+                  <SelectItem value="1-3months">{t('ideas:timelines.1_3_months')}</SelectItem>
+                  <SelectItem value="3-6months">{t('ideas:timelines.3_6_months')}</SelectItem>
+                  <SelectItem value="6-12months">{t('ideas:timelines.6_12_months')}</SelectItem>
+                  <SelectItem value="1year+">{t('ideas:timelines.1_year_plus')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -756,75 +759,72 @@ export default function IdeaSubmissionWizard() {
           <div className="space-y-6">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <Check className="w-5 h-5 text-primary" />
-              {isRTL ? 'المراجعة والإرسال' : 'Review & Submit'}
+              {t('ideas:steps.review_submit.title')}
             </h3>
             
             <Alert>
               <InfoIcon className="h-4 w-4" />
               <AlertDescription>
-                {isRTL ? 
-                  'يرجى مراجعة جميع المعلومات قبل الإرسال. سيتم إشعارك عند بدء مراجعة فكرتك.' :
-                  'Please review all information before submitting. You will be notified when your idea review begins.'
-                }
+                {t('ideas:review.info_message')}
               </AlertDescription>
             </Alert>
             
             <div className="bg-muted/50 p-6 rounded-lg space-y-4">
-              <h4 className="text-lg font-semibold">{isRTL ? 'ملخص الفكرة' : 'Idea Summary'}</h4>
+              <h4 className="text-lg font-semibold">{t('ideas:review.title')}</h4>
               
               <div className="grid gap-4">
                 <div>
-                  <strong>{isRTL ? 'العنوان:' : 'Title:'}</strong>
+                  <strong>{t('ideas:review.field_title')}</strong>
                   <p className="mt-1">{formData.title_ar}</p>
                 </div>
                 
                 <div>
-                  <strong>{isRTL ? 'الوصف:' : 'Description:'}</strong>
+                  <strong>{t('ideas:review.field_description')}</strong>
                   <p className="mt-1 text-muted-foreground">{formData.description_ar}</p>
                 </div>
                 
                 <div>
-                  <strong>{isRTL ? 'التحدي:' : 'Challenge:'}</strong>
-                  <p className="mt-1">{challenges.find(c => c.id === formData.challenge_id)?.title_ar || 'لم يتم اختياره'}</p>
+                  <strong>{t('ideas:review.field_challenge')}</strong>
+                  <p className="mt-1">{challenges.find(c => c.id === formData.challenge_id)?.title_ar || t('ideas:review.not_selected')}</p>
                 </div>
                 
                 {formData.focus_question_id && (
                   <div>
-                    <strong>{isRTL ? 'السؤال المحوري:' : 'Focus Question:'}</strong>
+                    <strong>{t('ideas:review.field_focus_question')}</strong>
                     <p className="mt-1">{filteredFocusQuestions.find(fq => fq.id === formData.focus_question_id)?.question_text_ar}</p>
                   </div>
                 )}
 
                 <div>
-                  <strong>{isRTL ? 'مستوى الابتكار:' : 'Innovation Level:'}</strong>
+                  <strong>{t('ideas:review.field_innovation_level')}</strong>
                   <p className="mt-1">
-                    {INNOVATION_LEVELS.find(l => l.value === formData.innovation_level)?.[isRTL ? 'label' : 'labelEn']}
+                    {formData.innovation_level && t(`ideas:innovation_levels.${INNOVATION_LEVELS.find(l => l.value === formData.innovation_level)?.key}`)}
                   </p>
                 </div>
                 
                 <div>
-                  <strong>{isRTL ? 'نهج الحل:' : 'Solution Approach:'}</strong>
+                  <strong>{t('ideas:review.field_solution_approach')}</strong>
                   <p className="mt-1 text-muted-foreground">{formData.solution_approach}</p>
                 </div>
                 
                 <div>
-                  <strong>{isRTL ? 'التأثير المتوقع:' : 'Expected Impact:'}</strong>
+                  <strong>{t('ideas:review.field_expected_impact')}</strong>
                   <p className="mt-1 text-muted-foreground">{formData.expected_impact}</p>
                 </div>
                 
                 <div>
-                  <strong>{isRTL ? 'خطة التنفيذ:' : 'Implementation Plan:'}</strong>
+                  <strong>{t('ideas:review.field_implementation_plan')}</strong>
                   <p className="mt-1 text-muted-foreground">{formData.implementation_plan}</p>
                 </div>
                 
                 <div>
-                  <strong>{isRTL ? 'المتطلبات والموارد:' : 'Resource Requirements:'}</strong>
+                  <strong>{t('ideas:review.field_resource_requirements')}</strong>
                   <p className="mt-1 text-muted-foreground">{formData.resource_requirements}</p>
                 </div>
 
                 {formData.tags.length > 0 && (
                   <div>
-                    <strong>{isRTL ? 'العلامات:' : 'Tags:'}</strong>
+                    <strong>{t('ideas:review.field_tags')}</strong>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {formData.tags.map((tag, index) => (
                         <Badge key={index} variant="outline">{tag}</Badge>
@@ -837,7 +837,7 @@ export default function IdeaSubmissionWizard() {
                   <div className="flex items-center gap-2 text-green-600">
                     <Users className="w-4 h-4" />
                     <span className="text-sm">
-                      {isRTL ? 'مفتوح للتعاون' : 'Open for collaboration'}
+                      {t('ideas:review.field_collaboration')}
                     </span>
                   </div>
                 )}
@@ -863,10 +863,10 @@ export default function IdeaSubmissionWizard() {
               <Sparkles className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {isRTL ? 'معالج تقديم الفكرة الابتكارية' : 'Innovation Idea Submission Wizard'}
+              {t('ideas:wizard.title')}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {isRTL ? 'شاركنا فكرتك الابتكارية خطوة بخطوة وساعد في بناء مستقبل أفضل' : 'Share your innovative idea step by step and help build a better future'}
+              {t('ideas:wizard.description')}
             </p>
           </div>
 
@@ -876,17 +876,17 @@ export default function IdeaSubmissionWizard() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold">
-                    {isRTL ? `الخطوة ${currentStep} من ${STEPS.length}` : `Step ${currentStep} of ${STEPS.length}`}
+                    {t('ideas:wizard.step_label', { current: currentStep, total: STEPS.length })}
                   </span>
                   <div className="flex items-center gap-3">
                     {autoSaving && (
                       <div className="flex items-center gap-2 text-sm text-primary bg-primary/10 px-3 py-1 rounded-full">
                         <Save className="w-4 h-4 animate-pulse" />
-                        {isRTL ? 'جاري الحفظ...' : 'Auto-saving...'}
+                        {t('ideas:wizard.auto_saving')}
                       </div>
                     )}
                     <div className="text-sm font-medium text-primary">
-                      {Math.round(progress)}% {isRTL ? 'مكتمل' : 'Complete'}
+                      {t('ideas:wizard.complete_percentage', { percent: Math.round(progress) })}
                     </div>
                   </div>
                 </div>
@@ -927,10 +927,10 @@ export default function IdeaSubmissionWizard() {
                     <span className={`text-sm font-semibold block transition-colors ${
                       isActive ? 'text-primary' : isCompleted ? 'text-green-600' : 'text-muted-foreground'
                     }`}>
-                      {isRTL ? step.title : step.titleEn}
+                      {t(`ideas:steps.${step.key}.title`)}
                     </span>
                     <span className="text-xs text-muted-foreground leading-tight">
-                      {step.description}
+                      {t(`ideas:steps.${step.key}.description`)}
                     </span>
                   </div>
                 </div>
@@ -946,7 +946,7 @@ export default function IdeaSubmissionWizard() {
                   className: "w-8 h-8 text-primary" 
                 })}
                 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  {isRTL ? STEPS[currentStep - 1].title : STEPS[currentStep - 1].titleEn}
+                  {t(`ideas:steps.${STEPS[currentStep - 1].key}.title`)}
                 </span>
               </CardTitle>
             </CardHeader>
@@ -968,7 +968,7 @@ export default function IdeaSubmissionWizard() {
                   className="flex items-center gap-2 px-6 py-3 disabled:opacity-50"
                 >
                   <ArrowLeft className="w-5 h-5" />
-                  {isRTL ? 'السابق' : 'Previous'}
+                  {t('ideas:actions.previous')}
                 </Button>
 
                  <div className="flex gap-3">
@@ -980,7 +980,7 @@ export default function IdeaSubmissionWizard() {
                      className="flex items-center gap-2 px-6 py-3"
                    >
                      <Save className={`w-4 h-4 ${autoSaving ? 'animate-pulse' : ''}`} />
-                     {isRTL ? 'حفظ مسودة' : 'Save Draft'}
+                     {t('ideas:actions.save_draft')}
                    </Button>
                    
                    <Button
@@ -988,7 +988,7 @@ export default function IdeaSubmissionWizard() {
                      onClick={() => navigate('/dashboard')}
                      className="px-6 py-3"
                    >
-                     {isRTL ? 'إلغاء' : 'Cancel'}
+                     {t('ideas:actions.cancel')}
                    </Button>
                   
                   {currentStep < STEPS.length ? (
@@ -997,7 +997,7 @@ export default function IdeaSubmissionWizard() {
                       disabled={!validateStep(currentStep)}
                       className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 disabled:opacity-50"
                     >
-                      {isRTL ? 'التالي' : 'Next'}
+                      {t('ideas:actions.next')}
                       <ArrowRight className="w-5 h-5" />
                     </Button>
                   ) : (
@@ -1009,12 +1009,12 @@ export default function IdeaSubmissionWizard() {
                       {loading ? (
                         <>
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          {isRTL ? 'جاري الإرسال...' : 'Submitting...'}
+                          {t('ideas:wizard.submitting')}
                         </>
                       ) : (
                         <>
                           <Rocket className="w-5 h-5" />
-                          {isRTL ? 'إرسال الفكرة' : 'Submit Idea'}
+                          {t('ideas:actions.submit')}
                         </>
                       )}
                     </Button>

@@ -47,13 +47,13 @@ export const EventAdvancedFilters = ({
   const { getSettingValue } = useSettingsManager();
 
   const eventTypes = [
-    { value: 'workshop', label: t('event_type.workshop') },
-    { value: 'conference', label: t('event_type.conference') },
-    { value: 'webinar', label: isRTL ? 'ندوة إلكترونية' : 'Webinar' },
-    { value: 'meetup', label: isRTL ? 'لقاء' : 'Meetup' },
-    { value: 'hackathon', label: isRTL ? 'هاكاثون' : 'Hackathon' },
-    { value: 'seminar', label: isRTL ? 'ندوة' : 'Seminar' },
-    { value: 'brainstorm', label: isRTL ? 'عصف ذهني' : 'Brainstorm' }
+    { value: 'workshop', label: t('events:event_type.workshop') },
+    { value: 'conference', label: t('events:event_type.conference') },
+    { value: 'webinar', label: t('events:event_type.webinar') },
+    { value: 'meetup', label: t('events:event_type.meetup') },
+    { value: 'hackathon', label: t('events:event_type.hackathon') },
+    { value: 'seminar', label: t('events:event_type.seminar') },
+    { value: 'brainstorm', label: t('events:event_type.brainstorm') }
   ];
 
   // Get settings from database
@@ -124,20 +124,20 @@ export const EventAdvancedFilters = ({
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <Filter className="w-5 h-5" />
-            {isRTL ? 'الفلاتر المتقدمة' : 'Advanced Filters'}
+            {t('events:filters.advanced_filters')}
             {getActiveFiltersCount() > 0 && (
               <Badge variant="secondary">{getActiveFiltersCount()}</Badge>
             )}
           </SheetTitle>
           <SheetDescription>
-            {isRTL ? 'اختر الفلاتر للعثور على الفعاليات المناسبة' : 'Choose filters to find the right events for you'}
+            {t('events:filters.choose_filters')}
           </SheetDescription>
         </SheetHeader>
 
         <div className="space-y-6 mt-6">
           {/* Event Types */}
           <div>
-            <Label className="font-semibold">{isRTL ? 'نوع الفعالية' : 'Event Type'}</Label>
+            <Label className="font-semibold">{t('events:filters.type')}</Label>
             <div className="mt-3 space-y-3">
               {eventTypes.map((type) => (
                 <div key={type.value} className="flex items-center space-x-2 space-x-reverse">
@@ -158,7 +158,7 @@ export const EventAdvancedFilters = ({
 
           {/* Format */}
           <div>
-            <Label className="font-semibold">{isRTL ? 'نمط الفعالية' : 'Event Format'}</Label>
+            <Label className="font-semibold">{t('events:filters.event_format')}</Label>
             <div className="mt-3 space-y-3">
               {formats.map((format) => (
                 <div key={format.value} className="flex items-center space-x-2 space-x-reverse">
@@ -179,7 +179,7 @@ export const EventAdvancedFilters = ({
 
           {/* Status */}
           <div>
-            <Label className="font-semibold">{isRTL ? 'حالة الفعالية' : 'Event Status'}</Label>
+            <Label className="font-semibold">{t('events:filters.event_status')}</Label>
             <div className="mt-3 space-y-3">
               {statusOptions.map((status) => (
                 <div key={status.value} className="flex items-center space-x-2 space-x-reverse">
@@ -200,7 +200,7 @@ export const EventAdvancedFilters = ({
 
           {/* Date Range */}
           <div>
-            <Label className="font-semibold">{isRTL ? 'التاريخ' : 'Date Range'}</Label>
+            <Label className="font-semibold">{t('events:filters.date_range')}</Label>
             <div className="mt-3 space-y-3">
               <Popover>
                 <PopoverTrigger asChild>
@@ -216,7 +216,7 @@ export const EventAdvancedFilters = ({
                         dateHandler.formatDate(filters.dateRange.from, "LLL dd, y")
                       )
                     ) : (
-                      <span>{isRTL ? 'اختر التاريخ' : 'Pick a date'}</span>
+                      <span>{t('events:filters.pick_date')}</span>
                     )}
                   </Button>
                 </PopoverTrigger>
@@ -241,11 +241,11 @@ export const EventAdvancedFilters = ({
           <div>
             <Label className="font-semibold flex items-center gap-2">
               <DollarSign className="w-4 h-4" />
-              {isRTL ? 'نطاق السعر' : 'Price Range'}
+              {t('events:filters.price_range')}
             </Label>
             <Select value={filters.priceRange} onValueChange={(value) => onFiltersChange({ ...filters, priceRange: value })}>
               <SelectTrigger className="mt-3">
-                <SelectValue placeholder={isRTL ? 'اختر نطاق السعر' : 'Select price range'} />
+                <SelectValue placeholder={t('events:filters.select_price_range')} />
               </SelectTrigger>
               <SelectContent>
                 {priceRanges.map((range) => (
@@ -263,11 +263,11 @@ export const EventAdvancedFilters = ({
           <div>
             <Label className="font-semibold flex items-center gap-2">
               <Users className="w-4 h-4" />
-              {isRTL ? 'حجم الفعالية' : 'Event Capacity'}
+              {t('events:filters.event_capacity')}
             </Label>
             <Select value={filters.capacity} onValueChange={(value) => onFiltersChange({ ...filters, capacity: value })}>
               <SelectTrigger className="mt-3">
-                <SelectValue placeholder={isRTL ? 'اختر حجم الفعالية' : 'Select event capacity'} />
+                <SelectValue placeholder={t('events:filters.select_event_capacity')} />
               </SelectTrigger>
               <SelectContent>
                 {capacityOptions.map((option) => (
@@ -285,17 +285,17 @@ export const EventAdvancedFilters = ({
           <div className="flex gap-3 pt-4">
             <Button onClick={onClearFilters} variant="outline" className="flex-1">
               <X className="w-4 h-4 mr-2" />
-              {isRTL ? 'مسح الكل' : 'Clear All'}
+              {t('events:filters.clear_all')}
             </Button>
             <Button onClick={() => onOpenChange(false)} className="flex-1">
-              {isRTL ? 'تطبيق' : 'Apply'}
+              {t('events:filters.apply')}
             </Button>
           </div>
 
           {/* Active Filters Summary */}
           {getActiveFiltersCount() > 0 && (
             <div className="p-4 bg-muted/50 rounded-lg">
-              <div className="font-medium mb-2">{isRTL ? 'الفلاتر النشطة:' : 'Active Filters:'}</div>
+              <div className="font-medium mb-2">{t('events:filters.active_filters_label')}</div>
               <div className="flex flex-wrap gap-2">
                 {filters.eventTypes.map((type) => (
                   <Badge key={type} variant="secondary">

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface CalendarEvent {
   id: string;
@@ -61,6 +62,7 @@ export const EventCalendarView = ({
   className = "" 
 }: EventCalendarViewProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -122,17 +124,30 @@ export const EventCalendarView = ({
   };
 
   // Date formatters
-  const monthNames = isRTL ? [
-    'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
-    'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
-  ] : [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+  const monthNames = [
+    t('events:calendar.months.january'),
+    t('events:calendar.months.february'),
+    t('events:calendar.months.march'),
+    t('events:calendar.months.april'),
+    t('events:calendar.months.may'),
+    t('events:calendar.months.june'),
+    t('events:calendar.months.july'),
+    t('events:calendar.months.august'),
+    t('events:calendar.months.september'),
+    t('events:calendar.months.october'),
+    t('events:calendar.months.november'),
+    t('events:calendar.months.december')
   ];
 
-  const dayNames = isRTL ? 
-    ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'] :
-    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dayNames = [
+    t('events:calendar.days.sunday'),
+    t('events:calendar.days.monday'),
+    t('events:calendar.days.tuesday'),
+    t('events:calendar.days.wednesday'),
+    t('events:calendar.days.thursday'),
+    t('events:calendar.days.friday'),
+    t('events:calendar.days.saturday')
+  ];
 
   const isToday = (date: Date) => {
     return date.toDateString() === today.toDateString();
@@ -178,11 +193,11 @@ export const EventCalendarView = ({
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <Calendar className="w-5 h-5" />
-              {isRTL ? 'التقويم' : 'Calendar View'}
+              {t('events:calendar.title')}
             </CardTitle>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" onClick={goToToday}>
-                {isRTL ? 'اليوم' : 'Today'}
+                {t('events:calendar.today')}
               </Button>
               <div className="flex items-center gap-1">
                 <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>
@@ -256,7 +271,7 @@ export const EventCalendarView = ({
                     ))}
                     {dayEvents.length > 2 && (
                       <div className="text-xs text-muted-foreground text-center">
-                        +{dayEvents.length - 2} {isRTL ? 'أكثر' : 'more'}
+                        +{dayEvents.length - 2} {t('events:calendar.more')}
                       </div>
                     )}
                   </div>
@@ -272,13 +287,13 @@ export const EventCalendarView = ({
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              {isRTL ? 'فعاليات' : 'Events for'} {selectedDate.toLocaleDateString()}
+              {t('events:calendar.events_for')} {selectedDate.toLocaleDateString()}
             </CardTitle>
           </CardHeader>
           <CardContent>
             {getEventsForDate(selectedDate).length === 0 ? (
               <p className="text-muted-foreground text-center py-4">
-                {isRTL ? 'لا توجد فعاليات في هذا التاريخ' : 'No events on this date'}
+                {t('events:calendar.no_events_date')}
               </p>
             ) : (
               <div className="space-y-3">

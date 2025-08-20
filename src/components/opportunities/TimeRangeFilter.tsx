@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, Clock, ChevronDown, RotateCcw } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { dateHandler } from '@/utils/unified-date-handler';
 import { subDays, subMonths, startOfDay, endOfDay } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -24,6 +25,7 @@ type PresetRange = {
 
 export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilterProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [selectedRange, setSelectedRange] = useState<string>('30d');
   const [customStart, setCustomStart] = useState<Date | undefined>();
   const [customEnd, setCustomEnd] = useState<Date | undefined>();
@@ -31,32 +33,32 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
 
   const presetRanges: PresetRange[] = [
     {
-      label: 'Last 7 days',
-      labelAr: 'آخر 7 أيام',
+      label: t('opportunities:time_range.last_7_days'),
+      labelAr: t('opportunities:time_range.last_7_days'),
       days: 7,
       getValue: () => ({ start: startOfDay(subDays(new Date(), 7)), end: endOfDay(new Date()) })
     },
     {
-      label: 'Last 30 days',
-      labelAr: 'آخر 30 يوم',
+      label: t('opportunities:time_range.last_30_days'),
+      labelAr: t('opportunities:time_range.last_30_days'),
       days: 30,
       getValue: () => ({ start: startOfDay(subDays(new Date(), 30)), end: endOfDay(new Date()) })
     },
     {
-      label: 'Last 3 months',
-      labelAr: 'آخر 3 أشهر',
+      label: t('opportunities:time_range.last_3_months'),
+      labelAr: t('opportunities:time_range.last_3_months'),
       days: 90,
       getValue: () => ({ start: startOfDay(subMonths(new Date(), 3)), end: endOfDay(new Date()) })
     },
     {
-      label: 'Last 6 months',
-      labelAr: 'آخر 6 أشهر',
+      label: t('opportunities:time_range.last_6_months'),
+      labelAr: t('opportunities:time_range.last_6_months'),
       days: 180,
       getValue: () => ({ start: startOfDay(subMonths(new Date(), 6)), end: endOfDay(new Date()) })
     },
     {
-      label: 'Last year',
-      labelAr: 'آخر سنة',
+      label: t('opportunities:time_range.last_year'),
+      labelAr: t('opportunities:time_range.last_year'),
       days: 365,
       getValue: () => ({ start: startOfDay(subMonths(new Date(), 12)), end: endOfDay(new Date()) })
     }
@@ -103,7 +105,7 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
     }
     
     const preset = presetRanges.find(r => `${r.days}d` === selectedRange);
-    return preset ? (isRTL ? preset.labelAr : preset.label) : (isRTL ? 'آخر 30 يوم' : 'Last 30 days');
+    return preset ? preset.label : t('opportunities:time_range.last_30_days');
   };
 
   return (
@@ -111,7 +113,7 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
       {/* Period Label with Icon */}
       <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
         <Clock className="w-4 h-4" />
-        <span>{isRTL ? 'فترة التحليل' : 'Analysis Period'}</span>
+        <span>{t('opportunities:time_range.analysis_period')}</span>
       </div>
 
       {/* Main Period Selector */}
@@ -128,13 +130,13 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
           <SelectContent>
             {presetRanges.map((range) => (
               <SelectItem key={range.days} value={`${range.days}d`}>
-                {isRTL ? range.labelAr : range.label}
+                {range.label}
               </SelectItem>
             ))}
             <SelectItem value="custom">
               <div className="flex items-center gap-2">
                 <CalendarIcon className="w-4 h-4" />
-                {isRTL ? 'تاريخ مخصص' : 'Custom Range'}
+                {t('opportunities:time_range.custom_range')}
               </div>
             </SelectItem>
           </SelectContent>
@@ -151,13 +153,13 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
             <PopoverContent className="w-80 p-0" align="start">
               <div className="p-4 space-y-4">
                 <div className="text-sm font-medium border-b pb-2">
-                  {isRTL ? 'اختر الفترة المخصصة' : 'Select Custom Date Range'}
+                  {t('opportunities:time_range.select_custom_range')}
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs text-muted-foreground block mb-2">
-                      {isRTL ? 'من تاريخ' : 'Start Date'}
+                      {t('opportunities:time_range.start_date')}
                     </label>
                     <Calendar
                       mode="single"
@@ -169,7 +171,7 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
                   
                   <div>
                     <label className="text-xs text-muted-foreground block mb-2">
-                      {isRTL ? 'إلى تاريخ' : 'End Date'}
+                      {t('opportunities:time_range.end_date')}
                     </label>
                     <Calendar
                       mode="single"
@@ -188,7 +190,7 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
                     disabled={!customStart || !customEnd}
                     className="flex-1"
                   >
-                    {isRTL ? 'تطبيق' : 'Apply'}
+                    {t('opportunities:time_range.apply')}
                   </Button>
                   <Button 
                     size="sm" 
@@ -196,7 +198,7 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
                     onClick={() => setShowCustomCalendar(false)}
                     className="flex-1"
                   >
-                    {isRTL ? 'إلغاء' : 'Cancel'}
+                    {t('opportunities:time_range.cancel')}
                   </Button>
                 </div>
               </div>
@@ -210,7 +212,7 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
           size="sm" 
           onClick={handleReset}
           className="h-9 px-2"
-          title={isRTL ? 'إعادة تعيين' : 'Reset'}
+          title={t('opportunities:time_range.reset')}
         >
           <RotateCcw className="w-4 h-4" />
         </Button>
@@ -219,8 +221,8 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
       {/* Selected Period Info */}
       <Badge variant="secondary" className="text-xs">
         {selectedRange === 'custom' && customStart && customEnd 
-          ? `${Math.ceil((customEnd.getTime() - customStart.getTime()) / (1000 * 60 * 60 * 24))} ${isRTL ? 'يوم' : 'days'}`
-          : presetRanges.find(r => `${r.days}d` === selectedRange)?.days + (isRTL ? ' يوم' : ' days')
+          ? `${Math.ceil((customEnd.getTime() - customStart.getTime()) / (1000 * 60 * 60 * 24))} ${t('opportunities:time_range.days')}`
+          : presetRanges.find(r => `${r.days}d` === selectedRange)?.days + ` ${t('opportunities:time_range.days')}`
         }
       </Badge>
     </div>

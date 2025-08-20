@@ -55,25 +55,25 @@ export function StatisticsFilters({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Filter className="w-5 h-5" />
-          Analytics Filters
+          {t('statistics.filters.title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Time Range Filter */}
           <div>
-            <label className="text-sm font-medium mb-2 block">Time Range</label>
+            <label className="text-sm font-medium mb-2 block">{t('statistics.filters.time_range')}</label>
             <Select value={timeRange} onValueChange={onTimeRangeChange}>
               <SelectTrigger>
-                <SelectValue placeholder="Select time range" />
+                <SelectValue placeholder={t('statistics.filters.select_time_range')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Time</SelectItem>
-                <SelectItem value="7d">Last 7 Days</SelectItem>
-                <SelectItem value="30d">Last 30 Days</SelectItem>
-                <SelectItem value="90d">Last 3 Months</SelectItem>
-                <SelectItem value="1y">Last Year</SelectItem>
-                <SelectItem value="custom">Custom Range</SelectItem>
+                <SelectItem value="all">{t('statistics.filters.all_time')}</SelectItem>
+                <SelectItem value="7d">{t('statistics.filters.last_7_days')}</SelectItem>
+                <SelectItem value="30d">{t('statistics.filters.last_30_days')}</SelectItem>
+                <SelectItem value="90d">{t('statistics.filters.last_3_months')}</SelectItem>
+                <SelectItem value="1y">{t('statistics.filters.last_year')}</SelectItem>
+                <SelectItem value="custom">{t('statistics.filters.custom_range')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -81,7 +81,7 @@ export function StatisticsFilters({
           {/* Custom Date Range */}
           {timeRange === 'custom' && (
             <div>
-              <label className="text-sm font-medium mb-2 block">Date Range</label>
+              <label className="text-sm font-medium mb-2 block">{t('statistics.filters.date_range')}</label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -102,7 +102,7 @@ export function StatisticsFilters({
                         dateHandler.formatDate(dateRange.from, "LLL dd, y")
                       )
                     ) : (
-                      <span>Pick a date range</span>
+                      <span>{t('statistics.filters.pick_date_range')}</span>
                     )}
                   </Button>
                 </PopoverTrigger>
@@ -122,7 +122,7 @@ export function StatisticsFilters({
 
           {/* Department Filter */}
           <div>
-            <label className="text-sm font-medium mb-2 block">Departments</label>
+            <label className="text-sm font-medium mb-2 block">{t('statistics.filters.departments')}</label>
             <Select
               value={selectedDepartments[0] || ""}
               onValueChange={(value) => {
@@ -132,7 +132,7 @@ export function StatisticsFilters({
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder={t('statistics.filters.select_departments', 'Select departments')} />
+                <SelectValue placeholder={t('statistics.filters.select_departments')} />
               </SelectTrigger>
               <SelectContent>
                 {departments.map((dept) => (
@@ -146,7 +146,7 @@ export function StatisticsFilters({
 
           {/* Sector Filter */}
           <div>
-            <label className="text-sm font-medium mb-2 block">Sectors</label>
+            <label className="text-sm font-medium mb-2 block">{t('statistics.filters.sectors')}</label>
             <Select
               value={selectedSectors[0] || ""}
               onValueChange={(value) => {
@@ -156,7 +156,7 @@ export function StatisticsFilters({
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder={t('statistics.filters.select_sectors', 'Select sectors')} />
+                <SelectValue placeholder={t('statistics.filters.select_sectors')} />
               </SelectTrigger>
               <SelectContent>
                 {sectors.map((sector) => (
@@ -172,7 +172,7 @@ export function StatisticsFilters({
         {/* Active Filters */}
         {hasActiveFilters && (
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-medium">Active Filters:</span>
+            <span className="text-sm font-medium">{t('statistics.filters.active_filters')}</span>
             
             {timeRange !== 'all' && (
               <Badge variant="secondary" className="gap-1">
@@ -228,13 +228,13 @@ export function StatisticsFilters({
         <div className="flex items-center gap-2 pt-4 border-t">
           <Button onClick={onExport} variant="outline" className="gap-2">
             <Download className="w-4 h-4" />
-            Export Data
+            {t('statistics.filters.export_data')}
           </Button>
           
           {hasActiveFilters && (
             <Button onClick={onReset} variant="ghost" className="gap-2">
               <X className="w-4 h-4" />
-              Reset Filters
+              {t('statistics.filters.reset_filters')}
             </Button>
           )}
         </div>

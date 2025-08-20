@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Send, 
   Upload, 
@@ -50,6 +51,7 @@ export const OpportunityApplicationDialog = ({
   onSuccess
 }: OpportunityApplicationDialogProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -120,10 +122,8 @@ export const OpportunityApplicationDialog = ({
       if (error) throw error;
 
       toast({
-        title: isRTL ? 'تم إرسال الطلب بنجاح' : 'Application Submitted Successfully',
-        description: isRTL ? 
-          'تم إرسال طلبك وسيتم مراجعته قريباً' : 
-          'Your application has been submitted and will be reviewed soon',
+        title: t('opportunities:application.submit_success_title'),
+        description: t('opportunities:application.submit_success_description'),
       });
 
       reset();
@@ -133,8 +133,8 @@ export const OpportunityApplicationDialog = ({
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: isRTL ? 'خطأ في الإرسال' : 'Submission Error',
-        description: isRTL ? 'فشل في إرسال الطلب' : 'Failed to submit application',
+        title: t('opportunities:application.submit_error_title'),
+        description: t('opportunities:application.submit_error_description'),
         variant: 'destructive',
       });
     } finally {
@@ -156,7 +156,7 @@ export const OpportunityApplicationDialog = ({
         <DialogHeader>
           <DialogTitle className="text-xl font-bold flex items-center gap-2">
             <Send className="w-5 h-5" />
-            {isRTL ? 'تقديم طلب للفرصة' : 'Apply for Opportunity'}
+            {t('opportunities:application.dialog_title')}
           </DialogTitle>
           <p className="text-muted-foreground">{opportunity.title_ar}</p>
         </DialogHeader>
@@ -166,7 +166,7 @@ export const OpportunityApplicationDialog = ({
           <div className="space-y-2">
             <Label className="flex items-center gap-2">
               <User className="w-4 h-4" />
-              {isRTL ? 'نوع التقديم' : 'Application Type'}
+              {t('opportunities:application.application_type')}
             </Label>
             <Select
               value={applicationType}
@@ -177,10 +177,10 @@ export const OpportunityApplicationDialog = ({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="individual">
-                  {isRTL ? 'فردي' : 'Individual'}
+                  {t('opportunities:application.type_individual')}
                 </SelectItem>
                 <SelectItem value="organization">
-                  {isRTL ? 'مؤسسي' : 'Organization'}
+                  {t('opportunities:application.type_organization')}
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -191,13 +191,13 @@ export const OpportunityApplicationDialog = ({
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
                 <Building2 className="w-4 h-4" />
-                {isRTL ? 'اسم المؤسسة' : 'Organization Name'}
+                {t('opportunities:application.organization_name')}
               </Label>
               <Input
                 {...register('organization_name', { 
-                  required: applicationType === 'organization' ? (isRTL ? 'اسم المؤسسة مطلوب' : 'Organization name is required') : false 
+                  required: applicationType === 'organization' ? t('opportunities:application.organization_name_required') : false 
                 })}
-                placeholder={isRTL ? 'أدخل اسم المؤسسة' : 'Enter organization name'}
+                placeholder={t('opportunities:application.organization_name_placeholder')}
               />
               {errors.organization_name && (
                 <p className="text-sm text-red-500">{errors.organization_name.message}</p>
@@ -210,13 +210,13 @@ export const OpportunityApplicationDialog = ({
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
                 <User className="w-4 h-4" />
-                {isRTL ? 'الشخص المسؤول' : 'Contact Person'}
+                {t('opportunities:application.contact_person')}
               </Label>
               <Input
                 {...register('contact_person', { 
-                  required: isRTL ? 'اسم الشخص المسؤول مطلوب' : 'Contact person is required' 
+                  required: t('opportunities:application.contact_person_required')
                 })}
-                placeholder={isRTL ? 'أدخل اسم الشخص المسؤول' : 'Enter contact person name'}
+                placeholder={t('opportunities:application.contact_person_placeholder')}
               />
               {errors.contact_person && (
                 <p className="text-sm text-red-500">{errors.contact_person.message}</p>
@@ -226,18 +226,18 @@ export const OpportunityApplicationDialog = ({
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                {isRTL ? 'البريد الإلكتروني' : 'Email Address'}
+                {t('opportunities:application.email_address')}
               </Label>
               <Input
                 type="email"
                 {...register('contact_email', { 
-                  required: isRTL ? 'البريد الإلكتروني مطلوب' : 'Email is required',
+                  required: t('opportunities:application.email_required'),
                   pattern: {
                     value: /^\S+@\S+$/i,
-                    message: isRTL ? 'البريد الإلكتروني غير صحيح' : 'Invalid email address'
+                    message: t('opportunities:application.email_invalid')
                   }
                 })}
-                placeholder={isRTL ? 'أدخل البريد الإلكتروني' : 'Enter email address'}
+                placeholder={t('opportunities:application.email_placeholder')}
               />
               {errors.contact_email && (
                 <p className="text-sm text-red-500">{errors.contact_email.message}</p>
@@ -248,13 +248,13 @@ export const OpportunityApplicationDialog = ({
           <div className="space-y-2">
             <Label className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              {isRTL ? 'رقم الهاتف' : 'Phone Number'}
+              {t('opportunities:application.phone_number')}
             </Label>
             <Input
               {...register('contact_phone', { 
-                required: isRTL ? 'رقم الهاتف مطلوب' : 'Phone number is required' 
+                required: t('opportunities:application.phone_required')
               })}
-              placeholder={isRTL ? 'أدخل رقم الهاتف' : 'Enter phone number'}
+              placeholder={t('opportunities:application.phone_placeholder')}
             />
             {errors.contact_phone && (
               <p className="text-sm text-red-500">{errors.contact_phone.message}</p>
@@ -265,17 +265,17 @@ export const OpportunityApplicationDialog = ({
           <div className="space-y-2">
             <Label className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
-              {isRTL ? 'ملخص المقترح' : 'Proposal Summary'}
+              {t('opportunities:application.proposal_summary')}
             </Label>
             <Textarea
               {...register('proposal_summary', { 
-                required: isRTL ? 'ملخص المقترح مطلوب' : 'Proposal summary is required',
+                required: t('opportunities:application.proposal_summary_required'),
                 minLength: {
                   value: 100,
-                  message: isRTL ? 'يجب أن يكون الملخص 100 حرف على الأقل' : 'Summary must be at least 100 characters'
+                  message: t('opportunities:application.proposal_summary_min_length')
                 }
               })}
-              placeholder={isRTL ? 'اكتب ملخصاً مفصلاً عن مقترحك...' : 'Write a detailed summary of your proposal...'}
+              placeholder={t('opportunities:application.proposal_summary_placeholder')}
               rows={4}
             />
             {errors.proposal_summary && (
@@ -288,36 +288,36 @@ export const OpportunityApplicationDialog = ({
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4" />
-                {isRTL ? 'الميزانية المتوقعة' : 'Expected Budget'}
+                {t('opportunities:application.expected_budget')}
               </Label>
               <Input
                 type="number"
                 {...register('expected_budget')}
-                placeholder={isRTL ? 'بالريال السعودي' : 'In SAR'}
+                placeholder={t('opportunities:application.budget_placeholder')}
               />
             </div>
 
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                {isRTL ? 'المدة الزمنية (بالأشهر)' : 'Timeline (Months)'}
+                {t('opportunities:application.timeline_months')}
               </Label>
               <Input
                 type="number"
                 {...register('timeline_months')}
-                placeholder={isRTL ? 'عدد الأشهر' : 'Number of months'}
+                placeholder={t('opportunities:application.timeline_placeholder')}
               />
             </div>
 
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
-                {isRTL ? 'حجم الفريق' : 'Team Size'}
+                {t('opportunities:application.team_size')}
               </Label>
               <Input
                 type="number"
                 {...register('team_size')}
-                placeholder={isRTL ? 'عدد أعضاء الفريق' : 'Number of team members'}
+                placeholder={t('opportunities:application.team_size_placeholder')}
               />
             </div>
           </div>
@@ -325,13 +325,13 @@ export const OpportunityApplicationDialog = ({
           {/* Relevant Experience */}
           <div className="space-y-2">
             <Label>
-              {isRTL ? 'الخبرة ذات الصلة' : 'Relevant Experience'}
+              {t('opportunities:application.relevant_experience')}
             </Label>
             <Textarea
               {...register('relevant_experience', { 
-                required: isRTL ? 'الخبرة ذات الصلة مطلوبة' : 'Relevant experience is required' 
+                required: t('opportunities:application.relevant_experience_required')
               })}
-              placeholder={isRTL ? 'اكتب عن خبرتك السابقة في مجالات مشابهة...' : 'Write about your previous experience in similar fields...'}
+              placeholder={t('opportunities:application.relevant_experience_placeholder')}
               rows={3}
             />
             {errors.relevant_experience && (
@@ -343,7 +343,7 @@ export const OpportunityApplicationDialog = ({
           <div className="space-y-2">
             <Label className="flex items-center gap-2">
               <Upload className="w-4 h-4" />
-              {isRTL ? 'المرفقات (اختياري)' : 'Attachments (Optional)'}
+              {t('opportunities:application.attachments_optional')}
             </Label>
             <Input
               type="file"
@@ -353,11 +353,11 @@ export const OpportunityApplicationDialog = ({
               className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
             />
             <p className="text-xs text-muted-foreground">
-              {isRTL ? 'يمكنك رفع ملفات PDF, Word, أو صور (الحد الأقصى 10 ميجابايت لكل ملف)' : 'You can upload PDF, Word, or image files (max 10MB each)'}
+              {t('opportunities:application.attachments_hint')}
             </p>
             {attachments.length > 0 && (
               <div className="space-y-1">
-                <p className="text-sm font-medium">{isRTL ? 'الملفات المحددة:' : 'Selected files:'}</p>
+                <p className="text-sm font-medium">{t('opportunities:application.selected_files')}</p>
                 {attachments.map((file, index) => (
                   <p key={index} className="text-xs text-muted-foreground">• {file.name}</p>
                 ))}
@@ -373,7 +373,7 @@ export const OpportunityApplicationDialog = ({
               onClick={() => onOpenChange(false)}
               className="flex-1"
             >
-              {isRTL ? 'إلغاء' : 'Cancel'}
+              {t('opportunities:application.cancel')}
             </Button>
             <Button
               type="submit"
@@ -383,12 +383,12 @@ export const OpportunityApplicationDialog = ({
               {isSubmitting ? (
                 <>
                   <span className={`animate-spin ${isRTL ? 'ml-2' : 'mr-2'}`}>⏳</span>
-                  {isRTL ? 'جاري الإرسال...' : 'Submitting...'}
+                  {t('opportunities:application.submitting')}
                 </>
               ) : (
                 <>
                   <Send className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                  {isRTL ? 'إرسال الطلب' : 'Submit Application'}
+                  {t('opportunities:application.submit_application')}
                 </>
               )}
             </Button>

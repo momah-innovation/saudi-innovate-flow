@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   MessageCircle, 
   Heart, 
@@ -40,6 +41,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
   const { user } = useAuth();
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyTo, setReplyTo] = useState<string | null>(null);
@@ -90,14 +92,14 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
       loadComments();
       
       toast({
-        title: isRTL ? 'تم إضافة التعليق' : 'Comment Added',
-        description: isRTL ? 'تم إضافة تعليقك بنجاح' : 'Your comment has been added successfully',
+        title: t('opportunities:comments.comment_added'),
+        description: t('opportunities:comments.comment_added_desc'),
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في إضافة التعليق' : 'Failed to add comment',
+        title: t('opportunities:common.error'),
+        description: t('opportunities:comments.add_comment_error'),
         variant: 'destructive',
       });
     } finally {
@@ -117,14 +119,14 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
       
       loadComments();
       toast({
-        title: isRTL ? 'تم حذف التعليق' : 'Comment Deleted',
-        description: isRTL ? 'تم حذف تعليقك بنجاح' : 'Your comment has been deleted',
+        title: t('opportunities:comments.comment_deleted'),
+        description: t('opportunities:comments.comment_deleted_desc'),
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في حذف التعليق' : 'Failed to delete comment',
+        title: t('opportunities:common.error'),
+        description: t('opportunities:comments.delete_comment_error'),
         variant: 'destructive',
       });
     }
@@ -145,11 +147,11 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
     
-    if (diffInHours < 1) return isRTL ? 'الآن' : 'now';
-    if (diffInHours < 24) return isRTL ? `منذ ${diffInHours} ساعة` : `${diffInHours}h ago`;
+    if (diffInHours < 1) return t('opportunities:comments.time_now');
+    if (diffInHours < 24) return t('opportunities:comments.time_hours_ago', { hours: diffInHours });
     
     const diffInDays = Math.floor(diffInHours / 24);
-    return isRTL ? `منذ ${diffInDays} يوم` : `${diffInDays}d ago`;
+    return t('opportunities:comments.time_days_ago', { days: diffInDays });
   };
 
   const getInitials = (userId: string) => {
@@ -164,7 +166,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <MessageCircle className="w-5 h-5" />
-          {isRTL ? 'التعليقات' : 'Comments'}
+          {t('opportunities:comments.title')}
           <Badge variant="secondary">{comments.length}</Badge>
         </CardTitle>
       </CardHeader>
@@ -175,14 +177,14 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
             {replyTo && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Reply className="w-4 h-4" />
-                {isRTL ? 'الرد على التعليق' : 'Replying to comment'}
+                {t('opportunities:comments.replying_to')}
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setReplyTo(null)}
                   className="h-auto p-0 text-blue-600 hover:text-blue-800"
                 >
-                  {isRTL ? 'إلغاء' : 'Cancel'}
+                  {t('opportunities:common.cancel')}
                 </Button>
               </div>
             )}
@@ -192,7 +194,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
               </Avatar>
               <div className="flex-1 space-y-2">
                 <Textarea
-                  placeholder={isRTL ? 'اكتب تعليقك...' : 'Write your comment...'}
+                  placeholder={t('opportunities:comments.write_comment_placeholder')}
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   className="min-h-[80px]"
@@ -204,7 +206,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
                     size="sm"
                   >
                     <Send className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                    {submitting ? (isRTL ? 'جارٍ الإرسال...' : 'Posting...') : (isRTL ? 'إرسال' : 'Post')}
+                    {submitting ? t('opportunities:comments.posting') : t('opportunities:comments.post')}
                   </Button>
                 </div>
               </div>
@@ -230,8 +232,8 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
             {mainComments.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <MessageCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                <p>{isRTL ? 'لا توجد تعليقات بعد' : 'No comments yet'}</p>
-                <p className="text-sm">{isRTL ? 'كن أول من يعلق على هذه الفرصة' : 'Be the first to comment on this opportunity'}</p>
+                <p>{t('opportunities:comments.no_comments')}</p>
+                <p className="text-sm">{t('opportunities:comments.be_first')}</p>
               </div>
             ) : (
               mainComments.map(comment => (
@@ -250,7 +252,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
                             {comment.is_pinned && (
                               <Badge variant="secondary" className="text-xs">
                                 <Pin className="w-3 h-3 mr-1" />
-                                {isRTL ? 'مثبت' : 'Pinned'}
+                                {t('opportunities:comments.pinned')}
                               </Badge>
                             )}
                           </div>
@@ -264,7 +266,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
                               <DropdownMenuContent>
                                 <DropdownMenuItem onClick={() => deleteComment(comment.id)}>
                                   <Trash2 className="w-4 h-4 mr-2" />
-                                  {isRTL ? 'حذف' : 'Delete'}
+                                  {t('opportunities:comments.delete')}
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -292,7 +294,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
                             className="h-auto p-0 text-muted-foreground hover:text-blue-500"
                           >
                             <Reply className="w-4 h-4 mr-1" />
-                            {isRTL ? 'رد' : 'Reply'}
+                            {t('opportunities:comments.reply')}
                           </Button>
                         )}
                       </div>

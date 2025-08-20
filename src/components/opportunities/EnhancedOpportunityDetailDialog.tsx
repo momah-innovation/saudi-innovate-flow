@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -48,6 +49,7 @@ export const EnhancedOpportunityDetailDialog = ({
   onBookmark
 }: OpportunityDetailDialogProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
   
@@ -219,10 +221,10 @@ export const EnhancedOpportunityDetailDialog = ({
   };
 
   const formatBudgetRange = () => {
-    if (!opportunity.budget_min && !opportunity.budget_max) return isRTL ? 'حسب التفاوض' : 'Negotiable';
-    if (!opportunity.budget_max) return `${opportunity.budget_min?.toLocaleString()}+ ${isRTL ? 'ر.س' : 'SAR'}`;
-    if (!opportunity.budget_min) return `${isRTL ? 'حتى' : 'Up to'} ${opportunity.budget_max?.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}`;
-    return `${opportunity.budget_min?.toLocaleString()} - ${opportunity.budget_max?.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}`;
+    if (!opportunity.budget_min && !opportunity.budget_max) return t('opportunities:detail.budget.negotiable');
+    if (!opportunity.budget_max) return `${opportunity.budget_min?.toLocaleString()}+ ${t('opportunities:common.currency')}`;
+    if (!opportunity.budget_min) return `${t('opportunities:detail.budget.up_to')} ${opportunity.budget_max?.toLocaleString()} ${t('opportunities:common.currency')}`;
+    return `${opportunity.budget_min?.toLocaleString()} - ${opportunity.budget_max?.toLocaleString()} ${t('opportunities:common.currency')}`;
   };
 
   if (!opportunity) return null;
@@ -250,7 +252,7 @@ export const EnhancedOpportunityDetailDialog = ({
           {/* Status Badge */}
           <div className="absolute top-4 right-4">
             <Badge className="bg-green-500 text-white">
-              {opportunity.status === 'open' ? (isRTL ? 'مفتوحة' : 'Open') : opportunity.status}
+              {opportunity.status === 'open' ? t('opportunities:detail.status.open') : opportunity.status}
             </Badge>
           </div>
 
@@ -293,12 +295,12 @@ export const EnhancedOpportunityDetailDialog = ({
               {daysRemaining !== null && (
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>{daysRemaining} {isRTL ? 'يوم متبقي' : 'days left'}</span>
+                  <span>{daysRemaining} {t('opportunities:detail.days_left')}</span>
                 </div>
               )}
               <div className="flex items-center gap-1">
                 <Users className="w-4 h-4" />
-                <span>{applications.length} {isRTL ? 'طلب' : 'applications'}</span>
+                <span>{applications.length} {t('opportunities:common.applications')}</span>
               </div>
               <div className="flex items-center gap-1">
                 <DollarSign className="w-4 h-4" />
@@ -318,7 +320,7 @@ export const EnhancedOpportunityDetailDialog = ({
         {opportunity.created_at && opportunity.deadline && (
           <div className="px-6 pt-4">
             <div className="flex justify-between text-sm text-muted-foreground mb-2">
-              <span>{isRTL ? 'تقدم الفرصة' : 'Opportunity Progress'}</span>
+              <span>{t('opportunities:detail.progress')}</span>
               <span>{Math.round(progressPercentage)}%</span>
             </div>
             <Progress value={progressPercentage} className="h-2" />
@@ -329,11 +331,11 @@ export const EnhancedOpportunityDetailDialog = ({
         <div className="flex-1 overflow-y-auto px-6 pb-6">
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">{isRTL ? 'نظرة عامة' : 'Overview'}</TabsTrigger>
-              <TabsTrigger value="requirements">{isRTL ? 'المتطلبات' : 'Requirements'}</TabsTrigger>
-              <TabsTrigger value="benefits">{isRTL ? 'المزايا' : 'Benefits'}</TabsTrigger>
-              <TabsTrigger value="applications">{isRTL ? 'الطلبات' : 'Applications'}</TabsTrigger>
-              <TabsTrigger value="comments">{isRTL ? 'التعليقات' : 'Comments'}</TabsTrigger>
+              <TabsTrigger value="overview">{t('opportunities:detail.tabs.overview')}</TabsTrigger>
+              <TabsTrigger value="requirements">{t('opportunities:detail.tabs.requirements')}</TabsTrigger>
+              <TabsTrigger value="benefits">{t('opportunities:detail.tabs.benefits')}</TabsTrigger>
+              <TabsTrigger value="applications">{t('opportunities:detail.tabs.applications')}</TabsTrigger>
+              <TabsTrigger value="comments">{t('opportunities:detail.tabs.comments')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6 mt-6">
@@ -342,7 +344,7 @@ export const EnhancedOpportunityDetailDialog = ({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <FileText className="w-5 h-5" />
-                    {isRTL ? 'وصف الفرصة' : 'Opportunity Description'}
+                    {t('opportunities:detail.description_title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -360,7 +362,7 @@ export const EnhancedOpportunityDetailDialog = ({
                         <Target className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div>
-                        <div className="text-sm text-muted-foreground">{isRTL ? 'نوع الفرصة' : 'Type'}</div>
+                        <div className="text-sm text-muted-foreground">{t('opportunities:detail.info.type')}</div>
                         <div className="font-medium">{opportunity.opportunity_type}</div>
                       </div>
                     </div>
@@ -375,7 +377,7 @@ export const EnhancedOpportunityDetailDialog = ({
                         <TrendingUp className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                       </div>
                       <div>
-                        <div className="text-sm text-muted-foreground">{isRTL ? 'الأولوية' : 'Priority'}</div>
+                        <div className="text-sm text-muted-foreground">{t('opportunities:detail.info.priority')}</div>
                         <div className="font-medium capitalize">{opportunity.priority_level || 'medium'}</div>
                       </div>
                     </div>
@@ -391,7 +393,7 @@ export const EnhancedOpportunityDetailDialog = ({
                           <Users className="w-5 h-5 text-green-600 dark:text-green-400" />
                         </div>
                         <div>
-                          <div className="text-sm text-muted-foreground">{isRTL ? 'جهة الاتصال' : 'Contact'}</div>
+                          <div className="text-sm text-muted-foreground">{t('opportunities:detail.info.contact')}</div>
                           <div className="font-medium">{opportunity.contact_person}</div>
                         </div>
                       </div>
@@ -406,20 +408,20 @@ export const EnhancedOpportunityDetailDialog = ({
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Building2 className="w-5 h-5" />
-                      {isRTL ? 'الجهة المسؤولة' : 'Responsible Organization'}
+                      {t('opportunities:detail.responsible_org')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
                       {opportunity.sector && (
                         <div>
-                          <span className="font-medium">{isRTL ? 'القطاع: ' : 'Sector: '}</span>
+                          <span className="font-medium">{t('opportunities:detail.info.sector')}</span>
                           <span>{isRTL ? opportunity.sector.name_ar : opportunity.sector.name}</span>
                         </div>
                       )}
                       {opportunity.department && (
                         <div>
-                          <span className="font-medium">{isRTL ? 'الإدارة: ' : 'Department: '}</span>
+                          <span className="font-medium">{t('opportunities:detail.info.department')}</span>
                           <span>{isRTL ? opportunity.department.name_ar : opportunity.department.name}</span>
                         </div>
                       )}
@@ -434,7 +436,7 @@ export const EnhancedOpportunityDetailDialog = ({
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Award className="w-5 h-5" />
-                      {isRTL ? 'مؤشرات النجاح' : 'Success Metrics'}
+                      {t('opportunities:detail.success_metrics')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -447,7 +449,7 @@ export const EnhancedOpportunityDetailDialog = ({
             <TabsContent value="requirements" className="space-y-4 mt-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>{isRTL ? 'متطلبات التقديم' : 'Application Requirements'}</CardTitle>
+                  <CardTitle>{t('opportunities:detail.requirements_title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {opportunity.requirements && Array.isArray(opportunity.requirements) ? (
@@ -460,7 +462,7 @@ export const EnhancedOpportunityDetailDialog = ({
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-muted-foreground">{isRTL ? 'لم يتم تحديد متطلبات محددة.' : 'No specific requirements defined.'}</p>
+                    <p className="text-muted-foreground">{t('opportunities:detail.no_requirements')}</p>
                   )}
                 </CardContent>
               </Card>
@@ -469,7 +471,7 @@ export const EnhancedOpportunityDetailDialog = ({
             <TabsContent value="benefits" className="space-y-4 mt-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>{isRTL ? 'المزايا والفوائد' : 'Benefits & Advantages'}</CardTitle>
+                  <CardTitle>{t('opportunities:detail.benefits_title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {opportunity.benefits && Array.isArray(opportunity.benefits) ? (
@@ -482,7 +484,7 @@ export const EnhancedOpportunityDetailDialog = ({
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-muted-foreground">{isRTL ? 'لم يتم تحديد مزايا محددة.' : 'No specific benefits defined.'}</p>
+                    <p className="text-muted-foreground">{t('opportunities:detail.no_benefits')}</p>
                   )}
                 </CardContent>
               </Card>
@@ -491,7 +493,7 @@ export const EnhancedOpportunityDetailDialog = ({
             <TabsContent value="applications" className="space-y-4 mt-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>{isRTL ? 'الطلبات المقدمة' : 'Recent Applications'}</CardTitle>
+                  <CardTitle>{t('opportunities:detail.recent_applications')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {applications.length > 0 ? (
@@ -512,7 +514,7 @@ export const EnhancedOpportunityDetailDialog = ({
                     </div>
                   ) : (
                     <p className="text-muted-foreground text-center py-8">
-                      {isRTL ? 'لا توجد طلبات مقدمة بعد.' : 'No applications submitted yet.'}
+                      {t('opportunities:detail.no_applications')}
                     </p>
                   )}
                 </CardContent>
@@ -524,7 +526,7 @@ export const EnhancedOpportunityDetailDialog = ({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <MessageSquare className="w-5 h-5" />
-                    {isRTL ? 'التعليقات' : 'Comments'}
+                    {t('opportunities:detail.comments_title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -541,7 +543,7 @@ export const EnhancedOpportunityDetailDialog = ({
                     </div>
                   ) : (
                     <p className="text-muted-foreground text-center py-8">
-                      {isRTL ? 'لا توجد تعليقات بعد.' : 'No comments yet.'}
+                      {t('opportunities:detail.no_comments')}
                     </p>
                   )}
                 </CardContent>
@@ -557,17 +559,17 @@ export const EnhancedOpportunityDetailDialog = ({
                 className="flex-1"
               >
                 <Send className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {isRTL ? 'تقدم للفرصة' : 'Apply for Opportunity'}
+                {t('opportunities:detail.apply_button')}
               </Button>
             ) : isApplied ? (
               <Button variant="secondary" className="flex-1" disabled>
                 <CheckCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {isRTL ? 'تم التقديم' : 'Application Submitted'}
+                {t('opportunities:detail.application_submitted')}
               </Button>
             ) : (
               <Button variant="secondary" className="flex-1" disabled>
                 <AlertCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {isRTL ? 'مغلقة للتقديم' : 'Closed for Applications'}
+                {t('opportunities:detail.closed_for_applications')}
               </Button>
             )}
             

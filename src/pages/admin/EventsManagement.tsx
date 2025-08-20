@@ -25,10 +25,10 @@ export default function EventsManagementPage() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">
-            {isRTL ? 'غير مصرح لك بالوصول' : 'Access Denied'}
+            {t('admin:access.denied')}
           </h2>
           <p className="text-muted-foreground">
-            {isRTL ? 'هذه الصفحة مخصصة للمديرين فقط' : 'This page is only accessible to administrators'}
+            {t('admin:access.admin_only')}
           </p>
         </div>
       </div>
@@ -39,7 +39,7 @@ export default function EventsManagementPage() {
     <>
       <Select>
         <SelectTrigger className="w-32">
-          <SelectValue placeholder="تصدير" />
+          <SelectValue placeholder={t('common:export')} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="pdf">PDF</SelectItem>
@@ -49,7 +49,7 @@ export default function EventsManagementPage() {
       </Select>
       <Button variant="outline" className="gap-2">
         <Users className="w-4 h-4" />
-        الإجراءات المجمعة
+        {t('common:bulk_actions')}
       </Button>
     </>
   );
@@ -59,33 +59,33 @@ export default function EventsManagementPage() {
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب الحالة" />
+            <SelectValue placeholder={t('events:filter_by_status')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">جميع الحالات</SelectItem>
-            <SelectItem value="scheduled">مجدول</SelectItem>
-            <SelectItem value="ongoing">جاري</SelectItem>
+            <SelectItem value="all">{t('common:all_status')}</SelectItem>
+            <SelectItem value="scheduled">{t('events:status.scheduled')}</SelectItem>
+            <SelectItem value="ongoing">{t('events:status.ongoing')}</SelectItem>
             {generalStatusOptions.filter(status => ['completed', 'cancelled'].includes(status)).map(status => (
               <SelectItem key={status} value={status}>
-                {status === 'completed' ? 'مكتمل' : 'ملغي'}
+                {status === 'completed' ? t('events:status.completed') : t('events:status.cancelled')}
               </SelectItem>
             ))}
-            <SelectItem value="postponed">مؤجل</SelectItem>
+            <SelectItem value="postponed">{t('events:status.postponed')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب النوع" />
+            <SelectValue placeholder={t('events:filter_by_type')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">جميع الأنواع</SelectItem>
+            <SelectItem value="all">{t('common:all_types')}</SelectItem>
             <SelectItem value="workshop">{t('event_type.workshop')}</SelectItem>
             <SelectItem value="conference">{t('event_type.conference')}</SelectItem>
-            <SelectItem value="seminar">ندوة</SelectItem>
-            <SelectItem value="training">تدريب</SelectItem>
-            <SelectItem value="networking">شبكات تواصل</SelectItem>
+            <SelectItem value="seminar">{t('events:type.seminar')}</SelectItem>
+            <SelectItem value="training">{t('events:type.training')}</SelectItem>
+            <SelectItem value="networking">{t('events:type.networking')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -96,11 +96,11 @@ export default function EventsManagementPage() {
     <div className="container mx-auto px-4 py-8">
       <AdminBreadcrumb />
       <PageLayout
-        title="إدارة الأحداث"
-        description="إدارة وتنظيم الأحداث والفعاليات والورش التدريبية"
+        title={t('events:management.title')}
+        description={t('events:management.description')}
         itemCount={3}
         primaryAction={{
-          label: "إنشاء حدث جديد",
+          label: t('events:create_new_event'),
           onClick: () => setShowAddDialog(true),
           icon: <Plus className="w-4 h-4" />
         }}
@@ -111,7 +111,7 @@ export default function EventsManagementPage() {
         showSearch={true}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-        searchPlaceholder="بحث في الأحداث..."
+        searchPlaceholder={t('events:search_placeholder')}
         filters={filters}
         spacing="md"
         maxWidth="full"

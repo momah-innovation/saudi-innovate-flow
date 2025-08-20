@@ -1,0 +1,71 @@
+{
+    "title": "التقييمات",
+    "description": "إدارة ومراجعة تقييمات الأفكار والمشاريع",
+    "loading": "جاري تحميل التقييمات...",
+    "newEvaluation": "تقييم جديد",
+    "export": "تصدير",
+    "search": "البحث في التقييمات...",
+    "totalEvaluations": "إجمالي التقييمات",
+    "pending": "في الانتظار",
+    "inProgress": "قيد المراجعة",
+    "completed": "مكتملة",
+    "allEvaluations": "جميع التقييمات",
+    "noEvaluations": "لا توجد تقييمات",
+    "noEvaluationsMessage": "لم يتم العثور على تقييمات في هذه الفئة",
+    "status": {
+        "all": "جميع الحالات",
+        "pending": "في الانتظار",
+        "inProgress": "قيد التقييم",
+        "completed": "مكتمل"
+    },
+    "priority": {
+        "all": "جميع الأولويات",
+        "high": "عالية",
+        "medium": "متوسطة",
+        "low": "منخفضة"
+    },
+    "details": {
+        "title": "تفاصيل التقييم",
+        "ideaInfo": "معلومات الفكرة",
+        "evaluatorInfo": "معلومات المقيم",
+        "overallScore": "النتيجة الإجمالية",
+        "detailedScores": "النتائج التفصيلية",
+        "strengths": "نقاط القوة",
+        "weaknesses": "نقاط الضعف",
+        "recommendations": "التوصيات",
+        "nextSteps": "الخطوات التالية",
+        "comments": "التعليقات والملاحظات",
+        "addComment": "إضافة تعليق...",
+        "post": "إضافة",
+        "noComments": "لا توجد تعليقات بعد"
+    },
+    "fields": {
+        "evaluatedBy": "بواسطة:",
+        "evaluationDate": "تاريخ التقييم:",
+        "ideaStatus": "حالة الفكرة:",
+        "title": "العنوان:",
+        "status": "الحالة:",
+        "name": "الاسم:",
+        "type": "النوع:",
+        "date": "التاريخ:",
+        "technical": "الجدوى",
+        "innovation": "الابتكار",
+        "market": "السوق",
+        "technicalFeasibility": "الجدوى التقنية",
+        "financialViability": "الجدوى المالية",
+        "marketPotential": "إمكانات السوق",
+        "strategicAlignment": "التوافق الاستراتيجي",
+        "innovationLevel": "مستوى الابتكار",
+        "implementationComplexity": "تعقيد التنفيذ"
+    },
+    "messages": {
+        "noStrengths": "لم يتم تقديم نقاط قوة",
+        "noWeaknesses": "لم يتم تقديم نقاط ضعف",
+        "noRecommendations": "لم يتم تقديم توصيات",
+        "noNextSteps": "لم يتم تحديد خطوات تالية",
+        "commentAdded": "تم إضافة التعليق",
+        "commentAddedDesc": "تم إضافة تعليقك بنجاح",
+        "errorFetch": "فشل في تحميل التقييمات",
+        "errorComment": "فشل في إضافة التعليق"
+    }
+}

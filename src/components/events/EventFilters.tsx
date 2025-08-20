@@ -72,37 +72,37 @@ export const EventFilters = ({
   const eventStatusOptionsData = getSettingValue('event_status_options', []) as string[];
 
   const formatOptions = [
-    { value: 'all', label: isRTL ? 'جميع الأشكال' : 'All Formats' },
+    { value: 'all', label: t('events:filters.all_formats') },
     ...eventFormatOptions.map(format => ({ value: format.toLowerCase(), label: format }))
   ];
 
   const eventTypeOptions = [
-    { value: 'all', label: isRTL ? 'جميع الأنواع' : 'All Types' },
+    { value: 'all', label: t('events:filters.all_types') },
     ...eventTypeOptionsData.map(type => ({ value: type.toLowerCase(), label: type }))
   ];
 
   const categoryOptions = [
-    { value: 'all', label: isRTL ? 'جميع الفئات' : 'All Categories' },
+    { value: 'all', label: t('events:filters.all_categories') },
     ...eventCategoriesData.map(category => ({ value: category.toLowerCase(), label: category }))
   ];
 
   const statusOptions = [
-    { value: 'all', label: isRTL ? 'جميع الحالات' : 'All Status' },
+    { value: 'all', label: t('events:filters.all_status') },
     ...eventStatusOptionsData.map(status => ({ value: status.toLowerCase(), label: status }))
   ];
 
   const sortOptions = [
-    { value: 'event_date', label: isRTL ? 'تاريخ الفعالية' : 'Event Date' },
-    { value: 'registered_participants', label: isRTL ? 'عدد المسجلين' : 'Participants' },
-    { value: 'created_at', label: isRTL ? 'تاريخ الإنشاء' : 'Created Date' },
-    { value: 'title_ar', label: isRTL ? 'العنوان' : 'Title' }
+    { value: 'event_date', label: t('events:filters.sort.event_date') },
+    { value: 'registered_participants', label: t('events:filters.sort.participants') },
+    { value: 'created_at', label: t('events:filters.sort.created_date') },
+    { value: 'title_ar', label: t('events:filters.sort.title') }
   ];
 
   const featureOptions = [
-    { value: 'virtual_link', label: isRTL ? 'رابط افتراضي' : 'Virtual Link' },
-    { value: 'recurring', label: isRTL ? 'متكرر' : 'Recurring' },
-    { value: 'free', label: isRTL ? 'مجاني' : 'Free' },
-    { value: 'open_registration', label: isRTL ? 'تسجيل مفتوح' : 'Open Registration' }
+    { value: 'virtual_link', label: t('events:filters.features.virtual_link') },
+    { value: 'recurring', label: t('events:filters.features.recurring') },
+    { value: 'free', label: t('events:filters.features.free') },
+    { value: 'open_registration', label: t('events:filters.features.open_registration') }
   ];
 
   return (
@@ -151,7 +151,7 @@ export const EventFilters = ({
           className="w-full sm:w-auto"
         >
           <SlidersHorizontal className="w-4 h-4 mr-2" />
-          {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+          {t('events:filters.advanced_filters')}
           <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${isAdvancedOpen ? 'rotate-180' : ''}`} />
         </Button>
       </div>
@@ -160,10 +160,10 @@ export const EventFilters = ({
       {activeFiltersCount > 0 && (
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-sm text-muted-foreground">
-            {isRTL ? 'الفلاتر النشطة:' : 'Active filters:'}
+            {t('events:filters.active_filters')}
           </span>
           <Badge variant="secondary" className="animate-scale-in">
-            {activeFiltersCount} {isRTL ? 'فلتر' : 'filters'}
+            {activeFiltersCount} {t('events:filters.filter_count')}
           </Badge>
           <Button
             variant="ghost"
@@ -172,7 +172,7 @@ export const EventFilters = ({
             className="h-auto p-1 text-muted-foreground hover:text-foreground"
           >
             <X className="w-4 h-4" />
-            {isRTL ? 'مسح الكل' : 'Clear all'}
+            {t('events:filters.clear_all')}
           </Button>
         </div>
       )}
@@ -187,7 +187,7 @@ export const EventFilters = ({
             <div className="space-y-3">
               <label className="text-sm font-medium flex items-center gap-2">
                 <CalendarIcon className="w-4 h-4" />
-                {isRTL ? 'فئة الفعالية' : 'Event Category'}
+                {t('events:filters.event_category')}
               </label>
               <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
                 <SelectTrigger>
@@ -207,7 +207,7 @@ export const EventFilters = ({
             <div className="space-y-3">
               <label className="text-sm font-medium flex items-center gap-2">
                 <Clock className="w-4 h-4" />
-                {isRTL ? 'حالة الفعالية' : 'Event Status'}
+                {t('events:filters.event_status')}
               </label>
               <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
                 <SelectTrigger>
@@ -227,7 +227,7 @@ export const EventFilters = ({
             <div className="space-y-3">
               <label className="text-sm font-medium flex items-center gap-2">
                 <Filter className="w-4 h-4" />
-                {isRTL ? 'ترتيب حسب' : 'Sort by'}
+                {t('events:filters.sort_by')}
               </label>
               <div className="flex gap-2">
                 <Select value={filters.sortBy} onValueChange={(value) => updateFilter('sortBy', value)}>
@@ -258,7 +258,7 @@ export const EventFilters = ({
           <div className="space-y-3">
             <label className="text-sm font-medium flex items-center gap-2">
               <Users className="w-4 h-4" />
-              {isRTL ? 'سعة المشاركين' : 'Participant Capacity'}
+              {t('events:filters.participant_capacity')}
             </label>
             <div className="px-3">
               <Slider
@@ -279,7 +279,7 @@ export const EventFilters = ({
           {/* Special Features */}
           <div className="space-y-3">
             <label className="text-sm font-medium">
-              {isRTL ? 'ميزات خاصة' : 'Special Features'}
+              {t('events:filters.special_features')}
             </label>
             <div className="flex flex-wrap gap-3">
               {featureOptions.map((feature) => (

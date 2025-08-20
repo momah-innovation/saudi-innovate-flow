@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { LikeOpportunityButton } from './LikeOpportunityButton';
 import { ShareOpportunityDialog } from './ShareOpportunityDialog';
 import { BookmarkOpportunityButton } from './BookmarkOpportunityButton';
@@ -48,6 +49,7 @@ export const OpportunityCard = ({
   showActions = true
 }: OpportunityCardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [analytics, setAnalytics] = useState({
     views: 0,
     likes: 0,
@@ -73,11 +75,11 @@ export const OpportunityCard = ({
   };
 
   const formatBudget = (min?: number, max?: number) => {
-    if (!min && !max) return isRTL ? 'غير محدد' : 'Not specified';
-    if (min && max) return `${min.toLocaleString()} - ${max.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
-    if (min) return `${isRTL ? 'من' : 'From'} ${min.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
-    if (max) return `${isRTL ? 'حتى' : 'Up to'} ${max.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
-    return isRTL ? 'غير محدد' : 'Not specified';
+    if (!min && !max) return t('opportunities:card.budget_not_specified');
+    if (min && max) return `${min.toLocaleString()} - ${max.toLocaleString()} ${t('opportunities:card.currency_sar')}`;
+    if (min) return `${t('opportunities:card.budget_from')} ${min.toLocaleString()} ${t('opportunities:card.currency_sar')}`;
+    if (max) return `${t('opportunities:card.budget_up_to')} ${max.toLocaleString()} ${t('opportunities:card.currency_sar')}`;
+    return t('opportunities:card.budget_not_specified');
   };
 
   const formatDate = (dateString: string) => {
@@ -104,11 +106,7 @@ export const OpportunityCard = ({
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute top-3 right-3">
             <Badge className={getStatusColor(opportunity.status)}>
-              {isRTL ? 
-                (opportunity.status === 'open' ? 'مفتوح' : 
-                 opportunity.status === 'closed' ? 'مغلق' : 'متوقف') :
-                opportunity.status
-              }
+              {t(`opportunities:card.status_${opportunity.status}`)}
             </Badge>
           </div>
         </div>
@@ -122,20 +120,11 @@ export const OpportunityCard = ({
             <div className="flex gap-2 flex-wrap">
               {!opportunity.image_url && (
                 <Badge className={getStatusColor(opportunity.status)}>
-                  {isRTL ? 
-                    (opportunity.status === 'open' ? 'مفتوح' : 
-                     opportunity.status === 'closed' ? 'مغلق' : 'متوقف') :
-                    opportunity.status
-                  }
+                  {t(`opportunities:card.status_${opportunity.status}`)}
                 </Badge>
               )}
               <Badge className={getPriorityColor(opportunity.priority_level)}>
-                {isRTL ? 
-                  (opportunity.priority_level === 'high' ? 'عالي' : 
-                   opportunity.priority_level === 'medium' ? 'متوسط' : 
-                   opportunity.priority_level === 'low' ? 'منخفض' : 'عادي') :
-                  (opportunity.priority_level || 'normal')
-                } {isRTL ? 'الأولوية' : 'Priority'}
+                {t(`opportunities:card.priority_${opportunity.priority_level || 'normal'}`)} {t('opportunities:card.priority_label')}
               </Badge>
             </div>
           </div>
@@ -180,7 +169,7 @@ export const OpportunityCard = ({
           
           <div className="flex items-center gap-2 text-muted-foreground">
             <Calendar className="w-4 h-4" />
-            <span>{isRTL ? 'الموعد النهائي:' : 'Deadline:'} {formatDate(opportunity.deadline)}</span>
+            <span>{t('opportunities:card.deadline_label')} {formatDate(opportunity.deadline)}</span>
           </div>
           
           {opportunity.location && (
@@ -213,7 +202,7 @@ export const OpportunityCard = ({
                 onClick={() => onView(opportunity)}
                 className="flex-1"
               >
-                {isRTL ? 'عرض التفاصيل' : 'View Details'}
+                {t('opportunities:card.view_details')}
               </Button>
             )}
             {onEdit && (
@@ -222,7 +211,7 @@ export const OpportunityCard = ({
                 size="sm"
                 onClick={() => onEdit(opportunity)}
               >
-                {isRTL ? 'تعديل' : 'Edit'}
+                {t('opportunities:card.edit')}
               </Button>
             )}
           </div>

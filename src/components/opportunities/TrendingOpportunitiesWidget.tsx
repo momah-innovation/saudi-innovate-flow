@@ -3,11 +3,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { TrendingUp, Users, Calendar, DollarSign, ArrowRight } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 import { TrendingOpportunitiesWidgetProps } from '@/types/opportunities';
 
 export const TrendingOpportunitiesWidget = ({ opportunities }: TrendingOpportunitiesWidgetProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   if (!opportunities?.length) return null;
 
@@ -16,7 +18,7 @@ export const TrendingOpportunitiesWidget = ({ opportunities }: TrendingOpportuni
       <CardHeader>
         <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
           <TrendingUp className="w-5 h-5 text-orange-500" />
-          {isRTL ? 'الفرص الرائجة' : 'Trending Opportunities'}
+          {t('opportunities:widgets.trending.title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -42,7 +44,7 @@ export const TrendingOpportunitiesWidget = ({ opportunities }: TrendingOpportuni
         ))}
         <Button variant="outline" size="sm" className="w-full">
           <ArrowRight className="w-4 h-4 mr-2" />
-          {isRTL ? 'عرض المزيد' : 'View More'}
+          {t('opportunities:widgets.trending.view_more')}
         </Button>
       </CardContent>
     </Card>

@@ -1,0 +1,71 @@
+{
+    "title": "Evaluations",
+    "description": "Manage and review idea and project evaluations",
+    "loading": "Loading evaluations...",
+    "newEvaluation": "New Evaluation",
+    "export": "Export",
+    "search": "Search evaluations...",
+    "totalEvaluations": "Total Evaluations",
+    "pending": "Pending",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "allEvaluations": "All Evaluations",
+    "noEvaluations": "No evaluations found",
+    "noEvaluationsMessage": "No evaluations found in this category",
+    "status": {
+        "all": "All Status",
+        "pending": "Pending Review",
+        "inProgress": "Under Evaluation",
+        "completed": "Completed"
+    },
+    "priority": {
+        "all": "All Priorities",
+        "high": "High Priority",
+        "medium": "Medium Priority",
+        "low": "Low Priority"
+    },
+    "details": {
+        "title": "Evaluation Details",
+        "ideaInfo": "Idea Information",
+        "evaluatorInfo": "Evaluator Information",
+        "overallScore": "Overall Score",
+        "detailedScores": "Detailed Scores",
+        "strengths": "Strengths",
+        "weaknesses": "Weaknesses",
+        "recommendations": "Recommendations",
+        "nextSteps": "Next Steps",
+        "comments": "Comments & Feedback",
+        "addComment": "Add a comment...",
+        "post": "Post",
+        "noComments": "No comments yet"
+    },
+    "fields": {
+        "evaluatedBy": "Evaluated by:",
+        "evaluationDate": "Evaluation Date:",
+        "ideaStatus": "Idea Status:",
+        "title": "Title:",
+        "status": "Status:",
+        "name": "Name:",
+        "type": "Type:",
+        "date": "Date:",
+        "technical": "Technical",
+        "innovation": "Innovation",
+        "market": "Market",
+        "technicalFeasibility": "Technical Feasibility",
+        "financialViability": "Financial Viability",
+        "marketPotential": "Market Potential",
+        "strategicAlignment": "Strategic Alignment",
+        "innovationLevel": "Innovation Level",
+        "implementationComplexity": "Implementation Complexity"
+    },
+    "messages": {
+        "noStrengths": "No strengths provided",
+        "noWeaknesses": "No weaknesses provided",
+        "noRecommendations": "No recommendations provided",
+        "noNextSteps": "No next steps provided",
+        "commentAdded": "Comment Added",
+        "commentAddedDesc": "Your comment has been added successfully",
+        "errorFetch": "Failed to fetch evaluations",
+        "errorComment": "Failed to add comment"
+    }
+}

@@ -112,11 +112,11 @@ export const EnhancedOpportunityFilters = ({
   };
 
   const opportunityTypes = [
-    { value: 'sponsorship', label: isRTL ? 'رعاية' : 'Sponsorship' },
-    { value: 'collaboration', label: isRTL ? 'تعاون' : 'Collaboration' },
-    { value: 'research', label: isRTL ? 'بحث' : 'Research' },
-    { value: 'training', label: isRTL ? 'تدريب' : 'Training' },
-    { value: 'consulting', label: isRTL ? 'استشارات' : 'Consulting' }
+    { value: 'sponsorship', label: t('opportunities:filters.types.sponsorship') },
+    { value: 'collaboration', label: t('opportunities:filters.types.collaboration') },
+    { value: 'research', label: t('opportunities:filters.types.research') },
+    { value: 'training', label: t('opportunities:filters.types.training') },
+    { value: 'consulting', label: t('opportunities:filters.types.consulting') }
   ];
 
   const opportunityStatusOptions = getSettingValue('opportunity_status_options', []) as string[];
@@ -133,25 +133,25 @@ export const EnhancedOpportunityFilters = ({
   }));
 
   const deadlineOptions = [
-    { value: 'week', label: isRTL ? 'خلال أسبوع' : 'Within a week' },
-    { value: 'month', label: isRTL ? 'خلال شهر' : 'Within a month' },
-    { value: 'quarter', label: isRTL ? 'خلال ربع سنة' : 'Within 3 months' },
-    { value: 'year', label: isRTL ? 'خلال سنة' : 'Within a year' }
+    { value: 'week', label: t('opportunities:filters.deadlines.week') },
+    { value: 'month', label: t('opportunities:filters.deadlines.month') },
+    { value: 'quarter', label: t('opportunities:filters.deadlines.quarter') },
+    { value: 'year', label: t('opportunities:filters.deadlines.year') }
   ];
 
   const sortOptions = [
-    { value: 'deadline', label: isRTL ? 'الموعد النهائي' : 'Deadline' },
-    { value: 'created_at', label: isRTL ? 'تاريخ الإنشاء' : 'Created Date' },
-    { value: 'budget_max', label: isRTL ? 'الميزانية' : 'Budget' },
-    { value: 'applications', label: isRTL ? 'عدد الطلبات' : 'Applications' },
-    { value: 'title_ar', label: isRTL ? 'الاسم' : 'Name' }
+    { value: 'deadline', label: t('opportunities:filters.sort.deadline') },
+    { value: 'created_at', label: t('opportunities:filters.sort.created_date') },
+    { value: 'budget_max', label: t('opportunities:filters.sort.budget') },
+    { value: 'applications', label: t('opportunities:filters.sort.applications') },
+    { value: 'title_ar', label: t('opportunities:filters.sort.name') }
   ];
 
   const features = [
-    { value: 'featured', label: isRTL ? 'مميزة' : 'Featured', icon: Star },
-    { value: 'urgent', label: isRTL ? 'عاجلة' : 'Urgent', icon: Clock },
-    { value: 'high-budget', label: isRTL ? 'ميزانية عالية' : 'High Budget', icon: DollarSign },
-    { value: 'government', label: isRTL ? 'حكومية' : 'Government', icon: Building2 }
+    { value: 'featured', label: t('opportunities:filters.features.featured'), icon: Star },
+    { value: 'urgent', label: t('opportunities:filters.features.urgent'), icon: Clock },
+    { value: 'high-budget', label: t('opportunities:filters.features.high_budget'), icon: DollarSign },
+    { value: 'government', label: t('opportunities:filters.features.government'), icon: Building2 }
   ];
 
   return (
@@ -160,7 +160,7 @@ export const EnhancedOpportunityFilters = ({
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Filter className="w-5 h-5" />
-            {isRTL ? 'تصفية الفرص' : 'Filter Opportunities'}
+            {t('opportunities:filters.title')}
             {activeFiltersCount > 0 && (
               <Badge variant="secondary" className={isRTL ? 'mr-2' : 'ml-2'}>
                 {activeFiltersCount}
@@ -171,7 +171,7 @@ export const EnhancedOpportunityFilters = ({
             {activeFiltersCount > 0 && (
               <Button variant="outline" size="sm" onClick={onClearFilters}>
                 <X className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                {isRTL ? 'مسح الكل' : 'Clear All'}
+                {t('opportunities:filters.clear_all')}
               </Button>
             )}
             <Button 
@@ -179,7 +179,7 @@ export const EnhancedOpportunityFilters = ({
               size="sm" 
               onClick={() => setIsExpanded(!isExpanded)}
             >
-              {isExpanded ? (isRTL ? 'إخفاء' : 'Collapse') : (isRTL ? 'توسيع' : 'Expand')}
+              {isExpanded ? t('opportunities:filters.collapse') : t('opportunities:filters.expand')}
             </Button>
           </div>
         </div>
@@ -201,13 +201,13 @@ export const EnhancedOpportunityFilters = ({
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Status */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">{isRTL ? 'الحالة' : 'Status'}</label>
+            <label className="text-sm font-medium">{t('opportunities:filters.labels.status')}</label>
             <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
               <SelectTrigger>
-                <SelectValue placeholder={isRTL ? 'جميع الحالات' : 'All statuses'} />
+                <SelectValue placeholder={t('opportunities:filters.placeholders.all_statuses')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الحالات' : 'All statuses'}</SelectItem>
+                <SelectItem value="all">{t('opportunities:filters.placeholders.all_statuses')}</SelectItem>
                 {statusOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -219,13 +219,13 @@ export const EnhancedOpportunityFilters = ({
 
           {/* Type */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">{isRTL ? 'النوع' : 'Type'}</label>
+            <label className="text-sm font-medium">{t('opportunities:filters.labels.type')}</label>
             <Select value={filters.type} onValueChange={(value) => updateFilter('type', value)}>
               <SelectTrigger>
-                <SelectValue placeholder={isRTL ? 'جميع الأنواع' : 'All types'} />
+                <SelectValue placeholder={t('opportunities:filters.placeholders.all_types')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الأنواع' : 'All types'}</SelectItem>
+                <SelectItem value="all">{t('opportunities:filters.placeholders.all_types')}</SelectItem>
                 {opportunityTypes.map(type => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}
@@ -237,13 +237,13 @@ export const EnhancedOpportunityFilters = ({
 
           {/* Priority */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">{isRTL ? 'الأولوية' : 'Priority'}</label>
+            <label className="text-sm font-medium">{t('opportunities:filters.labels.priority')}</label>
             <Select value={filters.priority} onValueChange={(value) => updateFilter('priority', value)}>
               <SelectTrigger>
-                <SelectValue placeholder={isRTL ? 'جميع الأولويات' : 'All priorities'} />
+                <SelectValue placeholder={t('opportunities:filters.placeholders.all_priorities')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الأولويات' : 'All priorities'}</SelectItem>
+                <SelectItem value="all">{t('opportunities:filters.placeholders.all_priorities')}</SelectItem>
                 {priorityOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -255,7 +255,7 @@ export const EnhancedOpportunityFilters = ({
 
           {/* Sort */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">{isRTL ? 'ترتيب حسب' : 'Sort by'}</label>
+            <label className="text-sm font-medium">{t('opportunities:filters.labels.sort_by')}</label>
             <div className="flex gap-2">
               <Select value={filters.sortBy} onValueChange={(value) => updateFilter('sortBy', value)}>
                 <SelectTrigger className="flex-1">
@@ -288,13 +288,13 @@ export const EnhancedOpportunityFilters = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Category */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">{isRTL ? 'الفئة' : 'Category'}</label>
+                <label className="text-sm font-medium">{t('opportunities:filters.labels.category')}</label>
                 <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? 'جميع الفئات' : 'All categories'} />
+                    <SelectValue placeholder={t('opportunities:filters.placeholders.all_categories')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{isRTL ? 'جميع الفئات' : 'All categories'}</SelectItem>
+                    <SelectItem value="all">{t('opportunities:filters.placeholders.all_categories')}</SelectItem>
                     {categories.map(category => (
                       <SelectItem key={category.id} value={category.id}>
                         {isRTL ? category.name_ar : category.name_en}
@@ -306,13 +306,13 @@ export const EnhancedOpportunityFilters = ({
 
               {/* Sector */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">{isRTL ? 'القطاع' : 'Sector'}</label>
+                <label className="text-sm font-medium">{t('opportunities:filters.labels.sector')}</label>
                 <Select value={filters.sector} onValueChange={(value) => updateFilter('sector', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? 'جميع القطاعات' : 'All sectors'} />
+                    <SelectValue placeholder={t('opportunities:filters.placeholders.all_sectors')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{isRTL ? 'جميع القطاعات' : 'All sectors'}</SelectItem>
+                    <SelectItem value="all">{t('opportunities:filters.placeholders.all_sectors')}</SelectItem>
                     {sectors.map(sector => (
                       <SelectItem key={sector.id} value={sector.id}>
                         {isRTL ? sector.name_ar : sector.name}
@@ -324,13 +324,13 @@ export const EnhancedOpportunityFilters = ({
 
               {/* Department */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">{isRTL ? 'الإدارة' : 'Department'}</label>
+                <label className="text-sm font-medium">{t('opportunities:filters.labels.department')}</label>
                 <Select value={filters.department} onValueChange={(value) => updateFilter('department', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? 'جميع الإدارات' : 'All departments'} />
+                    <SelectValue placeholder={t('opportunities:filters.placeholders.all_departments')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{isRTL ? 'جميع الإدارات' : 'All departments'}</SelectItem>
+                    <SelectItem value="all">{t('opportunities:filters.placeholders.all_departments')}</SelectItem>
                     {departments.map(dept => (
                       <SelectItem key={dept.id} value={dept.id}>
                         {isRTL ? dept.name_ar : dept.name}
@@ -346,10 +346,10 @@ export const EnhancedOpportunityFilters = ({
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium flex items-center gap-2">
                   <DollarSign className="w-4 h-4" />
-                  {isRTL ? 'نطاق الميزانية' : 'Budget Range'}
+                  {t('opportunities:filters.labels.budget_range')}
                 </label>
                 <span className="text-sm text-muted-foreground">
-                  {filters.budgetRange[0].toLocaleString()} - {filters.budgetRange[1].toLocaleString()} {isRTL ? 'ر.س' : 'SAR'}
+                  {filters.budgetRange[0].toLocaleString()} - {filters.budgetRange[1].toLocaleString()} {t('opportunities:common.currency')}
                 </span>
               </div>
               <Slider
@@ -368,10 +368,10 @@ export const EnhancedOpportunityFilters = ({
               <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
-                  {isRTL ? 'الموقع' : 'Location'}
+                  {t('opportunities:filters.labels.location')}
                 </label>
                 <Input
-                  placeholder={isRTL ? 'مثال: الرياض، جدة' : 'e.g. Riyadh, Jeddah'}
+                  placeholder={t('opportunities:filters.placeholders.location_example')}
                   value={filters.location}
                   onChange={(e) => updateFilter('location', e.target.value)}
                 />
@@ -381,14 +381,14 @@ export const EnhancedOpportunityFilters = ({
               <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  {isRTL ? 'الموعد النهائي' : 'Deadline'}
+                  {t('opportunities:filters.labels.deadline')}
                 </label>
                 <Select value={filters.deadline} onValueChange={(value) => updateFilter('deadline', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? 'أي موعد' : 'Any deadline'} />
+                    <SelectValue placeholder={t('opportunities:filters.placeholders.any_deadline')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{isRTL ? 'أي موعد' : 'Any deadline'}</SelectItem>
+                    <SelectItem value="all">{t('opportunities:filters.placeholders.any_deadline')}</SelectItem>
                     {deadlineOptions.map(option => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -403,7 +403,7 @@ export const EnhancedOpportunityFilters = ({
             <div className="space-y-3">
               <label className="text-sm font-medium flex items-center gap-2">
                 <Target className="w-4 h-4" />
-                {isRTL ? 'ميزات خاصة' : 'Special Features'}
+                {t('opportunities:filters.labels.special_features')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {features.map(feature => {

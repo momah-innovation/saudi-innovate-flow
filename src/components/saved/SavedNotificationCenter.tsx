@@ -21,6 +21,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface SavedNotification {
   id: string;
@@ -39,6 +40,7 @@ interface SavedNotificationCenterProps {
 
 export const SavedNotificationCenter = ({ className }: SavedNotificationCenterProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const [notifications, setNotifications] = useState<SavedNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -64,8 +66,8 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
         {
           id: '1',
           type: 'bookmark_added',
-          title: isRTL ? 'تم إضافة عنصر جديد' : 'New Item Bookmarked',
-          message: isRTL ? 'تم حفظ "مؤتمر الابتكار الرقمي" في مجموعة الفعاليات' : 'Digital Innovation Conference saved to Events collection',
+          title: t('saved:notifications.types.bookmark_added.title'),
+          message: t('saved:notifications.types.bookmark_added.message'),
           timestamp: new Date(Date.now() - 5 * 60000).toISOString(), // 5 minutes ago
           isRead: false,
           priority: 'medium',
@@ -74,8 +76,8 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
         {
           id: '2',
           type: 'collection_shared',
-          title: isRTL ? 'تمت مشاركة مجموعة' : 'Collection Shared',
-          message: isRTL ? 'شارك أحمد المحمد مجموعة "التحديات التقنية" معك' : 'Ahmed Al-Mohammed shared "Tech Challenges" collection with you',
+          title: t('saved:notifications.types.collection_shared.title'),
+          message: t('saved:notifications.types.collection_shared.message'),
           timestamp: new Date(Date.now() - 15 * 60000).toISOString(), // 15 minutes ago
           isRead: false,
           priority: 'high',
@@ -84,8 +86,8 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
         {
           id: '3',
           type: 'item_liked',
-          title: isRTL ? 'إعجاب بعنصر' : 'Item Liked',
-          message: isRTL ? 'أعجبت فاطمة العلي بفكرة "نظام إدارة الطاقة الذكي"' : 'Fatima Al-Ali liked your idea "Smart Energy Management System"',
+          title: t('saved:notifications.types.item_liked.title'),
+          message: t('saved:notifications.types.item_liked.message'),
           timestamp: new Date(Date.now() - 30 * 60000).toISOString(), // 30 minutes ago
           isRead: true,
           priority: 'low',
@@ -94,8 +96,8 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
         {
           id: '4',
           type: 'reminder',
-          title: isRTL ? 'تذكير موعد' : 'Reminder Due',
-          message: isRTL ? 'موعد انتهاء تسجيل "ورشة ريادة الأعمال" غداً' : 'Registration deadline for "Entrepreneurship Workshop" is tomorrow',
+          title: t('saved:notifications.types.reminder.title'),
+          message: t('saved:notifications.types.reminder.message'),
           timestamp: new Date(Date.now() - 60 * 60000).toISOString(), // 1 hour ago
           isRead: false,
           priority: 'high',
@@ -104,8 +106,8 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
         {
           id: '5',
           type: 'collaboration',
-          title: isRTL ? 'دعوة للتعاون' : 'Collaboration Invite',
-          message: isRTL ? 'دعاك محمد السعود للتعاون في مشروع "الذكاء الاصطناعي في التعليم"' : 'Mohammed Al-Saud invited you to collaborate on "AI in Education" project',
+          title: t('saved:notifications.types.collaboration.title'),
+          message: t('saved:notifications.types.collaboration.message'),
           timestamp: new Date(Date.now() - 2 * 3600000).toISOString(), // 2 hours ago
           isRead: true,
           priority: 'medium',
@@ -130,8 +132,8 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
       const newNotification: SavedNotification = {
         id: Date.now().toString(),
         type: 'bookmark_added',
-        title: isRTL ? 'تم إضافة عنصر جديد' : 'New Item Added',
-        message: isRTL ? 'تم حفظ عنصر جديد في مجموعاتك' : 'A new item was saved to your collections',
+        title: t('saved:notifications.types.bookmark_added.new_item_title'),
+        message: t('saved:notifications.types.bookmark_added.new_item_message'),
         timestamp: new Date().toISOString(),
         isRead: false,
         priority: 'medium'
@@ -161,7 +163,7 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
     setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
     setUnreadCount(0);
     toast({
-      title: isRTL ? 'تم وضع علامة قراءة على جميع الإشعارات' : 'All notifications marked as read',
+      title: t('saved:notifications.all_marked_read'),
       duration: 2000,
     });
   };
@@ -210,15 +212,15 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
     const diffInMinutes = Math.floor((now.getTime() - time.getTime()) / 60000);
 
     if (diffInMinutes < 1) {
-      return isRTL ? 'الآن' : 'Just now';
+      return t('saved:notifications.time_ago.just_now');
     } else if (diffInMinutes < 60) {
-      return isRTL ? `منذ ${diffInMinutes} دقيقة` : `${diffInMinutes}m ago`;
+      return t('saved:notifications.time_ago.minutes_ago', { count: diffInMinutes });
     } else if (diffInMinutes < 1440) {
       const hours = Math.floor(diffInMinutes / 60);
-      return isRTL ? `منذ ${hours} ساعة` : `${hours}h ago`;
+      return t('saved:notifications.time_ago.hours_ago', { count: hours });
     } else {
       const days = Math.floor(diffInMinutes / 1440);
-      return isRTL ? `منذ ${days} يوم` : `${days}d ago`;
+      return t('saved:notifications.time_ago.days_ago', { count: days });
     }
   };
 
@@ -228,7 +230,7 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bell className="w-5 h-5" />
-            {isRTL ? 'الإشعارات' : 'Notifications'}
+            {t('saved:notifications.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -254,7 +256,7 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Bell className="w-5 h-5" />
-            {isRTL ? 'الإشعارات' : 'Notifications'}
+            {t('saved:notifications.title')}
             {unreadCount > 0 && (
               <Badge variant="destructive" className="ml-2">
                 {unreadCount}
@@ -269,7 +271,7 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
               className="text-xs"
             >
               <Check className="w-3 h-3 mr-1" />
-              {isRTL ? 'قراءة الكل' : 'Mark all read'}
+              {t('saved:notifications.mark_all_read')}
             </Button>
           )}
         </div>
@@ -280,7 +282,7 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
             {notifications.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <Bell className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>{isRTL ? 'لا توجد إشعارات' : 'No notifications'}</p>
+                <p>{t('saved:notifications.no_notifications')}</p>
               </div>
             ) : (
               notifications.map((notification, index) => (
@@ -331,7 +333,7 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
                         <div className="flex items-center gap-1 mt-2">
                           <AlertCircle className="w-3 h-3 text-red-500" />
                           <span className="text-xs text-red-600 font-medium">
-                            {isRTL ? 'أولوية عالية' : 'High Priority'}
+                            {t('saved:notifications.high_priority')}
                           </span>
                         </div>
                       )}

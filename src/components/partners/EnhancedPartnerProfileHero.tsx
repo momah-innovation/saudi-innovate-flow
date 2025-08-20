@@ -17,7 +17,7 @@ import {
   TrendingUp,
   Handshake
 } from 'lucide-react';
-import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface PartnerProfileHeroProps {
@@ -33,14 +33,14 @@ export const EnhancedPartnerProfileHero = ({
   onToggleEdit,
   onNavigate
 }: PartnerProfileHeroProps) => {
-  const { isRTL } = useDirection();
+  const { t, isRTL } = useUnifiedTranslation();
   const [currentMetric, setCurrentMetric] = useState(0);
 
   const partnerMetrics = [
-    { icon: Handshake, value: '15+', label: isRTL ? 'شراكة نشطة' : 'active partnerships', color: 'text-blue-400' },
-    { icon: Target, value: '50K+', label: isRTL ? 'ر.س استثمار' : 'SAR invested', color: 'text-green-400' },
-    { icon: Award, value: '25+', label: isRTL ? 'مشروع مدعوم' : 'projects supported', color: 'text-purple-400' },
-    { icon: Star, value: '4.8', label: isRTL ? 'تقييم الشراكة' : 'partnership rating', color: 'text-yellow-400' }
+    { icon: Handshake, value: '15+', label: t('partners:profile.metrics.active_partnerships'), color: 'text-blue-400' },
+    { icon: Target, value: '50K+', label: t('partners:profile.metrics.sar_invested'), color: 'text-green-400' },
+    { icon: Award, value: '25+', label: t('partners:profile.metrics.projects_supported'), color: 'text-purple-400' },
+    { icon: Star, value: '4.8', label: t('partners:profile.metrics.partnership_rating'), color: 'text-yellow-400' }
   ];
 
   const { setInterval: scheduleInterval } = useTimerManager();
@@ -77,7 +77,7 @@ export const EnhancedPartnerProfileHero = ({
               </div>
               <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                 <Briefcase className="w-3 h-3 mr-1" />
-                {isRTL ? 'ملف الشريك' : 'Partner Profile'}
+                {t('partners:profile.badge')}
               </Badge>
             </div>
 
@@ -88,7 +88,7 @@ export const EnhancedPartnerProfileHero = ({
               </div>
               
               <h1 className="text-4xl md:text-5xl font-bold text-white">
-                {partnerProfile?.organization_name_ar || (isRTL ? 'اسم المؤسسة' : 'Organization Name')}
+                {partnerProfile?.organization_name_ar || t('partners:profile.organization_name')}
               </h1>
               
               {partnerProfile?.organization_type && (
@@ -145,12 +145,12 @@ export const EnhancedPartnerProfileHero = ({
               {isEditing ? (
                 <>
                   <Shield className="w-5 h-5 mr-2" />
-                  {isRTL ? 'حفظ التغييرات' : 'Save Changes'}
+                  {t('partners:profile.save_changes')}
                 </>
               ) : (
                 <>
                   <Edit3 className="w-5 h-5 mr-2" />
-                  {isRTL ? 'تحرير الملف' : 'Edit Profile'}
+                  {t('partners:profile.edit_profile')}
                 </>
               )}
             </Button>
@@ -162,7 +162,7 @@ export const EnhancedPartnerProfileHero = ({
               className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
             >
               <TrendingUp className="w-5 h-5 mr-2" />
-              {isRTL ? 'لوحة التحكم' : 'Dashboard'}
+              {t('partners:profile.dashboard')}
             </Button>
 
             <Button
@@ -172,7 +172,7 @@ export const EnhancedPartnerProfileHero = ({
               className="text-white hover:bg-white/10"
             >
               <Target className="w-5 h-5 mr-2" />
-              {isRTL ? 'تصفح التحديات' : 'Browse Challenges'}
+              {t('partners:profile.browse_challenges')}
             </Button>
           </div>
 
@@ -181,19 +181,19 @@ export const EnhancedPartnerProfileHero = ({
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">
-                  {isRTL ? 'معلومات الشراكة' : 'Partnership Information'}
+                  {t('partners:profile.partnership_info')}
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-white/70">{isRTL ? 'سنة التأسيس' : 'Founded'}</span>
+                    <span className="text-white/70">{t('partners:profile.founded')}</span>
                     <span className="text-white">2010</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/70">{isRTL ? 'حجم الفريق' : 'Team Size'}</span>
+                    <span className="text-white/70">{t('partners:profile.team_size')}</span>
                     <span className="text-white">500-1000</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/70">{isRTL ? 'الاستثمار المتاح' : 'Investment Capacity'}</span>
+                    <span className="text-white/70">{t('partners:profile.investment_capacity')}</span>
                     <span className="text-white">5-50M SAR</span>
                   </div>
                 </div>
@@ -203,7 +203,7 @@ export const EnhancedPartnerProfileHero = ({
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">
-                  {isRTL ? 'مجالات الاهتمام' : 'Areas of Interest'}
+                  {t('partners:profile.areas_of_interest')}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {['AI & Technology', 'Healthcare', 'Smart Cities', 'Environment'].map((interest, index) => (

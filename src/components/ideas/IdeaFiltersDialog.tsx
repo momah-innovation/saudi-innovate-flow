@@ -91,11 +91,11 @@ export function IdeaFiltersDialog({
   }));
 
   const dateRangeOptions = [
-    { value: 'all', label: isRTL ? 'جميع الفترات' : 'All time' },
-    { value: 'week', label: isRTL ? 'آخر أسبوع' : 'Last week' },
-    { value: 'month', label: isRTL ? 'آخر شهر' : 'Last month' },
-    { value: 'quarter', label: isRTL ? 'آخر 3 أشهر' : 'Last quarter' },
-    { value: 'year', label: isRTL ? 'آخر سنة' : 'Last year' }
+    { value: 'all', label: t('ideas:filters.date_ranges.all') },
+    { value: 'week', label: t('ideas:filters.date_ranges.week') },
+    { value: 'month', label: t('ideas:filters.date_ranges.month') },
+    { value: 'quarter', label: t('ideas:filters.date_ranges.quarter') },
+    { value: 'year', label: t('ideas:filters.date_ranges.year') }
   ];
 
   const handleStatusChange = (value: string, checked: boolean) => {
@@ -173,7 +173,7 @@ export function IdeaFiltersDialog({
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl flex items-center gap-2">
               <Filter className="w-5 h-5" />
-              {isRTL ? 'تصفية الأفكار' : 'Filter Ideas'}
+              {t('ideas:filters.title')}
               {getActiveFiltersCount() > 0 && (
                 <Badge variant="secondary" className="ml-2">
                   {getActiveFiltersCount()}
@@ -187,7 +187,7 @@ export function IdeaFiltersDialog({
               className="gap-2"
             >
               <RotateCcw className="w-4 h-4" />
-              {isRTL ? 'إعادة تعيين' : 'Reset'}
+              {t('ideas:filters.reset')}
             </Button>
           </div>
         </DialogHeader>
@@ -197,7 +197,7 @@ export function IdeaFiltersDialog({
           <div>
             <Label className="text-sm font-medium mb-3 flex items-center gap-2">
               <Star className="w-4 h-4" />
-              {isRTL ? 'فلاتر سريعة' : 'Quick Filters'}
+              {t('ideas:filters.quick_filters')}
             </Label>
             <div className="flex flex-wrap gap-3">
               <div className="flex items-center space-x-2">
@@ -210,7 +210,7 @@ export function IdeaFiltersDialog({
                 />
                 <Label htmlFor="featured" className="text-sm flex items-center gap-1">
                   <Star className="w-3 h-3" />
-                  {isRTL ? 'الأفكار المميزة' : 'Featured Ideas'}
+                  {t('ideas:filters.featured_ideas')}
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
@@ -223,7 +223,7 @@ export function IdeaFiltersDialog({
                 />
                 <Label htmlFor="trending" className="text-sm flex items-center gap-1">
                   <TrendingUp className="w-3 h-3" />
-                  {isRTL ? 'الأفكار الرائجة' : 'Trending Ideas'}
+                  {t('ideas:filters.trending_ideas')}
                 </Label>
               </div>
             </div>
@@ -233,7 +233,7 @@ export function IdeaFiltersDialog({
           <div>
             <Label className="text-sm font-medium mb-3 flex items-center gap-2">
               <FileCheck className="w-4 h-4" />
-              {isRTL ? 'حالة الفكرة' : 'Idea Status'}
+              {t('ideas:filters.idea_status')}
             </Label>
             <div className="grid grid-cols-2 gap-3">
               {statusOptions.map((option) => (
@@ -257,7 +257,7 @@ export function IdeaFiltersDialog({
           <div>
             <Label className="text-sm font-medium mb-3 flex items-center gap-2">
               <Zap className="w-4 h-4" />
-              {isRTL ? 'مستوى النضج' : 'Maturity Level'}
+              {t('ideas:filters.maturity_level')}
             </Label>
             <div className="grid grid-cols-2 gap-3">
               {maturityOptions.map((option) => (
@@ -281,7 +281,7 @@ export function IdeaFiltersDialog({
           <div>
             <Label className="text-sm font-medium mb-3 flex items-center gap-2">
               <Target className="w-4 h-4" />
-              {isRTL ? 'نطاق النتيجة' : 'Score Range'}
+              {t('ideas:filters.score_range')}
             </Label>
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -306,7 +306,7 @@ export function IdeaFiltersDialog({
             <div>
               <Label className="text-sm font-medium mb-3 flex items-center gap-2">
                 <Building className="w-4 h-4" />
-                {isRTL ? 'القطاعات' : 'Sectors'}
+                {t('ideas:filters.sectors')}
               </Label>
               <div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto">
                 {sectors.map((sector) => (
@@ -332,7 +332,7 @@ export function IdeaFiltersDialog({
             <div>
               <Label className="text-sm font-medium mb-3 flex items-center gap-2">
                 <Target className="w-4 h-4" />
-                {isRTL ? 'التحديات' : 'Challenges'}
+                {t('ideas:filters.challenges')}
               </Label>
               <div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto">
                 {challenges.slice(0, 10).map((challenge) => (
@@ -357,7 +357,7 @@ export function IdeaFiltersDialog({
           <div>
             <Label className="text-sm font-medium mb-3 flex items-center gap-2">
               <Calendar className="w-4 h-4" />
-              {isRTL ? 'فترة زمنية' : 'Date Range'}
+              {t('ideas:filters.date_range')}
             </Label>
             <Select 
               value={localFilters.dateRange} 
@@ -382,17 +382,17 @@ export function IdeaFiltersDialog({
         <div className="pt-4 border-t flex justify-between">
           <div className="text-sm text-muted-foreground">
             {getActiveFiltersCount() > 0 
-              ? `${getActiveFiltersCount()} ${isRTL ? 'فلاتر نشطة' : 'active filters'}`
-              : isRTL ? 'لا توجد فلاتر نشطة' : 'No active filters'
+              ? `${getActiveFiltersCount()} ${t('ideas:filters.active_filters')}`
+              : t('ideas:filters.no_active_filters')
             }
           </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              {isRTL ? 'إلغاء' : 'Cancel'}
+              {t('ideas:filters.cancel')}
             </Button>
             <Button onClick={applyFilters} className="gap-2">
               <Filter className="w-4 h-4" />
-              {isRTL ? 'تطبيق الفلاتر' : 'Apply Filters'}
+              {t('ideas:filters.apply_filters')}
             </Button>
           </div>
         </div>

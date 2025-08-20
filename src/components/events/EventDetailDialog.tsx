@@ -24,6 +24,7 @@ import {
   Info
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEventState } from '@/hooks/useEventState';
 import { useEventDetails } from '@/hooks/useEventDetails';
@@ -74,6 +75,7 @@ interface EventDetailDialogProps {
 
 export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: EventDetailDialogProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { user, hasRole } = useAuth();
 
   // Use comprehensive hooks for data
@@ -111,10 +113,10 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'upcoming': return isRTL ? 'قادم' : 'Upcoming';
-      case 'ongoing': return isRTL ? 'جاري' : 'Ongoing';
-      case 'completed': return isRTL ? 'مكتمل' : 'Completed';
-      case 'cancelled': return isRTL ? 'ملغي' : 'Cancelled';
+      case 'upcoming': return t('events:status.upcoming');
+      case 'ongoing': return t('events:status.ongoing');
+      case 'completed': return t('events:status.completed');
+      case 'cancelled': return t('events:status.cancelled');
       default: return status;
     }
   };
@@ -148,7 +150,7 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
               {event.event_category === 'featured' && (
                 <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
                   <Star className="w-3 h-3 mr-1" />
-                  {isRTL ? 'مميز' : 'Featured'}
+                  {t('events:details.featured')}
                 </Badge>
               )}
               <Badge className={getStatusColor(event.status)}>
@@ -161,7 +163,7 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
               <div className="absolute bottom-4 left-4">
                 <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
                   <Globe className="w-3 h-3 mr-1" />
-                  {isRTL ? 'عبر الإنترنت' : 'Online Event'}
+                  {t('events:details.online_event')}
                 </Badge>
               </div>
             )}
@@ -201,18 +203,18 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
               </div>
               <div className="text-center p-3 bg-muted/50 rounded-lg">
                 <MapPin className="w-5 h-5 mx-auto mb-1 text-primary" />
-                <div className="text-sm font-bold truncate">{event.location || 'Location TBD'}</div>
-                <div className="text-xs text-muted-foreground">{isRTL ? 'الموقع' : 'Location'}</div>
+                <div className="text-sm font-bold truncate">{event.location || t('events:details.location_tbd')}</div>
+                <div className="text-xs text-muted-foreground">{t('events:details.location')}</div>
               </div>
               <div className="text-center p-3 bg-muted/50 rounded-lg">
                 <Users className="w-5 h-5 mx-auto mb-1 text-primary" />
                 <div className="text-lg font-bold">{participantCount || event.registered_participants}/{event.max_participants || '∞'}</div>
-                <div className="text-xs text-muted-foreground">{isRTL ? 'المسجلين' : 'Registered'}</div>
+                <div className="text-xs text-muted-foreground">{t('events:details.registered')}</div>
               </div>
               <div className="text-center p-3 bg-muted/50 rounded-lg">
                 <Ticket className="w-5 h-5 mx-auto mb-1 text-primary" />
-                <div className="text-lg font-bold">{event.budget ? `${event.budget} SAR` : (isRTL ? 'مجاني' : 'Free')}</div>
-                <div className="text-xs text-muted-foreground">{isRTL ? 'السعر' : 'Price'}</div>
+                <div className="text-lg font-bold">{event.budget ? `${event.budget} SAR` : t('events:details.free')}</div>
+                <div className="text-xs text-muted-foreground">{t('events:details.price')}</div>
               </div>
             </div>
 
@@ -220,8 +222,8 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
             {event.max_participants && (
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>{isRTL ? 'حالة التسجيل' : 'Registration Status'}</span>
-                  <span>{Math.round(getRegistrationPercentage())}% {isRTL ? 'ممتلئ' : 'full'}</span>
+                  <span>{t('events:details.registration_status')}</span>
+                  <span>{Math.round(getRegistrationPercentage())}% {t('events:details.full')}</span>
                 </div>
                 <Progress value={getRegistrationPercentage()} className="h-2" />
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -234,10 +236,10 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
                   )}
                   <span>
                     {getRegistrationPercentage() < 70 ? 
-                      (isRTL ? 'أماكن متاحة' : 'Spots available') :
+                      t('events:details.spots_available') :
                       getRegistrationPercentage() < 90 ?
-                      (isRTL ? 'أماكن محدودة' : 'Limited spots') :
-                      (isRTL ? 'شبه ممتلئ' : 'Nearly full')
+                      t('events:details.limited_spots') :
+                      t('events:details.nearly_full')
                     }
                   </span>
                 </div>
@@ -273,20 +275,20 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
             
             return (
               <TabsList className={`grid w-full ${gridClass}`}>
-                <TabsTrigger value="details">{isRTL ? 'التفاصيل' : 'Details'}</TabsTrigger>
-                <TabsTrigger value="registration">{isRTL ? 'التسجيل' : 'Registration'}</TabsTrigger>
+                <TabsTrigger value="details">{t('events:tabs.details')}</TabsTrigger>
+                <TabsTrigger value="registration">{t('events:tabs.registration')}</TabsTrigger>
                 {canViewAttendees && (
-                  <TabsTrigger value="attendees">{isRTL ? 'الحضور' : 'Attendees'}</TabsTrigger>
+                  <TabsTrigger value="attendees">{t('events:tabs.attendees')}</TabsTrigger>
                 )}
                 {canViewPartners && (
-                  <TabsTrigger value="partners">{isRTL ? 'الشركاء' : 'Partners'}</TabsTrigger>
+                  <TabsTrigger value="partners">{t('events:tabs.partners')}</TabsTrigger>
                 )}
                 {canViewRelated && (
-                  <TabsTrigger value="related">{isRTL ? 'مرتبط' : 'Related'}</TabsTrigger>
+                  <TabsTrigger value="related">{t('events:tabs.related')}</TabsTrigger>
                 )}
-                <TabsTrigger value="feedback">{isRTL ? 'التقييمات' : 'Feedback'}</TabsTrigger>
+                <TabsTrigger value="feedback">{t('events:tabs.feedback')}</TabsTrigger>
                 {canViewResources && (
-                  <TabsTrigger value="resources">{isRTL ? 'الموارد' : 'Resources'}</TabsTrigger>
+                  <TabsTrigger value="resources">{t('events:tabs.resources')}</TabsTrigger>
                 )}
               </TabsList>
             );
@@ -297,26 +299,26 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
               <div>
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
                   <Info className="w-4 h-4" />
-                  {isRTL ? 'معلومات الفعالية' : 'Event Information'}
+                  {t('events:details.event_information')}
                 </h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{isRTL ? 'النوع:' : 'Type:'}</span>
+                    <span className="text-muted-foreground">{t('events:details.type_label')}</span>
                     <span>{event.event_type}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{isRTL ? 'الفئة:' : 'Category:'}</span>
+                    <span className="text-muted-foreground">{t('events:details.category_label')}</span>
                     <span>{event.event_category}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{isRTL ? 'التنسيق:' : 'Format:'}</span>
+                    <span className="text-muted-foreground">{t('events:details.format_label')}</span>
                     <span>{event.format}</span>
                   </div>
                   {event.virtual_link && (
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">{isRTL ? 'الرابط:' : 'Link:'}</span>
+                      <span className="text-muted-foreground">{t('events:details.link_label')}</span>
                       <Button variant="link" size="sm" className="h-auto p-0">
-                        {isRTL ? 'انضم الآن' : 'Join Now'}
+                        {t('events:details.join_now')}
                       </Button>
                     </div>
                   )}
@@ -328,7 +330,7 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
           <TabsContent value="registration" className="space-y-4">
             <div className="space-y-4">
               <div className="bg-muted/50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-3">{isRTL ? 'معلومات التسجيل' : 'Registration Information'}</h4>
+                <h4 className="font-semibold mb-3">{t('events:details.registration_information')}</h4>
                 
                 {event.max_participants && (
                   <div className="mb-4">
@@ -348,12 +350,12 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
                   disabled={isEventFull || event.status === 'completed' || event.status === 'cancelled'}
                 >
                   {isEventFull ? 
-                    (isRTL ? 'الفعالية ممتلئة' : 'Event Full') :
+                    t('events:details.event_full') :
                     event.status === 'completed' ?
-                    (isRTL ? 'انتهت الفعالية' : 'Event Completed') :
+                    t('events:details.event_completed') :
                     event.status === 'cancelled' ?
-                    (isRTL ? 'الفعالية ملغية' : 'Event Cancelled') :
-                    (isRTL ? 'سجل الآن' : 'Register Now')
+                    t('events:details.event_cancelled') :
+                    t('events:details.register_now')
                   }
                 </Button>
               </div>
@@ -399,10 +401,10 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
             <div>
               <h4 className="font-semibold mb-3 flex items-center gap-2">
                 <Star className="w-4 h-4" />
-                {isRTL ? 'التقييمات والمراجعات' : 'Ratings & Reviews'}
+                {t('events:details.ratings_reviews')}
               </h4>
               <div className="text-center py-8 text-muted-foreground">
-                {isRTL ? 'لا توجد تقييمات بعد' : 'No reviews yet'}
+                {t('events:details.no_reviews_yet')}
               </div>
             </div>
           </TabsContent>

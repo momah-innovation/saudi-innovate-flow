@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Heart, MessageSquare, Share2, Flag, Eye, Star, Trophy, Target, 
   Rocket, Zap, FileText, BarChart3, User, Plus, Bookmark,
@@ -94,6 +95,7 @@ export function IdeaDetailDialog({
   isBookmarked = false
 }: IdeaDetailDialogProps) {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const { user } = useAuth();
   const [comments, setComments] = useState<IdeaComment[]>([]);
@@ -164,8 +166,8 @@ export function IdeaDetailDialog({
         .eq('id', idea.id);
 
       toast({
-        title: isRTL ? 'تم إضافة التعليق' : 'Comment added',
-        description: isRTL ? 'تم إضافة تعليقك بنجاح' : 'Your comment has been added successfully'
+        title: t('ideas:detail.comment_added'),
+        description: t('ideas:detail.comment_added_description')
       });
 
       setNewComment('');
@@ -174,7 +176,7 @@ export function IdeaDetailDialog({
     } catch (error) {
       logger.error('Error adding comment', { component: 'IdeaDetailDialog', action: 'handleAddComment', ideaId: idea.id }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في إضافة التعليق' : 'Error adding comment',
+        title: t('ideas:detail.comment_error'),
         variant: 'destructive'
       });
     } finally {
@@ -202,8 +204,8 @@ export function IdeaDetailDialog({
       const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
       navigator.clipboard.writeText(currentUrl);
       toast({
-        title: isRTL ? 'تم نسخ الرابط' : 'Link copied',
-        description: isRTL ? 'تم نسخ رابط الفكرة إلى الحافظة' : 'Idea link copied to clipboard'
+        title: t('ideas:detail.link_copied'),
+        description: t('ideas:detail.link_copied_description')
       });
     }
   };
@@ -222,12 +224,12 @@ export function IdeaDetailDialog({
 
   const getStatusText = (status: string) => {
     const statusMap = {
-      pending: isRTL ? 'في الانتظار' : 'Pending',
-      under_review: isRTL ? 'قيد المراجعة' : 'Under Review',
-      approved: isRTL ? 'موافق عليها' : 'Approved',
-      rejected: isRTL ? 'مرفوضة' : 'Rejected',
-      in_development: isRTL ? 'قيد التطوير' : 'In Development',
-      implemented: isRTL ? 'منفذة' : 'Implemented'
+      pending: t('ideas:detail.status.pending'),
+      under_review: t('ideas:detail.status.under_review'),
+      approved: t('ideas:detail.status.approved'),
+      rejected: t('ideas:detail.status.rejected'),
+      in_development: t('ideas:detail.status.in_development'),
+      implemented: t('ideas:detail.status.implemented')
     };
     return statusMap[status as keyof typeof statusMap] || status;
   };
@@ -265,7 +267,7 @@ export function IdeaDetailDialog({
                 {idea.featured && (
                   <Badge className="bg-yellow-500 text-white border-0">
                     <Star className="w-3 h-3 mr-1" />
-                    {isRTL ? 'مميزة' : 'Featured'}
+                    {t('ideas:detail.featured_badge')}
                   </Badge>
                 )}
                 {idea.challenges && (
@@ -330,7 +332,7 @@ export function IdeaDetailDialog({
                     className={`gap-1 ${isLiked ? 'text-red-500' : ''}`}
                   >
                     <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-                    {isRTL ? 'إعجاب' : 'Like'}
+                    {t('ideas:detail.like_button')}
                   </Button>
                 </div>
               </div>
@@ -344,7 +346,7 @@ export function IdeaDetailDialog({
               <div>
                 <h4 className="font-semibold mb-3 flex items-center gap-2">
                   <FileText className="w-4 h-4" />
-                  {isRTL ? 'الوصف' : 'Description'}
+                  {t('ideas:detail.sections.description')}
                 </h4>
                 <p className="text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
                   {idea.description_ar}
@@ -356,7 +358,7 @@ export function IdeaDetailDialog({
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <Zap className="w-4 h-4" />
-                    {isRTL ? 'نهج الحل' : 'Solution Approach'}
+                    {t('ideas:detail.sections.solution_approach')}
                   </h4>
                   <p className="text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
                     {idea.solution_approach}
@@ -369,7 +371,7 @@ export function IdeaDetailDialog({
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <Rocket className="w-4 h-4" />
-                    {isRTL ? 'خطة التنفيذ' : 'Implementation Plan'}
+                    {t('ideas:detail.sections.implementation_plan')}
                   </h4>
                   <p className="text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
                     {idea.implementation_plan}
@@ -382,7 +384,7 @@ export function IdeaDetailDialog({
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <Target className="w-4 h-4" />
-                    {isRTL ? 'التأثير المتوقع' : 'Expected Impact'}
+                    {t('ideas:detail.sections.expected_impact')}
                   </h4>
                   <p className="text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
                     {idea.expected_impact}
@@ -397,7 +399,7 @@ export function IdeaDetailDialog({
               <div>
                 <h4 className="font-semibold mb-4 flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  {isRTL ? 'مساحة التعاون' : 'Collaboration Space'}
+                  {t('ideas:detail.sections.collaboration_space')}
                 </h4>
                 <WorkspaceCollaboration
                   workspaceType="user"
@@ -412,40 +414,40 @@ export function IdeaDetailDialog({
               <div>
                 <h4 className="font-semibold mb-4 flex items-center gap-2">
                   <BarChart3 className="w-4 h-4" />
-                  {isRTL ? 'نتائج التقييم' : 'Evaluation Scores'}
+                  {t('ideas:detail.sections.evaluation_scores')}
                 </h4>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'الجدوى الفنية' : 'Technical Feasibility'}</span>
+                      <span>{t('ideas:detail.scores.technical_feasibility')}</span>
                       <span className="font-semibold">{idea.feasibility_score}/10</span>
                     </div>
                     <Progress value={idea.feasibility_score * 10} className="h-3" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'التأثير' : 'Impact'}</span>
+                      <span>{t('ideas:detail.scores.impact')}</span>
                       <span className="font-semibold">{idea.impact_score}/10</span>
                     </div>
                     <Progress value={idea.impact_score * 10} className="h-3" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'الابتكار' : 'Innovation'}</span>
+                      <span>{t('ideas:detail.scores.innovation')}</span>
                       <span className="font-semibold">{idea.innovation_score}/10</span>
                     </div>
                     <Progress value={idea.innovation_score * 10} className="h-3" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'التوافق الاستراتيجي' : 'Strategic Alignment'}</span>
+                      <span>{t('ideas:detail.scores.strategic_alignment')}</span>
                       <span className="font-semibold">{idea.alignment_score}/10</span>
                     </div>
                     <Progress value={idea.alignment_score * 10} className="h-3" />
                   </div>
                   <div className="border-t pt-3">
                     <div className="flex justify-between text-lg mb-2">
-                      <span className="font-semibold">{isRTL ? 'النتيجة الإجمالية' : 'Overall Score'}</span>
+                      <span className="font-semibold">{t('ideas:detail.scores.overall_score')}</span>
                       <span className="font-bold text-primary">{idea.overall_score}/10</span>
                     </div>
                     <Progress value={idea.overall_score * 10} className="h-4" />
@@ -457,7 +459,7 @@ export function IdeaDetailDialog({
               <div>
                 <h4 className="font-semibold mb-4 flex items-center gap-2">
                   <User className="w-4 h-4" />
-                  {isRTL ? 'معلومات المبتكر' : 'Innovator Info'}
+                  {t('ideas:detail.sections.innovator_info')}
                 </h4>
                 <div className="bg-gradient-to-br from-muted/50 to-muted/30 p-4 rounded-lg border">
                   <div className="flex items-center gap-3 mb-4">
@@ -472,17 +474,17 @@ export function IdeaDetailDialog({
                         {isRTL ? idea.profile?.name_ar : idea.profile?.name || 'Anonymous'}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {isRTL ? 'مبتكر' : 'Innovator'}
+                        {t('ideas:detail.innovator.label')}
                       </p>
                     </div>
                   </div>
                   <div className="text-sm text-muted-foreground space-y-2">
                     <div className="flex justify-between items-center">
-                      <span>{isRTL ? 'تاريخ التقديم:' : 'Submitted:'}</span>
+                      <span>{t('ideas:detail.innovator.submitted')}</span>
                       <span>{new Date(idea.created_at).toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span>{isRTL ? 'آخر تحديث:' : 'Last Updated:'}</span>
+                      <span>{t('ideas:detail.innovator.last_updated')}</span>
                       <span>{new Date(idea.updated_at).toLocaleDateString()}</span>
                     </div>
                   </div>
@@ -496,7 +498,7 @@ export function IdeaDetailDialog({
             <div className="flex items-center justify-between mb-4">
               <h4 className="font-semibold flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
-                {isRTL ? 'التعليقات' : 'Comments'} ({comments.length})
+                {t('ideas:detail.comments.title')} ({comments.length})
               </h4>
               <Button 
                 variant="outline" 
@@ -505,7 +507,7 @@ export function IdeaDetailDialog({
                 className="gap-2"
               >
                 <Plus className="w-4 h-4" />
-                {isRTL ? 'إضافة تعليق' : 'Add Comment'}
+                {t('ideas:detail.comments.add_comment')}
               </Button>
             </div>
 
@@ -515,7 +517,7 @@ export function IdeaDetailDialog({
                 <Textarea
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
-                  placeholder={isRTL ? 'اكتب تعليقك هنا...' : 'Write your comment here...'}
+                  placeholder={t('ideas:detail.comments.write_placeholder')}
                   rows={3}
                   className="resize-none mb-3"
                 />
@@ -528,7 +530,7 @@ export function IdeaDetailDialog({
                       setNewComment('');
                     }}
                   >
-                    {isRTL ? 'إلغاء' : 'Cancel'}
+                    {t('ideas:detail.comments.cancel')}
                   </Button>
                   <Button 
                     size="sm"
@@ -537,7 +539,7 @@ export function IdeaDetailDialog({
                     className="gap-2"
                   >
                     <MessageSquare className="w-4 h-4" />
-                    {loading ? (isRTL ? 'جاري الإضافة...' : 'Adding...') : (isRTL ? 'إضافة تعليق' : 'Add Comment')}
+                    {loading ? t('ideas:detail.comments.adding') : t('ideas:detail.comments.add_comment')}
                   </Button>
                 </div>
               </div>
@@ -568,8 +570,8 @@ export function IdeaDetailDialog({
               )) : (
                 <div className="text-center py-12 text-muted-foreground">
                   <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p className="text-lg mb-2">{isRTL ? 'لا توجد تعليقات بعد' : 'No comments yet'}</p>
-                  <p className="text-sm">{isRTL ? 'كن أول من يضيف تعليقاً على هذه الفكرة' : 'Be the first to comment on this idea'}</p>
+                  <p className="text-lg mb-2">{t('ideas:detail.comments.no_comments')}</p>
+                  <p className="text-sm">{t('ideas:detail.comments.be_first')}</p>
                 </div>
               )}
             </div>

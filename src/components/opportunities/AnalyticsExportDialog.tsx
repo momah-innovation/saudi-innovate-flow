@@ -21,6 +21,7 @@ export const AnalyticsExportDialog = ({
 }: AnalyticsExportDialogProps) => {
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [isExporting, setIsExporting] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -108,8 +109,8 @@ export const AnalyticsExportDialog = ({
       await exportToCsv(summaryData, `${opportunityTitle.replace(/[^a-zA-Z0-9]/g, '_')}_analytics_summary.csv`);
 
       toast({
-        title: isRTL ? 'تم تصدير التقرير' : 'Report Exported',
-        description: isRTL ? 'تم تصدير تقرير الإحصائيات بنجاح' : 'Analytics report exported successfully',
+        title: t('opportunities:export.report_exported'),
+        description: t('opportunities:export.report_exported_desc'),
       });
     } catch (error) {
       logger.error('Failed to export analytics summary', { 
@@ -118,8 +119,8 @@ export const AnalyticsExportDialog = ({
         opportunityId 
       }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في التصدير' : 'Export Error',
-        description: isRTL ? 'فشل في تصدير التقرير' : 'Failed to export report',
+        title: t('opportunities:export.export_error'),
+        description: t('opportunities:export.export_failed'),
         variant: 'destructive',
       });
     } finally {
@@ -154,8 +155,8 @@ export const AnalyticsExportDialog = ({
       }
 
       toast({
-        title: isRTL ? 'تم تصدير التقرير المفصل' : 'Detailed Report Exported',
-        description: isRTL ? 'تم تصدير التقرير المفصل بنجاح' : 'Detailed analytics report exported successfully',
+        title: t('opportunities:export.detailed_exported'),
+        description: t('opportunities:export.detailed_exported_desc'),
       });
     } catch (error) {
       logger.error('Failed to export detailed analytics report', { 
@@ -164,8 +165,8 @@ export const AnalyticsExportDialog = ({
         opportunityId 
       }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في التصدير' : 'Export Error',
-        description: isRTL ? 'فشل في تصدير التقرير المفصل' : 'Failed to export detailed report',
+        title: t('opportunities:export.export_error'),
+        description: t('opportunities:export.detailed_failed'),
         variant: 'destructive',
       });
     } finally {
@@ -178,14 +179,14 @@ export const AnalyticsExportDialog = ({
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
           <Download className="w-4 h-4 mr-2" />
-          {isRTL ? 'تصدير' : 'Export'}
+          {t('opportunities:export.export')}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-primary" />
-            {isRTL ? 'تصدير الإحصائيات' : 'Export Analytics'}
+            {t('opportunities:export.export_analytics')}
           </DialogTitle>
         </DialogHeader>
 
@@ -194,16 +195,16 @@ export const AnalyticsExportDialog = ({
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
                 <TrendingUp className="w-4 h-4" />
-                {isRTL ? 'تقرير موجز' : 'Summary Report'}
+                {t('opportunities:export.summary_report')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'تقرير يحتوي على الإحصائيات الأساسية والمقاييس الرئيسية' : 'Basic analytics and key metrics overview'}
+                {t('opportunities:export.summary_desc')}
               </p>
               <div className="flex gap-2">
                 <Badge variant="secondary">CSV</Badge>
-                <Badge variant="outline">{isRTL ? 'سريع' : 'Quick'}</Badge>
+                <Badge variant="outline">{t('opportunities:export.quick')}</Badge>
               </div>
               <Button 
                 onClick={exportAnalyticsSummary}
@@ -212,7 +213,7 @@ export const AnalyticsExportDialog = ({
                 size="sm"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                {isRTL ? 'تصدير الموجز' : 'Export Summary'}
+                {t('opportunities:export.export_summary')}
               </Button>
             </CardContent>
           </Card>
@@ -221,16 +222,16 @@ export const AnalyticsExportDialog = ({
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                {isRTL ? 'تقرير مفصل' : 'Detailed Report'}
+                {t('opportunities:export.detailed_report')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                {isRTL ? 'تقرير شامل مع تفاصيل الجلسات والسلوك' : 'Comprehensive report with session details and user behavior'}
+                {t('opportunities:export.detailed_desc')}
               </p>
               <div className="flex gap-2">
                 <Badge variant="secondary">CSV</Badge>
-                <Badge variant="outline">{isRTL ? 'شامل' : 'Comprehensive'}</Badge>
+                <Badge variant="outline">{t('opportunities:export.comprehensive')}</Badge>
               </div>
               <Button 
                 onClick={exportDetailedReport}
@@ -240,7 +241,7 @@ export const AnalyticsExportDialog = ({
                 size="sm"
               >
                 <Download className="w-4 h-4 mr-2" />
-                {isRTL ? 'تصدير مفصل' : 'Export Detailed'}
+                {t('opportunities:export.export_detailed')}
               </Button>
             </CardContent>
           </Card>

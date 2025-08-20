@@ -374,14 +374,14 @@ export default function OpportunitiesManagement() {
                               setSelectedOpportunityForApplications(opportunity);
                               setShowApplicationsDialog(true);
                             }}
-                            title={isRTL ? 'إدارة الطلبات' : 'Manage Applications'}
+                            title={t('manageApplications')}
                           >
                             <Users className="w-4 h-4" />
                           </Button>
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            title={isRTL ? 'عرض' : 'View'}
+                            title={t('view')}
                             onClick={() => {
                               setSelectedOpportunity(opportunity);
                               setShowDetailsDialog(true);
@@ -392,7 +392,7 @@ export default function OpportunitiesManagement() {
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            title={isRTL ? 'تعديل' : 'Edit'}
+                            title={t('edit')}
                             onClick={() => {
                               setSelectedOpportunity(opportunity);
                               setShowEditDialog(true);
@@ -403,7 +403,7 @@ export default function OpportunitiesManagement() {
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            title={isRTL ? 'الإحصائيات' : 'Analytics'}
+                            title={t('analytics')}
                             onClick={() => {
                               setSelectedOpportunity(opportunity);
                               setShowAnalyticsDialog(true);
@@ -414,7 +414,7 @@ export default function OpportunitiesManagement() {
                           <Button 
                             variant="destructive" 
                             size="sm" 
-                            title={isRTL ? 'حذف' : 'Delete'}
+                            title={t('delete')}
                             onClick={() => {
                               setSelectedOpportunity(opportunity);
                               setShowDeleteDialog(true);

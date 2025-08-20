@@ -44,6 +44,7 @@ interface PerformanceMetrics {
 
 export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanceProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -241,23 +242,23 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
     let recommendations: string[] = [];
     
     if (metrics.conversionRate < 2) {
-      recommendations = [...recommendations, isRTL ? 'تبسيط عملية التطبيق لزيادة التحويلات' : 'Simplify application process to increase conversions'];
+      recommendations = [...recommendations, t('opportunities:advanced_metrics.recommendations_list.simplify_process')];
     }
     
     if (metrics.engagementRate < 10) {
-      recommendations = [...recommendations, isRTL ? 'إضافة محتوى تفاعلي أكثر جاذبية' : 'Add more engaging interactive content'];
+      recommendations = [...recommendations, t('opportunities:advanced_metrics.recommendations_list.add_engaging_content')];
     }
     
     if (metrics.bounceRate > 60) {
-      recommendations = [...recommendations, isRTL ? 'تحسين المحتوى لتقليل معدل الارتداد' : 'Improve content to reduce bounce rate'];
+      recommendations = [...recommendations, t('opportunities:advanced_metrics.recommendations_list.improve_content')];
     }
     
     if (metrics.averageTimeSpent < 60) {
-      recommendations = [...recommendations, isRTL ? 'إضافة المزيد من التفاصيل والوسائط' : 'Add more detailed content and media'];
+      recommendations = [...recommendations, t('opportunities:advanced_metrics.recommendations_list.add_details')];
     }
     
     if (metrics.clickThroughRate < 5) {
-      recommendations = [...recommendations, isRTL ? 'تحسين العناوين والأزرار لزيادة النقرات' : 'Optimize headings and buttons for better click-through'];
+      recommendations = [...recommendations, t('opportunities:advanced_metrics.recommendations_list.optimize_buttons')];
     }
     
     return recommendations;
@@ -275,7 +276,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
     returningVisitors: 0,
     peakViewingHours: [],
     recommendations: [
-      isRTL ? 'لا توجد بيانات كافية للتحليل' : 'Not enough data for analysis'
+      t('opportunities:advanced_metrics.recommendations_list.no_data')
     ],
     trends: {
       views: { value: 0, change: 0, direction: 'stable' },
@@ -313,16 +314,16 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
   };
 
   const getScoreBadge = (score: number) => {
-    if (score >= 8) return { variant: 'default' as const, label: isRTL ? 'ممتاز' : 'Excellent' };
-    if (score >= 6) return { variant: 'secondary' as const, label: isRTL ? 'جيد' : 'Good' };
-    return { variant: 'destructive' as const, label: isRTL ? 'يحتاج تحسين' : 'Needs Improvement' };
+    if (score >= 8) return { variant: 'default' as const, label: t('opportunities:advanced_metrics.score_labels.excellent') };
+    if (score >= 6) return { variant: 'secondary' as const, label: t('opportunities:advanced_metrics.score_labels.good') };
+    return { variant: 'destructive' as const, label: t('opportunities:advanced_metrics.score_labels.needs_improvement') };
   };
 
   if (loading) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{isRTL ? 'مقاييس الأداء المتقدمة' : 'Advanced Performance Metrics'}</CardTitle>
+          <CardTitle>{t('opportunities:advanced_metrics.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -347,7 +348,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
           <CardTitle className="flex items-center justify-between">
             <span className="flex items-center gap-2">
               <Target className="w-5 h-5" />
-              {isRTL ? 'نقاط الجودة الإجمالية' : 'Overall Quality Score'}
+              {t('opportunities:advanced_metrics.overall_quality_score')}
             </span>
             <Badge variant={scoreBadge.variant}>{scoreBadge.label}</Badge>
           </CardTitle>
@@ -363,7 +364,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
             <div className="flex-1">
               <Progress value={metrics.qualityScore * 10} className="h-3" />
               <p className="text-sm text-muted-foreground mt-1">
-                {isRTL ? 'بناءً على التفاعل والتحويل والوقت المقضي' : 'Based on engagement, conversion, and time spent'}
+                {t('opportunities:advanced_metrics.based_on')}
               </p>
             </div>
           </div>
@@ -379,7 +380,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
               <MousePointer className="w-5 h-5 text-blue-500" />
               <div className="flex-1">
                 <p className="text-2xl font-bold">{metrics.clickThroughRate.toFixed(1)}%</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'نسبة النقر' : 'Click-through Rate'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:advanced_metrics.click_through_rate')}</p>
                 <div className="flex items-center gap-1 mt-1">
                   {(() => {
                     const TrendIcon = getTrendIcon(metrics.trends.views.direction);
@@ -401,7 +402,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
               <Users className="w-5 h-5 text-green-500" />
               <div className="flex-1">
                 <p className="text-2xl font-bold">{metrics.engagementRate.toFixed(1)}%</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التفاعل' : 'Engagement Rate'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:advanced_metrics.engagement_rate')}</p>
                 <div className="flex items-center gap-1 mt-1">
                   {(() => {
                     const TrendIcon = getTrendIcon(metrics.trends.engagement.direction);
@@ -423,9 +424,9 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
               <Clock className="w-5 h-5 text-purple-500" />
               <div className="flex-1">
                 <p className="text-2xl font-bold">{formatDuration(metrics.averageTimeSpent)}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'متوسط الوقت المقضي' : 'Avg. Time Spent'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:advanced_metrics.avg_time_spent')}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {metrics.totalInteractions} {isRTL ? 'تفاعل' : 'interactions'}
+                  {metrics.totalInteractions} {t('opportunities:advanced_metrics.interactions')}
                 </p>
               </div>
             </div>
@@ -439,24 +440,24 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Eye className="w-5 h-5" />
-              {isRTL ? 'تفاصيل الزوار' : 'Visitor Details'}
+              {t('opportunities:advanced_metrics.visitor_details')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between">
-              <span>{isRTL ? 'زوار فريدون' : 'Unique Visitors'}</span>
+              <span>{t('opportunities:advanced_metrics.unique_visitors')}</span>
               <span className="font-medium">{metrics.uniqueVisitors}</span>
             </div>
             <div className="flex justify-between">
-              <span>{isRTL ? 'زوار عائدون' : 'Returning Visitors'}</span>
+              <span>{t('opportunities:advanced_metrics.returning_visitors')}</span>
               <span className="font-medium">{metrics.returningVisitors}</span>
             </div>
             <div className="flex justify-between">
-              <span>{isRTL ? 'معدل الارتداد' : 'Bounce Rate'}</span>
+              <span>{t('opportunities:advanced_metrics.bounce_rate')}</span>
               <span className="font-medium">{metrics.bounceRate.toFixed(1)}%</span>
             </div>
             <div className="flex justify-between">
-              <span>{isRTL ? 'معدل التحويل' : 'Conversion Rate'}</span>
+              <span>{t('opportunities:advanced_metrics.conversion_rate')}</span>
               <span className="font-medium">{metrics.conversionRate.toFixed(1)}%</span>
             </div>
           </CardContent>
@@ -466,7 +467,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5" />
-              {isRTL ? 'التوصيات' : 'Recommendations'}
+              {t('opportunities:advanced_metrics.recommendations')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -481,7 +482,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-green-700">
-                    {isRTL ? 'أداء ممتاز! استمر في الحفاظ على هذا المستوى' : 'Excellent performance! Keep maintaining this level'}
+                    {t('opportunities:advanced_metrics.excellent_performance')}
                   </p>
                 </div>
               )}

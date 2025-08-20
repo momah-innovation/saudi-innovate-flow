@@ -11,6 +11,7 @@ import {
   ArrowUp, ArrowDown, Minus
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 const mockMetrics = {
   totalProjects: 48,
@@ -84,6 +85,7 @@ const mockNotifications = [
 
 const StakeholderDashboard = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -106,19 +108,19 @@ const StakeholderDashboard = () => {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'active': return isRTL ? 'نشط' : 'Active';
-      case 'planning': return isRTL ? 'تخطيط' : 'Planning';
-      case 'completed': return isRTL ? 'مكتمل' : 'Completed';
-      case 'on_hold': return isRTL ? 'معلق' : 'On Hold';
+      case 'active': return t('status.active');
+      case 'planning': return t('common:status.planning');
+      case 'completed': return t('status.completed');
+      case 'on_hold': return t('status.on_hold');
       default: return status;
     }
   };
 
   const getPriorityText = (priority: string) => {
     switch (priority) {
-      case 'high': return isRTL ? 'عالية' : 'High';
-      case 'medium': return isRTL ? 'متوسطة' : 'Medium';
-      case 'low': return isRTL ? 'منخفضة' : 'Low';
+      case 'high': return t('common:priority.high');
+      case 'medium': return t('common:priority.medium');
+      case 'low': return t('common:priority.low');
       default: return priority;
     }
   };
@@ -182,7 +184,7 @@ const StakeholderDashboard = () => {
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>{isRTL ? 'التقدم' : 'Progress'}</span>
+              <span>{t('projects.progress')}</span>
               <span>{project.progress}%</span>
             </div>
             <Progress value={project.progress} className="h-2" />
@@ -190,29 +192,29 @@ const StakeholderDashboard = () => {
 
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-muted-foreground">{isRTL ? 'الميزانية:' : 'Budget:'}</span>
+              <span className="text-muted-foreground">{t('investments.amount')}:</span>
               <div className="font-medium">{formatCurrency(project.budget)}</div>
             </div>
             <div>
-              <span className="text-muted-foreground">{isRTL ? 'المنصرف:' : 'Spent:'}</span>
+              <span className="text-muted-foreground">{t('common:metrics.spent')}:</span>
               <div className="font-medium">{formatCurrency(project.spent)}</div>
             </div>
             <div>
-              <span className="text-muted-foreground">{isRTL ? 'المعنيين:' : 'Stakeholders:'}</span>
+              <span className="text-muted-foreground">{t('title')}:</span>
               <div className="font-medium">{project.stakeholders}</div>
             </div>
             <div>
-              <span className="text-muted-foreground">{isRTL ? 'آخر تحديث:' : 'Last Update:'}</span>
+              <span className="text-muted-foreground">{t('dashboard.last_updated')}:</span>
               <div className="font-medium">{project.lastUpdate}</div>
             </div>
           </div>
 
           <div className="flex justify-between items-center pt-2">
             <Button variant="outline" size="sm">
-              {isRTL ? 'عرض التفاصيل' : 'View Details'}
+              {t('projects.view_details')}
             </Button>
             <Button size="sm">
-              {isRTL ? 'إدارة المشروع' : 'Manage Project'}
+              {t('common:actions.manage')}
             </Button>
           </div>
         </div>
@@ -223,37 +225,37 @@ const StakeholderDashboard = () => {
   return (
     <AppShell>
       <PageLayout
-        title={isRTL ? 'لوحة تحكم المعني' : 'Stakeholder Dashboard'}
-        description={isRTL ? 'نظرة شاملة على المشاريع والمبادرات والأداء' : 'Comprehensive overview of projects, initiatives, and performance'}
+        title={t('title')}
+        description={t('overview')}
       >
         <div className="space-y-6">
           {/* Key Metrics */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <MetricCard
               icon={Target}
-              title={isRTL ? 'إجمالي المشاريع' : 'Total Projects'}
+              title={t('projects.all_projects')}
               value={mockMetrics.totalProjects}
               trend="up"
               trendValue="+12%"
             />
             <MetricCard
               icon={TrendingUp}
-              title={isRTL ? 'المشاريع النشطة' : 'Active Projects'}
+              title={t('metrics.active_projects')}
               value={mockMetrics.activeProjects}
               trend="up"
               trendValue="+3"
             />
             <MetricCard
               icon={BarChart3}
-              title={isRTL ? 'الميزانية المنصرفة' : 'Budget Spent'}
+              title={t('common:metrics.budget_spent')}
               value={formatCurrency(mockMetrics.spentBudget)}
-              subtitle={`${isRTL ? 'من' : 'of'} ${formatCurrency(mockMetrics.totalBudget)}`}
+              subtitle={`${t('common:of')} ${formatCurrency(mockMetrics.totalBudget)}`}
               trend="neutral"
               trendValue="70%"
             />
             <MetricCard
               icon={Star}
-              title={isRTL ? 'رضا المعنيين' : 'Stakeholder Satisfaction'}
+              title={t('common:satisfaction')}
               value={`${mockMetrics.stakeholderSatisfaction}/5`}
               trend="up"
               trendValue="+0.3"
@@ -262,10 +264,10 @@ const StakeholderDashboard = () => {
 
           <Tabs defaultValue="projects" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="projects">{isRTL ? 'المشاريع' : 'Projects'}</TabsTrigger>
-              <TabsTrigger value="analytics">{isRTL ? 'التحليلات' : 'Analytics'}</TabsTrigger>
-              <TabsTrigger value="reports">{isRTL ? 'التقارير' : 'Reports'}</TabsTrigger>
-              <TabsTrigger value="notifications">{isRTL ? 'الإشعارات' : 'Notifications'}</TabsTrigger>
+              <TabsTrigger value="projects">{t('projects.title')}</TabsTrigger>
+              <TabsTrigger value="analytics">{t('common:labels.analytics')}</TabsTrigger>
+              <TabsTrigger value="reports">{t('reports.title')}</TabsTrigger>
+              <TabsTrigger value="notifications">{t('communications.notifications')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="projects" className="space-y-4">
@@ -280,24 +282,24 @@ const StakeholderDashboard = () => {
               <div className="grid gap-4 md:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'تحليل الأداء' : 'Performance Analysis'}</CardTitle>
+                    <CardTitle>{t('reports.performance')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'معدل إنجاز المشاريع' : 'Project Completion Rate'}</span>
+                        <span>{t('common:metrics.completion_rate')}</span>
                         <span className="font-bold">78%</span>
                       </div>
                       <Progress value={78} />
                       
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'الالتزام بالميزانية' : 'Budget Adherence'}</span>
+                        <span>{t('common:metrics.budget')}</span>
                         <span className="font-bold">85%</span>
                       </div>
                       <Progress value={85} />
                       
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'مستوى المشاركة' : 'Engagement Level'}</span>
+                        <span>{t('common:metrics.engagement')}</span>
                         <span className="font-bold">92%</span>
                       </div>
                       <Progress value={92} />
@@ -307,24 +309,24 @@ const StakeholderDashboard = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'المؤشرات الرئيسية' : 'Key Indicators'}</CardTitle>
+                    <CardTitle>{t('stakeholder:indicators.key_indicators')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'المشاريع في الموعد' : 'Projects On Time'}</span>
+                        <span className="text-sm text-muted-foreground">{t('stakeholder:indicators.projects_on_time')}</span>
                         <span className="font-medium text-success">9/12</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'ضمن الميزانية' : 'Within Budget'}</span>
+                        <span className="text-sm text-muted-foreground">{t('stakeholder:indicators.within_budget')}</span>
                         <span className="font-medium text-success">10/12</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'المخاطر المحددة' : 'Identified Risks'}</span>
+                        <span className="text-sm text-muted-foreground">{t('stakeholder:indicators.identified_risks')}</span>
                         <span className="font-medium text-warning">3</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'الإجراءات المطلوبة' : 'Actions Required'}</span>
+                        <span className="text-sm text-muted-foreground">{t('stakeholder:indicators.actions_required')}</span>
                         <span className="font-medium text-destructive">2</span>
                       </div>
                     </div>
@@ -339,15 +341,15 @@ const StakeholderDashboard = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <FileText className="h-5 w-5" />
-                      {isRTL ? 'تقرير الأداء الشهري' : 'Monthly Performance Report'}
+                      {t('reports.quarterly')}
                     </CardTitle>
                     <CardDescription>
-                      {isRTL ? 'تقرير شامل عن أداء المشاريع خلال الشهر' : 'Comprehensive project performance report for the month'}
+                      {t('reports.performance')}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Button className="w-full">
-                      {isRTL ? 'تحميل التقرير' : 'Download Report'}
+                      {t('reports.download')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -356,15 +358,15 @@ const StakeholderDashboard = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <BarChart3 className="h-5 w-5" />
-                      {isRTL ? 'تحليل الميزانية' : 'Budget Analysis'}
+                      {t('reports.financial')}
                     </CardTitle>
                     <CardDescription>
-                      {isRTL ? 'تحليل تفصيلي لاستخدام الميزانية' : 'Detailed analysis of budget utilization'}
+                      {t('investments.current')}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Button className="w-full">
-                      {isRTL ? 'تحميل التقرير' : 'Download Report'}
+                      {t('reports.download')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -373,15 +375,15 @@ const StakeholderDashboard = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Users className="h-5 w-5" />
-                      {isRTL ? 'تقرير المعنيين' : 'Stakeholder Report'}
+                      {t('stakeholder:reports.stakeholder_report')}
                     </CardTitle>
                     <CardDescription>
-                      {isRTL ? 'تقرير عن مشاركة ورضا المعنيين' : 'Report on stakeholder engagement and satisfaction'}
+                      {t('stakeholder:reports.stakeholder_report_description')}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Button className="w-full">
-                      {isRTL ? 'تحميل التقرير' : 'Download Report'}
+                      {t('stakeholder:reports.download')}
                     </Button>
                   </CardContent>
                 </Card>

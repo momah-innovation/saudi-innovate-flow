@@ -127,7 +127,7 @@ export function LandingNavigation({ user, loading }: LandingNavigationProps) {
                 <Home className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className={cn("text-xl font-bold text-foreground", isRTL ? "font-arabic" : "font-english")}>
-                {isRTL ? 'رواد' : 'Ruwād'}
+                {t('navigation:landing.logo_text')}
               </span>
             </Link>
           </div>
@@ -164,12 +164,12 @@ export function LandingNavigation({ user, loading }: LandingNavigationProps) {
               /* Authenticated User Menu */
               <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
                 <span className={cn("text-sm text-muted-foreground", isRTL ? "font-arabic" : "font-english")}>
-                  {t('welcome', isRTL ? 'مرحباً' : 'Welcome')}
+                  {t('navigation:landing.welcome')}
                 </span>
                 <Button asChild>
                   <Link to="/dashboard">
                     <User className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
-                    {t('nav.dashboard', isRTL ? 'لوحة التحكم' : 'Dashboard')}
+                    {t('navigation:landing.dashboard')}
                   </Link>
                 </Button>
               </div>
@@ -178,12 +178,12 @@ export function LandingNavigation({ user, loading }: LandingNavigationProps) {
               <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <Button variant="ghost" asChild className={isRTL ? "font-arabic" : "font-english"}>
                   <Link to="/login">
-                    {isRTL ? 'تسجيل الدخول' : 'Login'}
+                    {t('navigation:landing.login')}
                   </Link>
                 </Button>
                 <Button asChild className={isRTL ? "font-arabic" : "font-english"}>
                   <Link to="/signup">
-                    {isRTL ? 'البدء' : 'Get Started'}
+                    {t('navigation:landing.get_started')}
                     <ArrowRight className={cn("h-4 w-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
                   </Link>
                 </Button>

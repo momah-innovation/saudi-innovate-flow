@@ -3,13 +3,13 @@
     "advanced_analytics_center": "مركز التحليلات المتقدم",
     "smart_innovation_analytics": "تحليلات الابتكار الذكية",
     "smart": "تحليلات",
-    "innovation": "الابتكار", 
+    "innovation": "الابتكار",
     "analytics": "الذكية",
     "hero_description": "اكتشف الرؤى العميقة والبيانات المتقدمة لقياس أداء منصة الابتكار ومتابعة التقدم نحو رؤية 2030",
     "labels": {
       "ideas": "فكرة",
       "challenges": "تحدي",
-      "events": "فعالية", 
+      "events": "فعالية",
       "users": "مستخدم"
     },
     "action_buttons": {
@@ -34,9 +34,24 @@
     "interactive": "تفاعلي"
   },
   "filters": {
-    "select_departments": "اختر الإدارات",
-    "select_sectors": "اختر القطاعات",
+    "title": "فلاتر التحليلات",
+    "time_range": "الفترة الزمنية",
+    "select_time_range": "اختر الفترة الزمنية",
+    "all_time": "كل الوقت",
+    "last_7_days": "آخر 7 أيام",
+    "last_30_days": "آخر 30 يوم",
+    "last_3_months": "آخر 3 أشهر",
+    "last_year": "السنة الماضية",
+    "custom_range": "نطاق مخصص",
     "date_range": "النطاق الزمني",
+    "pick_date_range": "اختر نطاق زمني",
+    "departments": "الإدارات",
+    "select_departments": "اختر الإدارات",
+    "sectors": "القطاعات",
+    "select_sectors": "اختر القطاعات",
+    "active_filters": "الفلاتر النشطة:",
+    "export_data": "تصدير البيانات",
+    "reset_filters": "إعادة تعيين الفلاتر",
     "apply_filters": "تطبيق المرشحات",
     "clear_filters": "مسح المرشحات"
   },
@@ -44,5 +59,196 @@
     "monthly_trends": "الاتجاهات الشهرية",
     "registration_trends": "اتجاهات التسجيل",
     "performance_metrics": "مؤشرات الأداء"
+  },
+  "page": {
+    "title": "إحصائيات المنصة",
+    "analytics_title": "تحليلات المنصة",
+    "description": "جاري تحميل تحليلات منصة الابتكار...",
+    "analytics_description": "نظرة شاملة على أداء ونشاط منصة الابتكار"
+  },
+  "access": {
+    "denied": "الوصول مرفوض",
+    "no_permission": "ليس لديك صلاحية للوصول إلى هذه الصفحة",
+    "admin_only": "هذه الصفحة متاحة للإداريين فقط"
+  },
+  "actions": {
+    "refresh_data": "تحديث البيانات",
+    "last_updated": "آخر تحديث"
+  },
+  "tabs": {
+    "overview": "نظرة عامة",
+    "trends": "الاتجاهات",
+    "categories": "التصنيفات",
+    "impact": "التأثير"
+  },
+  "analytics": {
+    "total_metrics": "إجمالي المقاييس",
+    "active_reports": "التقارير النشطة",
+    "total_users": "إجمالي المستخدمين",
+    "avg_engagement": "متوسط التفاعل",
+    "from_last_month": "من الشهر الماضي",
+    "reports": "التقارير",
+    "users": "المستخدمين",
+    "engagement": "التفاعل",
+    "performance_goals": "أهداف الأداء",
+    "report_completion_rate": "معدل إكمال التقارير",
+    "data_accuracy": "دقة البيانات",
+    "trend_analysis": "تحليل الاتجاهات",
+    "top_categories": "أهم الفئات",
+    "report_types": "أنواع التقارير",
+    "of_total_reports": "من إجمالي التقارير"
+  },
+  "metrics": {
+    "total_ideas": "إجمالي الأفكار",
+    "ideas_submitted": "أفكار مقترحة",
+    "active_challenges": "التحديات النشطة",
+    "open_challenges": "تحديات مفتوحة",
+    "events": "الفعاليات",
+    "events_organized": "فعاليات منظمة",
+    "active_innovators": "المبدعون النشطون",
+    "active_users": "مستخدم نشط",
+    "successful_implementations": "التطبيقات الناجحة",
+    "partnerships": "الشراكات",
+    "departments": "إدارات",
+    "sectors": "قطاعات",
+    "average_rating": "متوسط التقييم",
+    "idea_quality_rating": "تقييم جودة الأفكار"
+  },
+  "detailed_metrics": {
+    "total_submitted": "إجمالي المقترحة",
+    "under_review": "قيد المراجعة",
+    "approved": "مقبولة",
+    "in_development": "قيد التطوير",
+    "draft": "مسودة",
+    "rejected": "مرفوضة",
+    "completed": "مكتملة",
+    "avg_ideas_per_challenge": "متوسط الأفكار لكل تحدي",
+    "total_events": "إجمالي الفعاليات",
+    "total_participants": "إجمالي المشاركين",
+    "avg_attendance": "متوسط الحضور",
+    "expert_evaluators": "الخبراء المقيمون",
+    "platform_growth": "نمو المنصة",
+    "innovators": "مبدعون",
+    "experts": "خبراء",
+    "partners": "شركاء"
+  },
+  "chart_titles": {
+    "ideas_status_distribution": "توزيع حالة الأفكار",
+    "challenge_status_distribution": "توزيع حالة التحديات",
+    "event_participation_trends": "اتجاهات مشاركة الفعاليات",
+    "user_base_growth": "نمو قاعدة المستخدمين",
+    "activity_trends": "اتجاهات النشاط (آخر 6 أشهر)",
+    "ideas_distribution_by_sector": "توزيع الأفكار حسب القطاع",
+    "top_sectors": "أهم القطاعات"
+  },
+  "impact": {
+    "social_impact": "التأثير الاجتماعي",
+    "people_benefited": "مستفيد من الحلول المنفذة",
+    "economic_impact": "التأثير الاقتصادي",
+    "economic_value_added": "قيمة اقتصادية مضافة تقديرية",
+    "platform_growth": "نمو المنصة",
+    "monthly_user_growth": "نمو المستخدمين الشهري",
+    "key_performance_indicators": "مؤشرات الأداء الرئيسية",
+    "idea_acceptance_rate": "معدل قبول الأفكار",
+    "implementation_rate": "معدل التنفيذ",
+    "user_engagement": "مشاركة المستخدمين",
+    "user_satisfaction": "رضا المستخدمين"
+  },
+  "dialog": {
+    "ideas_analytics": "تحليلات الأفكار",
+    "challenges_analytics": "تحليلات التحديات",
+    "events_analytics": "تحليلات الفعاليات",
+    "users_analytics": "تحليلات المستخدمين",
+    "analytics": "التحليلات",
+    "ideas_description": "تفصيل شامل لتقديم وتقييم الأفكار الابتكارية",
+    "challenges_description": "تحليل التحديات الابتكارية وتقدمها",
+    "events_description": "مقاييس مشاركة وانخراط الفعاليات",
+    "users_description": "إحصائيات نشاط المستخدمين ومشاركتهم في المنصة",
+    "default_description": "بيانات تحليلية مفصلة",
+    "data_visualization": "عرض البيانات",
+    "performance_indicators": "مؤشرات الأداء",
+    "detailed_breakdown": "تفصيل شامل"
+  },
+  "statuses": {
+    "active": "نشط",
+    "completed": "مكتمل"
+  },
+  "system_uptime": "وقت التشغيل",
+  "avg_response_time": "متوسط الاستجابة",
+  "threats_blocked": "التهديدات المحجوبة",
+  "queries_today": "استعلامات اليوم",
+  "system_alerts": "تنبيهات النظام",
+  "high_impact": "تأثير عالي",
+  "medium_impact": "تأثير متوسط",
+  "growth": "النمو",
+  "projects": "المشاريع",
+  "budget": "الميزانية",
+  "avg_value": "متوسط القيمة",
+  "rising_trends": "اتجاهات صاعدة",
+  "declining_trends": "اتجاهات هابطة",
+  "sar": "ريال",
+  "notifications": {
+    "title": "إشعارات الإحصائيات",
+    "mark_all_read": "قراءة الكل",
+    "no_notifications": "لا توجد إشعارات جديدة",
+    "types": {
+      "report_generated": {
+        "title": "تم إنشاء تقرير جديد",
+        "message": "تقرير الإحصائيات الشهرية جاهز للمراجعة"
+      },
+      "threshold_reached": {
+        "title": "تم تجاوز العتبة المحددة",
+        "message": "عدد المستخدمين النشطين تجاوز 1000 مستخدم"
+      },
+      "data_updated": {
+        "title": "تم تحديث البيانات",
+        "message": "تم تحديث بيانات الأفكار والتحديات"
+      },
+      "milestone": {
+        "title": "إنجاز جديد",
+        "message": "تم الوصول إلى 500 فكرة منشورة"
+      },
+      "alert": {
+        "title": "تنبيه النظام",
+        "message": "انخفاض في معدل المشاركة هذا الأسبوع"
+      }
+    },
+    "time_ago": {
+      "now": "الآن",
+      "minutes_ago": "منذ {{count}} دقيقة",
+      "hours_ago": "منذ {{count}} ساعة",
+      "days_ago": "منذ {{count}} يوم"
+    }
+  },
+  "trending": {
+    "title": "الإحصائيات الرائجة",
+    "error_loading": "خطأ في تحميل الإحصائيات",
+    "stats": {
+      "user_engagement": {
+        "title": "مشاركة المستخدمين",
+        "description": "المستخدمون النشطون في النظام",
+        "description_alt": "زيادة في نشاط المستخدمين"
+      },
+      "active_challenges": {
+        "title": "التحديات النشطة",
+        "description": "التحديات المتاحة حالياً"
+      },
+      "submissions": {
+        "title": "المشاركات",
+        "description": "إجمالي المشاركات المقدمة"
+      },
+      "submitted_ideas": {
+        "title": "الأفكار المقترحة",
+        "description": "أفكار جديدة مبدعة"
+      },
+      "success_rate": {
+        "title": "معدل النجاح",
+        "description": "معدل نجاح العمليات"
+      },
+      "event_attendance": {
+        "title": "حضور الفعاليات",
+        "description": "معدل حضور ممتاز"
+      }
+    }
   }
 }

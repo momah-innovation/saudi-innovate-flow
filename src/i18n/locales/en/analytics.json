@@ -1,0 +1,97 @@
+{
+    "title": "System Analytics",
+    "page_title": "System Analytics",
+    "description": "Monitor system performance, servers, and security",
+    "buttons": {
+        "refresh": "Refresh",
+        "export": "Export",
+        "export_logs": "Export Logs",
+        "monitoring_settings": "Monitoring Settings",
+        "configure_settings": "Configure Settings"
+    },
+    "metrics": {
+        "system_uptime": "System Uptime",
+        "avg_response_time": "Avg Response Time",
+        "active_connections": "Active Connections",
+        "error_rate": "Error Rate",
+        "current_usage": "Current Usage",
+        "total_requests_today": "Total Requests Today",
+        "requests_per_second": "Requests per Second",
+        "peak_hours": "Peak Hours",
+        "queries_today": "Queries Today",
+        "slow_queries": "Slow Queries",
+        "connection_pool": "Connection Pool",
+        "storage_used": "Storage Used",
+        "threats_blocked": "Threats Blocked",
+        "login_attempts": "Login Attempts",
+        "failed_logins": "Failed Logins",
+        "suspicious_activity": "Suspicious Activity"
+    },
+    "tabs": {
+        "performance": "Performance",
+        "database": "Database",
+        "security": "Security",
+        "logs": "Logs",
+        "monitoring": "Monitoring"
+    },
+    "performance": {
+        "cpu_usage": "CPU Usage",
+        "memory_usage": "Memory Usage",
+        "disk_usage": "Disk Usage",
+        "network_traffic": "Network Traffic",
+        "request_statistics": "Request Statistics",
+        "system_health": "System Health",
+        "system_services": "System Services",
+        "all_running": "All Running",
+        "last_backup": "Last Backup",
+        "last_system_update": "Last System Update"
+    },
+    "database": {
+        "performance": "Database Performance",
+        "avg_query_time": "Avg Query Time",
+        "index_usage": "Index Usage",
+        "cache_hit_rate": "Cache Hit Rate",
+        "table_statistics": "Table Statistics",
+        "rows": "rows"
+    },
+    "security": {
+        "report": "Security Report",
+        "last_security_scan": "Last Security Scan",
+        "data_encryption": "Data Encryption",
+        "firewall_status": "Firewall Status",
+        "potential_vulnerabilities": "Potential Vulnerabilities",
+        "pending_security_updates": "Pending Security Updates",
+        "weak_passwords": "Weak Passwords",
+        "expired_sessions": "Expired Sessions",
+        "clean": "Clean",
+        "enabled": "Enabled",
+        "active": "Active"
+    },
+    "logs": {
+        "recent_system_logs": "Recent System Logs",
+        "level": {
+            "info": "Info",
+            "warning": "Warning",
+            "error": "Error",
+            "success": "Success"
+        }
+    },
+    "monitoring": {
+        "system_alerts": "System Alerts",
+        "settings": "Monitoring Settings",
+        "performance_monitoring": "Performance Monitoring",
+        "email_alerts": "Email Alerts",
+        "log_retention": "Log Retention",
+        "high_memory_usage": "High Memory Usage",
+        "backup_completed": "Backup Completed",
+        "warning": "Warning",
+        "success": "Success",
+        "days": "days"
+    },
+    "units": {
+        "ms": "ms",
+        "gb": "GB",
+        "gbps": "Gbps",
+        "of": "of"
+    }
+}

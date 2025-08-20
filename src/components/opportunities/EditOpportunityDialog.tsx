@@ -104,8 +104,8 @@ export const EditOpportunityDialog = ({
     // Validate file type
     if (!file.type.startsWith('image/')) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'يرجى اختيار ملف صورة' : 'Please select an image file',
+        title: t('opportunities:common.error'),
+        description: t('opportunities:edit.image_type_error'),
         variant: 'destructive',
       });
       return;
@@ -114,8 +114,8 @@ export const EditOpportunityDialog = ({
     // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'حجم الملف يجب أن يكون أقل من 5 ميجابايت' : 'File size must be less than 5MB',
+        title: t('opportunities:common.error'),
+        description: t('opportunities:edit.image_size_error'),
         variant: 'destructive',
       });
       return;
@@ -138,14 +138,14 @@ export const EditOpportunityDialog = ({
       setImageUrl(relativePath);
       
       toast({
-        title: isRTL ? 'نجح' : 'Success',
-        description: isRTL ? 'تم رفع الصورة بنجاح' : 'Image uploaded successfully',
+        title: t('opportunities:common.success'),
+        description: t('opportunities:edit.image_upload_success'),
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في رفع الصورة' : 'Failed to upload image',
+        title: t('opportunities:common.error'),
+        description: t('opportunities:edit.image_upload_error'),
         variant: 'destructive',
       });
     } finally {
@@ -193,12 +193,12 @@ export const EditOpportunityDialog = ({
           await supabase.functions.invoke('send-opportunity-notification', {
             body: {
               to: data.contact_email,
-              subject: isRTL ? 'تحديث حالة الفرصة' : 'Opportunity Status Update',
+              subject: t('opportunities:edit.email_subject'),
               html: `
                 <div dir="${isRTL ? 'rtl' : 'ltr'}">
-                  <h2>${isRTL ? 'تحديث حالة الفرصة' : 'Opportunity Status Update'}</h2>
-                  <p>${isRTL ? 'تم تحديث حالة فرصة' : 'The status of opportunity'} "${data.title_ar}" ${isRTL ? 'إلى' : 'has been updated to'}: <strong>${data.status}</strong></p>
-                  <p>${isRTL ? 'يمكنكم مراجعة التفاصيل في لوحة التحكم.' : 'You can review the details in the dashboard.'}</p>
+                  <h2>${t('opportunities:edit.email_title')}</h2>
+                  <p>${t('opportunities:edit.email_status_updated')} "${data.title_ar}" ${t('opportunities:edit.email_to')}: <strong>${data.status}</strong></p>
+                  <p>${t('opportunities:edit.email_review_details')}</p>
                 </div>
               `,
               opportunityId: opportunity.id,
@@ -212,16 +212,16 @@ export const EditOpportunityDialog = ({
       }
 
       toast({
-        title: isRTL ? 'تم التحديث بنجاح' : 'Updated Successfully',
-        description: isRTL ? 'تم تحديث الفرصة بنجاح' : 'Opportunity updated successfully',
+        title: t('opportunities:edit.update_success_title'),
+        description: t('opportunities:edit.update_success'),
       });
 
       onSuccess?.();
       onOpenChange(false);
     } catch (error: any) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: error.message || (isRTL ? 'حدث خطأ أثناء تحديث الفرصة' : 'An error occurred while updating the opportunity'),
+        title: t('opportunities:common.error'),
+        description: error.message || t('opportunities:edit.update_error'),
         variant: 'destructive',
       });
     }
@@ -238,7 +238,7 @@ export const EditOpportunityDialog = ({
         <DialogHeader className={isRTL ? 'text-right' : 'text-left'}>
           <DialogTitle className="flex items-center gap-2">
             <Building2 className="w-5 h-5 text-primary" />
-            {isRTL ? 'تعديل الفرصة' : 'Edit Opportunity'}
+            {t('opportunities:edit.title')}
           </DialogTitle>
         </DialogHeader>
 
@@ -247,13 +247,13 @@ export const EditOpportunityDialog = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="title_ar" className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'العنوان (بالعربية)' : 'Title (Arabic)'}
+                {t('opportunities:edit.title_arabic')}
               </Label>
               <Input
                 id="title_ar"
                 {...register('title_ar', { required: 'Arabic title is required' })}
                 className={isRTL ? 'text-right' : 'text-left'}
-                placeholder={isRTL ? 'أدخل العنوان بالعربية' : 'Enter title in Arabic'}
+                placeholder={t('opportunities:edit.title_arabic_placeholder')}
               />
               {errors.title_ar && (
                 <p className="text-sm text-destructive">{errors.title_ar.message}</p>
@@ -262,13 +262,13 @@ export const EditOpportunityDialog = ({
 
             <div className="space-y-2">
               <Label htmlFor="title_en" className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'العنوان (بالإنجليزية)' : 'Title (English)'}
+                {t('opportunities:edit.title_english')}
               </Label>
               <Input
                 id="title_en"
                 {...register('title_en')}
                 className={isRTL ? 'text-right' : 'text-left'}
-                placeholder={isRTL ? 'أدخل العنوان بالإنجليزية' : 'Enter title in English'}
+                placeholder={t('opportunities:edit.title_english_placeholder')}
               />
             </div>
           </div>
@@ -277,13 +277,13 @@ export const EditOpportunityDialog = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="description_ar" className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'الوصف (بالعربية)' : 'Description (Arabic)'}
+                {t('opportunities:edit.description_arabic')}
               </Label>
               <Textarea
                 id="description_ar"
                 {...register('description_ar', { required: 'Arabic description is required' })}
                 className={isRTL ? 'text-right' : 'text-left'}
-                placeholder={isRTL ? 'أدخل الوصف بالعربية' : 'Enter description in Arabic'}
+                placeholder={t('opportunities:edit.description_arabic_placeholder')}
                 rows={4}
               />
               {errors.description_ar && (
@@ -293,13 +293,13 @@ export const EditOpportunityDialog = ({
 
             <div className="space-y-2">
               <Label htmlFor="description_en" className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'الوصف (بالإنجليزية)' : 'Description (English)'}
+                {t('opportunities:edit.description_english')}
               </Label>
               <Textarea
                 id="description_en"
                 {...register('description_en')}
                 className={isRTL ? 'text-right' : 'text-left'}
-                placeholder={isRTL ? 'أدخل الوصف بالإنجليزية' : 'Enter description in English'}
+                placeholder={t('opportunities:edit.description_english_placeholder')}
                 rows={4}
               />
             </div>
@@ -309,49 +309,49 @@ export const EditOpportunityDialog = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'نوع الفرصة' : 'Opportunity Type'}
+                {t('opportunities:edit.opportunity_type')}
               </Label>
               <Select onValueChange={(value) => setValue('opportunity_type', value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر النوع' : 'Select type'} />
+                  <SelectValue placeholder={t('opportunities:edit.select_type')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="funding">{isRTL ? 'تمويل' : 'Funding'}</SelectItem>
-                  <SelectItem value="collaboration">{isRTL ? 'تعاون' : 'Collaboration'}</SelectItem>
-                  <SelectItem value="sponsorship">{isRTL ? 'رعاية' : 'Sponsorship'}</SelectItem>
-                  <SelectItem value="research">{isRTL ? 'بحث' : 'Research'}</SelectItem>
+                  <SelectItem value="funding">{t('opportunities:types.funding')}</SelectItem>
+                  <SelectItem value="collaboration">{t('opportunities:types.collaboration')}</SelectItem>
+                  <SelectItem value="sponsorship">{t('opportunities:types.sponsorship')}</SelectItem>
+                  <SelectItem value="research">{t('opportunities:types.research')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
               <Label className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'الحالة' : 'Status'}
+                {t('opportunities:edit.status')}
               </Label>
               <Select onValueChange={(value) => setValue('status', value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر الحالة' : 'Select status'} />
+                  <SelectValue placeholder={t('opportunities:edit.select_status')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="open">{isRTL ? 'مفتوح' : 'Open'}</SelectItem>
-                  <SelectItem value="closed">{isRTL ? 'مغلق' : 'Closed'}</SelectItem>
-                  <SelectItem value="paused">{isRTL ? 'متوقف' : 'Paused'}</SelectItem>
+                  <SelectItem value="open">{t('opportunities:status.open')}</SelectItem>
+                  <SelectItem value="closed">{t('opportunities:status.closed')}</SelectItem>
+                  <SelectItem value="paused">{t('opportunities:status.paused')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
               <Label className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'مستوى الأولوية' : 'Priority Level'}
+                {t('opportunities:edit.priority_level')}
               </Label>
               <Select onValueChange={(value) => setValue('priority_level', value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر الأولوية' : 'Select priority'} />
+                  <SelectValue placeholder={t('opportunities:edit.select_priority')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="high">{isRTL ? 'عالي' : 'High'}</SelectItem>
-                  <SelectItem value="medium">{isRTL ? 'متوسط' : 'Medium'}</SelectItem>
-                  <SelectItem value="low">{isRTL ? 'منخفض' : 'Low'}</SelectItem>
+                  <SelectItem value="high">{t('opportunities:priority.high')}</SelectItem>
+                  <SelectItem value="medium">{t('opportunities:priority.medium')}</SelectItem>
+                  <SelectItem value="low">{t('opportunities:priority.low')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -362,33 +362,33 @@ export const EditOpportunityDialog = ({
             <div className="space-y-2">
               <Label htmlFor="budget_min" className={isRTL ? 'text-right' : 'text-left'}>
                 <DollarSign className="w-4 h-4 inline mr-1" />
-                {isRTL ? 'الحد الأدنى للميزانية' : 'Minimum Budget'}
+                {t('opportunities:edit.budget_min')}
               </Label>
               <Input
                 id="budget_min"
                 type="number"
                 {...register('budget_min')}
-                placeholder={isRTL ? 'أدخل الحد الأدنى' : 'Enter minimum amount'}
+                placeholder={t('opportunities:edit.budget_min_placeholder')}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="budget_max" className={isRTL ? 'text-right' : 'text-left'}>
                 <DollarSign className="w-4 h-4 inline mr-1" />
-                {isRTL ? 'الحد الأقصى للميزانية' : 'Maximum Budget'}
+                {t('opportunities:edit.budget_max')}
               </Label>
               <Input
                 id="budget_max"
                 type="number"
                 {...register('budget_max')}
-                placeholder={isRTL ? 'أدخل الحد الأقصى' : 'Enter maximum amount'}
+                placeholder={t('opportunities:edit.budget_max_placeholder')}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="deadline" className={isRTL ? 'text-right' : 'text-left'}>
                 <Calendar className="w-4 h-4 inline mr-1" />
-                {isRTL ? 'الموعد النهائي' : 'Deadline'}
+                {t('opportunities:edit.deadline')}
               </Label>
               <Input
                 id="deadline"
@@ -406,24 +406,24 @@ export const EditOpportunityDialog = ({
             <div className="space-y-2">
               <Label htmlFor="location" className={isRTL ? 'text-right' : 'text-left'}>
                 <MapPin className="w-4 h-4 inline mr-1" />
-                {isRTL ? 'الموقع' : 'Location'}
+                {t('opportunities:edit.location')}
               </Label>
               <Input
                 id="location"
                 {...register('location')}
-                placeholder={isRTL ? 'أدخل الموقع' : 'Enter location'}
+                placeholder={t('opportunities:edit.location_placeholder')}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="contact_person" className={isRTL ? 'text-right' : 'text-left'}>
                 <Users className="w-4 h-4 inline mr-1" />
-                {isRTL ? 'الشخص المسؤول' : 'Contact Person'}
+                {t('opportunities:edit.contact_person')}
               </Label>
               <Input
                 id="contact_person"
                 {...register('contact_person', { required: 'Contact person is required' })}
-                placeholder={isRTL ? 'أدخل اسم المسؤول' : 'Enter contact person name'}
+                placeholder={t('opportunities:edit.contact_person_placeholder')}
               />
               {errors.contact_person && (
                 <p className="text-sm text-destructive">{errors.contact_person.message}</p>
@@ -432,13 +432,13 @@ export const EditOpportunityDialog = ({
 
             <div className="space-y-2">
               <Label htmlFor="contact_email" className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'البريد الإلكتروني' : 'Contact Email'}
+                {t('opportunities:edit.contact_email')}
               </Label>
               <Input
                 id="contact_email"
                 type="email"
                 {...register('contact_email', { required: 'Contact email is required' })}
-                placeholder={isRTL ? 'أدخل البريد الإلكتروني' : 'Enter email address'}
+                placeholder={t('opportunities:edit.contact_email_placeholder')}
               />
               {errors.contact_email && (
                 <p className="text-sm text-destructive">{errors.contact_email.message}</p>
@@ -451,24 +451,24 @@ export const EditOpportunityDialog = ({
             <div className="space-y-2">
               <Label htmlFor="requirements" className={isRTL ? 'text-right' : 'text-left'}>
                 <Target className="w-4 h-4 inline mr-1" />
-                {isRTL ? 'المتطلبات' : 'Requirements'}
+                {t('opportunities:edit.requirements')}
               </Label>
               <Textarea
                 id="requirements"
                 {...register('requirements')}
-                placeholder={isRTL ? 'أدخل المتطلبات' : 'Enter requirements'}
+                placeholder={t('opportunities:edit.requirements_placeholder')}
                 rows={3}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="benefits" className={isRTL ? 'text-right' : 'text-left'}>
-                {isRTL ? 'الفوائد' : 'Benefits'}
+                {t('opportunities:edit.benefits')}
               </Label>
               <Textarea
                 id="benefits"
                 {...register('benefits')}
-                placeholder={isRTL ? 'أدخل الفوائد' : 'Enter benefits'}
+                placeholder={t('opportunities:edit.benefits_placeholder')}
                 rows={3}
               />
             </div>
@@ -477,7 +477,7 @@ export const EditOpportunityDialog = ({
           {/* Image Upload */}
           <div className="space-y-4">
             <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-              {isRTL ? 'صورة الفرصة' : 'Opportunity Image'}
+              {t('opportunities:edit.image_section')}
             </h3>
             
             <div className="space-y-4">
@@ -520,17 +520,17 @@ export const EditOpportunityDialog = ({
                         {uploadingImage ? (
                           <>
                             <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                            {isRTL ? 'جاري الرفع...' : 'Uploading...'}
+                            {t('opportunities:edit.uploading')}
                           </>
                         ) : (
                           <>
                             <Upload className="w-4 h-4" />
-                            {isRTL ? 'رفع صورة' : 'Upload Image'}
+                            {t('opportunities:edit.upload_image')}
                           </>
                         )}
                       </Button>
                       <p className="mt-2 text-sm text-gray-500">
-                        {isRTL ? 'PNG أو JPG أو JPEG (حد أقصى 5 ميجابايت)' : 'PNG, JPG, or JPEG (max 5MB)'}
+                        {t('opportunities:edit.image_format_hint')}
                       </p>
                     </div>
                   </div>
@@ -544,10 +544,10 @@ export const EditOpportunityDialog = ({
           <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
             <Button type="submit" disabled={loading}>
               <Save className="w-4 h-4 mr-2" />
-              {loading ? (isRTL ? 'جاري الحفظ...' : 'Saving...') : (isRTL ? 'حفظ التغييرات' : 'Save Changes')}
+              {loading ? t('opportunities:edit.saving') : t('opportunities:edit.save_changes')}
             </Button>
             <Button type="button" variant="outline" onClick={handleClose}>
-              {isRTL ? 'إلغاء' : 'Cancel'}
+              {t('opportunities:common.cancel')}
             </Button>
           </div>
         </form>

@@ -2,11 +2,11 @@ import { AdminBreadcrumb } from "@/components/layout/AdminBreadcrumb";
 import { PageLayout } from '@/components/layout/PageLayout';
 import { EvaluationsManagement } from '@/components/admin/EvaluationsManagement';
 import { useAuth } from "@/contexts/AuthContext";
-import { useDirection } from "@/components/ui/direction-provider";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export default function AdminEvaluations() {
   const { hasRole } = useAuth();
-  const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   // Check if user has admin access
   if (!hasRole('admin') && !hasRole('super_admin')) {
@@ -14,10 +14,10 @@ export default function AdminEvaluations() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">
-            {isRTL ? 'غير مصرح لك بالوصول' : 'Access Denied'}
+            {t('admin:access.denied')}
           </h2>
           <p className="text-muted-foreground">
-            {isRTL ? 'هذه الصفحة مخصصة للمديرين فقط' : 'This page is only accessible to administrators'}
+            {t('admin:access.admin_only')}
           </p>
         </div>
       </div>

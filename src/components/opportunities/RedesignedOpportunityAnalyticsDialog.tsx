@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { AnalyticsSidebar } from './analytics/AnalyticsSidebar';
 import { AnalyticsOverview } from './analytics/AnalyticsOverview';
 import { EngagementAnalytics } from './EngagementAnalytics';
@@ -57,6 +58,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
   onOpenChange
 }: RedesignedOpportunityAnalyticsDialogProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [trends, setTrends] = useState<Record<string, { value: number; isPositive: boolean }>>({});
   const [loading, setLoading] = useState(false);
@@ -214,15 +216,15 @@ export const RedesignedOpportunityAnalyticsDialog = ({
     });
     
     const sourceLabels = {
-      direct: isRTL ? 'البحث المباشر' : 'Direct Search',
-      social: isRTL ? 'وسائل التواصل' : 'Social Media',
-      referral: isRTL ? 'الإحالات' : 'Referrals',
-      email: isRTL ? 'البريد الإلكتروني' : 'Email',
-      other: isRTL ? 'أخرى' : 'Other'
+      direct: t('opportunities:analytics.sources.direct'),
+      social: t('opportunities:analytics.sources.social'),
+      referral: t('opportunities:analytics.sources.referral'),
+      email: t('opportunities:analytics.sources.email'),
+      other: t('opportunities:analytics.sources.other')
     };
     
     return Array.from(sourceCounts.entries()).map(([key, count]) => ({
-      source: sourceLabels[key] || (isRTL ? 'أخرى' : 'Other'),
+      source: sourceLabels[key] || t('opportunities:analytics.sources.other'),
       count,
       percentage: Math.round((count / total) * 100)
     })).sort((a, b) => b.count - a.count);
@@ -235,7 +237,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
       const date = new Date();
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
-      timeline.set(dateStr, { date: dateStr, action: isRTL ? 'نشاط' : 'Activity', count: 0 });
+      timeline.set(dateStr, { date: dateStr, action: t('opportunities:analytics.activity'), count: 0 });
     }
     
     [...applications, ...likes, ...shares, ...bookmarks, ...comments].forEach(item => {
@@ -365,7 +367,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
             <div className="text-center space-y-4">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
               <p className="text-muted-foreground">
-                {isRTL ? 'تحميل البيانات التحليلية...' : 'Loading analytics data...'}
+                {t('opportunities:analytics.loading')}
               </p>
             </div>
           </div>
@@ -381,10 +383,10 @@ export const RedesignedOpportunityAnalyticsDialog = ({
           <div className="text-center py-12">
             <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">
-              {isRTL ? 'لا توجد بيانات تحليلية' : 'No Analytics Data'}
+              {t('opportunities:analytics.no_data_title')}
             </h3>
             <p className="text-muted-foreground">
-              {isRTL ? 'لم يتم العثور على بيانات تحليلية لهذه الفرصة' : 'No analytics data found for this opportunity'}
+              {t('opportunities:analytics.no_data_description')}
             </p>
           </div>
         </DialogContent>
@@ -406,7 +408,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
               </div>
               <div>
                 <DialogTitle className="text-xl font-semibold">
-                  {isRTL ? 'تحليلات الفرصة' : 'Opportunity Analytics'}
+                  {t('opportunities:analytics.title')}
                 </DialogTitle>
                 <p className="text-sm text-muted-foreground mt-1">
                   {opportunityTitle}
@@ -424,7 +426,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
                 className="gap-2"
               >
                 <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                {isRTL ? 'تحديث' : 'Refresh'}
+                {t('opportunities:analytics.refresh')}
               </Button>
               
               <AnalyticsExportDialog

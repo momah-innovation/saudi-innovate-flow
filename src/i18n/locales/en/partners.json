@@ -142,5 +142,50 @@
     "export_completed": "Partner data exported successfully",
     "delete_confirmation": "Are you sure you want to delete this partner?",
     "terminate_confirmation": "Are you sure you want to terminate this partnership?"
+  },
+  "dashboard": {
+    "partnerDashboard": "Partner Dashboard",
+    "createNewPartnership": "Create New Partnership",
+    "exploreOpportunities": "Explore Opportunities",
+    "browseChallenges": "Browse Challenges",
+    "viewProfile": "View Profile"
+  },
+  "profile": {
+    "badge": "Partner Profile",
+    "organization_name": "Organization Name",
+    "save_changes": "Save Changes",
+    "edit_profile": "Edit Profile",
+    "dashboard": "Dashboard",
+    "browse_challenges": "Browse Challenges",
+    "partnership_info": "Partnership Information",
+    "founded": "Founded",
+    "team_size": "Team Size",
+    "investment_capacity": "Investment Capacity",
+    "areas_of_interest": "Areas of Interest",
+    "metrics": {
+      "active_partnerships": "active partnerships",
+      "sar_invested": "SAR invested",
+      "projects_supported": "projects supported",
+      "partnership_rating": "partnership rating"
+    }
+  },
+  "details": {
+    "partnershipDetails": "Partnership Details",
+    "timeline": "Timeline",
+    "contribution": "Contribution",
+    "description": "Description",
+    "ideasGenerated": "Ideas Generated",
+    "participants": "Participants",
+    "impactScore": "Impact Score"
+  },
+  "applications": {
+    "opportunity": "Opportunity",
+    "type": "Type",
+    "submittedDate": "Submitted Date",
+    "status": "Status",
+    "contribution": "Contribution",
+    "contact": "Contact",
+    "actions": "Actions",
+    "noApplicationsFound": "No applications found"
   }
 }

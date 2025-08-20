@@ -60,40 +60,40 @@ export const TrendingStatisticsWidget = ({ className = "" }: TrendingStatisticsW
         trendingStats = [
           {
             id: '1',
-            title: isRTL ? 'مشاركة المستخدمين' : 'User Engagement',
+            title: t('statistics:trending.stats.user_engagement.title'),
             value: metrics.users?.active || 0,
             change: metrics.users?.growthRate || 0,
             trend: (metrics.users?.growthRate || 0) > 0 ? 'up' : (metrics.users?.growthRate || 0) < 0 ? 'down' : 'stable',
             category: 'users',
-            description: isRTL ? 'المستخدمون النشطون في النظام' : 'Active users in the system',
+            description: t('statistics:trending.stats.user_engagement.description'),
             progress: Math.min((metrics.users?.active || 0) / Math.max(metrics.users?.total || 1, 1) * 100, 100)
           },
           {
             id: '2',
-            title: isRTL ? 'التحديات النشطة' : 'Active Challenges',
+            title: t('statistics:trending.stats.active_challenges.title'),
             value: metrics.challenges?.active || 0,
             change: Math.random() * 30 - 10, // Would be calculated from historical data
             trend: (metrics.challenges?.active || 0) > (metrics.challenges?.total || 0) * 0.5 ? 'up' : 'stable',
             category: 'challenges',
-            description: isRTL ? 'التحديات المتاحة حالياً' : 'Currently available challenges'
+            description: t('statistics:trending.stats.active_challenges.description')
           },
           {
             id: '3',
-            title: isRTL ? 'المشاركات' : 'Submissions',
+            title: t('statistics:trending.stats.submissions.title'),
             value: metrics.challenges?.submissions || 0,
             change: Math.random() * 25 + 5,
             trend: 'up',
             category: 'ideas',
-            description: isRTL ? 'إجمالي المشاركات المقدمة' : 'Total submissions received'
+            description: t('statistics:trending.stats.submissions.description')
           },
           {
             id: '4',
-            title: isRTL ? 'معدل النجاح' : 'Success Rate',
+            title: t('statistics:trending.stats.success_rate.title'),
             value: metrics.system?.uptime || 95,
             change: Math.random() * 10 + 2,
             trend: 'up',
             category: 'events',
-            description: isRTL ? 'معدل نجاح العمليات' : 'System operation success rate',
+            description: t('statistics:trending.stats.success_rate.description'),
             progress: metrics.system?.uptime || 95
           }
         ];
@@ -102,40 +102,40 @@ export const TrendingStatisticsWidget = ({ className = "" }: TrendingStatisticsW
         trendingStats = [
           {
             id: '1',
-            title: isRTL ? 'مشاركة المستخدمين' : 'User Engagement',
+            title: t('statistics:trending.stats.user_engagement.title'),
             value: 87,
             change: 12.3,
             trend: 'up',
             category: 'users',
-            description: isRTL ? 'زيادة في نشاط المستخدمين' : 'Increased user activity',
+            description: t('statistics:trending.stats.user_engagement.description_alt'),
             progress: 87
           },
           {
             id: '2',
-            title: isRTL ? 'الأفكار المقترحة' : 'Submitted Ideas',
+            title: t('statistics:trending.stats.submitted_ideas.title'),
             value: 156,
             change: 23.8,
             trend: 'up',
             category: 'ideas',
-            description: isRTL ? 'أفكار جديدة مبدعة' : 'New innovative ideas'
+            description: t('statistics:trending.stats.submitted_ideas.description')
           },
           {
             id: '3',
-            title: isRTL ? 'التحديات النشطة' : 'Active Challenges',
+            title: t('statistics:trending.stats.active_challenges.title'),
             value: 24,
             change: -5.2,
             trend: 'down',
             category: 'challenges',
-            description: isRTL ? 'التحديات المتاحة حالياً' : 'Currently available challenges'
+            description: t('statistics:trending.stats.active_challenges.description')
           },
           {
             id: '4',
-            title: isRTL ? 'حضور الفعاليات' : 'Event Attendance',
+            title: t('statistics:trending.stats.event_attendance.title'),
             value: 92,
             change: 18.7,
             trend: 'up',
             category: 'events',
-            description: isRTL ? 'معدل حضور ممتاز' : 'Excellent attendance rate',
+            description: t('statistics:trending.stats.event_attendance.description'),
             progress: 92
           }
         ];
@@ -144,7 +144,7 @@ export const TrendingStatisticsWidget = ({ className = "" }: TrendingStatisticsW
       setStats(trendingStats);
     } catch (error) {
       errorHandler.handleError(error, 'TrendingStatisticsWidget.loadStats');
-      toast.error(isRTL ? 'خطأ في تحميل الإحصائيات' : 'Error loading statistics');
+      toast.error(t('statistics:trending.error_loading'));
     } finally {
       setLoading(false);
     }
@@ -178,7 +178,7 @@ export const TrendingStatisticsWidget = ({ className = "" }: TrendingStatisticsW
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
-            {isRTL ? 'الإحصائيات الرائجة' : 'Trending Statistics'}
+            {t('statistics:trending.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -204,7 +204,7 @@ export const TrendingStatisticsWidget = ({ className = "" }: TrendingStatisticsW
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
-            {isRTL ? 'الإحصائيات الرائجة' : 'Trending Statistics'}
+            {t('statistics:trending.title')}
           </CardTitle>
           <Button variant="ghost" size="sm" onClick={refresh}>
             <RefreshCw className="w-4 h-4" />

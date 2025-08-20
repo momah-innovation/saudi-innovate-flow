@@ -292,7 +292,7 @@ export const ComprehensiveEventWizard = ({
       setImagePreview(publicUrl);
       
       toast({
-        title: isRTL ? 'تم رفع الصورة بنجاح' : 'Image uploaded successfully',
+        title: t('events:wizard.toast.image_uploaded'),
       });
     } catch (error) {
       logger.error('Error uploading image', { 
@@ -301,7 +301,7 @@ export const ComprehensiveEventWizard = ({
         data: { fileName: file?.name }
       }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في رفع الصورة' : 'Error uploading image',
+        title: t('events:wizard.toast.image_upload_error'),
         variant: 'destructive'
       });
     } finally {
@@ -314,7 +314,7 @@ export const ComprehensiveEventWizard = ({
       // Validate required fields
       if (!formData.title_ar || !formData.description_ar || !formData.event_date) {
         toast({
-          title: isRTL ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields',
+          title: t('events:wizard.toast.required_fields'),
           variant: 'destructive'
         });
         return;
@@ -387,7 +387,7 @@ export const ComprehensiveEventWizard = ({
       }
 
       toast({
-        title: isRTL ? 'تم حفظ الفعالية بنجاح' : 'Event saved successfully',
+        title: t('events:wizard.toast.save_success'),
       });
 
       onSave(eventData);
@@ -399,7 +399,7 @@ export const ComprehensiveEventWizard = ({
         data: { eventId: formData.id, isEditing: !!formData.id }
       }, error as Error);
       toast({
-        title: isRTL ? 'خطأ في حفظ الفعالية' : 'Error saving event',
+        title: t('events:wizard.toast.save_error'),
         variant: 'destructive'
       });
     }
@@ -410,21 +410,18 @@ export const ComprehensiveEventWizard = ({
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl">
-            {event ? 
-              (isRTL ? 'تعديل الفعالية' : 'Edit Event') : 
-              (isRTL ? 'إنشاء فعالية جديدة' : 'Create New Event')
-            }
+            {event ? t('events:wizard.title_edit') : t('events:wizard.title_create')}
           </DialogTitle>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-6 w-full">
-            <TabsTrigger value="basic">{isRTL ? 'أساسي' : 'Basic'}</TabsTrigger>
-            <TabsTrigger value="details">{isRTL ? 'التفاصيل' : 'Details'}</TabsTrigger>
-            <TabsTrigger value="scheduling">{isRTL ? 'الجدولة' : 'Scheduling'}</TabsTrigger>
-            <TabsTrigger value="participants">{isRTL ? 'المشاركون' : 'Participants'}</TabsTrigger>
-            <TabsTrigger value="resources">{isRTL ? 'الموارد' : 'Resources'}</TabsTrigger>
-            <TabsTrigger value="settings">{isRTL ? 'الإعدادات' : 'Settings'}</TabsTrigger>
+            <TabsTrigger value="basic">{t('events:wizard.tabs.basic')}</TabsTrigger>
+            <TabsTrigger value="details">{t('events:wizard.tabs.details')}</TabsTrigger>
+            <TabsTrigger value="scheduling">{t('events:wizard.tabs.scheduling')}</TabsTrigger>
+            <TabsTrigger value="participants">{t('events:wizard.tabs.participants')}</TabsTrigger>
+            <TabsTrigger value="resources">{t('events:wizard.tabs.resources')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('events:wizard.tabs.settings')}</TabsTrigger>
           </TabsList>
 
           {/* Basic Information Tab */}
@@ -462,15 +459,15 @@ export const ComprehensiveEventWizard = ({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="conference">{t('event_type.conference')}</SelectItem>
-                        <SelectItem value="workshop">{t('event_type.workshop')}</SelectItem>
-                        <SelectItem value="seminar">{isRTL ? 'ندوة' : 'Seminar'}</SelectItem>
-                        <SelectItem value="training">{isRTL ? 'تدريب' : 'Training'}</SelectItem>
-                        <SelectItem value="expo">{isRTL ? 'معرض' : 'Exhibition'}</SelectItem>
-                        <SelectItem value="hackathon">{isRTL ? 'هاكاثون' : 'Hackathon'}</SelectItem>
-                        <SelectItem value="summit">{isRTL ? 'قمة' : 'Summit'}</SelectItem>
-                        <SelectItem value="forum">{isRTL ? 'منتدى' : 'Forum'}</SelectItem>
-                        <SelectItem value="networking">{isRTL ? 'شبكات تواصل' : 'Networking'}</SelectItem>
+                        <SelectItem value="conference">{t('events:event_type.conference')}</SelectItem>
+                        <SelectItem value="workshop">{t('events:event_type.workshop')}</SelectItem>
+                        <SelectItem value="seminar">{t('events:wizard.event_types.seminar')}</SelectItem>
+                        <SelectItem value="training">{t('events:wizard.event_types.training')}</SelectItem>
+                        <SelectItem value="expo">{t('events:wizard.event_types.expo')}</SelectItem>
+                        <SelectItem value="hackathon">{t('events:wizard.event_types.hackathon')}</SelectItem>
+                        <SelectItem value="summit">{t('events:wizard.event_types.summit')}</SelectItem>
+                        <SelectItem value="forum">{t('events:wizard.event_types.forum')}</SelectItem>
+                        <SelectItem value="networking">{t('events:wizard.event_types.networking')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -482,10 +479,10 @@ export const ComprehensiveEventWizard = ({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="standalone">{isRTL ? 'مستقلة' : 'Standalone'}</SelectItem>
-                        <SelectItem value="campaign">{isRTL ? 'جزء من حملة' : 'Campaign Event'}</SelectItem>
-                        <SelectItem value="challenge">{isRTL ? 'مرتبطة بتحدي' : 'Challenge Event'}</SelectItem>
-                        <SelectItem value="series">{isRTL ? 'سلسلة فعاليات' : 'Event Series'}</SelectItem>
+                        <SelectItem value="standalone">{t('events:wizard.event_categories.standalone')}</SelectItem>
+                        <SelectItem value="campaign">{t('events:wizard.event_categories.campaign')}</SelectItem>
+                        <SelectItem value="challenge">{t('events:wizard.event_categories.challenge')}</SelectItem>
+                        <SelectItem value="series">{t('events:wizard.event_categories.series')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -498,9 +495,9 @@ export const ComprehensiveEventWizard = ({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="in_person">{isRTL ? 'حضوري' : 'In-Person'}</SelectItem>
-                      <SelectItem value="virtual">{isRTL ? 'افتراضي' : 'Virtual'}</SelectItem>
-                      <SelectItem value="hybrid">{isRTL ? 'مختلط' : 'Hybrid'}</SelectItem>
+                      <SelectItem value="in_person">{t('events:wizard.event_formats.in_person')}</SelectItem>
+                      <SelectItem value="virtual">{t('events:wizard.event_formats.virtual')}</SelectItem>
+                      <SelectItem value="hybrid">{t('events:wizard.event_formats.hybrid')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -579,11 +576,11 @@ export const ComprehensiveEventWizard = ({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="مجدول">{isRTL ? 'مجدول' : 'Scheduled'}</SelectItem>
-                        <SelectItem value="جاري">{isRTL ? 'جاري' : 'Ongoing'}</SelectItem>
-                        <SelectItem value="مكتمل">{isRTL ? 'مكتمل' : 'Completed'}</SelectItem>
-                        <SelectItem value="ملغي">{isRTL ? 'ملغي' : 'Cancelled'}</SelectItem>
-                        <SelectItem value="مؤجل">{isRTL ? 'مؤجل' : 'Postponed'}</SelectItem>
+                        <SelectItem value="مجدول">{t('events:wizard.event_status.scheduled')}</SelectItem>
+                        <SelectItem value="جاري">{t('events:wizard.event_status.ongoing')}</SelectItem>
+                        <SelectItem value="مكتمل">{t('events:wizard.event_status.completed')}</SelectItem>
+                        <SelectItem value="ملغي">{t('events:wizard.event_status.cancelled')}</SelectItem>
+                        <SelectItem value="مؤجل">{t('events:wizard.event_status.postponed')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -598,19 +595,19 @@ export const ComprehensiveEventWizard = ({
                         <SelectItem value="public">
                           <div className="flex items-center gap-2">
                             <Eye className="w-4 h-4" />
-                            {isRTL ? 'عامة' : 'Public'}
+                            {t('events:wizard.visibility.public')}
                           </div>
                         </SelectItem>
                         <SelectItem value="internal">
                           <div className="flex items-center gap-2">
                             <Building2 className="w-4 h-4" />
-                            {isRTL ? 'داخلية' : 'Internal'}
+                            {t('events:wizard.visibility.internal')}
                           </div>
                         </SelectItem>
                         <SelectItem value="restricted">
                           <div className="flex items-center gap-2">
                             <EyeOff className="w-4 h-4" />
-                            {isRTL ? 'مقيدة' : 'Restricted'}
+                            {t('events:wizard.visibility.restricted')}
                           </div>
                         </SelectItem>
                       </SelectContent>
@@ -1294,13 +1291,10 @@ export const ComprehensiveEventWizard = ({
           </Button>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => handleSave()}>
-              {isRTL ? 'حفظ كمسودة' : 'Save as Draft'}
+              {t('events:wizard.save_draft')}
             </Button>
             <Button onClick={handleSave} disabled={uploading}>
-              {event ? 
-                (isRTL ? 'تحديث الفعالية' : 'Update Event') : 
-                (isRTL ? 'إنشاء الفعالية' : 'Create Event')
-              }
+              {event ? t('events:wizard.update_event') : t('events:wizard.create_event')}
             </Button>
           </div>
         </div>

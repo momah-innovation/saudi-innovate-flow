@@ -81,16 +81,10 @@ const SavedItemsPage = () => {
   };
 
   const getStatusText = (status: string) => {
-    const statusMap = {
-      active: isRTL ? 'نشط' : 'Active',
-      upcoming: isRTL ? 'قادم' : 'Upcoming',
-      under_review: isRTL ? 'قيد المراجعة' : 'Under Review',
-      closed: isRTL ? 'مغلق' : 'Closed',
-      completed: isRTL ? 'مكتمل' : 'Completed',
-      draft: isRTL ? 'مسودة' : 'Draft',
-      published: isRTL ? 'منشور' : 'Published'
-    };
-    return statusMap[status as keyof typeof statusMap] || status;
+    const statusKey = `saved:status.${status}`;
+    const translated = t(statusKey);
+    // Return original status if translation key not found
+    return translated !== statusKey ? translated : status;
   };
 
   const getPriorityColor = (priority: string) => {
@@ -228,15 +222,15 @@ const SavedItemsPage = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => setSelectedItem({...data, type, notes: bookmark.notes})}>
                   <Eye className="w-4 h-4 mr-2" />
-                  {isRTL ? 'عرض التفاصيل' : 'View Details'}
+                  {t('saved:actions.view_details')}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Edit3 className="w-4 h-4 mr-2" />
-                  {isRTL ? 'تعديل الملاحظات' : 'Edit Notes'}
+                  {t('saved:actions.edit_notes')}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Move className="w-4 h-4 mr-2" />
-                  {isRTL ? 'نقل إلى مجموعة' : 'Move to Collection'}
+                  {t('saved:actions.move_to_collection')}
                 </DropdownMenuItem>
                 <Separator />
                 <DropdownMenuItem 
@@ -244,7 +238,7 @@ const SavedItemsPage = () => {
                   className="text-red-600"
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
-                  {isRTL ? 'حذف من المحفوظات' : 'Remove Bookmark'}
+                  {t('saved:actions.remove_bookmark')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -262,13 +256,13 @@ const SavedItemsPage = () => {
           {bookmark.notes && (
             <div className="mb-4 p-3 bg-muted/50 rounded-lg">
               <p className="text-sm text-muted-foreground">
-                <strong>{isRTL ? 'ملاحظة:' : 'Note:'}</strong> {bookmark.notes}
+                <strong>{t('saved:item.note_label')}</strong> {bookmark.notes}
               </p>
             </div>
           )}
           
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-            <span>{isRTL ? 'محفوظ في:' : 'Saved:'} {new Date(bookmark.created_at).toLocaleDateString()}</span>
+            <span>{t('saved:item.saved_on')} {new Date(bookmark.created_at).toLocaleDateString()}</span>
           </div>
           
           <div className="flex gap-2">
@@ -278,15 +272,15 @@ const SavedItemsPage = () => {
               onClick={() => setSelectedItem({...data, type, notes: bookmark.notes})}
             >
               <Eye className="w-4 h-4 mr-2" />
-              {isRTL ? 'عرض' : 'View'}
+              {t('saved:actions.view')}
             </Button>
             
             <Button size="sm">
               {type === 'challenge' ? 
-                (isRTL ? 'المشاركة' : 'Participate') : 
+                t('saved:actions.participate') : 
                 type === 'event' ?
-                (isRTL ? 'التسجيل' : 'Register') :
-                (isRTL ? 'فتح' : 'Open')
+                t('saved:actions.register') :
+                t('saved:actions.open')
               }
             </Button>
           </div>
@@ -347,7 +341,7 @@ const SavedItemsPage = () => {
               />
               <span className="text-sm text-muted-foreground">
                 {selectedItems.length > 0 && (
-                  <span>{selectedItems.length} {isRTL ? 'عنصر محدد' : 'items selected'}</span>
+                  <span>{selectedItems.length} {t('saved:item.selected_items')}</span>
                 )}
               </span>
             </div>
@@ -356,19 +350,19 @@ const SavedItemsPage = () => {
               <div className="flex gap-2">
                 <Button size="sm" variant="outline">
                   <Copy className="w-4 h-4 mr-2" />
-                  {isRTL ? 'نسخ' : 'Copy'}
+                  {t('saved:actions.copy')}
                 </Button>
                 <Button size="sm" variant="outline">
                   <Move className="w-4 h-4 mr-2" />
-                  {isRTL ? 'نقل' : 'Move'}
+                  {t('saved:actions.move')}
                 </Button>
                 <Button size="sm" variant="outline">
                   <Archive className="w-4 h-4 mr-2" />
-                  {isRTL ? 'أرشفة' : 'Archive'}
+                  {t('saved:actions.archive')}
                 </Button>
                 <Button size="sm" variant="destructive">
                   <Trash2 className="w-4 h-4 mr-2" />
-                  {isRTL ? 'حذف' : 'Delete'}
+                  {t('saved:actions.delete')}
                 </Button>
               </div>
             )}
@@ -399,31 +393,31 @@ const SavedItemsPage = () => {
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{challengeBookmarks.length}</div>
-              <div className="text-sm text-muted-foreground">{isRTL ? 'التحديات' : 'Challenges'}</div>
+              <div className="text-sm text-muted-foreground">{t('saved:quick_stats.challenges')}</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{eventBookmarks.length}</div>
-              <div className="text-sm text-muted-foreground">{isRTL ? 'الفعاليات' : 'Events'}</div>
+              <div className="text-sm text-muted-foreground">{t('saved:quick_stats.events')}</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{ideaBookmarks.length}</div>
-              <div className="text-sm text-muted-foreground">{isRTL ? 'الأفكار' : 'Ideas'}</div>
+              <div className="text-sm text-muted-foreground">{t('saved:quick_stats.ideas')}</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{opportunityBookmarks.length + partnerBookmarks.length}</div>
-              <div className="text-sm text-muted-foreground">{isRTL ? 'الشراكات' : 'Partnerships'}</div>
+              <div className="text-sm text-muted-foreground">{t('saved:quick_stats.partnerships')}</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{collections.length}</div>
-              <div className="text-sm text-muted-foreground">{isRTL ? 'المجموعات' : 'Collections'}</div>
+              <div className="text-sm text-muted-foreground">{t('saved:quick_stats.collections')}</div>
             </CardContent>
           </Card>
         </div>
@@ -434,7 +428,7 @@ const SavedItemsPage = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
-                placeholder={isRTL ? 'البحث في العناصر المحفوظة...' : 'Search saved items...'}
+                placeholder={t('saved:search.placeholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -447,45 +441,45 @@ const SavedItemsPage = () => {
               <DialogTrigger asChild>
                 <Button variant="outline">
                   <FolderPlus className="w-4 h-4 mr-2" />
-                  {isRTL ? 'مجموعة جديدة' : 'New Collection'}
+                  {t('saved:actions.new_collection')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>{isRTL ? 'إنشاء مجموعة جديدة' : 'Create New Collection'}</DialogTitle>
+                  <DialogTitle>{t('saved:collection.create_title')}</DialogTitle>
                   <DialogDescription>
-                    {isRTL ? 'أنشئ مجموعة لتنظيم العناصر المحفوظة' : 'Create a collection to organize your saved items'}
+                    {t('saved:collection.create_description')}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">{isRTL ? 'الاسم بالعربية' : 'Name (Arabic)'}</label>
+                    <label className="text-sm font-medium">{t('saved:collection.name_arabic')}</label>
                     <Input 
                       value={newCollectionData.name_ar}
                       onChange={(e) => setNewCollectionData(prev => ({...prev, name_ar: e.target.value}))}
-                      placeholder={isRTL ? 'اسم المجموعة بالعربية' : 'Collection name in Arabic'}
+                      placeholder={t('saved:collection.name_arabic_placeholder')}
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{isRTL ? 'الاسم بالإنجليزية' : 'Name (English)'}</label>
+                    <label className="text-sm font-medium">{t('saved:collection.name_english')}</label>
                     <Input 
                       value={newCollectionData.name_en}
                       onChange={(e) => setNewCollectionData(prev => ({...prev, name_en: e.target.value}))}
-                      placeholder={isRTL ? 'اسم المجموعة بالإنجليزية' : 'Collection name in English'}
+                      placeholder={t('saved:collection.name_english_placeholder')}
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{isRTL ? 'الوصف' : 'Description'}</label>
+                    <label className="text-sm font-medium">{t('saved:collection.description')}</label>
                     <Textarea 
                       value={newCollectionData.description_ar}
                       onChange={(e) => setNewCollectionData(prev => ({...prev, description_ar: e.target.value}))}
-                      placeholder={isRTL ? 'وصف المجموعة' : 'Collection description'}
+                      placeholder={t('saved:collection.description_placeholder')}
                     />
                   </div>
                   <div className="flex gap-2">
-                    <Button className="flex-1">{isRTL ? 'إنشاء' : 'Create'}</Button>
+                    <Button className="flex-1">{t('saved:actions.create')}</Button>
                     <Button variant="outline" onClick={() => setShowNewCollectionDialog(false)}>
-                      {isRTL ? 'إلغاء' : 'Cancel'}
+                      {t('saved:actions.cancel')}
                     </Button>
                   </div>
                 </div>
@@ -494,13 +488,13 @@ const SavedItemsPage = () => {
 
             <Select value={priorityFilter} onValueChange={setPriorityFilter}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder={isRTL ? 'الأولوية' : 'Priority'} />
+                <SelectValue placeholder={t('saved:filters.priority')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'الكل' : 'All'}</SelectItem>
-                <SelectItem value="high">{isRTL ? 'عالية' : 'High'}</SelectItem>
-                <SelectItem value="medium">{isRTL ? 'متوسطة' : 'Medium'}</SelectItem>
-                <SelectItem value="low">{isRTL ? 'منخفضة' : 'Low'}</SelectItem>
+                <SelectItem value="all">{t('saved:priority.all')}</SelectItem>
+                <SelectItem value="high">{t('saved:priority.high')}</SelectItem>
+                <SelectItem value="medium">{t('saved:priority.medium')}</SelectItem>
+                <SelectItem value="low">{t('saved:priority.low')}</SelectItem>
               </SelectContent>
             </Select>
             
@@ -530,52 +524,52 @@ const SavedItemsPage = () => {
           <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10">
             <TabsTrigger value="challenges" className="flex items-center gap-1">
               <Target className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'التحديات' : 'Challenges'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.challenges')}</span>
               <Badge variant="secondary" className="ml-1">{challengeBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="events" className="flex items-center gap-1">
               <Calendar className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'الفعاليات' : 'Events'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.events')}</span>
               <Badge variant="secondary" className="ml-1">{eventBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="ideas" className="flex items-center gap-1">
               <Lightbulb className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'الأفكار' : 'Ideas'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.ideas')}</span>
               <Badge variant="secondary" className="ml-1">{ideaBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="questions" className="flex items-center gap-1">
               <HelpCircle className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'الأسئلة' : 'Questions'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.questions')}</span>
               <Badge variant="secondary" className="ml-1">{focusQuestionBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="campaigns" className="flex items-center gap-1">
               <Zap className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'الحملات' : 'Campaigns'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.campaigns')}</span>
               <Badge variant="secondary" className="ml-1">{campaignBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="opportunities" className="flex items-center gap-1">
               <Briefcase className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'الفرص' : 'Opportunities'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.opportunities')}</span>
               <Badge variant="secondary" className="ml-1">{opportunityBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="partners" className="flex items-center gap-1">
               <Building className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'الشركاء' : 'Partners'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.partners')}</span>
               <Badge variant="secondary" className="ml-1">{partnerBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="teams" className="flex items-center gap-1">
               <Users className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'الفرق' : 'Teams'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.teams')}</span>
               <Badge variant="secondary" className="ml-1">{publicTeams.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="experts" className="flex items-center gap-1">
               <UserCheck className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'الخبراء' : 'Experts'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.experts')}</span>
               <Badge variant="secondary" className="ml-1">{expertBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="collections" className="flex items-center gap-1">
               <FolderPlus className="w-3 h-3" />
-              <span className="hidden sm:inline">{isRTL ? 'المجموعات' : 'Collections'}</span>
+              <span className="hidden sm:inline">{t('saved:tabs.collections')}</span>
               <Badge variant="secondary" className="ml-1">{collections.length}</Badge>
             </TabsTrigger>
           </TabsList>
@@ -585,8 +579,8 @@ const SavedItemsPage = () => {
               challengeBookmarks,
               (bookmark) => renderGenericCard(bookmark, 'challenge', 'challenges'),
               <Target className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد تحديات محفوظة' : 'No saved challenges',
-              isRTL ? 'ابدأ بحفظ التحديات المثيرة للاهتمام' : 'Start saving interesting challenges'
+              t('saved:empty_states.no_saved_challenges'),
+              t('saved:empty_states.start_saving_challenges')
             )}
           </TabsContent>
 
@@ -595,8 +589,8 @@ const SavedItemsPage = () => {
               eventBookmarks,
               (bookmark) => renderGenericCard(bookmark, 'event', 'events'),
               <Calendar className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد فعاليات محفوظة' : 'No saved events',
-              isRTL ? 'احفظ الفعاليات التي تهمك' : 'Save events that interest you'
+              t('saved:empty_states.no_saved_events'),
+              t('saved:empty_states.save_events')
             )}
           </TabsContent>
 
@@ -605,8 +599,8 @@ const SavedItemsPage = () => {
               ideaBookmarks,
               (bookmark) => renderGenericCard(bookmark, 'idea', 'ideas'),
               <Lightbulb className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد أفكار محفوظة' : 'No saved ideas',
-              isRTL ? 'احفظ الأفكار الملهمة' : 'Save inspiring ideas'
+              t('saved:empty_states.no_saved_ideas'),
+              t('saved:empty_states.save_ideas')
             )}
           </TabsContent>
 
@@ -615,8 +609,8 @@ const SavedItemsPage = () => {
               focusQuestionBookmarks,
               (bookmark) => renderGenericCard(bookmark, 'focus_question', 'focus_questions'),
               <HelpCircle className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد أسئلة محفوظة' : 'No saved questions',
-              isRTL ? 'احفظ الأسئلة المهمة' : 'Save important questions'
+              t('saved:empty_states.no_saved_questions'),
+              t('saved:empty_states.save_questions')
             )}
           </TabsContent>
 
@@ -625,8 +619,8 @@ const SavedItemsPage = () => {
               campaignBookmarks,
               (bookmark) => renderGenericCard(bookmark, 'campaign', 'campaigns'),
               <Zap className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد حملات محفوظة' : 'No saved campaigns',
-              isRTL ? 'احفظ الحملات التي تتابعها' : 'Save campaigns you follow'
+              t('saved:empty_states.no_saved_campaigns'),
+              t('saved:empty_states.save_campaigns')
             )}
           </TabsContent>
 
@@ -635,8 +629,8 @@ const SavedItemsPage = () => {
               opportunityBookmarks,
               (bookmark) => renderGenericCard(bookmark, 'opportunity', 'partnership_opportunities'),
               <Briefcase className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد فرص شراكة محفوظة' : 'No saved partnership opportunities',
-              isRTL ? 'احفظ فرص الشراكة المثيرة للاهتمام' : 'Save interesting partnership opportunities'
+              t('saved:empty_states.no_saved_opportunities'),
+              t('saved:empty_states.save_opportunities')
             )}
           </TabsContent>
 
@@ -645,8 +639,8 @@ const SavedItemsPage = () => {
               partnerBookmarks,
               (bookmark) => renderGenericCard(bookmark, 'partner', 'partners'),
               <Building className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد شركاء محفوظون' : 'No saved partners',
-              isRTL ? 'احفظ ملفات الشركاء المهمين' : 'Save important partner profiles'
+              t('saved:empty_states.no_saved_partners'),
+              t('saved:empty_states.save_partners')
             )}
           </TabsContent>
 
@@ -655,8 +649,8 @@ const SavedItemsPage = () => {
               publicTeams,
               (team) => renderGenericCard(team, 'team'),
               <Users className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد فرق عامة' : 'No public teams',
-              isRTL ? 'اكتشف الفرق العامة النشطة' : 'Discover active public teams'
+              t('saved:empty_states.no_public_teams'),
+              t('saved:empty_states.discover_teams')
             )}
           </TabsContent>
 
@@ -665,8 +659,8 @@ const SavedItemsPage = () => {
               expertBookmarks,
               (bookmark) => renderGenericCard(bookmark, 'expert'),
               <UserCheck className="w-8 h-8 text-muted-foreground" />,
-              isRTL ? 'لا توجد خبراء محفوظون' : 'No saved experts',
-              isRTL ? 'احفظ ملفات الخبراء المهمين' : 'Save important expert profiles'
+              t('saved:empty_states.no_saved_experts'),
+              t('saved:empty_states.save_experts')
             )}
           </TabsContent>
 
@@ -697,10 +691,10 @@ const SavedItemsPage = () => {
                   <CardContent>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">
-                        0 {isRTL ? 'عنصر' : 'items'}
+                        0 {t('saved:collection.items_count')}
                       </span>
                       <Button size="sm" variant="outline">
-                        {isRTL ? 'عرض' : 'View'}
+                        {t('saved:actions.view')}
                       </Button>
                     </div>
                   </CardContent>
@@ -726,15 +720,15 @@ const SavedItemsPage = () => {
                 </p>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <strong>{isRTL ? 'الحالة:' : 'Status:'}</strong> {getStatusText(selectedItem.status || 'active')}
+                    <strong>{t('saved:item.status_label')}</strong> {getStatusText(selectedItem.status || 'active')}
                   </div>
                   <div>
-                    <strong>{isRTL ? 'النوع:' : 'Type:'}</strong> {selectedItem.type}
+                    <strong>{t('saved:item.type_label')}</strong> {selectedItem.type}
                   </div>
                 </div>
                 {selectedItem.notes && (
                   <div>
-                    <strong>{isRTL ? 'الملاحظات:' : 'Notes:'}</strong>
+                    <strong>{t('saved:item.notes_label')}</strong>
                     <p className="mt-2 p-3 bg-muted rounded-lg">{selectedItem.notes}</p>
                   </div>
                 )}

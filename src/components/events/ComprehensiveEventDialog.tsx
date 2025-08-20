@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { debugLog } from '@/utils/debugLogger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -88,6 +89,7 @@ export const ComprehensiveEventDialog = ({
   if (!event) return null;
 
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { user, hasRole } = useAuth();
   const [activeTab, setActiveTab] = useState('details');
   
@@ -144,11 +146,18 @@ export const ComprehensiveEventDialog = ({
   };
 
   const getStatusText = (status: string) => {
-    if (status === 'مجدول') return isRTL ? 'مجدول' : 'Scheduled';
-    if (status === 'جاري') return isRTL ? 'جاري' : 'Ongoing';
-    if (status === 'مكتمل') return isRTL ? 'مكتمل' : 'Completed';
-    if (status === 'ملغي') return isRTL ? 'ملغي' : 'Cancelled';
-    return status;
+    const statusMap: { [key: string]: string } = {
+      'مجدول': 'scheduled',
+      'جاري': 'ongoing',
+      'مكتمل': 'completed',
+      'ملغي': 'cancelled',
+      'scheduled': 'scheduled',
+      'ongoing': 'ongoing',
+      'completed': 'completed',
+      'cancelled': 'cancelled'
+    };
+    const statusKey = statusMap[status] || status;
+    return t(`events:status.${statusKey}`);
   };
 
   const formatDate = (dateString: string) => {
@@ -227,14 +236,14 @@ export const ComprehensiveEventDialog = ({
                     {event.format === 'virtual' && (
                       <Badge variant="secondary" className="flex items-center gap-1">
                         <Globe className="w-3 h-3" />
-                        {isRTL ? 'عبر الإنترنت' : 'Online'}
+                        {t('events:registration_page.virtual')}
                       </Badge>
                     )}
                     {event.format === 'hybrid' && (
                       <Badge variant="secondary" className="flex items-center gap-1">
                         <MapPin className="w-3 h-3" />
                         <Video className="w-3 h-3" />
-                        {isRTL ? 'مختلط' : 'Hybrid'}
+                        {t('events:registration_page.hybrid')}
                       </Badge>
                     )}
                   </div>
@@ -282,7 +291,7 @@ export const ComprehensiveEventDialog = ({
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
-                  <span className="truncate">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
+                  <span className="truncate">{event.location || (event.format === 'virtual' ? t('events:details.online_event') : t('events:details.location_tbd'))}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-muted-foreground" />
@@ -294,14 +303,14 @@ export const ComprehensiveEventDialog = ({
               {event.max_participants && (
                 <div className="mt-4">
                   <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                    <span>{isRTL ? 'حالة التسجيل' : 'Registration Status'}</span>
-                    <span>{Math.round(getRegistrationPercentage())}% {isRTL ? 'ممتلئ' : 'full'}</span>
+                    <span>{t('events:details.registration_status')}</span>
+                    <span>{Math.round(getRegistrationPercentage())}% {t('events:details.full')}</span>
                   </div>
                   <Progress value={getRegistrationPercentage()} className="h-2" />
                   {getRegistrationPercentage() > 80 && (
                     <p className="text-xs text-orange-600 mt-1 flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" />
-                      {isRTL ? 'أماكن محدودة متبقية' : 'Limited spots remaining'}
+                      {t('events:details.limited_spots_remaining')}
                     </p>
                   )}
                 </div>
@@ -314,32 +323,32 @@ export const ComprehensiveEventDialog = ({
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className={`grid w-full grid-cols-${visibleTabs.length}`}>
             <TabsTrigger value="details">
-              {isRTL ? 'التفاصيل' : 'Details'}
+              {t('events:tabs.details')}
             </TabsTrigger>
             <TabsTrigger value="registration">
-              {isRTL ? 'التسجيل' : 'Registration'}
+              {t('events:tabs.registration')}
             </TabsTrigger>
             <TabsTrigger value="feedback">
-              {isRTL ? 'التقييمات' : 'Feedback'}
+              {t('events:tabs.feedback')}
             </TabsTrigger>
             {canShowParticipants && (
               <TabsTrigger value="attendees">
-                {isRTL ? 'الحضور' : 'Attendees'}
+                {t('events:tabs.attendees')}
               </TabsTrigger>
             )}
             {canShowPartners && (
               <TabsTrigger value="partners">
-                {isRTL ? 'الشركاء' : 'Partners'}
+                {t('events:tabs.partners')}
               </TabsTrigger>
             )}
             {canShowRelated && (
               <TabsTrigger value="related">
-                {isRTL ? 'ذات صلة' : 'Related'}
+                {t('events:tabs.related')}
               </TabsTrigger>
             )}
             {canShowResources && (
               <TabsTrigger value="resources">
-                {isRTL ? 'الموارد' : 'Resources'}
+                {t('events:tabs.resources')}
               </TabsTrigger>
             )}
           </TabsList>
@@ -352,30 +361,30 @@ export const ComprehensiveEventDialog = ({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Calendar className="w-5 h-5" />
-                    {isRTL ? 'معلومات الفعالية' : 'Event Information'}
+                    {t('events:details.event_information')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="font-medium mb-1">{isRTL ? 'الوصف' : 'Description'}</h4>
+                    <h4 className="font-medium mb-1">{t('events:details.description')}</h4>
                     <p className="text-sm text-muted-foreground">{event.description_ar}</p>
                   </div>
                   <Separator />
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="font-medium">{isRTL ? 'النوع:' : 'Type:'}</span>
+                      <span className="font-medium">{t('events:details.type_label')}</span>
                       <span className="ml-2">{event.event_type}</span>
                     </div>
                     <div>
-                      <span className="font-medium">{isRTL ? 'الصيغة:' : 'Format:'}</span>
+                      <span className="font-medium">{t('events:details.format_label')}</span>
                       <span className="ml-2">{event.format}</span>
                     </div>
                     <div>
-                      <span className="font-medium">{isRTL ? 'الفئة:' : 'Category:'}</span>
+                      <span className="font-medium">{t('events:details.category_label')}</span>
                       <span className="ml-2">{event.event_category}</span>
                     </div>
                     <div>
-                      <span className="font-medium">{isRTL ? 'الرؤية:' : 'Visibility:'}</span>
+                      <span className="font-medium">{t('events:details.visibility_label')}</span>
                       <span className="ml-2">{event.event_visibility}</span>
                     </div>
                   </div>
@@ -383,12 +392,12 @@ export const ComprehensiveEventDialog = ({
                     <>
                       <Separator />
                       <div>
-                        <h4 className="font-medium mb-2">{isRTL ? 'رابط الحضور الافتراضي' : 'Virtual Meeting Link'}</h4>
+                        <h4 className="font-medium mb-2">{t('events:details.virtual_meeting_link')}</h4>
                         <Button variant="outline" size="sm" asChild>
                           <a href={event.virtual_link} target="_blank" rel="noopener noreferrer"
                              onClick={(e) => { e.preventDefault(); window.open(event.virtual_link, '_blank', 'noopener noreferrer'); }}>
                             <Video className="w-4 h-4 mr-2" />
-                            {isRTL ? 'انضم للاجتماع' : 'Join Meeting'}
+                            {t('events:details.join_meeting')}
                           </a>
                         </Button>
                       </div>
@@ -402,26 +411,26 @@ export const ComprehensiveEventDialog = ({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendingUp className="w-5 h-5" />
-                    {isRTL ? 'الإحصائيات' : 'Statistics'}
+                    {t('events:details.statistics')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
                       <div className="text-2xl font-bold text-foreground">{participantCount || event.registered_participants}</div>
-                      <div className="text-xs text-muted-foreground">{isRTL ? 'مسجل' : 'Registered'}</div>
+                      <div className="text-xs text-muted-foreground">{t('events:attendance.registered')}</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
                       <div className="text-2xl font-bold text-foreground">{event.actual_participants}</div>
-                      <div className="text-xs text-muted-foreground">{isRTL ? 'حضر' : 'Attended'}</div>
+                      <div className="text-xs text-muted-foreground">{t('events:details.attended')}</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
                       <div className="text-2xl font-bold text-foreground">{interactions?.likes_count || 0}</div>
-                      <div className="text-xs text-muted-foreground">{isRTL ? 'إعجاب' : 'Likes'}</div>
+                      <div className="text-xs text-muted-foreground">{t('events:details.likes')}</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
                       <div className="text-2xl font-bold text-foreground">{interactions?.feedback_count || 0}</div>
-                      <div className="text-xs text-muted-foreground">{isRTL ? 'تقييم' : 'Reviews'}</div>
+                      <div className="text-xs text-muted-foreground">{t('events:details.reviews')}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -435,20 +444,20 @@ export const ComprehensiveEventDialog = ({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <UserCheck className="w-5 h-5" />
-                  {isRTL ? 'معلومات التسجيل' : 'Registration Information'}
+                  {t('events:details.registration_information')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {event.max_participants && (
                   <div>
                     <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                      <span>{isRTL ? 'المقاعد المحجوزة' : 'Seats Reserved'}</span>
+                      <span>{t('events:details.seats_reserved')}</span>
                       <span>{event.registered_participants} / {event.max_participants}</span>
                     </div>
                     <Progress value={getRegistrationPercentage()} className="h-3" />
                     <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                      <span>{Math.round(getRegistrationPercentage())}% {isRTL ? 'ممتلئ' : 'full'}</span>
-                      <span>{(event.max_participants - event.registered_participants)} {isRTL ? 'مقعد متبقي' : 'spots left'}</span>
+                      <span>{Math.round(getRegistrationPercentage())}% {t('events:details.full')}</span>
+                      <span>{(event.max_participants - event.registered_participants)} {t('events:registration.spots_left', { count: event.max_participants - event.registered_participants })}</span>
                     </div>
                   </div>
                 )}
@@ -457,9 +466,9 @@ export const ComprehensiveEventDialog = ({
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-5 h-5 text-muted-foreground" />
-                      <span className="font-medium">{isRTL ? 'رسوم التسجيل' : 'Registration Fee'}</span>
+                      <span className="font-medium">{t('events:details.registration_fee')}</span>
                     </div>
-                    <span className="text-lg font-bold">{event.budget.toLocaleString()} {isRTL ? 'ر.س' : 'SAR'}</span>
+                    <span className="text-lg font-bold">{event.budget.toLocaleString()} {t('events:details.sar')}</span>
                   </div>
                 )}
 
@@ -467,10 +476,10 @@ export const ComprehensiveEventDialog = ({
                   <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
                     <div className="flex items-center gap-2 text-green-800 dark:text-green-400 mb-2">
                       <CheckCircle2 className="w-5 h-5" />
-                      <span className="font-medium">{isRTL ? 'مسجل بنجاح!' : 'Successfully Registered!'}</span>
+                      <span className="font-medium">{t('events:details.successfully_registered')}</span>
                     </div>
                     <p className="text-sm text-green-700 dark:text-green-300">
-                      {isRTL ? 'أنت مسجل في هذه الفعالية. سيتم إرسال تفاصيل إضافية قريباً.' : 'You are registered for this event. Additional details will be sent soon.'}
+                      {t('events:details.registered_message')}
                     </p>
                   </div>
                 )}
@@ -551,25 +560,25 @@ export const ComprehensiveEventDialog = ({
                     
                     if (isEventPast) {
                       if (interactions?.isRegistered) {
-                        return isRTL ? 'تم الحضور' : 'Attended';
+                        return t('events:details.attended');
                       } else {
-                        return isRTL ? 'انتهت الفعالية' : 'Event Ended';
+                        return t('events:details.event_ended');
                       }
                     }
                     
                     if (isEventFull) {
-                      return isRTL ? 'الفعالية ممتلئة' : 'Event Full';
+                      return t('events:details.event_full');
                     }
                     
                     if (event.status === 'completed' || event.status === 'مكتمل') {
-                      return isRTL ? 'انتهت الفعالية' : 'Event Ended';
+                      return t('events:details.event_ended');
                     }
                     
                     if (interactions?.isRegistered) {
-                      return isRTL ? 'إلغاء التسجيل' : 'Cancel Registration';
+                      return t('events:details.cancel_registration');
                     }
                     
-                    return isRTL ? 'سجل الآن' : 'Register Now';
+                    return t('events:details.register_now');
                   })()}
                 </Button>
               </CardContent>
@@ -582,14 +591,14 @@ export const ComprehensiveEventDialog = ({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Star className="w-5 h-5" />
-                  {isRTL ? 'التقييمات والمراجعات' : 'Ratings & Reviews'}
+                  {t('events:details.ratings_reviews')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-center py-8 text-muted-foreground">
                   <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>{isRTL ? 'لا توجد تقييمات بعد' : 'No reviews yet'}</p>
-                  <p className="text-sm">{isRTL ? 'كن أول من يترك تقييماً لهذه الفعالية' : 'Be the first to review this event'}</p>
+                  <p>{t('events:details.no_reviews_yet')}</p>
+                  <p className="text-sm">{t('events:details.be_first_to_review')}</p>
                 </div>
               </CardContent>
             </Card>

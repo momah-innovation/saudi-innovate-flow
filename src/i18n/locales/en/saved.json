@@ -1,0 +1,215 @@
+{
+    "page_title": "Saved Items",
+    "quick_stats": {
+        "challenges": "Challenges",
+        "events": "Events",
+        "ideas": "Ideas",
+        "partnerships": "Partnerships",
+        "collections": "Collections"
+    },
+    "status": {
+        "active": "Active",
+        "upcoming": "Upcoming",
+        "under_review": "Under Review",
+        "closed": "Closed",
+        "completed": "Completed",
+        "draft": "Draft",
+        "published": "Published"
+    },
+    "priority": {
+        "all": "All",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+    },
+    "actions": {
+        "view_details": "View Details",
+        "edit_notes": "Edit Notes",
+        "move_to_collection": "Move to Collection",
+        "remove_bookmark": "Remove Bookmark",
+        "view": "View",
+        "participate": "Participate",
+        "register": "Register",
+        "open": "Open",
+        "copy": "Copy",
+        "move": "Move",
+        "archive": "Archive",
+        "delete": "Delete",
+        "create": "Create",
+        "cancel": "Cancel",
+        "new_collection": "New Collection"
+    },
+    "tabs": {
+        "challenges": "Challenges",
+        "events": "Events",
+        "ideas": "Ideas",
+        "questions": "Questions",
+        "campaigns": "Campaigns",
+        "opportunities": "Opportunities",
+        "partners": "Partners",
+        "teams": "Teams",
+        "experts": "Experts",
+        "collections": "Collections"
+    },
+    "empty_states": {
+        "no_saved_challenges": "No saved challenges",
+        "start_saving_challenges": "Start saving interesting challenges",
+        "no_saved_events": "No saved events",
+        "save_events": "Save events that interest you",
+        "no_saved_ideas": "No saved ideas",
+        "save_ideas": "Save inspiring ideas",
+        "no_saved_questions": "No saved questions",
+        "save_questions": "Save important questions",
+        "no_saved_campaigns": "No saved campaigns",
+        "save_campaigns": "Save campaigns you follow",
+        "no_saved_opportunities": "No saved partnership opportunities",
+        "save_opportunities": "Save interesting partnership opportunities",
+        "no_saved_partners": "No saved partners",
+        "save_partners": "Save important partner profiles",
+        "no_public_teams": "No public teams",
+        "discover_teams": "Discover active public teams",
+        "no_saved_experts": "No saved experts",
+        "save_experts": "Save important expert profiles"
+    },
+    "search": {
+        "placeholder": "Search saved items..."
+    },
+    "collection": {
+        "create_title": "Create New Collection",
+        "create_description": "Create a collection to organize your saved items",
+        "name_arabic": "Name (Arabic)",
+        "name_english": "Name (English)",
+        "description": "Description",
+        "name_arabic_placeholder": "Collection name in Arabic",
+        "name_english_placeholder": "Collection name in English",
+        "description_placeholder": "Collection description",
+        "items_count": "items"
+    },
+    "item": {
+        "saved_item": "Saved Item",
+        "saved_on": "Saved:",
+        "note_label": "Note:",
+        "notes_label": "Notes:",
+        "status_label": "Status:",
+        "type_label": "Type:",
+        "selected_items": "items selected",
+        "item_details": "Item Details",
+        "no_description": "No description available"
+    },
+    "filters": {
+        "priority": "Priority"
+    },
+    "notifications": {
+        "title": "Notifications",
+        "mark_all_read": "Mark all read",
+        "no_notifications": "No notifications",
+        "high_priority": "High Priority",
+        "all_marked_read": "All notifications marked as read",
+        "types": {
+            "bookmark_added": {
+                "title": "New Item Bookmarked",
+                "message": "Digital Innovation Conference saved to Events collection",
+                "new_item_title": "New Item Added",
+                "new_item_message": "A new item was saved to your collections"
+            },
+            "collection_shared": {
+                "title": "Collection Shared",
+                "message": "Ahmed Al-Mohammed shared \"Tech Challenges\" collection with you"
+            },
+            "item_liked": {
+                "title": "Item Liked",
+                "message": "Fatima Al-Ali liked your idea \"Smart Energy Management System\""
+            },
+            "reminder": {
+                "title": "Reminder Due",
+                "message": "Registration deadline for \"Entrepreneurship Workshop\" is tomorrow"
+            },
+            "collaboration": {
+                "title": "Collaboration Invite",
+                "message": "Mohammed Al-Saud invited you to collaborate on \"AI in Education\" project"
+            }
+        },
+        "time_ago": {
+            "just_now": "Just now",
+            "minutes_ago": "{{count}}m ago",
+            "hours_ago": "{{count}}h ago",
+            "days_ago": "{{count}}d ago"
+        }
+    },
+    "hero": {
+        "badge": "Saved Content Hub",
+        "title": "Organize Your",
+        "title_highlight": "Saved",
+        "title_suffix": "Content",
+        "subtitle": "Manage and organize all your saved content in one place with advanced search and categorization tools",
+        "stats": {
+            "bookmarks": "bookmarks",
+            "collections": "collections",
+            "tags": "tags",
+            "recent_activity": "recent activity"
+        },
+        "buttons": {
+            "create_collection": "Create New Collection",
+            "advanced_filters": "Advanced Filters",
+            "take_tour": "Take Tour"
+        },
+        "badges": {
+            "organized": "Organized",
+            "favorites": "Favorites"
+        },
+        "collections_card": {
+            "title": "Your Organized Collections",
+            "collections_label": "collections",
+            "items_per_collection": "items/collection",
+            "browse_collections": "Browse Collections"
+        },
+        "quick_actions": {
+            "recent_saves": "Recent Saves",
+            "active_tags": "Active Tags",
+            "items": "items",
+            "tags": "tags"
+        }
+    },
+    "analytics": {
+        "metrics": {
+            "total_bookmarks": "Total Bookmarks",
+            "collections": "Collections",
+            "recent_activity": "Recent Activity",
+            "favorite_items": "Favorite Items",
+            "from_last_month": "from last month"
+        },
+        "tabs": {
+            "overview": "Overview",
+            "trends": "Trends",
+            "categories": "Categories",
+            "collections": "Collections"
+        },
+        "categories": {
+            "challenges": "Challenges",
+            "events": "Events",
+            "ideas": "Ideas",
+            "others": "Others"
+        },
+        "collection_types": {
+            "personal": "Personal Collections",
+            "public": "Public Collections",
+            "shared": "Shared Collections"
+        },
+        "charts": {
+            "bookmark_growth": "Bookmark Growth",
+            "bookmarks_label": "Bookmarks:",
+            "collections_label": "Collections:",
+            "weekly_activity": "Weekly Activity",
+            "new_bookmarks": "New Bookmarks",
+            "collections_created": "Collections Created",
+            "items_shared": "Items Shared",
+            "trend_analysis": "Trend Analysis",
+            "bookmarks": "Bookmarks",
+            "collections": "Collections",
+            "activity": "Activity",
+            "top_categories": "Top Categories",
+            "collection_types": "Collection Types",
+            "of_total_collections": "of total collections"
+        }
+    }
+}

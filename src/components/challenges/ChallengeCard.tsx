@@ -168,13 +168,13 @@ export const ChallengeCard = ({
                     <h3 className="font-semibold text-lg truncate">{title}</h3>
                      {isNew && (
                        <Badge variant="secondary" className={challengesPageConfig.badges.new}>
-                         {isRTL ? 'جديد' : 'New'}
+                         {t('challenges:badges.new')}
                       </Badge>
                     )}
                      {isUrgent && (
                        <Badge variant="secondary" className={challengesPageConfig.badges.urgent}>
                          <AlertCircle className="w-3 h-3 mr-1" />
-                        {isRTL ? 'عاجل' : 'Urgent'}
+                        {t('challenges:badges.urgent')}
                       </Badge>
                     )}
                   </div>
@@ -194,7 +194,7 @@ export const ChallengeCard = ({
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-3 h-3 text-muted-foreground" />
-                      <span>{daysLeft || 0} {isRTL ? 'يوم' : 'days'}</span>
+                      <span>{daysLeft || 0} {t('challenges:time.days')}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Star className="w-3 h-3 text-muted-foreground" />
@@ -216,22 +216,22 @@ export const ChallengeCard = ({
                   <div className="flex items-center gap-1">
                     <IconActionButton
                       icon={<Heart className={cn("w-4 h-4", isLiked && `fill-current ${challengesPageConfig.ui.colors.stats.red}`)} />}
-                      tooltip={isRTL ? 'أعجبني' : 'Like'}
+                      tooltip={t('challenges:actions.like')}
                       onClick={handleLike}
                     />
                     <IconActionButton
                       icon={<BookmarkIcon className={cn("w-4 h-4", isBookmarked && "fill-current")} />}
-                      tooltip={isRTL ? 'حفظ' : 'Bookmark'}
+                      tooltip={t('challenges:actions.bookmark')}
                       onClick={handleBookmark}
                     />
                     <IconActionButton
                       icon={<Share2 className="w-4 h-4" />}
-                      tooltip={isRTL ? 'مشاركة' : 'Share'}
+                      tooltip={t('challenges:actions.share')}
                       onClick={handleShare}
                     />
                     <IconActionButton
                       icon={<Eye className="w-4 h-4" />}
-                      tooltip={isRTL ? 'التفاصيل' : 'View Details'}
+                      tooltip={t('challenges:actions.view_details')}
                       onClick={() => onViewDetails(challenge)}
                     />
                     <Button 
@@ -240,7 +240,7 @@ export const ChallengeCard = ({
                       disabled={challenge.status !== 'active' && challenge.status !== 'published'}
                       className={`ml-2 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
                     >
-                      {isRTL ? 'شارك' : 'Join'}
+                      {t('challenges:actions.join')}
                     </Button>
                   </div>
                 </div>
@@ -250,7 +250,7 @@ export const ChallengeCard = ({
               {variant === 'enhanced' && challenge.start_date && challenge.end_date && (
                 <div className="mt-3">
                   <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>{isRTL ? 'التقدم' : 'Progress'}</span>
+                    <span>{t('challenges:progress.label')}</span>
                     <span>{Math.round(progress)}%</span>
                   </div>
                   <Progress value={progress} className="h-1.5" />
@@ -304,19 +304,19 @@ export const ChallengeCard = ({
         <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <IconActionButton
             icon={<Heart className={cn("w-4 h-4", isLiked && `fill-current ${challengesPageConfig.ui.colors.stats.red}`)} />}
-            tooltip={isRTL ? 'أعجبني' : 'Like'}
+            tooltip={t('challenges:actions.like')}
             onClick={handleLike}
              className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.glassMorphism.cardHover}`}
           />
           <IconActionButton
             icon={<BookmarkIcon className={cn("w-4 h-4", isBookmarked && "fill-current")} />}
-            tooltip={isRTL ? 'حفظ' : 'Bookmark'}
+            tooltip={t('challenges:actions.bookmark')}
             onClick={handleBookmark}
              className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.glassMorphism.cardHover}`}
           />
           <IconActionButton
             icon={<Share2 className="w-4 h-4" />}
-            tooltip={isRTL ? 'مشاركة' : 'Share'}
+            tooltip={t('challenges:actions.share')}
             onClick={handleShare}
             className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.glassMorphism.cardHover}`}
           />
@@ -327,7 +327,7 @@ export const ChallengeCard = ({
           <div className="absolute bottom-3 left-3">
             <Badge className={`${challengesPageConfig.badges.urgent} animate-pulse`}>
               <AlertCircle className="w-3 h-3 mr-1" />
-              {daysLeft} {isRTL ? 'أيام' : 'days'}
+              {daysLeft} {t('challenges:time.days')}
             </Badge>
           </div>
         )}
@@ -336,12 +336,12 @@ export const ChallengeCard = ({
         <div className="absolute bottom-3 right-3">
           <div className={`${challengesPageConfig.ui.glassMorphism.heavy} rounded-lg p-2 text-center min-w-[4rem]`}>
             <div className="text-xs font-medium text-muted-foreground">
-              {isRTL ? 'الجائزة' : 'Prize'}
+              {t('challenges:prize.label')}
             </div>
             <div className="text-sm font-bold">
               {challenge.estimated_budget ? 
                 `${(challenge.estimated_budget / 1000).toFixed(0)}k` : 
-                (isRTL ? 'غير محدد' : 'TBD')
+                t('challenges:prize.tbd')
               }
             </div>
           </div>
@@ -378,7 +378,7 @@ export const ChallengeCard = ({
         {/* Experts */}
         {variant === 'enhanced' && challenge.experts && challenge.experts.length > 0 && (
           <div className="flex items-center gap-2 mt-3 p-2 bg-muted/30 rounded-lg">
-            <span className="text-sm font-medium">{isRTL ? 'الخبراء:' : 'Experts:'}</span>
+            <span className="text-sm font-medium">{t('challenges:experts.label')}</span>
             <div className="flex -space-x-1">
               {challenge.experts.slice(0, 3).map((expert, index) => (
                 <Avatar key={index} className="w-6 h-6 border-2 border-background">
@@ -399,7 +399,7 @@ export const ChallengeCard = ({
         {variant === 'enhanced' && challenge.start_date && challenge.end_date && (
           <div className="mt-3">
             <div className="flex justify-between text-sm text-muted-foreground mb-2">
-              <span>{isRTL ? 'التقدم' : 'Progress'}</span>
+              <span>{t('challenges:progress.label')}</span>
               <span>{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-2" />
@@ -417,15 +417,15 @@ export const ChallengeCard = ({
           <div className="grid grid-cols-3 gap-3 mb-4">
             <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.featured} border ${challengesPageConfig.ui.glassMorphism.badge} rounded-xl shadow-sm`}>
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.purple}`}>{challenge.participants || 0}</div>
-              <div className={`text-xs ${challengesPageConfig.ui.colors.stats.purple}`}>{isRTL ? 'مشارك' : 'participants'}</div>
+              <div className={`text-xs ${challengesPageConfig.ui.colors.stats.purple}`}>{t('challenges:stats.participants')}</div>
             </div>
             <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.info} border ${challengesPageConfig.ui.glassMorphism.badge} rounded-xl shadow-sm`}>
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.blue}`}>{challenge.submissions || 0}</div>
-              <div className={`text-xs ${challengesPageConfig.ui.colors.stats.blue}`}>{isRTL ? 'مقترح' : 'submissions'}</div>
+              <div className={`text-xs ${challengesPageConfig.ui.colors.stats.blue}`}>{t('challenges:stats.submissions')}</div>
             </div>
             <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.success} border ${challengesPageConfig.ui.glassMorphism.badge} rounded-xl shadow-sm`}>
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.green}`}>{challenge.success_rate || 85}%</div>
-              <div className={`text-xs ${challengesPageConfig.ui.colors.stats.green}`}>{isRTL ? 'نجاح' : 'success'}</div>
+              <div className={`text-xs ${challengesPageConfig.ui.colors.stats.green}`}>{t('challenges:stats.success')}</div>
             </div>
           </div>
         )}
@@ -434,7 +434,7 @@ export const ChallengeCard = ({
         <div className="flex gap-2">
           <IconActionButton
             icon={<Eye className="w-4 h-4" />}
-            tooltip={isRTL ? 'التفاصيل' : 'View Details'}
+            tooltip={t('challenges:actions.view_details')}
             onClick={() => onViewDetails(challenge)}
             variant="outline"
           />
@@ -445,8 +445,8 @@ export const ChallengeCard = ({
           >
             <Zap className="w-4 h-4 mr-2" />
             {challenge.status !== 'active' && challenge.status !== 'published' ? 
-              (isRTL ? 'غير متاح' : 'Unavailable') :
-              (isRTL ? 'شارك الآن' : 'Participate')
+              t('challenges:actions.unavailable') :
+              t('challenges:actions.participate')
             }
           </Button>
         </div>

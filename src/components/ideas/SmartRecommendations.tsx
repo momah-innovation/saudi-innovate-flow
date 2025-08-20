@@ -42,6 +42,7 @@ export function SmartRecommendations({
   onIdeaClick 
 }: SmartRecommendationsProps) {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -192,7 +193,7 @@ export function SmartRecommendations({
         recommended_idea_id: idea.id,
         recommendation_type: 'popular',
         confidence_score: 8.5,
-        reasoning: isRTL ? 'فكرة شائعة ومحبوبة من المجتمع' : 'Popular idea loved by the community',
+        reasoning: t('ideas:recommendations.popular_idea_reasoning'),
         created_at: new Date().toISOString(),
         ideas: idea
       }));
@@ -229,28 +230,20 @@ export function SmartRecommendations({
   };
 
   const generateReasoning = (type: string, idea: any): string => {
-    const reasons = {
-      high_potential: isRTL ? 
-        `فكرة عالية الجودة بنتيجة ${idea.overall_score}/10` :
-        `High-quality idea with score ${idea.overall_score}/10`,
-      trending: isRTL ?
-        `فكرة رائجة بـ ${idea.like_count} إعجاب` :
-        `Trending idea with ${idea.like_count} likes`,
-      popular: isRTL ?
-        `فكرة شائعة بـ ${idea.view_count} مشاهدة` :
-        `Popular idea with ${idea.view_count} views`,
-      similar_interests: isRTL ?
-        'قد تعجبك بناءً على اهتماماتك' :
-        'You might like this based on your interests',
-      expert_recommended: isRTL ?
-        'موصى بها من قبل الخبراء' :
-        'Recommended by experts',
-      discovery: isRTL ?
-        'اكتشف شيئاً جديداً' :
-        'Discover something new'
-    };
-    
-    return reasons[type as keyof typeof reasons] || reasons.discovery;
+    switch (type) {
+      case 'high_potential':
+        return t('ideas:recommendations.reasoning.high_potential', { score: idea.overall_score });
+      case 'trending':
+        return t('ideas:recommendations.reasoning.trending', { likes: idea.like_count });
+      case 'popular':
+        return t('ideas:recommendations.reasoning.popular', { views: idea.view_count });
+      case 'similar_interests':
+        return t('ideas:recommendations.reasoning.similar_interests');
+      case 'expert_recommended':
+        return t('ideas:recommendations.reasoning.expert_recommended');
+      default:
+        return t('ideas:recommendations.reasoning.discovery');
+    }
   };
 
   const getRecommendationIcon = (type: string) => {
@@ -276,15 +269,18 @@ export function SmartRecommendations({
   };
 
   const getRecommendationLabel = (type: string) => {
-    const labels = {
-      high_potential: isRTL ? 'إمكانية عالية' : 'High Potential',
-      trending: isRTL ? 'رائجة' : 'Trending',
-      popular: isRTL ? 'شائعة' : 'Popular',
-      similar_interests: isRTL ? 'مشابهة لاهتماماتك' : 'Similar Interests',
-      expert_recommended: isRTL ? 'موصى بها' : 'Expert Pick',
-      discovery: isRTL ? 'اكتشاف' : 'Discovery'
+    const typeKey = type as keyof typeof types;
+    const types = {
+      high_potential: 'high_potential',
+      trending: 'trending',
+      popular: 'popular',
+      similar_interests: 'similar_interests',
+      expert_recommended: 'expert_recommended',
+      discovery: 'discovery'
     };
-    return labels[type as keyof typeof labels] || labels.discovery;
+    
+    const validType = types[typeKey] || 'discovery';
+    return t(`ideas:recommendations.types.${validType}`);
   };
 
   const handleIdeaClick = async (recommendation: Recommendation) => {
@@ -348,15 +344,15 @@ export function SmartRecommendations({
           <div>
             <h2 className="text-xl font-bold flex items-center gap-2">
               <Sparkles className="w-5 h-5" />
-              {isRTL ? 'توصيات ذكية لك' : 'Smart Recommendations'}
+              {t('ideas:recommendations.title')}
             </h2>
             <p className="text-sm text-muted-foreground">
-              {isRTL ? 'أفكار مختارة بعناية قد تهمك' : 'Carefully curated ideas you might find interesting'}
+              {t('ideas:recommendations.description')}
             </p>
           </div>
           <Button variant="outline" size="sm" onClick={refreshRecommendations}>
             <ArrowRight className="w-4 h-4" />
-            {isRTL ? 'تحديث' : 'Refresh'}
+            {t('ideas:recommendations.refresh')}
           </Button>
         </div>
       )}
@@ -403,11 +399,11 @@ export function SmartRecommendations({
                   </div>
                   <div className="flex items-center gap-1">
                     <Users className="w-3 h-3" />
-                    <span>{recommendation.ideas?.like_count} {isRTL ? 'إعجاب' : 'likes'}</span>
+                    <span>{recommendation.ideas?.like_count} {t('ideas:recommendations.likes')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    <span>{recommendation.ideas?.view_count} {isRTL ? 'مشاهدة' : 'views'}</span>
+                    <span>{recommendation.ideas?.view_count} {t('ideas:recommendations.views')}</span>
                   </div>
                 </div>
 
@@ -424,17 +420,14 @@ export function SmartRecommendations({
         <div className="text-center py-12">
           <Sparkles className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
           <h3 className="text-lg font-medium mb-2">
-            {isRTL ? 'لا توجد توصيات متاحة' : 'No Recommendations Available'}
+            {t('ideas:recommendations.no_recommendations_title')}
           </h3>
           <p className="text-muted-foreground mb-4">
-            {isRTL ? 
-              'تفاعل مع المزيد من الأفكار للحصول على توصيات مخصصة' :
-              'Interact with more ideas to get personalized recommendations'
-            }
+            {t('ideas:recommendations.no_recommendations_description')}
           </p>
           <Button onClick={refreshRecommendations} className="gap-2">
             <ArrowRight className="w-4 h-4" />
-            {isRTL ? 'إنشاء توصيات' : 'Generate Recommendations'}
+            {t('ideas:recommendations.generate')}
           </Button>
         </div>
       )}

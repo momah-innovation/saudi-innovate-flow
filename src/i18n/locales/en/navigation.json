@@ -15,7 +15,7 @@
   },
   "admin": {
     "admin_dashboard": "Admin Dashboard",
-    "user_management": "User Management", 
+    "user_management": "User Management",
     "challenges_management": "Challenges Management",
     "campaigns_management": "Campaigns Management",
     "events_management": "Events Management",
@@ -38,9 +38,14 @@
   "landing": {
     "about": "About",
     "campaigns": "Campaigns",
-    "marketplace": "Marketplace", 
+    "marketplace": "Marketplace",
     "pricing": "Pricing",
-    "learn_more": "Learn More"
+    "learn_more": "Learn More",
+    "logo_text": "Ruwād",
+    "welcome": "Welcome",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "get_started": "Get Started"
   },
   "breadcrumbs": {
     "workspaces": "Workspaces",
@@ -81,7 +86,7 @@
     "main": "Main",
     "innovation": "Innovation",
     "management": "Management",
-    "analytics": "Analytics", 
+    "analytics": "Analytics",
     "settings": "Settings",
     "advanced": "Advanced"
   },

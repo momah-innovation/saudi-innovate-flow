@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useState } from 'react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Expert {
   id: string;
@@ -40,6 +41,7 @@ export const ExpertShowcase = ({
   onFilterByExpert 
 }: ExpertShowcaseProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [showAll, setShowAll] = useState(false);
   
   // Get featured expert (highest rated available expert)
@@ -62,7 +64,7 @@ export const ExpertShowcase = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Crown className="w-5 h-5 text-purple-600" />
-            {isRTL ? 'شبكة الخبراء' : 'Expert Network'}
+            {t('experts:network.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -70,25 +72,25 @@ export const ExpertShowcase = ({
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">{experts.length}</div>
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'إجمالي الخبراء' : 'Total Experts'}
+                {t('experts:network.total_experts')}
               </div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600">{availableCount}</div>
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'متاحون الآن' : 'Available Now'}
+                {t('experts:network.available_now')}
               </div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">{totalExperience}+</div>
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'سنوات خبرة' : 'Years Experience'}
+                {t('experts:network.years_experience')}
               </div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-600">4.8</div>
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'تقييم متوسط' : 'Avg Rating'}
+                {t('experts:network.avg_rating')}
               </div>
             </div>
           </div>
@@ -102,10 +104,10 @@ export const ExpertShowcase = ({
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-primary fill-current" />
-                {isRTL ? 'خبير مميز' : 'Featured Expert'}
+                {t('experts:network.featured_expert')}
               </CardTitle>
               <Badge className="bg-primary text-white">
-                {isRTL ? 'مميز' : 'Featured'}
+                {t('experts:network.featured_badge')}
               </Badge>
             </div>
           </CardHeader>
@@ -131,11 +133,11 @@ export const ExpertShowcase = ({
                   </div>
                   <div className="flex items-center gap-1">
                     <Target className="w-4 h-4 text-primary" />
-                    <span>{featuredExpert.active_challenges} {isRTL ? 'تحديات نشطة' : 'active challenges'}</span>
+                    <span>{featuredExpert.active_challenges} {t('experts:network.active_challenges')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <BookOpen className="w-4 h-4 text-primary" />
-                    <span>{featuredExpert.mentored_projects} {isRTL ? 'مشروع منتور' : 'mentored projects'}</span>
+                    <span>{featuredExpert.mentored_projects} {t('experts:network.mentored_projects')}</span>
                   </div>
                 </div>
                 
@@ -147,14 +149,14 @@ export const ExpertShowcase = ({
                 
                 <div className="flex gap-2">
                   <Button onClick={() => onExpertSelect(featuredExpert)}>
-                    {isRTL ? 'عرض الملف الشخصي' : 'View Profile'}
+                    {t('experts:network.view_profile')}
                   </Button>
                   <Button 
                     variant="outline" 
                     onClick={() => onFilterByExpert(featuredExpert.id)}
                   >
                     <Filter className="w-4 h-4 mr-2" />
-                    {isRTL ? 'تحدياته' : 'Their Challenges'}
+                    {t('experts:network.their_challenges')}
                   </Button>
                 </div>
               </div>
@@ -167,19 +169,19 @@ export const ExpertShowcase = ({
       <div>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold">{isRTL ? 'شبكة الخبراء' : 'Expert Network'}</h2>
+            <h2 className="text-2xl font-bold">{t('experts:network.title')}</h2>
             <p className="text-muted-foreground">
-              {isRTL ? 'تعرف على الخبراء المرشدين في التحديات' : 'Meet the expert mentors guiding our challenges'}
+              {t('experts:network.description')}
             </p>
           </div>
           
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setShowAll(!showAll)}>
-              {showAll ? (isRTL ? 'عرض أقل' : 'Show Less') : (isRTL ? 'عرض الكل' : 'Show All')}
+              {showAll ? t('experts:network.show_less') : t('experts:network.show_all')}
             </Button>
             <Button onClick={onViewAll}>
               <Search className="w-4 h-4 mr-2" />
-              {isRTL ? 'استكشف الخبراء' : 'Browse Experts'}
+              {t('experts:network.browse_experts')}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
@@ -200,7 +202,7 @@ export const ExpertShowcase = ({
       {/* Quick Access to Expert Categories */}
       <Card>
         <CardHeader>
-          <CardTitle>{isRTL ? 'تصفح حسب التخصص' : 'Browse by Specialization'}</CardTitle>
+          <CardTitle>{t('experts:specialization.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -215,7 +217,7 @@ export const ExpertShowcase = ({
                 <div>
                   <div className="font-medium text-sm">{category}</div>
                   <div className="text-xs text-muted-foreground">
-                    {experts.length} {isRTL ? 'خبراء' : 'experts'}
+                    {experts.length} {t('experts:network.experts_count')}
                   </div>
                 </div>
               </Button>

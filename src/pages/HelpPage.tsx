@@ -14,6 +14,7 @@ import {
   User, Calendar, Tag
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Link } from 'react-router-dom';
 
 const mockFAQs = [
@@ -126,40 +127,41 @@ const mockVideos = [
 
 const HelpPage = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const contactMethods = [
     {
       icon: MessageCircle,
-      title: isRTL ? 'الدردشة المباشرة' : 'Live Chat',
-      description: isRTL ? 'متاح 24/7 للمساعدة الفورية' : 'Available 24/7 for instant help',
-      action: isRTL ? 'بدء المحادثة' : 'Start Chat',
-      availability: isRTL ? 'متاح الآن' : 'Available Now'
+      title: t('help:contact.live_chat.title'),
+      description: t('help:contact.live_chat.description'),
+      action: t('help:contact.live_chat.action'),
+      availability: t('help:contact.live_chat.availability')
     },
     {
       icon: Mail,
-      title: isRTL ? 'البريد الإلكتروني' : 'Email Support',
-      description: isRTL ? 'سنرد خلال 24 ساعة' : 'We respond within 24 hours',
-      action: isRTL ? 'إرسال رسالة' : 'Send Email',
+      title: t('help:contact.email.title'),
+      description: t('help:contact.email.description'),
+      action: t('help:contact.email.action'),
       availability: 'support@platform.com'
     },
     {
       icon: Phone,
-      title: isRTL ? 'الهاتف' : 'Phone Support',
-      description: isRTL ? 'الأحد-الخميس 9ص-5م' : 'Sun-Thu 9AM-5PM',
-      action: isRTL ? 'اتصال' : 'Call Now',
+      title: t('help:contact.phone.title'),
+      description: t('help:contact.phone.description'),
+      action: t('help:contact.phone.action'),
       availability: '+966 11 123 4567'
     }
   ];
 
   const categories = [
-    { value: 'all', label: isRTL ? 'جميع الفئات' : 'All Categories' },
-    { value: 'account', label: isRTL ? 'الحساب' : 'Account' },
-    { value: 'ideas', label: isRTL ? 'الأفكار' : 'Ideas' },
-    { value: 'projects', label: isRTL ? 'المشاريع' : 'Projects' },
-    { value: 'evaluation', label: isRTL ? 'التقييم' : 'Evaluation' },
-    { value: 'technical', label: isRTL ? 'تقني' : 'Technical' }
+    { value: 'all', label: t('help:categories.all') },
+    { value: 'account', label: t('help:categories.account') },
+    { value: 'ideas', label: t('help:categories.ideas') },
+    { value: 'projects', label: t('help:categories.projects') },
+    { value: 'evaluation', label: t('help:categories.evaluation') },
+    { value: 'technical', label: t('help:categories.technical') }
   ];
 
   const getLevelColor = (level: string) => {
@@ -239,7 +241,7 @@ const HelpPage = () => {
           <div className="flex justify-between items-center text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Book className="h-4 w-4" />
-              <span>{guide.chapters} {isRTL ? 'فصل' : 'chapters'}</span>
+              <span>{guide.chapters} {t('help:guide.chapters')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
@@ -248,7 +250,7 @@ const HelpPage = () => {
           </div>
           <Button className="w-full">
             <ChevronRight className="h-4 w-4 mr-2" />
-            {isRTL ? 'بدء القراءة' : 'Start Reading'}
+            {t('help:guide.start_reading')}
           </Button>
         </div>
       </CardContent>
@@ -277,12 +279,12 @@ const HelpPage = () => {
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                 <span>{video.rating}</span>
               </div>
-              <span>{formatNumber(video.views)} {isRTL ? 'مشاهدة' : 'views'}</span>
+              <span>{formatNumber(video.views)} {t('help:video.views')}</span>
             </div>
           </div>
           <Button className="w-full">
             <Video className="h-4 w-4 mr-2" />
-            {isRTL ? 'مشاهدة الفيديو' : 'Watch Video'}
+            {t('help:video.watch')}
           </Button>
         </div>
       </CardContent>
@@ -316,20 +318,20 @@ const HelpPage = () => {
   return (
     <AppShell>
       <PageLayout
-        title={isRTL ? 'المساعدة والوثائق' : 'Help & Documentation'}
-        description={isRTL ? 'العثور على إجابات وأدلة شاملة لاستخدام المنصة' : 'Find answers and comprehensive guides for using the platform'}
+        title={t('help:title')}
+        description={t('help:description')}
       >
         <div className="space-y-6">
           {/* Quick Search */}
           <Card>
             <CardContent className="p-6">
               <div className="text-center space-y-4">
-                <h2 className="text-2xl font-bold">{isRTL ? 'كيف يمكننا مساعدتك؟' : 'How can we help you?'}</h2>
+                <h2 className="text-2xl font-bold">{t('help:search_title')}</h2>
                 <div className="max-w-md mx-auto">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder={isRTL ? 'ابحث عن إجابة...' : 'Search for an answer...'}
+                      placeholder={t('help:search_placeholder')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10"
@@ -342,11 +344,11 @@ const HelpPage = () => {
 
           <Tabs defaultValue="faq" className="w-full">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="faq">{isRTL ? 'الأسئلة الشائعة' : 'FAQ'}</TabsTrigger>
-              <TabsTrigger value="guides">{isRTL ? 'الأدلة' : 'Guides'}</TabsTrigger>
-              <TabsTrigger value="videos">{isRTL ? 'الفيديوهات' : 'Videos'}</TabsTrigger>
-              <TabsTrigger value="contact">{isRTL ? 'اتصل بنا' : 'Contact'}</TabsTrigger>
-              <TabsTrigger value="downloads">{isRTL ? 'التحميلات' : 'Downloads'}</TabsTrigger>
+              <TabsTrigger value="faq">{t('help:tabs.faq')}</TabsTrigger>
+              <TabsTrigger value="guides">{t('help:tabs.guides')}</TabsTrigger>
+              <TabsTrigger value="videos">{t('help:tabs.videos')}</TabsTrigger>
+              <TabsTrigger value="contact">{t('help:tabs.contact')}</TabsTrigger>
+              <TabsTrigger value="downloads">{t('help:tabs.downloads')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="faq" className="space-y-4">
@@ -390,10 +392,10 @@ const HelpPage = () => {
             <TabsContent value="contact" className="space-y-6">
               <div className="text-center mb-6">
                 <h2 className="text-2xl font-bold mb-2">
-                  {isRTL ? 'تحتاج مساعدة إضافية؟' : 'Need additional help?'}
+                  {t('help:need_help')}
                 </h2>
                 <p className="text-muted-foreground">
-                  {isRTL ? 'فريق الدعم متاح لمساعدتك' : 'Our support team is here to help you'}
+                  {t('help:support_available')}
                 </p>
               </div>
               
@@ -410,10 +412,10 @@ const HelpPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Download className="h-5 w-5" />
-                      {isRTL ? 'دليل المستخدم' : 'User Manual'}
+                      {t('help:downloads.user_manual.title')}
                     </CardTitle>
                     <CardDescription>
-                      {isRTL ? 'دليل شامل لجميع ميزات المنصة' : 'Comprehensive guide to all platform features'}
+                      {t('help:downloads.user_manual.description')}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -421,7 +423,7 @@ const HelpPage = () => {
                       <div className="text-sm text-muted-foreground">PDF - 2.3 MB</div>
                       <Button className="w-full">
                         <Download className="h-4 w-4 mr-2" />
-                        {isRTL ? 'تحميل' : 'Download'}
+                        {t('help:downloads.download')}
                       </Button>
                     </div>
                   </CardContent>
@@ -431,19 +433,19 @@ const HelpPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Book className="h-5 w-5" />
-                      {isRTL ? 'وثائق مساحات العمل' : 'Workspace Documentation'}
+                      {t('help:downloads.workspace_docs.title')}
                     </CardTitle>
                     <CardDescription>
-                      {isRTL ? 'دليل شامل لفهم أنواع مساحات العمل ووظائفها' : 'Comprehensive guide to workspace types and their functions'}
+                      {t('help:downloads.workspace_docs.description')}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      <div className="text-sm text-muted-foreground">{isRTL ? 'صفحة ويب' : 'Web Page'}</div>
+                      <div className="text-sm text-muted-foreground">{t('help:downloads.workspace_docs.type')}</div>
                       <Button className="w-full" asChild>
                       <Link to="/docs/workspaces">
                         <ExternalLink className="h-4 w-4 mr-2" />
-                        {isRTL ? 'عرض الوثائق' : 'View Documentation'}
+                        {t('help:downloads.workspace_docs.action')}
                       </Link>
                       </Button>
                     </div>
@@ -454,10 +456,10 @@ const HelpPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Download className="h-5 w-5" />
-                      {isRTL ? 'قوالب المشاريع' : 'Project Templates'}
+                      {t('help:downloads.project_templates.title')}
                     </CardTitle>
                     <CardDescription>
-                      {isRTL ? 'قوالب جاهزة لإنشاء مشاريع ناجحة' : 'Ready templates for creating successful projects'}
+                      {t('help:downloads.project_templates.description')}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -465,7 +467,7 @@ const HelpPage = () => {
                       <div className="text-sm text-muted-foreground">ZIP - 1.8 MB</div>
                       <Button className="w-full">
                         <Download className="h-4 w-4 mr-2" />
-                        {isRTL ? 'تحميل' : 'Download'}
+                        {t('help:downloads.download')}
                       </Button>
                     </div>
                   </CardContent>
@@ -475,10 +477,10 @@ const HelpPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Download className="h-5 w-5" />
-                      {isRTL ? 'دليل المطورين' : 'Developer Guide'}
+                      {t('help:downloads.developer_guide.title')}
                     </CardTitle>
                     <CardDescription>
-                      {isRTL ? 'وثائق للمطورين والمهندسين' : 'Documentation for developers and engineers'}
+                      {t('help:downloads.developer_guide.description')}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -486,7 +488,7 @@ const HelpPage = () => {
                       <div className="text-sm text-muted-foreground">PDF - 4.1 MB</div>
                       <Button className="w-full">
                         <Download className="h-4 w-4 mr-2" />
-                        {isRTL ? 'تحميل' : 'Download'}
+                        {t('help:downloads.download')}
                       </Button>
                     </div>
                   </CardContent>

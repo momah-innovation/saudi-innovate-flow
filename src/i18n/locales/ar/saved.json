@@ -1,0 +1,215 @@
+{
+    "page_title": "العناصر المحفوظة",
+    "quick_stats": {
+        "challenges": "التحديات",
+        "events": "الفعاليات",
+        "ideas": "الأفكار",
+        "partnerships": "الشراكات",
+        "collections": "المجموعات"
+    },
+    "status": {
+        "active": "نشط",
+        "upcoming": "قادم",
+        "under_review": "قيد المراجعة",
+        "closed": "مغلق",
+        "completed": "مكتمل",
+        "draft": "مسودة",
+        "published": "منشور"
+    },
+    "priority": {
+        "all": "الكل",
+        "high": "عالية",
+        "medium": "متوسطة",
+        "low": "منخفضة"
+    },
+    "actions": {
+        "view_details": "عرض التفاصيل",
+        "edit_notes": "تعديل الملاحظات",
+        "move_to_collection": "نقل إلى مجموعة",
+        "remove_bookmark": "حذف من المحفوظات",
+        "view": "عرض",
+        "participate": "المشاركة",
+        "register": "التسجيل",
+        "open": "فتح",
+        "copy": "نسخ",
+        "move": "نقل",
+        "archive": "أرشفة",
+        "delete": "حذف",
+        "create": "إنشاء",
+        "cancel": "إلغاء",
+        "new_collection": "مجموعة جديدة"
+    },
+    "tabs": {
+        "challenges": "التحديات",
+        "events": "الفعاليات",
+        "ideas": "الأفكار",
+        "questions": "الأسئلة",
+        "campaigns": "الحملات",
+        "opportunities": "الفرص",
+        "partners": "الشركاء",
+        "teams": "الفرق",
+        "experts": "الخبراء",
+        "collections": "المجموعات"
+    },
+    "empty_states": {
+        "no_saved_challenges": "لا توجد تحديات محفوظة",
+        "start_saving_challenges": "ابدأ بحفظ التحديات المثيرة للاهتمام",
+        "no_saved_events": "لا توجد فعاليات محفوظة",
+        "save_events": "احفظ الفعاليات التي تهمك",
+        "no_saved_ideas": "لا توجد أفكار محفوظة",
+        "save_ideas": "احفظ الأفكار الملهمة",
+        "no_saved_questions": "لا توجد أسئلة محفوظة",
+        "save_questions": "احفظ الأسئلة المهمة",
+        "no_saved_campaigns": "لا توجد حملات محفوظة",
+        "save_campaigns": "احفظ الحملات التي تتابعها",
+        "no_saved_opportunities": "لا توجد فرص شراكة محفوظة",
+        "save_opportunities": "احفظ فرص الشراكة المثيرة للاهتمام",
+        "no_saved_partners": "لا توجد شركاء محفوظون",
+        "save_partners": "احفظ ملفات الشركاء المهمين",
+        "no_public_teams": "لا توجد فرق عامة",
+        "discover_teams": "اكتشف الفرق العامة النشطة",
+        "no_saved_experts": "لا توجد خبراء محفوظون",
+        "save_experts": "احفظ ملفات الخبراء المهمين"
+    },
+    "search": {
+        "placeholder": "البحث في العناصر المحفوظة..."
+    },
+    "collection": {
+        "create_title": "إنشاء مجموعة جديدة",
+        "create_description": "أنشئ مجموعة لتنظيم العناصر المحفوظة",
+        "name_arabic": "الاسم بالعربية",
+        "name_english": "الاسم بالإنجليزية",
+        "description": "الوصف",
+        "name_arabic_placeholder": "اسم المجموعة بالعربية",
+        "name_english_placeholder": "اسم المجموعة بالإنجليزية",
+        "description_placeholder": "وصف المجموعة",
+        "items_count": "عنصر"
+    },
+    "item": {
+        "saved_item": "عنصر محفوظ",
+        "saved_on": "محفوظ في:",
+        "note_label": "ملاحظة:",
+        "notes_label": "الملاحظات:",
+        "status_label": "الحالة:",
+        "type_label": "النوع:",
+        "selected_items": "عنصر محدد",
+        "item_details": "تفاصيل العنصر",
+        "no_description": "لا يوجد وصف متاح"
+    },
+    "filters": {
+        "priority": "الأولوية"
+    },
+    "notifications": {
+        "title": "الإشعارات",
+        "mark_all_read": "قراءة الكل",
+        "no_notifications": "لا توجد إشعارات",
+        "high_priority": "أولوية عالية",
+        "all_marked_read": "تم وضع علامة قراءة على جميع الإشعارات",
+        "types": {
+            "bookmark_added": {
+                "title": "تم إضافة عنصر جديد",
+                "message": "تم حفظ \"مؤتمر الابتكار الرقمي\" في مجموعة الفعاليات",
+                "new_item_title": "تم إضافة عنصر جديد",
+                "new_item_message": "تم حفظ عنصر جديد في مجموعاتك"
+            },
+            "collection_shared": {
+                "title": "تمت مشاركة مجموعة",
+                "message": "شارك أحمد المحمد مجموعة \"التحديات التقنية\" معك"
+            },
+            "item_liked": {
+                "title": "إعجاب بعنصر",
+                "message": "أعجبت فاطمة العلي بفكرة \"نظام إدارة الطاقة الذكي\""
+            },
+            "reminder": {
+                "title": "تذكير موعد",
+                "message": "موعد انتهاء تسجيل \"ورشة ريادة الأعمال\" غداً"
+            },
+            "collaboration": {
+                "title": "دعوة للتعاون",
+                "message": "دعاك محمد السعود للتعاون في مشروع \"الذكاء الاصطناعي في التعليم\""
+            }
+        },
+        "time_ago": {
+            "just_now": "الآن",
+            "minutes_ago": "منذ {{count}} دقيقة",
+            "hours_ago": "منذ {{count}} ساعة",
+            "days_ago": "منذ {{count}} يوم"
+        }
+    },
+    "hero": {
+        "badge": "مركز المحتوى المحفوظ",
+        "title": "نظم",
+        "title_highlight": "محتواك",
+        "title_suffix": "المحفوظ",
+        "subtitle": "إدارة وتنظيم جميع المحتوى المحفوظ في مكان واحد مع أدوات متقدمة للبحث والتصنيف",
+        "stats": {
+            "bookmarks": "محفوظة",
+            "collections": "مجموعة",
+            "tags": "علامة",
+            "recent_activity": "نشاط حديث"
+        },
+        "buttons": {
+            "create_collection": "إنشاء مجموعة جديدة",
+            "advanced_filters": "فلاتر متقدمة",
+            "take_tour": "جولة تعريفية"
+        },
+        "badges": {
+            "organized": "منظمة",
+            "favorites": "مفضلة"
+        },
+        "collections_card": {
+            "title": "مجموعاتك المنظمة",
+            "collections_label": "مجموعة",
+            "items_per_collection": "عنصر/مجموعة",
+            "browse_collections": "تصفح المجموعات"
+        },
+        "quick_actions": {
+            "recent_saves": "المحفوظات الحديثة",
+            "active_tags": "العلامات النشطة",
+            "items": "عنصر",
+            "tags": "علامة"
+        }
+    },
+    "analytics": {
+        "metrics": {
+            "total_bookmarks": "إجمالي المحفوظات",
+            "collections": "المجموعات",
+            "recent_activity": "النشاط الأخير",
+            "favorite_items": "العناصر المفضلة",
+            "from_last_month": "من الشهر الماضي"
+        },
+        "tabs": {
+            "overview": "نظرة عامة",
+            "trends": "الاتجاهات",
+            "categories": "الفئات",
+            "collections": "المجموعات"
+        },
+        "categories": {
+            "challenges": "التحديات",
+            "events": "الفعاليات",
+            "ideas": "الأفكار",
+            "others": "أخرى"
+        },
+        "collection_types": {
+            "personal": "مجموعات شخصية",
+            "public": "مجموعات عامة",
+            "shared": "مجموعات مشتركة"
+        },
+        "charts": {
+            "bookmark_growth": "نمو الحفظ",
+            "bookmarks_label": "محفوظات:",
+            "collections_label": "مجموعات:",
+            "weekly_activity": "النشاط الأسبوعي",
+            "new_bookmarks": "عناصر محفوظة جديدة",
+            "collections_created": "مجموعات منشأة",
+            "items_shared": "عناصر تمت مشاركتها",
+            "trend_analysis": "تحليل الاتجاهات",
+            "bookmarks": "المحفوظات",
+            "collections": "المجموعات",
+            "activity": "النشاط",
+            "top_categories": "أهم الفئات",
+            "collection_types": "أنواع المجموعات",
+            "of_total_collections": "من إجمالي المجموعات"
+        }
+    }
+}

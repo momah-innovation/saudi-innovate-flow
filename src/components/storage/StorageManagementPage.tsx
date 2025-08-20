@@ -491,10 +491,10 @@ export function StorageManagementPage() {
                   onView={() => setSelectedBucketForView(bucket)}
                   onSettings={() => setSelectedBucketForManagement(bucket)}
                   onDelete={() => {
-                    if (confirm('هل أنت متأكد من حذف هذا الباقة؟')) {
+                    if (confirm(t('storage.confirm_bucket_delete'))) {
                       toast({
-                        title: 'تحذير',
-                        description: 'حذف الباقات غير مدعوم حالياً في واجهة التحكم',
+                        title: t('storage.warning'),
+                        description: t('storage.bucket_deletion_not_supported'),
                         variant: 'destructive'
                       });
                     }

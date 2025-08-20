@@ -23,6 +23,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface ChallengesHeroProps {
   totalChallenges: number;
@@ -51,6 +52,7 @@ export const ChallengesHero = ({
   featuredChallenge
 }: ChallengesHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { user, hasRole } = useAuth();
   const [currentStat, setCurrentStat] = useState(0);
   
@@ -63,10 +65,10 @@ export const ChallengesHero = ({
   );
 
   const stats = [
-    { icon: Target, value: totalChallenges, label: isRTL ? 'تحدي' : 'challenges', color: challengesPageConfig.ui.colors.stats.blue },
-    { icon: Award, value: activeChallenges, label: isRTL ? 'نشط' : 'active', color: challengesPageConfig.ui.colors.stats.green },
-    { icon: Users, value: `${Math.floor(totalParticipants / 1000)}K+`, label: isRTL ? 'مشارك' : 'participants', color: challengesPageConfig.ui.colors.stats.purple },
-    { icon: Trophy, value: `${Math.floor(totalPrizes / 1000000)}M+`, label: isRTL ? 'ر.س' : 'SAR', color: challengesPageConfig.ui.colors.stats.yellow }
+    { icon: Target, value: totalChallenges, label: t('challenges:hero.stats.challenges'), color: challengesPageConfig.ui.colors.stats.blue },
+    { icon: Award, value: activeChallenges, label: t('challenges:hero.stats.active'), color: challengesPageConfig.ui.colors.stats.green },
+    { icon: Users, value: `${Math.floor(totalParticipants / 1000)}K+`, label: t('challenges:hero.stats.participants'), color: challengesPageConfig.ui.colors.stats.purple },
+    { icon: Trophy, value: `${Math.floor(totalPrizes / 1000000)}M+`, label: t('challenges:hero.stats.currency'), color: challengesPageConfig.ui.colors.stats.yellow }
   ];
 
   useEffect(() => {
@@ -104,7 +106,7 @@ export const ChallengesHero = ({
                 </div>
                 <Badge variant="secondary" className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.colors.text.accent} border ${challengesPageConfig.ui.glassMorphism.light.split(' ').find(c => c.includes('border'))} backdrop-blur-sm`}>
                   <Star className="w-3 h-3 mr-1" />
-                  {isRTL ? 'منصة التحديات المبتكرة' : 'Innovation Challenges Platform'}
+                  {t('challenges:hero.platform_badge')}
                 </Badge>
               </div>
               
@@ -112,20 +114,17 @@ export const ChallengesHero = ({
                 <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold ${challengesPageConfig.ui.colors.text.accent} leading-tight`}>
                   {isRTL ? (
                     <>
-                       اكتشف <span className={`text-transparent bg-clip-text ${challengesPageConfig.ui.gradients.textHighlight}`}>التحديات</span> المبتكرة
+                       {t('challenges:hero.title_discover')} <span className={`text-transparent bg-clip-text ${challengesPageConfig.ui.gradients.textHighlight}`}>{t('challenges:hero.title_innovation')}</span> {t('challenges:hero.title_challenges')}
                     </>
                   ) : (
                     <>
-                      Discover <span className={`text-transparent bg-clip-text ${challengesPageConfig.ui.gradients.textHighlight}`}>Innovation</span> Challenges
+                      {t('challenges:hero.title_discover')} <span className={`text-transparent bg-clip-text ${challengesPageConfig.ui.gradients.textHighlight}`}>{t('challenges:hero.title_innovation')}</span> {t('challenges:hero.title_challenges')}
                     </>
                   )}
                 </h1>
                 
                 <p className={`text-xl ${challengesPageConfig.ui.colors.text.muted} max-w-2xl leading-relaxed`}>
-                  {isRTL 
-                    ? 'انضم إلى مجتمع المبدعين وشارك في حل التحديات التي تشكل مستقبل المملكة ورؤية 2030'
-                    : 'Join the innovators community and participate in solving challenges that shape the future of Saudi Arabia and Vision 2030'
-                  }
+                  {t('challenges:hero.subtitle')}
                 </p>
               </div>
             </div>
@@ -165,7 +164,7 @@ export const ChallengesHero = ({
                   className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                 >
                   <Plus className="w-5 h-5 mr-2" />
-                  {isRTL ? 'إنشاء تحدي جديد' : 'Create New Challenge'}
+                  {t('challenges:create')}
                 </Button>
               )}
               
@@ -175,7 +174,7 @@ export const ChallengesHero = ({
                 size="lg"
               >
                 <Filter className="w-5 h-5 mr-2" />
-                {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
+                {t('challenges:hero.advanced_filters')}
               </Button>
 
               <Button
@@ -183,7 +182,7 @@ export const ChallengesHero = ({
                 size="lg"
               >
                 <Play className="w-5 h-5 mr-2" />
-                {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
+                {t('challenges:hero.watch_demo')}
               </Button>
             </div>
           </div>
@@ -210,14 +209,14 @@ export const ChallengesHero = ({
                     <div className="absolute top-4 left-4">
                       <Badge className={`${challengesPageConfig.ui.gradients.danger} ${challengesPageConfig.ui.colors.text.accent} border-0 animate-pulse`}>
                         <Clock className="w-3 h-3 mr-1" />
-                        {featuredChallenge.daysLeft} {isRTL ? 'أيام متبقية' : 'days left'}
+                        {featuredChallenge.daysLeft} {t('challenges:hero.days_left')}
                       </Badge>
                     </div>
 
                     <div className="absolute top-4 right-4">
                       <Badge className={`${challengesPageConfig.ui.gradients.warning} ${challengesPageConfig.ui.colors.text.accent} border-0`}>
                         <TrendingUp className="w-3 h-3 mr-1" />
-                        {isRTL ? 'رائج' : 'Trending'}
+                        {t('challenges:hero.trending')}
                       </Badge>
                     </div>
 
@@ -234,13 +233,13 @@ export const ChallengesHero = ({
                         <div className={`text-2xl font-bold ${challengesPageConfig.ui.colors.stats.purple}`}>
                           {featuredChallenge.participants}
                         </div>
-                        <div className={`text-sm ${challengesPageConfig.ui.colors.text.muted}`}>{isRTL ? 'مشارك' : 'participants'}</div>
+                        <div className={`text-sm ${challengesPageConfig.ui.colors.text.muted}`}>{t('challenges:hero.stats.participants')}</div>
                       </div>
                       <div className="text-center">
                         <div className={`text-2xl font-bold ${challengesPageConfig.ui.colors.stats.yellow}`}>
                           {Math.floor(featuredChallenge.prize / 1000)}K
                         </div>
-                        <div className={`text-sm ${challengesPageConfig.ui.colors.text.muted}`}>{isRTL ? 'ر.س جائزة' : 'SAR prize'}</div>
+                        <div className={`text-sm ${challengesPageConfig.ui.colors.text.muted}`}>{t('challenges:hero.sar_prize')}</div>
                       </div>
                     </div>
 
@@ -252,7 +251,7 @@ export const ChallengesHero = ({
                     <Button 
                       className={`w-full ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent}`}
                     >
-                      {isRTL ? 'اعرض التفاصيل' : 'View Details'}
+                      {t('challenges:actions.view_details')}
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
@@ -263,10 +262,10 @@ export const ChallengesHero = ({
                 <CardContent className="p-8 text-center">
                   <Target className={`w-16 h-16 mx-auto ${challengesPageConfig.ui.colors.text.muted} mb-4`} />
                   <h3 className={`text-lg font-semibold ${challengesPageConfig.ui.colors.text.secondary} mb-2`}>
-                    {isRTL ? 'لا يوجد تحدي مميز حالياً' : 'No Featured Challenge'}
+                    {t('challenges:hero.no_featured')}
                   </h3>
                   <p className={`${challengesPageConfig.ui.colors.text.muted} text-sm`}>
-                    {isRTL ? 'سيتم عرض التحديات المميزة هنا' : 'Featured challenges will appear here'}
+                    {t('challenges:hero.featured_will_appear')}
                   </p>
                 </CardContent>
               </Card>
@@ -278,10 +277,10 @@ export const ChallengesHero = ({
                 <CardContent className="p-4 text-center">
                   <Calendar className={`w-8 h-8 ${challengesPageConfig.ui.colors.stats.blue} mx-auto mb-2`} />
                   <div className={`text-sm font-medium ${challengesPageConfig.ui.colors.text.accent}`}>
-                    {isRTL ? 'التحديات القادمة' : 'Upcoming'}
+                    {t('challenges:hero.upcoming')}
                   </div>
                   <div className={`text-xs ${challengesPageConfig.ui.colors.text.muted}`}>
-                    {isRTL ? '5 تحديات' : '5 challenges'}
+                    {`5 ${t('challenges:hero.challenges_count')}`}
                   </div>
                 </CardContent>
               </Card>
@@ -290,10 +289,10 @@ export const ChallengesHero = ({
                 <CardContent className="p-4 text-center">
                   <Star className={`w-8 h-8 ${challengesPageConfig.ui.colors.stats.yellow} mx-auto mb-2`} />
                   <div className={`text-sm font-medium ${challengesPageConfig.ui.colors.text.accent}`}>
-                    {isRTL ? 'المفضلة' : 'Favorites'}
+                    {t('challenges:hero.favorites')}
                   </div>
                   <div className={`text-xs ${challengesPageConfig.ui.colors.text.muted}`}>
-                    {isRTL ? '12 محفوظة' : '12 saved'}
+                    {`12 ${t('challenges:hero.saved')}`}
                   </div>
                 </CardContent>
               </Card>

@@ -12,6 +12,7 @@ import {
   RefreshCw, Download, Settings
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 const mockSystemMetrics = {
   serverStatus: {
@@ -80,6 +81,7 @@ const mockSystemLogs = [
 
 const SystemAnalyticsPage = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat(isRTL ? 'ar-SA' : 'en-US').format(num);
@@ -154,7 +156,7 @@ const SystemAnalyticsPage = () => {
         <div className="space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">
-              {isRTL ? 'الاستخدام الحالي' : 'Current Usage'}
+              {t('analytics:metrics.current_usage')}
             </span>
             <span className={`font-medium ${getUsageColor(usage)}`}>
               {usage}%
@@ -193,21 +195,21 @@ const SystemAnalyticsPage = () => {
   return (
     <AppShell>
       <PageLayout
-        title={isRTL ? 'تحليلات النظام' : 'System Analytics'}
-        description={isRTL ? 'مراقبة أداء النظام والخوادم والأمان' : 'Monitor system performance, servers, and security'}
+        title={t('analytics:page_title')}
+        description={t('analytics:description')}
         secondaryActions={
           <div className="flex gap-2">
             <Button variant="outline">
               <RefreshCw className="h-4 w-4 mr-2" />
-              {isRTL ? 'تحديث' : 'Refresh'}
+              {t('analytics:buttons.refresh')}
             </Button>
             <Button variant="outline">
               <Download className="h-4 w-4 mr-2" />
-              {isRTL ? 'تصدير' : 'Export'}
+              {t('analytics:buttons.export')}
             </Button>
             <Button>
               <Settings className="h-4 w-4 mr-2" />
-              {isRTL ? 'إعدادات المراقبة' : 'Monitoring Settings'}
+              {t('analytics:buttons.monitoring_settings')}
             </Button>
           </div>
         }
@@ -217,27 +219,27 @@ const SystemAnalyticsPage = () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <MetricCard
               icon={Server}
-              title={isRTL ? 'وقت التشغيل' : 'System Uptime'}
+              title={t('analytics:metrics.system_uptime')}
               value={mockSystemMetrics.serverStatus.uptime}
               status="good"
               trend="up"
             />
             <MetricCard
               icon={Activity}
-              title={isRTL ? 'متوسط الاستجابة' : 'Avg Response Time'}
-              value={`${mockSystemMetrics.serverStatus.avgResponseTime}ms`}
+              title={t('analytics:metrics.avg_response_time')}
+              value={`${mockSystemMetrics.serverStatus.avgResponseTime}${t('analytics:units.ms')}`}
               status="good"
             />
             <MetricCard
               icon={Users}
-              title={isRTL ? 'الاتصالات النشطة' : 'Active Connections'}
+              title={t('analytics:metrics.active_connections')}
               value={formatNumber(mockSystemMetrics.performance.activeConnections)}
               status="good"
               trend="up"
             />
             <MetricCard
               icon={AlertTriangle}
-              title={isRTL ? 'معدل الأخطاء' : 'Error Rate'}
+              title={t('analytics:metrics.error_rate')}
               value={`${mockSystemMetrics.serverStatus.errorRate}%`}
               status="good"
               trend="down"
@@ -246,62 +248,62 @@ const SystemAnalyticsPage = () => {
 
           <Tabs defaultValue="performance" className="w-full">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="performance">{isRTL ? 'الأداء' : 'Performance'}</TabsTrigger>
-              <TabsTrigger value="database">{isRTL ? 'قاعدة البيانات' : 'Database'}</TabsTrigger>
-              <TabsTrigger value="security">{isRTL ? 'الأمان' : 'Security'}</TabsTrigger>
-              <TabsTrigger value="logs">{isRTL ? 'السجلات' : 'Logs'}</TabsTrigger>
-              <TabsTrigger value="monitoring">{isRTL ? 'المراقبة' : 'Monitoring'}</TabsTrigger>
+              <TabsTrigger value="performance">{t('analytics:tabs.performance')}</TabsTrigger>
+              <TabsTrigger value="database">{t('analytics:tabs.database')}</TabsTrigger>
+              <TabsTrigger value="security">{t('analytics:tabs.security')}</TabsTrigger>
+              <TabsTrigger value="logs">{t('analytics:tabs.logs')}</TabsTrigger>
+              <TabsTrigger value="monitoring">{t('analytics:tabs.monitoring')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="performance" className="space-y-6">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <PerformanceCard
                   icon={Cpu}
-                  title={isRTL ? 'المعالج' : 'CPU Usage'}
+                  title={t('analytics:performance.cpu_usage')}
                   usage={mockSystemMetrics.performance.cpuUsage}
                 />
                 <PerformanceCard
                   icon={Server}
-                  title={isRTL ? 'الذاكرة' : 'Memory Usage'}
+                  title={t('analytics:performance.memory_usage')}
                   usage={mockSystemMetrics.performance.memoryUsage}
                   total="16"
-                  unit="GB"
+                  unit={t('analytics:units.gb')}
                 />
                 <PerformanceCard
                   icon={HardDrive}
-                  title={isRTL ? 'التخزين' : 'Disk Usage'}
+                  title={t('analytics:performance.disk_usage')}
                   usage={mockSystemMetrics.performance.diskUsage}
                   total="500"
-                  unit="GB"
+                  unit={t('analytics:units.gb')}
                 />
                 <PerformanceCard
                   icon={Network}
-                  title={isRTL ? 'الشبكة' : 'Network Traffic'}
+                  title={t('analytics:performance.network_traffic')}
                   usage={mockSystemMetrics.performance.networkTraffic}
                   total="1"
-                  unit="Gbps"
+                  unit={t('analytics:units.gbps')}
                 />
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'إحصائيات الطلبات' : 'Request Statistics'}</CardTitle>
+                    <CardTitle>{t('analytics:performance.request_statistics')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'إجمالي الطلبات اليوم' : 'Total Requests Today'}</span>
+                        <span>{t('analytics:metrics.total_requests_today')}</span>
                         <span className="font-bold text-blue-600">
                           {formatNumber(mockSystemMetrics.serverStatus.totalRequests)}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'الطلبات في الثانية' : 'Requests per Second'}</span>
+                        <span>{t('analytics:metrics.requests_per_second')}</span>
                         <span className="font-bold text-green-600">127</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'أوقات الذروة' : 'Peak Hours'}</span>
+                        <span>{t('analytics:metrics.peak_hours')}</span>
                         <span className="font-bold text-purple-600">2:00-4:00 PM</span>
                       </div>
                     </div>
@@ -310,23 +312,23 @@ const SystemAnalyticsPage = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'صحة النظام' : 'System Health'}</CardTitle>
+                    <CardTitle>{t('analytics:performance.system_health')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'خدمات النظام' : 'System Services'}</span>
+                        <span>{t('analytics:performance.system_services')}</span>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                           <CheckCircle className="h-3 w-3 mr-1" />
-                          {isRTL ? 'تعمل بشكل طبيعي' : 'All Running'}
+                          {t('analytics:performance.all_running')}
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'آخر نسخ احتياطي' : 'Last Backup'}</span>
+                        <span>{t('analytics:performance.last_backup')}</span>
                         <span className="font-medium">2024-08-30 02:00</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'آخر تحديث للنظام' : 'Last System Update'}</span>
+                        <span>{t('analytics:performance.last_system_update')}</span>
                         <span className="font-medium">2024-08-25</span>
                       </div>
                     </div>
@@ -339,27 +341,27 @@ const SystemAnalyticsPage = () => {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <MetricCard
                   icon={Database}
-                  title={isRTL ? 'استعلامات اليوم' : 'Queries Today'}
+                  title={t('analytics:metrics.queries_today')}
                   value={formatNumber(mockSystemMetrics.database.totalQueries)}
                   status="good"
                 />
                 <MetricCard
                   icon={Clock}
-                  title={isRTL ? 'استعلامات بطيئة' : 'Slow Queries'}
+                  title={t('analytics:metrics.slow_queries')}
                   value={mockSystemMetrics.database.slowQueries}
                   status="warning"
                 />
                 <MetricCard
                   icon={Network}
-                  title={isRTL ? 'تجمع الاتصالات' : 'Connection Pool'}
+                  title={t('analytics:metrics.connection_pool')}
                   value={`${mockSystemMetrics.database.connectionPool}%`}
                   status="good"
                 />
                 <MetricCard
                   icon={HardDrive}
-                  title={isRTL ? 'مساحة التخزين' : 'Storage Used'}
-                  value={`${mockSystemMetrics.database.storageUsed}GB`}
-                  subtitle={`${isRTL ? 'من' : 'of'} ${mockSystemMetrics.database.storageTotal}GB`}
+                  title={t('analytics:metrics.storage_used')}
+                  value={`${mockSystemMetrics.database.storageUsed}${t('analytics:units.gb')}`}
+                  subtitle={`${t('analytics:units.of')} ${mockSystemMetrics.database.storageTotal}${t('analytics:units.gb')}`}
                   status="good"
                 />
               </div>
@@ -367,27 +369,27 @@ const SystemAnalyticsPage = () => {
               <div className="grid gap-6 md:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'أداء قاعدة البيانات' : 'Database Performance'}</CardTitle>
+                    <CardTitle>{t('analytics:database.performance')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span>{isRTL ? 'متوسط وقت الاستعلام' : 'Avg Query Time'}</span>
-                          <span>23ms</span>
+                          <span>{t('analytics:database.avg_query_time')}</span>
+                          <span>23{t('analytics:units.ms')}</span>
                         </div>
                         <Progress value={15} className="h-2" />
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span>{isRTL ? 'استخدام الفهارس' : 'Index Usage'}</span>
+                          <span>{t('analytics:database.index_usage')}</span>
                           <span>94%</span>
                         </div>
                         <Progress value={94} className="h-2" />
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span>{isRTL ? 'معدل إصابة التخزين المؤقت' : 'Cache Hit Rate'}</span>
+                          <span>{t('analytics:database.cache_hit_rate')}</span>
                           <span>98.7%</span>
                         </div>
                         <Progress value={98.7} className="h-2" />
@@ -398,25 +400,25 @@ const SystemAnalyticsPage = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'إحصائيات الجداول' : 'Table Statistics'}</CardTitle>
+                    <CardTitle>{t('analytics:database.table_statistics')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span>users</span>
-                        <span className="font-medium">2,847 {isRTL ? 'سجل' : 'rows'}</span>
+                        <span className="font-medium">2,847 {t('analytics:database.rows')}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span>projects</span>
-                        <span className="font-medium">1,256 {isRTL ? 'سجل' : 'rows'}</span>
+                        <span className="font-medium">1,256 {t('analytics:database.rows')}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span>challenges</span>
-                        <span className="font-medium">89 {isRTL ? 'سجل' : 'rows'}</span>
+                        <span className="font-medium">89 {t('analytics:database.rows')}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span>submissions</span>
-                        <span className="font-medium">5,432 {isRTL ? 'سجل' : 'rows'}</span>
+                        <span className="font-medium">5,432 {t('analytics:database.rows')}</span>
                       </div>
                     </div>
                   </CardContent>
@@ -428,25 +430,25 @@ const SystemAnalyticsPage = () => {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <MetricCard
                   icon={AlertTriangle}
-                  title={isRTL ? 'التهديدات المحجوبة' : 'Threats Blocked'}
+                  title={t('analytics:metrics.threats_blocked')}
                   value={mockSystemMetrics.security.threatBlocked}
                   status="good"
                 />
                 <MetricCard
                   icon={Users}
-                  title={isRTL ? 'محاولات تسجيل الدخول' : 'Login Attempts'}
+                  title={t('analytics:metrics.login_attempts')}
                   value={formatNumber(mockSystemMetrics.security.loginAttempts)}
                   status="good"
                 />
                 <MetricCard
                   icon={AlertTriangle}
-                  title={isRTL ? 'تسجيل دخول فاشل' : 'Failed Logins'}
+                  title={t('analytics:metrics.failed_logins')}
                   value={mockSystemMetrics.security.failedLogins}
                   status="warning"
                 />
                 <MetricCard
                   icon={Activity}
-                  title={isRTL ? 'نشاط مشبوه' : 'Suspicious Activity'}
+                  title={t('analytics:metrics.suspicious_activity')}
                   value={mockSystemMetrics.security.suspiciousActivity}
                   status="warning"
                 />
@@ -455,31 +457,31 @@ const SystemAnalyticsPage = () => {
               <div className="grid gap-6 md:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'تقرير الأمان' : 'Security Report'}</CardTitle>
+                    <CardTitle>{t('analytics:security.report')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'آخر فحص أمني' : 'Last Security Scan'}</span>
+                        <span>{t('analytics:security.last_security_scan')}</span>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                           <CheckCircle className="h-3 w-3 mr-1" />
-                          {isRTL ? 'نظيف' : 'Clean'}
+                          {t('analytics:security.clean')}
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'تشفير البيانات' : 'Data Encryption'}</span>
+                        <span>{t('analytics:security.data_encryption')}</span>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                          {isRTL ? 'مفعل' : 'Enabled'}
+                          {t('analytics:security.enabled')}
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'جدار الحماية' : 'Firewall Status'}</span>
+                        <span>{t('analytics:security.firewall_status')}</span>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                          {isRTL ? 'نشط' : 'Active'}
+                          {t('analytics:security.active')}
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'آخر نسخة احتياطية' : 'Last Backup'}</span>
+                        <span>{t('analytics:performance.last_backup')}</span>
                         <span className="font-medium">2024-08-30 02:00</span>
                       </div>
                     </div>
@@ -488,24 +490,24 @@ const SystemAnalyticsPage = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'نقاط الضعف المحتملة' : 'Potential Vulnerabilities'}</CardTitle>
+                    <CardTitle>{t('analytics:security.potential_vulnerabilities')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm">{isRTL ? 'تحديثات الأمان المعلقة' : 'Pending Security Updates'}</span>
+                        <span className="text-sm">{t('analytics:security.pending_security_updates')}</span>
                         <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
                           2
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm">{isRTL ? 'كلمات مرور ضعيفة' : 'Weak Passwords'}</span>
+                        <span className="text-sm">{t('analytics:security.weak_passwords')}</span>
                         <Badge className="bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
                           5
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm">{isRTL ? 'جلسات منتهية الصلاحية' : 'Expired Sessions'}</span>
+                        <span className="text-sm">{t('analytics:security.expired_sessions')}</span>
                         <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
                           12
                         </Badge>
@@ -519,16 +521,16 @@ const SystemAnalyticsPage = () => {
             <TabsContent value="logs" className="space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">
-                  {isRTL ? 'سجلات النظام الحديثة' : 'Recent System Logs'}
+                  {t('analytics:logs.recent_system_logs')}
                 </h3>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm">
                     <RefreshCw className="h-4 w-4 mr-2" />
-                    {isRTL ? 'تحديث' : 'Refresh'}
+                    {t('analytics:buttons.refresh')}
                   </Button>
                   <Button variant="outline" size="sm">
                     <Download className="h-4 w-4 mr-2" />
-                    {isRTL ? 'تصدير السجلات' : 'Export Logs'}
+                    {t('analytics:buttons.export_logs')}
                   </Button>
                 </div>
               </div>
@@ -544,26 +546,26 @@ const SystemAnalyticsPage = () => {
               <div className="grid gap-6 md:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'تنبيهات النظام' : 'System Alerts'}</CardTitle>
+                    <CardTitle>{t('analytics:monitoring.system_alerts')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex items-center gap-2">
                           <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                          <span>{isRTL ? 'استخدام ذاكرة عالي' : 'High Memory Usage'}</span>
+                          <span>{t('analytics:monitoring.high_memory_usage')}</span>
                         </div>
                         <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
-                          {isRTL ? 'تحذير' : 'Warning'}
+                          {t('analytics:monitoring.warning')}
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex items-center gap-2">
                           <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>{isRTL ? 'النسخ الاحتياطي مكتمل' : 'Backup Completed'}</span>
+                          <span>{t('analytics:monitoring.backup_completed')}</span>
                         </div>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                          {isRTL ? 'تم' : 'Success'}
+                          {t('analytics:monitoring.success')}
                         </Badge>
                       </div>
                     </div>
@@ -572,29 +574,29 @@ const SystemAnalyticsPage = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>{isRTL ? 'إعدادات المراقبة' : 'Monitoring Settings'}</CardTitle>
+                    <CardTitle>{t('analytics:monitoring.settings')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'مراقبة الأداء' : 'Performance Monitoring'}</span>
+                        <span>{t('analytics:monitoring.performance_monitoring')}</span>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                          {isRTL ? 'مفعل' : 'Enabled'}
+                          {t('analytics:security.enabled')}
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'تنبيهات البريد الإلكتروني' : 'Email Alerts'}</span>
+                        <span>{t('analytics:monitoring.email_alerts')}</span>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                          {isRTL ? 'مفعل' : 'Enabled'}
+                          {t('analytics:security.enabled')}
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>{isRTL ? 'حفظ السجلات' : 'Log Retention'}</span>
-                        <span className="font-medium">30 {isRTL ? 'يوم' : 'days'}</span>
+                        <span>{t('analytics:monitoring.log_retention')}</span>
+                        <span className="font-medium">30 {t('analytics:monitoring.days')}</span>
                       </div>
                       <Button className="w-full">
                         <Settings className="h-4 w-4 mr-2" />
-                        {isRTL ? 'تعديل الإعدادات' : 'Configure Settings'}
+                        {t('analytics:buttons.configure_settings')}
                       </Button>
                     </div>
                   </CardContent>

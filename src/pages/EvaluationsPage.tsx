@@ -123,8 +123,8 @@ const EvaluationsPage = () => {
     } catch (error) {
       logger.error('Failed to fetch evaluations', { component: 'EvaluationsPage', action: 'fetchEvaluations' }, error as Error);
       toast({
-        title: "Error",
-        description: "Failed to fetch evaluations",
+        title: t('common:error'),
+        description: t('evaluations:messages.errorFetch'),
         variant: "destructive",
       });
     } finally {
@@ -186,18 +186,18 @@ const EvaluationsPage = () => {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'pending': return isRTL ? 'في الانتظار' : 'Pending Review';
-      case 'in_progress': return isRTL ? 'قيد التقييم' : 'Under Evaluation';
-      case 'completed': return isRTL ? 'مكتمل' : 'Completed';
+      case 'pending': return t('evaluations:status.pending');
+      case 'in_progress': return t('evaluations:status.inProgress');
+      case 'completed': return t('evaluations:status.completed');
       default: return status;
     }
   };
 
   const getPriorityText = (priority: string) => {
     switch (priority) {
-      case 'high': return isRTL ? 'عالية' : 'High Priority';
-      case 'medium': return isRTL ? 'متوسطة' : 'Medium Priority';
-      case 'low': return isRTL ? 'منخفضة' : 'Low Priority';
+      case 'high': return t('evaluations:priority.high');
+      case 'medium': return t('evaluations:priority.medium');
+      case 'low': return t('evaluations:priority.low');
       default: return priority;
     }
   };
@@ -244,8 +244,8 @@ const EvaluationsPage = () => {
 
       setNewComment('');
       toast({
-        title: isRTL ? 'تم إضافة التعليق' : 'Comment Added',
-        description: isRTL ? 'تم إضافة تعليقك بنجاح' : 'Your comment has been added successfully'
+        title: t('evaluations:messages.commentAdded'),
+        description: t('evaluations:messages.commentAddedDesc')
       });
       
       // Refresh comments
@@ -259,8 +259,8 @@ const EvaluationsPage = () => {
     } catch (error) {
       logger.error('Failed to add evaluation comment', { component: 'EvaluationsPage', action: 'addComment' }, error as Error);
       toast({
-        title: 'Error',
-        description: 'Failed to add comment',
+        title: t('common:error'),
+        description: t('evaluations:messages.errorComment'),
         variant: 'destructive'
       });
     }
@@ -309,7 +309,7 @@ const EvaluationsPage = () => {
                 {isRTL ? idea?.title_ar : idea?.title_ar} 
               </CardTitle>
               <CardDescription className="text-sm">
-                {isRTL ? 'بواسطة:' : 'Evaluated by:'} {profile?.name || 'Unknown Evaluator'}
+                {t('evaluations:fields.evaluatedBy')} {profile?.name || 'Unknown Evaluator'}
               </CardDescription>
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="text-xs">
@@ -338,20 +338,20 @@ const EvaluationsPage = () => {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div className="space-y-1">
-              <span className="text-muted-foreground">{isRTL ? 'تاريخ التقييم:' : 'Evaluation Date:'}</span>
+              <span className="text-muted-foreground">{t('evaluations:fields.evaluationDate')}</span>
               <div className="font-medium">
                 {new Date(evaluation.evaluation_date || evaluation.created_at).toLocaleDateString()}
               </div>
             </div>
             <div className="space-y-1">
-              <span className="text-muted-foreground">{isRTL ? 'حالة الفكرة:' : 'Idea Status:'}</span>
+              <span className="text-muted-foreground">{t('evaluations:fields.ideaStatus')}</span>
               <div className="font-medium capitalize">{idea?.status || 'Unknown'}</div>
             </div>
           </div>
 
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{isRTL ? 'النتيجة الإجمالية' : 'Overall Score'}</span>
+              <span className="text-muted-foreground">{t('evaluations:details.overallScore')}</span>
               <span className="font-medium">{overallScore}/10</span>
             </div>
             <Progress value={progress} className="h-2" />
@@ -360,15 +360,15 @@ const EvaluationsPage = () => {
           <div className="grid grid-cols-3 gap-2 text-xs">
             <div className="text-center p-2 bg-muted rounded-lg">
               <div className="font-semibold">{evaluation.technical_feasibility || 'N/A'}</div>
-              <div className="text-muted-foreground">{isRTL ? 'الجدوى' : 'Technical'}</div>
+              <div className="text-muted-foreground">{t('evaluations:fields.technical')}</div>
             </div>
             <div className="text-center p-2 bg-muted rounded-lg">
               <div className="font-semibold">{evaluation.innovation_level || 'N/A'}</div>
-              <div className="text-muted-foreground">{isRTL ? 'الابتكار' : 'Innovation'}</div>
+              <div className="text-muted-foreground">{t('evaluations:fields.innovation')}</div>
             </div>
             <div className="text-center p-2 bg-muted rounded-lg">
               <div className="font-semibold">{evaluation.market_potential || 'N/A'}</div>
-              <div className="text-muted-foreground">{isRTL ? 'السوق' : 'Market'}</div>
+              <div className="text-muted-foreground">{t('evaluations:fields.market')}</div>
             </div>
           </div>
 
@@ -395,13 +395,13 @@ const EvaluationsPage = () => {
     return (
       <AppShell>
         <PageLayout 
-          title={isRTL ? 'التقييمات' : 'Evaluations'}
-          description={isRTL ? 'جاري التحميل...' : 'Loading...'}
+          title={t('evaluations:title')}
+          description={t('common:loading')}
         >
           <div className="min-h-[400px] flex items-center justify-center">
             <div className="text-center space-y-4">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="text-sm text-muted-foreground">{isRTL ? 'جاري تحميل التقييمات...' : 'Loading evaluations...'}</p>
+              <p className="text-sm text-muted-foreground">{t('evaluations:loading')}</p>
             </div>
           </div>
         </PageLayout>
@@ -420,10 +420,10 @@ const EvaluationsPage = () => {
         onShowFilters={() => logger.info('Show filters requested', { component: 'EvaluationsPage', action: 'onShowFilters' })}
       />
       <PageLayout
-        title={isRTL ? 'التقييمات' : 'Evaluations'}
-        description={isRTL ? 'إدارة ومراجعة تقييمات الأفكار والمشاريع' : 'Manage and review idea and project evaluations'}
+        title={t('evaluations:title')}
+        description={t('evaluations:description')}
         primaryAction={{
-          label: isRTL ? 'تقييم جديد' : 'New Evaluation',
+          label: t('evaluations:newEvaluation'),
           onClick: () => {},
           icon: <Plus className="w-4 h-4" />
         }}
@@ -431,29 +431,29 @@ const EvaluationsPage = () => {
           <div className="flex items-center gap-2">
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder={isRTL ? 'الحالة' : 'Status'} />
+                <SelectValue placeholder={t('evaluations:status.all')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الحالات' : 'All Status'}</SelectItem>
-                <SelectItem value="pending">{isRTL ? 'في الانتظار' : 'Pending'}</SelectItem>
-                <SelectItem value="in_progress">{isRTL ? 'قيد المراجعة' : 'In Progress'}</SelectItem>
-                <SelectItem value="completed">{isRTL ? 'مكتمل' : 'Completed'}</SelectItem>
+                <SelectItem value="all">{t('evaluations:status.all')}</SelectItem>
+                <SelectItem value="pending">{t('evaluations:status.pending')}</SelectItem>
+                <SelectItem value="in_progress">{t('evaluations:status.inProgress')}</SelectItem>
+                <SelectItem value="completed">{t('evaluations:status.completed')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={priorityFilter} onValueChange={setPriorityFilter}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder={isRTL ? 'الأولوية' : 'Priority'} />
+                <SelectValue placeholder={t('evaluations:priority.all')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الأولويات' : 'All Priorities'}</SelectItem>
-                <SelectItem value="high">{isRTL ? 'عالية' : 'High'}</SelectItem>
-                <SelectItem value="medium">{isRTL ? 'متوسطة' : 'Medium'}</SelectItem>
-                <SelectItem value="low">{isRTL ? 'منخفضة' : 'Low'}</SelectItem>
+                <SelectItem value="all">{t('evaluations:priority.all')}</SelectItem>
+                <SelectItem value="high">{t('evaluations:priority.high')}</SelectItem>
+                <SelectItem value="medium">{t('evaluations:priority.medium')}</SelectItem>
+                <SelectItem value="low">{t('evaluations:priority.low')}</SelectItem>
               </SelectContent>
             </Select>
             <Button variant="outline" size="sm">
               <Download className="w-4 h-4 mr-1" />
-              {isRTL ? 'تصدير' : 'Export'}
+              {t('evaluations:export')}
             </Button>
           </div>
         }
@@ -463,7 +463,7 @@ const EvaluationsPage = () => {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
-                placeholder={isRTL ? 'البحث في التقييمات...' : 'Search evaluations...'}
+                placeholder={t('evaluations:search')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9"
@@ -475,7 +475,7 @@ const EvaluationsPage = () => {
             <Card>
               <CardContent className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي التقييمات' : 'Total Evaluations'}</p>
+                  <p className="text-sm text-muted-foreground">{t('evaluations:totalEvaluations')}</p>
                   <p className="text-2xl font-bold">{evaluations.length}</p>
                 </div>
                 <FileText className="h-8 w-8 text-primary" />
@@ -484,7 +484,7 @@ const EvaluationsPage = () => {
             <Card>
               <CardContent className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{isRTL ? 'في الانتظار' : 'Pending'}</p>
+                  <p className="text-sm text-muted-foreground">{t('evaluations:pending')}</p>
                   <p className="text-2xl font-bold">{groupedEvaluations.pending.length}</p>
                 </div>
                 <Clock className="h-8 w-8 text-warning" />
@@ -493,7 +493,7 @@ const EvaluationsPage = () => {
             <Card>
               <CardContent className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{isRTL ? 'قيد المراجعة' : 'In Progress'}</p>
+                  <p className="text-sm text-muted-foreground">{t('evaluations:inProgress')}</p>
                   <p className="text-2xl font-bold">{groupedEvaluations.in_progress.length}</p>
                 </div>
                 <AlertCircle className="h-8 w-8 text-info" />
@@ -502,7 +502,7 @@ const EvaluationsPage = () => {
             <Card>
               <CardContent className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{isRTL ? 'مكتملة' : 'Completed'}</p>
+                  <p className="text-sm text-muted-foreground">{t('evaluations:completed')}</p>
                   <p className="text-2xl font-bold">{groupedEvaluations.completed.length}</p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-success" />
@@ -513,16 +513,16 @@ const EvaluationsPage = () => {
           <Tabs defaultValue="assigned" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="assigned">
-                {isRTL ? 'جميع التقييمات' : 'All Evaluations'} ({groupedEvaluations.assigned.length})
+                {t('evaluations:allEvaluations')} ({groupedEvaluations.assigned.length})
               </TabsTrigger>
               <TabsTrigger value="pending">
-                {isRTL ? 'في الانتظار' : 'Pending'} ({groupedEvaluations.pending.length})
+                {t('evaluations:pending')} ({groupedEvaluations.pending.length})
               </TabsTrigger>
               <TabsTrigger value="in_progress">
-                {isRTL ? 'قيد المراجعة' : 'In Progress'} ({groupedEvaluations.in_progress.length})
+                {t('evaluations:inProgress')} ({groupedEvaluations.in_progress.length})
               </TabsTrigger>
               <TabsTrigger value="completed">
-                {isRTL ? 'المكتملة' : 'Completed'} ({groupedEvaluations.completed.length})
+                {t('evaluations:completed')} ({groupedEvaluations.completed.length})
               </TabsTrigger>
             </TabsList>
 
@@ -537,10 +537,10 @@ const EvaluationsPage = () => {
                   <div className="text-center py-12">
                     <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-semibold mb-2">
-                      {isRTL ? 'لا توجد تقييمات' : 'No evaluations found'}
+                      {t('evaluations:noEvaluations')}
                     </h3>
                     <p className="text-muted-foreground">
-                      {isRTL ? 'لم يتم العثور على تقييمات في هذه الفئة' : 'No evaluations found in this category'}
+                      {t('evaluations:noEvaluationsMessage')}
                     </p>
                   </div>
                 )}
@@ -556,7 +556,7 @@ const EvaluationsPage = () => {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
-              {isRTL ? 'تفاصيل التقييم' : 'Evaluation Details'}
+              {t('evaluations:details.title')}
             </DialogTitle>
           </DialogHeader>
           
@@ -568,11 +568,11 @@ const EvaluationsPage = () => {
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
                       <BookOpen className="h-5 w-5" />
-                      {isRTL ? 'معلومات الفكرة' : 'Idea Information'}
+                      {t('evaluations:details.ideaInfo')}
                     </h3>
                     <div className="space-y-2">
-                      <p><strong>{isRTL ? 'العنوان:' : 'Title:'}</strong> {ideas[selectedEvaluation.idea_id]?.title_ar}</p>
-                      <p><strong>{isRTL ? 'الحالة:' : 'Status:'}</strong> 
+                      <p><strong>{t('evaluations:fields.title')}</strong> {ideas[selectedEvaluation.idea_id]?.title_ar}</p>
+                      <p><strong>{t('evaluations:fields.status')}</strong> 
                         <Badge className="ml-2">{ideas[selectedEvaluation.idea_id]?.status}</Badge>
                       </p>
                     </div>
@@ -580,14 +580,14 @@ const EvaluationsPage = () => {
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
                       <Users className="h-5 w-5" />
-                      {isRTL ? 'معلومات المقيم' : 'Evaluator Information'}
+                      {t('evaluations:details.evaluatorInfo')}
                     </h3>
                     <div className="space-y-2">
-                      <p><strong>{isRTL ? 'الاسم:' : 'Name:'}</strong> {profiles[selectedEvaluation.evaluator_id]?.name}</p>
-                      <p><strong>{isRTL ? 'النوع:' : 'Type:'}</strong> 
+                      <p><strong>{t('evaluations:fields.name')}</strong> {profiles[selectedEvaluation.evaluator_id]?.name}</p>
+                      <p><strong>{t('evaluations:fields.type')}</strong> 
                         <Badge className="ml-2">{selectedEvaluation.evaluator_type}</Badge>
                       </p>
-                      <p><strong>{isRTL ? 'التاريخ:' : 'Date:'}</strong> {new Date(selectedEvaluation.evaluation_date || selectedEvaluation.created_at).toLocaleDateString()}</p>
+                      <p><strong>{t('evaluations:fields.date')}</strong> {new Date(selectedEvaluation.evaluation_date || selectedEvaluation.created_at).toLocaleDateString()}</p>
                     </div>
                   </div>
                 </div>
@@ -597,7 +597,7 @@ const EvaluationsPage = () => {
                   <div className="flex items-center justify-center gap-4">
                     <div className="text-center">
                       <div className="text-4xl font-bold text-primary">{getOverallScore(selectedEvaluation)}/10</div>
-                      <div className="text-sm text-muted-foreground">{isRTL ? 'النتيجة الإجمالية' : 'Overall Score'}</div>
+                      <div className="text-sm text-muted-foreground">{t('evaluations:details.overallScore')}</div>
                     </div>
                     <TrendingUp className="h-8 w-8 text-primary" />
                   </div>
@@ -607,16 +607,16 @@ const EvaluationsPage = () => {
                 <div className="space-y-4">
                   <h3 className="font-semibold text-lg flex items-center gap-2">
                     <Target className="h-5 w-5" />
-                    {isRTL ? 'النتائج التفصيلية' : 'Detailed Scores'}
+                    {t('evaluations:details.detailedScores')}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[
-                      { key: 'technical_feasibility', label: isRTL ? 'الجدوى التقنية' : 'Technical Feasibility', value: selectedEvaluation.technical_feasibility },
-                      { key: 'financial_viability', label: isRTL ? 'الجدوى المالية' : 'Financial Viability', value: selectedEvaluation.financial_viability },
-                      { key: 'market_potential', label: isRTL ? 'إمكانات السوق' : 'Market Potential', value: selectedEvaluation.market_potential },
-                      { key: 'strategic_alignment', label: isRTL ? 'التوافق الاستراتيجي' : 'Strategic Alignment', value: selectedEvaluation.strategic_alignment },
-                      { key: 'innovation_level', label: isRTL ? 'مستوى الابتكار' : 'Innovation Level', value: selectedEvaluation.innovation_level },
-                      { key: 'implementation_complexity', label: isRTL ? 'تعقيد التنفيذ' : 'Implementation Complexity', value: selectedEvaluation.implementation_complexity }
+                      { key: 'technical_feasibility', label: t('evaluations:fields.technicalFeasibility'), value: selectedEvaluation.technical_feasibility },
+                      { key: 'financial_viability', label: t('evaluations:fields.financialViability'), value: selectedEvaluation.financial_viability },
+                      { key: 'market_potential', label: t('evaluations:fields.marketPotential'), value: selectedEvaluation.market_potential },
+                      { key: 'strategic_alignment', label: t('evaluations:fields.strategicAlignment'), value: selectedEvaluation.strategic_alignment },
+                      { key: 'innovation_level', label: t('evaluations:fields.innovationLevel'), value: selectedEvaluation.innovation_level },
+                      { key: 'implementation_complexity', label: t('evaluations:fields.implementationComplexity'), value: selectedEvaluation.implementation_complexity }
                     ].map((item) => (
                       <Card key={item.key} className="text-center p-4">
                         <div className="text-2xl font-bold mb-2">{item.value || 'N/A'}</div>
@@ -630,20 +630,20 @@ const EvaluationsPage = () => {
                 {/* Qualitative Feedback */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card className="p-4 border-l-4 border-l-success">
-                    <h4 className="font-semibold text-success mb-3">{isRTL ? 'نقاط القوة' : 'Strengths'}</h4>
-                    <p className="text-sm">{selectedEvaluation.strengths || (isRTL ? 'لم يتم تقديم نقاط قوة' : 'No strengths provided')}</p>
+                    <h4 className="font-semibold text-success mb-3">{t('evaluations:details.strengths')}</h4>
+                    <p className="text-sm">{selectedEvaluation.strengths || t('evaluations:messages.noStrengths')}</p>
                   </Card>
                   <Card className="p-4 border-l-4 border-l-destructive">
-                    <h4 className="font-semibold text-destructive mb-3">{isRTL ? 'نقاط الضعف' : 'Weaknesses'}</h4>
-                    <p className="text-sm">{selectedEvaluation.weaknesses || (isRTL ? 'لم يتم تقديم نقاط ضعف' : 'No weaknesses provided')}</p>
+                    <h4 className="font-semibold text-destructive mb-3">{t('evaluations:details.weaknesses')}</h4>
+                    <p className="text-sm">{selectedEvaluation.weaknesses || t('evaluations:messages.noWeaknesses')}</p>
                   </Card>
                   <Card className="p-4 border-l-4 border-l-info">
-                    <h4 className="font-semibold text-info mb-3">{isRTL ? 'التوصيات' : 'Recommendations'}</h4>
-                    <p className="text-sm">{selectedEvaluation.recommendations || (isRTL ? 'لم يتم تقديم توصيات' : 'No recommendations provided')}</p>
+                    <h4 className="font-semibold text-info mb-3">{t('evaluations:details.recommendations')}</h4>
+                    <p className="text-sm">{selectedEvaluation.recommendations || t('evaluations:messages.noRecommendations')}</p>
                   </Card>
                   <Card className="p-4 border-l-4 border-l-warning">
-                    <h4 className="font-semibold text-warning mb-3">{isRTL ? 'الخطوات التالية' : 'Next Steps'}</h4>
-                    <p className="text-sm">{selectedEvaluation.next_steps || (isRTL ? 'لم يتم تحديد خطوات تالية' : 'No next steps provided')}</p>
+                    <h4 className="font-semibold text-warning mb-3">{t('evaluations:details.nextSteps')}</h4>
+                    <p className="text-sm">{selectedEvaluation.next_steps || t('evaluations:messages.noNextSteps')}</p>
                   </Card>
                 </div>
 
@@ -651,20 +651,20 @@ const EvaluationsPage = () => {
                 <div className="space-y-4">
                   <h3 className="font-semibold text-lg flex items-center gap-2">
                     <MessageSquare className="h-5 w-5" />
-                    {isRTL ? 'التعليقات والملاحظات' : 'Comments & Feedback'}
+                    {t('evaluations:details.comments')}
                   </h3>
                   
                   <div className="space-y-3">
                     <div className="flex gap-3">
                       <Textarea
-                        placeholder={isRTL ? 'إضافة تعليق...' : 'Add a comment...'}
+                        placeholder={t('evaluations:details.addComment')}
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         className="flex-1"
                         rows={3}
                       />
                       <Button onClick={addComment} disabled={!newComment.trim()}>
-                        {isRTL ? 'إضافة' : 'Post'}
+                        {t('evaluations:details.post')}
                       </Button>
                     </div>
                     
@@ -686,7 +686,7 @@ const EvaluationsPage = () => {
                       ))}
                       {comments.length === 0 && (
                         <p className="text-center text-muted-foreground py-4">
-                          {isRTL ? 'لا توجد تعليقات بعد' : 'No comments yet'}
+                          {t('evaluations:details.noComments')}
                         </p>
                       )}
                     </div>

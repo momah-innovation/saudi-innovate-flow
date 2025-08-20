@@ -1,7 +1,11 @@
 {
+  "select": {
+    "placeholder": "اختر...",
+    "search_placeholder": "البحث..."
+  },
   "actions": {
     "save": "حفظ",
-    "cancel": "إلغاء", 
+    "cancel": "إلغاء",
     "delete": "حذف",
     "edit": "تعديل",
     "add": "إضافة",
@@ -327,5 +331,9 @@
     "sort_descending": "ترتيب تنازلي",
     "filter_column": "تصفية العمود",
     "search_table": "بحث في الجدول"
+  },
+  "file_uploader": {
+    "config_not_found": "لم يتم العثور على إعدادات الرفع '{uploadType}'. يرجى التحقق من إعدادات الرفع.",
+    "disabled": "رفع الملفات معطل حالياً."
   }
 }

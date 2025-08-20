@@ -294,12 +294,12 @@ const EventRegistration = () => {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'confirmed': return isRTL ? 'مؤكد' : 'Confirmed';
-      case 'pending': return isRTL ? 'في الانتظار' : 'Pending';
-      case 'waitlist': return isRTL ? 'قائمة انتظار' : 'Waitlist';
-      case 'cancelled': return isRTL ? 'ملغي' : 'Cancelled';
-      case 'available': return isRTL ? 'متاح' : 'Available';
-      case 'completed': return isRTL ? 'مكتمل' : 'Completed';
+      case 'confirmed': return t('events:event_status.confirmed');
+      case 'pending': return t('events:event_status.pending');
+      case 'waitlist': return t('events:event_status.waitlist');
+      case 'cancelled': return t('events:event_status.cancelled');
+      case 'available': return t('events:event_status.available');
+      case 'completed': return t('events:event_status.completed');
       default: return status;
     }
   };
@@ -316,10 +316,10 @@ const EventRegistration = () => {
 
   const getTypeText = (type: string) => {
     switch (type) {
-      case 'conference': return t('event_type.conference');
-      case 'workshop': return t('event_type.workshop');
-      case 'exhibition': return isRTL ? 'معرض' : 'Exhibition';
-      case 'summit': return isRTL ? 'ملتقى' : 'Summit';
+      case 'conference': return t('events:event_type.conference');
+      case 'workshop': return t('events:event_type.workshop');
+      case 'exhibition': return t('events:event_type.exhibition');
+      case 'summit': return t('events:event_type.summit');
       default: return type;
     }
   };
@@ -352,8 +352,8 @@ const EventRegistration = () => {
     );
     toast({
       title: favorites.includes(eventId) 
-        ? (isRTL ? 'تم إزالة من المفضلة' : 'Removed from favorites')
-        : (isRTL ? 'تم إضافة للمفضلة' : 'Added to favorites'),
+        ? t('events:registration_page.removed_from_favorites')
+        : t('events:registration_page.added_to_favorites'),
       duration: 2000,
     });
   };
@@ -365,8 +365,8 @@ const EventRegistration = () => {
 
   const confirmRegistration = () => {
     toast({
-      title: isRTL ? 'تم التسجيل بنجاح!' : 'Registration Successful!',
-      description: isRTL ? 'سيتم إرسال تفاصيل الفعالية عبر البريد الإلكتروني' : 'Event details will be sent to your email',
+      title: t('events:registration_page.registration_successful'),
+      description: t('events:registration_page.registration_details_sent'),
     });
     setShowRegistrationDialog(false);
   };
@@ -384,7 +384,7 @@ const EventRegistration = () => {
       const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
       navigator.clipboard.writeText(currentUrl);
       toast({
-        title: isRTL ? 'تم نسخ الرابط' : 'Link copied',
+        title: t('events:registration_page.link_copied'),
         duration: 2000,
       });
     }
@@ -392,7 +392,7 @@ const EventRegistration = () => {
 
   const downloadTicket = (event: any) => {
     toast({
-      title: isRTL ? 'جاري تحميل التذكرة...' : 'Downloading ticket...',
+      title: t('events:registration_page.downloading_ticket'),
       duration: 2000,
     });
   };
@@ -428,24 +428,23 @@ const EventRegistration = () => {
                 <Badge variant="outline">
                   {isRTL ? event.category : event.category_en}
                 </Badge>
-                {event.format && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
-                    {event.format === 'virtual' ? (
-                      <VideoIcon className="h-3 w-3" />
-                    ) : event.format === 'hybrid' ? (
-                      <>
-                        <MapPinIcon className="h-3 w-3" />
+                  {event.format && (
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      {event.format === 'virtual' ? (
                         <VideoIcon className="h-3 w-3" />
-                      </>
-                    ) : (
-                      <MapPinIcon className="h-3 w-3" />
-                    )}
-                    {isRTL ? 
-                      (event.format === 'virtual' ? 'افتراضي' : event.format === 'hybrid' ? 'مختلط' : 'حضوري') :
-                      event.format
-                    }
-                  </Badge>
-                )}
+                      ) : event.format === 'hybrid' ? (
+                        <>
+                          <MapPinIcon className="h-3 w-3" />
+                          <VideoIcon className="h-3 w-3" />
+                        </>
+                      ) : (
+                        <MapPinIcon className="h-3 w-3" />
+                      )}
+                      {event.format === 'virtual' ? t('events:registration_page.virtual') : 
+                       event.format === 'hybrid' ? t('events:registration_page.hybrid') : 
+                       t('events:registration_page.in_person')}
+                    </Badge>
+                  )}
               </div>
 
               {event.rating && (
@@ -453,7 +452,7 @@ const EventRegistration = () => {
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                   <span className="text-sm font-medium">{event.rating}</span>
                   <span className="text-xs text-muted-foreground">
-                    ({event.registered || 0} {isRTL ? 'تقييم' : 'reviews'})
+                    ({event.registered || 0} {t('events:registration_page.reviews')})
                   </span>
                 </div>
               )}
@@ -516,10 +515,10 @@ const EventRegistration = () => {
             
             <div className="flex items-center gap-2">
               <UsersIcon className="h-4 w-4 flex-shrink-0" />
-              <span>{event.registered}/{event.capacity} {isRTL ? 'مشارك' : 'participants'}</span>
+              <span>{event.registered}/{event.capacity} {t('events:registration_page.participants')}</span>
               {isNearFull && (
                 <Badge variant="destructive" className="text-xs">
-                  {isRTL ? 'أوشك على الامتلاء' : 'Nearly Full'}
+                  {t('events:registration_page.nearly_full')}
                 </Badge>
               )}
             </div>
@@ -528,7 +527,7 @@ const EventRegistration = () => {
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-primary">
                   {event.ticketPrice === 0 
-                    ? (isRTL ? 'مجاني' : 'Free')
+                    ? t('events:registration_page.free')
                     : `${event.ticketPrice} ${event.currency}`
                   }
                 </span>
@@ -539,7 +538,7 @@ const EventRegistration = () => {
           {/* Capacity Progress */}
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs">
-              <span>{isRTL ? 'معدل التسجيل' : 'Registration'}</span>
+              <span>{t('events:registration_page.registration_rate')}</span>
               <span>{capacityPercentage}%</span>
             </div>
             <Progress 
@@ -577,7 +576,7 @@ const EventRegistration = () => {
                 className="flex items-center gap-1"
               >
                 <Eye className="h-3 w-3" />
-                {isRTL ? 'التفاصيل' : 'Details'}
+                {t('events:registration_page.details')}
               </Button>
               
               {event.status === 'confirmed' && (
@@ -588,7 +587,7 @@ const EventRegistration = () => {
                   className="flex items-center gap-1"
                 >
                   <Download className="h-3 w-3" />
-                  {isRTL ? 'التذكرة' : 'Ticket'}
+                  {t('events:registration_page.ticket')}
                 </Button>
               )}
             </div>
@@ -596,7 +595,7 @@ const EventRegistration = () => {
             <div className="flex gap-2">
               {event.status === 'pending' && (
                 <Button variant="outline" size="sm">
-                  {isRTL ? 'إلغاء' : 'Cancel'}
+                  {t('events:registration_page.cancel')}
                 </Button>
               )}
               
@@ -607,8 +606,8 @@ const EventRegistration = () => {
                   disabled={capacityPercentage >= 100}
                 >
                   {capacityPercentage >= 100 
-                    ? (isRTL ? 'مكتمل' : 'Full')
-                    : (isRTL ? 'التسجيل' : 'Register')
+                    ? t('events:registration_page.full')
+                    : t('events:registration.register')
                   }
                 </Button>
               )}
@@ -640,7 +639,7 @@ const EventRegistration = () => {
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="h-5 w-5 text-primary" />
                   <div>
-                    <p className="font-medium">{isRTL ? 'التاريخ' : 'Date'}</p>
+                    <p className="font-medium">{t('events:details.date')}</p>
                     <p className="text-sm text-muted-foreground">{formatEventDuration(selectedEvent)}</p>
                   </div>
                 </div>
@@ -648,7 +647,7 @@ const EventRegistration = () => {
                 <div className="flex items-center gap-2">
                   <ClockIcon className="h-5 w-5 text-primary" />
                   <div>
-                    <p className="font-medium">{isRTL ? 'الوقت' : 'Time'}</p>
+                    <p className="font-medium">{t('events:details.time')}</p>
                     <p className="text-sm text-muted-foreground">
                       {selectedEvent.time}
                       {selectedEvent.endTime && ` - ${selectedEvent.endTime}`}
@@ -660,7 +659,7 @@ const EventRegistration = () => {
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-primary" />
                     <div>
-                      <p className="font-medium">{isRTL ? 'المكان' : 'Location'}</p>
+                      <p className="font-medium">{t('events:details.location')}</p>
                       <p className="text-sm text-muted-foreground">
                         {isRTL ? selectedEvent.location : selectedEvent.location_en}
                       </p>
@@ -673,7 +672,7 @@ const EventRegistration = () => {
                 <div className="flex items-center gap-2">
                   <UsersIcon className="h-5 w-5 text-primary" />
                   <div>
-                    <p className="font-medium">{isRTL ? 'المشاركون' : 'Participants'}</p>
+                    <p className="font-medium">{t('events:registration_page.participants')}</p>
                     <p className="text-sm text-muted-foreground">
                       {selectedEvent.registered}/{selectedEvent.capacity}
                     </p>
@@ -686,10 +685,10 @@ const EventRegistration = () => {
                 
                 {selectedEvent.ticketPrice !== undefined && (
                   <div>
-                    <p className="font-medium">{isRTL ? 'السعر' : 'Price'}</p>
+                    <p className="font-medium">{t('events:registration_page.price')}</p>
                     <p className="text-lg font-bold text-primary">
                       {selectedEvent.ticketPrice === 0 
-                        ? (isRTL ? 'مجاني' : 'Free')
+                        ? t('events:registration_page.free')
                         : `${selectedEvent.ticketPrice} ${selectedEvent.currency}`
                       }
                     </p>
@@ -703,7 +702,7 @@ const EventRegistration = () => {
             {/* Speakers */}
             {selectedEvent.speakers && (
               <div>
-                <h3 className="font-semibold mb-3">{isRTL ? 'المتحدثون' : 'Speakers'}</h3>
+                <h3 className="font-semibold mb-3">{t('events:details.speakers')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {selectedEvent.speakers.map((speaker: string, index: number) => (
                     <Badge key={index} variant="secondary" className="px-3 py-1">
@@ -717,7 +716,7 @@ const EventRegistration = () => {
             {/* Agenda */}
             {selectedEvent.agenda && (
               <div>
-                <h3 className="font-semibold mb-3">{isRTL ? 'جدول الأعمال' : 'Agenda'}</h3>
+                <h3 className="font-semibold mb-3">{t('events:details.agenda')}</h3>
                 <div className="space-y-2">
                   {selectedEvent.agenda.map((item: any, index: number) => (
                     <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-muted">
@@ -734,7 +733,7 @@ const EventRegistration = () => {
             {/* Tags */}
             {selectedEvent.tags && (
               <div>
-                <h3 className="font-semibold mb-3">{isRTL ? 'المواضيع' : 'Topics'}</h3>
+                <h3 className="font-semibold mb-3">{t('events:registration_page.topics')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {selectedEvent.tags.map((tag: string, index: number) => (
                     <Badge key={index} variant="outline">
@@ -754,7 +753,7 @@ const EventRegistration = () => {
                   className="flex items-center gap-2"
                 >
                   <Share2 className="h-4 w-4" />
-                  {isRTL ? 'مشاركة' : 'Share'}
+                  {t('events:registration_page.share')}
                 </Button>
                 
                 <Button 
@@ -764,15 +763,15 @@ const EventRegistration = () => {
                 >
                   <Heart className={`h-4 w-4 ${favorites.includes(selectedEvent.id) ? 'fill-red-500 text-red-500' : ''}`} />
                   {favorites.includes(selectedEvent.id) 
-                    ? (isRTL ? 'إزالة من المفضلة' : 'Remove from Favorites')
-                    : (isRTL ? 'إضافة للمفضلة' : 'Add to Favorites')
+                    ? t('events:registration_page.remove_from_favorites')
+                    : t('events:registration_page.add_to_favorites')
                   }
                 </Button>
               </div>
               
               {selectedEvent.status === 'available' && (
                 <Button onClick={() => handleRegistration(selectedEvent)}>
-                  {isRTL ? 'التسجيل الآن' : 'Register Now'}
+                  {t('events:registration.register_now')}
                 </Button>
               )}
             </div>
@@ -787,11 +786,11 @@ const EventRegistration = () => {
     <Dialog open={showRegistrationDialog} onOpenChange={setShowRegistrationDialog}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isRTL ? 'تأكيد التسجيل' : 'Confirm Registration'}</DialogTitle>
+          <DialogTitle>{t('events:registration_page.confirm_registration')}</DialogTitle>
           <DialogDescription>
             {selectedEvent && (
               <>
-                {isRTL ? 'هل تريد التسجيل في:' : 'Are you sure you want to register for:'}
+                {t('events:registration_page.confirm_registration_desc')}
                 <br />
                 <strong>{isRTL ? selectedEvent.eventTitle : selectedEvent.eventTitle_en}</strong>
               </>
@@ -815,7 +814,7 @@ const EventRegistration = () => {
                   <span>{isRTL ? 'السعر:' : 'Price:'}</span>
                   <span className="font-semibold">
                     {selectedEvent.ticketPrice === 0 
-                      ? (isRTL ? 'مجاني' : 'Free')
+                      ? t('events:registration_page.free')
                       : `${selectedEvent.ticketPrice} ${selectedEvent.currency}`
                     }
                   </span>
@@ -825,10 +824,10 @@ const EventRegistration = () => {
             
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowRegistrationDialog(false)}>
-                {isRTL ? 'إلغاء' : 'Cancel'}
+                {t('events:registration_page.cancel')}
               </Button>
               <Button onClick={confirmRegistration}>
-                {isRTL ? 'تأكيد التسجيل' : 'Confirm Registration'}
+                {t('events:registration_page.confirm_registration')}
               </Button>
             </div>
           </div>
@@ -842,29 +841,29 @@ const EventRegistration = () => {
     <Sheet open={showFilters} onOpenChange={setShowFilters}>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>{isRTL ? 'تصفية الفعاليات' : 'Filter Events'}</SheetTitle>
+          <SheetTitle>{t('events:registration_page.filter_events')}</SheetTitle>
           <SheetDescription>
-            {isRTL ? 'استخدم الفلاتر لتضييق نتائج البحث' : 'Use filters to narrow down your search results'}
+            {t('events:registration_page.filter_events_desc')}
           </SheetDescription>
         </SheetHeader>
         
         <div className="space-y-6 mt-6">
           <div>
             <label className="text-sm font-medium mb-2 block">
-              {isRTL ? 'الفئة' : 'Category'}
+              {t('events:filters.category')}
             </label>
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger>
-                <SelectValue placeholder={isRTL ? 'اختر الفئة' : 'Select category'} />
+                <SelectValue placeholder={t('events:registration_page.select_category')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الفئات' : 'All Categories'}</SelectItem>
-                <SelectItem value="technology">{isRTL ? 'تكنولوجيا' : 'Technology'}</SelectItem>
-                <SelectItem value="business">{isRTL ? 'أعمال' : 'Business'}</SelectItem>
-                <SelectItem value="fintech">{isRTL ? 'تكنولوجيا مالية' : 'FinTech'}</SelectItem>
-                <SelectItem value="artificial intelligence">{isRTL ? 'ذكاء اصطناعي' : 'Artificial Intelligence'}</SelectItem>
-                <SelectItem value="development">{isRTL ? 'تطوير' : 'Development'}</SelectItem>
-                <SelectItem value="cybersecurity">{isRTL ? 'أمن سيبراني' : 'Cybersecurity'}</SelectItem>
+                <SelectItem value="all">{t('events:registration_page.all_categories')}</SelectItem>
+                <SelectItem value="technology">{t('events:event_category.technology')}</SelectItem>
+                <SelectItem value="business">{t('events:event_category.business')}</SelectItem>
+                <SelectItem value="fintech">{t('events:event_category.fintech')}</SelectItem>
+                <SelectItem value="artificial intelligence">{t('events:event_category.ai')}</SelectItem>
+                <SelectItem value="development">{t('events:event_category.development')}</SelectItem>
+                <SelectItem value="cybersecurity">{t('events:event_category.cybersecurity')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -964,8 +963,8 @@ const EventRegistration = () => {
         } : undefined}
       />
       <PageLayout
-        title={isRTL ? 'تسجيل الفعاليات' : 'Event Registration'}
-        description={isRTL ? 'إدارة تسجيلاتك في الفعاليات والمؤتمرات' : 'Manage your event and conference registrations'}
+        title={t('events:registration_page.title')}
+        description={t('events:registration_page.description')}
       >
         <div className="space-y-6">
           {/* Enhanced Header with Search and Filters */}
@@ -974,7 +973,7 @@ const EventRegistration = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
+                  placeholder={t('events:registration_page.search_placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -990,7 +989,7 @@ const EventRegistration = () => {
                 className="flex items-center gap-2"
               >
                 <Filter className="h-4 w-4" />
-                {isRTL ? 'تصفية' : 'Filter'}
+                {t('events:registration_page.filter')}
               </Button>
               
               <div className="flex items-center gap-1 border rounded-md">
@@ -1018,7 +1017,7 @@ const EventRegistration = () => {
           {(searchQuery || selectedCategory !== 'all' || selectedType !== 'all' || selectedStatus !== 'all') && (
             <div className="bg-muted p-3 rounded-lg flex items-center justify-between">
               <span className="text-sm">
-                {isRTL ? `تم العثور على ${currentEvents.length} فعالية` : `Found ${currentEvents.length} events`}
+                {t('events:registration_page.results_found', { count: currentEvents.length })}
               </span>
               <Button
                 variant="ghost"
@@ -1030,7 +1029,7 @@ const EventRegistration = () => {
                   setSelectedStatus('all');
                 }}
               >
-                {isRTL ? 'إزالة الفلاتر' : 'Clear filters'}
+                {t('events:registration_page.clear_filters')}
               </Button>
             </div>
           )}
@@ -1040,21 +1039,21 @@ const EventRegistration = () => {
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="my-registrations" className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />
-                {isRTL ? 'تسجيلاتي' : 'My Registrations'}
+                {t('events:registration_page.my_registrations')}
                 <Badge variant="secondary" className="ml-1">
                   {mockRegistrations.length}
                 </Badge>
               </TabsTrigger>
               <TabsTrigger value="upcoming-events" className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                {isRTL ? 'فعاليات قادمة' : 'Upcoming Events'}
+                {t('events:registration_page.upcoming_events')}
                 <Badge variant="secondary" className="ml-1">
                   {upcomingEvents.length}
                 </Badge>
               </TabsTrigger>
               <TabsTrigger value="past-events" className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                {isRTL ? 'فعاليات سابقة' : 'Past Events'}
+                {t('events:registration_page.past_events')}
                 <Badge variant="secondary" className="ml-1">
                   {pastEvents.length}
                 </Badge>
@@ -1076,10 +1075,10 @@ const EventRegistration = () => {
                   <div className="text-center">
                     <CheckCircle className="h-16 w-16 mx-auto mb-4 opacity-50" />
                     <h3 className="text-lg font-medium mb-2">
-                      {isRTL ? 'لا توجد تسجيلات' : 'No registrations'}
+                      {t('events:registration_page.no_registrations')}
                     </h3>
                     <p className="text-sm">
-                      {isRTL ? 'لم تقم بالتسجيل في أي فعالية بعد' : 'You haven\'t registered for any events yet'}
+                      {t('events:registration_page.no_registrations_desc')}
                     </p>
                   </div>
                 </div>
@@ -1101,10 +1100,10 @@ const EventRegistration = () => {
                   <div className="text-center">
                     <Calendar className="h-16 w-16 mx-auto mb-4 opacity-50" />
                     <h3 className="text-lg font-medium mb-2">
-                      {isRTL ? 'لا توجد فعاليات قادمة' : 'No upcoming events'}
+                      {t('events:registration_page.no_upcoming')}
                     </h3>
                     <p className="text-sm">
-                      {isRTL ? 'لا توجد فعاليات متاحة للتسجيل حالياً' : 'No events available for registration at the moment'}
+                      {t('events:registration_page.no_upcoming_desc')}
                     </p>
                   </div>
                 </div>
@@ -1126,10 +1125,10 @@ const EventRegistration = () => {
                   <div className="text-center">
                     <Clock className="h-16 w-16 mx-auto mb-4 opacity-50" />
                     <h3 className="text-lg font-medium mb-2">
-                      {isRTL ? 'لا توجد فعاليات سابقة' : 'No past events'}
+                      {t('events:registration_page.no_past')}
                     </h3>
                     <p className="text-sm">
-                      {isRTL ? 'لم تحضر أي فعالية بعد' : 'You haven\'t attended any events yet'}
+                      {t('events:registration_page.no_past_desc')}
                     </p>
                   </div>
                 </div>
@@ -1146,9 +1145,9 @@ const EventRegistration = () => {
         {/* Event Collaboration */}
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>{isRTL ? 'تعاون الفعاليات' : 'Event Collaboration'}</CardTitle>
+            <CardTitle>{t('events:registration_page.event_collaboration')}</CardTitle>
             <CardDescription>
-              {isRTL ? 'تفاعل مع المشاركين الآخرين' : 'Engage with other participants'}
+              {t('events:registration_page.event_collaboration_desc')}
             </CardDescription>
           </CardHeader>
           <CardContent>

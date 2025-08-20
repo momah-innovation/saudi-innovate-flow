@@ -81,7 +81,7 @@
   "actions": {
     "create": "إنشاء",
     "update": "تحديث",
-    "save": "حفظ", 
+    "save": "حفظ",
     "cancel": "إلغاء",
     "delete": "حذف",
     "edit": "تعديل",
@@ -105,19 +105,47 @@
     "manage": "إدارة",
     "review": "مراجعة"
   },
+  "messages": {
+    "success": "نجح",
+    "error": "خطأ",
+    "warning": "تحذير",
+    "info": "معلومات",
+    "saved_successfully": "تم الحفظ بنجاح",
+    "deleted_successfully": "تم الحذف بنجاح",
+    "updated_successfully": "تم التحديث بنجاح",
+    "created_successfully": "تم الإنشاء بنجاح",
+    "operation_failed": "فشلت العملية",
+    "please_try_again": "يرجى المحاولة مرة أخرى",
+    "loading": "جاري التحميل...",
+    "processing": "جاري المعالجة...",
+    "please_wait": "يرجى الانتظار...",
+    "no_data_available": "لا توجد بيانات متاحة",
+    "something_went_wrong": "حدث خطأ ما",
+    "permission_denied": "تم رفض الإذن",
+    "unauthorized_access": "وصول غير مصرح به",
+    "session_expired": "انتهت صلاحية الجلسة",
+    "network_error": "خطأ في الشبكة",
+    "validation_error": "خطأ في التحقق",
+    "required_fields": "يرجى ملء جميع الحقول المطلوبة"
+  },
   "status": {
     "active": "نشط",
     "inactive": "غير نشط",
     "pending": "معلق",
-    "completed": "مكتمل", 
-    "in_progress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "in_progress": "قيد التقدم",
     "draft": "مسودة",
-    "submitted": "مُرسل",
+    "submitted": "مقدم",
     "under_review": "قيد المراجعة",
     "approved": "موافق عليه",
     "rejected": "مرفوض",
     "cancelled": "ملغي",
-    "published": "منشور"
+    "published": "منشور",
+    "on_hold": "معلق",
+    "planning": "تخطيط",
+    "upcoming": "قادم",
+    "closed": "مغلق",
+    "ongoing": "جاري"
   },
   "placeholders": {
     "search": "بحث...",
@@ -239,5 +267,73 @@
   "validation": {
     "validation_error": "خطأ في التحقق",
     "required_field": "الحقل مطلوب: {{field}}"
+  },
+  "units": {
+    "bytes": "بايت",
+    "kb": "كيلوبايت",
+    "mb": "ميجابايت",
+    "gb": "جيجابايت",
+    "days": "أيام",
+    "hours": "ساعات",
+    "minutes": "دقائق",
+    "seconds": "ثواني",
+    "currency": "ريال",
+    "percentage": "%"
+  },
+  "directions": {
+    "up": "أعلى",
+    "down": "أسفل",
+    "neutral": "محايد"
+  },
+  "view_details": "عرض التفاصيل",
+  "tasks": "المهام",
+  "filter": "تصفية",
+  "close_sr": "إغلاق",
+  "metrics": {
+    "growth": "النمو",
+    "projects": "المشاريع",
+    "budget": "الميزانية",
+    "progress": "التقدم",
+    "participants": "المشاركون",
+    "revenue": "الإيرادات",
+    "performance": "الأداء",
+    "uptime": "وقت التشغيل",
+    "response_time": "وقت الاستجابة",
+    "error_rate": "معدل الأخطاء",
+    "success_rate": "معدل النجاح",
+    "completion_rate": "معدل الإنجاز",
+    "engagement_rate": "معدل المشاركة"
+  },
+  "labels": {
+    "refresh": "تحديث",
+    "share": "مشاركة",
+    "analytics": "التحليلات",
+    "reports": "التقارير",
+    "notifications": "الإشعارات",
+    "dashboard": "لوحة التحكم",
+    "overview": "نظرة عامة",
+    "details": "التفاصيل",
+    "statistics": "إحصائيات",
+    "trends": "الاتجاهات",
+    "insights": "الرؤى",
+    "monitoring": "المراقبة",
+    "settings": "الإعدادات",
+    "back_to": "العودة إلى",
+    "manage": "إدارة",
+    "view_all": "عرض الكل",
+    "show_more": "عرض المزيد",
+    "show_less": "عرض أقل"
+  },
+  "priority": {
+    "high": "عالية",
+    "medium": "متوسطة",
+    "low": "منخفضة",
+    "critical": "حرجة",
+    "normal": "عادية"
+  },
+  "impact": {
+    "high": "تأثير عالي",
+    "medium": "تأثير متوسط",
+    "low": "تأثير منخفض"
   }
 }

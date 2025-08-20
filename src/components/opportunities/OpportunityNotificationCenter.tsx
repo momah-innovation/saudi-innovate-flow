@@ -8,6 +8,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Notification {
   id: string;
@@ -23,6 +24,7 @@ export const OpportunityNotificationCenter = () => {
   const { isRTL } = useDirection();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(false);
@@ -65,8 +67,8 @@ export const OpportunityNotificationCenter = () => {
       // Failed to load notifications - use empty array
       setNotifications([]);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحميل الإشعارات' : 'Failed to load notifications',
+        title: t('opportunities:notifications.error'),
+        description: t('opportunities:notifications.load_error'),
         variant: 'destructive',
       });
     } finally {
@@ -105,12 +107,12 @@ export const OpportunityNotificationCenter = () => {
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
     if (diffDays > 0) {
-      return isRTL ? `منذ ${diffDays} أيام` : `${diffDays} days ago`;
+      return t('opportunities:notifications.days_ago', { count: diffDays });
     } else if (diffHrs > 0) {
-      return isRTL ? `منذ ${diffHrs} ساعات` : `${diffHrs} hours ago`;
+      return t('opportunities:notifications.hours_ago', { count: diffHrs });
     } else {
       const diffMins = Math.floor(diffMs / (1000 * 60));
-      return isRTL ? `منذ ${diffMins} دقائق` : `${diffMins} minutes ago`;
+      return t('opportunities:notifications.minutes_ago', { count: diffMins });
     }
   };
 
@@ -118,7 +120,7 @@ export const OpportunityNotificationCenter = () => {
     <>
       <Button variant="outline" size="sm" className="relative" onClick={() => setOpen(true)}>
         <Bell className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-        {isRTL ? 'الإشعارات' : 'Notifications'}
+        {t('opportunities:notifications.title')}
         {unreadCount > 0 && (
           <Badge className={`absolute -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-red-500 text-white text-xs ${isRTL ? '-left-2' : '-right-2'}`}>
             {unreadCount}
@@ -132,7 +134,7 @@ export const OpportunityNotificationCenter = () => {
             <DialogTitle className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Bell className="w-5 h-5" />
-                {isRTL ? 'الإشعارات' : 'Notifications'}
+                {t('opportunities:notifications.title')}
               </div>
               {unreadCount > 0 && (
                 <Button
@@ -141,7 +143,7 @@ export const OpportunityNotificationCenter = () => {
                   onClick={markAllAsRead}
                   className="text-xs"
                 >
-                  {isRTL ? 'تعيين الكل كمقروء' : 'Mark all as read'}
+                  {t('opportunities:notifications.mark_all_read')}
                 </Button>
               )}
             </DialogTitle>
@@ -152,15 +154,15 @@ export const OpportunityNotificationCenter = () => {
               <div className="text-center py-8">
                 <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
                 <p className="text-muted-foreground text-sm">
-                  {isRTL ? 'جاري التحميل...' : 'Loading...'}
+                  {t('opportunities:notifications.loading')}
                 </p>
               </div>
             ) : notifications.length === 0 ? (
               <div className="text-center py-8">
                 <Bell className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="font-medium mb-2">{isRTL ? 'لا توجد إشعارات' : 'No Notifications'}</h3>
+                <h3 className="font-medium mb-2">{t('opportunities:notifications.no_notifications')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {isRTL ? 'ستظهر الإشعارات هنا عند وصولها' : 'Notifications will appear here when they arrive'}
+                  {t('opportunities:notifications.will_appear_here')}
                 </p>
               </div>
             ) : (

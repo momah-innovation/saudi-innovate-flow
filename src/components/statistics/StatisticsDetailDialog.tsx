@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface StatisticsDetailDialogProps {
   isOpen: boolean;
@@ -21,25 +22,27 @@ interface StatisticsDetailDialogProps {
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accent))', 'hsl(var(--muted))'];
 
 export function StatisticsDetailDialog({ isOpen, onClose, type, data }: StatisticsDetailDialogProps) {
+  const { t } = useUnifiedTranslation();
+  
   if (!type || !data) return null;
 
   const getTitle = () => {
     switch (type) {
-      case 'ideas': return 'Ideas Analytics';
-      case 'challenges': return 'Challenges Analytics'; 
-      case 'events': return 'Events Analytics';
-      case 'users': return 'Users Analytics';
-      default: return 'Analytics';
+      case 'ideas': return t('statistics.dialog.ideas_analytics');
+      case 'challenges': return t('statistics.dialog.challenges_analytics'); 
+      case 'events': return t('statistics.dialog.events_analytics');
+      case 'users': return t('statistics.dialog.users_analytics');
+      default: return t('statistics.dialog.analytics');
     }
   };
 
   const getDescription = () => {
     switch (type) {
-      case 'ideas': return 'Detailed breakdown of innovation ideas submission and evaluation';
-      case 'challenges': return 'Analysis of innovation challenges and their progress';
-      case 'events': return 'Event participation and engagement metrics';
-      case 'users': return 'User activity and platform engagement statistics';
-      default: return 'Detailed analytics data';
+      case 'ideas': return t('statistics.dialog.ideas_description');
+      case 'challenges': return t('statistics.dialog.challenges_description');
+      case 'events': return t('statistics.dialog.events_description');
+      case 'users': return t('statistics.dialog.users_description');
+      default: return t('statistics.dialog.default_description');
     }
   };
 
@@ -105,7 +108,7 @@ export function StatisticsDetailDialog({ isOpen, onClose, type, data }: Statisti
           {data.chartData && (
             <Card className="animate-fade-in">
               <CardHeader>
-                <CardTitle>{data.chartTitle || 'Data Visualization'}</CardTitle>
+                <CardTitle>{data.chartTitle || t('statistics.dialog.data_visualization')}</CardTitle>
               </CardHeader>
               <CardContent>
                 {renderChart()}
@@ -117,7 +120,7 @@ export function StatisticsDetailDialog({ isOpen, onClose, type, data }: Statisti
           {data.progressData && (
             <Card className="animate-fade-in">
               <CardHeader>
-                <CardTitle>Performance Indicators</CardTitle>
+                <CardTitle>{t('statistics.dialog.performance_indicators')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {data.progressData.map((item: any, index: number) => (
@@ -137,7 +140,7 @@ export function StatisticsDetailDialog({ isOpen, onClose, type, data }: Statisti
           {data.tableData && (
             <Card className="animate-fade-in">
               <CardHeader>
-                <CardTitle>Detailed Breakdown</CardTitle>
+                <CardTitle>{t('statistics.dialog.detailed_breakdown')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">

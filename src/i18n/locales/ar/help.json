@@ -1,0 +1,70 @@
+{
+    "title": "المساعدة والوثائق",
+    "description": "العثور على إجابات وأدلة شاملة لاستخدام المنصة",
+    "search_title": "كيف يمكننا مساعدتك؟",
+    "search_placeholder": "ابحث عن إجابة...",
+    "need_help": "تحتاج مساعدة إضافية؟",
+    "support_available": "فريق الدعم متاح لمساعدتك",
+    "tabs": {
+        "faq": "الأسئلة الشائعة",
+        "guides": "الأدلة",
+        "videos": "الفيديوهات",
+        "contact": "اتصل بنا",
+        "downloads": "التحميلات"
+    },
+    "contact": {
+        "live_chat": {
+            "title": "الدردشة المباشرة",
+            "description": "متاح 24/7 للمساعدة الفورية",
+            "action": "بدء المحادثة",
+            "availability": "متاح الآن"
+        },
+        "email": {
+            "title": "البريد الإلكتروني",
+            "description": "سنرد خلال 24 ساعة",
+            "action": "إرسال رسالة"
+        },
+        "phone": {
+            "title": "الهاتف",
+            "description": "الأحد-الخميس 9ص-5م",
+            "action": "اتصال"
+        }
+    },
+    "categories": {
+        "all": "جميع الفئات",
+        "account": "الحساب",
+        "ideas": "الأفكار",
+        "projects": "المشاريع",
+        "evaluation": "التقييم",
+        "technical": "تقني"
+    },
+    "guide": {
+        "chapters": "فصل",
+        "start_reading": "بدء القراءة"
+    },
+    "video": {
+        "views": "مشاهدة",
+        "watch": "مشاهدة الفيديو"
+    },
+    "downloads": {
+        "user_manual": {
+            "title": "دليل المستخدم",
+            "description": "دليل شامل لجميع ميزات المنصة"
+        },
+        "workspace_docs": {
+            "title": "وثائق مساحات العمل",
+            "description": "دليل شامل لفهم أنواع مساحات العمل ووظائفها",
+            "type": "صفحة ويب",
+            "action": "عرض الوثائق"
+        },
+        "project_templates": {
+            "title": "قوالب المشاريع",
+            "description": "قوالب جاهزة لإنشاء مشاريع ناجحة"
+        },
+        "developer_guide": {
+            "title": "دليل المطورين",
+            "description": "وثائق للمطورين والمهندسين"
+        },
+        "download": "تحميل"
+    }
+}

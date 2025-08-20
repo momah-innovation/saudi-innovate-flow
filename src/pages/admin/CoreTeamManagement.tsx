@@ -26,10 +26,10 @@ export default function CoreTeamManagement() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">
-            {isRTL ? 'غير مصرح لك بالوصول' : 'Access Denied'}
+            {t('admin:access.denied')}
           </h2>
           <p className="text-muted-foreground">
-            {isRTL ? 'هذه الصفحة مخصصة للمديرين فقط' : 'This page is only accessible to administrators'}
+            {t('admin:access.admin_only')}
           </p>
         </div>
       </div>

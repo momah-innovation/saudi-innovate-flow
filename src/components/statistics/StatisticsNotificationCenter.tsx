@@ -45,6 +45,7 @@ export const StatisticsNotificationCenter = ({
   className = "" 
 }: StatisticsNotificationCenterProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<StatisticsNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -88,8 +89,8 @@ export const StatisticsNotificationCenter = ({
         {
           id: '1',
           type: 'report_generated',
-          title: isRTL ? 'تم إنشاء تقرير جديد' : 'New Report Generated',
-          message: isRTL ? 'تقرير الإحصائيات الشهرية جاهز للمراجعة' : 'Monthly statistics report is ready for review',
+          title: t('statistics:notifications.types.report_generated.title'),
+          message: t('statistics:notifications.types.report_generated.message'),
           timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
           read: false,
           priority: 'high',
@@ -98,8 +99,8 @@ export const StatisticsNotificationCenter = ({
         {
           id: '2',
           type: 'threshold_reached',
-          title: isRTL ? 'تم تجاوز العتبة المحددة' : 'Threshold Reached',
-          message: isRTL ? 'عدد المستخدمين النشطين تجاوز 1000 مستخدم' : 'Active users exceeded 1000 users',
+          title: t('statistics:notifications.types.threshold_reached.title'),
+          message: t('statistics:notifications.types.threshold_reached.message'),
           timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
           read: false,
           priority: 'medium',
@@ -108,8 +109,8 @@ export const StatisticsNotificationCenter = ({
         {
           id: '3',
           type: 'data_updated',
-          title: isRTL ? 'تم تحديث البيانات' : 'Data Updated',
-          message: isRTL ? 'تم تحديث بيانات الأفكار والتحديات' : 'Ideas and challenges data has been updated',
+          title: t('statistics:notifications.types.data_updated.title'),
+          message: t('statistics:notifications.types.data_updated.message'),
           timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
           read: true,
           priority: 'low'
@@ -117,8 +118,8 @@ export const StatisticsNotificationCenter = ({
         {
           id: '4',
           type: 'milestone',
-          title: isRTL ? 'إنجاز جديد' : 'Milestone Achieved',
-          message: isRTL ? 'تم الوصول إلى 500 فكرة منشورة' : 'Reached 500 published ideas',
+          title: t('statistics:notifications.types.milestone.title'),
+          message: t('statistics:notifications.types.milestone.message'),
           timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
           read: true,
           priority: 'high'
@@ -126,8 +127,8 @@ export const StatisticsNotificationCenter = ({
         {
           id: '5',
           type: 'alert',
-          title: isRTL ? 'تنبيه النظام' : 'System Alert',
-          message: isRTL ? 'انخفاض في معدل المشاركة هذا الأسبوع' : 'Decrease in engagement rate this week',
+          title: t('statistics:notifications.types.alert.title'),
+          message: t('statistics:notifications.types.alert.message'),
           timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
           read: false,
           priority: 'medium'
@@ -236,15 +237,15 @@ export const StatisticsNotificationCenter = ({
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
     if (diffInMinutes < 1) {
-      return isRTL ? 'الآن' : 'now';
+      return t('statistics:notifications.time_ago.now');
     } else if (diffInMinutes < 60) {
-      return isRTL ? `منذ ${diffInMinutes} دقيقة` : `${diffInMinutes}m ago`;
+      return t('statistics:notifications.time_ago.minutes_ago', { count: diffInMinutes });
     } else if (diffInMinutes < 1440) {
       const hours = Math.floor(diffInMinutes / 60);
-      return isRTL ? `منذ ${hours} ساعة` : `${hours}h ago`;
+      return t('statistics:notifications.time_ago.hours_ago', { count: hours });
     } else {
       const days = Math.floor(diffInMinutes / 1440);
-      return isRTL ? `منذ ${days} يوم` : `${days}d ago`;
+      return t('statistics:notifications.time_ago.days_ago', { count: days });
     }
   };
 
@@ -269,7 +270,7 @@ export const StatisticsNotificationCenter = ({
           <SheetTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Bell className="w-5 h-5" />
-              {isRTL ? 'إشعارات الإحصائيات' : 'Statistics Notifications'}
+              {t('statistics:notifications.title')}
             </div>
             {unreadCount > 0 && (
               <Button
@@ -278,7 +279,7 @@ export const StatisticsNotificationCenter = ({
                 onClick={markAllAsRead}
                 className="text-xs"
               >
-                {isRTL ? 'قراءة الكل' : 'Mark all read'}
+                {t('statistics:notifications.mark_all_read')}
               </Button>
             )}
           </SheetTitle>
@@ -297,7 +298,7 @@ export const StatisticsNotificationCenter = ({
             ) : notifications.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <Bell className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>{isRTL ? 'لا توجد إشعارات جديدة' : 'No new notifications'}</p>
+                <p>{t('statistics:notifications.no_notifications')}</p>
               </div>
             ) : (
               notifications.map((notification) => (

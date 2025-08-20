@@ -1,0 +1,324 @@
+{
+    "wizard": {
+        "title": "Innovation Idea Submission Wizard",
+        "description": "Share your innovative idea step by step and help build a better future",
+        "step_label": "Step {{current}} of {{total}}",
+        "complete_percentage": "{{percent}}% Complete",
+        "auto_saving": "Auto-saving...",
+        "submitting": "Submitting..."
+    },
+    "steps": {
+        "basic_info": {
+            "title": "Basic Information",
+            "description": "Idea title and description"
+        },
+        "challenge_focus": {
+            "title": "Challenge & Focus",
+            "description": "Select challenge and focus question"
+        },
+        "solution_details": {
+            "title": "Solution Details",
+            "description": "Solution approach and expected impact"
+        },
+        "implementation": {
+            "title": "Implementation Plan",
+            "description": "Implementation plan and required resources"
+        },
+        "review_submit": {
+            "title": "Review & Submit",
+            "description": "Final review and submit idea"
+        }
+    },
+    "fields": {
+        "title": "Idea Title (Arabic)",
+        "title_placeholder": "Enter your idea title in Arabic",
+        "description": "Idea Description (Arabic)",
+        "description_placeholder": "Describe your idea in detail...",
+        "tags": "Tags",
+        "tags_optional": "Optional",
+        "tags_predefined": "Select from predefined tags:",
+        "tags_custom_placeholder": "Add custom tag...",
+        "tags_selected": "Selected tags:",
+        "challenge": "Select Challenge",
+        "challenge_placeholder": "Choose a challenge",
+        "challenge_high_priority": "High Priority",
+        "focus_question": "Focus Question",
+        "focus_question_optional": "Optional",
+        "focus_question_placeholder": "Choose a focus question",
+        "innovation_level": "Innovation Level",
+        "solution_approach": "Solution Approach",
+        "solution_approach_placeholder": "Describe your proposed solution approach...",
+        "expected_impact": "Expected Impact",
+        "expected_impact_placeholder": "What impact do you expect this idea to have?",
+        "collaboration_open": "Open for collaboration with other teams",
+        "implementation_plan": "Implementation Plan",
+        "implementation_plan_placeholder": "How would you implement this idea?",
+        "resource_requirements": "Resource Requirements",
+        "resource_requirements_placeholder": "What resources would be needed?",
+        "timeline": "Estimated Timeline",
+        "timeline_placeholder": "Select timeline",
+        "characters": "characters"
+    },
+    "innovation_levels": {
+        "incremental": "Incremental",
+        "radical": "Radical",
+        "disruptive": "Disruptive"
+    },
+    "timelines": {
+        "1_3_months": "1-3 months",
+        "3_6_months": "3-6 months",
+        "6_12_months": "6-12 months",
+        "1_year_plus": "1+ years"
+    },
+    "review": {
+        "title": "Idea Summary",
+        "info_message": "Please review all information before submitting. You will be notified when your idea review begins.",
+        "field_title": "Title:",
+        "field_description": "Description:",
+        "field_challenge": "Challenge:",
+        "field_focus_question": "Focus Question:",
+        "field_innovation_level": "Innovation Level:",
+        "field_solution_approach": "Solution Approach:",
+        "field_expected_impact": "Expected Impact:",
+        "field_implementation_plan": "Implementation Plan:",
+        "field_resource_requirements": "Resource Requirements:",
+        "field_tags": "Tags:",
+        "field_collaboration": "Open for collaboration",
+        "not_selected": "Not selected"
+    },
+    "actions": {
+        "previous": "Previous",
+        "next": "Next",
+        "save_draft": "Save Draft",
+        "load_draft": "Load Draft",
+        "cancel": "Cancel",
+        "submit": "Submit Idea"
+    },
+    "drafts": {
+        "title": "Saved Drafts",
+        "untitled": "Untitled"
+    },
+    "messages": {
+        "error_loading": "Error loading challenges and focus questions",
+        "draft_auto_saved": "Draft auto-saved",
+        "draft_loaded": "Draft loaded successfully",
+        "error_loading_draft": "Error loading draft",
+        "draft_saved_manually": "Draft saved manually",
+        "validation_error": "Please fill in all required fields before proceeding",
+        "user_not_authenticated": "User not authenticated",
+        "submit_success": "Idea submitted successfully!",
+        "submit_error": "Error submitting idea. Please try again."
+    },
+    "page": {
+        "title": "Idea Drafts",
+        "description": "Continue working on your saved idea drafts",
+        "new_idea": "New Idea",
+        "no_drafts": "No Drafts Found",
+        "no_drafts_message": "You haven't saved any drafts yet. Start by creating a new idea!",
+        "create_new": "Create New Idea",
+        "draft_status": "Draft",
+        "untitled": "Untitled Idea",
+        "no_description": "No description",
+        "last_updated": "Last updated:",
+        "continue_editing": "Continue Editing",
+        "delete_draft": "Delete Draft",
+        "delete_draft_message": "Are you sure you want to delete this draft? This action cannot be undone.",
+        "delete": "Delete",
+        "cancel": "Cancel"
+    },
+    "hero": {
+        "platform_badge": "Creative Ideas Platform",
+        "title": "Discover Creative Ideas",
+        "subtitle": "Join the innovators community and share your creative ideas that contribute to achieving Saudi Vision 2030",
+        "stats": {
+            "ideas": "ideas",
+            "published": "published",
+            "views": "views",
+            "likes": "likes"
+        },
+        "buttons": {
+            "submit_new": "Submit New Idea",
+            "advanced_filters": "Advanced Filters",
+            "watch_demo": "Watch Demo"
+        },
+        "featured": {
+            "badge": "Featured",
+            "trending_badge": "Trending",
+            "by": "By:",
+            "view_details": "View Details",
+            "no_featured_title": "No Featured Idea",
+            "no_featured_subtitle": "Featured ideas will appear here"
+        },
+        "quick_actions": {
+            "new_ideas": "New Ideas",
+            "in_development": "In Development",
+            "ideas_count": "ideas",
+            "projects_count": "projects"
+        }
+    },
+    "detail": {
+        "featured_badge": "Featured",
+        "like_button": "Like",
+        "comment_added": "Comment added",
+        "comment_added_description": "Your comment has been added successfully",
+        "comment_error": "Error adding comment",
+        "link_copied": "Link copied",
+        "link_copied_description": "Idea link copied to clipboard",
+        "status": {
+            "pending": "Pending",
+            "under_review": "Under Review",
+            "approved": "Approved",
+            "rejected": "Rejected",
+            "in_development": "In Development",
+            "implemented": "Implemented"
+        },
+        "sections": {
+            "description": "Description",
+            "solution_approach": "Solution Approach",
+            "implementation_plan": "Implementation Plan",
+            "expected_impact": "Expected Impact",
+            "collaboration_space": "Collaboration Space",
+            "evaluation_scores": "Evaluation Scores",
+            "innovator_info": "Innovator Info"
+        },
+        "scores": {
+            "technical_feasibility": "Technical Feasibility",
+            "impact": "Impact",
+            "innovation": "Innovation",
+            "strategic_alignment": "Strategic Alignment",
+            "overall_score": "Overall Score"
+        },
+        "innovator": {
+            "label": "Innovator",
+            "submitted": "Submitted:",
+            "last_updated": "Last Updated:"
+        },
+        "comments": {
+            "title": "Comments",
+            "add_comment": "Add Comment",
+            "write_placeholder": "Write your comment here...",
+            "cancel": "Cancel",
+            "adding": "Adding...",
+            "no_comments": "No comments yet",
+            "be_first": "Be the first to comment on this idea"
+        }
+    },
+    "gamification": {
+        "levels": {
+            "legend": "Legend",
+            "expert": "Expert",
+            "advanced": "Advanced",
+            "intermediate": "Intermediate",
+            "beginner": "Beginner",
+            "novice": "Novice"
+        },
+        "points": "points",
+        "points_unit": "pts",
+        "progress_to_next": "Progress to next level",
+        "points_to_go": "points to go",
+        "recent_achievements": "Recent Achievements",
+        "no_achievements": "No achievements yet",
+        "start_submitting": "Start submitting ideas to earn points!",
+        "monthly_leaderboard": "Monthly Leaderboard",
+        "ideas": "ideas",
+        "no_leaderboard_data": "No leaderboard data"
+    },
+    "filters": {
+        "title": "Filter Ideas",
+        "reset": "Reset",
+        "quick_filters": "Quick Filters",
+        "featured_ideas": "Featured Ideas",
+        "trending_ideas": "Trending Ideas",
+        "idea_status": "Idea Status",
+        "maturity_level": "Maturity Level",
+        "score_range": "Score Range",
+        "sectors": "Sectors",
+        "challenges": "Challenges",
+        "date_range": "Date Range",
+        "date_ranges": {
+            "all": "All time",
+            "week": "Last week",
+            "month": "Last month",
+            "quarter": "Last quarter",
+            "year": "Last year"
+        },
+        "active_filters": "active filters",
+        "no_active_filters": "No active filters",
+        "cancel": "Cancel",
+        "apply_filters": "Apply Filters"
+    },
+    "templates": {
+        "title": "Innovation Idea Templates",
+        "description": "Choose a template to help you structure your innovative idea comprehensively",
+        "error_loading": "Error loading templates",
+        "template_selected": "Template selected",
+        "template_selected_description": "\"{{name}}\" template selected successfully",
+        "all_templates": "All Templates",
+        "categories": {
+            "technology": "Technology",
+            "process": "Process",
+            "digital": "Digital",
+            "sustainability": "Sustainability",
+            "customer": "Customer",
+            "business": "Business",
+            "general": "General"
+        },
+        "included_sections": "Included sections:",
+        "more": "more",
+        "use_template": "Use This Template",
+        "no_templates": "No templates available",
+        "no_templates_description": "No templates are available in this category at the moment",
+        "cancel": "Cancel"
+    },
+    "success_stories": {
+        "title": "Innovation Success Stories",
+        "description": "Discover how innovative ideas transformed into successful solutions with positive impact",
+        "implemented_badge": "Implemented",
+        "read_full_story": "Read Full Story",
+        "no_stories_title": "No Success Stories Yet",
+        "no_stories_description": "Success stories will appear here as innovative ideas get implemented",
+        "metrics": {
+            "cost_savings": "Cost Savings",
+            "revenue_increase": "Revenue Increase",
+            "efficiency_gain": "Efficiency Gain",
+            "time_saved": "Time Saved",
+            "saved": "Saved",
+            "efficiency": "Efficiency",
+            "areas": "Areas"
+        },
+        "innovator_label": "Innovator",
+        "dialog": {
+            "detailed_story": "Detailed Story",
+            "roi_metrics": "ROI & Impact Metrics",
+            "implementation_timeline": "Implementation Timeline",
+            "testimonials": "Testimonials"
+        }
+    },
+    "recommendations": {
+        "title": "Smart Recommendations",
+        "description": "Carefully curated ideas you might find interesting",
+        "refresh": "Refresh",
+        "generate": "Generate Recommendations",
+        "likes": "likes",
+        "views": "views",
+        "no_recommendations_title": "No Recommendations Available",
+        "no_recommendations_description": "Interact with more ideas to get personalized recommendations",
+        "popular_idea_reasoning": "Popular idea loved by the community",
+        "types": {
+            "high_potential": "High Potential",
+            "trending": "Trending",
+            "popular": "Popular",
+            "similar_interests": "Similar Interests",
+            "expert_recommended": "Expert Pick",
+            "discovery": "Discovery"
+        },
+        "reasoning": {
+            "high_potential": "High-quality idea with score {{score}}/10",
+            "trending": "Trending idea with {{likes}} likes",
+            "popular": "Popular idea with {{views}} views",
+            "similar_interests": "You might like this based on your interests",
+            "expert_recommended": "Recommended by experts",
+            "discovery": "Discover something new"
+        }
+    }
+}

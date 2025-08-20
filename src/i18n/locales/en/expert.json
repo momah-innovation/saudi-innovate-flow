@@ -1,0 +1,98 @@
+{
+    "dashboard": {
+        "title": "Expert Dashboard",
+        "description": "Welcome to the Expert Management and Evaluation System",
+        "start_evaluating": "Start Evaluating",
+        "filters": "Filters"
+    },
+    "tabs": {
+        "overview": "Overview",
+        "pending": "Pending",
+        "completed": "Completed",
+        "analytics": "Analytics"
+    },
+    "metrics": {
+        "assigned_challenges": "Assigned Challenges",
+        "active_assignments": "Active Assignments",
+        "pending_evaluations": "Pending Evaluations",
+        "awaiting_review": "Awaiting Review",
+        "total_evaluated": "Total Evaluated",
+        "ideas_reviewed": "Ideas Reviewed",
+        "average_rating": "Average Rating",
+        "evaluation_quality": "Evaluation Quality"
+    },
+    "progress": {
+        "title": "Evaluation Progress",
+        "description": "Your evaluation performance metrics",
+        "completion_rate": "Completion Rate",
+        "response_time": "Average Response Time",
+        "response_time_value": "2.3 days",
+        "quality_score": "Quality Score",
+        "days": "days"
+    },
+    "actions": {
+        "title": "Quick Actions",
+        "description": "What would you like to do next?",
+        "start_evaluating": "Start Evaluating Ideas",
+        "update_profile": "Update Expert Profile",
+        "view_challenges": "View Assigned Challenges",
+        "view_analytics": "View Analytics"
+    },
+    "expertise": {
+        "title": "Areas of Expertise",
+        "description": "Your specialization areas"
+    },
+    "pending": {
+        "title": "Pending Evaluations",
+        "description": "Ideas awaiting expert review",
+        "loading": "Loading...",
+        "submitted_days_ago": "Submitted {{days}} days ago",
+        "evaluate": "Evaluate",
+        "no_pending": "No pending evaluations",
+        "all_caught_up": "Great! You're all caught up."
+    },
+    "recent": {
+        "title": "Recent Evaluations",
+        "description": "Recently completed evaluations",
+        "evaluated_on": "Evaluated on {{date}}",
+        "view": "View",
+        "no_evaluations": "No evaluations completed yet",
+        "start_message": "Start evaluating ideas to see your history here"
+    },
+    "stats": {
+        "quick_stats": "Quick Stats",
+        "this_week": "This Week",
+        "evaluations": "evaluations",
+        "avg_time": "Avg Time",
+        "avg_time_value": "2.1 days",
+        "quality_rate": "Quality Rate"
+    },
+    "status": {
+        "pending": "Pending",
+        "completed": "Completed",
+        "in_progress": "In Progress",
+        "active": "Active",
+        "waiting": "Waiting"
+    },
+    "activity": {
+        "title": "Recent Activity",
+        "evaluated_idea": "Evaluated idea",
+        "new_assignment": "New assignment",
+        "profile_updated": "Profile updated",
+        "time_ago": "{{time}} ago",
+        "yesterday": "Yesterday",
+        "2_hours_ago": "2h ago",
+        "5_hours_ago": "5h ago"
+    },
+    "priority": {
+        "urgent": "Urgent",
+        "high": "High",
+        "normal": "Normal"
+    },
+    "score": {
+        "excellent": "Excellent",
+        "good": "Good",
+        "fair": "Fair",
+        "poor": "Poor"
+    }
+}

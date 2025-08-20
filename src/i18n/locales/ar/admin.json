@@ -112,7 +112,7 @@
       "label": "المستخدمون النشطون"
     },
     "core_team_management": {
-      "title": "إدارة الفريق الأساسي", 
+      "title": "إدارة الفريق الأساسي",
       "description": "إدارة أعضاء الفريق الأساسي والمهام",
       "label": "أعضاء الفريق"
     },
@@ -329,7 +329,16 @@
     "all_types": "جميع الأنواع",
     "search_entities": "البحث في العناصر...",
     "loading": "جاري تحميل الهيكل التنظيمي...",
-    "unnamed_sector": "قطاع غير مسمى"
+    "unnamed_sector": "قطاع غير مسمى",
+    "entity_types": {
+      "sector": "قطاع",
+      "entity": "جهة",
+      "deputy": "نائب",
+      "department": "إدارة",
+      "domain": "نطاق",
+      "sub_domain": "نطاق فرعي",
+      "service": "خدمة"
+    }
   },
   "role_requests": {
     "title": "إدارة طلبات الأدوار",
@@ -399,6 +408,10 @@
     "enter_question_details": "أدخل تفاصيل السؤال والمحتوى",
     "optional_english": "ترجمة اختيارية للسؤال باللغة الإنجليزية",
     "select_challenge": "اختر تحدياً..."
+  },
+  "access": {
+    "denied": "غير مصرح لك بالوصول",
+    "admin_only": "هذه الصفحة مخصصة للمديرين فقط"
   },
   "common": {
     "error": "خطأ",
@@ -683,6 +696,159 @@
     "settings": {
       "archived_success_title": "تم أرشفة التحدي",
       "archived_success_description": "تم أرشفة التحدي بنجاح"
+    }
+  },
+  "evaluation": {
+    "title": "إدارة نظام التقييم",
+    "description": "إدارة معايير التقييم والقوالب والقواعد",
+    "loading": "جاري تحميل البيانات...",
+    "system_settings": "إعدادات النظام",
+    "metrics": {
+      "active_criteria": "المعايير النشطة",
+      "templates": "القوالب",
+      "active_rules": "القواعد النشطة",
+      "avg_weight": "متوسط الوزن"
+    },
+    "tabs": {
+      "criteria": "المعايير",
+      "templates": "القوالب",
+      "rules": "القواعد",
+      "scorecards": "بطاقات التقييم",
+      "framework": "الإطار",
+      "analytics": "التحليلات"
+    },
+    "criteria": {
+      "title": "معايير التقييم",
+      "add": "إضافة معيار",
+      "edit": "تعديل معيار",
+      "add_new": "إضافة معيار جديد",
+      "name": "اسم المعيار",
+      "name_placeholder": "أدخل اسم المعيار",
+      "category": "الفئة",
+      "category_placeholder": "اختر الفئة",
+      "description": "الوصف",
+      "description_placeholder": "أدخل وصف المعيار",
+      "weight": "الوزن (%)",
+      "min_score": "الحد الأدنى للدرجة",
+      "max_score": "الحد الأقصى للدرجة",
+      "scoring_guide": "دليل التقييم",
+      "scoring_guide_placeholder": "أدخل دليل التقييم المفصل",
+      "required": "معيار مطلوب",
+      "delete_title": "حذف المعيار",
+      "delete_confirm": "هل أنت متأكد من رغبتك في حذف هذا المعيار؟ لا يمكن التراجع عن هذا الإجراء.",
+      "save_success": "تم حفظ المعيار بنجاح",
+      "delete_success": "تم حذف المعيار بنجاح",
+      "categories": {
+        "technical": "تقني",
+        "financial": "مالي",
+        "strategic": "استراتيجي",
+        "innovation": "ابتكار",
+        "market": "سوق"
+      }
+    },
+    "templates": {
+      "title": "قوالب التقييم",
+      "add": "إضافة قالب",
+      "edit": "تعديل قالب",
+      "add_new": "إضافة قالب جديد",
+      "name": "اسم القالب",
+      "name_placeholder": "أدخل اسم القالب",
+      "type": "نوع التقييم",
+      "type_placeholder": "اختر النوع",
+      "description": "الوصف",
+      "description_placeholder": "أدخل وصف القالب",
+      "selected_criteria": "المعايير المختارة",
+      "default": "القالب الافتراضي",
+      "included_criteria": "المعايير المضمنة",
+      "criteria_count": "معيار",
+      "delete_title": "حذف القالب",
+      "delete_confirm": "هل أنت متأكد من رغبتك في حذف هذا القالب؟ لا يمكن التراجع عن هذا الإجراء.",
+      "save_success": "تم حفظ القالب بنجاح",
+      "delete_success": "تم حذف القالب بنجاح",
+      "types": {
+        "innovation": "ابتكار",
+        "feasibility": "جدوى",
+        "impact": "تأثير",
+        "comprehensive": "شامل"
+      }
+    },
+    "rules": {
+      "title": "قواعد التقييم",
+      "add": "إضافة قاعدة",
+      "edit": "تعديل قاعدة",
+      "add_new": "إضافة قاعدة جديدة",
+      "name": "اسم القاعدة",
+      "name_placeholder": "أدخل اسم القاعدة",
+      "condition_type": "نوع الشرط",
+      "condition_value": "قيمة الشرط",
+      "action_type": "نوع الإجراء",
+      "action_value": "قيمة الإجراء",
+      "action_value_placeholder": "أدخل قيمة الإجراء (اختياري)",
+      "priority": "الأولوية",
+      "active": "قاعدة نشطة",
+      "status_active": "نشط",
+      "status_inactive": "غير نشط",
+      "condition": "الشرط",
+      "action": "الإجراء",
+      "delete_title": "حذف القاعدة",
+      "delete_confirm": "هل أنت متأكد من رغبتك في حذف هذه القاعدة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "save_success": "تم حفظ القاعدة بنجاح",
+      "delete_success": "تم حذف القاعدة بنجاح",
+      "conditions": {
+        "min_score": "الحد الأدنى للدرجة",
+        "max_score": "الحد الأقصى للدرجة",
+        "avg_score": "متوسط الدرجة",
+        "criteria_score": "درجة معيار محدد"
+      },
+      "actions": {
+        "auto_approve": "موافقة تلقائية",
+        "auto_reject": "رفض تلقائي",
+        "flag_review": "وضع علامة للمراجعة",
+        "assign_evaluator": "تعيين مقيم",
+        "send_notification": "إرسال إشعار"
+      }
+    },
+    "scorecards": {
+      "title": "بطاقات التقييم",
+      "description": "إدارة وتخصيص بطاقات تقييم الأفكار",
+      "create": "إنشاء بطاقة تقييم"
+    },
+    "framework": {
+      "title": "إطار التقييم",
+      "description": "تكوين إطار نظام التقييم الشامل",
+      "scale_type": "نوع المقياس",
+      "final_score": "حساب النتيجة النهائية",
+      "thresholds": "عتبات التقييم",
+      "approval_threshold": "عتبة الموافقة (ممتاز)",
+      "review_threshold": "عتبة المراجعة (جيد)",
+      "rejection_threshold": "عتبة الرفض (ضعيف)",
+      "scales": {
+        "points_5": "1-5 نقاط",
+        "points_10": "1-10 نقاط",
+        "points_100": "1-100 نقطة",
+        "percentage": "نسبة مئوية"
+      },
+      "calculations": {
+        "weighted_average": "متوسط مرجح",
+        "simple_average": "متوسط بسيط",
+        "sum": "مجموع",
+        "custom": "مخصص"
+      }
+    },
+    "analytics": {
+      "criteria_stats": "إحصائيات المعايير",
+      "usage_stats": "إحصائيات الاستخدام",
+      "total_evaluations": "إجمالي التقييمات",
+      "average_score": "متوسط الدرجة",
+      "approval_rate": "معدل الموافقة",
+      "avg_evaluation_time": "متوسط وقت التقييم",
+      "days": "أيام"
+    },
+    "common": {
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "weight_label": "الوزن"
     }
   }
 }

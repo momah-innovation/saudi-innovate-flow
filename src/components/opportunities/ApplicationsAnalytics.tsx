@@ -42,6 +42,7 @@ interface ApplicationData {
 
 export const ApplicationsAnalytics = ({ opportunityId, analytics }: ApplicationsAnalyticsProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [applicationData, setApplicationData] = useState<ApplicationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState('30d');
@@ -200,10 +201,10 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     
     // Use real data only - no assumptions about "started" applications
     const stages = [
-      { stage: isRTL ? 'مشاهدات' : 'Views', count: totalViews, percentage: 100 },
-      { stage: isRTL ? 'طلبات مرسلة' : 'Applications Submitted', count: applications.length, percentage: totalViews > 0 ? Math.round((applications.length / totalViews) * 100) : 0 },
-      { stage: isRTL ? 'قيد المراجعة' : 'Under Review', count: applications.filter(app => app.status === 'in_review').length, percentage: 0 },
-      { stage: isRTL ? 'مقبولة' : 'Approved', count: applications.filter(app => app.status === 'approved').length, percentage: 0 }
+      { stage: t('opportunities:applications_analytics.views'), count: totalViews, percentage: 100 },
+      { stage: t('opportunities:applications_analytics.applications_submitted'), count: applications.length, percentage: totalViews > 0 ? Math.round((applications.length / totalViews) * 100) : 0 },
+      { stage: t('opportunities:applications_analytics.under_review'), count: applications.filter(app => app.status === 'in_review').length, percentage: 0 },
+      { stage: t('opportunities:applications_analytics.approved'), count: applications.filter(app => app.status === 'approved').length, percentage: 0 }
     ];
     
     // Calculate percentages for review and approved stages based on total applications
@@ -226,16 +227,16 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     
     // Map to display format
     const sourceLabels = {
-      direct: isRTL ? 'البحث المباشر' : 'Direct Search',
-      social: isRTL ? 'وسائل التواصل' : 'Social Media', 
-      referral: isRTL ? 'الإحالات' : 'Referrals',
-      email: isRTL ? 'البريد الإلكتروني' : 'Email',
-      campaign: isRTL ? 'الحملات' : 'Campaigns',
-      other: isRTL ? 'أخرى' : 'Other'
+      direct: t('opportunities:applications_analytics.sources.direct'),
+      social: t('opportunities:applications_analytics.sources.social'), 
+      referral: t('opportunities:applications_analytics.sources.referral'),
+      email: t('opportunities:applications_analytics.sources.email'),
+      campaign: t('opportunities:applications_analytics.sources.campaign'),
+      other: t('opportunities:applications_analytics.sources.other')
     };
     
     return Object.entries(sourceCounts).map(([key, count]) => ({
-      source: sourceLabels[key] || (isRTL ? 'أخرى' : 'Other'),
+      source: sourceLabels[key] || t('opportunities:applications_analytics.sources.other'),
       count: count as number,
       percentage: Math.round(((count as number) / total) * 100)
     })).sort((a, b) => b.count - a.count);
@@ -295,7 +296,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
               <Users className="w-5 h-5 text-blue-500" />
               <div>
                 <p className="text-2xl font-bold">{applicationData.totalApplications}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي الطلبات' : 'Total Applications'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:applications_analytics.total_applications')}</p>
                 {/* Real trend calculated from data */}
               </div>
             </div>
@@ -308,7 +309,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
               <CheckCircle className="w-5 h-5 text-green-500" />
               <div>
                 <p className="text-2xl font-bold">{applicationData.approvedApplications}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'مقبولة' : 'Approved'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:applications_analytics.approved')}</p>
                 <Badge variant="outline" className="mt-1">
                   {((applicationData.approvedApplications / Math.max(1, applicationData.totalApplications)) * 100).toFixed(0)}%
                 </Badge>
@@ -323,9 +324,9 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
               <Clock className="w-5 h-5 text-orange-500" />
               <div>
                 <p className="text-2xl font-bold">{applicationData.inReviewApplications}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'قيد المراجعة' : 'In Review'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:applications_analytics.in_review')}</p>
                 <Badge variant="outline" className="mt-1">
-                  {applicationData.avgProcessingTime}d {isRTL ? 'متوسط' : 'avg'}
+                  {applicationData.avgProcessingTime}d {t('opportunities:applications_analytics.avg')}
                 </Badge>
               </div>
             </div>
@@ -340,7 +341,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
                 <p className="text-2xl font-bold">
                   {((applicationData.totalApplications / Math.max(1, Number(analytics.totalViews))) * 100).toFixed(1)}%
                 </p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التحويل' : 'Conversion Rate'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:applications_analytics.conversion_rate')}</p>
                 {/* Real trend calculated from data */}
               </div>
             </div>
@@ -354,7 +355,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5" />
-              {isRTL ? 'الطلبات عبر الزمن' : 'Applications Over Time'}
+              {t('opportunities:applications_analytics.applications_over_time')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -367,7 +368,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5" />
-              {isRTL ? 'حالة الطلبات' : 'Application Status'}
+              {t('opportunities:applications_analytics.application_status')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -380,7 +381,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Target className="w-5 h-5" />
-              {isRTL ? 'قمع التحويل' : 'Conversion Funnel'}
+              {t('opportunities:applications_analytics.conversion_funnel')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -412,7 +413,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Filter className="w-5 h-5" />
-              {isRTL ? 'مصادر الطلبات' : 'Application Sources'}
+              {t('opportunities:applications_analytics.application_sources')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -434,7 +435,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
       {/* Status Details Table */}
       <Card>
         <CardHeader>
-          <CardTitle>{isRTL ? 'تفاصيل الحالة' : 'Status Details'}</CardTitle>
+          <CardTitle>{t('opportunities:applications_analytics.status_details')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

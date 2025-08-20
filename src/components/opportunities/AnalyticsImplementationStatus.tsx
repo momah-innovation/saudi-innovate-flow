@@ -4,7 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useDirection } from '@/components/ui/direction-provider';
-import { 
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import {
   CheckCircle, 
   AlertCircle, 
   Clock, 
@@ -37,33 +38,34 @@ interface ImplementationItem {
 
 export const AnalyticsImplementationStatus = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const implementationItems: ImplementationItem[] = [
     // Database Tables & Infrastructure
     {
       category: 'database',
-      name: isRTL ? 'جداول قاعدة البيانات' : 'Database Tables',
+      name: t('opportunities:implementation.database_tables'),
       status: 'completed',
-      description: isRTL ? 'جميع جداول الإحصائيات مُنشأة مع RLS' : 'All analytics tables created with RLS policies',
+      description: t('opportunities:implementation.descriptions.tables'),
       icon: <Database className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'database',
-      name: isRTL ? 'محفزات قاعدة البيانات' : 'Database Triggers',
+      name: t('opportunities:implementation.database_triggers'),
       status: 'completed',
-      description: isRTL ? 'المحفزات التلقائية لتحديث الإحصائيات' : 'Automatic triggers for analytics updates',
+      description: t('opportunities:implementation.descriptions.triggers'),
       icon: <Zap className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'database',
-      name: isRTL ? 'دوال قاعدة البيانات' : 'Database Functions',
+      name: t('opportunities:implementation.database_functions'),
       status: 'completed',
-      description: isRTL ? 'دوال RPC لحساب الإحصائيات' : 'RPC functions for analytics calculations',
+      description: t('opportunities:implementation.descriptions.functions'),
       icon: <FileText className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: false
@@ -72,54 +74,54 @@ export const AnalyticsImplementationStatus = () => {
     // Core Analytics Components
     {
       category: 'analytics',
-      name: isRTL ? 'حوار الإحصائيات الرئيسي' : 'Main Analytics Dialog',
+      name: t('opportunities:implementation.main_dialog'),
       status: 'completed',
-      description: isRTL ? 'حوار الإحصائيات مع 6 تبويبات' : 'Analytics dialog with 6 tabs',
+      description: t('opportunities:implementation.descriptions.dialog'),
       icon: <BarChart3 className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'analytics',
-      name: isRTL ? 'إحصائيات التفاعل' : 'Engagement Analytics',
+      name: t('opportunities:implementation.engagement_analytics'),
       status: 'completed',
-      description: isRTL ? 'تحليل الإعجابات والمشاركات والتعليقات' : 'Likes, shares, comments analysis',
+      description: t('opportunities:implementation.descriptions.engagement'),
       icon: <Heart className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'analytics',
-      name: isRTL ? 'إحصائيات الطلبات' : 'Applications Analytics',
+      name: t('opportunities:implementation.applications_analytics'),
       status: 'completed',
-      description: isRTL ? 'تحليل طلبات الشراكة ومعدلات التحويل' : 'Partnership applications and conversion analysis',
+      description: t('opportunities:implementation.descriptions.applications'),
       icon: <Users className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'analytics',
-      name: isRTL ? 'التحليل الجغرافي' : 'Geographic Analytics',
+      name: t('opportunities:implementation.geographic_analytics'),
       status: 'completed',
-      description: isRTL ? 'توزيع المشاهدات حسب البلدان' : 'Views distribution by countries',
+      description: t('opportunities:implementation.descriptions.geographic'),
       icon: <Globe className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: false
     },
     {
       category: 'analytics',
-      name: isRTL ? 'مقاييس الأداء المتقدمة' : 'Advanced Performance Metrics',
+      name: t('opportunities:implementation.advanced_metrics'),
       status: 'completed',
-      description: isRTL ? 'مقاييس الجودة والتوصيات' : 'Quality metrics and recommendations',
+      description: t('opportunities:implementation.descriptions.metrics'),
       icon: <Target className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: false
     },
     {
       category: 'analytics',
-      name: isRTL ? 'التحليل المتقدم' : 'Advanced Analytics',
+      name: t('opportunities:analytics.title'),
       status: 'completed',
-      description: isRTL ? 'رحلة المستخدم وأنماط السلوك' : 'User journey and behavior patterns',
+      description: t('opportunities:analytics.user_behavior'),
       icon: <Activity className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
@@ -128,36 +130,36 @@ export const AnalyticsImplementationStatus = () => {
     // Interactive Components
     {
       category: 'interactions',
-      name: isRTL ? 'زر الإعجاب' : 'Like Button',
+      name: t('common:buttons.like'),
       status: 'completed',
-      description: isRTL ? 'إعجاب/إلغاء إعجاب مع إحصائيات مباشرة' : 'Like/unlike with real-time analytics',
+      description: t('opportunities:messages.like_unlike_analytics'),
       icon: <Heart className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'interactions',
-      name: isRTL ? 'زر المشاركة' : 'Share Button',
+      name: t('opportunities:share.share'),
       status: 'completed',
-      description: isRTL ? 'مشاركة على منصات متعددة مع تتبع' : 'Multi-platform sharing with tracking',
+      description: t('opportunities:messages.multi_platform_tracking'),
       icon: <Share2 className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'interactions',
-      name: isRTL ? 'زر الحفظ' : 'Bookmark Button',
+      name: t('common:buttons.bookmark'),
       status: 'completed',
-      description: isRTL ? 'حفظ الفرص مع تتبع الإحصائيات' : 'Save opportunities with analytics tracking',
+      description: t('opportunities:messages.save_with_tracking'),
       icon: <BookOpen className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'interactions',
-      name: isRTL ? 'قسم التعليقات' : 'Comments Section',
+      name: t('common:comments.section'),
       status: 'completed',
-      description: isRTL ? 'نظام تعليقات كامل مع ردود' : 'Full commenting system with replies',
+      description: t('common:comments.system_with_replies'),
       icon: <MessageSquare className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
@@ -166,36 +168,36 @@ export const AnalyticsImplementationStatus = () => {
     // Tracking & Real-time Features
     {
       category: 'tracking',
-      name: isRTL ? 'تتبع المشاهدات' : 'View Tracking',
+      name: t('opportunities:analytics.view_tracking'),
       status: 'completed',
-      description: isRTL ? 'تتبع المشاهدات مع بيانات الجلسة' : 'View tracking with session data',
+      description: t('opportunities:analytics.view_tracking_desc'),
       icon: <Eye className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'tracking',
-      name: isRTL ? 'تتبع رحلة المستخدم' : 'User Journey Tracking',
+      name: t('opportunities:analytics.user_journey'),
       status: 'completed',
-      description: isRTL ? 'تتبع سلوك المستخدم والتفاعلات' : 'User behavior and interaction tracking',
+      description: t('opportunities:analytics.user_journey_desc'),
       icon: <Activity className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'tracking',
-      name: isRTL ? 'الحضور المباشر' : 'Live Presence',
+      name: t('opportunities:analytics.live_presence'),
       status: 'completed',
-      description: isRTL ? 'عرض المستخدمين المتصلين حالياً' : 'Show currently connected users',
+      description: t('opportunities:analytics.live_presence_desc'),
       icon: <Users className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'tracking',
-      name: isRTL ? 'نظام الإشعارات' : 'Notifications System',
+      name: t('notifications:title'),
       status: 'completed',
-      description: isRTL ? 'إشعارات في الوقت الفعلي للأحداث' : 'Real-time notifications for events',
+      description: t('notifications:real_time_events'),
       icon: <Bell className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
@@ -204,18 +206,18 @@ export const AnalyticsImplementationStatus = () => {
       // Export & Reporting
     {
       category: 'reporting',
-      name: isRTL ? 'تصدير التقارير' : 'Analytics Export',
+      name: t('opportunities:export.export_analytics'),
       status: 'completed',
-      description: isRTL ? 'تصدير CSV للإحصائيات المفصلة' : 'CSV export for detailed analytics',
+      description: t('opportunities:export.csv_detailed'),
       icon: <FileText className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: false
     },
     {
       category: 'reporting',
-      name: isRTL ? 'لوحة تحكم شاملة' : 'Comprehensive Dashboard',
+      name: t('opportunities:dashboard.comprehensive'),
       status: 'completed',
-      description: isRTL ? 'لوحة تحكم لجميع الفرص' : 'Dashboard for all opportunities',
+      description: t('opportunities:dashboard.all_opportunities'),
       icon: <BarChart3 className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
@@ -224,27 +226,27 @@ export const AnalyticsImplementationStatus = () => {
     // Advanced Analytics Features
     {
       category: 'advanced',
-      name: isRTL ? 'تتبع جلسات المستخدم' : 'User Session Tracking',
+      name: t('opportunities:analytics.session_tracking'),
       status: 'completed',
-      description: isRTL ? 'تتبع شامل للجلسات مع البيانات الجغرافية' : 'Comprehensive session tracking with geographic data',
+      description: t('opportunities:analytics.session_tracking_desc'),
       icon: <Activity className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'advanced',
-      name: isRTL ? 'تحليلات الأداء المتقدمة' : 'Advanced Performance Analytics',
+      name: t('opportunities:analytics.advanced_performance'),
       status: 'completed',
-      description: isRTL ? 'مقاييس حقيقية للأداء والتفاعل' : 'Real performance and engagement metrics',
+      description: t('opportunities:analytics.real_metrics'),
       icon: <Target className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
     },
     {
       category: 'advanced',
-      name: isRTL ? 'تحليل أنماط السلوك' : 'Behavior Pattern Analysis',
+      name: t('opportunities:analytics.behavior_analysis'),
       status: 'completed',
-      description: isRTL ? 'تتبع وتحليل سلوك المستخدمين' : 'User behavior tracking and analysis',
+      description: t('opportunities:analytics.behavior_tracking'),
       icon: <Brain className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
@@ -252,13 +254,13 @@ export const AnalyticsImplementationStatus = () => {
   ];
 
   const categories = [
-    { id: 'all', name: isRTL ? 'الكل' : 'All', count: implementationItems.length },
-    { id: 'database', name: isRTL ? 'قاعدة البيانات' : 'Database', count: implementationItems.filter(i => i.category === 'database').length },
-    { id: 'analytics', name: isRTL ? 'التحليلات' : 'Analytics', count: implementationItems.filter(i => i.category === 'analytics').length },
-    { id: 'interactions', name: isRTL ? 'التفاعلات' : 'Interactions', count: implementationItems.filter(i => i.category === 'interactions').length },
-    { id: 'tracking', name: isRTL ? 'التتبع' : 'Tracking', count: implementationItems.filter(i => i.category === 'tracking').length },
-    { id: 'reporting', name: isRTL ? 'التقارير' : 'Reporting', count: implementationItems.filter(i => i.category === 'reporting').length },
-    { id: 'advanced', name: isRTL ? 'المتقدم' : 'Advanced', count: implementationItems.filter(i => i.category === 'advanced').length }
+    { id: 'all', name: t('common:filters.all'), count: implementationItems.length },
+    { id: 'database', name: t('common:categories.database'), count: implementationItems.filter(i => i.category === 'database').length },
+    { id: 'analytics', name: t('common:categories.analytics'), count: implementationItems.filter(i => i.category === 'analytics').length },
+    { id: 'interactions', name: t('common:categories.interactions'), count: implementationItems.filter(i => i.category === 'interactions').length },
+    { id: 'tracking', name: t('common:categories.tracking'), count: implementationItems.filter(i => i.category === 'tracking').length },
+    { id: 'reporting', name: t('common:categories.reporting'), count: implementationItems.filter(i => i.category === 'reporting').length },
+    { id: 'advanced', name: t('common:categories.advanced'), count: implementationItems.filter(i => i.category === 'advanced').length }
   ];
 
   const filteredItems = selectedCategory === 'all' 
@@ -281,13 +283,13 @@ export const AnalyticsImplementationStatus = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed': 
-        return <Badge className="bg-green-100 text-green-800 border-green-200">{isRTL ? 'مكتمل' : 'Completed'}</Badge>;
+        return <Badge className="bg-green-100 text-green-800 border-green-200">{t('common:status.completed')}</Badge>;
       case 'in_progress': 
-        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">{isRTL ? 'قيد التنفيذ' : 'In Progress'}</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">{t('common:status.in_progress')}</Badge>;
       case 'pending': 
-        return <Badge variant="outline">{isRTL ? 'معلق' : 'Pending'}</Badge>;
+        return <Badge variant="outline">{t('common:status.pending')}</Badge>;
       default: 
-        return <Badge variant="outline">{isRTL ? 'غير محدد' : 'Unknown'}</Badge>;
+        return <Badge variant="outline">{t('common:status.unknown')}</Badge>;
     }
   };
 
@@ -298,14 +300,14 @@ export const AnalyticsImplementationStatus = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-primary" />
-            {isRTL ? 'حالة تنفيذ نظام إحصائيات الفرص' : 'Opportunity Analytics Implementation Status'}
+            {t('opportunities:implementation.status_title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-lg font-medium">
-                {isRTL ? 'التقدم الإجمالي' : 'Overall Progress'}
+                {t('common:progress.overall')}
               </span>
               <span className="text-2xl font-bold text-green-600">
                 {completionPercentage}%
@@ -313,8 +315,8 @@ export const AnalyticsImplementationStatus = () => {
             </div>
             <Progress value={completionPercentage} className="h-3" />
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>{completedCount} {isRTL ? 'مكتمل' : 'completed'}</span>
-              <span>{totalCount} {isRTL ? 'إجمالي' : 'total'}</span>
+              <span>{completedCount} {t('common:status.completed_count')}</span>
+              <span>{totalCount} {t('common:status.total')}</span>
             </div>
           </div>
         </CardContent>
@@ -367,7 +369,7 @@ export const AnalyticsImplementationStatus = () => {
                   {item.realTimeEnabled && (
                     <Badge variant="outline" className="text-purple-600 border-purple-200">
                       <Zap className="w-3 h-3 mr-1" />
-                      {isRTL ? 'مباشر' : 'Real-time'}
+                      {t('common:features.realtime')}
                     </Badge>
                   )}
                 </div>
@@ -384,7 +386,7 @@ export const AnalyticsImplementationStatus = () => {
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600">17</div>
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'جداول قاعدة بيانات' : 'Database Tables'}
+                {t('opportunities:implementation.database_tables')}
               </div>
             </div>
           </CardContent>
@@ -395,7 +397,7 @@ export const AnalyticsImplementationStatus = () => {
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">6</div>
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'تبويبات التحليل' : 'Analytics Tabs'}
+                {t('opportunities:implementation.analytics_tabs')}
               </div>
             </div>
           </CardContent>
@@ -406,7 +408,7 @@ export const AnalyticsImplementationStatus = () => {
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">12</div>
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'ميزات في الوقت الفعلي' : 'Real-time Features'}
+                {t('opportunities:implementation.realtime_features')}
               </div>
             </div>
           </CardContent>
@@ -417,7 +419,7 @@ export const AnalyticsImplementationStatus = () => {
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-600">100%</div>
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'تكامل Supabase' : 'Supabase Integration'}
+                {t('opportunities:implementation.supabase_integration')}
               </div>
             </div>
           </CardContent>
@@ -429,34 +431,34 @@ export const AnalyticsImplementationStatus = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-500" />
-            {isRTL ? 'التنفيذ مكتمل!' : 'Implementation Complete!'}
+            {t('opportunities:implementation.complete')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2 text-sm">
             <p className="text-green-700 font-medium">
-              ✅ {isRTL ? 'تم تنفيذ نظام إحصائيات الفرص بالكامل بنسبة 100% مع بيانات حقيقية' : 'Opportunity Analytics system is 100% implemented with real data'}
+              ✅ {t('opportunities:implementation.messages.system_complete')}
             </p>
             <p>
-              ✅ {isRTL ? 'تم ربط جميع البيانات بجداول Supabase الحقيقية' : 'All data connected to real Supabase tables'}
+              ✅ {t('opportunities:implementation.messages.data_connected')}
             </p>
             <p>
-              ✅ {isRTL ? 'تم ربط جميع مصادر البيانات بجداول Supabase' : 'All data sources connected to Supabase tables'}
+              ✅ {t('opportunities:implementation.messages.sources_connected')}
             </p>
             <p>
-              ✅ {isRTL ? 'تم استبدال جميع البيانات الوهمية ببيانات حقيقية' : 'All mock data replaced with real Supabase data'}
+              ✅ {t('opportunities:implementation.messages.mock_replaced')}
             </p>
             <p>
-              ✅ {isRTL ? 'جميع قواعد البيانات والجداول جاهزة مع سياسات RLS' : 'All database tables ready with RLS policies'}
+              ✅ {t('opportunities:implementation.messages.rls_ready')}
             </p>
             <p>
-              ✅ {isRTL ? 'التحديثات في الوقت الفعلي تعمل بشكل كامل' : 'Real-time updates fully functional'}
+              ✅ {t('opportunities:implementation.messages.realtime_functional')}
             </p>
             <p>
-              ✅ {isRTL ? 'جميع مكونات التفاعل متكاملة مع Supabase' : 'All interactive components integrated with Supabase'}
+              ✅ {t('opportunities:implementation.messages.components_integrated')}
             </p>
             <p>
-              ✅ {isRTL ? 'نظام شامل للتحليلات مع 6 تبويبات مختلفة' : 'Comprehensive analytics system with 6 different tabs'}
+              ✅ {t('opportunities:implementation.messages.analytics_system')}
             </p>
           </div>
         </CardContent>

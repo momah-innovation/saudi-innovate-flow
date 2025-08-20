@@ -63,26 +63,42 @@ interface CreateOpportunityDialogProps {
   onSuccess?: () => void;
 }
 
-// Form validation schema
-const formSchema = z.object({
-  title_ar: z.string().min(1, 'Arabic title is required'),
+// Form validation schema - using a factory function to get translated messages
+const createFormSchema = (t: (key: string) => string) => z.object({
+  title_ar: z.string().min(1, t('opportunities:validation.title_ar_required')),
   title_en: z.string().optional(),
-  description_ar: z.string().min(1, 'Arabic description is required'),
+  description_ar: z.string().min(1, t('opportunities:validation.description_ar_required')),
   description_en: z.string().optional(),
-  opportunity_type: z.string().min(1, 'Opportunity type is required'),
-  status: z.string().min(1, 'Status is required'),
-  priority_level: z.string().min(1, 'Priority level is required'),
+  opportunity_type: z.string().min(1, t('opportunities:validation.opportunity_type_required')),
+  status: z.string().min(1, t('opportunities:validation.status_required')),
+  priority_level: z.string().min(1, t('opportunities:validation.priority_level_required')),
   budget_min: z.coerce.number().optional(),
   budget_max: z.coerce.number().optional(),
-  deadline: z.string().min(1, 'Deadline is required'),
+  deadline: z.string().min(1, t('opportunities:validation.deadline_required')),
   location: z.string().optional(),
-  contact_person: z.string().min(1, 'Contact person is required'),
-  contact_email: z.string().email('Valid email is required'),
+  contact_person: z.string().min(1, t('opportunities:validation.contact_person_required')),
+  contact_email: z.string().email(t('opportunities:validation.email_required')),
   requirements: z.string().optional(),
   benefits: z.string().optional(),
 });
 
-type FormData = z.infer<typeof formSchema>;
+type FormData = {
+  title_ar: string;
+  title_en?: string;
+  description_ar: string;
+  description_en?: string;
+  opportunity_type: string;
+  status: string;
+  priority_level: string;
+  budget_min?: number;
+  budget_max?: number;
+  deadline: string;
+  location?: string;
+  contact_person: string;
+  contact_email: string;
+  requirements?: string;
+  benefits?: string;
+};
 
 export const CreateOpportunityDialog = ({
   open,
@@ -95,6 +111,8 @@ export const CreateOpportunityDialog = ({
   const { isRTL } = useDirection();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>('');
+
+  const formSchema = createFormSchema(t);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -109,8 +127,8 @@ export const CreateOpportunityDialog = ({
     if (files.length > 0) {
       setImageUrl(files[0].url);
       toast({
-        title: isRTL ? 'نجح' : 'Success',
-        description: isRTL ? 'تم رفع الصورة بنجاح' : 'Image uploaded successfully',
+        title: t('common:messages.success'),
+        description: t('opportunities:messages.image_uploaded'),
       });
     }
   };
@@ -118,16 +136,16 @@ export const CreateOpportunityDialog = ({
   const handleUnsplashSelect = (image: UnsplashImage) => {
     setImageUrl(image.urls.regular);
     toast({
-      title: isRTL ? 'نجح' : 'Success',
-      description: isRTL ? 'تم اختيار الصورة من Unsplash' : 'Image selected from Unsplash',
+      title: t('common:messages.success'),
+      description: t('opportunities:messages.unsplash_selected'),
     });
   };
 
   const onSubmit = async (data: FormData) => {
     if (!user) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'يجب تسجيل الدخول أولاً' : 'You must be logged in',
+        title: t('common:messages.error'),
+        description: t('common:messages.login_required'),
         variant: 'destructive',
       });
       return;
@@ -163,8 +181,8 @@ export const CreateOpportunityDialog = ({
       }
 
       toast({
-        title: isRTL ? 'تم بنجاح' : 'Success',
-        description: isRTL ? 'تم إنشاء الفرصة بنجاح' : 'Opportunity created successfully',
+        title: t('common:messages.success'),
+        description: t('opportunities:messages.created_successfully'),
       });
 
       form.reset();
@@ -174,8 +192,8 @@ export const CreateOpportunityDialog = ({
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'حدث خطأ أثناء إنشاء الفرصة' : 'Error creating opportunity',
+        title: t('common:messages.error'),
+        description: t('opportunities:messages.create_error'),
         variant: 'destructive',
       });
     } finally {
@@ -184,24 +202,24 @@ export const CreateOpportunityDialog = ({
   };
 
   const opportunityTypes = [
-    { value: 'funding', label: isRTL ? 'تمويل' : 'Funding' },
-    { value: 'partnership', label: isRTL ? 'شراكة' : 'Partnership' },
-    { value: 'collaboration', label: isRTL ? 'تعاون' : 'Collaboration' },
-    { value: 'research', label: isRTL ? 'بحث' : 'Research' },
-    { value: 'development', label: isRTL ? 'تطوير' : 'Development' },
+    { value: 'funding', label: t('opportunities:types.funding') },
+    { value: 'partnership', label: t('opportunities:types.partnership') },
+    { value: 'collaboration', label: t('opportunities:types.collaboration') },
+    { value: 'research', label: t('opportunities:types.research') },
+    { value: 'development', label: t('opportunities:types.development') },
   ];
 
   const statusOptions = [
-    { value: 'open', label: isRTL ? 'مفتوح' : 'Open' },
-    { value: 'closed', label: isRTL ? 'مغلق' : 'Closed' },
-    { value: 'draft', label: isRTL ? 'مسودة' : 'Draft' },
+    { value: 'open', label: t('opportunities:status.open') },
+    { value: 'closed', label: t('opportunities:status.closed') },
+    { value: 'draft', label: t('opportunities:status.draft') },
   ];
 
   const priorityOptions = [
-    { value: 'low', label: isRTL ? 'منخفض' : 'Low' },
-    { value: 'medium', label: isRTL ? 'متوسط' : 'Medium' },
-    { value: 'high', label: isRTL ? 'عالي' : 'High' },
-    { value: 'urgent', label: isRTL ? 'عاجل' : 'Urgent' },
+    { value: 'low', label: t('common:priority.low') },
+    { value: 'medium', label: t('common:priority.medium') },
+    { value: 'high', label: t('common:priority.high') },
+    { value: 'urgent', label: t('common:priority.urgent') },
   ];
 
   return (
@@ -210,7 +228,7 @@ export const CreateOpportunityDialog = ({
         <DialogHeader>
           <DialogTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
             <Plus className="w-5 h-5" />
-            {isRTL ? 'إنشاء فرصة شراكة جديدة' : 'Create New Partnership Opportunity'}
+            {t('opportunities:create.title')}
           </DialogTitle>
         </DialogHeader>
 
@@ -219,7 +237,7 @@ export const CreateOpportunityDialog = ({
             {/* Basic Information */}
             <div className="space-y-4">
               <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-                {isRTL ? 'المعلومات الأساسية' : 'Basic Information'}
+                {t('opportunities:create.basic_info')}
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -229,13 +247,13 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'العنوان (بالإنجليزية)' : 'Title (English)'}
+                        {t('opportunities:create.title_english')}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.enter_title_english')}
+                        placeholder={t('opportunities:placeholders.enter_title_english')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -249,13 +267,13 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'العنوان (بالعربية)' : 'Title (Arabic)'}
+                        {t('opportunities:create.title_arabic')}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           className="text-right"
-                          placeholder={t('opportunities.placeholders.enter_title_arabic')}
+                        placeholder={t('opportunities:placeholders.enter_title_arabic')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -271,13 +289,13 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الوصف (بالإنجليزية)' : 'Description (English)'}
+                        {t('opportunities:create.description_english')}
                       </FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.enter_description_english')}
+                        placeholder={t('opportunities:placeholders.enter_description_english')}
                           rows={4}
                         />
                       </FormControl>
@@ -292,13 +310,13 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الوصف (بالعربية)' : 'Description (Arabic)'}
+                        {t('opportunities:create.description_arabic')}
                       </FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
                           className="text-right"
-                          placeholder={t('opportunities.placeholders.enter_description_arabic')}
+                        placeholder={t('opportunities:placeholders.enter_description_arabic')}
                           rows={4}
                         />
                       </FormControl>
@@ -312,7 +330,7 @@ export const CreateOpportunityDialog = ({
             {/* Opportunity Details */}
             <div className="space-y-4">
               <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-                {isRTL ? 'تفاصيل الفرصة' : 'Opportunity Details'}
+                {t('opportunities:create.opportunity_details')}
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -322,12 +340,12 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'نوع الفرصة' : 'Opportunity Type'}
+                        {t('opportunities:create.opportunity_type')}
                       </FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={isRTL ? 'اختر النوع' : 'Select type'} />
+                            <SelectValue placeholder={t('opportunities:create.select_type')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -349,12 +367,12 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الحالة' : 'Status'}
+                        {t('opportunities:create.status')}
                       </FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={isRTL ? 'اختر الحالة' : 'Select status'} />
+                            <SelectValue placeholder={t('opportunities:create.select_status')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -376,12 +394,12 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'مستوى الأولوية' : 'Priority Level'}
+                        {t('opportunities:create.priority_level')}
                       </FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={isRTL ? 'اختر الأولوية' : 'Select priority'} />
+                            <SelectValue placeholder={t('opportunities:create.select_priority')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -405,14 +423,14 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الحد الأدنى للميزانية (ريال)' : 'Minimum Budget (SAR)'}
+                        {t('opportunities:create.min_budget')}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           type="number"
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.minimum_amount')}
+                        placeholder={t('opportunities:placeholders.minimum_amount')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -426,14 +444,14 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الحد الأقصى للميزانية (ريال)' : 'Maximum Budget (SAR)'}
+                        {t('opportunities:create.max_budget')}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           type="number"
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.maximum_amount')}
+                        placeholder={t('opportunities:placeholders.maximum_amount')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -447,7 +465,7 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الموعد النهائي' : 'Deadline'}
+                        {t('opportunities:deadline')}
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -466,7 +484,7 @@ export const CreateOpportunityDialog = ({
             {/* Contact Information */}
             <div className="space-y-4">
               <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-                {isRTL ? 'معلومات الاتصال' : 'Contact Information'}
+                {t('opportunities:create.contact_info')}
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -476,13 +494,13 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الشخص المسؤول' : 'Contact Person'}
+                        {t('opportunities:create.contact_person')}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.contact_person_name')}
+                        placeholder={t('opportunities:placeholders.contact_person_name')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -496,14 +514,14 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'البريد الإلكتروني' : 'Contact Email'}
+                        {t('opportunities:create.contact_email')}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           type="email"
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.email_address')}
+                        placeholder={t('opportunities:placeholders.email_address')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -517,13 +535,13 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الموقع' : 'Location'}
+                        {t('opportunities:location')}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.riyadh_saudi')}
+                        placeholder={t('opportunities:placeholders.riyadh_saudi')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -536,7 +554,7 @@ export const CreateOpportunityDialog = ({
             {/* Additional Details */}
             <div className="space-y-4">
               <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-                {isRTL ? 'تفاصيل إضافية' : 'Additional Details'}
+                {t('opportunities:create.additional_details')}
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -546,13 +564,13 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'المتطلبات' : 'Requirements'}
+                        {t('opportunities:requirements')}
                       </FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.enter_requirements')}
+                        placeholder={t('opportunities:placeholders.enter_requirements')}
                           rows={3}
                         />
                       </FormControl>
@@ -567,13 +585,13 @@ export const CreateOpportunityDialog = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
-                        {isRTL ? 'الفوائد والمميزات' : 'Benefits'}
+                        {t('opportunities:benefits')}
                       </FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
                           className={isRTL ? 'text-right' : 'text-left'}
-                          placeholder={t('opportunities.placeholders.enter_benefits')}
+                        placeholder={t('opportunities:placeholders.enter_benefits')}
                           rows={3}
                         />
                       </FormControl>
@@ -587,7 +605,7 @@ export const CreateOpportunityDialog = ({
             {/* Image Selection */}
             <div className="space-y-4">
               <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-                {isRTL ? 'صورة الفرصة' : 'Opportunity Image'}
+                {t('opportunities:create.opportunity_image')}
               </h3>
               
               <div className="space-y-4">
@@ -626,18 +644,18 @@ export const CreateOpportunityDialog = ({
                 onClick={() => onOpenChange(false)}
                 disabled={isSubmitting}
               >
-                {isRTL ? 'إلغاء' : 'Cancel'}
+                {t('common:buttons.cancel')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    {isRTL ? 'جاري الإنشاء...' : 'Creating...'}
+                    {t('opportunities:create.creating')}
                   </>
                 ) : (
                   <>
                     <Plus className="w-4 h-4 mr-2" />
-                    {isRTL ? 'إنشاء الفرصة' : 'Create Opportunity'}
+                    {t('opportunities:create.create_opportunity')}
                   </>
                 )}
               </Button>

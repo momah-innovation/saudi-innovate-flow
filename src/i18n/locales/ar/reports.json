@@ -1,0 +1,50 @@
+{
+    "title": "التقارير",
+    "description": "إدارة وتصدير التقارير والتحليلات المتنوعة",
+    "search_placeholder": "البحث في التقارير...",
+    "advanced_filter": "فلترة متقدمة",
+    "new_report": "تقرير جديد",
+    "create_report": "إنشاء تقرير",
+    "schedule_report": "جدولة تقرير",
+    "no_scheduled_reports": "لا توجد تقارير مجدولة",
+    "tabs": {
+        "published": "المنشورة",
+        "drafts": "المسودات",
+        "templates": "القوالب",
+        "scheduled": "المجدولة"
+    },
+    "filters": {
+        "report_type": "نوع التقرير",
+        "category": "الفئة",
+        "types": {
+            "all": "جميع الأنواع",
+            "performance": "أداء",
+            "analytics": "تحليلات",
+            "financial": "مالي",
+            "survey": "استبيان",
+            "impact": "أثر"
+        },
+        "categories": {
+            "all": "جميع الفئات",
+            "monthly": "شهري",
+            "quarterly": "ربعي",
+            "annual": "سنوي",
+            "special": "خاص"
+        }
+    },
+    "status": {
+        "published": "منشور",
+        "draft": "مسودة",
+        "reviewing": "قيد المراجعة"
+    },
+    "card": {
+        "pages": "صفحة",
+        "downloads": "تحميل",
+        "size": "الحجم:",
+        "sections": "الأقسام:",
+        "last_used": "آخر استخدام:",
+        "view": "عرض",
+        "share": "مشاركة",
+        "download": "تحميل"
+    }
+}

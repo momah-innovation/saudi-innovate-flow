@@ -18,6 +18,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
 
@@ -58,6 +59,7 @@ interface TeamWorkspaceAnalyticsDashboardProps {
 
 export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [data, setData] = useState<TeamWorkspaceAnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
@@ -86,21 +88,21 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
         ],
         topPerformers: [
           {
-            name: isRTL ? 'أحمد المحمد' : 'Ahmed Al-Mohammed',
+            name: t('team:analytics.sample_members.ahmed'),
             avatar: '/avatars/male-professional-1.jpg',
             tasksCompleted: 24,
             projectsLed: 3,
             efficiency: 95
           },
           {
-            name: isRTL ? 'فاطمة العلي' : 'Fatima Al-Ali',
+            name: t('team:analytics.sample_members.fatima'),
             avatar: '/avatars/female-professional-1.jpg',
             tasksCompleted: 22,
             projectsLed: 2,
             efficiency: 92
           },
           {
-            name: isRTL ? 'محمد السعود' : 'Mohammed Al-Saud',
+            name: t('team:analytics.sample_members.mohammed'),
             avatar: '/avatars/male-professional-2.jpg',
             tasksCompleted: 20,
             projectsLed: 2,
@@ -108,31 +110,31 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
           }
         ],
         projectStatus: [
-          { status: isRTL ? 'نشط' : 'Active', count: 9, percentage: 60 },
-          { status: isRTL ? 'مكتمل' : 'Completed', count: 4, percentage: 27 },
-          { status: isRTL ? 'متأخر' : 'Delayed', count: 2, percentage: 13 }
+          { status: t('team:analytics.project_status.active'), count: 9, percentage: 60 },
+          { status: t('team:analytics.project_status.completed'), count: 4, percentage: 27 },
+          { status: t('team:analytics.project_status.delayed'), count: 2, percentage: 13 }
         ],
         teamProductivity: [
           {
-            team: isRTL ? 'فريق التطوير' : 'Development Team',
+            team: t('team:analytics.team_names.development'),
             productivity: 92,
             tasksCompleted: 48,
             activeMembers: 8
           },
           {
-            team: isRTL ? 'فريق التصميم' : 'Design Team',
+            team: t('team:analytics.team_names.design'),
             productivity: 88,
             tasksCompleted: 36,
             activeMembers: 6
           },
           {
-            team: isRTL ? 'فريق الإدارة' : 'Management Team',
+            team: t('team:analytics.team_names.management'),
             productivity: 85,
             tasksCompleted: 28,
             activeMembers: 5
           },
           {
-            team: isRTL ? 'فريق التسويق' : 'Marketing Team',
+            team: t('team:analytics.team_names.marketing'),
             productivity: 82,
             tasksCompleted: 32,
             activeMembers: 7
@@ -172,7 +174,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
 
   const keyMetrics = [
     {
-      title: isRTL ? 'إجمالي الفرق' : 'Total Teams',
+      title: t('team:analytics.stats.total_teams'),
       value: data.totalTeams,
       change: '+14%',
       trend: 'up',
@@ -180,7 +182,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
       color: 'text-blue-600'
     },
     {
-      title: isRTL ? 'المشاريع النشطة' : 'Active Projects',
+      title: t('team:analytics.stats.active_projects'),
       value: data.activeProjects,
       change: '+25%',
       trend: 'up',
@@ -188,7 +190,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
       color: 'text-green-600'
     },
     {
-      title: isRTL ? 'أعضاء الفريق' : 'Team Members',
+      title: t('team:analytics.stats.team_members'),
       value: data.teamMembers,
       change: '+8%',
       trend: 'up',
@@ -196,7 +198,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
       color: 'text-purple-600'
     },
     {
-      title: isRTL ? 'المهام المكتملة' : 'Completed Tasks',
+      title: t('team:analytics.stats.completed_tasks'),
       value: data.completedTasks,
       change: '+32%',
       trend: 'up',
@@ -226,7 +228,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
                     {metric.change}
                   </Badge>
                   <span className="text-xs text-muted-foreground">
-                    {isRTL ? 'من الشهر الماضي' : 'from last month'}
+                    {t('team:analytics.stats.from_last_month')}
                   </span>
                 </div>
               </CardContent>
@@ -238,10 +240,10 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
       {/* Analytics Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">{isRTL ? 'نظرة عامة' : 'Overview'}</TabsTrigger>
-          <TabsTrigger value="performance">{isRTL ? 'الأداء' : 'Performance'}</TabsTrigger>
-          <TabsTrigger value="projects">{isRTL ? 'المشاريع' : 'Projects'}</TabsTrigger>
-          <TabsTrigger value="teams">{isRTL ? 'الفرق' : 'Teams'}</TabsTrigger>
+          <TabsTrigger value="overview">{t('team:analytics.tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="performance">{t('team:analytics.tabs.performance')}</TabsTrigger>
+          <TabsTrigger value="projects">{t('team:analytics.tabs.projects')}</TabsTrigger>
+          <TabsTrigger value="teams">{t('team:analytics.tabs.teams')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -250,7 +252,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5" />
-                  {isRTL ? 'الاتجاهات الشهرية' : 'Monthly Trends'}
+                  {t('team:analytics.trends.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -260,11 +262,11 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
                       <span className="font-medium">{trend.month}</span>
                       <div className="flex items-center gap-4">
                         <div className="text-sm">
-                          <span className="text-muted-foreground">{isRTL ? 'مشاريع:' : 'Projects:'}</span>
+                          <span className="text-muted-foreground">{t('team:analytics.trends.projects_label')}</span>
                           <span className="font-semibold ml-1">{trend.projects}</span>
                         </div>
                         <div className="text-sm">
-                          <span className="text-muted-foreground">{isRTL ? 'مهام:' : 'Tasks:'}</span>
+                          <span className="text-muted-foreground">{t('team:analytics.trends.tasks_label')}</span>
                           <span className="font-semibold ml-1">{trend.tasks}</span>
                         </div>
                       </div>
@@ -278,28 +280,28 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="w-5 h-5" />
-                  {isRTL ? 'أهداف الإنتاجية' : 'Productivity Goals'}
+                  {t('team:analytics.productivity.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'إكمال المشاريع' : 'Project Completion'}</span>
+                      <span>{t('team:analytics.productivity.project_completion')}</span>
                       <span className="font-semibold">87%</span>
                     </div>
                     <Progress value={87} className="h-2" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'كفاءة الفريق' : 'Team Efficiency'}</span>
+                      <span>{t('team:analytics.productivity.team_efficiency')}</span>
                       <span className="font-semibold">92%</span>
                     </div>
                     <Progress value={92} className="h-2" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'رضا الأعضاء' : 'Member Satisfaction'}</span>
+                      <span>{t('team:analytics.productivity.member_satisfaction')}</span>
                       <span className="font-semibold">89%</span>
                     </div>
                     <Progress value={89} className="h-2" />
@@ -315,7 +317,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="w-5 h-5" />
-                {isRTL ? 'أفضل المؤدين' : 'Top Performers'}
+                {t('team:analytics.top_performers.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -330,14 +332,14 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
                       <div>
                         <div className="font-medium">{performer.name}</div>
                         <div className="text-sm text-muted-foreground">
-                          {performer.tasksCompleted} {isRTL ? 'مهام مكتملة' : 'tasks completed'}
+                          {performer.tasksCompleted} {t('team:analytics.top_performers.tasks_completed')}
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="font-semibold text-green-600">{performer.efficiency}%</div>
                       <div className="text-sm text-muted-foreground">
-                        {performer.projectsLed} {isRTL ? 'مشاريع' : 'projects'}
+                        {performer.projectsLed} {t('team:analytics.top_performers.projects')}
                       </div>
                     </div>
                   </div>
@@ -352,7 +354,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <PieChart className="w-5 h-5" />
-                {isRTL ? 'حالة المشاريع' : 'Project Status'}
+                {t('team:analytics.project_status.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -389,7 +391,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5" />
-                {isRTL ? 'إنتاجية الفرق' : 'Team Productivity'}
+                {t('team:analytics.team_productivity.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -398,18 +400,18 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
                   <div key={index} className="p-4 border rounded-lg">
                     <div className="flex justify-between items-center mb-3">
                       <span className="font-medium">{team.team}</span>
-                      <Badge variant="outline">{team.activeMembers} {isRTL ? 'عضو' : 'members'}</Badge>
+                      <Badge variant="outline">{team.activeMembers} {t('team:analytics.team_productivity.members')}</Badge>
                     </div>
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">{isRTL ? 'الإنتاجية' : 'Productivity'}</span>
+                        <span className="text-muted-foreground">{t('team:analytics.team_productivity.productivity')}</span>
                         <span className="font-semibold">{team.productivity}%</span>
                       </div>
                       <Progress value={team.productivity} className="h-2" />
                       
                       <div className="text-sm text-muted-foreground">
-                        {team.tasksCompleted} {isRTL ? 'مهام مكتملة' : 'tasks completed'}
+                        {team.tasksCompleted} {t('team:analytics.team_productivity.tasks_completed')}
                       </div>
                     </div>
                   </div>

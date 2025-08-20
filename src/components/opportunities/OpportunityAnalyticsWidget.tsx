@@ -15,6 +15,7 @@ import {
   BarChart3 
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface OpportunityAnalyticsWidgetProps {
   opportunityId: string;
@@ -42,6 +43,7 @@ export const OpportunityAnalyticsWidget = ({
   onViewDetails
 }: OpportunityAnalyticsWidgetProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -195,19 +197,19 @@ export const OpportunityAnalyticsWidget = ({
           <div className="grid grid-cols-4 gap-2 text-xs">
             <div className="text-center">
               <div className="font-semibold">{formatNumber(analytics.views)}</div>
-              <div className="text-muted-foreground">{isRTL ? 'مشاهدات' : 'Views'}</div>
+              <div className="text-muted-foreground">{t('opportunities:analytics_widget.views')}</div>
             </div>
             <div className="text-center">
               <div className="font-semibold">{analytics.applications}</div>
-              <div className="text-muted-foreground">{isRTL ? 'طلبات' : 'Apps'}</div>
+              <div className="text-muted-foreground">{t('opportunities:analytics_widget.apps')}</div>
             </div>
             <div className="text-center">
               <div className="font-semibold">{analytics.likes}</div>
-              <div className="text-muted-foreground">{isRTL ? 'إعجابات' : 'Likes'}</div>
+              <div className="text-muted-foreground">{t('opportunities:analytics_widget.likes')}</div>
             </div>
             <div className="text-center">
               <div className="font-semibold">{analytics.shares}</div>
-              <div className="text-muted-foreground">{isRTL ? 'مشاركات' : 'Shares'}</div>
+              <div className="text-muted-foreground">{t('opportunities:analytics_widget.shares')}</div>
             </div>
           </div>
         </CardContent>
@@ -220,7 +222,7 @@ export const OpportunityAnalyticsWidget = ({
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center gap-2">
           <BarChart3 className="w-4 h-4 text-primary" />
-          {isRTL ? 'إحصائيات الفرصة' : 'Analytics'}
+          {t('opportunities:analytics_widget.title')}
         </CardTitle>
         <p className="text-xs text-muted-foreground truncate">{opportunityTitle}</p>
       </CardHeader>
@@ -231,7 +233,7 @@ export const OpportunityAnalyticsWidget = ({
             <Eye className="w-4 h-4 text-blue-500" />
             <div>
               <div className="font-semibold text-sm">{formatNumber(analytics.views)}</div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'مشاهدات' : 'Views'}</div>
+              <div className="text-xs text-muted-foreground">{t('opportunities:analytics_widget.views')}</div>
             </div>
           </div>
           
@@ -239,7 +241,7 @@ export const OpportunityAnalyticsWidget = ({
             <Users className="w-4 h-4 text-green-500" />
             <div>
               <div className="font-semibold text-sm">{analytics.applications}</div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'طلبات' : 'Applications'}</div>
+              <div className="text-xs text-muted-foreground">{t('opportunities:analytics_widget.applications')}</div>
             </div>
           </div>
           
@@ -247,7 +249,7 @@ export const OpportunityAnalyticsWidget = ({
             <MessageSquare className="w-4 h-4 text-purple-500" />
             <div>
               <div className="font-semibold text-sm">{analytics.likes}</div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'إعجابات' : 'Likes'}</div>
+              <div className="text-xs text-muted-foreground">{t('opportunities:analytics_widget.likes')}</div>
             </div>
           </div>
           
@@ -255,7 +257,7 @@ export const OpportunityAnalyticsWidget = ({
             <Share2 className="w-4 h-4 text-orange-500" />
             <div>
               <div className="font-semibold text-sm">{analytics.shares}</div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'مشاركات' : 'Shares'}</div>
+              <div className="text-xs text-muted-foreground">{t('opportunities:analytics_widget.shares')}</div>
             </div>
           </div>
         </div>
@@ -263,7 +265,7 @@ export const OpportunityAnalyticsWidget = ({
         {/* Conversion Rate */}
         <div className="flex items-center justify-between p-2 rounded-lg border">
           <div>
-            <div className="text-sm font-medium">{isRTL ? 'معدل التحويل' : 'Conversion Rate'}</div>
+            <div className="text-sm font-medium">{t('opportunities:analytics_widget.conversion_rate')}</div>
             <div className="text-lg font-bold">{analytics.conversionRate.toFixed(1)}%</div>
           </div>
           <div className={`flex items-center gap-1 text-xs ${getTrendColor()}`}>
@@ -282,7 +284,7 @@ export const OpportunityAnalyticsWidget = ({
               onClick={onViewDetails}
             >
               <BarChart3 className={`w-3 h-3 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {isRTL ? 'عرض التفاصيل' : 'View Details'}
+              {t('opportunities:analytics_widget.view_details')}
             </Button>
           </div>
         )}

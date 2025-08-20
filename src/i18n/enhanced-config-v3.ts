@@ -36,6 +36,34 @@ import arErrors from './locales/ar/errors.json';
 import enWorkspace from './locales/en/workspace.json';
 import arWorkspace from './locales/ar/workspace.json';
 
+// Challenges translations
+import enChallenges from './locales/en/challenges.json';
+import arChallenges from './locales/ar/challenges.json';
+
+// Expert translations
+import enExpert from './locales/en/expert.json';
+import arExpert from './locales/ar/expert.json';
+
+// Events translations
+import enEvents from './locales/en/events.json';
+import arEvents from './locales/ar/events.json';
+
+// Statistics translations
+import enStatistics from './locales/en/statistics.json';
+import arStatistics from './locales/ar/statistics.json';
+
+// Subscription translations
+import enSubscription from './locales/en/subscription.json';
+import arSubscription from './locales/ar/subscription.json';
+
+// Trends translations
+import enTrends from './locales/en/trends.json';
+import arTrends from './locales/ar/trends.json';
+
+// Stakeholder translations
+import enStakeholder from './locales/en/stakeholder.json';
+import arStakeholder from './locales/ar/stakeholder.json';
+
 // Base static resources - these are loaded immediately
 const staticResources = {
   en: { 
@@ -46,7 +74,14 @@ const staticResources = {
     admin: enAdmin,
     auth: enAuth,
     errors: enErrors,
-    workspace: enWorkspace
+    workspace: enWorkspace,
+    challenges: enChallenges,
+    expert: enExpert,
+    events: enEvents,
+    statistics: enStatistics,
+    subscription: enSubscription,
+    trends: enTrends,
+    stakeholder: enStakeholder
   },
   ar: { 
     landing: arLanding,
@@ -56,7 +91,14 @@ const staticResources = {
     admin: arAdmin,
     auth: arAuth,
     errors: arErrors,
-    workspace: arWorkspace
+    workspace: arWorkspace,
+    challenges: arChallenges,
+    expert: arExpert,
+    events: arEvents,
+    statistics: arStatistics,
+    subscription: arSubscription,
+    trends: arTrends,
+    stakeholder: arStakeholder
   }
 };
 
@@ -205,6 +247,24 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/workspace.json');
         break;
         
+      case 'team':
+        translations = language === 'en'
+          ? await import('./locales/en/team.json')
+          : await import('./locales/ar/team.json');
+        break;
+        
+      case 'trends':
+        translations = language === 'en'
+          ? await import('./locales/en/trends.json')
+          : await import('./locales/ar/trends.json');
+        break;
+        
+      case 'stakeholder':
+        translations = language === 'en'
+          ? await import('./locales/en/stakeholder.json')
+          : await import('./locales/ar/stakeholder.json');
+        break;
+        
       default:
         logger.warn(`Unknown namespace: ${namespace}`, { component: 'FeatureBasedBackend' });
         return {};
@@ -278,7 +338,7 @@ i18n
     
     // Default namespaces that should be loaded immediately - using dot notation
     defaultNS: 'common',
-    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists'],
+    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists', 'challenges', 'expert', 'events', 'statistics', 'subscription', 'trends', 'stakeholder'],
     
     // Namespace/key separators
     nsSeparator: ':', // use ':' to separate namespace from key (avoids conflict with nested dot keys)

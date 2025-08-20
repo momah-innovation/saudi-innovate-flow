@@ -42,7 +42,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const inviteFormSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z.string().email(),
   role: z.enum(['member', 'moderator', 'admin']).default('member'),
   message: z.string().optional(),
 });
@@ -120,11 +120,11 @@ export function MemberInvitationInterface({
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Active</Badge>;
+        return <Badge variant="default" className="bg-green-100 text-green-800">{t('team:member.status.active')}</Badge>;
       case 'pending':
-        return <Badge variant="secondary">Pending</Badge>;
+        return <Badge variant="secondary">{t('team:member.status.pending')}</Badge>;
       case 'inactive':
-        return <Badge variant="destructive">Inactive</Badge>;
+        return <Badge variant="destructive">{t('team:member.status.inactive')}</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -246,7 +246,7 @@ export function MemberInvitationInterface({
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="colleague@company.com"
+                            placeholder={t('team:member.fields.email_placeholder')}
                             {...field}
                           />
                         </FormControl>

@@ -229,7 +229,7 @@ function TeamOverview({ team }: { team: Team }) {
           <div className="text-2xl font-bold">{team.member_count}</div>
           <div className="flex items-center gap-1 text-sm text-green-600">
             <CheckCircle className="h-3 w-3" />
-            <span>All active</span>
+            <span>{t('team:status.all_active')}</span>
           </div>
         </CardContent>
       </Card>
@@ -244,7 +244,7 @@ function TeamOverview({ team }: { team: Team }) {
           <div className="text-2xl font-bold">{team.active_projects}</div>
           <div className="flex items-center gap-1 text-sm text-blue-600">
             <Clock className="h-3 w-3" />
-            <span>In progress</span>
+            <span>{t('team:status.in_progress')}</span>
           </div>
         </CardContent>
       </Card>
@@ -259,7 +259,7 @@ function TeamOverview({ team }: { team: Team }) {
           <div className="text-2xl font-bold">{team.pending_tasks}</div>
           <div className="flex items-center gap-1 text-sm text-orange-600">
             <AlertCircle className="h-3 w-3" />
-            <span>Requires attention</span>
+            <span>{t('team:status.requires_attention')}</span>
           </div>
         </CardContent>
       </Card>

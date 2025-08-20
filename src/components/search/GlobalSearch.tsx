@@ -40,6 +40,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
   
   const { hasRole, userProfile } = useAuth();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -325,13 +326,13 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
 
   const getTypeLabel = (type: string) => {
     const labels = {
-      campaign: isRTL ? 'حملة' : 'Campaign',
-      challenge: isRTL ? 'تحدي' : 'Challenge',
-      event: isRTL ? 'فعالية' : 'Event',
-      stakeholder: isRTL ? 'معني' : 'Stakeholder',
-      partner: isRTL ? 'شريك' : 'Partner',
-      idea: isRTL ? 'فكرة' : 'Idea',
-      expert: isRTL ? 'خبير' : 'Expert'
+      campaign: t('common:types.campaign'),
+      challenge: t('common:types.challenge'),
+      event: t('common:types.event'),
+      stakeholder: t('common:types.stakeholder'),
+      partner: t('common:types.partner'),
+      idea: t('common:types.idea'),
+      expert: t('common:types.expert')
     };
     return labels[type as keyof typeof labels] || type;
   };
@@ -345,7 +346,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
         )} />
         <Input
           ref={inputRef}
-          placeholder={placeholder || (isRTL ? 'البحث في التحديات والأفكار والمعنيين...' : 'Search challenges, ideas, stakeholders...')}
+          placeholder={placeholder || t('common:search.placeholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -382,7 +383,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
           <CardContent className="p-0">
             {isLoading ? (
               <div className="p-4 text-center text-muted-foreground">
-                {isRTL ? 'جاري البحث...' : 'Searching...'}
+                {t('common:search.searching')}
               </div>
             ) : (
               <>
@@ -428,7 +429,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
                 
                 {results.length === 0 && !isLoading && (
                   <div className="p-4 text-center text-muted-foreground">
-                    {isRTL ? 'لا توجد نتائج' : 'No results found'}
+                    {t('common:search.no_results')}
                   </div>
                 )}
               </>

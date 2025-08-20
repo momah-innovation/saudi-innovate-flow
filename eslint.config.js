@@ -3,6 +3,7 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
+import noHardcodedTranslations from "./eslint-plugin-no-hardcoded-translations.js";
 
 export default tseslint.config(
   { ignores: ["dist"] },
@@ -16,6 +17,7 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      "no-hardcoded-translations": noHardcodedTranslations,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -24,6 +26,9 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/no-unused-vars": "off",
+
+      // Custom translation rules
+      "no-hardcoded-translations/no-hardcoded-translations": "error",
     },
   }
 );

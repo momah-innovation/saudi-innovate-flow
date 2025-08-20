@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Users, 
   Clock, 
@@ -65,6 +66,7 @@ export const ApplicationsManagementDialog = ({
 }: ApplicationsManagementDialogProps) => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(false);
@@ -101,8 +103,8 @@ export const ApplicationsManagementDialog = ({
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحميل الطلبات' : 'Failed to load applications',
+        title: t('opportunities:applications.error'),
+        description: t('opportunities:applications.load_error'),
         variant: 'destructive',
       });
     } finally {
@@ -124,8 +126,8 @@ export const ApplicationsManagementDialog = ({
       if (error) throw error;
 
       toast({
-        title: isRTL ? 'تم التحديث' : 'Updated',
-        description: isRTL ? 'تم تحديث حالة الطلب' : 'Application status updated',
+        title: t('opportunities:applications.updated'),
+        description: t('opportunities:applications.status_updated'),
       });
 
       loadApplications();
@@ -134,8 +136,8 @@ export const ApplicationsManagementDialog = ({
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحديث الطلب' : 'Failed to update application',
+        title: t('opportunities:applications.error'),
+        description: t('opportunities:applications.update_error'),
         variant: 'destructive',
       });
     }
@@ -152,10 +154,10 @@ export const ApplicationsManagementDialog = ({
 
   const getStatusLabel = (status: string) => {
     const labels: Record<string, string> = {
-      pending: isRTL ? 'في الانتظار' : 'Pending',
-      under_review: isRTL ? 'قيد المراجعة' : 'Under Review',
-      approved: isRTL ? 'مقبول' : 'Approved',
-      rejected: isRTL ? 'مرفوض' : 'Rejected'
+      pending: t('opportunities:applications.status.pending'),
+      under_review: t('opportunities:applications.status.under_review'),
+      approved: t('opportunities:applications.status.approved'),
+      rejected: t('opportunities:applications.status.rejected')
     };
     return labels[status] || status;
   };
@@ -177,7 +179,7 @@ export const ApplicationsManagementDialog = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Users className="w-5 h-5" />
-            {isRTL ? 'إدارة الطلبات' : 'Manage Applications'}
+            {t('opportunities:applications.manage_applications')}
           </DialogTitle>
           <p className="text-muted-foreground">{opportunityTitle}</p>
         </DialogHeader>
@@ -189,7 +191,7 @@ export const ApplicationsManagementDialog = ({
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'المجموع' : 'Total'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:applications.total')}</p>
                     <p className="text-2xl font-bold">{stats.total}</p>
                   </div>
                   <Users className="w-8 h-8 text-blue-500" />
@@ -201,7 +203,7 @@ export const ApplicationsManagementDialog = ({
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'في الانتظار' : 'Pending'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:applications.status.pending')}</p>
                     <p className="text-2xl font-bold">{stats.pending}</p>
                   </div>
                   <Clock className="w-8 h-8 text-yellow-500" />
@@ -213,7 +215,7 @@ export const ApplicationsManagementDialog = ({
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'مقبول' : 'Approved'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:applications.status.approved')}</p>
                     <p className="text-2xl font-bold">{stats.approved}</p>
                   </div>
                   <CheckCircle className="w-8 h-8 text-green-500" />
@@ -225,7 +227,7 @@ export const ApplicationsManagementDialog = ({
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'مرفوض' : 'Rejected'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:applications.status.rejected')}</p>
                     <p className="text-2xl font-bold">{stats.rejected}</p>
                   </div>
                   <XCircle className="w-8 h-8 text-red-500" />
@@ -238,14 +240,14 @@ export const ApplicationsManagementDialog = ({
           <div className="flex gap-4">
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder={isRTL ? 'تصفية حسب الحالة' : 'Filter by status'} />
+                <SelectValue placeholder={t('opportunities:applications.filter_by_status')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الطلبات' : 'All Applications'}</SelectItem>
-                <SelectItem value="pending">{isRTL ? 'في الانتظار' : 'Pending'}</SelectItem>
-                <SelectItem value="under_review">{isRTL ? 'قيد المراجعة' : 'Under Review'}</SelectItem>
-                <SelectItem value="approved">{isRTL ? 'مقبول' : 'Approved'}</SelectItem>
-                <SelectItem value="rejected">{isRTL ? 'مرفوض' : 'Rejected'}</SelectItem>
+                <SelectItem value="all">{t('opportunities:applications.all_applications')}</SelectItem>
+                <SelectItem value="pending">{t('opportunities:applications.status.pending')}</SelectItem>
+                <SelectItem value="under_review">{t('opportunities:applications.status.under_review')}</SelectItem>
+                <SelectItem value="approved">{t('opportunities:applications.status.approved')}</SelectItem>
+                <SelectItem value="rejected">{t('opportunities:applications.status.rejected')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -255,14 +257,14 @@ export const ApplicationsManagementDialog = ({
             {loading ? (
               <div className="text-center py-8">
                 <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p className="text-muted-foreground">{isRTL ? 'جاري التحميل...' : 'Loading...'}</p>
+                <p className="text-muted-foreground">{t('opportunities:applications.loading')}</p>
               </div>
             ) : filteredApplications.length === 0 ? (
               <div className="text-center py-8">
                 <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium mb-2">{isRTL ? 'لا توجد طلبات' : 'No Applications'}</h3>
+                <h3 className="text-lg font-medium mb-2">{t('opportunities:applications.no_applications')}</h3>
                 <p className="text-muted-foreground">
-                  {isRTL ? 'لم يتم تقديم أي طلبات لهذه الفرصة بعد' : 'No applications have been submitted for this opportunity yet'}
+                  {t('opportunities:applications.no_applications_desc')}
                 </p>
               </div>
             ) : (
@@ -300,7 +302,7 @@ export const ApplicationsManagementDialog = ({
                           onClick={() => setSelectedApplication(application)}
                         >
                           <Eye className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                          {isRTL ? 'عرض' : 'View'}
+                          {t('opportunities:applications.view')}
                         </Button>
                       </div>
                     </div>
@@ -317,13 +319,13 @@ export const ApplicationsManagementDialog = ({
                       {application.expected_budget && (
                         <div className="flex items-center gap-2">
                           <DollarSign className="w-4 h-4 text-muted-foreground" />
-                          <span>{application.expected_budget.toLocaleString()} {isRTL ? 'ريال' : 'SAR'}</span>
+                          <span>{application.expected_budget.toLocaleString()} {t('opportunities:applications.currency')}</span>
                         </div>
                       )}
                       {application.timeline_months && (
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-muted-foreground" />
-                          <span>{application.timeline_months} {isRTL ? 'شهر' : 'months'}</span>
+                          <span>{application.timeline_months} {t('opportunities:applications.months')}</span>
                         </div>
                       )}
                     </div>
@@ -340,7 +342,7 @@ export const ApplicationsManagementDialog = ({
                           className="text-blue-600 border-blue-600 hover:bg-blue-50"
                           onClick={() => updateApplicationStatus(application.id, 'under_review')}
                         >
-                          {isRTL ? 'مراجعة' : 'Review'}
+                          {t('opportunities:applications.review')}
                         </Button>
                         <Button
                           size="sm"
@@ -348,7 +350,7 @@ export const ApplicationsManagementDialog = ({
                           className="text-green-600 border-green-600 hover:bg-green-50"
                           onClick={() => updateApplicationStatus(application.id, 'approved')}
                         >
-                          {isRTL ? 'قبول' : 'Approve'}
+                          {t('opportunities:applications.approve')}
                         </Button>
                         <Button
                           size="sm"
@@ -356,7 +358,7 @@ export const ApplicationsManagementDialog = ({
                           className="text-red-600 border-red-600 hover:bg-red-50"
                           onClick={() => updateApplicationStatus(application.id, 'rejected')}
                         >
-                          {isRTL ? 'رفض' : 'Reject'}
+                          {t('opportunities:applications.reject')}
                         </Button>
                       </div>
                     )}
@@ -374,7 +376,7 @@ export const ApplicationsManagementDialog = ({
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <FileText className="w-5 h-5" />
-                  {isRTL ? 'تفاصيل الطلب' : 'Application Details'}
+                  {t('opportunities:applications.application_details')}
                 </DialogTitle>
               </DialogHeader>
 
@@ -384,12 +386,12 @@ export const ApplicationsManagementDialog = ({
                   <div className="space-y-4">
                     <div>
                       <Label className="text-sm font-medium text-muted-foreground">
-                        {isRTL ? 'نوع التقديم' : 'Application Type'}
+                        {t('opportunities:applications.application_type')}
                       </Label>
                       <p className="font-medium">
                         {selectedApplication.application_type === 'organization' ? 
-                          (isRTL ? 'مؤسسي' : 'Organization') : 
-                          (isRTL ? 'فردي' : 'Individual')
+                          t('opportunities:applications.organization') : 
+                          t('opportunities:applications.individual')
                         }
                       </p>
                     </div>
@@ -397,7 +399,7 @@ export const ApplicationsManagementDialog = ({
                     {selectedApplication.organization_name && (
                       <div>
                         <Label className="text-sm font-medium text-muted-foreground">
-                          {isRTL ? 'اسم المؤسسة' : 'Organization Name'}
+                          {t('opportunities:applications.organization_name')}
                         </Label>
                         <p className="font-medium">{selectedApplication.organization_name}</p>
                       </div>
@@ -405,7 +407,7 @@ export const ApplicationsManagementDialog = ({
                     
                     <div>
                       <Label className="text-sm font-medium text-muted-foreground">
-                        {isRTL ? 'الشخص المسؤول' : 'Contact Person'}
+                        {t('opportunities:applications.contact_person')}
                       </Label>
                       <p className="font-medium">{selectedApplication.contact_person}</p>
                     </div>
@@ -414,21 +416,21 @@ export const ApplicationsManagementDialog = ({
                   <div className="space-y-4">
                     <div>
                       <Label className="text-sm font-medium text-muted-foreground">
-                        {isRTL ? 'البريد الإلكتروني' : 'Email'}
+                        {t('opportunities:applications.email')}
                       </Label>
                       <p className="font-medium">{selectedApplication.contact_email}</p>
                     </div>
                     
                     <div>
                       <Label className="text-sm font-medium text-muted-foreground">
-                        {isRTL ? 'رقم الهاتف' : 'Phone'}
+                        {t('opportunities:applications.phone')}
                       </Label>
                       <p className="font-medium">{selectedApplication.contact_phone}</p>
                     </div>
                     
                     <div>
                       <Label className="text-sm font-medium text-muted-foreground">
-                        {isRTL ? 'الحالة' : 'Status'}
+                        {t('opportunities:applications.status')}
                       </Label>
                       <Badge className={getStatusColor(selectedApplication.status)}>
                         {getStatusLabel(selectedApplication.status)}
@@ -440,15 +442,15 @@ export const ApplicationsManagementDialog = ({
                 {/* Project Details */}
                 {(selectedApplication.expected_budget || selectedApplication.timeline_months || selectedApplication.team_size) && (
                   <div>
-                    <h3 className="text-lg font-semibold mb-3">{isRTL ? 'تفاصيل المشروع' : 'Project Details'}</h3>
+                    <h3 className="text-lg font-semibold mb-3">{t('opportunities:applications.project_details')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {selectedApplication.expected_budget && (
                         <div>
                           <Label className="text-sm font-medium text-muted-foreground">
-                            {isRTL ? 'الميزانية المتوقعة' : 'Expected Budget'}
+                            {t('opportunities:applications.expected_budget')}
                           </Label>
                           <p className="font-medium">
-                            {selectedApplication.expected_budget.toLocaleString()} {isRTL ? 'ريال' : 'SAR'}
+                            {selectedApplication.expected_budget.toLocaleString()} {t('opportunities:applications.currency')}
                           </p>
                         </div>
                       )}
@@ -456,10 +458,10 @@ export const ApplicationsManagementDialog = ({
                       {selectedApplication.timeline_months && (
                         <div>
                           <Label className="text-sm font-medium text-muted-foreground">
-                            {isRTL ? 'المدة الزمنية' : 'Timeline'}
+                            {t('opportunities:applications.timeline')}
                           </Label>
                           <p className="font-medium">
-                            {selectedApplication.timeline_months} {isRTL ? 'شهر' : 'months'}
+                            {selectedApplication.timeline_months} {t('opportunities:applications.months')}
                           </p>
                         </div>
                       )}
@@ -467,7 +469,7 @@ export const ApplicationsManagementDialog = ({
                       {selectedApplication.team_size && (
                         <div>
                           <Label className="text-sm font-medium text-muted-foreground">
-                            {isRTL ? 'حجم الفريق' : 'Team Size'}
+                            {t('opportunities:applications.team_size')}
                           </Label>
                           <p className="font-medium">{selectedApplication.team_size}</p>
                         </div>
@@ -478,7 +480,7 @@ export const ApplicationsManagementDialog = ({
 
                 {/* Proposal Summary */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">{isRTL ? 'ملخص المقترح' : 'Proposal Summary'}</h3>
+                  <h3 className="text-lg font-semibold mb-3">{t('opportunities:applications.proposal_summary')}</h3>
                   <div className="bg-muted p-4 rounded-lg">
                     <p className="whitespace-pre-wrap">{selectedApplication.proposal_summary}</p>
                   </div>
@@ -486,7 +488,7 @@ export const ApplicationsManagementDialog = ({
 
                 {/* Relevant Experience */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">{isRTL ? 'الخبرة ذات الصلة' : 'Relevant Experience'}</h3>
+                  <h3 className="text-lg font-semibold mb-3">{t('opportunities:applications.relevant_experience')}</h3>
                   <div className="bg-muted p-4 rounded-lg">
                     <p className="whitespace-pre-wrap">{selectedApplication.relevant_experience}</p>
                   </div>
@@ -495,13 +497,13 @@ export const ApplicationsManagementDialog = ({
                 {/* Attachments */}
                 {selectedApplication.attachment_urls && selectedApplication.attachment_urls.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold mb-3">{isRTL ? 'المرفقات' : 'Attachments'}</h3>
+                    <h3 className="text-lg font-semibold mb-3">{t('opportunities:applications.attachments')}</h3>
                     <div className="space-y-2">
                       {selectedApplication.attachment_urls.map((url, index) => (
                         <Button key={index} variant="outline" size="sm" asChild>
                           <a href={url} target="_blank" rel="noopener noreferrer">
                             <Download className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                            {isRTL ? 'مرفق' : 'Attachment'} {index + 1}
+                            {t('opportunities:applications.attachment')} {index + 1}
                           </a>
                         </Button>
                       ))}
@@ -512,15 +514,15 @@ export const ApplicationsManagementDialog = ({
                 {/* Review Section */}
                 {selectedApplication.status === 'pending' && (
                   <div className="border-t pt-6">
-                    <h3 className="text-lg font-semibold mb-4">{isRTL ? 'مراجعة الطلب' : 'Review Application'}</h3>
+                    <h3 className="text-lg font-semibold mb-4">{t('opportunities:applications.review_application')}</h3>
                     
                     <div className="space-y-4">
                       <div>
-                        <Label>{isRTL ? 'ملاحظات المراجعة' : 'Review Notes'}</Label>
+                        <Label>{t('opportunities:applications.review_notes')}</Label>
                         <Textarea
                           value={reviewNotes}
                           onChange={(e) => setReviewNotes(e.target.value)}
-                          placeholder={isRTL ? 'أضف ملاحظاتك حول هذا الطلب...' : 'Add your notes about this application...'}
+                          placeholder={t('opportunities:applications.review_notes_placeholder')}
                           rows={3}
                         />
                       </div>
@@ -531,7 +533,7 @@ export const ApplicationsManagementDialog = ({
                           onClick={() => updateApplicationStatus(selectedApplication.id, 'approved', reviewNotes)}
                         >
                           <CheckCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                          {isRTL ? 'قبول الطلب' : 'Approve Application'}
+                          {t('opportunities:applications.approve_application')}
                         </Button>
                         
                         <Button
@@ -540,7 +542,7 @@ export const ApplicationsManagementDialog = ({
                           onClick={() => updateApplicationStatus(selectedApplication.id, 'under_review', reviewNotes)}
                         >
                           <Clock className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                          {isRTL ? 'وضع قيد المراجعة' : 'Mark Under Review'}
+                          {t('opportunities:applications.mark_under_review')}
                         </Button>
                         
                         <Button
@@ -549,7 +551,7 @@ export const ApplicationsManagementDialog = ({
                           onClick={() => updateApplicationStatus(selectedApplication.id, 'rejected', reviewNotes)}
                         >
                           <XCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                          {isRTL ? 'رفض الطلب' : 'Reject Application'}
+                          {t('opportunities:applications.reject_application')}
                         </Button>
                       </div>
                     </div>
@@ -559,12 +561,12 @@ export const ApplicationsManagementDialog = ({
                 {/* Existing Review Notes */}
                 {selectedApplication.reviewer_notes && (
                   <div className="border-t pt-6">
-                    <h3 className="text-lg font-semibold mb-3">{isRTL ? 'ملاحظات المراجع' : 'Reviewer Notes'}</h3>
+                    <h3 className="text-lg font-semibold mb-3">{t('opportunities:applications.reviewer_notes')}</h3>
                     <div className="bg-muted p-4 rounded-lg">
                       <p className="whitespace-pre-wrap">{selectedApplication.reviewer_notes}</p>
                       {selectedApplication.reviewed_at && (
                         <p className="text-sm text-muted-foreground mt-2">
-                          {isRTL ? 'تاريخ المراجعة:' : 'Reviewed on:'} {' '}
+                          {t('opportunities:applications.reviewed_on')} {' '}
                           {new Date(selectedApplication.reviewed_at).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US')}
                         </p>
                       )}

@@ -144,7 +144,7 @@ export const ChallengeFilters = ({
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
+                placeholder={t('challenges:filters.search_placeholder')}
                 value={filters.search}
                 onChange={(e) => updateFilter('search', e.target.value)}
                 className="pl-10"
@@ -182,7 +182,7 @@ export const ChallengeFilters = ({
             {/* Status Filter */}
             <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder={isRTL ? 'الحالة' : 'Status'} />
+                <SelectValue placeholder={t('challenges:filters.status')} />
               </SelectTrigger>
               <SelectContent>
                 {statusOptions.map((option) => (
@@ -199,7 +199,7 @@ export const ChallengeFilters = ({
             {/* Category Filter */}
             <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder={isRTL ? 'الفئة' : 'Category'} />
+                <SelectValue placeholder={t('challenges:filters.category')} />
               </SelectTrigger>
               <SelectContent>
                 {categoryOptions.map((option) => (
@@ -213,7 +213,7 @@ export const ChallengeFilters = ({
             {/* Difficulty Filter */}
             <Select value={filters.difficulty} onValueChange={(value) => updateFilter('difficulty', value)}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder={isRTL ? 'المستوى' : 'Level'} />
+                <SelectValue placeholder={t('challenges:filters.level')} />
               </SelectTrigger>
               <SelectContent>
                 {difficultyOptions.map((option) => (
@@ -260,7 +260,7 @@ export const ChallengeFilters = ({
               className="ml-auto"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
-              {isRTL ? 'فلاتر متقدمة' : 'Advanced'}
+              {t('challenges:filters.advanced')}
               <ChevronDown className={cn(
                 "w-4 h-4 ml-1 transition-transform",
                 isAdvancedOpen && "rotate-180"
@@ -280,7 +280,7 @@ export const ChallengeFilters = ({
                 <div className="space-y-3">
                   <label className="text-sm font-medium flex items-center gap-2">
                     <Award className="w-4 h-4" />
-                    {isRTL ? 'نطاق الجائزة (ر.س)' : 'Prize Range (SAR)'}
+                    {t('challenges:filters.prize_range')}
                   </label>
                   <div className="px-3">
                     <Slider
@@ -302,7 +302,7 @@ export const ChallengeFilters = ({
                 <div className="space-y-3">
                   <label className="text-sm font-medium flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    {isRTL ? 'نطاق المشاركين' : 'Participants Range'}
+                    {t('challenges:filters.participants_range')}
                   </label>
                   <div className="px-3">
                     <Slider

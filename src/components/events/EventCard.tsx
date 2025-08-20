@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { CalendarIcon, MapPin, Users, Clock, Ticket, UserMinus } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useEventState } from '@/hooks/useEventState';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Event {
   id: string;
@@ -38,6 +39,7 @@ interface EventCardProps {
 
 export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   
   // Use unified event state management
   const {
@@ -60,10 +62,10 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'upcoming': return isRTL ? 'قادم' : 'Upcoming';
-      case 'ongoing': return isRTL ? 'جاري' : 'Ongoing';
-      case 'completed': return isRTL ? 'مكتمل' : 'Completed';
-      case 'cancelled': return isRTL ? 'ملغي' : 'Cancelled';
+      case 'upcoming': return t('events:status.upcoming');
+      case 'ongoing': return t('events:status.ongoing');
+      case 'completed': return t('events:status.completed');
+      case 'cancelled': return t('events:status.cancelled');
       default: return status;
     }
   };
@@ -142,7 +144,7 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={() => onViewDetails(event)}>
               <Ticket className="h-4 w-4 mr-2" />
-              {isRTL ? 'التفاصيل' : 'Details'}
+              {t('events:actions.view_details')}
             </Button>
             <Button 
               size="sm" 
@@ -158,22 +160,22 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
             >
               {(() => {
                 if (loading) {
-                  return isRTL ? 'جاري التحديث...' : 'Updating...';
+                  return t('events:registration.updating');
                 }
                 if (isPastEvent) {
                   return isRegistered 
-                    ? (isRTL ? 'مسجل/حضر' : 'Registered/Attended')
-                    : (isRTL ? 'غير مسجل/انتهت الفعالية' : 'Not Registered/Event Ended');
+                    ? t('events:registration.registered_attended')
+                    : t('events:registration.event_ended');
                 }
                 if (isRegistered) {
                   return (
                     <>
                       <UserMinus className="h-4 w-4 mr-2" />
-                      {isRTL ? 'إلغاء التسجيل' : 'Cancel Registration'}
+                      {t('events:actions.cancel_registration')}
                     </>
                   );
                 }
-                return isRTL ? 'التسجيل' : 'Register';
+                return t('events:registration.register');
               })()}
             </Button>
           </div>

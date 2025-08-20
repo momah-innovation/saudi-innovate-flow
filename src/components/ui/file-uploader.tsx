@@ -3,6 +3,7 @@ import { WizardFileUploader } from '@/components/ui/wizard-file-uploader';
 import { createUploadConfig } from '@/utils/uploadConfigs';
 import { useUploaderSettingsContext } from '@/contexts/UploaderSettingsContext';
 import type { UploadedFile } from '@/hooks/useFileUploader';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface FileUploaderProps {
   uploadType: string;
@@ -31,6 +32,7 @@ export const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(({
   className,
   disabled = false
 }, ref) => {
+  const { t } = useUnifiedTranslation();
   const { getUploadConfig } = useUploaderSettingsContext();
   
   // Get the base configuration from the upload settings
@@ -39,7 +41,7 @@ export const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(({
   if (!baseConfig) {
     return (
       <div className="text-sm text-muted-foreground p-4 border border-dashed rounded-lg">
-        Upload configuration '{uploadType}' not found. Please check your upload settings.
+        {t('ui:file_uploader.config_not_found', { uploadType })}
       </div>
     );
   }
@@ -50,7 +52,7 @@ export const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(({
   if (disabled) {
     return (
       <div className="text-sm text-muted-foreground p-4 border border-dashed rounded-lg opacity-50">
-        File upload is currently disabled.
+        {t('ui:file_uploader.disabled')}
       </div>
     );
   }

@@ -37,6 +37,7 @@ export const TrendingEventsWidget = ({
   className = "" 
 }: TrendingEventsWidgetProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [trendingEvents, setTrendingEvents] = useState<TrendingEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalViews, setTotalViews] = useState(0);
@@ -90,9 +91,9 @@ export const TrendingEventsWidget = ({
     const today = new Date();
     const diffInDays = Math.ceil((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     
-    if (diffInDays === 0) return isRTL ? 'اليوم' : 'Today';
-    if (diffInDays === 1) return isRTL ? 'غداً' : 'Tomorrow';
-    if (diffInDays <= 7) return isRTL ? `خلال ${diffInDays} أيام` : `In ${diffInDays} days`;
+    if (diffInDays === 0) return t('events:calendar.today');
+    if (diffInDays === 1) return t('events:trending.tomorrow');
+    if (diffInDays <= 7) return t('events:trending.in_days', { days: diffInDays });
     
     return isRTL ? 
       date.toLocaleDateString('ar-SA', { month: 'short', day: 'numeric' }) :
@@ -142,7 +143,7 @@ export const TrendingEventsWidget = ({
             <div className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center">
               <Flame className="w-3 h-3 text-white" />
             </div>
-            {isRTL ? 'الفعاليات الرائجة' : 'Trending Events'}
+            {t('events:trending.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -172,14 +173,14 @@ export const TrendingEventsWidget = ({
             <div className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center animate-pulse">
               <Flame className="w-3 h-3 text-white" />
             </div>
-            {isRTL ? 'الفعاليات الرائجة' : 'Trending Events'}
+            {t('events:trending.title')}
           </div>
           <Badge variant="secondary" className="bg-orange-100 text-orange-700 border-orange-300">
-            {isRTL ? 'مباشر' : 'Live'}
+            {t('events:trending.live')}
           </Badge>
         </CardTitle>
         <p className="text-xs text-muted-foreground">
-          {isRTL ? 'الأكثر شعبية هذا الأسبوع' : 'Most popular this week'}
+          {t('events:trending.most_popular')}
         </p>
       </CardHeader>
       
@@ -190,7 +191,7 @@ export const TrendingEventsWidget = ({
               <TrendingUp className="w-6 h-6 text-muted-foreground" />
             </div>
             <p className="text-muted-foreground text-sm">
-              {isRTL ? 'لا توجد فعاليات رائجة حالياً' : 'No trending events right now'}
+              {t('events:trending.no_trending')}
             </p>
           </div>
         ) : (
@@ -235,7 +236,7 @@ export const TrendingEventsWidget = ({
                           </div>
                           {event.format === 'virtual' ? (
                             <Badge variant="outline" className="px-1.5 py-0.5 text-xs border-green-300 text-green-700 bg-green-50">
-                              {isRTL ? 'عبر الإنترنت' : 'Online'}
+                              {t('events:trending.online')}
                             </Badge>
                           ) : (
                             <div className="flex items-center gap-1">
@@ -251,11 +252,11 @@ export const TrendingEventsWidget = ({
                         <div className="flex items-center justify-between text-xs">
                           <div className="flex items-center gap-1 text-muted-foreground">
                             <Users className="w-3 h-3" />
-                            <span>{event.registered_participants} {isRTL ? 'مشترك' : 'participants'}</span>
+                            <span>{event.registered_participants} {t('events:trending.participants')}</span>
                           </div>
                           {event.max_participants && (
                             <span className="text-muted-foreground">
-                              {Math.round(capacity)}% {isRTL ? 'ممتلئ' : 'full'}
+                              {Math.round(capacity)}% {t('events:trending.full')}
                             </span>
                           )}
                         </div>
@@ -283,7 +284,7 @@ export const TrendingEventsWidget = ({
               className="w-full mt-4 border-orange-200 text-orange-700 hover:bg-orange-50"
               onClick={() => onEventSelect?.('all')}
             >
-              {isRTL ? 'عرض جميع الفعاليات الرائجة' : 'View All Trending Events'}
+              {t('events:trending.view_all')}
               <TrendingUp className="w-4 h-4 ml-2" />
             </Button>
           </div>

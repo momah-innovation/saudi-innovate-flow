@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Globe, MapPin, TrendingUp } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 
 
@@ -19,6 +20,7 @@ interface GeographicData {
 
 export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [geoData, setGeoData] = useState<GeographicData[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalViews, setTotalViews] = useState(0);
@@ -83,7 +85,7 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="w-5 h-5" />
-            {isRTL ? 'التحليل الجغرافي' : 'Geographic Analytics'}
+            {t('opportunities:analytics.geographic_analytics')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -104,7 +106,7 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="w-5 h-5" />
-            {isRTL ? 'التوزيع الجغرافي' : 'Geographic Distribution'}
+            {t('opportunities:analytics.geographic_distribution')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -144,7 +146,7 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="w-5 h-5" />
-            {isRTL ? 'أهم البلدان' : 'Top Countries'}
+            {t('opportunities:analytics.top_countries')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -156,7 +158,7 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
                   <div>
                     <p className="font-medium text-sm">{country.country_name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {country.view_count} {isRTL ? 'مشاهدة' : 'views'}
+                      {country.view_count} {t('opportunities:analytics.views')}
                     </p>
                   </div>
                 </div>
@@ -166,7 +168,7 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
                     {index === 0 && (
                       <div className="flex items-center gap-1 text-xs text-green-600">
                         <TrendingUp className="w-3 h-3" />
-                        {isRTL ? 'الأعلى' : 'Top'}
+                        {t('opportunities:analytics.top')}
                       </div>
                     )}
                   </div>
@@ -178,7 +180,7 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
           {geoData.length === 0 && (
             <div className="text-center py-4 text-muted-foreground">
               <Globe className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">{isRTL ? 'لا توجد بيانات جغرافية متاحة' : 'No geographic data available'}</p>
+              <p className="text-sm">{t('opportunities:analytics.no_geographic_data')}</p>
             </div>
           )}
         </CardContent>

@@ -380,8 +380,8 @@ interface ChallengeData {
   const handleParticipate = async (challenge: ChallengeData) => {
     if (!user) {
       toast({
-        title: t('pleaseSignIn', isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in'),
-        description: t('signInToParticipate', isRTL ? 'يجب تسجيل الدخول للمشاركة في التحديات' : 'You need to sign in to participate in challenges'),
+        title: t('challenges:messages.please_sign_in'),
+        description: t('challenges:messages.sign_in_to_participate'),
         variant: "destructive",
       });
       return;
@@ -400,10 +400,10 @@ interface ChallengeData {
       if (error) throw error;
 
       toast({
-        title: t('successfullyRegistered', isRTL ? 'تم التسجيل بنجاح' : 'Successfully Registered'),
-        description: t('challengeRegistrationSuccess', isRTL ? 
+        title: t('challenges:messages.successfully_registered'),
+        description: isRTL ? 
           `تم تسجيلك في تحدي "${challenge.title_ar}"` : 
-          `You have been registered for "${challenge.title_ar}"`),
+          `You have been registered for "${challenge.title_en || challenge.title_ar}"`,
       });
       
       // Refresh challenges to update participant count
@@ -411,8 +411,8 @@ interface ChallengeData {
     } catch (error) {
       logger.error('Challenge participation failed', { component: 'ChallengesBrowse', action: 'handleParticipate', key: challenge.id }, error as Error);
       toast({
-        title: t('error', isRTL ? 'خطأ' : 'Error'),
-        description: t('registrationFailed', isRTL ? 'فشل في التسجيل' : 'Failed to register'),
+        title: t('common:status.error'),
+        description: t('challenges:messages.registration_failed'),
         variant: "destructive",
       });
     }
@@ -421,8 +421,8 @@ interface ChallengeData {
   const handleBookmark = async (challenge: ChallengeData) => {
     if (!user) {
       toast({
-        title: t('pleaseSignIn', isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in'),
-        description: t('signInToBookmark', isRTL ? 'يجب تسجيل الدخول لحفظ التحديات' : 'You need to sign in to bookmark challenges'),
+        title: t('challenges:messages.please_sign_in'),
+        description: t('challenges:messages.sign_in_to_bookmark'),
         variant: "destructive",
       });
       return;
@@ -448,10 +448,10 @@ interface ChallengeData {
         if (error) throw error;
 
         toast({
-          title: t('bookmarkRemoved', isRTL ? 'تم إلغاء الحفظ' : 'Bookmark Removed'),
-          description: t('challengeBookmarkRemoved', isRTL ? 
+          title: t('challenges:messages.bookmark_removed'),
+          description: isRTL ? 
             `تم إلغاء حفظ تحدي "${challenge.title_ar}"` : 
-            `Removed "${challenge.title_ar}" from bookmarks`),
+            `Removed "${challenge.title_en || challenge.title_ar}" from bookmarks`,
         });
       } else {
         // Add bookmark
@@ -465,17 +465,17 @@ interface ChallengeData {
         if (error) throw error;
 
         toast({
-          title: t('bookmarked', isRTL ? 'تم الحفظ' : 'Bookmarked'),
-          description: t('challengeBookmarked', isRTL ? 
+          title: t('challenges:messages.bookmarked'),
+          description: isRTL ? 
             `تم حفظ تحدي "${challenge.title_ar}" في قائمة المفضلة` : 
-            `Challenge "${challenge.title_ar}" saved to bookmarks`),
+            `Challenge "${challenge.title_en || challenge.title_ar}" saved to bookmarks`,
         });
       }
     } catch (error) {
       logger.error('Challenge bookmark failed', { component: 'ChallengesBrowse', action: 'handleBookmark', key: challenge.id }, error as Error);
       toast({
-        title: t('error', isRTL ? 'خطأ' : 'Error'),
-        description: t('bookmarkFailed', isRTL ? 'فشل في حفظ التحدي' : 'Failed to bookmark challenge'),
+        title: t('common:status.error'),
+        description: t('challenges:messages.bookmark_failed'),
         variant: "destructive",
       });
     }
@@ -562,11 +562,11 @@ interface ChallengeData {
       }
       mainContent={
         <PageLayout
-          title={isRTL ? 'التحديات المتاحة' : 'Available Challenges'}
-          description={isRTL ? 'تصفح واختر التحديات التي تناسب مهاراتك واهتماماتك' : 'Browse and select challenges that match your skills and interests'}
+          title={t('challenges:browse.available_challenges')}
+          description={t('challenges:browse.description')}
           itemCount={tabFilteredChallenges.length}
           primaryAction={user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager') || hasRole('moderator')) ? {
-            label: isRTL ? 'تحدي جديد' : 'New Challenge',
+            label: t('challenges:actions.new_challenge'),
             onClick: () => setCreateChallengeOpen(true),
             icon: <Plus className="w-4 h-4" />
           } : undefined}
@@ -583,7 +583,7 @@ interface ChallengeData {
                       className={`h-8 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md`}
                     >
                       <FileText className="w-4 h-4 mr-2" />
-                      {isRTL ? 'القوالب' : 'Templates'}
+                      {t('challenges:templates.title')}
                     </Button>
                     <Button
                       variant="default"
@@ -592,7 +592,7 @@ interface ChallengeData {
                       className={`h-8 ${challengesPageConfig.ui.gradients.info} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md hover:scale-105 transition-transform`}
                     >
                       <BarChart3 className="w-4 h-4 mr-2" />
-                      {isRTL ? 'الإحصائيات' : 'Analytics'}
+                      {t('challenges:admin.analytics')}
                     </Button>
                   </div>
                   
@@ -628,7 +628,7 @@ interface ChallengeData {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="all" className="animate-fade-in">
-                  {isRTL ? 'جميع التحديات' : 'All Challenges'}
+                  {t('challenges:filters.all')}
                   {activeTab === 'all' && (
                     <span className={`ml-2 ${challengesPageConfig.ui.glassMorphism.badge} px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm`}>
                       {filteredChallenges.length}
@@ -636,7 +636,7 @@ interface ChallengeData {
                   )}
                 </TabsTrigger>
                 <TabsTrigger value="active" className="animate-fade-in">
-                  {isRTL ? 'النشطة' : 'Active'}
+                  {t('challenges:status.active')}
                   {activeTab === 'active' && (
                     <span className={`ml-2 ${challengesPageConfig.ui.gradients.success} px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm`}>
                       {filteredChallenges.filter(c => c.status === 'active').length}
@@ -644,7 +644,7 @@ interface ChallengeData {
                   )}
                 </TabsTrigger>
                 <TabsTrigger value="upcoming" className="animate-fade-in">
-                  {isRTL ? 'القادمة' : 'Upcoming'}
+                  {t('challenges:status.upcoming')}
                   {activeTab === 'upcoming' && (
                     <span className={`ml-2 ${challengesPageConfig.ui.gradients.info} px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm`}>
                       {filteredChallenges.filter(c => c.status === 'planning' || c.status === 'upcoming').length}
@@ -652,7 +652,7 @@ interface ChallengeData {
                   )}
                 </TabsTrigger>
                 <TabsTrigger value="trending" className="animate-fade-in">
-                  {isRTL ? 'الأكثر شعبية' : 'Trending'}
+                  {t('challenges:filters.trending')}
                   {activeTab === 'trending' && (
                     <span className={`ml-2 ${challengesPageConfig.ui.gradients.warning} px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm`}>
                       {filteredChallenges.filter(c => c.trending || c.participants > 200).length}
@@ -666,10 +666,10 @@ interface ChallengeData {
                   <ChallengeSkeleton viewMode={viewMode as 'cards' | 'list' | 'grid'} count={6} className="animate-fade-in" />
                 ) : tabFilteredChallenges.length === 0 ? (
                   <ChallengeEmptyState
-                    title={isRTL ? 'لا توجد تحديات' : 'No challenges found'}
-                    description={isRTL ? 'جرب تعديل الفلاتر أو البحث' : 'Try adjusting your filters or search terms'}
+                    title={t('challenges:messages.no_challenges_found')}
+                    description={t('challenges:messages.try_adjusting_filters')}
                     icon={Target}
-                    actionLabel={isRTL ? 'مسح الفلاتر' : 'Clear Filters'}
+                    actionLabel={t('challenges:actions.clear_filters')}
                     onAction={handleClearFilters}
                     className="animate-fade-in"
                   />
@@ -758,8 +758,8 @@ interface ChallengeData {
             onAssignmentComplete={() => {
               refetch();
               toast({
-                title: isRTL ? 'تم التعيين بنجاح' : 'Assignment Successful',
-                description: isRTL ? 'تم تعيين الخبراء للتحدي بنجاح' : 'Experts have been successfully assigned to the challenge',
+                title: t('challenges:messages.assignment_successful'),
+                description: t('challenges:messages.experts_assigned_successfully'),
               });
             }}
           />
@@ -801,7 +801,7 @@ interface ChallengeData {
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <BarChart3 className="w-5 h-5" />
-                  {isRTL ? 'لوحة إحصائيات التحديات' : 'Challenge Analytics Dashboard'}
+                  {t('challenges:analytics.dashboard_title')}
                 </DialogTitle>
               </DialogHeader>
               <ChallengeAnalyticsDashboard />

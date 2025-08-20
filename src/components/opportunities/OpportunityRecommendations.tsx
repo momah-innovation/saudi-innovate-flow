@@ -3,11 +3,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Lightbulb, Clock, Target, ArrowRight } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 import { OpportunityRecommendationsProps } from '@/types/opportunities';
 
 export const OpportunityRecommendations = ({ opportunities }: OpportunityRecommendationsProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   if (!opportunities?.length) return null;
 
@@ -16,9 +18,9 @@ export const OpportunityRecommendations = ({ opportunities }: OpportunityRecomme
     const now = new Date();
     const diffDays = Math.ceil((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     
-    if (diffDays <= 0) return isRTL ? 'منتهي' : 'Expired';
-    if (diffDays === 1) return isRTL ? 'غداً' : 'Tomorrow';
-    if (diffDays <= 7) return `${diffDays} ${isRTL ? 'أيام' : 'days'}`;
+    if (diffDays <= 0) return t('opportunities:recommendations.expired');
+    if (diffDays === 1) return t('opportunities:recommendations.tomorrow');
+    if (diffDays <= 7) return t('opportunities:recommendations.days_remaining', { count: diffDays });
     return date.toLocaleDateString();
   };
 
@@ -27,7 +29,7 @@ export const OpportunityRecommendations = ({ opportunities }: OpportunityRecomme
       <CardHeader>
         <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
           <Lightbulb className="w-5 h-5 text-yellow-500" />
-          {isRTL ? 'موصى لك' : 'Recommended for You'}
+          {t('opportunities:recommendations.title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -39,7 +41,7 @@ export const OpportunityRecommendations = ({ opportunities }: OpportunityRecomme
                   {opportunity.title_ar}
                 </h4>
                 <Badge variant="secondary" className="ml-2">
-                  {isRTL ? 'جديد' : 'New'}
+                  {t('opportunities:recommendations.new_badge')}
                 </Badge>
               </div>
               
@@ -57,7 +59,7 @@ export const OpportunityRecommendations = ({ opportunities }: OpportunityRecomme
         ))}
         <Button variant="outline" size="sm" className="w-full">
           <ArrowRight className="w-4 h-4 mr-2" />
-          {isRTL ? 'عرض التوصيات' : 'View All Recommendations'}
+          {t('opportunities:recommendations.view_all')}
         </Button>
       </CardContent>
     </Card>

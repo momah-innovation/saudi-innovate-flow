@@ -25,9 +25,9 @@ import { Badge } from '@/components/ui/badge';
 import { X, Users, Target, Calendar } from 'lucide-react';
 
 const teamFormSchema = z.object({
-  name: z.string().min(2, 'Team name must be at least 2 characters'),
+  name: z.string().min(2),
   description: z.string().optional(),
-  objectives: z.array(z.string()).min(1, 'At least one objective is required'),
+  objectives: z.array(z.string()).min(1),
   department_id: z.string().optional(),
   max_members: z.number().min(2).max(50).default(10),
   privacy_level: z.enum(['private', 'department', 'organization']).default('department'),

@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
 import { useOrganizationalHierarchy } from '@/hooks/useOrganizationalHierarchy';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,6 +23,7 @@ interface OrganizationalProfileFormProps {
 
 export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: OrganizationalProfileFormProps) {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const {
     sectors,
@@ -191,8 +193,8 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
       if (error) throw error;
 
       toast({
-        title: isRTL ? 'تم التحديث' : 'Updated',
-        description: isRTL ? 'تم تحديث البيانات التنظيمية بنجاح' : 'Organizational data updated successfully'
+        title: t('profile:messages.updated'),
+        description: t('profile:messages.organizational_data_updated')
       });
 
       await onSave();
@@ -215,29 +217,29 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Briefcase className="h-5 w-5" />
-            {isRTL ? 'المعلومات الأساسية' : 'Basic Information'}
+            {t('profile:organizational.basic_info_title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="name">{isRTL ? 'الاسم' : 'Name'}</Label>
+              <Label htmlFor="name">{t('profile:organizational.name')}</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                placeholder={isRTL ? 'أدخل الاسم' : 'Enter name'}
+                placeholder={t('profile:organizational.name_placeholder')}
                 disabled={!isEditing}
               />
             </div>
             
             <div>
-              <Label htmlFor="phone">{isRTL ? 'رقم الهاتف' : 'Phone'}</Label>
+              <Label htmlFor="phone">{t('profile:organizational.phone')}</Label>
               <Input
                 id="phone"
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
-                placeholder={isRTL ? 'أدخل رقم الهاتف' : 'Enter phone number'}
+                placeholder={t('profile:organizational.phone_placeholder')}
                 disabled={!isEditing}
               />
             </div>
@@ -245,35 +247,35 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="position">{isRTL ? 'المنصب' : 'Position'}</Label>
+              <Label htmlFor="position">{t('profile:organizational.position')}</Label>
               <Input
                 id="position"
                 value={formData.position}
                 onChange={(e) => handleInputChange('position', e.target.value)}
-                placeholder={isRTL ? 'أدخل المنصب' : 'Enter position'}
+                placeholder={t('profile:organizational.position_placeholder')}
                 disabled={!isEditing}
               />
             </div>
             
             <div>
-              <Label htmlFor="organization">{isRTL ? 'المؤسسة' : 'Organization'}</Label>
+              <Label htmlFor="organization">{t('profile:organizational.organization')}</Label>
               <Input
                 id="organization"
                 value={formData.organization}
                 onChange={(e) => handleInputChange('organization', e.target.value)}
-                placeholder={isRTL ? 'أدخل المؤسسة' : 'Enter organization'}
+                placeholder={t('profile:organizational.organization_placeholder')}
                 disabled={!isEditing}
               />
             </div>
           </div>
 
           <div>
-            <Label htmlFor="bio">{isRTL ? 'نبذة مختصرة' : 'Bio'}</Label>
+            <Label htmlFor="bio">{t('profile:organizational.bio')}</Label>
             <Textarea
               id="bio"
               value={formData.bio}
               onChange={(e) => handleInputChange('bio', e.target.value)}
-              placeholder={isRTL ? 'أدخل نبذة مختصرة' : 'Enter bio'}
+              placeholder={t('profile:organizational.bio_placeholder')}
               rows={3}
               disabled={!isEditing}
             />
@@ -286,13 +288,10 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building className="h-5 w-5" />
-            {isRTL ? 'الهيكل التنظيمي' : 'Organizational Structure'}
+            {t('profile:organizational.structure_title')}
           </CardTitle>
           <CardDescription>
-            {isRTL 
-              ? 'اختر موقعك في الهيكل التنظيمي الجديد' 
-              : 'Select your position in the new organizational structure'
-            }
+            {t('profile:organizational.structure_description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -301,11 +300,11 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
             <div>
               <Label htmlFor="sector_id" className="flex items-center gap-2">
                 <Globe className="h-4 w-4" />
-                {isRTL ? 'القطاع' : 'Sector'}
+                {t('profile:organizational.sector')}
               </Label>
               <Select value={formData.sector_id} onValueChange={(value) => handleInputChange('sector_id', value)} disabled={!isEditing}>
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر القطاع' : 'Select sector'} />
+                  <SelectValue placeholder={t('profile:organizational.select_sector')} />
                 </SelectTrigger>
                 <SelectContent>
                   {sectors.map((sector) => (
@@ -321,7 +320,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
             <div>
               <Label htmlFor="entity_id" className="flex items-center gap-2">
                 <Building className="h-4 w-4" />
-                {isRTL ? 'الجهة' : 'Entity'}
+                {t('profile:organizational.entity')}
               </Label>
               <Select 
                 value={formData.entity_id} 
@@ -329,7 +328,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 disabled={!formData.sector_id || !isEditing}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر الجهة' : 'Select entity'} />
+                  <SelectValue placeholder={t('profile:organizational.select_entity')} />
                 </SelectTrigger>
                 <SelectContent>
                   {getFilteredEntities().map((entity) => (
@@ -347,7 +346,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
             <div>
               <Label htmlFor="deputy_id" className="flex items-center gap-2">
                 <Briefcase className="h-4 w-4" />
-                {isRTL ? 'الوكالة/النائب' : 'Deputy'}
+                {t('profile:organizational.deputy')}
               </Label>
               <Select 
                 value={formData.deputy_id} 
@@ -355,7 +354,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 disabled={!formData.entity_id || !isEditing}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر الوكالة' : 'Select deputy'} />
+                  <SelectValue placeholder={t('profile:organizational.select_deputy')} />
                 </SelectTrigger>
                 <SelectContent>
                   {getFilteredDeputies().map((deputy) => (
@@ -371,7 +370,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
             <div>
               <Label htmlFor="department_id" className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                {isRTL ? 'الإدارة' : 'Department'}
+                {t('profile:organizational.department')}
               </Label>
               <Select 
                 value={formData.department_id} 
@@ -379,7 +378,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 disabled={!formData.deputy_id || !isEditing}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر الإدارة' : 'Select department'} />
+                  <SelectValue placeholder={t('profile:organizational.select_department')} />
                 </SelectTrigger>
                 <SelectContent>
                   {getFilteredDepartments().map((dept) => (
@@ -397,7 +396,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
             <div>
               <Label htmlFor="domain_id" className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                {isRTL ? 'النطاق' : 'Domain'}
+                {t('profile:organizational.domain')}
               </Label>
               <Select 
                 value={formData.domain_id} 
@@ -405,7 +404,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 disabled={!formData.department_id || !isEditing}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر النطاق' : 'Select domain'} />
+                  <SelectValue placeholder={t('profile:organizational.select_domain')} />
                 </SelectTrigger>
                 <SelectContent>
                   {getFilteredDomains().map((domain) => (
@@ -421,7 +420,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
             <div>
               <Label htmlFor="sub_domain_id" className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                {isRTL ? 'النطاق الفرعي' : 'Sub Domain'}
+                {t('profile:organizational.sub_domain')}
               </Label>
               <Select 
                 value={formData.sub_domain_id} 
@@ -429,7 +428,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 disabled={!formData.domain_id || !isEditing}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر النطاق الفرعي' : 'Select sub domain'} />
+                  <SelectValue placeholder={t('profile:organizational.select_sub_domain')} />
                 </SelectTrigger>
                 <SelectContent>
                   {getFilteredSubDomains().map((subDomain) => (
@@ -445,7 +444,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
             <div>
               <Label htmlFor="service_id" className="flex items-center gap-2">
                 <Settings className="h-4 w-4" />
-                {isRTL ? 'الخدمة' : 'Service'}
+                {t('profile:organizational.service')}
               </Label>
               <Select 
                 value={formData.service_id} 
@@ -453,7 +452,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
                 disabled={!formData.sub_domain_id || !isEditing}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر الخدمة' : 'Select service'} />
+                  <SelectValue placeholder={t('profile:organizational.select_service')} />
                 </SelectTrigger>
                 <SelectContent>
                   {getFilteredServices().map((service) => (
@@ -471,34 +470,31 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
       {/* Legacy Fields */}
       <Card>
         <CardHeader>
-          <CardTitle>{isRTL ? 'البيانات القديمة' : 'Legacy Data'}</CardTitle>
+          <CardTitle>{t('profile:organizational.legacy_data_title')}</CardTitle>
           <CardDescription>
-            {isRTL 
-              ? 'البيانات النصية القديمة (سيتم استبدالها بالهيكل الجديد)' 
-              : 'Legacy text-based data (will be replaced by new structure)'
-            }
+            {t('profile:organizational.legacy_data_description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="department">{isRTL ? 'الإدارة (نص)' : 'Department (Text)'}</Label>
+              <Label htmlFor="department">{t('profile:organizational.department_text')}</Label>
               <Input
                 id="department"
                 value={formData.department}
                 onChange={(e) => handleInputChange('department', e.target.value)}
-                placeholder={isRTL ? 'الإدارة الحالية' : 'Current department'}
+                placeholder={t('profile:organizational.current_department')}
                 disabled={!isEditing}
               />
             </div>
             
             <div>
-              <Label htmlFor="sector">{isRTL ? 'القطاع (نص)' : 'Sector (Text)'}</Label>
+              <Label htmlFor="sector">{t('profile:organizational.sector_text')}</Label>
               <Input
                 id="sector"
                 value={formData.sector}
                 onChange={(e) => handleInputChange('sector', e.target.value)}
-                placeholder={isRTL ? 'القطاع الحالي' : 'Current sector'}
+                placeholder={t('profile:organizational.current_sector')}
                 disabled={!isEditing}
               />
             </div>
@@ -509,7 +505,7 @@ export function OrganizationalProfileForm({ userProfile, isEditing, onSave }: Or
       {/* Submit Button */}
       <div className="flex justify-end">
         <Button type="submit" disabled={loading || hierarchyLoading} className="min-w-[120px]">
-          {loading ? (isRTL ? 'جاري الحفظ...' : 'Saving...') : (isRTL ? 'حفظ التغييرات' : 'Save Changes')}
+          {loading ? t('profile:organizational.saving') : t('profile:organizational.save_changes')}
         </Button>
       </div>
     </form>

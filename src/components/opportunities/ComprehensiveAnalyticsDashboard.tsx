@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
-import { 
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import {
   BarChart3, 
   TrendingUp, 
   Users, 
@@ -60,6 +61,7 @@ interface AnalyticsSummary {
 
 export const ComprehensiveAnalyticsDashboard = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('30d');
@@ -237,7 +239,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
     ]);
     
     const trafficSources = Array.from(allSources).map(source => ({
-      source: source === 'direct' ? (isRTL ? 'مباشر' : 'Direct') : source,
+      source: source === 'direct' ? t('opportunities:dashboard.charts.direct') : source,
       count: (trafficSourcesFromData[source] || 0) + (sessionSources[source] || 0) + (platformShares[source] || 0)
     })).filter(item => item.count > 0)
       .map(source => ({
@@ -312,9 +314,9 @@ export const ComprehensiveAnalyticsDashboard = () => {
       {/* Time Range Filter */}
       <div className="flex gap-2">
         {[
-          { value: '7d', label: isRTL ? '7 أيام' : '7 Days' },
-          { value: '30d', label: isRTL ? '30 يوم' : '30 Days' },
-          { value: '90d', label: isRTL ? '90 يوم' : '90 Days' }
+          { value: '7d', label: t('opportunities:dashboard.time_ranges.7d') },
+          { value: '30d', label: t('opportunities:dashboard.time_ranges.30d') },
+          { value: '90d', label: t('opportunities:dashboard.time_ranges.90d') }
         ].map(range => (
           <Button
             key={range.value}
@@ -335,7 +337,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <Eye className="w-5 h-5 text-blue-500" />
               <div>
                 <p className="text-2xl font-bold">{analytics.totalViews.toLocaleString()}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي المشاهدات' : 'Total Views'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:dashboard.stats.total_views')}</p>
                 {/* Real trend would be calculated from historical data */}
               </div>
             </div>
@@ -348,7 +350,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <Users className="w-5 h-5 text-green-500" />
               <div>
                 <p className="text-2xl font-bold">{analytics.totalApplications}</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي الطلبات' : 'Total Applications'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:dashboard.stats.total_applications')}</p>
                 {/* Real trend would be calculated from historical data */}
               </div>
             </div>
@@ -361,7 +363,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <Target className="w-5 h-5 text-purple-500" />
               <div>
                 <p className="text-2xl font-bold">{analytics.avgConversionRate.toFixed(1)}%</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التحويل' : 'Conversion Rate'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:dashboard.stats.conversion_rate')}</p>
                 {/* Real trend would be calculated from historical data */}
               </div>
             </div>
@@ -374,7 +376,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <Activity className="w-5 h-5 text-orange-500" />
               <div>
                 <p className="text-2xl font-bold">{analytics.avgEngagementRate.toFixed(1)}%</p>
-                <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التفاعل' : 'Engagement Rate'}</p>
+                <p className="text-sm text-muted-foreground">{t('opportunities:dashboard.stats.engagement_rate')}</p>
                 {/* Real trend would be calculated from historical data */}
               </div>
             </div>
@@ -384,10 +386,10 @@ export const ComprehensiveAnalyticsDashboard = () => {
 
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">{isRTL ? 'نظرة عامة' : 'Overview'}</TabsTrigger>
-          <TabsTrigger value="performance">{isRTL ? 'الأداء' : 'Performance'}</TabsTrigger>
-          <TabsTrigger value="engagement">{isRTL ? 'التفاعل' : 'Engagement'}</TabsTrigger>
-          <TabsTrigger value="geographic">{isRTL ? 'جغرافي' : 'Geographic'}</TabsTrigger>
+          <TabsTrigger value="overview">{t('opportunities:dashboard.tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="performance">{t('opportunities:dashboard.tabs.performance')}</TabsTrigger>
+          <TabsTrigger value="engagement">{t('opportunities:dashboard.tabs.engagement')}</TabsTrigger>
+          <TabsTrigger value="geographic">{t('opportunities:dashboard.tabs.geographic')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -396,11 +398,11 @@ export const ComprehensiveAnalyticsDashboard = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5" />
-                {isRTL ? 'اتجاه التفاعل خلال الوقت' : 'Engagement Trend Over Time'}
+                {t('opportunities:dashboard.charts.engagement_trend')}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ChartPlaceholder title={isRTL ? "اتجاهات التفاعل" : "Engagement Trends"} height={300} />
+              <ChartPlaceholder title={t('opportunities:dashboard.charts.engagement_trends')} height={300} />
             </CardContent>
           </Card>
 
@@ -409,7 +411,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="w-5 h-5" />
-                {isRTL ? 'الفرص الأعلى أداءً' : 'Top Performing Opportunities'}
+                {t('opportunities:dashboard.charts.top_performing')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -421,12 +423,12 @@ export const ComprehensiveAnalyticsDashboard = () => {
                       <div>
                         <p className="font-medium text-sm">{opp.title}</p>
                         <p className="text-xs text-muted-foreground">
-                          {opp.views} {isRTL ? 'مشاهدة' : 'views'} • {opp.applications} {isRTL ? 'طلب' : 'applications'}
+                          {opp.views} {t('opportunities:dashboard.charts.views')} • {opp.applications} {t('opportunities:dashboard.charts.applications')}
                         </p>
                       </div>
                     </div>
                     <Badge variant="secondary">
-                      {opp.conversionRate.toFixed(1)}% {isRTL ? 'تحويل' : 'conv.'}
+                      {opp.conversionRate.toFixed(1)}% {t('opportunities:dashboard.charts.conv')}
                     </Badge>
                   </div>
                 ))}
@@ -444,7 +446,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
                   <Heart className="w-5 h-5 text-red-500" />
                   <div>
                     <p className="text-2xl font-bold">{analytics.totalLikes}</p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'إعجابات' : 'Total Likes'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:dashboard.charts.total_likes')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -456,7 +458,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
                   <Share2 className="w-5 h-5 text-blue-500" />
                   <div>
                     <p className="text-2xl font-bold">{analytics.totalShares}</p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'مشاركات' : 'Total Shares'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:dashboard.charts.total_shares')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -468,7 +470,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
                   <BookOpen className="w-5 h-5 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">{analytics.totalBookmarks}</p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'حفظ' : 'Bookmarks'}</p>
+                    <p className="text-sm text-muted-foreground">{t('opportunities:dashboard.charts.bookmarks')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -478,10 +480,10 @@ export const ComprehensiveAnalyticsDashboard = () => {
           {/* Traffic Sources */}
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'مصادر الزيارات' : 'Traffic Sources'}</CardTitle>
+              <CardTitle>{t('opportunities:dashboard.charts.traffic_sources')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <ChartPlaceholder title={isRTL ? "مصادر الزيارات" : "Traffic Sources"} height={300} />
+              <ChartPlaceholder title={t('opportunities:dashboard.charts.traffic_sources')} height={300} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -490,11 +492,11 @@ export const ComprehensiveAnalyticsDashboard = () => {
           {/* Engagement metrics would go here */}
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'تفاصيل التفاعل' : 'Engagement Details'}</CardTitle>
+              <CardTitle>{t('opportunities:dashboard.charts.engagement_details')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                {isRTL ? 'تفاصيل التفاعل قيد التطوير...' : 'Engagement details coming soon...'}
+                {t('opportunities:dashboard.charts.coming_soon')}
               </p>
             </CardContent>
           </Card>
@@ -506,7 +508,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Globe className="w-5 h-5" />
-                {isRTL ? 'التوزيع الجغرافي' : 'Geographic Distribution'}
+                {t('opportunities:dashboard.charts.geographic_distribution')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -516,10 +518,10 @@ export const ComprehensiveAnalyticsDashboard = () => {
                     <span className="font-medium">{country.country}</span>
                     <div className="flex items-center gap-4">
                       <span className="text-sm text-muted-foreground">
-                        {country.views} {isRTL ? 'مشاهدة' : 'views'}
+                        {country.views} {t('opportunities:dashboard.charts.views')}
                       </span>
                       <span className="text-sm text-muted-foreground">
-                        {country.applications} {isRTL ? 'طلب' : 'applications'}
+                        {country.applications} {t('opportunities:dashboard.charts.applications')}
                       </span>
                     </div>
                   </div>

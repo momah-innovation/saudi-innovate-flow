@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTimerManager } from '@/utils/timerManager';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Users, Eye } from 'lucide-react';
@@ -23,6 +24,7 @@ interface PresenceUser {
 
 export const OpportunityLivePresence = ({ opportunityId, className }: LivePresenceProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [presenceUsers, setPresenceUsers] = useState<PresenceUser[]>([]);
   const [sessionId] = useState(() => 
     sessionStorage.getItem('opportunity-session') || crypto.randomUUID()
@@ -172,7 +174,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
       <div className="flex items-center gap-1">
         <Eye className="w-4 h-4 text-green-500" />
         <Badge variant="secondary" className="text-xs">
-          {activeUsers.length} {isRTL ? 'يشاهد الآن' : 'viewing now'}
+          {activeUsers.length} {t('opportunities:live_presence.viewing_now')}
         </Badge>
       </div>
       

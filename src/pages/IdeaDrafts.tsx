@@ -139,10 +139,10 @@ export default function IdeaDrafts() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              {isRTL ? 'مسودات الأفكار' : 'Idea Drafts'}
+              {t('ideas:page.title')}
             </h1>
             <p className="text-muted-foreground mt-2">
-              {isRTL ? 'أكمل أفكارك المحفوظة كمسودات' : 'Continue working on your saved idea drafts'}
+              {t('ideas:page.description')}
             </p>
           </div>
           <Button 
@@ -150,7 +150,7 @@ export default function IdeaDrafts() {
             className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
           >
             <Plus className="w-4 h-4 mr-2" />
-            {isRTL ? 'فكرة جديدة' : 'New Idea'}
+            {t('ideas:page.new_idea')}
           </Button>
         </div>
 
@@ -159,20 +159,17 @@ export default function IdeaDrafts() {
             <CardContent>
               <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">
-                {isRTL ? 'لا توجد مسودات' : 'No Drafts Found'}
+                {t('ideas:page.no_drafts')}
               </h3>
               <p className="text-muted-foreground mb-6">
-                {isRTL ? 
-                  'لم تقم بحفظ أي مسودات بعد. ابدأ بإنشاء فكرة جديدة!' :
-                  'You haven\'t saved any drafts yet. Start by creating a new idea!'
-                }
+                {t('ideas:page.no_drafts_message')}
               </p>
               <Button 
                 onClick={() => navigate('/submit-idea')}
                 className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                {isRTL ? 'إنشاء فكرة جديدة' : 'Create New Idea'}
+                {t('ideas:page.create_new')}
               </Button>
             </CardContent>
           </Card>
@@ -187,12 +184,12 @@ export default function IdeaDrafts() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
-                          {draft.title_ar || (isRTL ? 'فكرة بدون عنوان' : 'Untitled Idea')}
+                          {draft.title_ar || t('ideas:page.untitled')}
                         </CardTitle>
                         <div className="flex items-center gap-2 mt-2">
                           <Badge variant="secondary" className="text-xs">
                             <FileText className="w-3 h-3 mr-1" />
-                            {isRTL ? 'مسودة' : 'Draft'}
+                            {t('ideas:page.draft_status')}
                           </Badge>
                           {challenge && (
                             <Badge variant="outline" className="text-xs">
@@ -206,12 +203,12 @@ export default function IdeaDrafts() {
                   
                   <CardContent className="space-y-4">
                     <p className="text-sm text-muted-foreground line-clamp-3">
-                      {draft.description_ar || (isRTL ? 'لا يوجد وصف' : 'No description')}
+                      {draft.description_ar || t('ideas:page.no_description')}
                     </p>
                     
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <Clock className="w-3 h-3" />
-                      <span>{isRTL ? 'آخر تحديث:' : 'Last updated:'} {formatDate(draft.updated_at)}</span>
+                      <span>{t('ideas:page.last_updated')} {formatDate(draft.updated_at)}</span>
                     </div>
                     
                     <div className="flex items-center gap-2 pt-2">
@@ -221,7 +218,7 @@ export default function IdeaDrafts() {
                         className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
                       >
                         <Edit className="w-3 h-3 mr-1" />
-                        {isRTL ? 'متابعة التحرير' : 'Continue Editing'}
+                        {t('ideas:page.continue_editing')}
                       </Button>
                       
                       <AlertDialog>
@@ -237,24 +234,21 @@ export default function IdeaDrafts() {
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>
-                              {isRTL ? 'حذف المسودة' : 'Delete Draft'}
+                              {t('ideas:page.delete_draft')}
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                              {isRTL ? 
-                                'هل أنت متأكد من حذف هذه المسودة؟ لا يمكن التراجع عن هذا الإجراء.' :
-                                'Are you sure you want to delete this draft? This action cannot be undone.'
-                              }
+                              {t('ideas:page.delete_draft_message')}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>
-                              {isRTL ? 'إلغاء' : 'Cancel'}
+                              {t('ideas:page.cancel')}
                             </AlertDialogCancel>
                             <AlertDialogAction
                               onClick={() => deleteDraft(draft.id)}
                               className="bg-destructive hover:bg-destructive/90"
                             >
-                              {isRTL ? 'حذف' : 'Delete'}
+                              {t('ideas:page.delete')}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>

@@ -206,11 +206,11 @@ export function MeetingScheduling({ teamId, canSchedule }: MeetingSchedulingProp
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Edit Meeting</DropdownMenuItem>
-                      <DropdownMenuItem>Copy Link</DropdownMenuItem>
-                      <DropdownMenuItem>Send Reminder</DropdownMenuItem>
+                      <DropdownMenuItem>{t('team:actions.edit_meeting')}</DropdownMenuItem>
+                      <DropdownMenuItem>{t('team:actions.copy_link')}</DropdownMenuItem>
+                      <DropdownMenuItem>{t('team:actions.send_reminder')}</DropdownMenuItem>
                       <DropdownMenuItem className="text-destructive">
-                        Cancel Meeting
+                        {t('team:actions.cancel_meeting')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

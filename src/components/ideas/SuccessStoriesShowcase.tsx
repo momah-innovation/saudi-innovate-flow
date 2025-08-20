@@ -47,6 +47,7 @@ interface SuccessStoriesShowcaseProps {
 
 export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: SuccessStoriesShowcaseProps) {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [stories, setStories] = useState<SuccessStory[]>([]);
   const [selectedStory, setSelectedStory] = useState<SuccessStory | null>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
@@ -107,25 +108,25 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
         {metric.cost_savings && (
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600">{metric.cost_savings}</div>
-            <div className="text-sm text-muted-foreground">{isRTL ? 'توفير في التكاليف' : 'Cost Savings'}</div>
+            <div className="text-sm text-muted-foreground">{t('ideas:success_stories.metrics.cost_savings')}</div>
           </div>
         )}
         {metric.revenue_increase && (
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600">{metric.revenue_increase}</div>
-            <div className="text-sm text-muted-foreground">{isRTL ? 'زيادة الإيرادات' : 'Revenue Increase'}</div>
+            <div className="text-sm text-muted-foreground">{t('ideas:success_stories.metrics.revenue_increase')}</div>
           </div>
         )}
         {metric.efficiency_gain && (
           <div className="text-center">
             <div className="text-2xl font-bold text-purple-600">{metric.efficiency_gain}</div>
-            <div className="text-sm text-muted-foreground">{isRTL ? 'تحسن الكفاءة' : 'Efficiency Gain'}</div>
+            <div className="text-sm text-muted-foreground">{t('ideas:success_stories.metrics.efficiency_gain')}</div>
           </div>
         )}
         {metric.time_saved && (
           <div className="text-center">
             <div className="text-2xl font-bold text-orange-600">{metric.time_saved}</div>
-            <div className="text-sm text-muted-foreground">{isRTL ? 'توفير الوقت' : 'Time Saved'}</div>
+            <div className="text-sm text-muted-foreground">{t('ideas:success_stories.metrics.time_saved')}</div>
           </div>
         )}
       </div>
@@ -185,13 +186,10 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
         <div className="text-center space-y-2">
           <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
             <Award className="w-6 h-6" />
-            {isRTL ? 'قصص النجاح الابتكارية' : 'Innovation Success Stories'}
+            {t('ideas:success_stories.title')}
           </h2>
           <p className="text-muted-foreground">
-            {isRTL ? 
-              'اكتشف كيف تحولت الأفكار الابتكارية إلى حلول ناجحة وأثرت بشكل إيجابي' :
-              'Discover how innovative ideas transformed into successful solutions with positive impact'
-            }
+            {t('ideas:success_stories.description')}
           </p>
         </div>
       )}
@@ -210,7 +208,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                 <div className="absolute top-4 right-4">
                   <Badge className="bg-green-500 text-white border-0">
                     <CheckCircle className="w-3 h-3 mr-1" />
-                    {isRTL ? 'منفذة' : 'Implemented'}
+                    {t('ideas:success_stories.implemented_badge')}
                   </Badge>
                 </div>
                 <div className="absolute bottom-4 left-4 right-4">
@@ -236,19 +234,19 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                     {story.roi_metrics.cost_savings && (
                       <div className="text-center">
                         <div className="font-semibold text-green-600">{story.roi_metrics.cost_savings}</div>
-                        <div className="text-muted-foreground">{isRTL ? 'توفير' : 'Saved'}</div>
+                        <div className="text-muted-foreground">{t('ideas:success_stories.metrics.saved')}</div>
                       </div>
                     )}
                     {story.roi_metrics.efficiency_gain && (
                       <div className="text-center">
                         <div className="font-semibold text-blue-600">{story.roi_metrics.efficiency_gain}</div>
-                        <div className="text-muted-foreground">{isRTL ? 'كفاءة' : 'Efficiency'}</div>
+                        <div className="text-muted-foreground">{t('ideas:success_stories.metrics.efficiency')}</div>
                       </div>
                     )}
                     {story.impact_areas && story.impact_areas.length > 0 && (
                       <div className="text-center">
                         <div className="font-semibold text-purple-600">{story.impact_areas.length}</div>
-                        <div className="text-muted-foreground">{isRTL ? 'مجالات' : 'Areas'}</div>
+                        <div className="text-muted-foreground">{t('ideas:success_stories.metrics.areas')}</div>
                       </div>
                     )}
                   </div>
@@ -267,7 +265,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                       <p className="text-xs font-medium truncate">
                         {isRTL ? story.ideas.innovators.profiles.name_ar : story.ideas.innovators.profiles.name}
                       </p>
-                      <p className="text-xs text-muted-foreground">{isRTL ? 'المبتكر' : 'Innovator'}</p>
+                      <p className="text-xs text-muted-foreground">{t('ideas:success_stories.innovator_label')}</p>
                     </div>
                   </div>
                 )}
@@ -279,7 +277,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                   onClick={() => handleViewDetails(story)}
                 >
                   <ExternalLink className="w-4 h-4" />
-                  {isRTL ? 'قراءة القصة كاملة' : 'Read Full Story'}
+                  {t('ideas:success_stories.read_full_story')}
                 </Button>
               </CardContent>
             </Card>
@@ -289,13 +287,10 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
         <div className="text-center py-12">
           <Award className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
           <h3 className="text-lg font-medium mb-2">
-            {isRTL ? 'لا توجد قصص نجاح بعد' : 'No Success Stories Yet'}
+            {t('ideas:success_stories.no_stories_title')}
           </h3>
           <p className="text-muted-foreground">
-            {isRTL ? 
-              'ستظهر قصص النجاح هنا عند تنفيذ الأفكار الابتكارية' :
-              'Success stories will appear here as innovative ideas get implemented'
-            }
+            {t('ideas:success_stories.no_stories_description')}
           </p>
         </div>
       )}
@@ -326,7 +321,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                 <div>
                   <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                     <Star className="w-5 h-5" />
-                    {isRTL ? 'القصة التفصيلية' : 'Detailed Story'}
+                    {t('ideas:success_stories.dialog.detailed_story')}
                   </h3>
                   <div className="prose prose-sm max-w-none">
                     <p className="leading-relaxed">{selectedStory.detailed_story}</p>
@@ -338,7 +333,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                   <div>
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                       <DollarSign className="w-5 h-5" />
-                      {isRTL ? 'مؤشرات الأداء والعائد' : 'ROI & Impact Metrics'}
+                      {t('ideas:success_stories.dialog.roi_metrics')}
                     </h3>
                     {renderROIMetric(selectedStory.roi_metrics)}
                   </div>
@@ -349,7 +344,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                   <div>
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                       <Rocket className="w-5 h-5" />
-                      {isRTL ? 'جدول زمني للتنفيذ' : 'Implementation Timeline'}
+                      {t('ideas:success_stories.dialog.implementation_timeline')}
                     </h3>
                     <div className="space-y-4">
                       {selectedStory.implementation_timeline.map(renderTimelineStep)}
@@ -362,7 +357,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                   <div>
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                       <Users className="w-5 h-5" />
-                      {isRTL ? 'شهادات وآراء' : 'Testimonials'}
+                      {t('ideas:success_stories.dialog.testimonials')}
                     </h3>
                     <div className="grid gap-4 md:grid-cols-2">
                       {selectedStory.testimonials.map((testimonial: any, index: number) => (

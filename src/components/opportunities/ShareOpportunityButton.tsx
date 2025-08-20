@@ -26,6 +26,7 @@ export const ShareOpportunityButton = ({
 }: ShareOpportunityButtonProps) => {
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [isSharing, setIsSharing] = useState(false);
   const { user } = useCurrentUser();
 
@@ -60,13 +61,13 @@ export const ShareOpportunityButton = ({
       await navigator.clipboard.writeText(shareUrl);
       await trackShare('clipboard');
       toast({
-        title: isRTL ? 'تم نسخ الرابط' : 'Link Copied',
-        description: isRTL ? 'تم نسخ رابط الفرصة إلى الحافظة' : 'Opportunity link copied to clipboard',
+        title: t('opportunities:share.link_copied_title'),
+        description: t('opportunities:share.link_copied_desc'),
       });
     } catch (error) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في نسخ الرابط' : 'Failed to copy link',
+        title: t('opportunities:share.error'),
+        description: t('opportunities:share.copy_failed'),
         variant: 'destructive',
       });
     } finally {
@@ -75,8 +76,8 @@ export const ShareOpportunityButton = ({
   };
 
   const handleEmailShare = async () => {
-    const subject = encodeURIComponent(`${isRTL ? 'فرصة شراكة:' : 'Partnership Opportunity:'} ${opportunityTitle}`);
-    const body = encodeURIComponent(`${shareText}\n\n${isRTL ? 'للمزيد من التفاصيل:' : 'For more details:'} ${shareUrl}`);
+    const subject = encodeURIComponent(`${t('opportunities:share.email_subject')} ${opportunityTitle}`);
+    const body = encodeURIComponent(`${shareText}\n\n${t('opportunities:share.for_more_details')} ${shareUrl}`);
     window.open(`mailto:?subject=${subject}&body=${body}`);
     await trackShare('email');
   };
@@ -105,33 +106,33 @@ export const ShareOpportunityButton = ({
       <DropdownMenuTrigger asChild>
         <Button variant={variant} size={size} disabled={isSharing}>
           <Share2 className="w-4 h-4 mr-2" />
-          {isRTL ? 'مشاركة' : 'Share'}
+          {t('opportunities:share.share')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align={isRTL ? 'start' : 'end'} className="w-48">
         <DropdownMenuItem onClick={handleCopyLink}>
           <Copy className="w-4 h-4 mr-2" />
-          {isRTL ? 'نسخ الرابط' : 'Copy Link'}
+          {t('opportunities:share.copy_link')}
         </DropdownMenuItem>
         
         <DropdownMenuItem onClick={handleEmailShare}>
           <Mail className="w-4 h-4 mr-2" />
-          {isRTL ? 'مشاركة بالبريد' : 'Share via Email'}
+          {t('opportunities:share.share_via_email')}
         </DropdownMenuItem>
         
         <DropdownMenuItem onClick={handleWhatsAppShare}>
           <MessageCircle className="w-4 h-4 mr-2" />
-          {isRTL ? 'مشاركة في واتساب' : 'Share on WhatsApp'}
+          {t('opportunities:share.share_on_whatsapp')}
         </DropdownMenuItem>
         
         <DropdownMenuItem onClick={handleLinkedInShare}>
           <Linkedin className="w-4 h-4 mr-2" />
-          {isRTL ? 'مشاركة في لينكدإن' : 'Share on LinkedIn'}
+          {t('opportunities:share.share_on_linkedin')}
         </DropdownMenuItem>
         
         <DropdownMenuItem onClick={handleTwitterShare}>
           <Twitter className="w-4 h-4 mr-2" />
-          {isRTL ? 'مشاركة في تويتر' : 'Share on Twitter'}
+          {t('opportunities:share.share_on_twitter')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

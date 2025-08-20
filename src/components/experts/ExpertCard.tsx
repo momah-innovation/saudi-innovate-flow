@@ -7,6 +7,7 @@ import {
   ExternalLink, Mail, Linkedin, Twitter 
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { navigationHandler } from '@/utils/unified-navigation';
 
 interface Expert {
@@ -38,6 +39,7 @@ interface ExpertCardProps {
 
 export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }: ExpertCardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   const getAvailabilityColor = (availability: string) => {
     switch (availability) {
@@ -50,9 +52,9 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
 
   const getAvailabilityText = (availability: string) => {
     switch (availability) {
-      case 'available': return isRTL ? 'متاح' : 'Available';
-      case 'busy': return isRTL ? 'مشغول' : 'Busy';
-      case 'unavailable': return isRTL ? 'غير متاح' : 'Unavailable';
+      case 'available': return t('experts:availability.available');
+      case 'busy': return t('experts:availability.busy');
+      case 'unavailable': return t('experts:availability.unavailable');
       default: return availability;
     }
   };
@@ -124,7 +126,7 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                <span>{expert.experience_years} {isRTL ? 'سنوات خبرة' : 'years exp'}</span>
+                <span>{expert.experience_years} {t('experts:card.years_experience')}</span>
               </div>
             </div>
           </div>
@@ -134,7 +136,7 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
       <CardContent className="space-y-4">
         {/* Specializations */}
         <div>
-          <h4 className="font-medium mb-2">{isRTL ? 'التخصصات' : 'Specializations'}</h4>
+          <h4 className="font-medium mb-2">{t('experts:card.specializations')}</h4>
           <div className="flex flex-wrap gap-1">
             {expert.specializations.slice(0, 3).map((spec, index) => (
               <Badge key={index} variant="secondary" className="text-xs">
@@ -154,13 +156,13 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
           <div className="text-center p-3 bg-muted rounded-lg">
             <div className="font-semibold text-lg">{expert.active_challenges}</div>
             <div className="text-xs text-muted-foreground">
-              {isRTL ? 'تحديات نشطة' : 'Active Challenges'}
+              {t('experts:card.active_challenges')}
             </div>
           </div>
           <div className="text-center p-3 bg-muted rounded-lg">
             <div className="font-semibold text-lg">{expert.mentored_projects}</div>
             <div className="text-xs text-muted-foreground">
-              {isRTL ? 'مشاريع منتورة' : 'Mentored Projects'}
+              {t('experts:card.mentored_projects')}
             </div>
           </div>
         </div>
@@ -197,14 +199,14 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
 
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
-          <Button variant="outline" onClick={() => onViewProfile(expert)} className="flex-1">
-            <Users className="w-4 h-4 mr-2" />
-            {isRTL ? 'الملف الشخصي' : 'View Profile'}
-          </Button>
-          <Button onClick={() => onContact(expert)} className="flex-1">
-            <MessageSquare className="w-4 h-4 mr-2" />
-            {isRTL ? 'تواصل' : 'Contact'}
-          </Button>
+        <Button variant="outline" onClick={() => onViewProfile(expert)} className="flex-1">
+          <Users className="w-4 h-4 mr-2" />
+          {t('experts:card.view_profile')}
+        </Button>
+        <Button onClick={() => onContact(expert)} className="flex-1">
+          <MessageSquare className="w-4 h-4 mr-2" />
+          {t('experts:card.contact')}
+        </Button>
         </div>
       </CardContent>
     </Card>

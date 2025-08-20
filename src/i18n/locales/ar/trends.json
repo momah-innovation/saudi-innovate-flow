@@ -1,0 +1,97 @@
+{
+    "title": "الاتجاهات",
+    "page_title": "تحليل الاتجاهات",
+    "impact": {
+        "high": "تأثير عالي",
+        "medium": "تأثير متوسط",
+        "low": "تأثير منخفض",
+        "very_high": "تأثير عالي جداً",
+        "minimal": "تأثير طفيف"
+    },
+    "statistics": {
+        "growth": "النمو",
+        "projects": "المشاريع",
+        "budget": "الميزانية",
+        "avg_value": "متوسط القيمة",
+        "total_value": "القيمة الإجمالية",
+        "completion_rate": "معدل الإنجاز",
+        "success_rate": "معدل النجاح",
+        "roi": "العائد على الاستثمار",
+        "efficiency": "الكفاءة"
+    },
+    "trends": {
+        "rising": "اتجاهات صاعدة",
+        "declining": "اتجاهات هابطة",
+        "stable": "اتجاهات مستقرة",
+        "emerging": "اتجاهات ناشئة",
+        "fading": "اتجاهات متلاشية"
+    },
+    "categories": {
+        "technology": "التقنية",
+        "innovation": "الابتكار",
+        "sustainability": "الاستدامة",
+        "healthcare": "الرعاية الصحية",
+        "education": "التعليم",
+        "finance": "التمويل",
+        "energy": "الطاقة"
+    },
+    "time_periods": {
+        "daily": "يومي",
+        "weekly": "أسبوعي",
+        "monthly": "شهري",
+        "quarterly": "ربع سنوي",
+        "yearly": "سنوي",
+        "all_time": "كل الأوقات"
+    },
+    "indicators": {
+        "up": "صاعد",
+        "down": "هابط",
+        "unchanged": "بدون تغيير",
+        "new": "جديد",
+        "trending": "رائج"
+    },
+    "analysis": {
+        "view_details": "عرض التفاصيل",
+        "compare": "مقارنة",
+        "export": "تصدير",
+        "share": "مشاركة",
+        "forecast": "التنبؤ",
+        "historical": "البيانات التاريخية"
+    },
+    "filters": {
+        "filter_by": "تصفية حسب",
+        "sort_by": "ترتيب حسب",
+        "date_range": "النطاق الزمني",
+        "category": "الفئة",
+        "impact_level": "مستوى التأثير"
+    },
+    "charts": {
+        "trend_chart": "مخطط الاتجاه",
+        "growth_chart": "مخطط النمو",
+        "comparison_chart": "مخطط المقارنة",
+        "distribution": "التوزيع"
+    },
+    "predictions": {
+        "ai_projects_growth": "نمو مشاريع الذكاء الاصطناعي",
+        "sustainability_projects": "مشاريع الاستدامة",
+        "fintech_solutions": "التكنولوجيا المالية",
+        "ar_applications": "تطبيقات الواقع المعزز",
+        "emerging_opportunities": "الفرص الناشئة",
+        "quantum_computing": "تقنيات الحوسبة الكمية",
+        "expected_growth": "نمو متوقع 150% في المشاريع",
+        "digital_medicine": "الطب الرقمي والتطبيب عن بعد",
+        "demand_increase": "زيادة الطلب بنسبة 85%",
+        "renewable_energy": "تقنيات الطاقة المتجددة",
+        "increasing_investments": "استثمارات متزايدة في القطاع"
+    },
+    "tabs": {
+        "emerging": "الناشئة",
+        "insights": "الرؤى",
+        "keywords": "الكلمات المفتاحية",
+        "sectors": "القطاعات",
+        "predictions": "التنبؤات"
+    },
+    "no_data": "لا توجد بيانات اتجاهات متاحة",
+    "loading": "جاري تحميل الاتجاهات...",
+    "error": "خطأ في تحميل الاتجاهات"
+}

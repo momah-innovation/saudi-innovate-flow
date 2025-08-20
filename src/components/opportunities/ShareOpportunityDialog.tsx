@@ -46,6 +46,7 @@ export const ShareOpportunityDialog = ({
   const { user } = useAuth();
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const { setTimeout: scheduleTimeout } = useTimerManager();
@@ -140,10 +141,8 @@ export const ShareOpportunityDialog = ({
     await trackShare(platform.id);
     
     toast({
-      title: isRTL ? 'تم المشاركة' : 'Shared',
-      description: isRTL 
-        ? `تم مشاركة الفرصة عبر ${platform.name}` 
-        : `Opportunity shared via ${platform.name}`
+      title: t('opportunities:share.shared'),
+      description: t('opportunities:share.shared_via', { platform: platform.name })
     });
   };
 
@@ -156,8 +155,8 @@ export const ShareOpportunityDialog = ({
       await trackShare('copy_link');
       
       toast({
-        title: isRTL ? 'تم النسخ' : 'Copied',
-        description: isRTL ? 'تم نسخ الرابط' : 'Link copied to clipboard'
+        title: t('opportunities:share.copied'),
+        description: t('opportunities:share.link_copied')
       });
     } catch (error) {
       logger.error('Failed to copy opportunity link', { 
@@ -179,7 +178,7 @@ export const ShareOpportunityDialog = ({
         {children || (
           <Button variant="ghost" size="sm" className={cn("gap-2", className)}>
             <Share2 className="w-4 h-4" />
-            {isRTL ? 'مشاركة' : 'Share'}
+            {t('opportunities:share.share')}
           </Button>
         )}
       </DialogTrigger>
@@ -187,7 +186,7 @@ export const ShareOpportunityDialog = ({
         <DialogHeader className={isRTL ? 'text-right' : 'text-left'}>
           <DialogTitle className="flex items-center gap-2">
             <Share2 className="w-5 h-5" />
-            {isRTL ? 'مشاركة الفرصة' : 'Share Opportunity'}
+            {t('opportunities:share.share_opportunity')}
           </DialogTitle>
         </DialogHeader>
         
@@ -195,7 +194,7 @@ export const ShareOpportunityDialog = ({
           {/* Share Link */}
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              {isRTL ? 'رابط الفرصة' : 'Opportunity Link'}
+              {t('opportunities:share.opportunity_link')}
             </label>
             <div className="flex gap-2">
               <Input
@@ -221,7 +220,7 @@ export const ShareOpportunityDialog = ({
           {/* Social Platforms */}
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              {isRTL ? 'مشاركة عبر' : 'Share via'}
+              {t('opportunities:share.share_via')}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {platforms.map((platform) => {
@@ -252,7 +251,7 @@ export const ShareOpportunityDialog = ({
               onClick={handleCopyLink}
             >
               <Link className="w-4 h-4" />
-              {isRTL ? 'نسخ الرابط' : 'Copy Link'}
+              {t('opportunities:share.copy_link')}
             </Button>
           </div>
         </div>

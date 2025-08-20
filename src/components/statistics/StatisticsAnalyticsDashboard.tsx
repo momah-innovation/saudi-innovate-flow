@@ -27,6 +27,7 @@ interface StatisticsAnalyticsDashboardProps {
 
 export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState('overview');
   const { loading, data, loadAnalyticsData } = useStatisticsAnalytics();
 
@@ -58,7 +59,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
 
   const keyMetrics = [
     {
-      title: isRTL ? 'إجمالي المقاييس' : 'Total Metrics',
+      title: t('statistics:analytics.total_metrics'),
       value: data.totalMetrics,
       change: '+12%',
       trend: 'up',
@@ -66,7 +67,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
       color: 'text-blue-600'
     },
     {
-      title: isRTL ? 'التقارير النشطة' : 'Active Reports',
+      title: t('statistics:analytics.active_reports'),
       value: data.activeReports,
       change: '+8%',
       trend: 'up',
@@ -74,7 +75,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
       color: 'text-green-600'
     },
     {
-      title: isRTL ? 'إجمالي المستخدمين' : 'Total Users',
+      title: t('statistics:analytics.total_users'),
       value: data.totalUsers,
       change: '+15%',
       trend: 'up',
@@ -82,7 +83,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
       color: 'text-purple-600'
     },
     {
-      title: isRTL ? 'متوسط التفاعل' : 'Avg Engagement',
+      title: t('statistics:analytics.avg_engagement'),
       value: `${data.averageEngagement}%`,
       change: '+5%',
       trend: 'up',
@@ -112,7 +113,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
                     {metric.change}
                   </Badge>
                   <span className="text-xs text-muted-foreground">
-                    {isRTL ? 'من الشهر الماضي' : 'from last month'}
+                    {t('statistics:analytics.from_last_month')}
                   </span>
                 </div>
               </CardContent>
@@ -124,10 +125,10 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
       {/* Analytics Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">{isRTL ? 'نظرة عامة' : 'Overview'}</TabsTrigger>
-          <TabsTrigger value="trends">{isRTL ? 'الاتجاهات' : 'Trends'}</TabsTrigger>
-          <TabsTrigger value="categories">{isRTL ? 'الفئات' : 'Categories'}</TabsTrigger>
-          <TabsTrigger value="reports">{isRTL ? 'التقارير' : 'Reports'}</TabsTrigger>
+          <TabsTrigger value="overview">{t('statistics:tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="trends">{t('statistics:tabs.trends')}</TabsTrigger>
+          <TabsTrigger value="categories">{t('statistics:tabs.categories')}</TabsTrigger>
+          <TabsTrigger value="reports">{t('statistics:analytics.reports')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -136,7 +137,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <LineChart className="w-5 h-5" />
-                  {isRTL ? 'الاتجاهات الشهرية' : 'Monthly Trends'}
+                  {t('statistics:charts.monthly_trends')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -146,11 +147,11 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
                       <span className="font-medium">{trend.month}</span>
                       <div className="flex items-center gap-4">
                         <div className="text-sm">
-                          <span className="text-muted-foreground">{isRTL ? 'التقارير:' : 'Reports:'}</span>
+                          <span className="text-muted-foreground">{t('statistics:analytics.reports')}:</span>
                           <span className="font-semibold ml-1">{trend.reports}</span>
                         </div>
                         <div className="text-sm">
-                          <span className="text-muted-foreground">{isRTL ? 'المستخدمين:' : 'Users:'}</span>
+                          <span className="text-muted-foreground">{t('statistics:analytics.users')}:</span>
                           <span className="font-semibold ml-1">{trend.users}</span>
                         </div>
                       </div>
@@ -164,28 +165,28 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="w-5 h-5" />
-                  {isRTL ? 'أهداف الأداء' : 'Performance Goals'}
+                  {t('statistics:analytics.performance_goals')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'معدل إكمال التقارير' : 'Report Completion Rate'}</span>
+                      <span>{t('statistics:analytics.report_completion_rate')}</span>
                       <span className="font-semibold">85%</span>
                     </div>
                     <Progress value={85} className="h-2" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'مشاركة المستخدمين' : 'User Engagement'}</span>
+                      <span>{t('statistics:impact.user_engagement')}</span>
                       <span className="font-semibold">78%</span>
                     </div>
                     <Progress value={78} className="h-2" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'دقة البيانات' : 'Data Accuracy'}</span>
+                      <span>{t('statistics:analytics.data_accuracy')}</span>
                       <span className="font-semibold">92%</span>
                     </div>
                     <Progress value={92} className="h-2" />
@@ -199,7 +200,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
         <TabsContent value="trends" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'تحليل الاتجاهات' : 'Trend Analysis'}</CardTitle>
+              <CardTitle>{t('statistics:analytics.trend_analysis')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -208,15 +209,15 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
                     <div className="font-semibold text-lg">{trend.month}</div>
                     <div className="space-y-2 mt-2">
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'التقارير' : 'Reports'}</span>
+                        <span className="text-sm text-muted-foreground">{t('statistics:analytics.reports')}</span>
                         <span className="font-medium">{trend.reports}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'المستخدمين' : 'Users'}</span>
+                        <span className="text-sm text-muted-foreground">{t('statistics:analytics.users')}</span>
                         <span className="font-medium">{trend.users}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{isRTL ? 'التفاعل' : 'Engagement'}</span>
+                        <span className="text-sm text-muted-foreground">{t('statistics:analytics.engagement')}</span>
                         <span className="font-medium">{trend.engagement}%</span>
                       </div>
                     </div>
@@ -230,10 +231,10 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
         <TabsContent value="categories" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <PieChart className="w-5 h-5" />
-                {isRTL ? 'أهم الفئات' : 'Top Categories'}
-              </CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <PieChart className="w-5 h-5" />
+                  {t('statistics:analytics.top_categories')}
+                </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -262,7 +263,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
         <TabsContent value="reports" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'أنواع التقارير' : 'Report Types'}</CardTitle>
+              <CardTitle>{t('statistics:analytics.report_types')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -274,7 +275,7 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
                     </div>
                     <Progress value={report.percentage} className="h-2" />
                     <div className="text-sm text-muted-foreground mt-1">
-                      {report.percentage}% {isRTL ? 'من إجمالي التقارير' : 'of total reports'}
+                      {report.percentage}% {t('statistics:analytics.of_total_reports')}
                     </div>
                   </div>
                 ))}

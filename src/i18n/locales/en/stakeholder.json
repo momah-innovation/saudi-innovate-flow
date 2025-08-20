@@ -1,0 +1,102 @@
+{
+    "title": "Stakeholder Dashboard",
+    "page_title": "Stakeholder Overview",
+    "welcome": "Welcome, Stakeholder",
+    "overview": "Overview",
+    "dashboard": {
+        "title": "Dashboard",
+        "subtitle": "Monitor your investments and partnerships",
+        "last_updated": "Last Updated",
+        "refresh": "Refresh Dashboard"
+    },
+    "metrics": {
+        "total_investment": "Total Investment",
+        "active_projects": "Active Projects",
+        "roi": "Return on Investment",
+        "portfolio_value": "Portfolio Value",
+        "success_rate": "Success Rate",
+        "partnerships": "Partnerships",
+        "initiatives": "Initiatives",
+        "impact_score": "Impact Score"
+    },
+    "projects": {
+        "title": "Projects",
+        "my_projects": "My Projects",
+        "all_projects": "All Projects",
+        "invested": "Invested",
+        "monitoring": "Monitoring",
+        "completed": "Completed",
+        "view_details": "View Details",
+        "track_progress": "Track Progress"
+    },
+    "investments": {
+        "title": "Investments",
+        "current": "Current Investments",
+        "historical": "Historical Investments",
+        "opportunities": "Investment Opportunities",
+        "amount": "Amount",
+        "date": "Date",
+        "status": "Status",
+        "returns": "Returns"
+    },
+    "reports": {
+        "title": "Reports",
+        "quarterly": "Quarterly Report",
+        "annual": "Annual Report",
+        "performance": "Performance Report",
+        "financial": "Financial Report",
+        "impact": "Impact Report",
+        "download": "Download",
+        "generate": "Generate Report",
+        "stakeholder_report": "Stakeholder Report",
+        "stakeholder_report_description": "Report on stakeholder engagement and satisfaction"
+    },
+    "communications": {
+        "title": "Communications",
+        "messages": "Messages",
+        "announcements": "Announcements",
+        "updates": "Updates",
+        "notifications": "Notifications",
+        "mark_read": "Mark as Read"
+    },
+    "portfolio": {
+        "title": "Portfolio",
+        "summary": "Portfolio Summary",
+        "distribution": "Distribution",
+        "performance": "Performance",
+        "risk_assessment": "Risk Assessment",
+        "diversification": "Diversification"
+    },
+    "actions": {
+        "invest": "Invest",
+        "withdraw": "Withdraw",
+        "contact": "Contact",
+        "schedule_meeting": "Schedule Meeting",
+        "request_info": "Request Information",
+        "view_all": "View All"
+    },
+    "status": {
+        "active": "Active",
+        "pending": "Pending",
+        "completed": "Completed",
+        "on_hold": "On Hold",
+        "cancelled": "Cancelled"
+    },
+    "indicators": {
+        "key_indicators": "Key Indicators",
+        "projects_on_time": "Projects On Time",
+        "within_budget": "Within Budget",
+        "identified_risks": "Identified Risks",
+        "actions_required": "Actions Required"
+    },
+    "filters": {
+        "filter_by": "Filter by",
+        "date_range": "Date Range",
+        "investment_type": "Investment Type",
+        "project_status": "Project Status",
+        "sector": "Sector"
+    },
+    "no_data": "No stakeholder data available",
+    "loading": "Loading stakeholder information...",
+    "error": "Error loading stakeholder data"
+}
