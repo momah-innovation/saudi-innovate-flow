@@ -180,5 +180,26 @@
     "last_week": "الأسبوع الماضي",
     "this_month": "هذا الشهر",
     "last_month": "الشهر الماضي"
+  },
+  "time": {
+    "just_now": "الآن",
+    "minutes_ago": "منذ {{count}} دقيقة",
+    "minutes_ago_plural": "منذ {{count}} دقيقة",
+    "hours_ago": "منذ {{count}} ساعة", 
+    "hours_ago_plural": "منذ {{count}} ساعة",
+    "days_ago": "منذ {{count}} يوم",
+    "days_ago_plural": "منذ {{count}} يوم",
+    "weeks_ago": "منذ {{count}} أسبوع",
+    "months_ago": "منذ {{count}} شهر",
+    "years_ago": "منذ {{count}} سنة"
+  },
+  "workspace_aliases": {
+    "teamWorkspace": "مساحة عمل الفريق",
+    "collaborativeWorkspaceForTeams": "مساحة عمل تعاونية للفرق",
+    "joinTeam": "انضم للفريق",
+    "searchWorkspace": "البحث في مساحة العمل",
+    "allProjects": "جميع المشاريع",
+    "activeProjects": "المشاريع النشطة", 
+    "completedProjects": "المشاريع المكتملة"
   }
 }

@@ -1,0 +1,48 @@
+{
+  "title": "Ideas Wizard",
+  "create_idea": "Create New Idea",
+  "edit_idea": "Edit Idea",
+  "steps": {
+    "basic_info": "Basic Information",
+    "details": "Details",
+    "implementation": "Implementation",
+    "review": "Review"
+  },
+  "fields": {
+    "title": "Idea Title",
+    "description": "Description",
+    "category": "Category",
+    "problem_statement": "Problem Statement",
+    "solution_overview": "Solution Overview",
+    "target_audience": "Target Audience",
+    "implementation_plan": "Implementation Plan",
+    "required_resources": "Required Resources",
+    "timeline": "Timeline",
+    "budget_estimate": "Budget Estimate",
+    "expected_outcomes": "Expected Outcomes",
+    "success_metrics": "Success Metrics"
+  },
+  "categories": {
+    "technology": "Technology",
+    "process_improvement": "Process Improvement",
+    "product_development": "Product Development",
+    "service_enhancement": "Service Enhancement",
+    "cost_reduction": "Cost Reduction",
+    "innovation": "Innovation"
+  },
+  "validation": {
+    "title_required": "Idea title is required",
+    "description_required": "Description is required",
+    "category_required": "Please select a category"
+  },
+  "actions": {
+    "save_draft": "Save as Draft",
+    "submit_for_review": "Submit for Review",
+    "publish": "Publish Idea"
+  },
+  "messages": {
+    "idea_saved": "Idea saved successfully",
+    "idea_submitted": "Idea submitted for review",
+    "idea_published": "Idea published successfully"
+  }
+}

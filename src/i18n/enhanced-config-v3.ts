@@ -260,8 +260,8 @@ const loadNamespace = async (language: string, namespace: string) => {
         
       case 'ideas-wizard':
         translations = language === 'en'
-          ? await import('./locales/en/ideas/wizard.json')
-          : await import('./locales/ar/ideas/wizard.json');
+          ? await import('./locales/en/ideas-wizard.json')
+          : await import('./locales/ar/ideas-wizard.json');
         break;
         
       case 'collaboration':
@@ -421,7 +421,7 @@ i18n
     
     // Default namespaces that should be loaded immediately - using dot notation
     defaultNS: 'common',
-    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists', 'challenges', 'expert', 'events', 'statistics', 'subscription', 'trends', 'stakeholder', 'pages', 'dialogs', 'tabs', 'breadcrumbs', 'routes', 'advanced-search', 'challenge-form', 'activity', 'error-boundary'],
+    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'challenges', 'expert', 'events', 'statistics', 'subscription', 'trends', 'stakeholder', 'pages', 'dialogs', 'tabs', 'breadcrumbs', 'routes', 'advanced-search', 'challenge-form', 'activity', 'error-boundary', 'ideas-wizard'],
     
     // Namespace/key separators
     nsSeparator: ':', // use ':' to separate namespace from key (avoids conflict with nested dot keys)

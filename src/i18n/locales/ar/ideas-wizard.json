@@ -1,0 +1,48 @@
+{
+  "title": "معالج الأفكار",
+  "create_idea": "إنشاء فكرة جديدة",
+  "edit_idea": "تعديل الفكرة",
+  "steps": {
+    "basic_info": "المعلومات الأساسية",
+    "details": "التفاصيل",
+    "implementation": "التنفيذ",
+    "review": "المراجعة"
+  },
+  "fields": {
+    "title": "عنوان الفكرة",
+    "description": "الوصف",
+    "category": "الفئة",
+    "problem_statement": "بيان المشكلة",
+    "solution_overview": "نظرة عامة على الحل",
+    "target_audience": "الجمهور المستهدف",
+    "implementation_plan": "خطة التنفيذ",
+    "required_resources": "الموارد المطلوبة",
+    "timeline": "الجدول الزمني",
+    "budget_estimate": "تقدير الميزانية",
+    "expected_outcomes": "النتائج المتوقعة",
+    "success_metrics": "مقاييس النجاح"
+  },
+  "categories": {
+    "technology": "التكنولوجيا",
+    "process_improvement": "تحسين العمليات",
+    "product_development": "تطوير المنتجات",
+    "service_enhancement": "تحسين الخدمات",
+    "cost_reduction": "تقليل التكلفة",
+    "innovation": "الابتكار"
+  },
+  "validation": {
+    "title_required": "عنوان الفكرة مطلوب",
+    "description_required": "الوصف مطلوب",
+    "category_required": "يرجى اختيار فئة"
+  },
+  "actions": {
+    "save_draft": "حفظ كمسودة",
+    "submit_for_review": "إرسال للمراجعة",
+    "publish": "نشر الفكرة"
+  },
+  "messages": {
+    "idea_saved": "تم حفظ الفكرة بنجاح",
+    "idea_submitted": "تم إرسال الفكرة للمراجعة",
+    "idea_published": "تم نشر الفكرة بنجاح"
+  }
+}
