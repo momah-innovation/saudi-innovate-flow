@@ -108,5 +108,27 @@
     "components": "المكونات",
     "tokens": "رموز التصميم",
     "guidelines": "الإرشادات"
+  },
+  "app": {
+    "title": "منصة رواد",
+    "subtitle": "مركز الابتكار"
+  },
+  "tools": {
+    "title": "الأدوات والموارد"
+  },
+  "advanced": {
+    "title": "الإدارة المتقدمة"
+  },
+  "super_admin": {
+    "title": "المدير العام"
+  },
+  "ai_management": {
+    "title": "إدارة الذكاء الاصطناعي"
+  },
+  "security_advanced": {
+    "title": "الأمان المتقدم"
+  },
+  "elevation_monitor": {
+    "title": "مراقب الصلاحيات"
   }
 }

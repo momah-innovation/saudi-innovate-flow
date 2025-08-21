@@ -100,6 +100,15 @@
     "manage_users": "Manage Users",
     "system_settings": "System Settings"
   },
+  "roles": {
+    "admin": "Administrator",
+    "super_admin": "Super Administrator",
+    "user": "User",
+    "expert": "Expert",
+    "partner": "Partner",
+    "team_member": "Team Member",
+    "organization_member": "Organization Member"
+  },
   "status": {
     "active": "Active",
     "inactive": "Inactive",

@@ -108,5 +108,27 @@
     "components": "Components",
     "tokens": "Design Tokens",
     "guidelines": "Guidelines"
+  },
+  "app": {
+    "title": "Ruwād Platform",
+    "subtitle": "Innovation Hub"
+  },
+  "tools": {
+    "title": "Tools & Resources"
+  },
+  "advanced": {
+    "title": "Advanced Management"
+  },
+  "super_admin": {
+    "title": "Super Admin"
+  },
+  "ai_management": {
+    "title": "AI Management"
+  },
+  "security_advanced": {
+    "title": "Advanced Security"
+  },
+  "elevation_monitor": {
+    "title": "Privilege Monitor"
   }
 }
