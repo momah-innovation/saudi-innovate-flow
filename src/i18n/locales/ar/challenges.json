@@ -1,66 +1,20 @@
 {
   "title": "التحديات",
-  "description": "تحديات الابتكار والمسابقات",
-  "create": "إنشاء تحدي",
-  "edit": "تعديل التحدي",
-  "delete": "حذف التحدي",
-  "view": "عرض التحدي",
-  "join": "الانضمام للتحدي",
-  "leave": "مغادرة التحدي",
-  "submit": "تقديم فكرة",
-  "evaluate": "تقييم",
-  "publish": "نشر",
-  "archive": "أرشفة",
+  "overview": {
+    "active": "التحديات النشطة",
+    "completed": "التحديات المكتملة",
+    "drafts": "مسودات التحديات"
+  },
+  "actions": {
+    "create": "إنشاء تحدي",
+    "edit": "تعديل تحدي",
+    "delete": "حذف تحدي",
+    "publish": "نشر تحدي"
+  },
   "status": {
     "draft": "مسودة",
-    "published": "منشور",
     "active": "نشط",
-    "evaluation": "قيد التقييم",
     "completed": "مكتمل",
-    "cancelled": "ملغى",
-    "archived": "مؤرشف"
-  },
-  "priority": {
-    "low": "أولوية منخفضة",
-    "medium": "أولوية متوسطة",
-    "high": "أولوية عالية",
-    "critical": "أولوية حرجة"
-  },
-  "sensitivity": {
-    "public": "عام",
-    "internal": "داخلي",
-    "confidential": "سري",
-    "restricted": "مقيد"
-  },
-  "type": {
-    "innovation": "تحدي الابتكار",
-    "problem_solving": "حل المشاكل",
-    "improvement": "تحسين العمليات",
-    "research": "تحدي البحث"
-  },
-  "collaboration": {
-    "individual": "فردي",
-    "team": "جماعي",
-    "both": "فردي أو جماعي"
-  },
-  "fields": {
-    "title": "عنوان التحدي",
-    "description": "الوصف",
-    "objectives": "الأهداف",
-    "requirements": "المتطلبات",
-    "criteria": "معايير التقييم",
-    "budget": "الميزانية",
-    "deadline": "الموعد النهائي للتقديم",
-    "evaluation_deadline": "الموعد النهائي للتقييم",
-    "participants": "المشاركون",
-    "submissions": "المقترحات"
-  },
-  "analytics": {
-    "overview": "تحليلات التحدي",
-    "participation": "معدل المشاركة",
-    "submissions": "إحصائيات المقترحات",
-    "evaluation": "تقدم التقييم",
-    "timeline": "تحليل الجدول الزمني"
-  },
-  "delete_confirmation": "هل أنت متأكد من حذف هذا التحدي؟"
+    "cancelled": "ملغى"
+  }
 }

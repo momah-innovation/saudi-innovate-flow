@@ -1,104 +1,24 @@
 {
-  "discover": "استكشف",
-  "events": "الفعاليات",
   "main": {
-    "home": "الرئيسية",
     "dashboard": "لوحة التحكم",
-    "workspaces": "مساحات العمل",
     "challenges": "التحديات",
-    "events": "الفعاليات",
-    "opportunities": "الفرص",
-    "ideas": "الأفكار",
-    "statistics": "الإحصائيات",
-    "help": "المساعدة",
-    "settings": "الإعدادات"
-  },
-  "admin": {
-    "admin_dashboard": "لوحة التحكم الإدارية",
-    "user_management": "إدارة المستخدمين",
-    "challenges_management": "إدارة التحديات",
-    "campaigns_management": "إدارة الحملات",
-    "events_management": "إدارة الفعاليات",
-    "ideas_management": "إدارة الأفكار",
-    "partners_management": "إدارة الشركاء",
-    "sectors_management": "إدارة القطاعات",
-    "core_team_management": "إدارة الفريق الأساسي",
-    "expert_assignments": "تعيينات الخبراء",
-    "organizational_structure": "الهيكل التنظيمي",
-    "stakeholders_management": "إدارة أصحاب المصلحة",
-    "evaluation_management": "إدارة التقييم",
-    "system_settings": "إعدادات النظام",
-    "analytics": "التحليلات",
-    "relationships": "العلاقات",
-    "security": "الأمان",
-    "storage": "التخزين",
-    "ai_management": "إدارة الذكاء الاصطناعي",
-    "access_control": "التحكم في الوصول"
-  },
-  "landing": {
-    "about": "حول المنصة",
     "campaigns": "الحملات",
-    "marketplace": "السوق",
-    "pricing": "الأسعار",
-    "learn_more": "تعرف على المزيد",
-    "logo_text": "رواد",
-    "welcome": "مرحباً",
-    "dashboard": "لوحة التحكم",
-    "login": "تسجيل الدخول",
-    "get_started": "البدء"
-  },
-  "breadcrumbs": {
-    "workspaces": "مساحات العمل",
-    "admin_dashboard": "لوحة التحكم الإدارية",
-    "organizational_structure": "الهيكل التنظيمي",
-    "evaluation_management": "إدارة التقييم",
-    "relationship_overview": "نظرة عامة على العلاقات",
-    "challenges_management": "إدارة التحديات",
-    "users_management": "إدارة المستخدمين",
-    "events_management": "إدارة الفعاليات",
-    "ideas_management": "إدارة الأفكار",
-    "campaigns_management": "إدارة الحملات",
-    "core_team_management": "إدارة الفريق الأساسي",
-    "teams_management": "إدارة الفرق",
-    "sectors_management": "إدارة القطاعات",
-    "stakeholders_management": "إدارة أصحاب المصلحة",
-    "evaluations_management": "إدارة التقييمات",
-    "partners_management": "إدارة الشركاء",
-    "expert_assignments": "تعيينات الخبراء",
-    "system_settings": "إعدادات النظام",
-    "access_control": "التحكم في الوصول",
-    "security_advanced": "الأمان المتقدم",
-    "access_control_advanced": "مركز التحكم بالصلاحيات المتقدم",
-    "elevation_monitor": "مراقب رفع الصلاحيات",
-    "analytics_advanced": "التحليلات المتقدمة",
-    "ai_management": "إدارة الذكاء الاصطناعي",
-    "file_management_advanced": "إدارة الملفات المتقدمة",
-    "challenges_analytics_advanced": "تحليلات التحديات المتقدمة",
     "ideas": "الأفكار",
-    "challenges": "التحديات",
-    "evaluations": "التقييمات",
-    "bookmarks": "المفضلة",
-    "projects": "المشاريع",
-    "collaboration": "التعاون",
-    "analytics": "التحليلات"
-  },
-  "groups": {
-    "main": "الرئيسي",
-    "innovation": "الابتكار",
-    "management": "الإدارة",
-    "analytics": "التحليلات",
-    "settings": "الإعدادات",
-    "advanced": "متقدم"
-  },
-  "user_menu": {
+    "events": "الفعاليات",
+    "workspace": "مساحة العمل",
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
-    "logout": "تسجيل الخروج",
-    "sign_in": "تسجيل الدخول",
-    "sign_up": "إنشاء حساب"
+    "admin": "الإدارة",
+    "logout": "تسجيل الخروج"
   },
-  "search": {
-    "placeholder": "البحث في التنقل...",
-    "no_results": "لم يتم العثور على نتائج"
+  "admin": {
+    "users": "إدارة المستخدمين",
+    "settings": "إعدادات النظام",
+    "analytics": "التحليلات",
+    "reports": "التقارير"
+  },
+  "breadcrumb": {
+    "home": "الرئيسية", 
+    "back": "رجوع"
   }
 }

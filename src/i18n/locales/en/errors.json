@@ -1,26 +1,24 @@
 {
-  "something_went_wrong": "Something went wrong",
-  "try_again": "Try Again",
-  "validation_error": "Validation Error",
-  "network_error": "Network Error",
-  "server_error": "Server Error",
-  "permission_denied": "Permission Denied",
-  "not_found": "Not Found",
-  "timeout": "Request Timeout",
-  "invalid_input": "Invalid Input",
-  "required_field": "This field is required",
-  "invalid_email": "Invalid email address",
-  "invalid_phone": "Invalid phone number",
-  "password_too_short": "Password is too short",
-  "passwords_dont_match": "Passwords don't match",
-  "file_too_large": "File is too large",
-  "invalid_file_type": "Invalid file type",
-  "upload_failed": "Upload failed",
-  "download_failed": "Download failed",
-  "delete_failed": "Delete failed",
-  "save_failed": "Save failed",
-  "load_failed": "Load failed",
-  "connection_lost": "Connection lost",
-  "session_expired": "Session expired",
-  "unauthorized": "Unauthorized access"
+  "general": {
+    "unknown": "An unknown error occurred",
+    "network": "Network connection error",
+    "server": "Server error",
+    "timeout": "Request timeout"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Invalid email format",
+    "password": "Password requirements not met",
+    "min_length": "Minimum {{count}} characters required",
+    "max_length": "Maximum {{count}} characters allowed"
+  },
+  "auth": {
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "session_expired": "Session expired"
+  },
+  "not_found": {
+    "page": "Page not found", 
+    "resource": "Resource not found"
+  }
 }

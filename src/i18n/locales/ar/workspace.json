@@ -1,180 +1,20 @@
 {
-  "partner": {
-    "title": "مساحة عمل الشريك",
-    "role": "شريك استراتيجي",
-    "sample_company": "شركة تك كورب للحلول",
-    "company_type": "شريك تقني",
-    "industry": "التكنولوجيا المالية",
-    "strategic_level": "شريك استراتيجي",
-    "actions": {
-      "new_project": "مشروع جديد",
-      "direct_contact": "اتصال مباشر",
-      "new_contract": "عقد جديد",
-      "partnership_settings": "إعدادات الشراكة"
-    },
-    "stats": {
-      "partnership_duration": "مدة الشراكة",
-      "duration_months": "18 شهر",
-      "active_projects": "المشاريع النشطة",
-      "total_investment": "إجمالي الاستثمار",
-      "investment_amount": "2.5 مليون ريال",
-      "success_rate": "معدل النجاح"
-    },
-    "projects": {
-      "smart_payments": "حلول الدفع الذكية",
-      "digital_identity": "منصة الهوية الرقمية",
-      "banking_app": "تطبيق البنك الجديد"
-    },
-    "project_status": {
-      "in_development": "قيد التطوير",
-      "testing": "مرحلة الاختبار",
-      "planning": "التخطيط",
-      "completed": "مكتمل"
-    },
-    "communication_types": {
-      "meeting": "اجتماع",
-      "email": "بريد إلكتروني",
-      "call": "مكالمة",
-      "report": "تقرير"
-    },
-    "communications": {
-      "project_review": "اجتماع مراجعة المشروع",
-      "development_update": "تحديث التطوير",
-      "budget_discussion": "مناقشة الميزانية",
-      "monthly_report": "تقرير التقدم الشهري"
-    },
-    "status": {
-      "scheduled": "مجدول",
-      "sent": "مرسل",
-      "completed": "مكتمل",
-      "review": "قيد المراجعة"
-    },
-    "labels": {
-      "partner_name": "اسم الشريك",
-      "partnership_type": "نوع الشراكة",
-      "industry": "الصناعة",
-      "partnership_start": "بداية الشراكة",
-      "partnership_rating": "تقييم الشراكة",
-      "excellent_rating": "ممتاز (4.8/5.0)",
-      "current_projects": "المشاريع الحالية",
-      "progress": "التقدم",
-      "budget": "الميزانية"
-    }
+  "title": "مساحة العمل",
+  "overview": {
+    "title": "نظرة عامة على مساحة العمل",
+    "projects": "المشاريع",
+    "tasks": "المهام",
+    "members": "الأعضاء"
   },
-  "expert": {
-    "header": {
-      "expert_dashboard": "لوحة الخبير",
-      "evaluation_consultation_hub": "مركز التقييم والاستشارة"
-    },
-    "actions": {
-      "schedule_consultation": "جدولة استشارة"
-    },
-    "stats": {
-      "total_evaluations": "إجمالي التقييمات"
-    },
-    "tabs": {
-      "evaluation_queue": "قائمة انتظار التقييم",
-      "consultations": "الاستشارات"
-    },
-    "queue": {
-      "pending_evaluations": "التقييمات المعلقة",
-      "no_pending_evaluations": "لا توجد تقييمات معلقة في الوقت الحالي."
-    },
-    "consultations": {
-      "schedule": "جدول الاستشارات",
-      "no_upcoming": "لا توجد استشارات مجدولة قادمة."
-    }
+  "projects": {
+    "create": "إنشاء مشروع",
+    "edit": "تعديل مشروع",
+    "delete": "حذف مشروع",
+    "status": "حالة المشروع"
   },
-  "manager": {
-    "mock_data": {
-      "sample_member_1": "أحمد الراشد",
-      "sample_member_2": "سارة المنصوري",
-      "sample_member_3": "عمر الزهراني",
-      "sample_member_4": "فاطمة القاسمي",
-      "today": "اليوم",
-      "tomorrow": "غداً",
-      "thursday": "الخميس",
-      "sample_date_1": "2024-02-15",
-      "sample_date_2": "2024-02-20",
-      "sample_date_3": "2024-02-25"
-    },
-    "roles": {
-      "senior_developer": "مطور أول",
-      "ui_ux_designer": "مصمم واجهات المستخدم",
-      "project_coordinator": "منسق المشروع",
-      "quality_analyst": "محلل جودة"
-    },
-    "tasks": {
-      "ai_integration_module": "وحدة تكامل الذكاء الاصطناعي",
-      "user_interface_redesign": "إعادة تصميم واجهة المستخدم",
-      "milestone_planning": "تخطيط المعالم",
-      "quality_assessment": "تقييم الجودة",
-      "code_review_approval": "مراجعة الكود والموافقة",
-      "resource_allocation_review": "مراجعة توزيع الموارد",
-      "stakeholder_presentation": "عرض أصحاب المصلحة",
-      "assigned_to": "مكلف إلى",
-      "due_date": "تاريخ الاستحقاق"
-    },
-    "projects": {
-      "digital_transformation_initiative": "مبادرة التحول الرقمي",
-      "customer_portal_enhancement": "تحسين بوابة العملاء",
-      "mobile_app_development": "تطوير تطبيق الهاتف المحمول",
-      "active_projects": "المشاريع النشطة",
-      "description": "إدارة ومراقبة تقدم المشروع"
-    },
-    "resources": {
-      "development_team": "فريق التطوير",
-      "design_team": "فريق التصميم",
-      "qa_team": "فريق ضمان الجودة",
-      "project_management": "إدارة المشروع"
-    },
-    "deadlines": {
-      "phase_two_delivery": "تسليم المرحلة الثانية",
-      "user_testing_completion": "إكمال اختبار المستخدم",
-      "stakeholder_review": "مراجعة أصحاب المصلحة",
-      "days_left": "أيام متبقية"
-    },
-    "header": {
-      "manager_dashboard": "لوحة المدير",
-      "team_project_overview": "نظرة عامة على الفريق والمشروع"
-    },
-    "actions": {
-      "add_team_member": "إضافة عضو فريق",
-      "create_project": "إنشاء مشروع",
-      "review": "مراجعة",
-      "approve": "موافقة"
-    },
-    "stats": {
-      "team_members": "أعضاء الفريق",
-      "active_projects": "المشاريع النشطة",
-      "team_performance": "أداء الفريق",
-      "pending_tasks": "المهام المعلقة"
-    },
-    "tabs": {
-      "team_dashboard": "لوحة الفريق",
-      "projects": "المشاريع",
-      "resources": "الموارد",
-      "performance": "تحليلات الأداء"
-    },
-    "dashboard": {
-      "team_overview": "نظرة عامة على الفريق",
-      "pending_approvals": "الموافقات المعلقة",
-      "upcoming_deadlines": "المواعيد النهائية القادمة"
-    },
-    "status": {
-      "available": "متاح",
-      "busy": "مشغول",
-      "away": "غائب"
-    },
-    "priority": {
-      "high": "عالي",
-      "medium": "متوسط",
-      "low": "منخفض"
-    },
-    "project_status": {
-      "on_track": "في المسار الصحيح",
-      "at_risk": "في خطر",
-      "delayed": "متأخر"
-    }
+  "collaboration": {
+    "invite": "دعوة أعضاء",
+    "permissions": "إدارة الصلاحيات",
+    "activity": "النشاطات الأخيرة"
   }
 }

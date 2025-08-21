@@ -1,66 +1,20 @@
 {
   "title": "Challenges",
-  "description": "Innovation challenges and competitions",
-  "create": "Create Challenge",
-  "edit": "Edit Challenge",
-  "delete": "Delete Challenge",
-  "view": "View Challenge",
-  "join": "Join Challenge",
-  "leave": "Leave Challenge",
-  "submit": "Submit Idea",
-  "evaluate": "Evaluate",
-  "publish": "Publish",
-  "archive": "Archive",
+  "overview": {
+    "active": "Active Challenges",
+    "completed": "Completed Challenges",
+    "drafts": "Draft Challenges"
+  },
+  "actions": {
+    "create": "Create Challenge",
+    "edit": "Edit Challenge",
+    "delete": "Delete Challenge",
+    "publish": "Publish Challenge"
+  },
   "status": {
     "draft": "Draft",
-    "published": "Published", 
     "active": "Active",
-    "evaluation": "Under Evaluation",
     "completed": "Completed",
-    "cancelled": "Cancelled",
-    "archived": "Archived"
-  },
-  "priority": {
-    "low": "Low Priority",
-    "medium": "Medium Priority",
-    "high": "High Priority",
-    "critical": "Critical Priority"
-  },
-  "sensitivity": {
-    "public": "Public",
-    "internal": "Internal",
-    "confidential": "Confidential",
-    "restricted": "Restricted"
-  },
-  "type": {
-    "innovation": "Innovation Challenge",
-    "problem_solving": "Problem Solving",
-    "improvement": "Process Improvement",
-    "research": "Research Challenge"
-  },
-  "collaboration": {
-    "individual": "Individual",
-    "team": "Team",
-    "both": "Individual or Team"
-  },
-  "fields": {
-    "title": "Challenge Title",
-    "description": "Description",
-    "objectives": "Objectives",
-    "requirements": "Requirements",
-    "criteria": "Evaluation Criteria",
-    "budget": "Budget",
-    "deadline": "Submission Deadline",
-    "evaluation_deadline": "Evaluation Deadline",
-    "participants": "Participants",
-    "submissions": "Submissions"
-  },
-  "analytics": {
-    "overview": "Challenge Analytics",
-    "participation": "Participation Rate",
-    "submissions": "Submission Statistics",
-    "evaluation": "Evaluation Progress",
-    "timeline": "Timeline Analysis"
-  },
-  "delete_confirmation": "Are you sure you want to delete this challenge?"
+    "cancelled": "Cancelled"
+  }
 }

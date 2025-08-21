@@ -98,8 +98,8 @@ export function useFeatureTranslation(
 /**
  * Convenience hooks for specific features
  */
-export const useChallengeTranslation = () => useFeatureTranslation('challenges');
-export const useCampaignTranslation = () => useFeatureTranslation('campaigns');
+export const useChallengeTranslation = () => useFeatureTranslation(['challenges', 'challenges-details', 'challenges-form', 'challenges-submissions']);
+export const useCampaignTranslation = () => useFeatureTranslation(['campaigns', 'campaigns-form', 'campaigns-analytics']);
 export const useDashboardTranslation = () => useFeatureTranslation('dashboard');
 export const useAdminTranslation = () => useFeatureTranslation(['admin', 'admin-users', 'admin-settings', 'admin-analytics']);
 

@@ -1,26 +1,24 @@
 {
-  "something_went_wrong": "حدث خطأ ما",
-  "try_again": "حاول مرة أخرى",
-  "validation_error": "خطأ في التحقق",
-  "network_error": "خطأ في الشبكة",
-  "server_error": "خطأ في الخادم",
-  "permission_denied": "رُفض الإذن",
-  "not_found": "غير موجود",
-  "timeout": "انتهت مهلة الطلب",
-  "invalid_input": "مدخل غير صحيح",
-  "required_field": "هذا الحقل مطلوب",
-  "invalid_email": "عنوان بريد إلكتروني غير صحيح",
-  "invalid_phone": "رقم هاتف غير صحيح",
-  "password_too_short": "كلمة المرور قصيرة جداً",
-  "passwords_dont_match": "كلمات المرور غير متطابقة",
-  "file_too_large": "الملف كبير جداً",
-  "invalid_file_type": "نوع ملف غير صحيح",
-  "upload_failed": "فشل الرفع",
-  "download_failed": "فشل التنزيل",
-  "delete_failed": "فشل الحذف",
-  "save_failed": "فشل الحفظ",
-  "load_failed": "فشل التحميل",
-  "connection_lost": "انقطع الاتصال",
-  "session_expired": "انتهت صلاحية الجلسة",
-  "unauthorized": "وصول غير مصرح"
+  "general": {
+    "unknown": "حدث خطأ غير معروف",
+    "network": "خطأ في الاتصال بالشبكة",
+    "server": "خطأ في الخادم",
+    "timeout": "انتهت مهلة الطلب"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "email": "تنسيق البريد الإلكتروني غير صحيح",
+    "password": "متطلبات كلمة المرور غير مستوفاة",
+    "min_length": "الحد الأدنى {{count}} أحرف مطلوبة",
+    "max_length": "الحد الأقصى {{count}} أحرف مسموحة"
+  },
+  "auth": {
+    "unauthorized": "وصول غير مصرح",
+    "forbidden": "الوصول محظور",
+    "session_expired": "انتهت صلاحية الجلسة"
+  },
+  "not_found": {
+    "page": "الصفحة غير موجودة",
+    "resource": "المورد غير موجود"
+  }
 }

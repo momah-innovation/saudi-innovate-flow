@@ -1,180 +1,20 @@
 {
-  "partner": {
-    "title": "Partner Workspace",
-    "role": "Strategic Partner",
-    "sample_company": "TechCorp Solutions",
-    "company_type": "Technology Partner",
-    "industry": "Financial Technology",
-    "strategic_level": "Strategic Partner",
-    "actions": {
-      "new_project": "New Project",
-      "direct_contact": "Direct Contact",
-      "new_contract": "New Contract",
-      "partnership_settings": "Partnership Settings"
-    },
-    "stats": {
-      "partnership_duration": "Partnership Duration",
-      "duration_months": "18 months",
-      "active_projects": "Active Projects",
-      "total_investment": "Total Investment", 
-      "investment_amount": "$2.5M",
-      "success_rate": "Success Rate"
-    },
-    "projects": {
-      "smart_payments": "Smart Payment Solutions",
-      "digital_identity": "Digital Identity Platform",
-      "banking_app": "Next-Gen Banking App"
-    },
-    "project_status": {
-      "in_development": "In Development",
-      "testing": "Testing Phase",
-      "planning": "Planning",
-      "completed": "Completed"
-    },
-    "communication_types": {
-      "meeting": "Meeting",
-      "email": "Email",
-      "call": "Call",
-      "report": "Report"
-    },
-    "communications": {
-      "project_review": "Project Review Meeting",
-      "development_update": "Development Update",
-      "budget_discussion": "Budget Discussion",
-      "monthly_report": "Monthly Progress Report"
-    },
-    "status": {
-      "scheduled": "Scheduled",
-      "sent": "Sent",
-      "completed": "Completed",
-      "review": "Under Review"
-    },
-    "labels": {
-      "partner_name": "Partner Name",
-      "partnership_type": "Partnership Type",
-      "industry": "Industry",
-      "partnership_start": "Partnership Start",
-      "partnership_rating": "Partnership Rating",
-      "excellent_rating": "Excellent (4.8/5.0)",
-      "current_projects": "Current Projects",
-      "progress": "Progress",
-      "budget": "Budget"
-    }
+  "title": "Workspace",
+  "overview": {
+    "title": "Workspace Overview",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "members": "Members"
   },
-  "expert": {
-    "header": {
-      "expert_dashboard": "Expert Dashboard",
-      "evaluation_consultation_hub": "Evaluation & Consultation Hub"
-    },
-    "actions": {
-      "schedule_consultation": "Schedule Consultation"
-    },
-    "stats": {
-      "total_evaluations": "Total Evaluations"
-    },
-    "tabs": {
-      "evaluation_queue": "Evaluation Queue",
-      "consultations": "Consultations"
-    },
-    "queue": {
-      "pending_evaluations": "Pending Evaluations",
-      "no_pending_evaluations": "No pending evaluations at the moment."
-    },
-    "consultations": {
-      "schedule": "Consultation Schedule",
-      "no_upcoming": "No upcoming consultations scheduled."
-    }
+  "projects": {
+    "create": "Create Project",
+    "edit": "Edit Project",
+    "delete": "Delete Project",
+    "status": "Project Status"
   },
-  "manager": {
-    "mock_data": {
-      "sample_member_1": "Ahmed Al-Rashid",
-      "sample_member_2": "Sara Al-Mansouri",
-      "sample_member_3": "Omar Al-Zahrani",
-      "sample_member_4": "Fatima Al-Qasimi",
-      "today": "Today",
-      "tomorrow": "Tomorrow",
-      "thursday": "Thursday",
-      "sample_date_1": "2024-02-15",
-      "sample_date_2": "2024-02-20",
-      "sample_date_3": "2024-02-25"
-    },
-    "roles": {
-      "senior_developer": "Senior Developer",
-      "ui_ux_designer": "UI/UX Designer",
-      "project_coordinator": "Project Coordinator",
-      "quality_analyst": "Quality Analyst"
-    },
-    "tasks": {
-      "ai_integration_module": "AI Integration Module",
-      "user_interface_redesign": "User Interface Redesign",
-      "milestone_planning": "Milestone Planning",
-      "quality_assessment": "Quality Assessment",
-      "code_review_approval": "Code Review & Approval",
-      "resource_allocation_review": "Resource Allocation Review",
-      "stakeholder_presentation": "Stakeholder Presentation",
-      "assigned_to": "Assigned to",
-      "due_date": "Due Date"
-    },
-    "projects": {
-      "digital_transformation_initiative": "Digital Transformation Initiative",
-      "customer_portal_enhancement": "Customer Portal Enhancement",
-      "mobile_app_development": "Mobile App Development",
-      "active_projects": "Active Projects",
-      "description": "Manage and monitor project progress"
-    },
-    "resources": {
-      "development_team": "Development Team",
-      "design_team": "Design Team", 
-      "qa_team": "QA Team",
-      "project_management": "Project Management"
-    },
-    "deadlines": {
-      "phase_two_delivery": "Phase Two Delivery",
-      "user_testing_completion": "User Testing Completion",
-      "stakeholder_review": "Stakeholder Review",
-      "days_left": "days left"
-    },
-    "header": {
-      "manager_dashboard": "Manager Dashboard",
-      "team_project_overview": "Team & Project Overview"
-    },
-    "actions": {
-      "add_team_member": "Add Team Member",
-      "create_project": "Create Project",
-      "review": "Review",
-      "approve": "Approve"
-    },
-    "stats": {
-      "team_members": "Team Members",
-      "active_projects": "Active Projects",
-      "team_performance": "Team Performance",
-      "pending_tasks": "Pending Tasks"
-    },
-    "tabs": {
-      "team_dashboard": "Team Dashboard",
-      "projects": "Projects",
-      "resources": "Resources",
-      "performance": "Performance Analytics"
-    },
-    "dashboard": {
-      "team_overview": "Team Overview",
-      "pending_approvals": "Pending Approvals",
-      "upcoming_deadlines": "Upcoming Deadlines"
-    },
-    "status": {
-      "available": "Available",
-      "busy": "Busy",
-      "away": "Away"
-    },
-    "priority": {
-      "high": "High",
-      "medium": "Medium",
-      "low": "Low"
-    },
-    "project_status": {
-      "on_track": "On Track",
-      "at_risk": "At Risk",
-      "delayed": "Delayed"
-    }
+  "collaboration": {
+    "invite": "Invite Members",
+    "permissions": "Manage Permissions",
+    "activity": "Recent Activity"
   }
 }

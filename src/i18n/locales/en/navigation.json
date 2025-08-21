@@ -1,104 +1,24 @@
 {
-  "discover": "Discover",
-  "events": "Events",
   "main": {
-    "home": "Home",
     "dashboard": "Dashboard",
-    "workspaces": "Workspaces",
     "challenges": "Challenges",
+    "campaigns": "Campaigns", 
+    "ideas": "Ideas",
     "events": "Events",
-    "opportunities": "Opportunities",
-    "ideas": "Ideas",
-    "statistics": "Statistics",
-    "help": "Help",
-    "settings": "Settings"
-  },
-  "admin": {
-    "admin_dashboard": "Admin Dashboard",
-    "user_management": "User Management",
-    "challenges_management": "Challenges Management",
-    "campaigns_management": "Campaigns Management",
-    "events_management": "Events Management",
-    "ideas_management": "Ideas Management",
-    "partners_management": "Partners Management",
-    "sectors_management": "Sectors Management",
-    "core_team_management": "Core Team Management",
-    "expert_assignments": "Expert Assignments",
-    "organizational_structure": "Organizational Structure",
-    "stakeholders_management": "Stakeholders Management",
-    "evaluation_management": "Evaluation Management",
-    "system_settings": "System Settings",
-    "analytics": "Analytics",
-    "relationships": "Relationships",
-    "security": "Security",
-    "storage": "Storage",
-    "ai_management": "AI Management",
-    "access_control": "Access Control"
-  },
-  "landing": {
-    "about": "About",
-    "campaigns": "Campaigns",
-    "marketplace": "Marketplace",
-    "pricing": "Pricing",
-    "learn_more": "Learn More",
-    "logo_text": "Ruwād",
-    "welcome": "Welcome",
-    "dashboard": "Dashboard",
-    "login": "Login",
-    "get_started": "Get Started"
-  },
-  "breadcrumbs": {
-    "workspaces": "Workspaces",
-    "admin_dashboard": "Admin Dashboard",
-    "organizational_structure": "Organizational Structure",
-    "evaluation_management": "Evaluation Management",
-    "relationship_overview": "Relationship Overview",
-    "challenges_management": "Challenges Management",
-    "users_management": "Users Management",
-    "events_management": "Events Management",
-    "ideas_management": "Ideas Management",
-    "campaigns_management": "Campaigns Management",
-    "core_team_management": "Core Team Management",
-    "teams_management": "Teams Management",
-    "sectors_management": "Sectors Management",
-    "stakeholders_management": "Stakeholders Management",
-    "evaluations_management": "Evaluations Management",
-    "partners_management": "Partners Management",
-    "expert_assignments": "Expert Assignments",
-    "system_settings": "System Settings",
-    "access_control": "Access Control",
-    "security_advanced": "Security Advanced",
-    "access_control_advanced": "Access Control Advanced",
-    "elevation_monitor": "Elevation Monitor",
-    "analytics_advanced": "Analytics Advanced",
-    "ai_management": "AI Management",
-    "file_management_advanced": "File Management Advanced",
-    "challenges_analytics_advanced": "Challenges Analytics Advanced",
-    "ideas": "Ideas",
-    "challenges": "Challenges",
-    "evaluations": "Evaluations",
-    "bookmarks": "Bookmarks",
-    "projects": "Projects",
-    "collaboration": "Collaboration",
-    "analytics": "Analytics"
-  },
-  "groups": {
-    "main": "Main",
-    "innovation": "Innovation",
-    "management": "Management",
-    "analytics": "Analytics",
-    "settings": "Settings",
-    "advanced": "Advanced"
-  },
-  "user_menu": {
+    "workspace": "Workspace",
     "profile": "Profile",
     "settings": "Settings",
-    "logout": "Logout",
-    "sign_in": "Sign In",
-    "sign_up": "Sign Up"
+    "admin": "Admin",
+    "logout": "Logout"
   },
-  "search": {
-    "placeholder": "Search navigation...",
-    "no_results": "No results found"
+  "admin": {
+    "users": "User Management",
+    "settings": "System Settings",
+    "analytics": "Analytics", 
+    "reports": "Reports"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "back": "Back"
   }
 }
