@@ -12,8 +12,8 @@
 ### **Environment Setup (10 minutes)**
 ```bash
 # 1. Clone the repository
-git clone [repository-url]
-cd ruwad-innovation-platform
+git clone <your-repository-url>
+cd vite_react_shadcn_ts
 
 # 2. Install dependencies (uses Node.js for tooling)
 npm install
@@ -27,7 +27,7 @@ npm run dev
 ```
 
 ### **Verification (5 minutes)**
-- [ ] Application loads at `http://localhost:5173`
+- [ ] Application loads at `http://localhost:8080`
 - [ ] Login/signup functionality works  
 - [ ] Dashboard displays without errors
 - [ ] No TypeScript compilation errors (check during `npm run dev`)

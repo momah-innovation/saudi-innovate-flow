@@ -6,7 +6,7 @@ Understanding the Ruwād Innovation Platform codebase architecture and organizat
 ## 📂 **ROOT DIRECTORY STRUCTURE**
 
 ```
-ruwad-innovation-platform/
+vite_react_shadcn_ts/
 ├── 📁 docs/                     # Documentation hub
 ├── 📁 public/                   # Static assets (served directly)
 ├── 📁 src/                      # React application source code

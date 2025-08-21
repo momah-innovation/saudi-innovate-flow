@@ -36,8 +36,8 @@ git --version           # Should show 2.30.0+
 ### **Step 1: Repository Setup**
 ```bash
 # Clone the repository
-git clone [repository-url]
-cd ruwad-innovation-platform
+git clone <your-repository-url>
+cd vite_react_shadcn_ts
 
 # Verify repository structure
 ls -la
@@ -91,8 +91,8 @@ VITE_ENABLE_DEVTOOLS=true
 npm run dev
 
 # Expected output:
-# ➜  Local:   http://localhost:5173/
-# ➜  Network: http://192.168.x.x:5173/
+# ➜  Local:   http://localhost:8080/
+# ➜  Network: http://192.168.x.x:8080/
 ```
 
 ---
@@ -236,7 +236,7 @@ npm run lint
 
 # 3. Start application
 npm run dev
-# Expected: App loads at http://localhost:5173
+# Expected: App loads at http://localhost:8080
 
 # 4. Missing validations (need setup):
 # npm run type-check    # TypeScript compilation
@@ -382,7 +382,7 @@ npm install
 
 # 3. Start development environment
 npm run dev
-# Opens browser to http://localhost:5173
+# Opens browser to http://localhost:8080
 
 # 4. Check for issues (limited by missing scripts)
 npm run lint
