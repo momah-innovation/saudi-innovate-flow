@@ -50,7 +50,7 @@ Welcome to the comprehensive documentation for the Ruwad Innovation Platform - a
 - **Frontend:** React 18.3.1 + TypeScript + Vite
 - **Styling:** Tailwind CSS + shadcn/ui components
 - **Backend:** Supabase (PostgreSQL + Auth + Storage)
-- **State Management:** React Query + Zustand
+- **State Management:** React Query
 - **Routing:** React Router v6
 - **Testing:** Vitest + Testing Library
 - **Build:** Vite + TypeScript
