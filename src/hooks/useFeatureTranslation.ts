@@ -101,7 +101,7 @@ export function useFeatureTranslation(
 export const useChallengeTranslation = () => useFeatureTranslation('challenges');
 export const useCampaignTranslation = () => useFeatureTranslation('campaigns');
 export const useDashboardTranslation = () => useFeatureTranslation('dashboard');
-export const useAdminTranslation = () => useFeatureTranslation(['admin', 'users', 'settings']);
+export const useAdminTranslation = () => useFeatureTranslation(['admin', 'admin-users', 'admin-settings', 'admin-analytics']);
 
 /**
  * Hook for components that need multiple namespaces
