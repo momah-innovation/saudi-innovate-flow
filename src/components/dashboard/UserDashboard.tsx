@@ -10,7 +10,7 @@ import { useActivityLogger } from '@/hooks/useActivityLogger';
 import { useActivityFeed } from '@/hooks/useActivityFeed';
 import { DashboardHero } from './DashboardHero';
 import { DashboardMetrics } from './DashboardMetrics';
-import { DashboardQuickActions } from './DashboardQuickActions';
+import { UnifiedQuickActions } from '@/components/ui/unified-quick-actions';
 import { DashboardRecentActivity } from './DashboardRecentActivity';
 import { ActivityFeed } from '@/components/activity/ActivityFeed';
 import { 
@@ -117,32 +117,40 @@ export const UserDashboard: React.FC = () => {
   // Role-based quick actions
   const quickActions = [
     {
-      label: t('dashboard.cards.quick_actions.new_challenge'),
+      id: 'new_challenge',
+      title: t('dashboard.cards.quick_actions.new_challenge'),
+      description: t('dashboard.cards.quick_actions.new_challenge_desc', { defaultValue: 'Create and manage innovation challenges' }),
       icon: FileText,
-      href: '/challenges/create',
+      onClick: () => handleNavigate('/challenges/create'),
       visible: dashboardAccess.canManageChallenges,
-      color: 'bg-blue-500'
+      colorScheme: 'innovation' as const
     },
     {
-      label: t('dashboard.cards.quick_actions.new_campaign'),
+      id: 'new_campaign',
+      title: t('dashboard.cards.quick_actions.new_campaign'),
+      description: t('dashboard.cards.quick_actions.new_campaign_desc', { defaultValue: 'Launch strategic innovation campaigns' }),
       icon: Calendar,
-      href: '/campaigns/create',
+      onClick: () => handleNavigate('/campaigns/create'),
       visible: dashboardAccess.canCreateCampaigns,
-      color: 'bg-green-500'
+      colorScheme: 'success' as const
     },
     {
-      label: t('dashboard.cards.quick_actions.invite_users'),
+      id: 'invite_users',
+      title: t('dashboard.cards.quick_actions.invite_users'),
+      description: t('dashboard.cards.quick_actions.invite_users_desc', { defaultValue: 'Expand your innovation network' }),
       icon: UserPlus,
-      href: '/users/invite',
+      onClick: () => handleNavigate('/users/invite'),
       visible: dashboardAccess.canInviteUsers,
-      color: 'bg-purple-500'
+      colorScheme: 'social' as const
     },
     {
-      label: t('dashboard.cards.quick_actions.view_analytics'),
+      id: 'view_analytics',
+      title: t('dashboard.cards.quick_actions.view_analytics'),
+      description: t('dashboard.cards.quick_actions.view_analytics_desc', { defaultValue: 'Analyze performance and insights' }),
       icon: BarChart3,
-      href: '/analytics',
+      onClick: () => handleNavigate('/analytics'),
       visible: dashboardAccess.canViewAnalytics,
-      color: 'bg-orange-500'
+      colorScheme: 'info' as const
     }
   ].filter(action => action.visible);
 
@@ -216,9 +224,9 @@ export const UserDashboard: React.FC = () => {
               />
             </div>
             <div>
-              <DashboardQuickActions 
-                actions={quickActions} 
-                onActionClick={handleNavigate}
+              <UnifiedQuickActions 
+                title={t('dashboard.cards.quick_actions.title')}
+                actions={quickActions}
               />
             </div>
           </div>

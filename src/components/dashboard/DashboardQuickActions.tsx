@@ -1,7 +1,6 @@
-
 import React from 'react';
+import { CompactQuickActions, UnifiedQuickAction } from '@/components/ui/unified-quick-actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { LucideIcon } from 'lucide-react';
 
@@ -24,34 +23,26 @@ export const DashboardQuickActions: React.FC<DashboardQuickActionsProps> = ({
 }) => {
   const { t } = useUnifiedTranslation();
 
+  // Convert legacy actions to unified format
+  const unifiedActions: UnifiedQuickAction[] = actions.map((action, index) => ({
+    id: action.href,
+    title: action.label,
+    description: `${action.label} - Click to navigate`,
+    icon: action.icon,
+    onClick: () => onActionClick(action.href),
+    colorScheme: index % 2 === 0 ? 'primary' : 'info'
+  }));
+
   return (
-    <Card>
+    <Card className="gradient-border">
       <CardHeader>
-        <CardTitle>{t('dashboard.cards.quick_actions.title')}</CardTitle>
+        <CardTitle className="text-lg flex items-center gap-2">
+          <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+          {t('dashboard.cards.quick_actions.title')}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        {actions.map((action, index) => {
-          const Icon = action.icon;
-          return (
-            <Button 
-              key={index} 
-              variant="ghost" 
-              className="w-full justify-start hover:bg-muted/50 transition-colors"
-              onClick={() => onActionClick(action.href)}
-            >
-              <div className={`p-2 rounded-md mr-3 ${action.color} text-white`}>
-                <Icon className="h-4 w-4" />
-              </div>
-              {action.label}
-            </Button>
-          );
-        })}
-        
-        {actions.length === 0 && (
-          <div className="text-center py-4 text-muted-foreground">
-            No quick actions available for your role.
-          </div>
-        )}
+      <CardContent>
+        <CompactQuickActions actions={unifiedActions} />
       </CardContent>
     </Card>
   );

@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { UnifiedQuickActions, UnifiedQuickAction } from '@/components/ui/unified-quick-actions';
 import { 
   Lightbulb, 
   Users, 
@@ -21,6 +22,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { useUnifiedLoading } from '@/hooks/useUnifiedLoading';
 import { useOptimizedDashboardCounts, useOptimizedUserSpecificCounts } from '@/hooks/useOptimizedDashboardCounts';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface DashboardStats {
@@ -37,6 +39,7 @@ export const DashboardOverview = () => {
   const { isRTL } = useDirection();
   const { t } = useUnifiedTranslation();
   const { user, hasRole } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState<DashboardStats>({
     totalIdeas: 0,
     totalChallenges: 0,
@@ -58,6 +61,10 @@ export const DashboardOverview = () => {
   const { data: dashboardCounts, isLoading: countsLoading } = useOptimizedDashboardCounts();
   const { data: userStats, isLoading: userStatsLoading } = useOptimizedUserSpecificCounts(user?.id);
 
+  const onNavigate = (path: string) => {
+    navigate(path);
+  };
+
 
   useEffect(() => {
     if (dashboardCounts && userStats !== undefined) {
@@ -73,34 +80,38 @@ export const DashboardOverview = () => {
       // Loading handled by hooks
     }
   }, [dashboardCounts, userStats]);
-  const quickActions = [
+  const quickActions: UnifiedQuickAction[] = [
     {
+      id: 'submit_idea',
       title: t('dashboard_overview.submit_new_idea'),
       description: t('dashboard_overview.share_innovative_idea'),
       icon: Lightbulb,
-      href: '/ideas/submit',
-      color: 'from-blue-500 to-purple-600',
+      onClick: () => onNavigate('/ideas/submit'),
+      colorScheme: 'innovation'
     },
     {
+      id: 'browse_challenges',
       title: t('dashboard_overview.browse_challenges'),
       description: t('dashboard_overview.discover_new_challenges'),
       icon: Target,
-      href: '/challenges',
-      color: 'from-green-500 to-teal-600',
+      onClick: () => onNavigate('/challenges'),
+      colorScheme: 'success'
     },
     {
+      id: 'upcoming_events',
       title: t('dashboard_overview.upcoming_events_action'),
       description: t('dashboard_overview.join_upcoming_events'),
       icon: Calendar,
-      href: '/events',
-      color: 'from-orange-500 to-red-600',
+      onClick: () => onNavigate('/events'),
+      colorScheme: 'warning'
     },
     {
+      id: 'partnerships',
       title: t('dashboard_overview.new_partnerships'),
       description: t('dashboard_overview.explore_partnerships'),
       icon: Users,
-      href: '/partners',
-      color: 'from-purple-500 to-pink-600',
+      onClick: () => onNavigate('/partners'),
+      colorScheme: 'social'
     },
   ];
 
@@ -282,62 +293,12 @@ export const DashboardOverview = () => {
       <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
         {/* Quick Actions */}
         <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className={cn(
-                "flex items-center gap-2 text-base sm:text-lg",
-                isRTL && "flex-row-reverse"
-              )}>
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
-                {t('dashboard_overview.quick_actions')}
-              </CardTitle>
-              <CardDescription className="text-xs sm:text-sm">
-                {t('dashboard_overview.start_innovation_journey')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                {quickActions.map((action, index) => {
-                  const IconComponent = action.icon;
-                  return (
-                    <Card 
-                      key={index} 
-                      className="group card-hover-optimized cursor-pointer border-2 hover:border-primary/20 touch-manipulation"
-                    >
-                      <CardContent className="p-3 sm:p-4">
-                        <div className={cn(
-                          "flex items-start gap-2 sm:gap-3",
-                          isRTL && "flex-row-reverse"
-                        )}>
-                          <div className={cn(
-                            "p-1.5 sm:p-2 rounded-lg bg-gradient-to-r text-white shrink-0",
-                            action.color
-                          )}>
-                            <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
-                          </div>
-                          <div className={cn(
-                            "flex-1 min-w-0",
-                            isRTL && "text-right"
-                          )}>
-                            <h3 className="font-semibold text-sm sm:text-base mb-1 group-hover:text-primary transition-colors">
-                              {action.title}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
-                              {action.description}
-                            </p>
-                          </div>
-                          <ArrowRight className={cn(
-                            "w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0",
-                            isRTL && "rotate-180"
-                          )} />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+          <UnifiedQuickActions
+            title={t('dashboard_overview.quick_actions')}
+            actions={quickActions}
+            layout="grid"
+            columns={2}
+          />
         </div>
 
         {/* Recent Activities */}

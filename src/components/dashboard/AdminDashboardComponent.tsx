@@ -18,6 +18,7 @@ import { AdminMetricsCards } from './AdminMetricsCards';
 import { AdminSystemHealth } from './AdminSystemHealth';
 import { AdminUserBreakdown } from './AdminUserBreakdown';
 import { AdminTrendsAnalysis } from './AdminTrendsAnalysis';
+import { UnifiedQuickActions } from '@/components/ui/unified-quick-actions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
@@ -494,30 +495,48 @@ export const AdminDashboard = React.memo(function AdminDashboard({ userProfile, 
             </Card>
           </div>
 
-          {/* Quick Actions Grid */}
+          {/* Quick Actions - Enhanced */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('admin.cards.quick_actions')}</CardTitle>
-                <CardDescription>
-                   {t('admin.cards.quick_actions_desc')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button onClick={() => navigationHandler.navigateTo('/admin/users')} className="w-full justify-start">
-                  <Users className="w-4 h-4 mr-2" />
-                   {t('admin.cards.manage_users')}
-                 </Button>
-                 <Button onClick={() => navigationHandler.navigateTo('/admin/challenges')} variant="outline" className="w-full justify-start">
-                   <Target className="w-4 h-4 mr-2" />
-                   {t('admin.cards.manage_challenges')}
-                 </Button>
-                 <Button onClick={() => navigationHandler.navigateTo('/admin/evaluations')} variant="outline" className="w-full justify-start">
-                   <BarChart3 className="w-4 h-4 mr-2" />
-                   {t('admin.cards.system_reports')}
-                 </Button>
-               </CardContent>
-             </Card>
+            <UnifiedQuickActions
+              title={t('admin.cards.quick_actions')}
+              actions={[
+                {
+                  id: 'manage_users',
+                  title: t('admin.cards.manage_users'),
+                  description: t('admin.cards.manage_users_desc', { defaultValue: 'Manage users, roles, and permissions' }),
+                  icon: Users,
+                  onClick: () => navigationHandler.navigateTo('/admin/users'),
+                  colorScheme: 'social'
+                },
+                {
+                  id: 'manage_challenges', 
+                  title: t('admin.cards.manage_challenges'),
+                  description: t('admin.cards.manage_challenges_desc', { defaultValue: 'Create and manage innovation challenges' }),
+                  icon: Target,
+                  onClick: () => navigationHandler.navigateTo('/admin/challenges'),
+                  colorScheme: 'innovation'
+                },
+                {
+                  id: 'system_reports',
+                  title: t('admin.cards.system_reports'),
+                  description: t('admin.cards.system_reports_desc', { defaultValue: 'View analytics and system reports' }),
+                  icon: BarChart3,
+                  onClick: () => navigationHandler.navigateTo('/admin/evaluations'),
+                  colorScheme: 'info'
+                },
+                {
+                  id: 'system_settings',
+                  title: t('admin.cards.system_settings', { defaultValue: 'System Settings' }),
+                  description: t('admin.cards.system_settings_desc', { defaultValue: 'Configure system preferences' }),
+                  icon: Settings,
+                  onClick: () => navigationHandler.navigateTo('/admin/settings'),
+                  colorScheme: 'warning'
+                }
+              ]}
+              className="lg:col-span-2"
+              layout="grid"
+              columns={2}
+            />
 
              <Card>
                <CardHeader>
