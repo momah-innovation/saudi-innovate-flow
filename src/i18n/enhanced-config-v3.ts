@@ -84,6 +84,18 @@ import arBreadcrumbs from './locales/ar/breadcrumbs.json';
 import enRoutes from './locales/en/routes.json';
 import arRoutes from './locales/ar/routes.json';
 
+// Advanced Search translations
+import enAdvancedSearch from './locales/en/advanced-search.json';
+import arAdvancedSearch from './locales/ar/advanced-search.json';
+
+// Challenge Form translations
+import enChallengeForm from './locales/en/challenge-form.json';
+import arChallengeForm from './locales/ar/challenge-form.json';
+
+// Error Boundary translations
+import enErrorBoundary from './locales/en/error-boundary.json';
+import arErrorBoundary from './locales/ar/error-boundary.json';
+
 // Base static resources - these are loaded immediately
 const staticResources = {
   en: { 
@@ -106,7 +118,10 @@ const staticResources = {
     dialogs: enDialogs,
     tabs: enTabs,
     breadcrumbs: enBreadcrumbs,
-    routes: enRoutes
+    routes: enRoutes,
+    'advanced-search': enAdvancedSearch,
+    'challenge-form': enChallengeForm,
+    'error-boundary': enErrorBoundary
   },
   ar: { 
     landing: arLanding,
@@ -128,7 +143,10 @@ const staticResources = {
     dialogs: arDialogs,
     tabs: arTabs,
     breadcrumbs: arBreadcrumbs,
-    routes: arRoutes
+    routes: arRoutes,
+    'advanced-search': arAdvancedSearch,
+    'challenge-form': arChallengeForm,
+    'error-boundary': arErrorBoundary
   }
 };
 
@@ -258,17 +276,16 @@ const loadNamespace = async (language: string, namespace: string) => {
           : await import('./locales/ar/profile.json');
         break;
         
+      case 'activity':
+        translations = language === 'en'
+          ? await import('./locales/en/activity.json')
+          : await import('./locales/ar/activity.json');
+        break;
         
       case 'challenge-settings':
         translations = language === 'en'
           ? await import('./locales/en/challenge_settings.json')
           : await import('./locales/ar/challenge_settings.json');
-        break;
-        
-      case 'error-boundary':
-        translations = language === 'en'
-          ? await import('./locales/en/error_boundary.json')
-          : await import('./locales/ar/error_boundary.json');
         break;
         
       case 'workspace':
@@ -335,7 +352,8 @@ const normalizeTranslationKey = (key: string): { namespace: string | null; norma
       'campaigns-form', 'campaigns-analytics', 'admin-settings', 'admin-users', 
       'admin-analytics', 'partners', 'opportunities', 'ideas-wizard', 
       'collaboration', 'profile', 'challenge-settings', 'error-boundary', 'team',
-      'pages', 'dialogs', 'tabs', 'breadcrumbs', 'routes'
+      'pages', 'dialogs', 'tabs', 'breadcrumbs', 'routes', 'advanced-search', 
+      'challenge-form', 'activity'
     ];
     
     if (knownNamespaces.includes(potentialNamespace)) {
@@ -403,7 +421,7 @@ i18n
     
     // Default namespaces that should be loaded immediately - using dot notation
     defaultNS: 'common',
-    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists', 'challenges', 'expert', 'events', 'statistics', 'subscription', 'trends', 'stakeholder', 'pages', 'dialogs', 'tabs', 'breadcrumbs', 'routes'],
+    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists', 'challenges', 'expert', 'events', 'statistics', 'subscription', 'trends', 'stakeholder', 'pages', 'dialogs', 'tabs', 'breadcrumbs', 'routes', 'advanced-search', 'challenge-form', 'activity', 'error-boundary'],
     
     // Namespace/key separators
     nsSeparator: ':', // use ':' to separate namespace from key (avoids conflict with nested dot keys)

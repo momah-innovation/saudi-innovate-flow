@@ -1,0 +1,8 @@
+{
+  "description": "We encountered an error while loading this component. Please try refreshing the page.",
+  "refresh_page": "Refresh Page",
+  "report_error": "Report Error",
+  "error_details": "Error Details",
+  "component_stack": "Component Stack",
+  "retry_action": "Try Again"
+}
