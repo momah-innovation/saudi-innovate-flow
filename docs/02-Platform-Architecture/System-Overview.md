@@ -165,32 +165,107 @@ sequenceDiagram
 
 ## 🎯 **PERFORMANCE ARCHITECTURE**
 
+### **Query & Caching Strategy**
+<lov-mermaid>
+graph TB
+    A[User Request] --> B[React Query Cache]
+    B --> C{Cache Hit?}
+    C -->|Yes| D[Cached Response]
+    C -->|No| E[Supabase Client]
+    E --> F[PostgreSQL Database]
+    F --> G[Database Functions]
+    G --> H[Processed Data]
+    H --> B
+    B --> I[Real-time Updates]
+    I --> J[UI Update]
+</lov-mermaid>
+
 ### **Optimization Strategies**
 - **React Query Caching**: Aggressive caching with 10-minute stale time
 - **Component Optimization**: Memoized components and lazy loading
 - **Background Sync**: Real-time updates without blocking UI
 - **Query Optimization**: Optimized database functions and indexes
 - **Asset Optimization**: Compressed assets and code splitting
+- **Lazy Loading**: Dynamic imports for admin components
+- **Route Splitting**: Code splitting by user roles
 
 ### **Real-time Features**
+<lov-mermaid>
+graph LR
+    A[User Action] --> B[Supabase Realtime]
+    B --> C[Live Updates]
+    C --> D[React Query]
+    D --> E[Component Re-render]
+    E --> F[UI Sync]
+    
+    G[Presence Tracking] --> B
+    H[Live Collaboration] --> B
+    I[Notifications] --> B
+</lov-mermaid>
+
 - **Live Presence**: User presence tracking in challenges
 - **Real-time Updates**: Supabase Realtime for live data sync
 - **Notification System**: Real-time notifications and alerts
 - **Collaborative Features**: Live editing and commenting
 
+## 🏗️ **MODERN SIDEBAR ARCHITECTURE**
+
+### **Shadcn Sidebar System**
+<lov-mermaid>
+graph TB
+    A[SidebarProvider] --> B[AppSidebar Component]
+    A --> C[SidebarTrigger]
+    B --> D[SidebarContent]
+    B --> E[SidebarHeader]
+    B --> F[SidebarFooter]
+    D --> G[SidebarGroup]
+    G --> H[SidebarMenu]
+    H --> I[SidebarMenuItem]
+    
+    J[useSidebar Hook] --> K[State Management]
+    K --> L[Cookie Persistence]
+    K --> M[Mobile Responsive]
+</lov-mermaid>
+
+### **Sidebar Features**
+- **Responsive Design**: Mobile sheet, desktop fixed sidebar
+- **State Persistence**: Cookie-based state management
+- **Keyboard Shortcuts**: Ctrl/Cmd+B to toggle
+- **Icon Mode**: Collapsed state with icon-only display
+- **RTL Support**: Full Arabic/English directional support
+- **System Settings**: Configurable via database settings
+
 ## 📊 **ANALYTICS & AI INTEGRATION**
+
+### **Analytics Architecture**
+<lov-mermaid>
+graph TB
+    A[User Interaction] --> B[Analytics Event]
+    B --> C[Event Processing]
+    C --> D[Database Storage]
+    D --> E[Analytics Dashboard]
+    E --> F[Real-time Metrics]
+    
+    G[AI Usage Tracking] --> C
+    H[Performance Metrics] --> C
+    I[Security Events] --> C
+</lov-mermaid>
 
 ### **Built-in Analytics**
 - **Usage Tracking**: Comprehensive analytics events
 - **Performance Metrics**: System performance monitoring  
 - **User Behavior**: Detailed user interaction tracking
 - **Business Intelligence**: Advanced reporting and insights
+- **AI Usage**: Token usage and cost tracking
+- **Security Analytics**: Audit trails and risk assessment
 
 ### **AI Features**
 - **Smart Recommendations**: AI-powered content suggestions
 - **Tag Suggestions**: Automated content tagging
 - **Email Templates**: AI-generated communication templates
 - **Usage Optimization**: AI-driven feature usage insights
+- **Content Analysis**: AI-powered content evaluation
+- **Preference Learning**: Adaptive user experience
 
 ---
 
