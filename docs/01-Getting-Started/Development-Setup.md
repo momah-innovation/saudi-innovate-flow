@@ -151,25 +151,22 @@ npm run dev
 
 ### **Package Scripts**
 ```bash
-# Development
+# Available scripts (Current)
 npm run dev              # Start development server
 npm run build            # Production build
+npm run build:dev        # Development build
+npm run lint             # ESLint checking
 npm run preview          # Preview production build
 
-# Code Quality
-npm run type-check       # TypeScript compilation check
-npm run lint             # ESLint checking
-npm run lint:fix         # Auto-fix linting issues
-npm run format           # Prettier formatting
-
-# Testing
-npm run test             # Run unit tests
-npm run test:watch       # Watch mode testing
-npm run test:coverage    # Coverage report
-
-# Utilities
-npm run analyze          # Bundle analysis
-npm run clean            # Clean build artifacts
+# Missing scripts that should be added:
+npm run type-check       # TypeScript compilation check (MISSING)
+npm run lint:fix         # Auto-fix linting issues (MISSING)
+npm run format           # Prettier formatting (MISSING)
+npm run test             # Run unit tests (MISSING)
+npm run test:watch       # Watch mode testing (MISSING)
+npm run test:coverage    # Coverage report (MISSING)
+npm run analyze          # Bundle analysis (MISSING)
+npm run clean            # Clean build artifacts (MISSING)
 ```
 
 ### **Git Hooks Setup**

@@ -27,9 +27,9 @@ npm run dev
 
 ### **Verification (5 minutes)**
 - [ ] Application loads at `http://localhost:5173`
-- [ ] Login/signup functionality works
+- [ ] Login/signup functionality works  
 - [ ] Dashboard displays without errors
-- [ ] TypeScript compilation successful (`npm run type-check`)
+- [ ] No TypeScript compilation errors (check during `npm run dev`)
 
 ---
 
@@ -69,7 +69,7 @@ Testing:      Vitest + Testing Library
 ```
 
 ### **Database Structure**
-- **80+ Tables** with comprehensive relationships
+- **150+ Tables** with comprehensive relationships (validated count)
 - **Row Level Security (RLS)** for data isolation
 - **Real-time subscriptions** for live updates
 - **Audit trails** for compliance and tracking
@@ -148,23 +148,18 @@ The platform uses Supabase with predefined schema:
 ### **3. Development Commands**
 
 ```bash
-# Start development server
-npm run dev
+# Available scripts (verified from package.json)
+npm run dev              # Start development server
+npm run build            # Production build  
+npm run build:dev        # Development build
+npm run lint             # ESLint checking
+npm run preview          # Preview production build
 
-# Type checking
-npm run type-check
-
-# Linting and formatting  
-npm run lint
-npm run lint:fix
-
-# Testing
-npm run test
-npm run test:watch
-
-# Build for production
-npm run build
-npm run preview
+# Missing scripts that need to be added:
+# npm run type-check     # TypeScript compilation check
+# npm run lint:fix       # Auto-fix linting issues
+# npm run test           # Run unit tests
+# npm run test:watch     # Watch mode testing
 ```
 
 ---
