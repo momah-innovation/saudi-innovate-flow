@@ -32,7 +32,17 @@
 
 ---
 
-## ❌ **INACCURATE/MISSING CLAIMS**
+## 🚨 **CRITICAL ARCHITECTURAL ERROR**
+
+### **Fundamental Misconception - Node.js Claims**
+**❌ COMPLETELY WRONG**: Documentation incorrectly describes this as a Node.js application
+- This is a **React SPA** that runs in the browser
+- **No Node.js backend** exists in this codebase
+- Node.js is only needed for **development tools** (npm, Vite)
+- Production runs as **static files** on CDN
+- **Supabase handles all backend** functionality
+
+## ❌ **OTHER INACCURATE/MISSING CLAIMS**
 
 ### **Development Scripts**
 The documentation claims several npm scripts that don't exist:
@@ -138,13 +148,14 @@ npx husky install
 
 | Section | Accuracy | Issues Found |
 |---------|----------|--------------|
-| Technology Stack | 95% | Minor version details |
+| **Architecture Description** | **25%** | **CRITICAL: Wrong application type** |
+| Technology Stack | 70% | Node.js misconceptions |
 | Database Structure | 90% | Table count updated |
-| Development Setup | 60% | Missing scripts/tools |
+| Development Setup | 40% | Missing scripts + wrong architecture |
 | File Structure | 75% | Some path discrepancies |
 | Feature Claims | 80% | Need feature validation |
 
-**Overall Accuracy**: **78%** - Good foundation but needs tooling improvements
+**Overall Accuracy**: **47%** - **MAJOR architectural misconceptions require complete rewrite**
 
 ---
 
