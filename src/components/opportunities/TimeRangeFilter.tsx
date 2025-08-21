@@ -147,7 +147,7 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
           <Popover open={showCustomCalendar} onOpenChange={setShowCustomCalendar}>
             <PopoverTrigger asChild>
               <Button variant="ghost" className="sr-only">
-                Hidden Trigger
+                {t('common:aria.hidden_trigger', 'Hidden Trigger')}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-80 p-0" align="start">

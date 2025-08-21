@@ -344,7 +344,7 @@ export function EventBulkActions({
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel>{t('common:actions.cancel', 'Cancel')}</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={handleBulkDelete}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

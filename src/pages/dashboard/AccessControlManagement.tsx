@@ -15,6 +15,7 @@ import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { AppShell } from '@/components/layout/AppShell';
 import { Pencil, Trash2, Plus, Shield, History, Search } from 'lucide-react';
 import { toast } from 'sonner';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import type { Database } from '@/integrations/supabase/types';
 
 type AppRole = Database['public']['Enums']['app_role'];
@@ -42,6 +43,7 @@ interface AuditLog {
 }
 
 export default function AccessControlManagement() {
+  const { t } = useUnifiedTranslation();
   // Use database-driven access levels and resource types  
   const { getSettingValue } = useSettingsManager();
   const ACCESS_LEVELS = getSettingValue('access_control_levels', ['none', 'read', 'write', 'admin']) as string[];
@@ -450,7 +452,7 @@ export default function AccessControlManagement() {
 
               <div className="flex justify-end gap-2">
                 <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                  إلغاء
+                  {t('common:actions.cancel', 'Cancel')}
                 </Button>
                 <Button onClick={handleSubmit} disabled={createMutation.isPending}>
                   {createMutation.isPending ? 'جاري الحفظ...' : 'حفظ'}
@@ -470,7 +472,7 @@ export default function AccessControlManagement() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>إلغاء</AlertDialogCancel>
+              <AlertDialogCancel>{t('common:actions.cancel', 'Cancel')}</AlertDialogCancel>
               <AlertDialogAction 
                 onClick={() => controlToDelete && deleteMutation.mutate(controlToDelete)}
                 disabled={deleteMutation.isPending}

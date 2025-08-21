@@ -182,7 +182,7 @@ export function AdvancedDataTable<T extends Record<string, any>>({
             {filterable && (
               <Button variant="outline" size="sm">
                 <Filter className="w-4 h-4 mr-2" />
-                Filter
+                {t('filter')}
               </Button>
             )}
             
@@ -228,7 +228,7 @@ export function AdvancedDataTable<T extends Record<string, any>>({
               
               {actions.length > 0 && (
                 <th className="w-20 p-4">
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">{t('common:actions.actions', 'Actions')}</span>
                 </th>
               )}
             </tr>
