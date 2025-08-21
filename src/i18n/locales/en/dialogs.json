@@ -1,0 +1,68 @@
+{
+  "common": {
+    "confirmation": "Confirmation",
+    "warning": "Warning", 
+    "error": "Error",
+    "success": "Success",
+    "information": "Information",
+    "loading": "Loading...",
+    "please_wait": "Please wait...",
+    "processing": "Processing...",
+    "saving": "Saving...",
+    "deleting": "Deleting...",
+    "updating": "Updating...",
+    "creating": "Creating...",
+    "uploading": "Uploading...",
+    "downloading": "Downloading..."
+  },
+  "confirmations": {
+    "delete_item": "Are you sure you want to delete this item?",
+    "delete_items": "Are you sure you want to delete {{count}} items?",
+    "delete_challenge": "Are you sure you want to delete this challenge?",
+    "delete_idea": "Are you sure you want to delete this idea?",
+    "delete_user": "Are you sure you want to delete this user?",
+    "permanent_action": "This action cannot be undone.",
+    "confirm_logout": "Are you sure you want to logout?",
+    "unsaved_changes": "You have unsaved changes. Are you sure you want to leave?",
+    "discard_changes": "Discard changes and continue?",
+    "archive_item": "Archive this item?",
+    "publish_item": "Publish this item?",
+    "unpublish_item": "Unpublish this item?"
+  },
+  "wizard": {
+    "step_of": "Step {{current}} of {{total}}",
+    "next_step": "Next Step",
+    "previous_step": "Previous Step",
+    "complete_wizard": "Complete",
+    "skip_step": "Skip",
+    "required_fields": "Please fill in all required fields",
+    "validation_error": "Please correct the errors before proceeding",
+    "save_draft": "Save as Draft",
+    "exit_wizard": "Exit Wizard",
+    "unsaved_progress": "Your progress will be lost if you exit. Continue?"
+  },
+  "forms": {
+    "required_field": "This field is required",
+    "invalid_email": "Please enter a valid email address",
+    "invalid_phone": "Please enter a valid phone number", 
+    "password_too_short": "Password must be at least 8 characters",
+    "passwords_dont_match": "Passwords do not match",
+    "invalid_date": "Please enter a valid date",
+    "invalid_url": "Please enter a valid URL",
+    "file_too_large": "File size exceeds the maximum limit",
+    "invalid_file_type": "Invalid file type",
+    "form_submitted": "Form submitted successfully",
+    "form_error": "Error submitting form. Please try again."
+  },
+  "system": {
+    "system_activity": "System Activity",
+    "system_health": "System Health",
+    "maintenance_mode": "Maintenance Mode",
+    "server_error": "Server Error",
+    "connection_lost": "Connection Lost",
+    "reconnecting": "Reconnecting...",
+    "offline_mode": "Offline Mode",
+    "sync_data": "Sync Data",
+    "data_synced": "Data synchronized successfully"
+  }
+}

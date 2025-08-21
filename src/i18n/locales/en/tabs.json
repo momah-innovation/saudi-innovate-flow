@@ -1,0 +1,80 @@
+{
+  "common": {
+    "overview": "Overview",
+    "details": "Details",
+    "settings": "Settings",
+    "analytics": "Analytics",
+    "history": "History",
+    "activity": "Activity",
+    "comments": "Comments",
+    "attachments": "Attachments",
+    "permissions": "Permissions",
+    "members": "Members",
+    "tasks": "Tasks",
+    "progress": "Progress",
+    "timeline": "Timeline",
+    "documents": "Documents",
+    "media": "Media",
+    "files": "Files",
+    "links": "Links",
+    "notes": "Notes",
+    "tags": "Tags",
+    "categories": "Categories",
+    "metadata": "Metadata"
+  },
+  "ai_center": {
+    "features": "Features",
+    "recommendations": "Recommendations", 
+    "evaluation": "Evaluation",
+    "settings": "Settings"
+  },
+  "challenges": {
+    "description": "Description",
+    "requirements": "Requirements",
+    "timeline": "Timeline",
+    "resources": "Resources",
+    "submissions": "Submissions",
+    "participants": "Participants",
+    "experts": "Expert Panel",
+    "evaluation": "Evaluation",
+    "results": "Results",
+    "discussion": "Discussion"
+  },
+  "ideas": {
+    "concept": "Concept",
+    "implementation": "Implementation",
+    "impact": "Impact",
+    "feasibility": "Feasibility",
+    "feedback": "Feedback",
+    "collaboration": "Collaboration",
+    "prototype": "Prototype",
+    "validation": "Validation"
+  },
+  "events": {
+    "agenda": "Agenda",
+    "speakers": "Speakers",
+    "venue": "Venue",
+    "registration": "Registration",
+    "materials": "Materials",
+    "feedback": "Feedback",
+    "recordings": "Recordings",
+    "follow_up": "Follow-up"
+  },
+  "profile": {
+    "basic_info": "Basic Information",
+    "expertise": "Expertise",
+    "experience": "Experience",
+    "achievements": "Achievements", 
+    "portfolio": "Portfolio",
+    "social": "Social Links",
+    "preferences": "Preferences",
+    "security": "Security"
+  },
+  "dashboard": {
+    "summary": "Summary",
+    "recent": "Recent Activity",
+    "statistics": "Statistics",
+    "notifications": "Notifications",
+    "shortcuts": "Quick Actions"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "common": {
+    "overview": "نظرة عامة",
+    "details": "التفاصيل",
+    "settings": "الإعدادات",
+    "analytics": "التحليلات",
+    "history": "التاريخ",
+    "activity": "النشاط",
+    "comments": "التعليقات", 
+    "attachments": "المرفقات",
+    "permissions": "الصلاحيات",
+    "members": "الأعضاء",
+    "tasks": "المهام",
+    "progress": "التقدم",
+    "timeline": "الجدول الزمني",
+    "documents": "المستندات",
+    "media": "الوسائط",
+    "files": "الملفات",
+    "links": "الروابط",
+    "notes": "الملاحظات",
+    "tags": "العلامات",
+    "categories": "الفئات",
+    "metadata": "البيانات الوصفية"
+  },
+  "ai_center": {
+    "features": "الميزات",
+    "recommendations": "التوصيات",
+    "evaluation": "التقييم",
+    "settings": "الإعدادات"
+  },
+  "challenges": {
+    "description": "الوصف",
+    "requirements": "المتطلبات",
+    "timeline": "الجدول الزمني",
+    "resources": "الموارد",
+    "submissions": "المشاركات",
+    "participants": "المشاركون",
+    "experts": "لجنة الخبراء",
+    "evaluation": "التقييم",
+    "results": "النتائج",
+    "discussion": "النقاش"
+  },
+  "ideas": {
+    "concept": "المفهوم",
+    "implementation": "التنفيذ",
+    "impact": "التأثير",
+    "feasibility": "الجدوى",
+    "feedback": "التغذية الراجعة",
+    "collaboration": "التعاون",
+    "prototype": "النموذج الأولي",
+    "validation": "التحقق"
+  },
+  "events": {
+    "agenda": "جدول الأعمال",
+    "speakers": "المتحدثون",
+    "venue": "المكان",
+    "registration": "التسجيل",
+    "materials": "المواد",
+    "feedback": "التغذية الراجعة",
+    "recordings": "التسجيلات",
+    "follow_up": "المتابعة"
+  },
+  "profile": {
+    "basic_info": "المعلومات الأساسية",
+    "expertise": "الخبرة",
+    "experience": "التجربة",
+    "achievements": "الإنجازات",
+    "portfolio": "المحفظة",
+    "social": "الروابط الاجتماعية",
+    "preferences": "التفضيلات",
+    "security": "الأمان"
+  },
+  "dashboard": {
+    "summary": "الملخص",
+    "recent": "النشاط الحديث",
+    "statistics": "الإحصائيات",
+    "notifications": "الإشعارات",
+    "shortcuts": "إجراءات سريعة"
+  }
+}

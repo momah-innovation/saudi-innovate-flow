@@ -1,0 +1,68 @@
+{
+  "common": {
+    "confirmation": "تأكيد",
+    "warning": "تحذير",
+    "error": "خطأ", 
+    "success": "نجح",
+    "information": "معلومات",
+    "loading": "جاري التحميل...",
+    "please_wait": "يرجى الانتظار...",
+    "processing": "جاري المعالجة...",
+    "saving": "جاري الحفظ...",
+    "deleting": "جاري الحذف...",
+    "updating": "جاري التحديث...",
+    "creating": "جاري الإنشاء...",
+    "uploading": "جاري الرفع...",
+    "downloading": "جاري التحميل..."
+  },
+  "confirmations": {
+    "delete_item": "هل أنت متأكد من حذف هذا العنصر؟",
+    "delete_items": "هل أنت متأكد من حذف {{count}} عناصر؟",
+    "delete_challenge": "هل أنت متأكد من حذف هذا التحدي؟",
+    "delete_idea": "هل أنت متأكد من حذف هذه الفكرة؟",
+    "delete_user": "هل أنت متأكد من حذف هذا المستخدم؟",
+    "permanent_action": "لا يمكن التراجع عن هذا الإجراء.",
+    "confirm_logout": "هل أنت متأكد من تسجيل الخروج؟",
+    "unsaved_changes": "لديك تغييرات غير محفوظة. هل أنت متأكد من المغادرة؟",
+    "discard_changes": "تجاهل التغييرات والمتابعة؟",
+    "archive_item": "أرشفة هذا العنصر؟",
+    "publish_item": "نشر هذا العنصر؟",
+    "unpublish_item": "إلغاء نشر هذا العنصر؟"
+  },
+  "wizard": {
+    "step_of": "الخطوة {{current}} من {{total}}",
+    "next_step": "الخطوة التالية",
+    "previous_step": "الخطوة السابقة", 
+    "complete_wizard": "إكمال",
+    "skip_step": "تخطي",
+    "required_fields": "يرجى ملء جميع الحقول المطلوبة",
+    "validation_error": "يرجى تصحيح الأخطاء قبل المتابعة",
+    "save_draft": "حفظ كمسودة",
+    "exit_wizard": "إغلاق المعالج",
+    "unsaved_progress": "سيتم فقدان تقدمك إذا خرجت. المتابعة؟"
+  },
+  "forms": {
+    "required_field": "هذا الحقل مطلوب",
+    "invalid_email": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "invalid_phone": "يرجى إدخال رقم هاتف صحيح",
+    "password_too_short": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+    "passwords_dont_match": "كلمات المرور غير متطابقة",
+    "invalid_date": "يرجى إدخال تاريخ صحيح",
+    "invalid_url": "يرجى إدخال رابط صحيح",
+    "file_too_large": "حجم الملف يتجاوز الحد الأقصى",
+    "invalid_file_type": "نوع ملف غير صحيح",
+    "form_submitted": "تم إرسال النموذج بنجاح",
+    "form_error": "خطأ في إرسال النموذج. يرجى المحاولة مرة أخرى."
+  },
+  "system": {
+    "system_activity": "نشاط النظام",
+    "system_health": "صحة النظام",
+    "maintenance_mode": "وضع الصيانة",
+    "server_error": "خطأ في الخادم",
+    "connection_lost": "انقطع الاتصال",
+    "reconnecting": "جاري إعادة الاتصال...",
+    "offline_mode": "الوضع غير المتصل",
+    "sync_data": "مزامنة البيانات",
+    "data_synced": "تمت مزامنة البيانات بنجاح"
+  }
+}

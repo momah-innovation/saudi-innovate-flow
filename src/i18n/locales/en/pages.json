@@ -1,0 +1,112 @@
+{
+  "ai_center": {
+    "title": "AI Innovation Center",
+    "subtitle": "Enhance your innovation journey with AI-powered tools",
+    "features_available": "Features Available",
+    "beta_features": "Beta Features",
+    "accuracy_rate": "Accuracy Rate",
+    "monthly_usage": "Monthly Usage",
+    "idea_evaluation": "Idea Evaluation",
+    "idea_evaluation_desc": "AI-powered evaluation and scoring of innovation ideas",
+    "challenge_assist": "Challenge Assistant",
+    "challenge_assist_desc": "Smart recommendations for challenge creation and management",
+    "similar_ideas": "Similar Ideas Detection",
+    "similar_ideas_desc": "Identify similar ideas and prevent duplication",
+    "smart_partner_matching": "Smart Partner Matching",
+    "smart_partner_matching_desc": "AI-driven partner recommendations based on expertise",
+    "focus_questions": "Focus Question Generation",
+    "focus_questions_desc": "Generate targeted questions to guide innovation",
+    "smart_analytics": "Smart Analytics",
+    "smart_analytics_desc": "Advanced insights and trend analysis"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Your innovation workspace overview",
+    "welcome_back": "Welcome back",
+    "quick_actions": "Quick Actions",
+    "recent_activity": "Recent Activity",
+    "stats_overview": "Statistics Overview"
+  },
+  "challenges": {
+    "title": "Innovation Challenges",
+    "subtitle": "Discover and participate in innovation challenges",
+    "browse_challenges": "Browse Challenges",
+    "my_challenges": "My Challenges",
+    "featured_challenges": "Featured Challenges",
+    "create_new": "Create New Challenge"
+  },
+  "ideas": {
+    "title": "Innovation Ideas",
+    "subtitle": "Share and discover groundbreaking ideas",
+    "my_ideas": "My Ideas",
+    "browse_ideas": "Browse Ideas",
+    "submit_new": "Submit New Idea",
+    "drafts": "Drafts"
+  },
+  "events": {
+    "title": "Events & Workshops",
+    "subtitle": "Join innovation events and workshops",
+    "upcoming_events": "Upcoming Events",
+    "my_events": "My Events",
+    "past_events": "Past Events",
+    "register_event": "Register for Event"
+  },
+  "opportunities": {
+    "title": "Innovation Opportunities",
+    "subtitle": "Explore partnership and collaboration opportunities",
+    "available_opportunities": "Available Opportunities",
+    "my_opportunities": "My Opportunities",
+    "apply_opportunity": "Apply for Opportunity"
+  },
+  "profile": {
+    "title": "User Profile",
+    "subtitle": "Manage your profile and preferences",
+    "edit_profile": "Edit Profile",
+    "change_password": "Change Password",
+    "privacy_settings": "Privacy Settings",
+    "notification_preferences": "Notification Preferences"
+  },
+  "settings": {
+    "title": "Settings", 
+    "subtitle": "Customize your platform experience",
+    "general": "General Settings",
+    "account": "Account Settings",
+    "privacy": "Privacy & Security",
+    "notifications": "Notifications"
+  },
+  "help": {
+    "title": "Help Center",
+    "subtitle": "Get support and learn about the platform",
+    "search_help": "Search help articles",
+    "popular_topics": "Popular Topics",
+    "contact_support": "Contact Support",
+    "user_guide": "User Guide"
+  },
+  "collaboration": {
+    "title": "Collaboration Hub",
+    "subtitle": "Connect and collaborate with innovators",
+    "find_collaborators": "Find Collaborators",
+    "my_teams": "My Teams",
+    "join_team": "Join Team",
+    "create_team": "Create Team"
+  },
+  "statistics": {
+    "title": "Platform Statistics",
+    "subtitle": "Insights and analytics about innovation activities",
+    "overview": "Overview",
+    "trends": "Trends",
+    "reports": "Reports"
+  },
+  "not_found": {
+    "title": "Page Not Found",
+    "message": "The page you're looking for doesn't exist.",
+    "go_home": "Go to Homepage"
+  },
+  "design_system": {
+    "title": "Design System",
+    "subtitle": "Component library and design guidelines",
+    "components": "Components",
+    "tokens": "Design Tokens",
+    "guidelines": "Guidelines"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "ai_center": {
+    "title": "مركز الذكاء الاصطناعي للابتكار",
+    "subtitle": "عزز رحلة الابتكار الخاصة بك بأدوات مدعومة بالذكاء الاصطناعي",
+    "features_available": "الميزات المتاحة",
+    "beta_features": "الميزات التجريبية",
+    "accuracy_rate": "معدل الدقة",
+    "monthly_usage": "الاستخدام الشهري",
+    "idea_evaluation": "تقييم الأفكار",
+    "idea_evaluation_desc": "تقييم وتسجيل الأفكار الابتكارية بالذكاء الاصطناعي",
+    "challenge_assist": "مساعد التحديات",
+    "challenge_assist_desc": "توصيات ذكية لإنشاء وإدارة التحديات",
+    "similar_ideas": "كشف الأفكار المتشابهة",
+    "similar_ideas_desc": "تحديد الأفكار المتشابهة ومنع التكرار",
+    "smart_partner_matching": "مطابقة الشركاء الذكية",
+    "smart_partner_matching_desc": "توصيات شركاء مدفوعة بالذكاء الاصطناعي حسب الخبرة",
+    "focus_questions": "توليد أسئلة التركيز",
+    "focus_questions_desc": "توليد أسئلة موجهة لتوجيه الابتكار",
+    "smart_analytics": "التحليلات الذكية",
+    "smart_analytics_desc": "رؤى متقدمة وتحليل الاتجاهات"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "subtitle": "نظرة عامة على مساحة عمل الابتكار الخاصة بك",
+    "welcome_back": "مرحباً بعودتك",
+    "quick_actions": "إجراءات سريعة",
+    "recent_activity": "النشاط الحديث",
+    "stats_overview": "نظرة عامة على الإحصائيات"
+  },
+  "challenges": {
+    "title": "تحديات الابتكار",
+    "subtitle": "اكتشف وشارك في تحديات الابتكار",
+    "browse_challenges": "تصفح التحديات",
+    "my_challenges": "تحدياتي",
+    "featured_challenges": "التحديات المميزة",
+    "create_new": "إنشاء تحدي جديد"
+  },
+  "ideas": {
+    "title": "أفكار الابتكار",
+    "subtitle": "شارك واكتشف أفكاراً رائدة",
+    "my_ideas": "أفكاري",
+    "browse_ideas": "تصفح الأفكار",
+    "submit_new": "إرسال فكرة جديدة",
+    "drafts": "المسودات"
+  },
+  "events": {
+    "title": "الفعاليات وورش العمل",
+    "subtitle": "انضم إلى فعاليات وورش عمل الابتكار",
+    "upcoming_events": "الفعاليات القادمة",
+    "my_events": "فعالياتي",
+    "past_events": "الفعاليات السابقة",
+    "register_event": "التسجيل في فعالية"
+  },
+  "opportunities": {
+    "title": "فرص الابتكار",
+    "subtitle": "استكشف فرص الشراكة والتعاون",
+    "available_opportunities": "الفرص المتاحة",
+    "my_opportunities": "فرصي",
+    "apply_opportunity": "التقدم لفرصة"
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "subtitle": "إدارة ملفك الشخصي وتفضيلاتك",
+    "edit_profile": "تعديل الملف الشخصي",
+    "change_password": "تغيير كلمة المرور",
+    "privacy_settings": "إعدادات الخصوصية",
+    "notification_preferences": "تفضيلات الإشعارات"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "subtitle": "خصص تجربة المنصة الخاصة بك",
+    "general": "الإعدادات العامة",
+    "account": "إعدادات الحساب",
+    "privacy": "الخصوصية والأمان",
+    "notifications": "الإشعارات"
+  },
+  "help": {
+    "title": "مركز المساعدة",
+    "subtitle": "احصل على الدعم وتعلم حول المنصة",
+    "search_help": "البحث في مقالات المساعدة",
+    "popular_topics": "المواضيع الشائعة",
+    "contact_support": "الاتصال بالدعم",
+    "user_guide": "دليل المستخدم"
+  },
+  "collaboration": {
+    "title": "مركز التعاون",
+    "subtitle": "تواصل وتعاون مع المبتكرين",
+    "find_collaborators": "العثور على متعاونين",
+    "my_teams": "فرقي",
+    "join_team": "انضمام لفريق",
+    "create_team": "إنشاء فريق"
+  },
+  "statistics": {
+    "title": "إحصائيات المنصة",
+    "subtitle": "رؤى وتحليلات حول أنشطة الابتكار",
+    "overview": "نظرة عامة",
+    "trends": "الاتجاهات",
+    "reports": "التقارير"
+  },
+  "not_found": {
+    "title": "الصفحة غير موجودة",
+    "message": "الصفحة التي تبحث عنها غير موجودة.",
+    "go_home": "الذهاب للصفحة الرئيسية"
+  },
+  "design_system": {
+    "title": "نظام التصميم",
+    "subtitle": "مكتبة المكونات وإرشادات التصميم",
+    "components": "المكونات",
+    "tokens": "رموز التصميم",
+    "guidelines": "الإرشادات"
+  }
+}
