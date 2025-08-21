@@ -96,8 +96,21 @@ Welcome to the comprehensive documentation for the Ruwad Innovation Platform - a
 | Set up development environment | [Development Setup](./01-Getting-Started/Development-Setup.md) |
 | Understand the system architecture | [System Overview](./02-Platform-Architecture/System-Overview.md) |
 | Learn the development workflow | [Development Workflow](./03-Development-Guides/Development-Workflow.md) |
-| Deploy to production | [Deployment Guide](./07-Operations-Maintenance/Deployment-Guide.md) |
+| Review code standards | [Code Standards](./03-Development-Guides/Code-Standards.md) |
 | Onboard new developers | [Developer Onboarding](./08-Team-Handover/Developer-Onboarding.md) |
+
+## 📊 Documentation Status
+
+| Section | Files | Status |
+|---------|-------|---------|
+| **Getting Started** | 3 files | ✅ Complete |
+| **Platform Architecture** | 3 files | ✅ Complete |
+| **Development Guides** | 3 files | ✅ Complete |
+| **Business Features** | 4 files | 📋 Planned |
+| **UI Guidelines** | 3 files | 📋 Planned |
+| **API Documentation** | 3 files | 📋 Planned |
+| **Services** | 8 files | ✅ Complete |
+| **Team Handover** | 3 files | ✅ Complete |
 
 ---
 
