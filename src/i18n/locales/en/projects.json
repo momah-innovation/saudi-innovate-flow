@@ -1,0 +1,37 @@
+{
+  "title": "Projects",
+  "new_project": "New Project",
+  "my_projects": "My Projects",
+  "all_projects": "All Projects",
+  "active_projects": "Active Projects",
+  "completed_projects": "Completed Projects",
+  "create_project": "Create Project",
+  "edit_project": "Edit Project",
+  "view_project": "View Project",
+  "delete_project": "Delete Project",
+  "project_details": "Project Details",
+  "project_name": "Project Name",
+  "project_description": "Project Description",
+  "project_status": "Project Status",
+  "project_type": "Project Type",
+  "start_date": "Start Date",
+  "end_date": "End Date",
+  "budget": "Budget",
+  "team_members": "Team Members",
+  "progress": "Progress",
+  "milestones": "Milestones",
+  "tasks": "Tasks",
+  "status": {
+    "planning": "Planning",
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "type": {
+    "research": "Research",
+    "development": "Development",
+    "innovation": "Innovation",
+    "improvement": "Improvement"
+  }
+}

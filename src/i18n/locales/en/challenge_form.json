@@ -25,5 +25,7 @@
   "challenge_image": "Challenge Image",
   "saving": "Saving...",
   "save_changes": "Save Changes",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "submit_success": "Challenge saved successfully",
+  "submit_error": "Failed to save challenge"
 }

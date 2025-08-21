@@ -1,0 +1,37 @@
+{
+  "title": "المشاريع",
+  "new_project": "مشروع جديد",
+  "my_projects": "مشاريعي",
+  "all_projects": "جميع المشاريع",
+  "active_projects": "المشاريع النشطة",
+  "completed_projects": "المشاريع المكتملة",
+  "create_project": "إنشاء مشروع",
+  "edit_project": "تعديل مشروع",
+  "view_project": "عرض مشروع",
+  "delete_project": "حذف مشروع",
+  "project_details": "تفاصيل المشروع",
+  "project_name": "اسم المشروع",
+  "project_description": "وصف المشروع",
+  "project_status": "حالة المشروع",
+  "project_type": "نوع المشروع",
+  "start_date": "تاريخ البداية",
+  "end_date": "تاريخ النهاية",
+  "budget": "الميزانية",
+  "team_members": "أعضاء الفريق",
+  "progress": "التقدم",
+  "milestones": "المعالم",
+  "tasks": "المهام",
+  "status": {
+    "planning": "التخطيط",
+    "active": "نشط",
+    "on_hold": "معلق",
+    "completed": "مكتمل",
+    "cancelled": "ملغي"
+  },
+  "type": {
+    "research": "بحث",
+    "development": "تطوير",
+    "innovation": "ابتكار",
+    "improvement": "تحسين"
+  }
+}
