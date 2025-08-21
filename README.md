@@ -1,40 +1,23 @@
-# Ruwād Innovation Platform - Refactoring Project
+# Ruwād Innovation Platform
 
-## 🔄 Active Development - Platform Refactoring
+A modern innovation management platform built with React, TypeScript, and Supabase.
 
-[![Status](https://img.shields.io/badge/Status-Refactoring%20in%20Progress-orange)](./docs/README.md)
-[![Phase](https://img.shields.io/badge/Current%20Phase-Foundation%20&%20Routing-blue)](./docs/01-Getting-Started/)
+## 🛠️ Tech Stack
 
-**Comprehensive refactoring and expansion of the Ruwād Innovation Management System for enhanced scalability, subscription support, and AI integration.**
-
-## 🎯 Project Overview
-
-This is an **8-9 week refactoring project** to transform the existing Ruwād platform into a modern, scalable system supporting:
-- Public/authenticated route separation
-- Subscription-based monetization
-- AI-enhanced workflows
-- Enhanced media management
-- Advanced analytics dashboard
-
-## 📋 Current Architecture
-
-**Tech Stack:** React + TypeScript (Vite), TailwindCSS, Supabase (Postgres + Auth + Storage + Realtime), TanStack Query, react-i18next
-
-**Preserved Features:**
-- Full RLS and RBAC implementation
-- Multitenant organization-scoped architecture
-- Modular service ownership
-- Unsplash & Supabase Storage integration
-
-## 📚 Project Documentation
-
-- [Main Documentation Index](./docs/README.md)
-- [Getting Started Guide](./docs/01-Getting-Started/README.md)
-- [Platform Architecture](./docs/02-Platform-Architecture/System-Overview.md)
-- [Development Workflow](./docs/03-Development-Guides/Development-Workflow.md)
-- [Troubleshooting](./docs/07-Operations-Maintenance/Troubleshooting.md)
+- **Frontend:** React 18.3.1 + TypeScript + Vite
+- **Styling:** Tailwind CSS + shadcn/ui components  
+- **Backend:** Supabase (PostgreSQL + Auth + Storage + Realtime)
+- **State Management:** TanStack Query
+- **Internationalization:** react-i18next (Arabic/English support)
+- **Build Tool:** Vite
 
 ## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ 
+- npm or bun
+
+### Installation
 
 ```bash
 # Install dependencies
@@ -42,13 +25,55 @@ npm install
 
 # Set up environment variables
 cp .env.example .env.local
-# Add your Supabase credentials
+# Add your Supabase credentials to .env.local
 
 # Start development server
 npm run dev
 ```
 
-**Current Focus:** Phase 1 - Foundation & Routing (Week 1-2)
+The application will be available at `http://localhost:8080`
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production  
+npm run build:dev    # Build for development
+npm run lint         # Run ESLint
+npm run preview      # Preview production build
+```
+
+## 📚 Documentation
+
+- [Main Documentation](./docs/README.md)
+- [Getting Started Guide](./docs/01-Getting-Started/README.md)
+- [Development Setup](./docs/01-Getting-Started/Development-Setup.md)
+- [Project Structure](./docs/01-Getting-Started/Project-Structure.md)
+
+## 🏗️ Architecture
+
+- **Multi-tenant Architecture** - Organization-based workspace isolation
+- **Role-based Access Control** - Granular permissions system
+- **Real-time Features** - Live updates via Supabase Realtime
+- **Internationalization** - Full Arabic/English RTL/LTR support
+- **File Management** - Integrated Supabase Storage
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Required environment variables (see `.env.example`):
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### Supabase Setup
+
+1. Create a new Supabase project
+2. Copy your project URL and anon key from the API settings
+3. Update your `.env.local` file with these credentials
 
 ---
 
