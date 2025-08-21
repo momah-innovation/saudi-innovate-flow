@@ -1,186 +1,60 @@
 {
-  "create": {
-    "title": "Create New Campaign",
-    "description": "Launch comprehensive innovation campaigns and initiatives",
-    "button": "Create Campaign"
-  },
-  "edit": {
-    "title": "Edit Campaign",
-    "description": "Update campaign details and configuration",
-    "button": "Save Changes"
-  },
-  "basic_info": {
-    "section_title": "Campaign Information",
-    "name": "Campaign Name",
-    "name_placeholder": "Enter campaign name",
-    "name_ar": "Campaign Name (Arabic)",
-    "name_ar_placeholder": "Enter campaign name in Arabic",
-    "description": "Campaign Description",
-    "description_placeholder": "Describe the campaign objectives, scope, and expected outcomes",
-    "description_ar": "Campaign Description (Arabic)",
-    "description_ar_placeholder": "Describe in Arabic",
-    "type": "Campaign Type",
+  "title": "Campaign Form",
+  "create_title": "Create New Campaign",
+  "edit_title": "Edit Campaign",
+  
+  "basic": {
+    "campaign_name": "Campaign Name",
+    "campaign_name_placeholder": "Enter campaign name",
+    "campaign_description": "Campaign Description", 
+    "campaign_description_placeholder": "Describe the purpose and goals of this campaign...",
+    "campaign_type": "Campaign Type",
     "select_type": "Select campaign type",
-    "theme": "Campaign Theme",
-    "select_theme": "Select theme",
-    "sector": "Target Sector",
-    "select_sector": "Select target sector"
+    "category": "Category",
+    "select_category": "Select category"
   },
+  
   "objectives": {
-    "section_title": "Objectives & Goals",
     "primary_objective": "Primary Objective",
     "secondary_objectives": "Secondary Objectives",
     "success_metrics": "Success Metrics",
-    "target_audience": "Target Audience",
-    "expected_outcomes": "Expected Outcomes",
-    "impact_measurement": "Impact Measurement",
-    "kpis": "Key Performance Indicators",
-    "add_kpi": "Add KPI",
-    "kpi_name": "KPI Name",
-    "kpi_target": "Target Value",
-    "kpi_unit": "Unit"
+    "target_kpis": "Target KPIs"
   },
+  
   "timeline": {
-    "section_title": "Timeline & Phases",
-    "launch_date": "Launch Date",
-    "end_date": "End Date",
-    "registration_period": "Registration Period",
-    "submission_period": "Submission Period",
-    "evaluation_period": "Evaluation Period",
-    "announcement_date": "Results Announcement",
-    "phases": "Campaign Phases",
-    "add_phase": "Add Phase",
-    "phase_name": "Phase Name",
-    "phase_start": "Start Date",
-    "phase_end": "End Date",
-    "phase_description": "Phase Description"
+    "start_date": "Campaign Start Date",
+    "end_date": "Campaign End Date",
+    "registration_start": "Registration Opens",
+    "registration_end": "Registration Closes",
+    "total_budget": "Total Campaign Budget"
   },
-  "budget": {
-    "section_title": "Budget & Resources",
-    "total_budget": "Total Budget",
-    "prize_budget": "Prize Budget",
-    "operational_budget": "Operational Budget",
-    "marketing_budget": "Marketing Budget",
-    "resource_allocation": "Resource Allocation",
-    "funding_source": "Funding Source",
-    "budget_breakdown": "Budget Breakdown",
-    "add_budget_item": "Add Budget Item",
-    "item_category": "Category",
-    "item_amount": "Amount",
-    "item_description": "Description"
-  },
-  "management": {
-    "section_title": "Campaign Management",
-    "campaign_manager": "Campaign Manager",
-    "select_manager": "Select campaign manager",
-    "team_members": "Team Members",
-    "add_member": "Add Team Member",
-    "member_role": "Role",
-    "member_responsibilities": "Responsibilities",
-    "governance_structure": "Governance Structure",
-    "decision_makers": "Decision Makers",
-    "stakeholders": "Key Stakeholders",
-    "communication_plan": "Communication Plan"
-  },
+  
   "settings": {
-    "section_title": "Campaign Settings",
     "visibility": "Campaign Visibility",
-    "select_visibility": "Select visibility level",
-    "registration_required": "Registration Required",
-    "approval_workflow": "Approval Workflow",
-    "max_participants": "Maximum Participants",
-    "allow_teams": "Allow Team Participation",
-    "max_team_size": "Maximum Team Size",
-    "geographic_restrictions": "Geographic Restrictions",
-    "eligibility_criteria": "Eligibility Criteria",
-    "terms_conditions": "Terms and Conditions"
+    "public": "Public Campaign",
+    "private": "Private Campaign",
+    "registration_settings": "Registration Settings",
+    "max_participants": "Maximum Participants"
   },
-  "marketing": {
-    "section_title": "Marketing & Promotion",
-    "promotional_strategy": "Promotional Strategy",
-    "target_channels": "Target Channels",
-    "marketing_materials": "Marketing Materials",
-    "social_media": "Social Media Campaign",
-    "press_releases": "Press Releases",
-    "partnerships": "Marketing Partnerships",
-    "events": "Promotional Events",
-    "influencers": "Influencer Engagement",
-    "content_calendar": "Content Calendar"
-  },
-  "challenges": {
-    "section_title": "Related Challenges",
-    "add_challenge": "Add Challenge",
-    "select_challenges": "Select Related Challenges",
-    "challenge_weight": "Challenge Weight",
-    "challenge_priority": "Priority Level",
-    "main_challenge": "Main Challenge",
-    "supporting_challenges": "Supporting Challenges",
-    "challenge_alignment": "Alignment with Campaign Goals"
-  },
-  "types": {
-    "innovation": "Innovation Campaign",
-    "awareness": "Awareness Campaign",
-    "capacity_building": "Capacity Building",
-    "research": "Research Campaign",
-    "implementation": "Implementation Campaign",
-    "pilot": "Pilot Program",
-    "scaling": "Scaling Initiative",
-    "transformation": "Digital Transformation"
-  },
-  "themes": {
-    "digital_transformation": "Digital Transformation",
-    "sustainability": "Sustainability",
-    "smart_cities": "Smart Cities",
-    "health_innovation": "Health Innovation",
-    "education_tech": "Education Technology",
-    "fintech": "Financial Technology",
-    "ai_innovation": "AI Innovation",
-    "cybersecurity": "Cybersecurity",
-    "green_tech": "Green Technology",
-    "social_innovation": "Social Innovation"
-  },
-  "status": {
-    "planning": "Planning",
-    "approved": "Approved",
-    "active": "Active",
-    "on_hold": "On Hold",
-    "completed": "Completed",
-    "cancelled": "Cancelled",
-    "under_review": "Under Review"
-  },
-  "actions": {
-    "save_draft": "Save as Draft",
-    "submit_approval": "Submit for Approval",
-    "launch_campaign": "Launch Campaign",
-    "pause_campaign": "Pause Campaign",
-    "resume_campaign": "Resume Campaign",
-    "close_campaign": "Close Campaign",
-    "clone_campaign": "Clone Campaign",
-    "export_data": "Export Campaign Data",
-    "generate_report": "Generate Report"
-  },
+  
   "validation": {
     "name_required": "Campaign name is required",
     "description_required": "Campaign description is required",
-    "type_required": "Campaign type is required",
-    "launch_date_required": "Launch date is required",
-    "end_date_after_launch": "End date must be after launch date",
-    "budget_positive": "Budget must be positive",
-    "manager_required": "Campaign manager is required",
-    "objectives_required": "At least one objective is required"
+    "start_date_required": "Start date is required",
+    "end_date_required": "End date is required"
   },
+  
+  "actions": {
+    "save_draft": "Save as Draft",
+    "launch_campaign": "Launch Campaign",
+    "update_campaign": "Update Campaign",
+    "cancel": "Cancel"
+  },
+  
   "messages": {
-    "campaign_created": "Campaign created successfully",
-    "campaign_updated": "Campaign updated successfully",
-    "campaign_launched": "Campaign launched successfully",
-    "campaign_paused": "Campaign paused",
-    "campaign_resumed": "Campaign resumed",
-    "campaign_closed": "Campaign closed",
-    "approval_submitted": "Campaign submitted for approval",
-    "clone_successful": "Campaign cloned successfully",
-    "export_completed": "Campaign data exported",
-    "save_failed": "Failed to save campaign",
-    "launch_failed": "Failed to launch campaign",
-    "unsaved_changes": "You have unsaved changes. Are you sure you want to leave?"
+    "campaign_created": "Campaign created successfully!",
+    "campaign_updated": "Campaign updated successfully!",
+    "campaign_launched": "Campaign launched successfully!",
+    "save_error": "Error saving campaign"
   }
 }

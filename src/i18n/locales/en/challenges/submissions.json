@@ -1,95 +1,52 @@
 {
-  "process": {
-    "title": "Submission Process",
-    "steps": "Submission Steps",
-    "requirements": "Submission Requirements",
-    "guidelines": "Submission Guidelines",
-    "deadline": "Submission Deadline",
-    "status": "Submission Status"
-  },
-  "form": {
-    "title": "Submit Your Idea",
-    "idea_title": "Idea Title",
-    "idea_title_placeholder": "Enter your innovative idea title",
-    "description": "Detailed Description",
-    "description_placeholder": "Describe your solution, approach, and expected impact",
-    "category": "Category",
-    "select_category": "Select idea category",
-    "team_size": "Team Size",
-    "team_members": "Team Members",
-    "add_member": "Add Team Member",
-    "member_name": "Member Name",
-    "member_role": "Role",
-    "member_email": "Email",
-    "attachments": "Supporting Documents",
-    "upload_files": "Upload Files",
-    "video_demo": "Demo Video",
-    "video_url": "Video URL",
-    "presentation": "Presentation File",
-    "prototype": "Prototype/Demo",
-    "budget_estimate": "Budget Estimate",
-    "timeline": "Implementation Timeline",
-    "milestones": "Key Milestones"
-  },
-  "validation": {
-    "title_required": "Idea title is required",
-    "description_required": "Detailed description is required",
-    "description_min_length": "Description must be at least 100 characters",
-    "category_required": "Please select a category",
-    "team_size_positive": "Team size must be positive",
-    "member_name_required": "Team member name is required",
-    "member_email_invalid": "Valid email is required for team members",
-    "file_size_limit": "File size must be less than 10MB",
-    "budget_positive": "Budget estimate must be positive"
-  },
+  "title": "Challenge Submissions",
+  "my_submissions": "My Submissions",
+  "all_submissions": "All Submissions",
+  "submission_details": "Submission Details",
+  "create_submission": "Create Submission",
+  "edit_submission": "Edit Submission",
+  
   "status": {
     "draft": "Draft",
     "submitted": "Submitted",
     "under_review": "Under Review",
-    "approved": "Approved",
+    "reviewed": "Reviewed",
+    "accepted": "Accepted",
     "rejected": "Rejected",
-    "needs_revision": "Needs Revision",
-    "finalist": "Finalist",
-    "winner": "Winner"
+    "winner": "Winner",
+    "finalist": "Finalist"
   },
+  
+  "form": {
+    "submission_title": "Submission Title",
+    "submission_title_placeholder": "Enter your idea title",
+    "solution_description": "Solution Description",
+    "solution_description_placeholder": "Describe your innovative solution...",
+    "implementation_plan": "Implementation Plan",
+    "implementation_plan_placeholder": "How will you implement this solution?",
+    "team_information": "Team Information",
+    "attachments": "Attachments",
+    "upload_files": "Upload Files"
+  },
+  
   "actions": {
+    "submit_idea": "Submit Idea",
     "save_draft": "Save as Draft",
-    "submit": "Submit Idea",
-    "edit": "Edit Submission",
-    "withdraw": "Withdraw Submission",
-    "view_feedback": "View Feedback",
-    "upload_revision": "Upload Revision"
+    "update_submission": "Update Submission",
+    "withdraw_submission": "Withdraw Submission",
+    "view_feedback": "View Feedback"
   },
-  "workflow": {
-    "step1": "Idea Submission",
-    "step2": "Initial Review",
-    "step3": "Expert Evaluation",
-    "step4": "Final Selection",
-    "step1_desc": "Submit your innovative idea with all required documentation",
-    "step2_desc": "Administrative review for completeness and eligibility",
-    "step3_desc": "Expert panel evaluates technical feasibility and impact",
-    "step4_desc": "Final selection and winner announcement"
+  
+  "validation": {
+    "title_required": "Submission title is required",
+    "description_required": "Solution description is required",
+    "implementation_required": "Implementation plan is required"
   },
-  "evaluation": {
-    "criteria": "Evaluation Criteria",
-    "innovation": "Innovation Level",
-    "feasibility": "Technical Feasibility",
-    "impact": "Expected Impact",
-    "scalability": "Scalability Potential",
-    "team_capability": "Team Capability",
-    "score": "Score",
-    "feedback": "Evaluator Feedback",
-    "recommendations": "Recommendations"
-  },
+  
   "messages": {
-    "submission_successful": "Idea submitted successfully",
-    "draft_saved": "Draft saved successfully",
-    "submission_withdrawn": "Submission withdrawn",
-    "revision_uploaded": "Revision uploaded successfully",
-    "deadline_passed": "Submission deadline has passed",
-    "already_submitted": "You have already submitted an idea for this challenge",
-    "max_submissions_reached": "Maximum number of submissions reached",
-    "file_upload_failed": "Failed to upload file",
-    "submit_failed": "Failed to submit idea"
+    "submission_saved": "Submission saved successfully",
+    "submission_submitted": "Submission submitted successfully!",
+    "submission_updated": "Submission updated successfully",
+    "save_error": "Error saving submission"
   }
 }

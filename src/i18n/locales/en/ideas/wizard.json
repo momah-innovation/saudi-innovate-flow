@@ -1,104 +1,44 @@
 {
-  "wizard": {
-    "title": "Idea Wizard",
-    "description": "Create and manage innovative ideas through our guided wizard",
-    "basic_info_title": "Basic Information",
-    "basic_info_description": "Enter the fundamental details about your idea",
-    "details_title": "Idea Details",
-    "details_description": "Specify the development status and maturity level",
-    "campaigns_events_title": "Campaigns & Events",
-    "campaigns_events_description": "Link your idea to relevant campaigns or events",
-    "challenges_questions_title": "Challenges & Focus Questions",
-    "challenges_questions_description": "Connect your idea to specific challenges and focus questions",
-    "additional_content_title": "Additional Content",
-    "additional_content_description": "Provide more detailed information about your solution"
+  "title": "Idea Submission Wizard",
+  "step_basic": "Basic Information",
+  "step_description": "Detailed Description",
+  "step_implementation": "Implementation Plan",
+  "step_impact": "Impact & Benefits",
+  "step_resources": "Resources & Timeline",
+  "step_review": "Review & Submit",
+  
+  "basic": {
+    "idea_title": "Idea Title",
+    "idea_title_placeholder": "Enter a compelling title for your idea",
+    "category": "Category",
+    "select_category": "Select the most relevant category",
+    "tags": "Tags",
+    "tags_placeholder": "Add relevant keywords and tags",
+    "elevator_pitch": "Elevator Pitch",
+    "elevator_pitch_placeholder": "Summarize your idea in 2-3 sentences"
   },
-  "form": {
-    "title_label": "Idea Title",
-    "title_placeholder": "Enter your idea title in Arabic",
-    "title_help": "Provide a clear, descriptive title for your innovative idea",
-    "description_label": "Idea Description", 
-    "description_placeholder": "Describe your idea, its purpose, and expected impact",
-    "description_help": "Explain what your idea does and how it solves a problem",
-    "innovator_label": "Innovator",
-    "innovator_placeholder": "Select the innovator",
-    "status_label": "Idea Status",
-    "maturity_label": "Maturity Level",
-    "campaign_label": "Related Campaign",
-    "campaign_placeholder": "Select a campaign",
-    "campaign_none": "No campaign",
-    "event_label": "Related Event",
-    "event_placeholder": "Select an event",
-    "event_none": "No event",
-    "challenge_label": "Challenge",
-    "challenge_placeholder": "Select a challenge",
-    "challenge_help": "Choose the challenge this idea addresses",
-    "focus_question_label": "Focus Question",
-    "focus_question_placeholder": "Select a focus question",
-    "focus_question_help": "Select the specific question this idea answers",
-    "focus_question_help_no_challenge": "Please select a challenge first to see available focus questions",
-    "solution_approach_label": "Solution Approach",
-    "solution_approach_placeholder": "Describe your approach to solving the problem",
-    "implementation_plan_label": "Implementation Plan",
-    "implementation_plan_placeholder": "Outline how you plan to implement this idea",
-    "expected_impact_label": "Expected Impact",
-    "expected_impact_placeholder": "Describe the expected impact and benefits",
-    "required_resources_label": "Required Resources",
-    "required_resources_placeholder": "List the resources needed for implementation"
-  },
-  "status": {
-    "draft": "Draft",
-    "submitted": "Submitted",
-    "under_review": "Under Review",
-    "approved": "Approved",
-    "rejected": "Rejected",
-    "in_development": "In Development",
-    "implemented": "Implemented",
-    "archived": "Archived"
-  },
-  "maturity": {
-    "concept": "Concept",
-    "prototype": "Prototype",
-    "pilot": "Pilot",
-    "scale": "Ready to Scale",
-    "mature": "Mature Solution"
-  },
+  
   "validation": {
     "title_required": "Idea title is required",
-    "title_min_length": "Title must be at least 10 characters",
-    "description_required": "Idea description is required",
-    "description_min_length": "Description must be at least 50 characters",
-    "innovator_required": "Innovator selection is required",
-    "status_required": "Idea status is required",
-    "maturity_required": "Maturity level is required",
-    "challenge_required_when_submitted": "Challenge is required when idea is submitted",
-    "focus_question_required_when_submitted": "Focus question is required when idea is submitted",
-    "duplicate_title_error": "An idea with this title already exists",
-    "constraint_error": "This action violates data constraints"
+    "category_required": "Category selection is required",
+    "elevator_pitch_required": "Elevator pitch is required",
+    "problem_statement_required": "Problem statement is required",
+    "solution_description_required": "Solution description is required"
   },
-  "messages": {
-    "create_success_title": "Idea Created Successfully",
-    "create_success_description": "Your innovative idea has been created and saved",
-    "update_success_title": "Idea Updated Successfully", 
-    "update_success_description": "Your idea has been updated with the latest information",
-    "save_error_title": "Save Error",
-    "save_error_description": "Failed to save the idea. Please try again",
-    "innovator_prefix": "Innovator",
-    "not_specified": "Not Specified",
-    "points_label": "Points",
-    "campaigns_events_note": "Optional: Link your idea to campaigns or events for better visibility",
-    "draft_note": "Note: Draft ideas can be saved without linking to challenges",
-    "required_linking": "Required for submitted ideas",
-    "required_when_submitting": "Required when submitting"
-  },
+  
   "actions": {
-    "create_idea": "Create Idea",
-    "update_idea": "Update Idea",
     "save_draft": "Save as Draft",
-    "submit_idea": "Submit Idea",
-    "cancel": "Cancel",
-    "next": "Next",
+    "continue": "Continue",
     "previous": "Previous",
-    "finish": "Finish"
+    "next": "Next",
+    "submit_idea": "Submit Idea",
+    "cancel": "Cancel"
+  },
+  
+  "messages": {
+    "draft_saved": "Draft saved successfully",
+    "idea_submitted": "Idea submitted successfully!",
+    "save_error": "Error saving draft",
+    "submit_error": "Error submitting idea"
   }
 }

@@ -132,6 +132,11 @@
     "system_health": "System Health",
     "uptime": "uptime",
     "incidents": "Incidents",
-    "high_risk_events": "High Risk Events"
+    "high_risk_events": "High Risk Events",
+    "new": "New",
+    "ideas_submitted": "Ideas Submitted",
+    "this_week": "this week",
+    "system_performance": "System Performance"
   }
+}
 }
