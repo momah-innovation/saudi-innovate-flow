@@ -64,6 +64,26 @@ import arTrends from './locales/ar/trends.json';
 import enStakeholder from './locales/en/stakeholder.json';
 import arStakeholder from './locales/ar/stakeholder.json';
 
+// Pages translations  
+import enPages from './locales/en/pages.json';
+import arPages from './locales/ar/pages.json';
+
+// Dialogs translations
+import enDialogs from './locales/en/dialogs.json';
+import arDialogs from './locales/ar/dialogs.json';
+
+// Tabs translations
+import enTabs from './locales/en/tabs.json';
+import arTabs from './locales/ar/tabs.json';
+
+// Breadcrumbs translations
+import enBreadcrumbs from './locales/en/breadcrumbs.json';
+import arBreadcrumbs from './locales/ar/breadcrumbs.json';
+
+// Routes translations
+import enRoutes from './locales/en/routes.json';
+import arRoutes from './locales/ar/routes.json';
+
 // Base static resources - these are loaded immediately
 const staticResources = {
   en: { 
@@ -81,7 +101,12 @@ const staticResources = {
     statistics: enStatistics,
     subscription: enSubscription,
     trends: enTrends,
-    stakeholder: enStakeholder
+    stakeholder: enStakeholder,
+    pages: enPages,
+    dialogs: enDialogs,
+    tabs: enTabs,
+    breadcrumbs: enBreadcrumbs,
+    routes: enRoutes
   },
   ar: { 
     landing: arLanding,
@@ -98,7 +123,12 @@ const staticResources = {
     statistics: arStatistics,
     subscription: arSubscription,
     trends: arTrends,
-    stakeholder: arStakeholder
+    stakeholder: arStakeholder,
+    pages: arPages,
+    dialogs: arDialogs,
+    tabs: arTabs,
+    breadcrumbs: arBreadcrumbs,
+    routes: arRoutes
   }
 };
 
@@ -283,12 +313,47 @@ const loadNamespace = async (language: string, namespace: string) => {
   }
 };
 
+// Key normalization function to handle both namespace:key and namespace.key patterns
+const normalizeTranslationKey = (key: string): { namespace: string | null; normalizedKey: string } => {
+  // Handle namespace:key pattern (correct format)
+  if (key.includes(':')) {
+    const [namespace, ...keyParts] = key.split(':');
+    return { namespace, normalizedKey: keyParts.join(':') };
+  }
+  
+  // Handle namespace.key pattern (legacy format - convert to namespace:key)
+  if (key.includes('.')) {
+    const parts = key.split('.');
+    const potentialNamespace = parts[0];
+    
+    // Check if first part is a known namespace
+    const knownNamespaces = [
+      'common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 
+      'errors', 'challenges', 'campaigns', 'events', 'expert', 'statistics', 
+      'subscription', 'trends', 'stakeholder', 'validation', 'system-lists',
+      'challenges-details', 'challenges-form', 'challenges-submissions',
+      'campaigns-form', 'campaigns-analytics', 'admin-settings', 'admin-users', 
+      'admin-analytics', 'partners', 'opportunities', 'ideas-wizard', 
+      'collaboration', 'profile', 'challenge-settings', 'error-boundary', 'team',
+      'pages', 'dialogs', 'tabs', 'breadcrumbs', 'routes'
+    ];
+    
+    if (knownNamespaces.includes(potentialNamespace)) {
+      const normalizedKey = parts.slice(1).join('.');
+      return { namespace: potentialNamespace, normalizedKey };
+    }
+  }
+  
+  // No namespace found, return as-is
+  return { namespace: null, normalizedKey: key };
+};
+
 // Optimized backend for static-first loading
 const FeatureBasedBackend = {
   type: 'backend' as const,
   
   init() {
-    logger.info('Feature-based backend initialized');
+    logger.info('Feature-based backend initialized with dual pattern support');
   },
 
   async read(language: string, namespace: string, callback: (error: any, data?: any) => void) {
@@ -338,7 +403,7 @@ i18n
     
     // Default namespaces that should be loaded immediately - using dot notation
     defaultNS: 'common',
-    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists', 'challenges', 'expert', 'events', 'statistics', 'subscription', 'trends', 'stakeholder'],
+    ns: ['common', 'landing', 'navigation', 'dashboard', 'workspace', 'admin', 'auth', 'errors', 'validation', 'system-lists', 'challenges', 'expert', 'events', 'statistics', 'subscription', 'trends', 'stakeholder', 'pages', 'dialogs', 'tabs', 'breadcrumbs', 'routes'],
     
     // Namespace/key separators
     nsSeparator: ':', // use ':' to separate namespace from key (avoids conflict with nested dot keys)
@@ -433,5 +498,18 @@ export const preloadNamespaces = async (namespaces: string[], language?: string)
   });
 };
 
-export { loadNamespace };
+// Enhanced translation function that normalizes keys
+export const normalizedT = (key: string, options?: any) => {
+  const { namespace, normalizedKey } = normalizeTranslationKey(key);
+  
+  if (namespace) {
+    // Use namespace:key format for i18next
+    return i18n.t(`${namespace}:${normalizedKey}`, options);
+  }
+  
+  // Use key as-is if no namespace detected
+  return i18n.t(key, options);
+};
+
+export { loadNamespace, normalizeTranslationKey };
 export default i18n;
