@@ -36,101 +36,228 @@ graph TB
 ## 📁 **CURRENT FILE STRUCTURE** 
 
 ### **Actual Project Organization**
-```typescript
-src/
-├── components/           // 700+ component files
-│   ├── ui/              // 130+ UI components (shadcn + custom)
-│   ├── admin/           // Administrative interfaces
-│   ├── auth/            // Authentication components
-│   ├── challenges/      // Challenge management
-│   ├── dashboard/       // Dashboard components
-│   ├── events/          // Event management
-│   ├── ideas/           // Idea submission system
-│   ├── storage/         // File management
-│   ├── workspace/       // Workspace features
-│   ├── layout/          // AppShell, headers, sidebars
-│   └── maintenance/     // System maintenance
-├── pages/               // Route components (50+ pages)
-├── hooks/               // Custom business logic hooks
-├── contexts/            // React context providers
-├── lib/                 // Utility libraries
-├── routing/             // UnifiedRouter system with RBAC
-├── i18n/                // Internationalization (ar/en)
-└── integrations/        // Supabase integration
-```
+
+<lov-mermaid>
+graph LR
+    subgraph "src/"
+        A[components/]
+        B[pages/]
+        C[hooks/]
+        D[contexts/]
+        E[lib/]
+        F[routing/]
+        G[i18n/]
+        H[integrations/]
+    end
+    
+    subgraph "components/ (700+ files)"
+        A1[ui/ - 130+ shadcn components]
+        A2[admin/ - Administrative interfaces]
+        A3[auth/ - Authentication components]
+        A4[challenges/ - Challenge management]
+        A5[dashboard/ - Dashboard components]
+        A6[events/ - Event management]
+        A7[layout/ - AppShell, headers, sidebars]
+        A8[workspace/ - Workspace features]
+    end
+    
+    subgraph "Key Systems"
+        F1[UnifiedRouter - RBAC routing]
+        G1[Translation - ar/en RTL/LTR]
+        H1[Supabase - Backend integration]
+        C1[Custom hooks - Business logic]
+        D1[Contexts - State management]
+    end
+    
+    A --> A1
+    A --> A2
+    A --> A3
+    A --> A4
+    A --> A5
+    A --> A6
+    A --> A7
+    A --> A8
+    F --> F1
+    G --> G1
+    H --> H1
+    C --> C1
+    D --> D1
+</lov-mermaid>
 
 ## 🧱 **MODERN UI COMPONENT SYSTEM**
 
 ### **Shadcn/ui Components (50+ Core Components)**
-```typescript
-// Location: src/components/ui/ - ACTUAL IMPLEMENTATION
-├── button.tsx              // 25+ variants with micro-interactions
-├── input.tsx               // Form input with validation
-├── card.tsx                // Content container
-├── dialog.tsx              // Modal system
-├── select.tsx              // Dropdown selection
-├── textarea.tsx            // Multi-line input
-├── checkbox.tsx            // Boolean selection
-├── badge.tsx               // Status indicators
-├── avatar.tsx              // User profile images
-├── accordion.tsx           // Collapsible content
-├── alert-dialog.tsx        // Confirmation modals
-├── aspect-ratio.tsx        // Image ratio containers
-├── breadcrumb.tsx          // Navigation breadcrumbs
-├── calendar.tsx            // Date picker
-├── carousel.tsx            // Image/content carousel
-├── chart.tsx               // Data visualization
-├── collapsible.tsx         // Expandable sections
-├── command.tsx             // Command palette
-├── context-menu.tsx        // Right-click menus
-├── data-table.tsx          // Advanced table component
-├── date-picker.tsx         // Date selection
-├── drawer.tsx              // Slide-out panels
-├── dropdown-menu.tsx       // Action menus
-├── form.tsx                // Form management
-├── hover-card.tsx          // Hover tooltips
-├── label.tsx               // Form labels
-├── menubar.tsx             // Menu navigation
-├── navigation-menu.tsx     // Site navigation
-├── pagination.tsx          // Data pagination
-├── popover.tsx             // Floating content
-├── progress.tsx            // Loading indicators
-├── radio-group.tsx         // Single selection
-├── resizable.tsx           // Resizable panels
-├── scroll-area.tsx         // Custom scrollbars
-├── separator.tsx           // Visual dividers
-├── sheet.tsx               // Side sheets
-├── skeleton.tsx            // Loading placeholders
-├── slider.tsx              // Range inputs
-├── sonner.tsx              // Toast notifications
-├── switch.tsx              // Toggle switches
-├── table.tsx               // Basic tables
-├── tabs.tsx                // Tab navigation
-├── toast.tsx               // Notification system
-├── toggle.tsx              // Toggle buttons
-├── toggle-group.tsx        // Toggle button groups
-├── tooltip.tsx             // Help tooltips
-├── sidebar.tsx             // 🆕 Modern sidebar system
-├── direction-provider.tsx  // RTL/LTR provider
-├── theme-provider.tsx      // Theme management
-└── loading.tsx             // Loading indicators
-```
+
+<lov-mermaid>
+graph TB
+    subgraph "Core UI Components (src/components/ui/)"
+        A[Input & Forms]
+        B[Navigation & Layout] 
+        C[Data Display]
+        D[Feedback & Overlay]
+        E[Advanced Features]
+    end
+    
+    subgraph "Input & Forms"
+        A1[button.tsx - 25+ variants]
+        A2[input.tsx - Form validation]
+        A3[textarea.tsx - Multi-line input]
+        A4[checkbox.tsx - Boolean selection]
+        A5[form.tsx - Form management]
+        A6[label.tsx - Form labels]
+        A7[radio-group.tsx - Single selection]
+        A8[switch.tsx - Toggle switches]
+        A9[slider.tsx - Range inputs]
+    end
+    
+    subgraph "Navigation & Layout"
+        B1[sidebar.tsx - Modern sidebar system ⭐]
+        B2[navigation-menu.tsx - Site navigation]
+        B3[breadcrumb.tsx - Navigation breadcrumbs]
+        B4[tabs.tsx - Tab navigation]
+        B5[menubar.tsx - Menu navigation]
+        B6[separator.tsx - Visual dividers]
+        B7[resizable.tsx - Resizable panels]
+    end
+    
+    subgraph "Data Display"
+        C1[card.tsx - Content container]
+        C2[table.tsx - Basic tables]
+        C3[data-table.tsx - Advanced tables]
+        C4[badge.tsx - Status indicators]
+        C5[avatar.tsx - User images]
+        C6[chart.tsx - Data visualization]
+        C7[progress.tsx - Loading indicators]
+        C8[pagination.tsx - Data pagination]
+    end
+    
+    subgraph "Feedback & Overlay"
+        D1[dialog.tsx - Modal system]
+        D2[alert-dialog.tsx - Confirmations]
+        D3[toast.tsx - Notifications]
+        D4[sonner.tsx - Toast system]
+        D5[tooltip.tsx - Help tooltips]
+        D6[popover.tsx - Floating content]
+        D7[sheet.tsx - Side sheets]
+        D8[drawer.tsx - Slide-out panels]
+    end
+    
+    subgraph "Advanced Features"
+        E1[command.tsx - Command palette]
+        E2[scroll-area.tsx - Custom scrollbars]
+        E3[skeleton.tsx - Loading placeholders]
+        E4[calendar.tsx - Date picker]
+        E5[carousel.tsx - Content carousel]
+        E6[accordion.tsx - Collapsible content]
+        E7[context-menu.tsx - Right-click menus]
+        E8[direction-provider.tsx - RTL/LTR ⭐]
+        E9[theme-provider.tsx - Theme management ⭐]
+    end
+    
+    A --> A1
+    A --> A2
+    A --> A3
+    A --> A4
+    A --> A5
+    A --> A6
+    A --> A7
+    A --> A8
+    A --> A9
+    
+    B --> B1
+    B --> B2
+    B --> B3
+    B --> B4
+    B --> B5
+    B --> B6
+    B --> B7
+    
+    C --> C1
+    C --> C2
+    C --> C3
+    C --> C4
+    C --> C5
+    C --> C6
+    C --> C7
+    C --> C8
+    
+    D --> D1
+    D --> D2
+    D --> D3
+    D --> D4
+    D --> D5
+    D --> D6
+    D --> D7
+    D --> D8
+    
+    E --> E1
+    E --> E2
+    E --> E3
+    E --> E4
+    E --> E5
+    E --> E6
+    E --> E7
+    E --> E8
+    E --> E9
+</lov-mermaid>
 
 ### **Custom Advanced Components (80+ Components)**
-```typescript
-// Location: src/components/ui/ - CUSTOM IMPLEMENTATIONS
-├── FileUploadField.tsx     // Advanced file upload with drag-drop
-├── AdvancedDataTable.tsx   // Enterprise data table
-├── SmartSearch.tsx         // AI-powered search
-├── NotificationCenter.tsx  // Real-time notifications
-├── UserMenu.tsx            // User profile menu
-├── ActionMenu.tsx          // Context actions
-├── BulkActions.tsx         // Bulk operation tools
-├── StorageStatsCards.tsx   // Storage analytics display
-├── LanguageSelector.tsx    // RTL/LTR language switcher
-├── ThemeToggle.tsx         // Dark/light theme toggle
-└── ImageBrowser.tsx        // Advanced image browser
-```
+
+<lov-mermaid>
+graph TB
+    subgraph "Advanced Custom Components"
+        F[File Management]
+        G[Data & Analytics]
+        H[User Interface]
+        I[System Features]
+    end
+    
+    subgraph "File Management"
+        F1[FileUploadField.tsx - Drag & drop]
+        F2[ImageBrowser.tsx - Advanced browser]
+        F3[StorageStatsCards.tsx - Analytics]
+    end
+    
+    subgraph "Data & Analytics"  
+        G1[AdvancedDataTable.tsx - Enterprise tables]
+        G2[SmartSearch.tsx - AI-powered search]
+        G3[BulkActions.tsx - Bulk operations]
+        G4[NotificationCenter.tsx - Real-time alerts]
+    end
+    
+    subgraph "User Interface"
+        H1[UserMenu.tsx - Profile menu]
+        H2[ActionMenu.tsx - Context actions]
+        H3[LanguageSelector.tsx - RTL/LTR switcher]
+        H4[ThemeToggle.tsx - Dark/light toggle]
+    end
+    
+    subgraph "System Features"
+        I1[AppShell.tsx - Root layout wrapper ⭐]
+        I2[UnifiedRouter.tsx - RBAC routing ⭐]
+        I3[EnhancedNavigationSidebar.tsx - Modern nav ⭐]
+        I4[SystemHeader.tsx - Unified header ⭐]
+    end
+    
+    F --> F1
+    F --> F2
+    F --> F3
+    
+    G --> G1
+    G --> G2
+    G --> G3
+    G --> G4
+    
+    H --> H1
+    H --> H2
+    H --> H3
+    H --> H4
+    
+    I --> I1
+    I --> I2
+    I --> I3
+    I --> I4
+</lov-mermaid>
 
 ## 🏗️ **MODERN SIDEBAR ARCHITECTURE**
 
@@ -230,17 +357,76 @@ const buttonVariants = cva(
 ## 🎯 **FEATURE-BASED COMPONENTS**
 
 ### **Page Components (Route Endpoints)**
-```typescript
-// src/pages/ - ACTUAL IMPLEMENTATION
-├── Dashboard.tsx           // Main dashboard with stats
-├── AdminDashboardPage.tsx  // Administrative overview  
-├── ChallengesBrowse.tsx    // Challenge listing and filtering
-├── Auth.tsx                // Authentication pages
-├── AICenter.tsx            // AI features center
-├── DesignSystem.tsx        // Component showcase
-├── CollaborationLandingPage.tsx // Collaboration features
-└── ProfileSetupPage.tsx    // User onboarding
-```
+
+<lov-mermaid>
+graph TB
+    subgraph "Page Components (50+ pages)"
+        J[Public Pages]
+        K[User Pages]  
+        L[Admin Pages]
+        M[Workspace Pages]
+    end
+    
+    subgraph "Public Pages"
+        J1[LandingPage.tsx - Public homepage]
+        J2[Auth.tsx - Authentication flow]
+        J3[Challenges.tsx - Public challenges]
+        J4[Help.tsx - Documentation]
+        J5[DesignSystem.tsx - Component showcase]
+    end
+    
+    subgraph "User Pages"
+        K1[UserDashboard.tsx - Main dashboard ⭐]
+        K2[ChallengesBrowse.tsx - Challenge listing]
+        K3[ChallengeDetails.tsx - Challenge details]
+        K4[Settings.tsx - User preferences]
+        K5[ProfileSetup.tsx - User onboarding]
+        K6[CollaborationLandingPage.tsx - Collaboration]
+    end
+    
+    subgraph "Admin Pages"
+        L1[AdminDashboardPage.tsx - Admin overview ⭐]
+        L2[ChallengesManagement.tsx - Challenge admin]
+        L3[UserManagement.tsx - User admin]
+        L4[SystemAnalytics.tsx - System metrics]
+        L5[StorageManagement.tsx - File admin]
+        L6[SecurityAdvanced.tsx - Security admin]
+    end
+    
+    subgraph "Workspace Pages"
+        M1[UserWorkspace.tsx - User workspace]
+        M2[ExpertWorkspace.tsx - Expert workspace]
+        M3[AdminWorkspace.tsx - Admin workspace]
+        M4[TeamWorkspace.tsx - Team workspace]
+        M5[PartnerWorkspace.tsx - Partner workspace]
+    end
+    
+    J --> J1
+    J --> J2
+    J --> J3
+    J --> J4
+    J --> J5
+    
+    K --> K1
+    K --> K2
+    K --> K3
+    K --> K4
+    K --> K5
+    K --> K6
+    
+    L --> L1
+    L --> L2
+    L --> L3
+    L --> L4
+    L --> L5
+    L --> L6
+    
+    M --> M1
+    M --> M2
+    M --> M3
+    M --> M4
+    M --> M5
+</lov-mermaid>
 
 ### **Dashboard Implementation Example**
 ```typescript
@@ -298,15 +484,54 @@ graph LR
 </lov-mermaid>
 
 ### **Context Providers (Actual Implementation)**
-```typescript
-// src/contexts/ - ACTUAL IMPLEMENTATION
-├── AuthContext.tsx           // User authentication state
-├── WorkspaceContext.tsx      // Multi-tenant workspace data
-├── SettingsContext.tsx       // User preferences
-├── SystemSettingsContext.tsx // Global system settings
-├── SidebarContext.tsx        // UI state persistence
-└── UploaderSettingsContext.tsx // File upload configuration
-```
+
+<lov-mermaid>
+graph LR
+    subgraph "Context Providers (src/contexts/)"
+        N[Authentication]
+        O[Application State]
+        P[UI & Settings]
+        Q[System Integration]
+    end
+    
+    subgraph "Authentication"
+        N1[AuthContext.tsx - User auth state ⭐]
+        N2[WorkspaceContext.tsx - Multi-tenant data ⭐]
+    end
+    
+    subgraph "Application State"
+        O1[SettingsContext.tsx - User preferences]
+        O2[SystemSettingsContext.tsx - Global settings]
+        O3[TranslationContext.tsx - i18n state]
+        O4[AnalyticsContext.tsx - Usage tracking]
+    end
+    
+    subgraph "UI & Settings"
+        P1[SidebarContext.tsx - UI persistence ⭐]
+        P2[ThemeProvider.tsx - Theme management]
+        P3[DirectionProvider.tsx - RTL/LTR support]
+    end
+    
+    subgraph "System Integration"
+        Q1[UploaderSettingsContext.tsx - File config]
+        Q2[RealTimeCollaborationWrapper.tsx - Live features]
+    end
+    
+    N --> N1
+    N --> N2
+    
+    O --> O1
+    O --> O2
+    O --> O3
+    O --> O4
+    
+    P --> P1
+    P --> P2
+    P --> P3
+    
+    Q --> Q1
+    Q --> Q2
+</lov-mermaid>
 
 ### **Custom Hooks Pattern**
 ```typescript
