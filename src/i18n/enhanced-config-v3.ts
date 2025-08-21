@@ -463,6 +463,33 @@ i18n
     returnObjects: false
   });
 
+// Monkey-patch i18n.t to support both namespace:key and namespace.key patterns globally
+const __originalT = i18n.t.bind(i18n);
+(i18n as any).t = ((key: any, options?: any) => {
+  try {
+    if (typeof key === 'string') {
+      const { namespace, normalizedKey } = normalizeTranslationKey(key);
+      if (namespace) {
+        return __originalT(`${namespace}:${normalizedKey}`, options);
+      }
+      return __originalT(key, options);
+    }
+    if (Array.isArray(key)) {
+      const processed = key.map((k) => {
+        if (typeof k === 'string') {
+          const { namespace, normalizedKey } = normalizeTranslationKey(k);
+          return namespace ? `${namespace}:${normalizedKey}` : k;
+        }
+        return k;
+      });
+      return __originalT(processed as any, options);
+    }
+    return __originalT(key, options);
+  } catch (e) {
+    return __originalT(key, options);
+  }
+}) as any;
+
 // Enhanced helper functions for production optimization
 export const preloadNamespace = async (namespace: string, language?: string) => {
   const targetLanguage = language || i18n.language;
