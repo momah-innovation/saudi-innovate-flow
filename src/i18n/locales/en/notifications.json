@@ -1,0 +1,49 @@
+{
+  "title": "Notifications",
+  "new": "New Notification",
+  "mark_read": "Mark as Read",
+  "mark_unread": "Mark as Unread", 
+  "mark_all_read": "Mark All as Read",
+  "delete": "Delete Notification",
+  "delete_all": "Delete All",
+  "clear_all": "Clear All",
+  "no_notifications": "No notifications",
+  "empty_message": "You're all caught up! No new notifications.",
+  "loading": "Loading notifications...",
+  "error": "Error loading notifications",
+  "retry": "Retry",
+  "settings": "Notification Settings",
+  "preferences": "Notification Preferences",
+  "frequency": "Notification Frequency",
+  "types": {
+    "system": "System Notifications",
+    "security": "Security Alerts",
+    "activity": "Activity Updates",
+    "mentions": "Mentions",
+    "messages": "Messages",
+    "challenges": "Challenge Updates",
+    "ideas": "Idea Notifications",
+    "events": "Event Reminders",
+    "partnerships": "Partnership Updates",
+    "evaluation": "Evaluation Updates"
+  },
+  "channels": {
+    "email": "Email",
+    "push": "Push Notifications",
+    "sms": "SMS",
+    "in_app": "In-App Notifications"
+  },
+  "priority": {
+    "low": "Low Priority",
+    "medium": "Medium Priority", 
+    "high": "High Priority",
+    "urgent": "Urgent"
+  },
+  "timing": {
+    "immediately": "Immediately",
+    "hourly": "Every Hour",
+    "daily": "Daily Digest",
+    "weekly": "Weekly Summary",
+    "never": "Never"
+  }
+}

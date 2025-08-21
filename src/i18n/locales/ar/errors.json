@@ -1,3 +1,26 @@
 {
-  "failed_to_save_team_member": "فشل في حفظ بيانات عضو الفريق"
+  "something_went_wrong": "حدث خطأ ما",
+  "try_again": "حاول مرة أخرى",
+  "validation_error": "خطأ في التحقق",
+  "network_error": "خطأ في الشبكة",
+  "server_error": "خطأ في الخادم",
+  "permission_denied": "رُفض الإذن",
+  "not_found": "غير موجود",
+  "timeout": "انتهت مهلة الطلب",
+  "invalid_input": "مدخل غير صحيح",
+  "required_field": "هذا الحقل مطلوب",
+  "invalid_email": "عنوان بريد إلكتروني غير صحيح",
+  "invalid_phone": "رقم هاتف غير صحيح",
+  "password_too_short": "كلمة المرور قصيرة جداً",
+  "passwords_dont_match": "كلمات المرور غير متطابقة",
+  "file_too_large": "الملف كبير جداً",
+  "invalid_file_type": "نوع ملف غير صحيح",
+  "upload_failed": "فشل الرفع",
+  "download_failed": "فشل التنزيل",
+  "delete_failed": "فشل الحذف",
+  "save_failed": "فشل الحفظ",
+  "load_failed": "فشل التحميل",
+  "connection_lost": "انقطع الاتصال",
+  "session_expired": "انتهت صلاحية الجلسة",
+  "unauthorized": "وصول غير مصرح"
 }

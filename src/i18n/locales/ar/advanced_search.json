@@ -1,0 +1,23 @@
+{
+  "title": "البحث المتقدم",
+  "filters_active": "مرشحات نشطة",
+  "search_query": "استعلام البحث",
+  "search_placeholder": "أدخل مصطلحات البحث...",
+  "status": "الحالة",
+  "select_status": "اختر الحالة",
+  "all_statuses": "جميع الحالات",
+  "priority": "الأولوية",
+  "select_priority": "اختر الأولوية",
+  "all_priorities": "جميع الأولويات",
+  "date_range": "نطاق التاريخ",
+  "start_date": "تاريخ البداية",
+  "end_date": "تاريخ النهاية",
+  "budget_range": "نطاق الميزانية",
+  "minimum_budget": "أدنى ميزانية",
+  "maximum_budget": "أقصى ميزانية",
+  "tags": "العلامات",
+  "tag_selector_coming_soon": "منتقي العلامات قريباً",
+  "searching": "جاري البحث...",
+  "search": "بحث",
+  "clear_filters": "مسح المرشحات"
+}
