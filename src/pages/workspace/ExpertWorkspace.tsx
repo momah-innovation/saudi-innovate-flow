@@ -59,6 +59,7 @@ export default function ExpertWorkspace() {
       icon: Star,
       onClick: () => {},
       variant: 'default' as const,
+      colorScheme: 'warning' as const,
       badge: workspaceData?.stats?.pendingEvaluations ? {
         text: workspaceData.stats.pendingEvaluations.toString(),
         variant: 'destructive' as const
@@ -70,7 +71,8 @@ export default function ExpertWorkspace() {
       description: t('workspace.expert.actions.review_submissions_desc'),
       icon: Eye,
       onClick: () => {},
-      variant: 'outline' as const
+      variant: 'outline' as const,
+      colorScheme: 'info' as const
     }
   ];
 

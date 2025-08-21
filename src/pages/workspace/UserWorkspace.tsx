@@ -57,7 +57,8 @@ export default function UserWorkspace() {
       description: t('workspace.user.actions.new_idea_desc'),
       icon: Plus,
       onClick: () => navigate(ALL_ROUTES.IDEAS + '?action=create'),
-      variant: 'default' as const
+      variant: 'default' as const,
+      colorScheme: 'innovation' as const
     },
     {
       id: 'join-challenge',
@@ -65,7 +66,8 @@ export default function UserWorkspace() {
       description: t('workspace.user.actions.join_challenge_desc'),
       icon: Trophy,
       onClick: () => navigate(ALL_ROUTES.CHALLENGES),
-      variant: 'outline' as const
+      variant: 'outline' as const,
+      colorScheme: 'success' as const
     }
   ];
 

@@ -57,7 +57,8 @@ export default function PartnerWorkspace() {
       description: t('workspace.partner.actions.browse_opportunities_desc'),
       icon: Search,
       onClick: () => navigate(ALL_ROUTES.OPPORTUNITIES),
-      variant: 'default' as const
+      variant: 'default' as const,
+      colorScheme: 'innovation' as const
     },
     {
       id: 'create-opportunity',
@@ -66,7 +67,8 @@ export default function PartnerWorkspace() {
       icon: Plus,
       onClick: () => navigate(ALL_ROUTES.OPPORTUNITIES + '?action=create'),
       variant: 'outline' as const,
-      disabled: !permissions.canCreateOpportunities
+      disabled: !permissions.canCreateOpportunities,
+      colorScheme: 'success' as const
     }
   ];
 

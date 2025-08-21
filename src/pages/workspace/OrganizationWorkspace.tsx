@@ -57,7 +57,8 @@ export default function OrganizationWorkspace() {
       description: t('workspace.organization.actions.create_challenge_desc'),
       icon: Plus,
       onClick: () => navigate(ALL_ROUTES.ADMIN_CHALLENGES + '?action=create'),
-      variant: 'default' as const
+      variant: 'default' as const,
+      colorScheme: 'innovation' as const
     },
     {
       id: 'manage-team',
@@ -65,7 +66,8 @@ export default function OrganizationWorkspace() {
       description: t('workspace.organization.actions.manage_team_desc'),
       icon: Settings,
       onClick: () => navigate(ALL_ROUTES.ADMIN_TEAMS),
-      variant: 'outline' as const
+      variant: 'outline' as const,
+      colorScheme: 'social' as const
     }
   ];
 

@@ -38,7 +38,11 @@
       "new_challenge": "Create Challenge",
       "new_campaign": "Start Campaign",
       "invite_users": "Invite Users",
-      "view_analytics": "View Analytics"
+      "view_analytics": "View Analytics",
+      "new_challenge_desc": "Create and manage innovation challenges",
+      "new_campaign_desc": "Launch strategic innovation campaigns", 
+      "invite_users_desc": "Expand your innovation network",
+      "view_analytics_desc": "Analyze performance and insights"
     },
     "new_user_registered": "New user registered",
     "new_idea_submitted": "New idea submitted",

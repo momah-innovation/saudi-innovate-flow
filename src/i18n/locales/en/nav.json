@@ -34,5 +34,109 @@
     "administration": "Administration", 
     "system": "System",
     "help_support": "Help & Support"
+  },
+  "workspace": {
+    "admin": {
+      "actions": {
+        "add_user": "Add User",
+        "add_user_desc": "Add new users to the system and manage their roles",
+        "system_settings": "System Settings",
+        "system_settings_desc": "Configure system preferences and security",
+        "backup_data": "Backup Data",
+        "backup_data_desc": "Create system backups and restore data"
+      },
+      "nav": {
+        "users": "Users",
+        "system": "System",
+        "analytics": "Analytics"
+      },
+      "metrics": {
+        "total_users": "Total Users",
+        "total_challenges": "Total Challenges",
+        "total_ideas": "Total Ideas",
+        "active_challenges": "Active Challenges"
+      },
+      "system_health": "System Health",
+      "uptime": "Uptime",
+      "response_time": "Response Time",
+      "active_users": "Active Users",
+      "healthy": "Healthy",
+      "optimal": "Optimal",
+      "normal": "Normal",
+      "recent_users": "Recent Users",
+      "joined": "Joined",
+      "manage_all": "Manage All",
+      "no_users": "No Users Yet",
+      "no_users_desc": "No users registered yet",
+      "title": "Admin Workspace",
+      "description": "Manage system administration and user accounts",
+      "quick_actions": "Quick Actions"
+    },
+    "partner": {
+      "actions": {
+        "browse_opportunities": "Browse Opportunities",
+        "browse_opportunities_desc": "Explore collaboration opportunities and partnerships",
+        "create_opportunity": "Create Opportunity",
+        "create_opportunity_desc": "Post new collaboration opportunities for partners"
+      },
+      "metrics": {
+        "available_opportunities": "Available Opportunities",
+        "active_partnerships": "Active Partnerships",
+        "pending_applications": "Pending Applications",
+        "accepted_applications": "Accepted Applications"
+      },
+      "title": "Partner Workspace",
+      "description": "Collaborate with partners and explore opportunities",
+      "quick_actions": "Quick Actions"
+    },
+    "expert": {
+      "actions": {
+        "evaluate_ideas": "Evaluate Ideas",
+        "evaluate_ideas_desc": "Review and provide expert feedback on submitted ideas",
+        "review_submissions": "Review Submissions",
+        "review_submissions_desc": "Analyze submissions and provide detailed evaluations"
+      },
+      "metrics": {
+        "pending_evaluations": "Pending Evaluations",
+        "completed_evaluations": "Completed Evaluations",
+        "assigned_challenges": "Assigned Challenges"
+      },
+      "title": "Expert Workspace",
+      "description": "Evaluate innovations and provide expert insights",
+      "quick_actions": "Quick Actions"
+    },
+    "organization": {
+      "actions": {
+        "create_challenge": "Create Challenge",
+        "create_challenge_desc": "Launch new innovation challenges for your organization",
+        "manage_team": "Manage Team",
+        "manage_team_desc": "Organize teams and coordinate innovation initiatives"
+      },
+      "metrics": {
+        "active_challenges": "Active Challenges",
+        "total_submissions": "Total Submissions",
+        "team_size": "Team Size",
+        "completed_challenges": "Completed Challenges"
+      },
+      "title": "Organization Workspace",
+      "description": "Drive organizational innovation and manage challenges",
+      "quick_actions": "Quick Actions"
+    },
+    "user": {
+      "actions": {
+        "new_idea": "New Idea",
+        "new_idea_desc": "Share your innovative ideas with the community",
+        "join_challenge": "Join Challenge",
+        "join_challenge_desc": "Participate in ongoing innovation challenges"
+      },
+      "metrics": {
+        "total_ideas": "Total Ideas",
+        "active_challenges": "Active Challenges",
+        "saved_items": "Saved Items"
+      },
+      "title": "User Workspace",
+      "description": "Your personal innovation workspace",
+      "quick_actions": "Quick Actions"
+    }
   }
 }

@@ -57,7 +57,8 @@ export default function AdminWorkspace() {
       description: t('workspace.admin.actions.add_user_desc'),
       icon: UserPlus,
       onClick: () => navigate(ALL_ROUTES.ADMIN_USERS + '?action=create'),
-      variant: 'default' as const
+      variant: 'default' as const,
+      colorScheme: 'social' as const
     },
     {
       id: 'system-settings',
@@ -65,7 +66,8 @@ export default function AdminWorkspace() {
       description: t('workspace.admin.actions.system_settings_desc'),
       icon: Settings,
       onClick: () => navigate(ALL_ROUTES.ADMIN_DASHBOARD),
-      variant: 'outline' as const
+      variant: 'outline' as const,
+      colorScheme: 'warning' as const
     },
     {
       id: 'backup-data',
@@ -73,7 +75,8 @@ export default function AdminWorkspace() {
       description: t('workspace.admin.actions.backup_data_desc'),
       icon: Database,
       onClick: () => {},
-      variant: 'outline' as const
+      variant: 'outline' as const,
+      colorScheme: 'info' as const
     }
   ];
 
