@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
 import { WorkspaceNavigation } from '@/components/workspace/WorkspaceNavigation';
@@ -12,6 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Briefcase, Handshake, FileCheck, Plus, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ALL_ROUTES } from '@/routing/routes';
@@ -22,6 +23,7 @@ export default function PartnerWorkspace() {
   const navigate = useNavigate();
   const permissions = useWorkspacePermissions();
   const { data: workspaceData, isLoading } = usePartnerWorkspaceData();
+  const [activeTab, setActiveTab] = useState('opportunities');
 
   const navigationItems = [
     {
@@ -153,11 +155,19 @@ export default function PartnerWorkspace() {
       </div>
       
       <div className="container mx-auto px-4 pb-12">
-        <div className="space-y-6">
-        {/* Navigation */}
-        <WorkspaceNavigation items={navigationItems} />
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="opportunities">{t('workspace.partner.tabs.opportunities', 'Opportunities')}</TabsTrigger>
+            <TabsTrigger value="partnerships">{t('workspace.partner.tabs.partnerships', 'Partnerships')}</TabsTrigger>
+            <TabsTrigger value="applications">{t('workspace.partner.tabs.applications', 'Applications')}</TabsTrigger>
+          </TabsList>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <TabsContent value="opportunities" className="space-y-6">
+            <div className="space-y-6">
+              {/* Navigation */}
+              <WorkspaceNavigation items={navigationItems} />
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Available Opportunities */}
@@ -327,8 +337,119 @@ export default function PartnerWorkspace() {
             {/* Metrics */}
             <WorkspaceMetrics metrics={metrics} />
           </div>
+          </div>
         </div>
-        </div>
+        </TabsContent>
+
+        <TabsContent value="partnerships" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <Card className="gradient-border hover-scale group">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+                    {t('workspace.partner.active_partnerships')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {workspaceData?.partnerships?.length > 0 ? (
+                    <div className="space-y-3">
+                      {workspaceData.partnerships.map((partnership) => (
+                        <div key={partnership.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                              <Handshake className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold group-hover:text-primary transition-colors">{partnership.challenges?.title_ar}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {t('workspace.partner.status')}: {partnership.challenges?.status}
+                              </p>
+                            </div>
+                          </div>
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
+                            {t('common.manage')}
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4 hover-scale">
+                        <Handshake className="h-12 w-12 text-primary" />
+                      </div>
+                      <p className="text-lg font-medium mb-2">{t('workspace.partner.no_partnerships')}</p>
+                      <p className="text-sm">{t('workspace.partner.no_partnerships_desc', 'No active partnerships at this time')}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="space-y-6">
+              <WorkspaceQuickActions
+                title={t('workspace.partner.quick_actions')}
+                actions={quickActions}
+              />
+              <WorkspaceMetrics metrics={metrics} />
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="applications" className="space-y-6">
+          <Card className="gradient-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+                {t('workspace.partner.my_applications', 'My Applications')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {workspaceData?.applications?.length > 0 ? (
+                <div className="space-y-4">
+                  {workspaceData.applications.map((application) => (
+                    <div key={application.id} className="p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                            <FileCheck className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold group-hover:text-primary transition-colors">{application.id}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('workspace.partner.applied')}: {new Date(application.created_at || '').toLocaleDateString('ar')}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={
+                            application.status === 'accepted' ? 'success' :
+                            application.status === 'rejected' ? 'destructive' : 'secondary'
+                          } className="gradient-border">
+                            {application.status}
+                          </Badge>
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
+                            {t('common.view')}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4 hover-scale">
+                    <FileCheck className="h-12 w-12 text-primary" />
+                  </div>
+                  <p className="text-lg font-medium mb-2">{t('workspace.partner.no_applications', 'No Applications')}</p>
+                  <p className="text-sm">{t('workspace.partner.no_applications_desc', 'You have not submitted any applications yet')}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
         
         {/* Partner Workspace Collaboration */}
         <WorkspaceCollaboration
@@ -338,7 +459,6 @@ export default function PartnerWorkspace() {
           showPresence={true}
           showActivity={true}
         />
-      </div>
     </>
   );
 }

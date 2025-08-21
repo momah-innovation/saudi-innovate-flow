@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WorkspaceLayout } from '@/components/workspace/WorkspaceLayout';
 import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
@@ -22,6 +23,7 @@ export default function UserWorkspace() {
   const navigate = useNavigate();
   const permissions = useWorkspacePermissions();
   const { data: workspaceData, isLoading } = useUserWorkspaceData();
+  const [activeTab, setActiveTab] = useState('overview');
 
   const navigationItems = [
     {
@@ -142,13 +144,21 @@ export default function UserWorkspace() {
       </div>
       
       <div className="container mx-auto px-4 pb-12">
-        <div className="space-y-6">
-        {/* Navigation */}
-        <WorkspaceNavigation items={navigationItems} />
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview">{t('workspace.user.tabs.overview', 'Overview')}</TabsTrigger>
+            <TabsTrigger value="ideas">{t('workspace.user.tabs.ideas', 'My Ideas')}</TabsTrigger>
+            <TabsTrigger value="achievements">{t('workspace.user.tabs.achievements', 'Achievements')}</TabsTrigger>
+          </TabsList>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <TabsContent value="overview" className="space-y-6">
+            <div className="space-y-6">
+              {/* Navigation */}
+              <WorkspaceNavigation items={navigationItems} />
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Main Content */}
+                <div className="lg:col-span-2 space-y-6">
             {/* Recent Ideas */}
             <Card className="gradient-border hover-scale group">
               <CardHeader>
@@ -246,21 +256,91 @@ export default function UserWorkspace() {
                 )}
               </CardContent>
             </Card>
-          </div>
+                </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <WorkspaceQuickActions
-              title={t('workspace.user.quick_actions')}
-              actions={quickActions}
-            />
+                {/* Sidebar */}
+                <div className="space-y-6">
+                  {/* Quick Actions */}
+                  <WorkspaceQuickActions
+                    title={t('workspace.user.quick_actions')}
+                    actions={quickActions}
+                  />
 
-            {/* Metrics */}
-            <WorkspaceMetrics metrics={metrics} />
-          </div>
-        </div>
-        </div>
+                  {/* Metrics */}
+                  <WorkspaceMetrics metrics={metrics} />
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="ideas" className="space-y-6">
+            <Card className="gradient-border">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+                  {t('workspace.user.my_ideas', 'My Ideas')}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {workspaceData?.ideas?.length > 0 ? (
+                  <div className="space-y-4">
+                    {workspaceData.ideas.map((idea) => (
+                      <div key={idea.id} className="p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                              <Lightbulb className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold group-hover:text-primary transition-colors">{getDynamicText(idea.title_ar, idea.title_en)}</h4>
+                              <p className="text-sm text-muted-foreground">{idea.status}</p>
+                            </div>
+                          </div>
+                          <Button variant="ghost" size="sm" className="hover-scale gradient-border">
+                            {t('common.view')}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4 hover-scale">
+                      <Lightbulb className="h-12 w-12 text-primary" />
+                    </div>
+                    <p className="text-lg font-medium mb-2">{t('workspace.user.no_ideas', 'No Ideas Yet')}</p>
+                    <p className="text-sm mb-6">{t('workspace.user.no_ideas_desc', 'Start your innovation journey by sharing your first idea')}</p>
+                    <Button className="hover-scale gradient-border" onClick={() => navigate(ALL_ROUTES.IDEAS + '?action=create')}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      {t('workspace.user.actions.new_idea')}
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="achievements" className="space-y-6">
+            <Card className="gradient-border">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+                  {t('workspace.user.achievements', 'Achievements')}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4 hover-scale">
+                    <Trophy className="h-12 w-12 text-primary" />
+                  </div>
+                  <p className="text-lg font-medium mb-2">{t('workspace.user.coming_soon', 'Coming Soon')}</p>
+                  <p className="text-sm">{t('workspace.user.achievements_desc', 'Track your innovation achievements and milestones')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
         
         {/* User Workspace Collaboration */}
         <WorkspaceCollaboration
@@ -270,7 +350,6 @@ export default function UserWorkspace() {
           showPresence={true}
           showActivity={true}
         />
-      </div>
     </>
   );
 }

@@ -122,6 +122,20 @@
       "description": "Drive organizational innovation and manage challenges",
       "quick_actions": "Quick Actions"
     },
+    "tabs": {
+      "overview": "Overview",
+      "ideas": "My Ideas", 
+      "achievements": "Achievements",
+      "evaluations": "Evaluations",
+      "challenges": "Assigned Challenges",
+      "completed": "Completed Reviews",
+      "partnerships": "Partnerships",
+      "opportunities": "Opportunities",
+      "applications": "Applications",
+      "team_overview": "Team Overview",
+      "projects": "Projects",
+      "members": "Members"
+    },
     "user": {
       "actions": {
         "new_idea": "New Idea",

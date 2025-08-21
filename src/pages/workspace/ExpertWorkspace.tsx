@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { WorkspaceLayout } from '@/components/workspace/WorkspaceLayout';
 import { WorkspaceMetrics } from '@/components/workspace/WorkspaceMetrics';
 import { WorkspaceQuickActions } from '@/components/workspace/WorkspaceQuickActions';
@@ -13,6 +13,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ClipboardList, Users, Star, Eye, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ALL_ROUTES } from '@/routing/routes';
@@ -23,6 +24,7 @@ export default function ExpertWorkspace() {
   const navigate = useNavigate();
   const permissions = useWorkspacePermissions();
   const { data: workspaceData, isLoading } = useExpertWorkspaceData();
+  const [activeTab, setActiveTab] = useState('evaluations');
 
   const navigationItems = [
     {
@@ -147,11 +149,19 @@ export default function ExpertWorkspace() {
       </div>
       
       <div className="container mx-auto px-4 pb-12">
-        <div className="space-y-6">
-          {/* Navigation */}
-          <WorkspaceNavigation items={navigationItems} />
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="evaluations">{t('workspace.expert.tabs.evaluations', 'Evaluations')}</TabsTrigger>
+            <TabsTrigger value="challenges">{t('workspace.expert.tabs.challenges', 'Assigned Challenges')}</TabsTrigger>
+            <TabsTrigger value="completed">{t('workspace.expert.tabs.completed', 'Completed Reviews')}</TabsTrigger>
+          </TabsList>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <TabsContent value="evaluations" className="space-y-6">
+            <div className="space-y-6">
+              {/* Navigation */}
+              <WorkspaceNavigation items={navigationItems} />
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Pending Evaluations */}
@@ -249,21 +259,87 @@ export default function ExpertWorkspace() {
                 )}
               </CardContent>
             </Card>
-          </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <WorkspaceQuickActions
-              title={t('workspace.expert.quick_actions')}
-              actions={quickActions}
-            />
+          <TabsContent value="challenges" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <Card className="gradient-border hover-scale group">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+                      {t('workspace.expert.assigned_challenges')}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {workspaceData?.assignedChallenges?.length > 0 ? (
+                      <div className="space-y-3">
+                        {workspaceData.assignedChallenges.map((assignment) => (
+                          <div key={assignment.id} className="flex items-center justify-between p-4 rounded-xl border gradient-border hover-scale group transition-all duration-300 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10">
+                            <div className="flex items-center gap-4">
+                              <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 text-primary group-hover:from-primary/20 group-hover:to-primary/30 transition-all duration-300 group-hover:scale-110">
+                                <Users className="h-5 w-5" />
+                              </div>
+                              <div>
+                                <h4 className="font-semibold group-hover:text-primary transition-colors">{assignment.challenges?.title_ar}</h4>
+                                <p className="text-sm text-muted-foreground">
+                                  {t('common.status_label')}: {assignment.challenges?.status?.startsWith('status.') ? t(assignment.challenges.status) : t(`status.${assignment.challenges?.status}`) || assignment.challenges?.status}
+                                </p>
+                              </div>
+                            </div>
+                            <Button variant="ghost" size="sm" className="hover-scale gradient-border">
+                              {t('common.view')}
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                        <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4 hover-scale">
+                          <Users className="h-12 w-12 text-primary" />
+                        </div>
+                        <p className="text-lg font-medium mb-2">{t('workspace.expert.no_challenges')}</p>
+                        <p className="text-sm">{t('workspace.expert.no_challenges_desc', 'No challenges assigned to you currently')}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <div className="space-y-6">
+                <WorkspaceQuickActions
+                  title={t('workspace.expert.quick_actions')}
+                  actions={quickActions}
+                />
+                <WorkspaceMetrics metrics={metrics} />
+              </div>
+            </div>
+          </TabsContent>
 
-            {/* Metrics */}
-            <WorkspaceMetrics metrics={metrics} />
-          </div>
-        </div>
-        </div>
+          <TabsContent value="completed" className="space-y-6">
+            <Card className="gradient-border">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gradient-primary rounded-full animate-pulse"></div>
+                  {t('workspace.expert.completed_evaluations', 'Completed Evaluations')}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12 text-muted-foreground animate-fade-in">
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 w-fit mx-auto mb-4 hover-scale">
+                    <CheckCircle className="h-12 w-12 text-primary" />
+                  </div>
+                  <p className="text-lg font-medium mb-2">{t('workspace.expert.no_completed', 'No Completed Reviews')}</p>
+                  <p className="text-sm">{t('workspace.expert.no_completed_desc', 'Completed evaluations will appear here')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
         
         {/* Expert Workspace Collaboration */}
         <WorkspaceCollaboration
@@ -273,7 +349,6 @@ export default function ExpertWorkspace() {
           showPresence={true}
           showActivity={true}
         />
-      </div>
     </>
   );
 }
