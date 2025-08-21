@@ -1,682 +1,35 @@
 {
-  "workspace_selection": {
-    "title": "مساحات العمل",
-    "subtitle": "اختر نوع مساحة العمل المناسبة لك",
-    "enter": "دخول",
-    "enter_arrow": "←",
-    "invalid_type": "نوع مساحة العمل غير صحيح",
-    "invalid_description": "نوع مساحة العمل المطلوبة غير متاح: {type}"
-  },
-  "workspace_types": {
-    "personal": {
-      "title": "مساحة العمل الشخصية",
-      "description": "إدارة أفكارك ومشاريعك الشخصية"
-    },
-    "expert": {
-      "title": "مساحة الخبراء",
-      "description": "تقييم وإرشاد الأفكار المبتكرة"
-    },
-    "organization": {
-      "title": "مساحة المؤسسة",
-      "description": "إدارة الابتكار على مستوى المؤسسة"
-    },
-    "partner": {
-      "title": "مساحة الشركاء",
-      "description": "التعاون مع الشركاء الخارجيين"
-    },
-    "admin": {
-      "title": "مساحة الإدارة",
-      "description": "إدارة النظام والمستخدمين"
-    },
-    "team": {
-      "title": "مساحة الفريق",
-      "description": "العمل التعاوني مع الفريق"
-    }
-  },
-  "mock_data": {
-    "sample_member_1": "أحمد الزهراني",
-    "sample_member_2": "سارة المطيري",
-    "sample_member_3": "محمد العتيبي",
-    "sample_member_4": "فاطمة الشهري",
-    "today": "اليوم",
-    "tomorrow": "غداً",
-    "thursday": "الخميس",
-    "sample_date_1": "15 فبراير 2024",
-    "sample_date_2": "22 فبراير 2024",
-    "sample_date_3": "28 فبراير 2024",
-    "mention_message": "ذكرك أحمد في مشروع التطوير الجديد",
-    "assignment_message": "تم تعيين مهمة جديدة لك في المشروع",
-    "comment_message": "تعليق جديد على مقترحك",
-    "meeting_message": "اجتماع فريق التطوير يبدأ خلال 15 دقيقة"
-  },
-  "workspace": {
-    "user": {
-      "title": "مساحة العمل الشخصية",
-      "description": "إدارة أفكارك ومشاريعك الشخصية",
-      "nav": {
-        "ideas": "أفكاري",
-        "challenges": "التحديات",
-        "bookmarks": "المفضلة"
-      },
-      "actions": {
-        "new_idea": "فكرة جديدة",
-        "new_idea_desc": "ابدأ بإنشاء فكرة مبتكرة جديدة",
-        "join_challenge": "انضم لتحدي",
-        "join_challenge_desc": "شارك في التحديات المتاحة",
-        "browse_challenges": "تصفح التحديات",
-        "create_idea": "إنشاء فكرة جديدة",
-        "manage_ideas": "إدارة الأفكار"
-      },
-      "metrics": {
-        "total_ideas": "إجمالي الأفكار",
-        "active_challenges": "التحديات النشطة",
-        "saved_items": "العناصر المحفوظة",
-        "submissions": "المشاركات"
-      },
-      "sections": {
-        "recent_ideas": "الأفكار الحديثة",
-        "idea_insights": "إحصائيات الأفكار",
-        "quick_actions": "الإجراءات السريعة"
-      },
-      "status": {
-        "draft": "مسودة",
-        "submitted": "مُرسلة",
-        "under_review": "قيد المراجعة",
-        "approved": "موافق عليها"
-      },
-      "messages": {
-        "no_ideas": "لا توجد أفكار بعد. ابدأ بإنشاء فكرتك الأولى!",
-        "no_challenges": "لا توجد تحديات نشطة متاحة",
-        "no_submissions": "لا توجد مشاركات بعد"
-      },
-      "recent_ideas": "الأفكار الحديثة",
-      "participated_challenges": "التحديات المشاركة",
-      "browse_challenges": "تصفح التحديات",
-      "quick_actions": "الإجراءات السريعة",
-      "no_ideas": "لا توجد أفكار بعد. ابدأ بإنشاء فكرتك الأولى!",
-      "no_challenges": "لا توجد تحديات نشطة متاحة"
-    },
-    "expert": {
-      "title": "مساحة الخبراء",
-      "description": "تقييم وإرشاد الأفكار المبتكرة",
-      "nav": {
-        "evaluations": "التقييمات",
-        "assigned_challenges": "التحديات المُعيّنة",
-        "completed": "مُكتملة"
-      },
-      "header": {
-        "expert_dashboard": "لوحة الخبراء",
-        "evaluation_consultation_hub": "مركز التقييم والاستشارات"
-      },
-      "actions": {
-        "start_evaluation": "بدء التقييم",
-        "evaluate_ideas": "تقييم الأفكار",
-        "evaluate_ideas_desc": "مراجعة وتقييم الأفكار المُقدمة",
-        "review_submissions": "مراجعة المشاركات",
-        "review_submissions_desc": "مراجعة مشاركات التحديات وتقديم التغذية الراجعة",
-        "schedule_consultation": "جدولة استشارة"
-      },
-      "metrics": {
-        "pending_evaluations": "التقييمات المعلقة",
-        "completed_evaluations": "التقييمات المكتملة",
-        "assigned_challenges": "التحديات المُعيّنة"
-      },
-      "stats": {
-        "total_evaluations": "إجمالي التقييمات"
-      },
-      "tabs": {
-        "evaluation_queue": "قائمة التقييمات",
-        "consultations": "الاستشارات"
-      },
-      "queue": {
-        "pending_evaluations": "التقييمات المعلقة",
-        "no_pending_evaluations": "لا توجد تقييمات معلقة"
-      },
-      "consultations": {
-        "schedule": "الجدولة",
-        "no_upcoming": "لا توجد استشارات قادمة"
-      },
-      "sections": {
-        "pending_evaluations": "التقييمات المعلقة",
-        "assigned_challenges": "التحديات المُعيّنة",
-        "quick_actions": "الإجراءات السريعة"
-      },
-      "status": {
-        "pending": "معلق",
-        "completed": "مكتمل",
-        "in_progress": "قيد التنفيذ"
-      },
-      "labels": {
-        "submitted": "مُرسلة",
-        "evaluate": "تقييم",
-        "status": "الحالة"
-      },
-      "messages": {
-        "no_evaluations": "لا توجد تقييمات معلقة",
-        "no_challenges": "لا توجد تحديات مُعيّنة"
-      },
-      "pending_evaluations": "التقييمات المعلقة",
-      "assigned_challenges": "التحديات المُعيّنة",
-      "completed_evaluations": "التقييمات المكتملة",
-      "pending": "معلق",
-      "completed": "مكتمل",
-      "in_progress": "قيد التنفيذ",
-      "evaluate": "تقييم",
-      "status": "الحالة",
-      "submitted": "مُرسلة",
-      "no_evaluations": "لا توجد تقييمات معلقة",
-      "no_challenges": "لا توجد تحديات مُعيّنة",
-      "quick_actions": "الإجراءات السريعة"
-    },
-    "admin": {
-      "title": "مساحة إدارة النظام",
-      "description": "إدارة النظام والتحكم",
-      "nav": {
-        "users": "المستخدمون",
-        "system": "النظام",
-        "analytics": "التحليلات"
-      },
-      "actions": {
-        "add_user": "إضافة مستخدم",
-        "add_user_desc": "إضافة مستخدم جديد للنظام",
-        "system_settings": "إعدادات النظام",
-        "system_settings_desc": "تكوين إعدادات النظام",
-        "backup_data": "نسخ احتياطي للبيانات",
-        "backup_data_desc": "إنشاء نسخة احتياطية للنظام",
-        "manage_system": "إدارة النظام"
-      },
-      "metrics": {
-        "total_users": "إجمالي المستخدمين",
-        "total_challenges": "إجمالي التحديات",
-        "total_ideas": "إجمالي الأفكار",
-        "active_challenges": "التحديات النشطة"
-      },
-      "sections": {
-        "system_health": "صحة النظام",
-        "recent_users": "المستخدمون الجدد",
-        "quick_actions": "الإجراءات السريعة"
-      },
-      "health": {
-        "uptime": "وقت التشغيل",
-        "response_time": "وقت الاستجابة",
-        "active_users": "المستخدمون النشطون",
-        "healthy": "سليم",
-        "optimal": "مثالي",
-        "normal": "طبيعي"
-      },
-      "labels": {
-        "joined": "انضم",
-        "manage_all": "إدارة الكل"
-      },
-      "messages": {
-        "no_users": "لم يتم العثور على مستخدمين"
-      },
-      "system_health": "صحة النظام",
-      "uptime": "وقت التشغيل",
-      "response_time": "وقت الاستجابة",
-      "active_users": "المستخدمون النشطون",
-      "healthy": "سليم",
-      "optimal": "مثالي",
-      "normal": "طبيعي",
-      "recent_users": "المستخدمون الجدد",
-      "manage_all": "إدارة الكل",
-      "no_users": "لم يتم العثور على مستخدمين",
-      "quick_actions": "الإجراءات السريعة"
-    },
-    "team": {
-      "title": "مساحة الفريق",
-      "description": "التعاون مع أعضاء فريقك",
-      "nav": {
-        "projects": "المشاريع",
-        "team_members": "أعضاء الفريق",
-        "tasks": "المهام"
-      },
-      "actions": {
-        "new_project": "مشروع جديد",
-        "create_project": "إنشاء مشروع",
-        "invite_member": "دعوة عضو"
-      },
-      "metrics": {
-        "active_projects": "المشاريع النشطة",
-        "team_members": "أعضاء الفريق",
-        "pending_tasks": "المهام المعلقة"
-      },
-      "active_projects": "المشاريع النشطة",
-      "team_members": "أعضاء الفريق",
-      "pending_tasks": "المهام المعلقة",
-      "quick_actions": "الإجراءات السريعة"
-    },
-    "organization": {
-      "title": "مساحة المؤسسة",
-      "description": "إدارة مبادرات الابتكار التنظيمية",
-      "nav": {
-        "challenges": "التحديات",
-        "submissions": "المشاركات",
-        "team": "الفريق"
-      },
-      "actions": {
-        "create_challenge": "إنشاء تحدي",
-        "create_challenge_desc": "إنشاء تحدي ابتكار جديد",
-        "manage_team": "إدارة الفريق",
-        "manage_team_desc": "إدارة فريق المؤسسة"
-      },
-      "metrics": {
-        "active_challenges": "التحديات النشطة",
-        "total_submissions": "إجمالي المشاركات",
-        "team_size": "حجم الفريق",
-        "completed_challenges": "التحديات المكتملة"
-      },
-      "active_challenges": "التحديات النشطة",
-      "new_challenge": "تحدي جديد",
-      "created": "تم الإنشاء",
-      "challenge": "التحدي",
-      "recent_submissions": "المشاركات الحديثة",
-      "no_challenges": "لا توجد تحديات بعد. أنشئ أول تحدي لك!",
-      "no_submissions": "لا توجد مشاركات بعد",
-      "total_submissions": "إجمالي المشاركات",
-      "team_size": "حجم الفريق",
-      "quick_actions": "الإجراءات السريعة"
-    },
-    "partner": {
-      "title": "مساحة الشركاء",
-      "description": "التعاون مع الشركاء الحكوميين والخاصين",
-      "nav": {
-        "partnerships": "الشراكات",
-        "opportunities": "الفرص",
-        "collaboration": "التعاون",
-        "applications": "الطلبات"
-      },
-      "actions": {
-        "new_partnership": "شراكة جديدة",
-        "explore_opportunities": "استكشاف الفرص",
-        "browse_opportunities": "استعراض الفرص",
-        "browse_opportunities_desc": "استكشاف الفرص المتاحة",
-        "create_opportunity": "إنشاء فرصة",
-        "create_opportunity_desc": "نشر فرصة جديدة"
-      },
-      "metrics": {
-        "active_partnerships": "الشراكات النشطة",
-        "collaboration_projects": "مشاريع التعاون",
-        "opportunities": "الفرص",
-        "available_opportunities": "الفرص المتاحة",
-        "pending_applications": "الطلبات المعلقة",
-        "accepted_applications": "الطلبات المقبولة"
-      },
-      "available_opportunities": "الفرص المتاحة",
-      "view_all": "عرض الكل",
-      "deadline": "الموعد النهائي",
-      "no_opportunities": "لا توجد فرص متاحة",
-      "active_partnerships": "الشراكات النشطة",
-      "status": "الحالة",
-      "no_partnerships": "لا توجد شراكات",
-      "my_applications": "طلباتي",
-      "applied": "تم التقديم",
-      "no_applications": "لا توجد طلبات",
-      "quick_actions": "الإجراءات السريعة",
-      "tabs": {
-        "overview": "نظرة عامة",
-        "projects": "المشاريع",
-        "communication": "التواصل",
-        "contracts": "العقود"
-      },
-      "partner_info": {
-        "title": "معلومات الشريك"
-      }
-    },
-    "title": "مساحات العمل",
-    "type": "النوع",
-    "role": "الدور",
-    "activity": "النشاط",
-    "members": "الأعضاء",
-    "files": "الملفات",
-    "settings": "الإعدادات",
-    "header": {
-      "welcome_back": "أهلاً بعودتك",
-      "personal_innovation_space": "مساحة الابتكار الشخصية",
-      "organization_dashboard": "لوحة المؤسسة",
-      "strategic_overview": "نظرة عامة استراتيجية للمؤسسة",
-      "manager_dashboard": "لوحة المدير",
-      "team_overview": "نظرة عامة على الفريق"
-    },
-    "tabs": {
-      "dashboard": "لوحة التحكم",
-      "achievements": "الإنجازات",
-      "team_dashboard": "لوحة الفريق",
-      "strategic_dashboard": "اللوحة الاستراتيجية",
-      "analytics": "التحليلات"
-    },
-    "dashboard": {
-      "recent_activities": "الأنشطة الحديثة",
-      "no_activities": "لا توجد أنشطة حديثة",
-      "team_overview": "نظرة عامة على الفريق",
-      "pending_approvals": "الموافقات المعلقة",
-      "upcoming_deadlines": "المواعيد النهائية القادمة"
-    },
-    "achievements": {
-      "title": "الإنجازات",
-      "coming_soon": "قريباً"
-    },
-    "stats": {
-      "submissions": "المشاركات",
-      "total_employees": "إجمالي الموظفين",
-      "compliance_score": "نقاط الامتثال",
-      "innovation_index": "مؤشر الابتكار",
-      "digital_maturity": "النضج الرقمي",
-      "team_members": "أعضاء الفريق"
-    },
-    "strategic": {
-      "overview": "النظرة الاستراتيجية",
-      "description": "المقاييس والرؤى التنظيمية الرئيسية",
-      "active_challenges": "التحديات النشطة",
-      "challenges_description": "تحديات الابتكار الجارية حالياً",
-      "total_submissions": "إجمالي المشاركات",
-      "submissions_description": "الأفكار والمقترحات المُقدمة"
-    },
-    "analytics": {
-      "organization_metrics": "مقاييس المؤسسة",
-      "digital_transformation": "التحول الرقمي",
-      "compliance_score": "نقاط الامتثال",
-      "total_members": "إجمالي الأعضاء",
-      "active_members": "الأعضاء النشطون",
-      "active": "نشط"
-    },
-    "actions": {
-      "generate_report": "إنشاء تقرير",
-      "manage_policies": "إدارة السياسات",
-      "notifications": "الإشعارات"
-    },
-    "projects": {
-      "members": "أعضاء"
-    },
-    "collaboration": {
-      "online_members": "الأعضاء المتصلون",
-      "no_messages": "لا توجد رسائل بعد"
-    },
-    "files": {
-      "upload_files": "رفع الملفات",
-      "drag_drop_files": "اسحب وأفلت الملفات هنا",
-      "or_click_to_browse": "أو انقر للتصفح",
-      "uploading": "جاري الرفع...",
-      "select_files": "اختر الملفات",
-      "status": {
-        "uploading": "جاري الرفع",
-        "completed": "مكتمل",
-        "failed": "فشل"
-      }
-    },
-    "sidebar": {
-      "online_now": "متصل الآن",
-      "recent_activity": "النشاط الحديث",
-      "quick_actions": "الإجراءات السريعة"
-    },
-    "hardcoded": {
-      "dashboard": "لوحة التحكم",
-      "members": "الأعضاء",
-      "files": "الملفات",
-      "messages": "الرسائل",
-      "settings": "الإعدادات",
-      "workspace_overview": "نظرة عامة على مساحة العمل",
-      "files_documents": "الملفات والوثائق",
-      "team_members": "أعضاء الفريق",
-      "messages_chat": "الرسائل والدردشة",
-      "workspace_settings": "إعدادات مساحة العمل",
-      "content_for_view": "سيتم عرض محتوى {view} هنا.",
-      "placeholder_content": "هذا نص تجريبي لمحتوى مساحة العمل الديناميكي.",
-      "recent_activity": "النشاط الحديث",
-      "user_joined": "انضم مستخدم لمساحة العمل",
-      "new_file_uploaded": "تم رفع ملف جديد",
-      "meeting_scheduled": "تم جدولة اجتماع",
-      "quick_actions": "الإجراءات السريعة",
-      "new_document": "وثيقة جديدة",
-      "invite_members": "دعوة أعضاء",
-      "online_members": "الأعضاء المتصلون",
-      "more": "المزيد"
-    },
-    "roles": {
-      "senior_developer": "مطور أول",
-      "ui_ux_designer": "مصمم واجهات",
-      "project_coordinator": "منسق مشاريع",
-      "quality_analyst": "محلل جودة"
-    },
-    "tasks": {
-      "ai_integration_module": "وحدة تكامل الذكاء الاصطناعي",
-      "user_interface_redesign": "إعادة تصميم واجهة المستخدم",
-      "milestone_planning": "تخطيط المراحل",
-      "quality_assessment": "تقييم الجودة",
-      "code_review_approval": "موافقة مراجعة الكود",
-      "resource_allocation_review": "مراجعة توزيع الموارد",
-      "stakeholder_presentation": "عرض أصحاب المصلحة",
-      "assigned_to": "مُعيّن إلى",
-      "due_date": "تاريخ الاستحقاق"
-    },
-    "projects": {
-      "digital_transformation_initiative": "مبادرة التحول الرقمي",
-      "customer_portal_enhancement": "تطوير بوابة العملاء",
-      "mobile_app_development": "تطوير تطبيق الهاتف المحمول",
-      "active_projects": "المشاريع النشطة",
-      "description": "إدارة وتتبع جميع المشاريع النشطة",
-      "team_size": "حجم الفريق",
-      "budget": "الميزانية",
-      "due_date": "تاريخ الاستحقاق",
-      "milestones": "المراحل",
-      "progress": "التقدم",
-      "sar": "ريال"
-    },
-    "resources": {
-      "development_team": "فريق التطوير",
-      "design_team": "فريق التصميم",
-      "qa_team": "فريق ضمان الجودة",
-      "project_management": "إدارة المشاريع",
-      "allocation_overview": "نظرة عامة على توزيع الموارد",
-      "description": "مراقبة استخدام الموارد والقدرة",
-      "capacity": "السعة",
-      "utilization": "الاستخدام",
-      "team_workload": "عبء العمل للفريق",
-      "overall_utilization": "الاستخدام الإجمالي",
-      "budget_tracking": "تتبع الميزانية",
-      "allocated_budget": "الميزانية المخصصة",
-      "spent_budget": "الميزانية المُنفقة",
-      "budget_utilized": "من الميزانية مُستخدمة"
-    },
-    "deadlines": {
-      "phase_two_delivery": "تسليم المرحلة الثانية",
-      "user_testing_completion": "إكمال اختبار المستخدم",
-      "stakeholder_review": "مراجعة أصحاب المصلحة",
-      "days_left": "أيام متبقية"
-    },
-    "priority": {
-      "high": "عالي",
-      "medium": "متوسط",
-      "low": "منخفض",
-      "critical": "حرج"
-    },
-    "project_status": {
-      "on_track": "في المسار الصحيح",
-      "at_risk": "معرض للخطر",
-      "delayed": "متأخر",
-      "completed": "مكتمل"
-    },
-    "status": {
-      "active": "نشط",
-      "on_leave": "في إجازة",
-      "pending": "معلق",
-      "completed": "مكتمل"
-    },
-    "analytics": {
-      "team_performance": "أداء الفريق",
-      "overall_performance": "الأداء الإجمالي",
-      "completed_tasks": "المهام المكتملة",
-      "this_month": "هذا الشهر",
-      "project_delivery": "تسليم المشاريع",
-      "on_time_delivery": "التسليم في الوقت المحدد",
-      "monthly_trends": "الاتجاهات الشهرية",
-      "productivity_trend": "اتجاه الإنتاجية",
-      "quality_score": "نقاط الجودة"
-    },
-    "tabs": {
-      "dashboard": "لوحة التحكم",
-      "achievements": "الإنجازات",
-      "team_dashboard": "لوحة الفريق",
-      "strategic_dashboard": "اللوحة الاستراتيجية",
-      "analytics": "التحليلات",
-      "projects": "المشاريع",
-      "resources": "الموارد",
-      "performance": "الأداء"
-    },
-    "actions": {
-      "generate_report": "إنشاء تقرير",
-      "manage_policies": "إدارة السياسات",
-      "notifications": "الإشعارات",
-      "add_team_member": "إضافة عضو فريق",
-      "create_project": "إنشاء مشروع",
-      "review": "مراجعة",
-      "approve": "موافقة",
-      "view_details": "عرض التفاصيل",
-      "manage_team": "إدارة الفريق",
-      "update_status": "تحديث الحالة"
-    },
-    "nav": {
-      "dashboard": "لوحة التحكم",
-      "activity": "النشاط",
-      "ideas": "الأفكار",
-      "challenges": "التحديات",
-      "bookmarks": "المفضلة",
-      "evaluations": "التقييمات",
-      "expertise": "الخبرة",
-      "reports": "التقارير",
-      "members": "الأعضاء",
-      "departments": "الأقسام",
-      "analytics": "التحليلات",
-      "partnerships": "الشراكات",
-      "collaborations": "التعاونات",
-      "users": "المستخدمون",
-      "system": "النظام",
-      "projects": "المشاريع",
-      "tasks": "المهام",
-      "meetings": "الاجتماعات",
-      "overview": "نظرة عامة",
-      "feedback": "التغذية الراجعة",
-      "files": "الملفات",
-      "messages": "الرسائل",
-      "calendar": "التقويم"
-    },
-    "quick_actions": "الإجراءات السريعة",
-    "navigation": "التنقل",
-    "types": {
-      "user": "مساحة المستخدم",
-      "expert": "مساحة الخبراء",
-      "organization": "مساحة المؤسسة",
-      "partner": "مساحة الشركاء",
-      "admin": "مساحة الإدارة",
-      "team": "مساحة الفريق",
-      "stakeholder": "مساحة أصحاب المصلحة",
-      "project": "مساحة المشروع"
-    }
-  },
-  "notifications": {
-    "title": "الإشعارات",
-    "mark_all_read": "تحديد الكل كمقروء",
-    "empty": "لا توجد إشعارات",
-    "mention": {
-      "title": "إشارة"
-    },
-    "assignment": {
-      "title": "مهمة"
-    },
-    "comment": {
-      "title": "تعليق"
-    },
-    "meeting": {
-      "title": "اجتماع"
-    }
-  },
-  "common": {
-    "loading": "جاري تحميل مساحة العمل...",
-    "error": "خطأ في تحميل مساحة العمل",
-    "refresh": "تحديث",
-    "view_all": "عرض الكل",
-    "manage": "إدارة",
-    "create": "إنشاء",
-    "edit": "تعديل",
-    "delete": "حذف",
-    "save": "حفظ",
-    "cancel": "إلغاء"
-  },
-  "ai": {
-    "assistant_title": "المساعد الذكي",
-    "analyze": "تحليل",
-    "suggest": "اقتراح",
-    "summarize": "ملخص",
-    "optimize": "تحسين",
-    "query_placeholder": "اسألني أي شيء عن مساحة العمل...",
-    "auto_analysis_query": "تحليل عام للمساحة الرقمية",
-    "performance_analysis": "تحليل الأداء",
-    "improvement_suggestion": "اقتراح للتحسين",
-    "quick_query_template": "{{action}} المساحة الرقمية"
-  },
-  "analytics": {
-    "timeframe": {
-      "last_7_days": "آخر 7 أيام",
-      "last_30_days": "آخر 30 يوم",
-      "last_90_days": "آخر 90 يوم",
-      "last_year": "آخر سنة"
-    }
-  },
-  "collaboration": {
-    "sample_user": "مستخدم تجريبي",
-    "file_updated": "قام بتحديث ملف",
-    "default_user": "مستخدم"
-  },
   "partner": {
-    "sample_company": "شركة التقنية المتقدمة",
-    "company_type": "شركة تقنية",
-    "industry": "التكنولوجيا المالية",
-    "strategic_level": "استراتيجي",
     "title": "مساحة عمل الشريك",
-    "description": "شراكة استراتيجية مع {{companyName}}",
-    "role": "مدير الشراكات",
+    "role": "شريك استراتيجي",
+    "sample_company": "شركة تك كورب للحلول",
+    "company_type": "شريك تقني",
+    "industry": "التكنولوجيا المالية",
+    "strategic_level": "شريك استراتيجي",
     "actions": {
       "new_project": "مشروع جديد",
-      "direct_contact": "تواصل مباشر",
+      "direct_contact": "اتصال مباشر",
       "new_contract": "عقد جديد",
-      "partnership_settings": "إعدادات الشراكة",
-      "view": "عرض"
+      "partnership_settings": "إعدادات الشراكة"
     },
     "stats": {
       "partnership_duration": "مدة الشراكة",
-      "duration_months": "18 شهراً",
+      "duration_months": "18 شهر",
       "active_projects": "المشاريع النشطة",
       "total_investment": "إجمالي الاستثمار",
-      "investment_amount": "5.2 مليون ريال",
+      "investment_amount": "2.5 مليون ريال",
       "success_rate": "معدل النجاح"
     },
     "projects": {
-      "smart_payments": "منصة المدفوعات الذكية",
-      "digital_identity": "نظام إدارة الهوية الرقمية",
-      "banking_app": "تطبيق الخدمات المصرفية"
+      "smart_payments": "حلول الدفع الذكية",
+      "digital_identity": "منصة الهوية الرقمية",
+      "banking_app": "تطبيق البنك الجديد"
     },
-    "labels": {
-      "partner_name": "اسم الشريك",
-      "partnership_type": "نوع الشراكة",
-      "industry": "القطاع",
-      "partnership_start": "بداية الشراكة",
-      "partnership_rating": "تقييم الشراكة",
-      "excellent_rating": "ممتاز (87%)",
-      "current_projects": "المشاريع الحالية",
-      "progress": "التقدم",
-      "budget": "الميزانية",
-      "deadline": "الموعد النهائي",
-      "all_projects": "جميع المشاريع",
-      "communication_log": "سجل التواصل",
-      "contracts_agreements": "العقود والاتفاقيات",
-      "contracts_coming_soon": "سيتم عرض العقود والاتفاقيات هنا",
-      "upcoming_events": "الأحداث القادمة"
-    },
-    "events": {
-      "project_review_meeting": "اجتماع مراجعة المشروع",
-      "tomorrow_10am": "غداً، 10:00 ص",
-      "client_presentation": "عرض تقديمي للعميل",
-      "thursday_2pm": "الخميس، 2:00 م"
+    "project_status": {
+      "in_development": "قيد التطوير",
+      "testing": "مرحلة الاختبار",
+      "planning": "التخطيط",
+      "completed": "مكتمل"
     },
     "communication_types": {
       "meeting": "اجتماع",
@@ -685,69 +38,143 @@
       "report": "تقرير"
     },
     "communications": {
-      "project_review": "مراجعة المشروع الأول",
-      "development_update": "تحديث حالة التطوير",
+      "project_review": "اجتماع مراجعة المشروع",
+      "development_update": "تحديث التطوير",
       "budget_discussion": "مناقشة الميزانية",
-      "monthly_report": "تقرير الأداء الشهري"
+      "monthly_report": "تقرير التقدم الشهري"
     },
     "status": {
-      "scheduled": "مقرر",
+      "scheduled": "مجدول",
       "sent": "مرسل",
       "completed": "مكتمل",
-      "review": "مراجعة"
+      "review": "قيد المراجعة"
     },
-    "project_status": {
-      "in_development": "قيد التطوير",
-      "testing": "اختبار",
-      "planning": "تخطيط",
-      "completed": "مكتمل"
+    "labels": {
+      "partner_name": "اسم الشريك",
+      "partnership_type": "نوع الشراكة",
+      "industry": "الصناعة",
+      "partnership_start": "بداية الشراكة",
+      "partnership_rating": "تقييم الشراكة",
+      "excellent_rating": "ممتاز (4.8/5.0)",
+      "current_projects": "المشاريع الحالية",
+      "progress": "التقدم",
+      "budget": "الميزانية"
     }
   },
-  "files": {
-    "sample_file_1": "تقرير المشروع.pdf",
-    "sample_file_2": "عرض تقديمي.pptx",
-    "sample_file_3": "صورة المخطط.png"
-  },
-  "general": {
-    "nav": {
-      "dashboard": "لوحة التحكم",
-      "files": "الملفات",
-      "messages": "الرسائل",
-      "members": "الأعضاء",
-      "settings": "الإعدادات"
-    },
-    "metrics": {
-      "online_members": "الأعضاء المتصلون",
-      "files_shared": "الملفات المشتركة",
-      "active_projects": "المشاريع النشطة"
+  "expert": {
+    "header": {
+      "expert_dashboard": "لوحة الخبير",
+      "evaluation_consultation_hub": "مركز التقييم والاستشارة"
     },
     "actions": {
-      "new_document": "مستند جديد",
-      "invite_members": "دعوة أعضاء"
+      "schedule_consultation": "جدولة استشارة"
     },
-    "breadcrumbs": {
-      "workspaces": "مساحات العمل",
-      "workspace_type": "مساحة عمل {type}"
+    "stats": {
+      "total_evaluations": "إجمالي التقييمات"
     },
-    "title": "مساحة عمل {type}",
-    "description": "إدارة مساحة عمل {type}",
-    "sidebar": {
-      "online_now": "متصل الآن ({count})",
-      "more_members": "و {count} آخرين",
-      "recent_activity": "النشاط الأخير",
-      "user_joined": "انضم مستخدم إلى مساحة العمل",
-      "file_uploaded": "تم رفع ملف",
-      "meeting_scheduled": "تم جدولة اجتماع",
-      "quick_actions": "إجراءات سريعة"
+    "tabs": {
+      "evaluation_queue": "قائمة انتظار التقييم",
+      "consultations": "الاستشارات"
     },
-    "content": {
-      "workspace_overview": "نظرة عامة على مساحة العمل",
-      "files_documents": "الملفات والمستندات",
-      "team_members": "أعضاء الفريق",
-      "messages_chat": "الرسائل والدردشة",
-      "workspace_settings": "إعدادات مساحة العمل",
-      "placeholder": "سيتم عرض محتوى {view} هنا"
+    "queue": {
+      "pending_evaluations": "التقييمات المعلقة",
+      "no_pending_evaluations": "لا توجد تقييمات معلقة في الوقت الحالي."
+    },
+    "consultations": {
+      "schedule": "جدول الاستشارات",
+      "no_upcoming": "لا توجد استشارات مجدولة قادمة."
     }
   },
-  "locale": "ar-SA"
+  "manager": {
+    "mock_data": {
+      "sample_member_1": "أحمد الراشد",
+      "sample_member_2": "سارة المنصوري",
+      "sample_member_3": "عمر الزهراني",
+      "sample_member_4": "فاطمة القاسمي",
+      "today": "اليوم",
+      "tomorrow": "غداً",
+      "thursday": "الخميس",
+      "sample_date_1": "2024-02-15",
+      "sample_date_2": "2024-02-20",
+      "sample_date_3": "2024-02-25"
+    },
+    "roles": {
+      "senior_developer": "مطور أول",
+      "ui_ux_designer": "مصمم واجهات المستخدم",
+      "project_coordinator": "منسق المشروع",
+      "quality_analyst": "محلل جودة"
+    },
+    "tasks": {
+      "ai_integration_module": "وحدة تكامل الذكاء الاصطناعي",
+      "user_interface_redesign": "إعادة تصميم واجهة المستخدم",
+      "milestone_planning": "تخطيط المعالم",
+      "quality_assessment": "تقييم الجودة",
+      "code_review_approval": "مراجعة الكود والموافقة",
+      "resource_allocation_review": "مراجعة توزيع الموارد",
+      "stakeholder_presentation": "عرض أصحاب المصلحة",
+      "assigned_to": "مكلف إلى",
+      "due_date": "تاريخ الاستحقاق"
+    },
+    "projects": {
+      "digital_transformation_initiative": "مبادرة التحول الرقمي",
+      "customer_portal_enhancement": "تحسين بوابة العملاء",
+      "mobile_app_development": "تطوير تطبيق الهاتف المحمول",
+      "active_projects": "المشاريع النشطة",
+      "description": "إدارة ومراقبة تقدم المشروع"
+    },
+    "resources": {
+      "development_team": "فريق التطوير",
+      "design_team": "فريق التصميم",
+      "qa_team": "فريق ضمان الجودة",
+      "project_management": "إدارة المشروع"
+    },
+    "deadlines": {
+      "phase_two_delivery": "تسليم المرحلة الثانية",
+      "user_testing_completion": "إكمال اختبار المستخدم",
+      "stakeholder_review": "مراجعة أصحاب المصلحة",
+      "days_left": "أيام متبقية"
+    },
+    "header": {
+      "manager_dashboard": "لوحة المدير",
+      "team_project_overview": "نظرة عامة على الفريق والمشروع"
+    },
+    "actions": {
+      "add_team_member": "إضافة عضو فريق",
+      "create_project": "إنشاء مشروع",
+      "review": "مراجعة",
+      "approve": "موافقة"
+    },
+    "stats": {
+      "team_members": "أعضاء الفريق",
+      "active_projects": "المشاريع النشطة",
+      "team_performance": "أداء الفريق",
+      "pending_tasks": "المهام المعلقة"
+    },
+    "tabs": {
+      "team_dashboard": "لوحة الفريق",
+      "projects": "المشاريع",
+      "resources": "الموارد",
+      "performance": "تحليلات الأداء"
+    },
+    "dashboard": {
+      "team_overview": "نظرة عامة على الفريق",
+      "pending_approvals": "الموافقات المعلقة",
+      "upcoming_deadlines": "المواعيد النهائية القادمة"
+    },
+    "status": {
+      "available": "متاح",
+      "busy": "مشغول",
+      "away": "غائب"
+    },
+    "priority": {
+      "high": "عالي",
+      "medium": "متوسط",
+      "low": "منخفض"
+    },
+    "project_status": {
+      "on_track": "في المسار الصحيح",
+      "at_risk": "في خطر",
+      "delayed": "متأخر"
+    }
+  }
 }

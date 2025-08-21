@@ -12,12 +12,16 @@
     "active_users": "المستخدمون النشطون",
     "storage_used": "التخزين المستخدم",
     "system_uptime": "وقت تشغيل النظام",
-    "this_month": "هذا الشهر"
-  },
-  "metrics": {
-    "total_users": "إجمالي المستخدمين",
     "this_month": "هذا الشهر",
-    "active_challenges": "التحديات النشطة"
+    "submissions": "المقترحات المقدمة",
+    "system_health": "صحة النظام",
+    "uptime": "وقت التشغيل",
+    "incidents": "الحوادث",
+    "high_risk_events": "أحداث عالية المخاطر",
+    "new": "جديد",
+    "ideas_submitted": "الأفكار المقدمة",
+    "this_week": "هذا الأسبوع",
+    "system_performance": "أداء النظام"
   },
   "cards": {
     "recent_challenges": {
@@ -162,20 +166,5 @@
     "failed_logins": "محاولات دخول فاشلة",
     "suspicious_activity": "نشاط مشبوه",
     "security_score": "نقاط الأمان"
-  },
-  "metrics": {
-    "submissions": "المقترحات المقدمة",
-    "completion_rate": "معدل الإكمال",
-    "system_health": "صحة النظام",
-    "uptime": "وقت التشغيل",
-    "incidents": "الحوادث",
-    "high_risk_events": "أحداث عالية المخاطر",
-    "total_users": "إجمالي المستخدمين",
-    "this_month": "هذا الشهر",
-    "active_challenges": "التحديات النشطة",
-    "new": "جديد",
-    "ideas_submitted": "الأفكار المقدمة",
-    "this_week": "هذا الأسبوع",
-    "system_performance": "أداء النظام"
   }
 }

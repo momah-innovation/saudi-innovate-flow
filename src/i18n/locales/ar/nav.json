@@ -34,5 +34,123 @@
     "administration": "الإدارة",
     "system": "النظام", 
     "help_support": "المساعدة والدعم"
+  },
+  "workspace": {
+    "admin": {
+      "actions": {
+        "add_user": "إضافة مستخدم",
+        "add_user_desc": "إضافة مستخدمين جدد للنظام وإدارة أدوارهم",
+        "system_settings": "إعدادات النظام",
+        "system_settings_desc": "تكوين تفضيلات النظام والأمان",
+        "backup_data": "نسخ احتياطي للبيانات",
+        "backup_data_desc": "إنشاء نسخ احتياطية للنظام واستعادة البيانات"
+      },
+      "nav": {
+        "users": "المستخدمون",
+        "system": "النظام",
+        "analytics": "التحليلات"
+      },
+      "metrics": {
+        "total_users": "إجمالي المستخدمين",
+        "total_challenges": "إجمالي التحديات",
+        "total_ideas": "إجمالي الأفكار",
+        "active_challenges": "التحديات النشطة"
+      },
+      "system_health": "صحة النظام",
+      "uptime": "وقت التشغيل",
+      "response_time": "وقت الاستجابة",
+      "active_users": "المستخدمون النشطون",
+      "healthy": "صحي",
+      "optimal": "مثالي",
+      "normal": "طبيعي",
+      "recent_users": "المستخدمون الجدد",
+      "joined": "انضم",
+      "manage_all": "إدارة الكل",
+      "no_users": "لا يوجد مستخدمون بعد",
+      "no_users_desc": "لم يتم تسجيل أي مستخدمين بعد",
+      "title": "مساحة عمل الإدارة",
+      "description": "إدارة النظام وحسابات المستخدمين",
+      "quick_actions": "إجراءات سريعة"
+    },
+    "partner": {
+      "actions": {
+        "browse_opportunities": "تصفح الفرص",
+        "browse_opportunities_desc": "استكشاف فرص التعاون والشراكات",
+        "create_opportunity": "إنشاء فرصة",
+        "create_opportunity_desc": "نشر فرص تعاون جديدة للشركاء"
+      },
+      "metrics": {
+        "available_opportunities": "الفرص المتاحة",
+        "active_partnerships": "الشراكات النشطة",
+        "pending_applications": "الطلبات المعلقة",
+        "accepted_applications": "الطلبات المقبولة"
+      },
+      "title": "مساحة عمل الشريك",
+      "description": "التعاون مع الشركاء واستكشاف الفرص",
+      "quick_actions": "إجراءات سريعة"
+    },
+    "expert": {
+      "actions": {
+        "evaluate_ideas": "تقييم الأفكار",
+        "evaluate_ideas_desc": "مراجعة وتقديم تغذية راجعة من الخبراء على الأفكار المقدمة",
+        "review_submissions": "مراجعة المقترحات",
+        "review_submissions_desc": "تحليل المقترحات وتقديم تقييمات مفصلة"
+      },
+      "metrics": {
+        "pending_evaluations": "التقييمات المعلقة",
+        "completed_evaluations": "التقييمات المكتملة",
+        "assigned_challenges": "التحديات المعينة"
+      },
+      "title": "مساحة عمل الخبير",
+      "description": "تقييم الابتكارات وتقديم رؤى الخبراء",
+      "quick_actions": "إجراءات سريعة"
+    },
+    "organization": {
+      "actions": {
+        "create_challenge": "إنشاء تحدي",
+        "create_challenge_desc": "إطلاق تحديات ابتكار جديدة لمؤسستك",
+        "manage_team": "إدارة الفريق",
+        "manage_team_desc": "تنظيم الفرق وتنسيق مبادرات الابتكار"
+      },
+      "metrics": {
+        "active_challenges": "التحديات النشطة",
+        "total_submissions": "إجمالي المقترحات",
+        "team_size": "حجم الفريق",
+        "completed_challenges": "التحديات المكتملة"
+      },
+      "title": "مساحة عمل المؤسسة",
+      "description": "قيادة الابتكار التنظيمي وإدارة التحديات",
+      "quick_actions": "إجراءات سريعة"
+    },
+    "tabs": {
+      "overview": "نظرة عامة",
+      "ideas": "أفكاري", 
+      "achievements": "الإنجازات",
+      "evaluations": "التقييمات",
+      "challenges": "التحديات المعينة",
+      "completed": "المراجعات المكتملة",
+      "partnerships": "الشراكات",
+      "opportunities": "الفرص",
+      "applications": "الطلبات",
+      "team_overview": "نظرة عامة على الفريق",
+      "projects": "المشاريع",
+      "members": "الأعضاء"
+    },
+    "user": {
+      "actions": {
+        "new_idea": "فكرة جديدة",
+        "new_idea_desc": "شارك أفكارك المبتكرة مع المجتمع",
+        "join_challenge": "الانضمام للتحدي",
+        "join_challenge_desc": "شارك في تحديات الابتكار الجارية"
+      },
+      "metrics": {
+        "total_ideas": "إجمالي الأفكار",
+        "active_challenges": "التحديات النشطة",
+        "saved_items": "العناصر المحفوظة"
+      },
+      "title": "مساحة العمل للمستخدم",
+      "description": "مساحة العمل الشخصية للابتكار",
+      "quick_actions": "إجراءات سريعة"
+    }
   }
 }
