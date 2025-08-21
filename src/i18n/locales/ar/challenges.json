@@ -1,207 +1,66 @@
 {
   "title": "التحديات",
-  "page_title": "تحديات الابتكار",
-  "activity_hub": "مركز نشاط التحديات",
-  "activity_collaboration_hub": "مركز النشاط والتعاون",
-  "overview": "نظرة عامة على التحديات",
+  "description": "تحديات الابتكار والمسابقات",
   "create": "إنشاء تحدي",
   "edit": "تعديل التحدي",
   "delete": "حذف التحدي",
-  "access_denied": "غير مصرح",
-  "access_denied_message": "ليس لديك صلاحية للوصول لهذه الصفحة",
-  "unauthorized": "غير مصرح",
-  "unauthorized_message": "غير مصرح لك",
-  "error": "خطأ",
-  "error_load_challenge": "فشل في تحميل التحدي",
-  "back": "العودة",
-  "back_to_challenges": "العودة للتحديات",
-  "loading": "جاري تحميل التحديات...",
-  "no_data": "لا توجد تحديات متاحة",
-  "challenge_not_found": "التحدي غير موجود",
-  "challenge_progress": "تقدم التحدي",
-  "currency": "ريال",
-  "days_left": "يوم متبقي",
-  "progress": "مكتمل",
-  "admin_controls": "أدوات الإدارة",
-  "participants": {
-    "title": "المشاركون",
-    "count": "عدد المشاركين",
-    "view_all": "عرض جميع المشاركين",
-    "joined": "انضم",
-    "active": "المشاركون النشطون",
-    "pending": "في انتظار الموافقة"
-  },
-  "statistics": {
-    "title": "الإحصائيات",
-    "participants": "مشارك",
-    "budget": "الميزانية",
-    "prize": "الجائزة",
-    "days_left": "يوم متبقي",
-    "progress": "التقدم",
-    "completion_rate": "معدل الإنجاز",
-    "submissions": "المشاركات",
-    "winners": "الفائزون"
-  },
+  "view": "عرض التحدي",
+  "join": "الانضمام للتحدي",
+  "leave": "مغادرة التحدي",
+  "submit": "تقديم فكرة",
+  "evaluate": "تقييم",
+  "publish": "نشر",
+  "archive": "أرشفة",
   "status": {
-    "active": "نشط",
-    "completed": "مكتمل",
-    "pending": "قيد الانتظار",
     "draft": "مسودة",
-    "closed": "مغلق",
-    "upcoming": "قادم",
-    "in_progress": "قيد التنفيذ"
+    "published": "منشور",
+    "active": "نشط",
+    "evaluation": "قيد التقييم",
+    "completed": "مكتمل",
+    "cancelled": "ملغى",
+    "archived": "مؤرشف"
   },
-  "admin": {
-    "title": "أدوات الإدارة",
-    "tools": "أدوات المشرف",
-    "manage": "إدارة التحدي",
-    "settings": "إعدادات التحدي",
-    "review": "مراجعة المشاركات",
-    "approve": "موافقة",
-    "reject": "رفض",
-    "publish": "نشر التحدي",
-    "manage_participants": "إدارة المشاركين",
-    "analytics": "التحليلات",
-    "submissions": "المشاريع المقدمة",
-    "quick_stats": "إحصائيات سريعة",
-    "total_activities": "إجمالي النشاطات:",
-    "submissions_count": "مشاريع مقدمة:",
-    "messages_today": "رسائل اليوم:",
-    "engagement_rate": "معدل المشاركة:",
-    "edit_challenge": "تعديل التحدي"
+  "priority": {
+    "low": "أولوية منخفضة",
+    "medium": "أولوية متوسطة",
+    "high": "أولوية عالية",
+    "critical": "أولوية حرجة"
   },
-  "detail": {
-    "edit_challenge": "تعديل التحدي"
+  "sensitivity": {
+    "public": "عام",
+    "internal": "داخلي",
+    "confidential": "سري",
+    "restricted": "مقيد"
   },
-  "evaluation": {
-    "title": "التقييم",
+  "type": {
+    "innovation": "تحدي الابتكار",
+    "problem_solving": "حل المشاكل",
+    "improvement": "تحسين العمليات",
+    "research": "تحدي البحث"
+  },
+  "collaboration": {
+    "individual": "فردي",
+    "team": "جماعي",
+    "both": "فردي أو جماعي"
+  },
+  "fields": {
+    "title": "عنوان التحدي",
+    "description": "الوصف",
+    "objectives": "الأهداف",
+    "requirements": "المتطلبات",
     "criteria": "معايير التقييم",
-    "score": "النتيجة",
-    "feedback": "التغذية الراجعة",
-    "start": "ابدأ التقييم",
-    "complete": "إكمال التقييم",
-    "pending": "في انتظار التقييم"
-  },
-  "categories": {
-    "technology": "التقنية",
-    "innovation": "الابتكار",
-    "sustainability": "الاستدامة",
-    "education": "التعليم",
-    "healthcare": "الرعاية الصحية",
-    "finance": "المالية",
-    "other": "أخرى"
-  },
-  "actions": {
-    "join": "شارك",
-    "submit": "إرسال الحل",
-    "view_details": "عرض التفاصيل",
-    "share": "مشاركة",
-    "save": "حفظ",
-    "export": "تصدير",
-    "register": "تسجيل",
-    "new_challenge": "تحدي جديد",
-    "clear_filters": "مسح الفلاتر",
-    "like": "أعجبني",
-    "bookmark": "حفظ",
-    "participate": "شارك الآن",
-    "unavailable": "غير متاح"
-  },
-  "messages": {
-    "success": "نجح",
-    "join_success": "تم الانضمام للتحدي بنجاح",
-    "submit_success": "تم إرسال الحل بنجاح",
-    "save_success": "تم حفظ التحدي بنجاح",
-    "error_generic": "حدث خطأ",
-    "unauthorized": "غير مصرح لك بالقيام بهذا الإجراء",
-    "no_challenges_found": "لا توجد تحديات",
-    "try_adjusting_filters": "جرب تعديل الفلاتر أو البحث",
-    "assignment_successful": "تم التعيين بنجاح",
-    "experts_assigned_successfully": "تم تعيين الخبراء للتحدي بنجاح",
-    "please_sign_in": "يرجى تسجيل الدخول",
-    "sign_in_to_participate": "يجب تسجيل الدخول للمشاركة في التحديات",
-    "successfully_registered": "تم التسجيل بنجاح",
-    "challenge_registration_success": "تم تسجيلك في التحدي",
-    "registration_failed": "فشل في التسجيل",
-    "sign_in_to_bookmark": "يجب تسجيل الدخول لحفظ التحديات",
-    "bookmark_removed": "تم إلغاء الحفظ",
-    "challenge_bookmark_removed": "تم إلغاء حفظ التحدي",
-    "bookmarked": "تم الحفظ",
-    "challenge_bookmarked": "تم حفظ التحدي في قائمة المفضلة",
-    "bookmark_failed": "فشل في حفظ التحدي"
-  },
-  "filters": {
-    "all": "جميع التحديات",
-    "my_challenges": "تحدياتي",
-    "category": "الفئة",
-    "status": "الحالة",
-    "date_range": "النطاق الزمني",
-    "difficulty": "الصعوبة",
-    "trending": "الأكثر شعبية",
-    "search_placeholder": "البحث في التحديات...",
-    "level": "المستوى",
-    "advanced": "فلاتر متقدمة",
-    "prize_range": "نطاق الجائزة (ر.س)",
-    "participants_range": "نطاق المشاركين"
-  },
-  "navigation": {
-    "next": "←",
-    "previous": "→"
-  },
-  "browse": {
-    "available_challenges": "التحديات المتاحة",
-    "description": "تصفح واختر التحديات التي تناسب مهاراتك واهتماماتك"
-  },
-  "templates": {
-    "title": "القوالب"
+    "budget": "الميزانية",
+    "deadline": "الموعد النهائي للتقديم",
+    "evaluation_deadline": "الموعد النهائي للتقييم",
+    "participants": "المشاركون",
+    "submissions": "المقترحات"
   },
   "analytics": {
-    "dashboard_title": "لوحة إحصائيات التحديات"
+    "overview": "تحليلات التحدي",
+    "participation": "معدل المشاركة",
+    "submissions": "إحصائيات المقترحات",
+    "evaluation": "تقدم التقييم",
+    "timeline": "تحليل الجدول الزمني"
   },
-  "badges": {
-    "new": "جديد",
-    "urgent": "عاجل"
-  },
-  "time": {
-    "days": "يوم"
-  },
-  "progress": {
-    "label": "التقدم"
-  },
-  "prize": {
-    "label": "الجائزة",
-    "tbd": "غير محدد"
-  },
-  "experts": {
-    "label": "الخبراء:"
-  },
-  "stats": {
-    "participants": "مشارك",
-    "submissions": "مقترح",
-    "success": "نجاح"
-  },
-  "hero": {
-    "stats": {
-      "challenges": "تحدي",
-      "active": "نشط",
-      "participants": "مشارك",
-      "currency": "ر.س"
-    },
-    "platform_badge": "منصة التحديات المبتكرة",
-    "advanced_filters": "تصفية متقدمة",
-    "watch_demo": "شاهد الفيديو",
-    "days_left": "أيام متبقية",
-    "trending": "رائج",
-    "sar_prize": "ر.س جائزة",
-    "no_featured": "لا يوجد تحدي مميز حالياً",
-    "featured_will_appear": "سيتم عرض التحديات المميزة هنا",
-    "upcoming": "التحديات القادمة",
-    "challenges_count": "تحديات",
-    "favorites": "المفضلة",
-    "saved": "محفوظة",
-    "title": "اكتشف التحديات المبتكرة",
-    "title_discover": "اكتشف",
-    "title_innovation": "التحديات",
-    "title_challenges": "المبتكرة",
-    "subtitle": "انضم إلى مجتمع المبدعين وشارك في حل التحديات التي تشكل مستقبل المملكة ورؤية 2030"
-  }
+  "delete_confirmation": "هل أنت متأكد من حذف هذا التحدي؟"
 }

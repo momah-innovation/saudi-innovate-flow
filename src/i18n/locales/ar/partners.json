@@ -1,191 +1,55 @@
 {
-  "management": {
-    "title": "إدارة الشراكات",
-    "description": "إدارة الشراكات والتعاون والتحالفات الاستراتيجية",
-    "total_partners": "إجمالي الشركاء",
-    "active_partnerships": "الشراكات النشطة",
-    "pending_requests": "الطلبات المعلقة",
-    "recent_partnerships": "الشراكات الحديثة"
+  "title": "الشركاء",
+  "description": "إدارة الشراكات",
+  "create": "إنشاء شريك",
+  "edit": "تعديل الشريك",
+  "delete": "حذف الشريك",
+  "view": "عرض الشريك",
+  "manage": "إدارة الشراكة",
+  "contact": "التواصل مع الشريك",
+  "fields": {
+    "name": "اسم الشريك",
+    "type": "نوع الشراكة",
+    "industry": "الصناعة",
+    "status": "حالة الشراكة",
+    "level": "مستوى الشراكة",
+    "contact_person": "شخص الاتصال",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "website": "الموقع الإلكتروني",
+    "address": "العنوان",
+    "description": "الوصف",
+    "start_date": "تاريخ بداية الشراكة",
+    "end_date": "تاريخ انتهاء الشراكة",
+    "budget": "تخصيص الميزانية",
+    "projects": "المشاريع النشطة",
+    "agreements": "الاتفاقيات"
   },
   "types": {
-    "government": "جهة حكومية",
-    "private_sector": "شركة خاصة",
-    "non_profit": "منظمة غير ربحية",
-    "academic": "مؤسسة أكاديمية",
-    "international": "منظمة دولية",
-    "startup": "شركة ناشئة",
-    "research_center": "مركز بحثي",
-    "consulting": "شركة استشارية"
-  },
-  "partnership_types": {
-    "strategic": "شراكة استراتيجية",
-    "operational": "شراكة تشغيلية",
-    "financial": "شراكة مالية",
-    "technical": "شراكة تقنية",
-    "research": "تعاون بحثي",
-    "implementation": "شراكة تنفيذية",
-    "advisory": "شراكة استشارية",
-    "sponsorship": "رعاية"
-  },
-  "form": {
-    "basic_info": "المعلومات الأساسية",
-    "organization_name": "اسم المؤسسة",
-    "organization_name_ar": "اسم المؤسسة (بالعربية)",
-    "organization_type": "نوع المؤسسة",
-    "select_type": "اختر نوع المؤسسة",
-    "industry": "الصناعة/القطاع",
-    "website": "رابط الموقع الإلكتروني",
-    "description": "الوصف",
-    "description_placeholder": "اوصف المؤسسة وقدراتها",
-    "partnership_type": "نوع الشراكة",
-    "select_partnership_type": "اختر نوع الشراكة",
-    "partnership_scope": "نطاق الشراكة",
-    "objectives": "أهداف الشراكة",
-    "expected_outcomes": "النتائج المتوقعة",
-    "duration": "مدة الشراكة",
-    "start_date": "تاريخ البدء",
-    "end_date": "تاريخ الانتهاء",
-    "renewable": "شراكة قابلة للتجديد"
-  },
-  "contact": {
-    "section_title": "معلومات الاتصال",
-    "primary_contact": "جهة الاتصال الرئيسية",
-    "contact_name": "اسم جهة الاتصال",
-    "contact_title": "المنصب/المسمى",
-    "contact_email": "عنوان البريد الإلكتروني",
-    "contact_phone": "رقم الهاتف",
-    "secondary_contact": "جهة اتصال ثانوية",
-    "address": "العنوان",
-    "city": "المدينة",
-    "country": "البلد",
-    "postal_code": "الرمز البريدي"
-  },
-  "capabilities": {
-    "section_title": "القدرات والموارد",
-    "expertise_areas": "مجالات الخبرة",
-    "resources_available": "الموارد المتاحة",
-    "technology_stack": "المجموعة التقنية",
-    "certifications": "الشهادات",
-    "previous_projects": "المشاريع السابقة",
-    "team_size": "حجم الفريق",
-    "budget_range": "نطاق الميزانية",
-    "geographic_coverage": "التغطية الجغرافية"
+    "strategic": "شريك استراتيجي",
+    "technology": "شريك تقني",
+    "financial": "شريك مالي",
+    "academic": "شريك أكاديمي",
+    "government": "شريك حكومي",
+    "vendor": "مورد",
+    "client": "عميل",
+    "distributor": "موزع"
   },
   "status": {
-    "prospect": "محتمل",
-    "in_negotiation": "قيد التفاوض",
-    "active": "شراكة نشطة",
-    "on_hold": "معلق",
-    "completed": "مكتمل",
-    "terminated": "منتهي",
-    "renewal_pending": "تجديد معلق"
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "في انتظار الموافقة",
+    "suspended": "معلق",
+    "terminated": "منتهي"
   },
-  "actions": {
-    "add_partner": "إضافة شريك جديد",
-    "edit_partner": "تعديل الشريك",
-    "view_details": "عرض التفاصيل",
-    "contact_partner": "التواصل مع الشريك",
-    "renew_partnership": "تجديد الشراكة",
-    "terminate_partnership": "إنهاء الشراكة",
-    "export_partners": "تصدير الشركاء",
-    "send_proposal": "إرسال اقتراح",
-    "schedule_meeting": "جدولة اجتماع",
-    "view_projects": "عرض المشاريع المشتركة"
+  "levels": {
+    "bronze": "برونزي",
+    "silver": "فضي",
+    "gold": "ذهبي",
+    "platinum": "بلاتيني",
+    "diamond": "ماسي"
   },
-  "evaluation": {
-    "performance_rating": "تقييم الأداء",
-    "collaboration_quality": "جودة التعاون",
-    "deliverable_quality": "جودة المخرجات",
-    "communication": "التواصل",
-    "timeliness": "الالتزام بالمواعيد",
-    "innovation": "مستوى الابتكار",
-    "overall_satisfaction": "الرضا العام",
-    "feedback": "التعليقات",
-    "recommendations": "التوصيات"
-  },
-  "documents": {
-    "partnership_agreement": "اتفاقية الشراكة",
-    "mou": "مذكرة تفاهم",
-    "service_agreement": "اتفاقية الخدمة",
-    "nda": "اتفاقية عدم الإفشاء",
-    "compliance_documents": "مستندات الامتثال",
-    "certifications": "الشهادات",
-    "references": "المراجع",
-    "portfolio": "الأعمال السابقة/دراسات الحالة"
-  },
-  "metrics": {
-    "projects_completed": "المشاريع المكتملة",
-    "total_value": "إجمالي قيمة الشراكة",
-    "success_rate": "معدل النجاح",
-    "response_time": "متوسط وقت الاستجابة",
-    "client_satisfaction": "رضا العملاء",
-    "renewal_rate": "معدل التجديد",
-    "geographic_reach": "النطاق الجغرافي"
-  },
-  "validation": {
-    "name_required": "اسم المؤسسة مطلوب",
-    "type_required": "نوع المؤسسة مطلوب",
-    "contact_email_invalid": "بريد إلكتروني صحيح لجهة الاتصال مطلوب",
-    "website_invalid": "رابط موقع إلكتروني صحيح مطلوب",
-    "partnership_type_required": "نوع الشراكة مطلوب",
-    "start_date_required": "تاريخ البدء مطلوب",
-    "end_date_after_start": "تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء"
-  },
-  "messages": {
-    "partner_added": "تم إضافة الشريك بنجاح",
-    "partner_updated": "تم تحديث الشريك بنجاح",
-    "partner_deleted": "تم حذف الشريك بنجاح",
-    "partnership_activated": "تم تفعيل الشراكة",
-    "partnership_terminated": "تم إنهاء الشراكة",
-    "proposal_sent": "تم إرسال الاقتراح بنجاح",
-    "meeting_scheduled": "تم جدولة الاجتماع",
-    "export_completed": "تم تصدير بيانات الشركاء بنجاح",
-    "delete_confirmation": "هل أنت متأكد من حذف هذا الشريك؟",
-    "terminate_confirmation": "هل أنت متأكد من إنهاء هذه الشراكة؟"
-  },
-  "dashboard": {
-    "partnerDashboard": "لوحة تحكم الشريك",
-    "createNewPartnership": "إنشاء شراكة جديدة",
-    "exploreOpportunities": "استكشاف الفرص",
-    "browseChallenges": "تصفح التحديات",
-    "viewProfile": "عرض الملف الشخصي"
-  },
-  "profile": {
-    "badge": "ملف الشريك",
-    "organization_name": "اسم المؤسسة",
-    "save_changes": "حفظ التغييرات",
-    "edit_profile": "تحرير الملف",
-    "dashboard": "لوحة التحكم",
-    "browse_challenges": "تصفح التحديات",
-    "partnership_info": "معلومات الشراكة",
-    "founded": "سنة التأسيس",
-    "team_size": "حجم الفريق",
-    "investment_capacity": "الاستثمار المتاح",
-    "areas_of_interest": "مجالات الاهتمام",
-    "metrics": {
-      "active_partnerships": "شراكة نشطة",
-      "sar_invested": "ر.س استثمار",
-      "projects_supported": "مشروع مدعوم",
-      "partnership_rating": "تقييم الشراكة"
-    }
-  },
-  "details": {
-    "partnershipDetails": "تفاصيل الشراكة",
-    "timeline": "الجدول الزمني",
-    "contribution": "المساهمة",
-    "description": "الوصف",
-    "ideasGenerated": "الأفكار المولدة",
-    "participants": "المشاركون",
-    "impactScore": "نقاط التأثير"
-  },
-  "applications": {
-    "opportunity": "الفرصة",
-    "type": "النوع",
-    "submittedDate": "تاريخ التقديم",
-    "status": "الحالة",
-    "contribution": "المساهمة",
-    "contact": "جهة الاتصال",
-    "actions": "الإجراءات",
-    "noApplicationsFound": "لا توجد طلبات"
-  }
+  "delete_confirmation": "هل أنت متأكد من حذف هذا الشريك؟",
+  "no_partners": "لم يتم العثور على شركاء",
+  "add_first_partner": "أضف شريكك الأول"
 }

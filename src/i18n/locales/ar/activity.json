@@ -1,0 +1,76 @@
+{
+  "feed": {
+    "title": "تدفق النشاطات",
+    "error": "خطأ في تحميل النشاطات",
+    "refresh": "تحديث",
+    "loadMore": "تحميل المزيد",
+    "empty": "لا توجد نشاطات للعرض"
+  },
+  "filters": {
+    "title": "مرشحات النشاطات",
+    "clear": "مسح المرشحات",
+    "actionTypes": "أنواع الإجراءات",
+    "entityTypes": "أنواع الكيانات",
+    "privacyLevels": "مستويات الخصوصية",
+    "dateRange": "نطاق التاريخ",
+    "apply": "تطبيق المرشحات"
+  },
+  "actions": {
+    "created": "أنشأ",
+    "updated": "حدث",
+    "deleted": "حذف",
+    "submitted": "قدم",
+    "evaluated": "قيم",
+    "assigned": "عين",
+    "approved": "وافق",
+    "rejected": "رفض",
+    "published": "نشر",
+    "archived": "أرشف",
+    "viewed": "عرض",
+    "downloaded": "نزل",
+    "uploaded": "رفع",
+    "shared": "شارك",
+    "joined": "انضم",
+    "left": "غادر",
+    "invited": "دعا",
+    "accepted": "قبل",
+    "declined": "رفض",
+    "commented": "علق",
+    "liked": "أعجب",
+    "bookmarked": "حفظ"
+  },
+  "entities": {
+    "challenge": "التحدي",
+    "idea": "الفكرة",
+    "user": "المستخدم",
+    "event": "الفعالية",
+    "campaign": "الحملة",
+    "opportunity": "الفرصة",
+    "team": "الفريق",
+    "project": "المشروع",
+    "evaluation": "التقييم",
+    "partnership": "الشراكة",
+    "document": "الوثيقة",
+    "file": "الملف",
+    "comment": "التعليق",
+    "notification": "الإشعار",
+    "submission": "المقترح",
+    "assignment": "التكليف"
+  },
+  "privacy": {
+    "public": "عام",
+    "internal": "داخلي",
+    "private": "خاص",
+    "restricted": "مقيد",
+    "confidential": "سري"
+  },
+  "severity": {
+    "low": "منخفض",
+    "medium": "متوسط",
+    "high": "عالي",
+    "critical": "حرج",
+    "info": "معلومات",
+    "warning": "تحذير",
+    "error": "خطأ"
+  }
+}

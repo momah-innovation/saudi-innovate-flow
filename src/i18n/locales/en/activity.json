@@ -1,0 +1,76 @@
+{
+  "feed": {
+    "title": "Activity Feed",
+    "error": "Error loading activities",
+    "refresh": "Refresh",
+    "loadMore": "Load More",
+    "empty": "No activities to display"
+  },
+  "filters": {
+    "title": "Activity Filters",
+    "clear": "Clear Filters",
+    "actionTypes": "Action Types",
+    "entityTypes": "Entity Types",
+    "privacyLevels": "Privacy Levels",
+    "dateRange": "Date Range",
+    "apply": "Apply Filters"
+  },
+  "actions": {
+    "created": "Created",
+    "updated": "Updated",
+    "deleted": "Deleted",
+    "submitted": "Submitted",
+    "evaluated": "Evaluated",
+    "assigned": "Assigned",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "published": "Published",
+    "archived": "Archived",
+    "viewed": "Viewed",
+    "downloaded": "Downloaded",
+    "uploaded": "Uploaded",
+    "shared": "Shared",
+    "joined": "Joined",
+    "left": "Left",
+    "invited": "Invited",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "commented": "Commented",
+    "liked": "Liked",
+    "bookmarked": "Bookmarked"
+  },
+  "entities": {
+    "challenge": "Challenge",
+    "idea": "Idea",
+    "user": "User",
+    "event": "Event",
+    "campaign": "Campaign",
+    "opportunity": "Opportunity",
+    "team": "Team",
+    "project": "Project",
+    "evaluation": "Evaluation",
+    "partnership": "Partnership",
+    "document": "Document",
+    "file": "File",
+    "comment": "Comment",
+    "notification": "Notification",
+    "submission": "Submission",
+    "assignment": "Assignment"
+  },
+  "privacy": {
+    "public": "Public",
+    "internal": "Internal",
+    "private": "Private",
+    "restricted": "Restricted",
+    "confidential": "Confidential"
+  },
+  "severity": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "critical": "Critical",
+    "info": "Info",
+    "warning": "Warning",
+    "error": "Error"
+  }
+}
