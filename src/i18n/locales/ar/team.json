@@ -1,239 +1,33 @@
 {
-    "title": "الفريق",
-    "page_title": "إدارة الفريق",
-    "dashboard_title": "لوحة قيادة الفريق",
-    "overview": "نظرة عامة على الفريق",
-    "status": {
-        "all_active": "الكل نشط",
-        "in_progress": "قيد التقدم",
-        "requires_attention": "يتطلب الانتباه",
-        "completed": "مكتمل",
-        "not_started": "لم يبدأ",
-        "on_hold": "قيد الانتظار",
-        "cancelled": "ملغى"
-    },
-    "actions": {
-        "view_details": "عرض التفاصيل",
-        "edit_project": "تعديل المشروع",
-        "add_task": "إضافة مهمة",
-        "all_tasks": "جميع المهام",
-        "my_tasks": "مهامي",
-        "overdue": "متأخر",
-        "edit_task": "تعديل المهمة",
-        "change_status": "تغيير الحالة",
-        "assign_member": "تعيين عضو",
-        "edit_meeting": "تعديل الاجتماع",
-        "copy_link": "نسخ الرابط",
-        "send_reminder": "إرسال تذكير",
-        "cancel_meeting": "إلغاء الاجتماع",
-        "add_member": "إضافة عضو",
-        "remove_member": "إزالة عضو",
-        "create_team": "إنشاء فريق",
-        "edit_team": "تعديل الفريق",
-        "delete_team": "حذف الفريق",
-        "invite_member": "دعوة عضو",
-        "manage_roles": "إدارة الأدوار",
-        "view_profile": "عرض الملف الشخصي",
-        "archive_project": "أرشفة المشروع",
-        "delete_task": "حذف المهمة"
-    },
-    "member": {
-        "status": {
-            "active": "نشط",
-            "pending": "معلق",
-            "inactive": "غير نشط",
-            "invited": "مدعو",
-            "suspended": "موقوف"
-        },
-        "role": {
-            "admin": "مدير",
-            "manager": "مدير",
-            "member": "عضو",
-            "viewer": "مشاهد",
-            "owner": "مالك",
-            "lead": "قائد الفريق",
-            "developer": "مطور",
-            "designer": "مصمم"
-        },
-        "fields": {
-            "name": "الاسم",
-            "email": "البريد الإلكتروني",
-            "email_placeholder": "colleague@company.com",
-            "role": "الدور",
-            "department": "القسم",
-            "joined_date": "تاريخ الانضمام",
-            "last_active": "آخر نشاط",
-            "permissions": "الصلاحيات"
-        }
-    },
-    "project": {
-        "title": "المشاريع",
-        "my_projects": "مشاريعي",
-        "all_projects": "جميع المشاريع",
-        "active_projects": "المشاريع النشطة",
-        "completed_projects": "المشاريع المكتملة",
-        "create_project": "إنشاء مشروع",
-        "project_name": "اسم المشروع",
-        "project_description": "وصف المشروع",
-        "start_date": "تاريخ البداية",
-        "end_date": "تاريخ النهاية",
-        "deadline": "الموعد النهائي",
-        "budget": "الميزانية",
-        "priority": "الأولوية",
-        "team_members": "أعضاء الفريق",
-        "progress": "التقدم"
-    },
-    "task": {
-        "title": "المهام",
-        "task_name": "اسم المهمة",
-        "description": "الوصف",
-        "assigned_to": "معين إلى",
-        "due_date": "تاريخ الاستحقاق",
-        "priority": {
-            "high": "أولوية عالية",
-            "medium": "أولوية متوسطة",
-            "low": "أولوية منخفضة",
-            "critical": "حرج",
-            "normal": "عادي"
-        },
-        "status": {
-            "todo": "للقيام به",
-            "in_progress": "قيد التنفيذ",
-            "review": "قيد المراجعة",
-            "completed": "مكتمل",
-            "blocked": "محظور"
-        },
-        "filters": {
-            "all": "جميع المهام",
-            "assigned_to_me": "المعينة لي",
-            "created_by_me": "التي أنشأتها",
-            "overdue": "المهام المتأخرة",
-            "upcoming": "القادمة",
-            "completed": "المكتملة"
-        }
-    },
-    "meeting": {
-        "title": "الاجتماعات",
-        "schedule_meeting": "جدولة اجتماع",
-        "meeting_title": "عنوان الاجتماع",
-        "date_time": "التاريخ والوقت",
-        "duration": "المدة",
-        "location": "الموقع",
-        "participants": "المشاركون",
-        "agenda": "جدول الأعمال",
-        "notes": "ملاحظات الاجتماع",
-        "recurring": "متكرر",
-        "reminder": "تذكير",
-        "join_meeting": "الانضمام للاجتماع"
-    },
-    "messages": {
-        "member_added": "تمت إضافة العضو بنجاح",
-        "member_removed": "تمت إزالة العضو بنجاح",
-        "team_created": "تم إنشاء الفريق بنجاح",
-        "team_updated": "تم تحديث الفريق بنجاح",
-        "project_created": "تم إنشاء المشروع بنجاح",
-        "task_assigned": "تم تعيين المهمة بنجاح",
-        "meeting_scheduled": "تم جدولة الاجتماع بنجاح",
-        "no_teams": "لا توجد فرق",
-        "no_members": "لا يوجد أعضاء في الفريق",
-        "no_projects": "لا توجد مشاريع",
-        "no_tasks": "لا توجد مهام",
-        "loading": "جاري تحميل بيانات الفريق...",
-        "error": "خطأ في تحميل معلومات الفريق"
-    },
-    "filters": {
-        "filter_by": "تصفية حسب",
-        "sort_by": "ترتيب حسب",
-        "status": "الحالة",
-        "role": "الدور",
-        "department": "القسم",
-        "date_range": "النطاق الزمني",
-        "search": "البحث عن الفرق..."
-    },
-    "permissions": {
-        "view": "عرض",
-        "edit": "تعديل",
-        "delete": "حذف",
-        "create": "إنشاء",
-        "manage": "إدارة",
-        "admin": "مدير"
-    },
-    "analytics": {
-        "stats": {
-            "total_teams": "إجمالي الفرق",
-            "active_projects": "المشاريع النشطة",
-            "team_members": "أعضاء الفريق",
-            "completed_tasks": "المهام المكتملة",
-            "from_last_month": "من الشهر الماضي"
-        },
-        "tabs": {
-            "overview": "نظرة عامة",
-            "performance": "الأداء",
-            "projects": "المشاريع",
-            "teams": "الفرق"
-        },
-        "trends": {
-            "title": "الاتجاهات الشهرية",
-            "projects_label": "مشاريع:",
-            "tasks_label": "مهام:"
-        },
-        "productivity": {
-            "title": "أهداف الإنتاجية",
-            "project_completion": "إكمال المشاريع",
-            "team_efficiency": "كفاءة الفريق",
-            "member_satisfaction": "رضا الأعضاء"
-        },
-        "top_performers": {
-            "title": "أفضل المؤدين",
-            "tasks_completed": "مهام مكتملة",
-            "projects": "مشاريع"
-        },
-        "project_status": {
-            "title": "حالة المشاريع",
-            "active": "نشط",
-            "completed": "مكتمل",
-            "delayed": "متأخر"
-        },
-        "team_productivity": {
-            "title": "إنتاجية الفرق",
-            "members": "عضو",
-            "productivity": "الإنتاجية",
-            "tasks_completed": "مهام مكتملة"
-        },
-        "team_names": {
-            "development": "فريق التطوير",
-            "design": "فريق التصميم",
-            "management": "فريق الإدارة",
-            "marketing": "فريق التسويق"
-        },
-        "sample_members": {
-            "ahmed": "أحمد المحمد",
-            "fatima": "فاطمة العلي",
-            "mohammed": "محمد السعود"
-        }
-    },
-    "hero": {
-        "workspace": {
-            "collaborative": "مساحة العمل التعاونية",
-            "join_team": "انضم لفريق",
-            "advanced_filters": "فلاتر متقدمة",
-            "collaboration_guide": "دليل التعاون",
-            "active": "نشط",
-            "interactive": "تفاعلي",
-            "active_workspace": "فرق العمل النشطة",
-            "active_projects": "مشروع نشط",
-            "completion_rate": "معدل الإنجاز",
-            "enter_workspace": "دخول مساحة العمل",
-            "meetings": "الاجتماعات",
-            "scheduled": "اجتماع",
-            "achievements": "الإنجازات",
-            "milestones": "إنجاز"
-        },
-        "stats": {
-            "teams": "فريق",
-            "active_projects": "مشروع نشط",
-            "members": "عضو",
-            "completion": "إنجاز"
-        }
-    }
+  "title": "الفريق",
+  "my_team": "فريقي",
+  "team_members": "أعضاء الفريق",
+  "add_member": "إضافة عضو فريق",
+  "invite_member": "دعوة عضو",
+  "remove_member": "إزالة عضو",
+  "team_settings": "إعدادات الفريق",
+  "team_roles": "أدوار الفريق",
+  "permissions": "الصلاحيات",
+  "team_activity": "نشاط الفريق",
+  "team_projects": "مشاريع الفريق",
+  "team_challenges": "تحديات الفريق",
+  "team_analytics": "تحليلات الفريق",
+  "team_collaboration": "تعاون الفريق",
+  "member_details": "تفاصيل العضو",
+  "role_assignment": "تعيين الأدوار",
+  "access_control": "التحكم في الوصول",
+  "team_communication": "التواصل في الفريق",
+  "team_goals": "أهداف الفريق",
+  "team_performance": "أداء الفريق",
+  "team_resources": "موارد الفريق",
+  "team_calendar": "تقويم الفريق",
+  "team_files": "ملفات الفريق",
+  "team_workspace": "مساحة عمل الفريق",
+  "leadership": "القيادة",
+  "collaboration_tools": "أدوات التعاون",
+  "team_meetings": "اجتماعات الفريق",
+  "team_tasks": "مهام الفريق",
+  "member_onboarding": "إدماج الأعضاء",
+  "team_culture": "ثقافة الفريق",
+  "feedback_reviews": "التقييمات والمراجعات"
 }

@@ -1,239 +1,33 @@
 {
-    "title": "Team",
-    "page_title": "Team Management",
-    "dashboard_title": "Team Dashboard",
-    "overview": "Team Overview",
-    "status": {
-        "all_active": "All active",
-        "in_progress": "In progress",
-        "requires_attention": "Requires attention",
-        "completed": "Completed",
-        "not_started": "Not Started",
-        "on_hold": "On Hold",
-        "cancelled": "Cancelled"
-    },
-    "actions": {
-        "view_details": "View Details",
-        "edit_project": "Edit Project",
-        "add_task": "Add Task",
-        "all_tasks": "All Tasks",
-        "my_tasks": "My Tasks",
-        "overdue": "Overdue",
-        "edit_task": "Edit Task",
-        "change_status": "Change Status",
-        "assign_member": "Assign Member",
-        "edit_meeting": "Edit Meeting",
-        "copy_link": "Copy Link",
-        "send_reminder": "Send Reminder",
-        "cancel_meeting": "Cancel Meeting",
-        "add_member": "Add Member",
-        "remove_member": "Remove Member",
-        "create_team": "Create Team",
-        "edit_team": "Edit Team",
-        "delete_team": "Delete Team",
-        "invite_member": "Invite Member",
-        "manage_roles": "Manage Roles",
-        "view_profile": "View Profile",
-        "archive_project": "Archive Project",
-        "delete_task": "Delete Task"
-    },
-    "member": {
-        "status": {
-            "active": "Active",
-            "pending": "Pending",
-            "inactive": "Inactive",
-            "invited": "Invited",
-            "suspended": "Suspended"
-        },
-        "role": {
-            "admin": "Admin",
-            "manager": "Manager",
-            "member": "Member",
-            "viewer": "Viewer",
-            "owner": "Owner",
-            "lead": "Team Lead",
-            "developer": "Developer",
-            "designer": "Designer"
-        },
-        "fields": {
-            "name": "Name",
-            "email": "Email",
-            "email_placeholder": "colleague@company.com",
-            "role": "Role",
-            "department": "Department",
-            "joined_date": "Joined Date",
-            "last_active": "Last Active",
-            "permissions": "Permissions"
-        }
-    },
-    "project": {
-        "title": "Projects",
-        "my_projects": "My Projects",
-        "all_projects": "All Projects",
-        "active_projects": "Active Projects",
-        "completed_projects": "Completed Projects",
-        "create_project": "Create Project",
-        "project_name": "Project Name",
-        "project_description": "Project Description",
-        "start_date": "Start Date",
-        "end_date": "End Date",
-        "deadline": "Deadline",
-        "budget": "Budget",
-        "priority": "Priority",
-        "team_members": "Team Members",
-        "progress": "Progress"
-    },
-    "task": {
-        "title": "Tasks",
-        "task_name": "Task Name",
-        "description": "Description",
-        "assigned_to": "Assigned To",
-        "due_date": "Due Date",
-        "priority": {
-            "high": "High Priority",
-            "medium": "Medium Priority",
-            "low": "Low Priority",
-            "critical": "Critical",
-            "normal": "Normal"
-        },
-        "status": {
-            "todo": "To Do",
-            "in_progress": "In Progress",
-            "review": "In Review",
-            "completed": "Completed",
-            "blocked": "Blocked"
-        },
-        "filters": {
-            "all": "All Tasks",
-            "assigned_to_me": "Assigned to Me",
-            "created_by_me": "Created by Me",
-            "overdue": "Overdue Tasks",
-            "upcoming": "Upcoming",
-            "completed": "Completed"
-        }
-    },
-    "meeting": {
-        "title": "Meetings",
-        "schedule_meeting": "Schedule Meeting",
-        "meeting_title": "Meeting Title",
-        "date_time": "Date & Time",
-        "duration": "Duration",
-        "location": "Location",
-        "participants": "Participants",
-        "agenda": "Agenda",
-        "notes": "Meeting Notes",
-        "recurring": "Recurring",
-        "reminder": "Reminder",
-        "join_meeting": "Join Meeting"
-    },
-    "messages": {
-        "member_added": "Member added successfully",
-        "member_removed": "Member removed successfully",
-        "team_created": "Team created successfully",
-        "team_updated": "Team updated successfully",
-        "project_created": "Project created successfully",
-        "task_assigned": "Task assigned successfully",
-        "meeting_scheduled": "Meeting scheduled successfully",
-        "no_teams": "No teams found",
-        "no_members": "No team members found",
-        "no_projects": "No projects found",
-        "no_tasks": "No tasks found",
-        "loading": "Loading team data...",
-        "error": "Error loading team information"
-    },
-    "filters": {
-        "filter_by": "Filter by",
-        "sort_by": "Sort by",
-        "status": "Status",
-        "role": "Role",
-        "department": "Department",
-        "date_range": "Date Range",
-        "search": "Search teams..."
-    },
-    "permissions": {
-        "view": "View",
-        "edit": "Edit",
-        "delete": "Delete",
-        "create": "Create",
-        "manage": "Manage",
-        "admin": "Admin"
-    },
-    "analytics": {
-        "stats": {
-            "total_teams": "Total Teams",
-            "active_projects": "Active Projects",
-            "team_members": "Team Members",
-            "completed_tasks": "Completed Tasks",
-            "from_last_month": "from last month"
-        },
-        "tabs": {
-            "overview": "Overview",
-            "performance": "Performance",
-            "projects": "Projects",
-            "teams": "Teams"
-        },
-        "trends": {
-            "title": "Monthly Trends",
-            "projects_label": "Projects:",
-            "tasks_label": "Tasks:"
-        },
-        "productivity": {
-            "title": "Productivity Goals",
-            "project_completion": "Project Completion",
-            "team_efficiency": "Team Efficiency",
-            "member_satisfaction": "Member Satisfaction"
-        },
-        "top_performers": {
-            "title": "Top Performers",
-            "tasks_completed": "tasks completed",
-            "projects": "projects"
-        },
-        "project_status": {
-            "title": "Project Status",
-            "active": "Active",
-            "completed": "Completed",
-            "delayed": "Delayed"
-        },
-        "team_productivity": {
-            "title": "Team Productivity",
-            "members": "members",
-            "productivity": "Productivity",
-            "tasks_completed": "tasks completed"
-        },
-        "team_names": {
-            "development": "Development Team",
-            "design": "Design Team",
-            "management": "Management Team",
-            "marketing": "Marketing Team"
-        },
-        "sample_members": {
-            "ahmed": "Ahmed Al-Mohammed",
-            "fatima": "Fatima Al-Ali",
-            "mohammed": "Mohammed Al-Saud"
-        }
-    },
-    "hero": {
-        "workspace": {
-            "collaborative": "Collaborative Workspace",
-            "join_team": "Join Team",
-            "advanced_filters": "Advanced Filters",
-            "collaboration_guide": "Collaboration Guide",
-            "active": "Active",
-            "interactive": "Interactive",
-            "active_workspace": "Active Team Workspace",
-            "active_projects": "active projects",
-            "completion_rate": "completion rate",
-            "enter_workspace": "Enter Workspace",
-            "meetings": "Meetings",
-            "scheduled": "scheduled",
-            "achievements": "Achievements",
-            "milestones": "milestones"
-        },
-        "stats": {
-            "teams": "teams",
-            "active_projects": "active projects",
-            "members": "members",
-            "completion": "completion"
-        }
-    }
+  "title": "Team",
+  "my_team": "My Team",
+  "team_members": "Team Members",
+  "add_member": "Add Team Member",
+  "invite_member": "Invite Member",
+  "remove_member": "Remove Member",
+  "team_settings": "Team Settings",
+  "team_roles": "Team Roles",
+  "permissions": "Permissions",
+  "team_activity": "Team Activity",
+  "team_projects": "Team Projects",
+  "team_challenges": "Team Challenges",
+  "team_analytics": "Team Analytics",
+  "team_collaboration": "Team Collaboration",
+  "member_details": "Member Details",
+  "role_assignment": "Role Assignment",
+  "access_control": "Access Control",
+  "team_communication": "Team Communication",
+  "team_goals": "Team Goals",
+  "team_performance": "Team Performance",
+  "team_resources": "Team Resources",
+  "team_calendar": "Team Calendar",
+  "team_files": "Team Files",
+  "team_workspace": "Team Workspace",
+  "leadership": "Leadership",
+  "collaboration_tools": "Collaboration Tools",
+  "team_meetings": "Team Meetings",
+  "team_tasks": "Team Tasks",
+  "member_onboarding": "Member Onboarding",
+  "team_culture": "Team Culture",
+  "feedback_reviews": "Feedback & Reviews"
 }
