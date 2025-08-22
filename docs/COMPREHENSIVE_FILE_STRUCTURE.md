@@ -315,6 +315,7 @@ features/
 │   │   ├── ChallengeComments.tsx
 │   │   ├── ChallengeVoting.tsx
 │   │   ├── ChallengeRewards.tsx
+│   │   ├── ChallengeTemplates.tsx
 │   │   └── ChallengeWizard.tsx
 │   ├── 📁 submissions/
 │   │   ├── 📁 components/
@@ -324,26 +325,278 @@ features/
 │   │   │   ├── SubmissionEvaluation.tsx
 │   │   │   ├── SubmissionComments.tsx
 │   │   │   ├── SubmissionVersions.tsx
+│   │   │   ├── SubmissionCompare.tsx
+│   │   │   ├── SubmissionScoring.tsx
 │   │   │   └── SubmissionAnalytics.tsx
 │   │   └── 📁 hooks/
 │   │       ├── useSubmissions.ts
 │   │       ├── useSubmissionManagement.ts
-│   │       └── useSubmissionEvaluation.ts
+│   │       ├── useSubmissionEvaluation.ts
+│   │       └── useSubmissionCompare.ts
 │   ├── 📁 hooks/
 │   │   ├── useChallenges.ts
 │   │   ├── useChallengeManagement.ts
 │   │   ├── useChallengeParticipation.ts
 │   │   ├── useChallengeEvaluation.ts
 │   │   ├── useChallengeAnalytics.ts
+│   │   ├── useChallengeTemplates.ts
 │   │   └── useChallengeFilters.ts
 │   ├── 📁 services/
 │   │   ├── challengeService.ts
 │   │   ├── submissionService.ts
 │   │   ├── evaluationService.ts
+│   │   ├── templateService.ts
 │   │   └── participationService.ts
 │   └── 📁 types/
 │       ├── challenge.types.ts
-│       └── submission.types.ts
+│       ├── submission.types.ts
+│       └── template.types.ts
+```
+
+#### 📋 Templates & Forms System
+```
+├── 📁 templates/
+│   ├── 📁 components/
+│   │   ├── TemplateCard.tsx
+│   │   ├── TemplateForm.tsx
+│   │   ├── TemplateEditor.tsx
+│   │   ├── TemplatePreview.tsx
+│   │   ├── TemplateLibrary.tsx
+│   │   ├── TemplateBuilder.tsx
+│   │   ├── TemplateImporter.tsx
+│   │   ├── TemplateExporter.tsx
+│   │   ├── TemplateVersions.tsx
+│   │   ├── TemplateSharing.tsx
+│   │   ├── TemplateCategories.tsx
+│   │   ├── TemplateSearch.tsx
+│   │   ├── DynamicFormRenderer.tsx
+│   │   ├── FormFieldBuilder.tsx
+│   │   └── TemplateAnalytics.tsx
+│   ├── 📁 challenge-templates/
+│   │   ├── 📁 components/
+│   │   │   ├── ChallengeTemplateCard.tsx
+│   │   │   ├── ChallengeTemplateForm.tsx
+│   │   │   ├── ChallengeTemplateBuilder.tsx
+│   │   │   ├── ChallengeTemplatePreview.tsx
+│   │   │   └── ChallengeTemplateWizard.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useChallengeTemplates.ts
+│   │       └── useChallengeTemplateBuilder.ts
+│   ├── 📁 campaign-templates/
+│   │   ├── 📁 components/
+│   │   │   ├── CampaignTemplateCard.tsx
+│   │   │   ├── CampaignTemplateForm.tsx
+│   │   │   ├── CampaignTemplateBuilder.tsx
+│   │   │   └── CampaignTemplatePreview.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useCampaignTemplates.ts
+│   │       └── useCampaignTemplateBuilder.ts
+│   ├── 📁 event-templates/
+│   │   ├── 📁 components/
+│   │   │   ├── EventTemplateCard.tsx
+│   │   │   ├── EventTemplateForm.tsx
+│   │   │   ├── EventTemplateBuilder.tsx
+│   │   │   └── EventTemplatePreview.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useEventTemplates.ts
+│   │       └── useEventTemplateBuilder.ts
+│   ├── 📁 evaluation-templates/
+│   │   ├── 📁 components/
+│   │   │   ├── EvaluationTemplateCard.tsx
+│   │   │   ├── EvaluationTemplateForm.tsx
+│   │   │   ├── EvaluationTemplateBuilder.tsx
+│   │   │   ├── ScoringTemplateBuilder.tsx
+│   │   │   ├── CriteriaTemplateBuilder.tsx
+│   │   │   └── EvaluationTemplatePreview.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useEvaluationTemplates.ts
+│   │       ├── useScoringTemplates.ts
+│   │       └── useCriteriaTemplates.ts
+│   ├── 📁 document-templates/
+│   │   ├── 📁 components/
+│   │   │   ├── DocumentTemplateCard.tsx
+│   │   │   ├── DocumentTemplateForm.tsx
+│   │   │   ├── DocumentTemplateEditor.tsx
+│   │   │   ├── ReportTemplateBuilder.tsx
+│   │   │   ├── CertificateTemplateBuilder.tsx
+│   │   │   └── DocumentTemplatePreview.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useDocumentTemplates.ts
+│   │       ├── useReportTemplates.ts
+│   │       └── useCertificateTemplates.ts
+│   ├── 📁 email-templates/
+│   │   ├── 📁 components/
+│   │   │   ├── EmailTemplateCard.tsx
+│   │   │   ├── EmailTemplateForm.tsx
+│   │   │   ├── EmailTemplateEditor.tsx
+│   │   │   ├── EmailTemplatePreview.tsx
+│   │   │   ├── EmailVariableManager.tsx
+│   │   │   └── EmailTemplateTestSender.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useEmailTemplates.ts
+│   │       ├── useEmailVariables.ts
+│   │       └── useEmailTesting.ts
+│   ├── 📁 hooks/
+│   │   ├── useTemplates.ts
+│   │   ├── useTemplateManagement.ts  
+│   │   ├── useTemplateBuilder.ts
+│   │   ├── useTemplateLibrary.ts
+│   │   ├── useTemplateSharing.ts
+│   │   ├── useTemplateVersions.ts
+│   │   ├── useTemplateAnalytics.ts
+│   │   ├── useDynamicForms.ts
+│   │   └── useFormValidation.ts
+│   ├── 📁 services/
+│   │   ├── templateService.ts
+│   │   ├── templateBuilderService.ts
+│   │   ├── templateLibraryService.ts
+│   │   ├── dynamicFormService.ts
+│   │   ├── templateSharingService.ts
+│   │   ├── templateVersioningService.ts
+│   │   └── templateAnalyticsService.ts
+│   └── 📁 types/
+│       ├── template.types.ts
+│       ├── form.types.ts
+│       ├── builder.types.ts
+│       └── validation.types.ts
+```
+
+#### 🔍 Ideas & Evaluations System
+```
+├── 📁 evaluations/
+│   ├── 📁 components/
+│   │   ├── EvaluationDashboard.tsx
+│   │   ├── EvaluationCard.tsx
+│   │   ├── EvaluationForm.tsx
+│   │   ├── EvaluationDetails.tsx
+│   │   ├── EvaluationWorkflow.tsx
+│   │   ├── EvaluationCriteria.tsx
+│   │   ├── EvaluationScoring.tsx
+│   │   ├── EvaluationComparison.tsx
+│   │   ├── EvaluationCalibration.tsx
+│   │   ├── EvaluationConflictResolution.tsx
+│   │   ├── EvaluationAnalytics.tsx
+│   │   ├── EvaluationReports.tsx
+│   │   ├── ReviewerAssignment.tsx
+│   │   ├── ReviewerWorkspace.tsx
+│   │   └── EvaluationTimeline.tsx
+│   ├── 📁 idea-evaluation/
+│   │   ├── 📁 components/
+│   │   │   ├── IdeaEvaluationCard.tsx
+│   │   │   ├── IdeaEvaluationForm.tsx
+│   │   │   ├── IdeaScorecard.tsx
+│   │   │   ├── IdeaScoringMatrix.tsx
+│   │   │   ├── IdeaComparison.tsx
+│   │   │   ├── IdeaRanking.tsx
+│   │   │   ├── IdeaFeedback.tsx
+│   │   │   ├── IdeaRecommendations.tsx
+│   │   │   ├── IdeaImplementationPlan.tsx
+│   │   │   └── IdeaEvaluationSummary.tsx
+│   │   ├── 📁 hooks/
+│   │   │   ├── useIdeaEvaluation.ts
+│   │   │   ├── useIdeaScoring.ts
+│   │   │   ├── useIdeaComparison.ts
+│   │   │   ├── useIdeaRanking.ts
+│   │   │   └── useIdeaFeedback.ts
+│   │   └── 📁 types/
+│   │       └── ideaEvaluation.types.ts
+│   ├── 📁 peer-review/
+│   │   ├── 📁 components/
+│   │   │   ├── PeerReviewCard.tsx
+│   │   │   ├── PeerReviewForm.tsx
+│   │   │   ├── PeerReviewAssignment.tsx
+│   │   │   ├── PeerReviewWorkspace.tsx
+│   │   │   ├── PeerReviewCalibration.tsx
+│   │   │   ├── PeerReviewConsensus.tsx
+│   │   │   ├── PeerReviewConflicts.tsx
+│   │   │   └── PeerReviewAnalytics.tsx
+│   │   ├── 📁 hooks/
+│   │   │   ├── usePeerReview.ts
+│   │   │   ├── usePeerReviewAssignment.ts
+│   │   │   ├── usePeerReviewCalibration.ts
+│   │   │   └── usePeerReviewConsensus.ts
+│   │   └── 📁 types/
+│   │       └── peerReview.types.ts
+│   ├── 📁 expert-evaluation/
+│   │   ├── 📁 components/
+│   │   │   ├── ExpertEvaluationCard.tsx
+│   │   │   ├── ExpertEvaluationForm.tsx
+│   │   │   ├── ExpertAssignment.tsx
+│   │   │   ├── ExpertWorkspace.tsx
+│   │   │   ├── ExpertRecommendations.tsx
+│   │   │   ├── ExpertConsultation.tsx
+│   │   │   ├── ExpertPanel.tsx
+│   │   │   └── ExpertConflictResolution.tsx
+│   │   ├── 📁 hooks/
+│   │   │   ├── useExpertEvaluation.ts
+│   │   │   ├── useExpertAssignment.ts
+│   │   │   ├── useExpertPanel.ts
+│   │   │   └── useExpertConsultation.ts
+│   │   └── 📁 types/
+│   │       └── expertEvaluation.types.ts
+│   ├── 📁 evaluation-workflows/
+│   │   ├── 📁 components/
+│   │   │   ├── WorkflowBuilder.tsx
+│   │   │   ├── WorkflowEditor.tsx
+│   │   │   ├── WorkflowSteps.tsx
+│   │   │   ├── WorkflowApprovals.tsx
+│   │   │   ├── WorkflowMonitoring.tsx
+│   │   │   ├── WorkflowAnalytics.tsx
+│   │   │   ├── MultiStageEvaluation.tsx
+│   │   │   └── EvaluationPipeline.tsx
+│   │   ├── 📁 hooks/
+│   │   │   ├── useEvaluationWorkflows.ts
+│   │   │   ├── useWorkflowBuilder.ts
+│   │   │   ├── useWorkflowExecution.ts
+│   │   │   └── useWorkflowMonitoring.ts
+│   │   └── 📁 types/
+│   │       └── evaluationWorkflow.types.ts
+│   ├── 📁 scoring-systems/
+│   │   ├── 📁 components/
+│   │   │   ├── ScoringSystemCard.tsx
+│   │   │   ├── ScoringSystemForm.tsx
+│   │   │   ├── ScoringSystemBuilder.tsx
+│   │   │   ├── WeightedScoring.tsx
+│   │   │   ├── RankingScoring.tsx
+│   │   │   ├── QualitativeScoring.tsx
+│   │   │   ├── HybridScoring.tsx
+│   │   │   ├── ScoringCalibration.tsx
+│   │   │   └── ScoringAnalytics.tsx
+│   │   ├── 📁 hooks/
+│   │   │   ├── useScoringSystem.ts
+│   │   │   ├── useScoringBuilder.ts
+│   │   │   ├── useScoringCalibration.ts
+│   │   │   └── useScoringAnalytics.ts
+│   │   └── 📁 types/
+│   │       └── scoringSystem.types.ts
+│   ├── 📁 hooks/
+│   │   ├── useEvaluations.ts
+│   │   ├── useEvaluationManagement.ts
+│   │   ├── useEvaluationAssignment.ts
+│   │   ├── useEvaluationWorkflow.ts
+│   │   ├── useEvaluationAnalytics.ts
+│   │   ├── useReviewerManagement.ts
+│   │   ├── useEvaluationCalibration.ts
+│   │   ├── useConflictResolution.ts
+│   │   └── useEvaluationReports.ts
+│   ├── 📁 services/
+│   │   ├── evaluationService.ts
+│   │   ├── ideaEvaluationService.ts
+│   │   ├── peerReviewService.ts
+│   │   ├── expertEvaluationService.ts
+│   │   ├── workflowService.ts
+│   │   ├── scoringService.ts
+│   │   ├── reviewerService.ts
+│   │   ├── calibrationService.ts
+│   │   ├── conflictResolutionService.ts
+│   │   └── evaluationAnalyticsService.ts
+│   └── 📁 types/
+│       ├── evaluation.types.ts
+│       ├── reviewer.types.ts
+│       ├── workflow.types.ts
+│       ├── scoring.types.ts
+│       ├── calibration.types.ts
+│       └── analytics.types.ts
 ```
 
 #### 📢 Campaigns Management
@@ -804,6 +1057,29 @@ pages/
 │   ├── ChallengeSubmissionPage.tsx
 │   ├── ChallengeEvaluationPage.tsx
 │   └── MyChallengesPage.tsx
+├── 📁 templates/
+│   ├── TemplatesPage.tsx
+│   ├── TemplateLibraryPage.tsx
+│   ├── CreateTemplatePage.tsx
+│   ├── EditTemplatePage.tsx
+│   ├── TemplateBuilderPage.tsx
+│   ├── TemplatePreviewPage.tsx
+│   ├── ChallengeTemplatesPage.tsx
+│   ├── CampaignTemplatesPage.tsx
+│   ├── EventTemplatesPage.tsx
+│   ├── EvaluationTemplatesPage.tsx
+│   └── MyTemplatesPage.tsx
+├── 📁 evaluations/
+│   ├── EvaluationsPage.tsx
+│   ├── EvaluationDashboardPage.tsx
+│   ├── IdeaEvaluationPage.tsx
+│   ├── PeerReviewPage.tsx
+│   ├── ExpertEvaluationPage.tsx
+│   ├── EvaluationWorkflowPage.tsx
+│   ├── ReviewerWorkspacePage.tsx
+│   ├── EvaluationAnalyticsPage.tsx
+│   ├── ScoringSystemsPage.tsx
+│   └── MyEvaluationsPage.tsx
 ├── 📁 campaigns/
 │   ├── CampaignsPage.tsx
 │   ├── CampaignDetailsPage.tsx
@@ -977,7 +1253,12 @@ services/
 │   ├── marketplaceService.ts
 │   ├── knowledgeService.ts
 │   ├── supportService.ts
-│   └── workflowService.ts
+│   ├── templateService.ts
+│   ├── evaluationService.ts
+│   ├── ideaService.ts
+│   ├── workflowService.ts
+│   ├── scoringService.ts
+│   └── reviewService.ts
 └── 📁 utilities/
     ├── validationService.ts
     ├── formatService.ts
@@ -1081,7 +1362,12 @@ types/
 │   ├── marketplace.types.ts
 │   ├── knowledge.types.ts
 │   ├── support.types.ts
-│   └── workflow.types.ts
+│   ├── template.types.ts
+│   ├── evaluation.types.ts
+│   ├── idea.types.ts
+│   ├── workflow.types.ts
+│   ├── scoring.types.ts
+│   └── review.types.ts
 ├── 📁 ui/
 │   ├── component.types.ts
 │   ├── theme.types.ts
@@ -1303,6 +1589,12 @@ i18n/
 │   │   ├── marketplace.json
 │   │   ├── knowledge.json
 │   │   ├── support.json
+│   │   ├── templates.json
+│   │   ├── evaluations.json
+│   │   ├── ideas.json
+│   │   ├── workflows.json
+│   │   ├── scoring.json
+│   │   ├── reviews.json
 │   │   ├── admin.json
 │   │   ├── errors.json
 │   │   ├── validation.json
@@ -1320,6 +1612,12 @@ i18n/
 │       ├── marketplace.json
 │       ├── knowledge.json
 │       ├── support.json
+│       ├── templates.json
+│       ├── evaluations.json
+│       ├── ideas.json
+│       ├── workflows.json
+│       ├── scoring.json
+│       ├── reviews.json
 │       ├── admin.json
 │       ├── errors.json
 │       ├── validation.json
@@ -1472,6 +1770,12 @@ docs/
 │   ├── marketplace.md
 │   ├── knowledge-base.md
 │   ├── support.md
+│   ├── templates.md
+│   ├── evaluations.md
+│   ├── ideas.md
+│   ├── workflows.md
+│   ├── scoring-systems.md
+│   ├── peer-review.md
 │   └── admin.md
 ├── 📁 api/                         # API documentation
 │   ├── authentication.md
@@ -1553,3 +1857,52 @@ scripts/
 - **Cultural Adaptation**: Saudi-specific features and branding
 
 This comprehensive file structure ensures scalability, maintainability, and supports all the enterprise features required for the Saudi Innovation Spark Platform while maintaining clear separation of concerns and following modern React development best practices.
+
+---
+
+## 🎯 Critical Features Added: Templates & Evaluations
+
+### 📋 Templates System
+The **Templates & Forms System** is crucial for:
+- **Consistency**: Standardized formats across all features
+- **Efficiency**: Rapid creation of challenges, campaigns, events
+- **Quality Control**: Pre-approved templates ensure quality
+- **Scalability**: Template library grows with platform usage
+- **Customization**: Flexible template builder for specific needs
+
+**Key Template Types:**
+- Challenge Templates (Innovation challenges, hackathons, competitions)
+- Campaign Templates (Awareness campaigns, recruitment drives)
+- Event Templates (Workshops, conferences, networking events)
+- Evaluation Templates (Scoring matrices, criteria frameworks)
+- Document Templates (Reports, certificates, proposals)
+- Email Templates (Notifications, communications, marketing)
+
+### 🔍 Ideas & Evaluations System
+The **Comprehensive Evaluation System** is essential for:
+- **Quality Assurance**: Multi-stage evaluation processes
+- **Fairness**: Standardized scoring and peer review systems  
+- **Expertise**: Expert-driven evaluation workflows
+- **Transparency**: Clear evaluation criteria and feedback
+- **Continuous Improvement**: Analytics and calibration systems
+
+**Key Evaluation Features:**
+- **Multi-Stage Workflows**: Initial screening → Peer review → Expert evaluation → Final selection
+- **Flexible Scoring Systems**: Weighted scoring, ranking, qualitative, hybrid approaches
+- **Reviewer Management**: Assignment, calibration, conflict resolution
+- **Peer Review System**: Anonymous peer evaluations with consensus building
+- **Expert Panels**: Domain expert evaluations and recommendations
+- **Conflict Resolution**: Automated and manual conflict resolution processes
+- **Analytics & Reporting**: Evaluation performance metrics and insights
+
+### 🔄 Integration with Core Features
+Both systems deeply integrate with:
+- **Challenges**: Template-based challenge creation, comprehensive idea evaluation
+- **Campaigns**: Campaign templates, performance evaluation frameworks  
+- **Events**: Event templates, attendee feedback evaluations
+- **Organizations**: Organization-specific templates and evaluation criteria
+- **Teams**: Team evaluation templates, collaborative review processes
+- **Experts**: Expert template creation, expert-led evaluations
+- **Analytics**: Template usage analytics, evaluation effectiveness metrics
+
+This enhanced structure ensures the Saudi Innovation Spark Platform can handle enterprise-level innovation management with the flexibility, quality control, and evaluation rigor required for government and large organization deployments.
