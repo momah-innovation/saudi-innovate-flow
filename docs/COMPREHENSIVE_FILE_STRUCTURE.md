@@ -382,6 +382,251 @@ features/
 │       └── interactions.types.ts
 ```
 
+#### 📊 Projects & Project Management
+```
+├── 📁 projects/
+│   ├── 📁 components/
+│   │   ├── ProjectCard.tsx
+│   │   ├── ProjectForm.tsx
+│   │   ├── ProjectDetails.tsx
+│   │   ├── ProjectDashboard.tsx
+│   │   ├── ProjectTimeline.tsx
+│   │   ├── ProjectGantt.tsx
+│   │   ├── ProjectKanban.tsx
+│   │   ├── ProjectTasks.tsx
+│   │   ├── ProjectMilestones.tsx
+│   │   ├── ProjectTeam.tsx
+│   │   ├── ProjectBudget.tsx
+│   │   ├── ProjectResources.tsx
+│   │   ├── ProjectRisks.tsx
+│   │   ├── ProjectDocuments.tsx
+│   │   ├── ProjectProgress.tsx
+│   │   ├── ProjectAnalytics.tsx
+│   │   ├── ProjectReports.tsx
+│   │   ├── ProjectSettings.tsx
+│   │   ├── TaskCard.tsx
+│   │   ├── TaskForm.tsx
+│   │   ├── TaskDetails.tsx
+│   │   ├── TaskAssignment.tsx
+│   │   ├── TaskDependencies.tsx
+│   │   ├── TaskComments.tsx
+│   │   ├── TaskAttachments.tsx
+│   │   ├── MilestoneCard.tsx
+│   │   ├── MilestoneForm.tsx
+│   │   ├── MilestoneProgress.tsx
+│   │   ├── ResourcePlanner.tsx
+│   │   ├── ResourceAllocation.tsx
+│   │   ├── BudgetTracker.tsx
+│   │   ├── TimeTracker.tsx
+│   │   ├── RiskAssessment.tsx
+│   │   ├── RiskMitigation.tsx
+│   │   ├── ProjectTemplateSelector.tsx
+│   │   ├── ProjectCalendarIntegration.tsx
+│   │   ├── ProjectNotifications.tsx
+│   │   ├── ProjectLikes.tsx
+│   │   ├── ProjectSaves.tsx
+│   │   ├── ProjectComments.tsx
+│   │   ├── ProjectSharing.tsx
+│   │   └── ProjectSocialMetrics.tsx
+│   ├── 📁 task-management/
+│   │   ├── 📁 components/
+│   │   │   ├── TaskList.tsx
+│   │   │   ├── TaskGrid.tsx
+│   │   │   ├── TaskBoard.tsx
+│   │   │   ├── TaskFilters.tsx
+│   │   │   ├── TaskSearch.tsx
+│   │   │   ├── TaskPriority.tsx
+│   │   │   ├── TaskStatus.tsx
+│   │   │   ├── TaskLabels.tsx
+│   │   │   ├── TaskTimer.tsx
+│   │   │   ├── TaskChecklist.tsx
+│   │   │   ├── TaskRecurring.tsx
+│   │   │   └── TaskBulkActions.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useTaskManagement.ts
+│   │       ├── useTaskFiltering.ts
+│   │       ├── useTaskTimer.ts
+│   │       └── useTaskDependencies.ts
+│   ├── 📁 project-planning/
+│   │   ├── 📁 components/
+│   │   │   ├── ProjectWizard.tsx
+│   │   │   ├── ProjectScope.tsx
+│   │   │   ├── ProjectObjectives.tsx
+│   │   │   ├── ProjectRequirements.tsx
+│   │   │   ├── ProjectConstraints.tsx
+│   │   │   ├── ProjectStakeholders.tsx
+│   │   │   ├── ProjectApprovals.tsx
+│   │   │   ├── WorkBreakdownStructure.tsx
+│   │   │   ├── ProjectSchedule.tsx
+│   │   │   ├── ResourcePlan.tsx
+│   │   │   ├── CommunicationPlan.tsx
+│   │   │   ├── QualityPlan.tsx
+│   │   │   └── RiskPlan.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useProjectPlanning.ts
+│   │       ├── useProjectScope.ts
+│   │       ├── useProjectScheduling.ts
+│   │       └── useProjectApprovals.ts
+│   ├── 📁 hooks/
+│   │   ├── useProjects.ts
+│   │   ├── useProjectManagement.ts
+│   │   ├── useProjectDashboard.ts
+│   │   ├── useProjectAnalytics.ts
+│   │   ├── useProjectTimeline.ts
+│   │   ├── useProjectBudget.ts
+│   │   ├── useProjectResources.ts
+│   │   ├── useProjectRisks.ts
+│   │   ├── useProjectReporting.ts
+│   │   ├── useProjectLikes.ts
+│   │   ├── useProjectSaves.ts
+│   │   ├── useProjectComments.ts
+│   │   └── useProjectSocial.ts
+│   ├── 📁 services/
+│   │   ├── projectService.ts
+│   │   ├── taskService.ts
+│   │   ├── milestoneService.ts
+│   │   ├── budgetService.ts
+│   │   ├── resourceService.ts
+│   │   ├── riskService.ts
+│   │   ├── timeTrackingService.ts
+│   │   ├── reportingService.ts
+│   │   ├── projectAnalyticsService.ts
+│   │   └── projectSocialService.ts
+│   └── 📁 types/
+│       ├── project.types.ts
+│       ├── task.types.ts
+│       ├── milestone.types.ts
+│       ├── resource.types.ts
+│       ├── budget.types.ts
+│       ├── risk.types.ts
+│       ├── timeline.types.ts
+│       ├── planning.types.ts
+│       └── social.types.ts
+```
+
+#### 📅 Calendar & Scheduling System
+```
+├── 📁 calendar/
+│   ├── 📁 components/
+│   │   ├── Calendar.tsx
+│   │   ├── CalendarHeader.tsx
+│   │   ├── CalendarGrid.tsx
+│   │   ├── CalendarEvent.tsx
+│   │   ├── CalendarDayView.tsx
+│   │   ├── CalendarWeekView.tsx
+│   │   ├── CalendarMonthView.tsx
+│   │   ├── CalendarYearView.tsx
+│   │   ├── CalendarAgendaView.tsx
+│   │   ├── CalendarTimelineView.tsx
+│   │   ├── CalendarGanttView.tsx
+│   │   ├── EventForm.tsx
+│   │   ├── EventDetails.tsx
+│   │   ├── EventReminders.tsx
+│   │   ├── EventRecurrence.tsx
+│   │   ├── EventInvitations.tsx
+│   │   ├── EventConflicts.tsx
+│   │   ├── CalendarSync.tsx
+│   │   ├── CalendarExport.tsx
+│   │   ├── CalendarImport.tsx
+│   │   ├── CalendarSharing.tsx
+│   │   ├── CalendarPermissions.tsx
+│   │   ├── CalendarCategories.tsx
+│   │   ├── CalendarFilters.tsx
+│   │   ├── CalendarSearch.tsx
+│   │   ├── CalendarWidgets.tsx
+│   │   ├── MiniCalendar.tsx
+│   │   ├── CalendarSidebar.tsx
+│   │   ├── DatePicker.tsx
+│   │   ├── TimePicker.tsx
+│   │   ├── DateRangePicker.tsx
+│   │   ├── TimezonePicker.tsx
+│   │   ├── RecurrenceRules.tsx
+│   │   └── CalendarSettings.tsx
+│   ├── 📁 resource-booking/
+│   │   ├── 📁 components/
+│   │   │   ├── ResourceCalendar.tsx
+│   │   │   ├── ResourceBooking.tsx
+│   │   │   ├── ResourceAvailability.tsx
+│   │   │   ├── RoomBooking.tsx
+│   │   │   ├── EquipmentBooking.tsx
+│   │   │   ├── ExpertBooking.tsx
+│   │   │   ├── BookingForm.tsx
+│   │   │   ├── BookingDetails.tsx
+│   │   │   ├── BookingConfirmation.tsx
+│   │   │   ├── BookingRequests.tsx
+│   │   │   ├── BookingApprovals.tsx
+│   │   │   ├── BookingConflicts.tsx
+│   │   │   └── BookingAnalytics.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useResourceBooking.ts
+│   │       ├── useRoomBooking.ts
+│   │       ├── useEquipmentBooking.ts
+│   │       ├── useExpertBooking.ts
+│   │       └── useBookingAvailability.ts
+│   ├── 📁 team-calendars/
+│   │   ├── 📁 components/
+│   │   │   ├── TeamCalendar.tsx
+│   │   │   ├── TeamSchedule.tsx
+│   │   │   ├── TeamAvailability.tsx
+│   │   │   ├── TeamMeetings.tsx
+│   │   │   ├── TeamWorkload.tsx
+│   │   │   ├── TeamTimeOff.tsx
+│   │   │   ├── TeamCapacity.tsx
+│   │   │   ├── TeamSyncMeeting.tsx
+│   │   │   ├── ShiftScheduling.tsx
+│   │   │   └── TeamCalendarSettings.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useTeamCalendar.ts
+│   │       ├── useTeamScheduling.ts
+│   │       ├── useTeamAvailability.ts
+│   │       └── useTeamWorkload.ts
+│   ├── 📁 integrations/
+│   │   ├── 📁 components/
+│   │   │   ├── GoogleCalendarSync.tsx
+│   │   │   ├── OutlookSync.tsx
+│   │   │   ├── AppleCalendarSync.tsx
+│   │   │   ├── CalDAVSync.tsx
+│   │   │   ├── ICSImportExport.tsx
+│   │   │   ├── WebhookIntegrations.tsx
+│   │   │   └── ThirdPartySync.tsx
+│   │   └── 📁 hooks/
+│   │       ├── useCalendarSync.ts
+│   │       ├── useExternalCalendars.ts
+│   │       └── useCalendarWebhooks.ts
+│   ├── 📁 hooks/
+│   │   ├── useCalendar.ts
+│   │   ├── useCalendarEvents.ts
+│   │   ├── useCalendarViews.ts
+│   │   ├── useEventManagement.ts
+│   │   ├── useCalendarFilters.ts
+│   │   ├── useCalendarSearch.ts
+│   │   ├── useCalendarNotifications.ts
+│   │   ├── useCalendarSharing.ts
+│   │   ├── useCalendarSync.ts
+│   │   ├── useTimezones.ts
+│   │   ├── useRecurrence.ts
+│   │   └── useCalendarAnalytics.ts
+│   ├── 📁 services/
+│   │   ├── calendarService.ts
+│   │   ├── eventService.ts
+│   │   ├── bookingService.ts
+│   │   ├── availabilityService.ts
+│   │   ├── notificationService.ts
+│   │   ├── syncService.ts
+│   │   ├── timezoneService.ts
+│   │   ├── recurrenceService.ts
+│   │   └── calendarAnalyticsService.ts
+│   └── 📁 types/
+│       ├── calendar.types.ts
+│       ├── event.types.ts
+│       ├── booking.types.ts
+│       ├── availability.types.ts
+│       ├── recurrence.types.ts
+│       ├── timezone.types.ts
+│       ├── sync.types.ts
+│       └── notifications.types.ts
+```
+
 #### 📋 Templates & Forms System
 ```
 ├── 📁 templates/
@@ -1214,6 +1459,36 @@ pages/
 │   ├── EventTemplatesPage.tsx
 │   ├── EvaluationTemplatesPage.tsx
 │   └── MyTemplatesPage.tsx
+├── 📁 projects/
+│   ├── ProjectsPage.tsx
+│   ├── ProjectDashboardPage.tsx
+│   ├── ProjectDetailsPage.tsx
+│   ├── ProjectPlanningPage.tsx
+│   ├── ProjectTimelinePage.tsx
+│   ├── ProjectTasksPage.tsx
+│   ├── ProjectTeamPage.tsx
+│   ├── ProjectBudgetPage.tsx
+│   ├── ProjectResourcesPage.tsx
+│   ├── ProjectRisksPage.tsx
+│   ├── ProjectReportsPage.tsx
+│   ├── ProjectAnalyticsPage.tsx
+│   ├── CreateProjectPage.tsx
+│   ├── EditProjectPage.tsx
+│   ├── ProjectTemplatesPage.tsx
+│   └── MyProjectsPage.tsx
+├── 📁 calendar/
+│   ├── CalendarPage.tsx
+│   ├── CalendarDashboardPage.tsx
+│   ├── EventDetailsPage.tsx
+│   ├── CreateEventPage.tsx
+│   ├── EditEventPage.tsx
+│   ├── CalendarSettingsPage.tsx
+│   ├── ResourceBookingPage.tsx
+│   ├── TeamCalendarPage.tsx
+│   ├── CalendarSyncPage.tsx
+│   ├── BookingRequestsPage.tsx
+│   ├── CalendarAnalyticsPage.tsx
+│   └── MyCalendarPage.tsx
 ├── 📁 evaluations/
 │   ├── EvaluationsPage.tsx
 │   ├── EvaluationDashboardPage.tsx
@@ -1401,6 +1676,11 @@ services/
 │   ├── templateService.ts
 │   ├── evaluationService.ts
 │   ├── ideaService.ts
+│   ├── projectService.ts
+│   ├── taskService.ts
+│   ├── calendarService.ts
+│   ├── eventService.ts
+│   ├── bookingService.ts
 │   ├── workflowService.ts
 │   ├── scoringService.ts
 │   ├── reviewService.ts
@@ -2063,3 +2343,55 @@ Both systems deeply integrate with:
 - **Analytics**: Template usage analytics, evaluation effectiveness metrics
 
 This enhanced structure ensures the Saudi Innovation Spark Platform can handle enterprise-level innovation management with the flexibility, quality control, and evaluation rigor required for government and large organization deployments.
+
+---
+
+## 🎯 Critical Features Added: Projects & Calendar Systems
+
+### 📋 Projects & Project Management System
+The **Comprehensive Project Management System** is essential for:
+- **Strategic Planning**: Project roadmaps, milestone tracking, resource allocation
+- **Team Collaboration**: Task assignment, progress tracking, team coordination
+- **Timeline Management**: Gantt charts, deadline tracking, dependency management
+- **Resource Optimization**: Budget tracking, resource allocation, capacity planning
+- **Performance Monitoring**: Project KPIs, progress analytics, success metrics
+
+**Key Project Management Features:**
+- **Project Lifecycle Management**: Initiation → Planning → Execution → Monitoring → Closure
+- **Task & Subtask Management**: Hierarchical task breakdown, dependencies, priorities
+- **Team Coordination**: Member assignments, role definitions, workload balancing
+- **Timeline & Scheduling**: Gantt charts, calendar integration, milestone tracking
+- **Budget & Resource Management**: Cost tracking, resource allocation, procurement
+- **Risk Management**: Risk assessment, mitigation strategies, contingency planning
+- **Document Management**: Project documentation, version control, collaboration
+- **Progress Reporting**: Automated reports, dashboards, stakeholder updates
+
+### 📅 Calendar System
+The **Integrated Calendar System** is crucial for:
+- **Unified Scheduling**: Centralized calendar across all platform features
+- **Event Management**: Seamless integration with events, meetings, deadlines
+- **Resource Booking**: Meeting rooms, equipment, expert consultations
+- **Time Management**: Personal and team calendar management
+- **Notification System**: Automated reminders, deadline alerts, meeting notifications
+
+**Key Calendar Features:**
+- **Multi-View Calendars**: Daily, weekly, monthly, yearly, Gantt views
+- **Resource Scheduling**: Room booking, equipment reservation, expert availability
+- **Recurring Events**: Meeting series, project milestones, regular check-ins
+- **Integration Hub**: Connect with challenges, campaigns, events, projects
+- **Team Calendars**: Shared team schedules, availability tracking
+- **Timezone Support**: Multi-timezone scheduling for global collaboration
+- **Calendar Sharing**: Public/private calendars, permission-based access
+- **Mobile Sync**: Cross-device synchronization, offline availability
+
+### 🔄 Integration with Core Features
+Both systems deeply integrate with:
+- **Challenges**: Project-based challenge management, deadline calendars
+- **Campaigns**: Campaign project management, scheduling and timeline tracking
+- **Events**: Event project planning, calendar integration, resource booking
+- **Organizations**: Department project portfolios, organizational calendars
+- **Teams**: Team project assignments, collaborative calendars, workload management
+- **Experts**: Expert project consultations, availability calendars, booking systems
+- **Analytics**: Project performance metrics, calendar utilization analytics
+
+This comprehensive project and calendar management ensures the Saudi Innovation Spark Platform provides enterprise-grade project management capabilities with seamless calendar integration across all organizational activities.
